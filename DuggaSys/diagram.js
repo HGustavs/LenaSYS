@@ -4152,720 +4152,803 @@ function generateErTableString()
     weakEntityList = tempWeakList; // Update the values in the weakEntity list
 
     var allEntityList = strongEntityList.concat(weakEntityList); // Add the two list together
-    console.log(weakEntityList);
+
     //Iterate through all relations
     for (var i = 0; i < ERRelationData.length; i++) {        
         if (ERRelationData[i].length >= 3) {
-            //If it is a strong / normal relation
-            if (ERRelationData[i][0].state == 'normal') {
-                //Array with entities foreign keys
-                var foreign = [];
-                //ONE to ONE relation, key from second ONE-side is stored in the other side
-                if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
-                    //If array is empty
-                    if (ERForeignData.length < 1) {
-                        //Push in first ONE-side entity
-                        ERForeignData.push([ERRelationData[i][1][0]]);
-                    }
-                    else {
-                        //If entity already exist in ERForeignData, 
-                        var exist = false;
-                        for (var j = 0; j < ERForeignData.length; j++) {
-                            //First ONE-side entity
-                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                                exist = true;
-                            }
-                        }
-                        if (!exist) {
-                            //Push in first ONE-side entity
-                            ERForeignData.push([ERRelationData[i][1][0]]);
-                        }
-                    }
-                    //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        //Second ONE-side entity
-                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
-                            foreign.push(ERRelationData[i][2][0]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //First ONE-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                            //Every key-attribute is pushed into array
-                            ERForeignData[j].push(foreign);
-                        }
-                    }
-                }
-                //MANY to ONE relation, key from the ONE is foreign for MANY, case 1
-                else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
-                    console.log('Waa');
-                    //If array is empty
-                    if (ERForeignData.length < 1) {
-                        //Push in MANY-side entity
-                        ERForeignData.push([ERRelationData[i][2][0]]);
-                    }
-                    else {
-                        //If entity already exist in ERForeignData, 
-                        var exist = false;
-                        for (var j = 0; j < ERForeignData.length; j++) {
-                            //MANY-side entity
-                            if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
-                                exist = true;
-                            }
-                        }
-                        if (!exist) {
-                            //Push in MANY-side entity
-                            ERForeignData.push([ERRelationData[i][2][0]]);
-                        }
-                    }
-                    //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        //ONE-side entity
-                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
-                            foreign.push(ERRelationData[i][1][0]);                            
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //Push in MANY-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
-                            //Every key-attribute is pushed into array
-                            ERForeignData[j].push(foreign);
-                        }
-                    }
-                }
-                //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
-                else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
-                    //If array is empty
-                    if (ERForeignData.length < 1) {
-                        //Push in MANY-side entity
-                        ERForeignData.push([ERRelationData[i][1][0]]);
-                    }
-                    else {
-                        var exist = false;
-                        //Iterate through array and check if entity already exist
-                        for (var j = 0; j < ERForeignData.length; j++) {
-                            //MANY-side entity
-                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                                exist = true;
-                            }
-                        }
-                        if (!exist) {
-                            //Push in MANY-side entity
-                            ERForeignData.push([ERRelationData[i][1][0]]);
-                        }
-                    }
-                    //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        //ONE-side entity
-                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
-                            foreign.push(ERRelationData[i][2][0]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //MANY-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                            //Every key-attribute is pushed into array
-                            ERForeignData[j].push(foreign);
-                        }
-                    }
-                }
-                //MANY to MANY relation, key from both is stored together with relation
-                else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
-                    //Push in relation
-                    ERForeignData.push([ERRelationData[i][0]]);
-                    //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
-                            foreign.push([ERRelationData[i][1][0]]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign[0].push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign[0].push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
-                            foreign.push([ERRelationData[i][2][0]]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if(allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign[1].push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign[1].push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //MANY-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
-                            //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
-                                ERForeignData[j].push(foreign[k]);
-                            }
-                        }
-                    }
-                }
-            }
-            //If it is a weak relation
-            if (ERRelationData[i][0].state == 'weak') {
-                //Array with entities foreign keys
-                var foreign = [];
-                //ONE to ONE relation, key from second ONE-side is stored in the other side
-                if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
-                    //If array is empty
-                    if (ERForeignData.length < 1) {
-                        //Push in first ONE-side entity
-                        ERForeignData.push([ERRelationData[i][1][0]]);
-                    }
-                    else {
-                        //If entity already exist in ERForeignData, 
-                        var exist = false;
-                        for (var j = 0; j < ERForeignData.length; j++) {
-                            //First ONE-side entity
-                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                                exist = true;
-                            }
-                        }
-                        if (!exist) {
-                            //Push in first ONE-side entity
-                            ERForeignData.push([ERRelationData[i][1][0]]);
-                        }
-                    }
-                    //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        //Second ONE-side entity
-                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
-                            foreign.push(ERRelationData[i][2][0]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //First ONE-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                            //Every key-attribute is pushed into array
-                            ERForeignData[j].push(foreign);
-                        }
-                    }
-                }
-                //MANY to ONE relation, key from the ONE is foreign for MANY, case 1
-                else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
-                    console.log('Waa');
-                    //If array is empty
-                    if (ERForeignData.length < 1) {
-                        //Push in MANY-side entity
-                        ERForeignData.push([ERRelationData[i][2][0]]);
-                    }
-                    else {
-                        //If entity already exist in ERForeignData, 
-                        var exist = false;
-                        for (var j = 0; j < ERForeignData.length; j++) {
-                            //MANY-side entity
-                            if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
-                                exist = true;
-                            }
-                        }
-                        if (!exist) {
-                            //Push in MANY-side entity
-                            ERForeignData.push([ERRelationData[i][2][0]]);
-                        }
-                    }
-                    //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        //ONE-side entity
-                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
-                            foreign.push(ERRelationData[i][1][0]);                            
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //Push in MANY-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
-                            //Every key-attribute is pushed into array
-                            ERForeignData[j].push(foreign);
-                        }
-                    }
-                }
-                //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
-                else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
-                    //If array is empty
-                    if (ERForeignData.length < 1) {
-                        //Push in MANY-side entity
-                        ERForeignData.push([ERRelationData[i][1][0]]);
-                    }
-                    else {
-                        var exist = false;
-                        //Iterate through array and check if entity already exist
-                        for (var j = 0; j < ERForeignData.length; j++) {
-                            //MANY-side entity
-                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                                exist = true;
-                            }
-                        }
-                        if (!exist) {
-                            //Push in MANY-side entity
-                            ERForeignData.push([ERRelationData[i][1][0]]);
-                        }
-                    }
-                    //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        //ONE-side entity
-                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
-                            foreign.push(ERRelationData[i][2][0]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign.push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //MANY-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
-                            //Every key-attribute is pushed into array
-                            ERForeignData[j].push(foreign);
-                        }
-                    }
-                }
-                //MANY to MANY relation, key from both is stored together with relation
-                else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
-                    //Push in relation
-                    ERForeignData.push([ERRelationData[i][0]]);
-                    //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
-                            foreign.push([ERRelationData[i][1][0]]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                //Check if primary key is present
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if (allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign[0].push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign[0].push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
-                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
-                            foreign.push([ERRelationData[i][2][0]]);
-                            if(allEntityList[j][0].state == 'normal'){
-                                var existPrimary = false;
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    if(allEntityList[j][1][k].state == 'primary') {
-                                        existPrimary = true;
-                                        break;
-                                    }
-                                }
-                                //Push in primary or candidate keys depending if one is present
-                                for (var k = 1; k < allEntityList[j][1].length; k++) {
-                                    //Primary exist, push in primary keys
-                                    if (existPrimary && allEntityList[j][1][k].state == 'primary') {
-                                        //Push in every key-attribute
-                                        foreign[1].push(allEntityList[j][1][k]);
-                                    }
-                                    //Primary non-existant, push in candidate keys
-                                    else if (!(existPrimary) && allEntityList[j][1][k].state == 'candidate') {
-                                        //Push in every key-attribute
-                                        foreign[1].push(allEntityList[j][1][k]);                            
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
-                        //MANY-side entity
-                        if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
-                            //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
-                                ERForeignData[j].push(foreign[k]);
-                            }
-                        }
-                    }
-                }
-            }
+            var foreign = []; // Array with entities foreign keys
             // Case 1, two strong entities in relation
             if (ERRelationData[i][1][0].state == 'normal' && ERRelationData[i][2][0].state == 'normal') {
-
+                // ONE to ONE relation, key from second ONE-side is stored in the other side
+                if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                    }
+                    else {
+                        var exist = false; // If entity already exist in ERForeignData
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        //Second ONE-side entity
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push(ERRelationData[i][2][0]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign.push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //First ONE-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                            ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                        }
+                    }
+                }     
+                //MANY to ONE relation, key from the ONE is foreign for MANY, case 1
+                else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
+                    }
+                    else {
+                        var exist = false; // If entity already exist in ERForeignData
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            ERForeignData.push([ERRelationData[i][2][0]]); //Push in first ONE-side entity
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        //Second ONE-side entity
+                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                            foreign.push(ERRelationData[i][1][0]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign.push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //First ONE-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                            ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                        }
+                    }
+                }
+                //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
+                else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                    }
+                    else {
+                        var exist = false; // If entity already exist in ERForeignData
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        //Second ONE-side entity
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push(ERRelationData[i][2][0]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign.push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //First ONE-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                            ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                        }
+                    }
+                }
+                //MANY to MANY relation, key from both is stored together with relation
+                else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
+                    ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
+                    //Find currentEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                            foreign.push([ERRelationData[i][1][0]]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign[0].push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find otherEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                                foreign.push([ERRelationData[i][2][0]]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign[1].push(allEntityList[j][1][k]);
+                               
+                                }
+                            }
+                        }
+                    }
+                    //Find relation in ERForeignData and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //MANY-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
+                            //Every key-attribute is pushed into array
+                            for (var k = 0; k < foreign.length; k++) {
+                                ERForeignData[j].push(foreign[k]);
+                            }
+                        }
+                    }
+                }
             }
             // Case 2, two weak entities in relation
             if (ERRelationData[i][1][0].state == 'weak' && ERRelationData[i][2][0].state == 'weak') {
-
+                // ONE to ONE relation, key from second ONE-side is stored in the other side
+                if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                    }
+                    else {
+                        var exist = false; // If entity already exist in ERForeignData
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        //Second ONE-side entity
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push(ERRelationData[i][2][0]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign.push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //First ONE-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                            ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                        }
+                    }
+                }
+                // ONE to MANY relation, key from the ONE is foreign for MANY, case 1
+                else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
+                    // If normal relation
+                    if (ERRelationData[i][0].state == 'normal') {
+                        //If array is empty
+                        if (ERForeignData.length < 1) {
+                            ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
+                        }
+                        else {
+                            var exist = false; // If entity already exist in ERForeignData
+                            for (var j = 0; j < ERForeignData.length; j++) {
+                                //First ONE-side entity
+                                if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                ERForeignData.push([ERRelationData[i][2][0]]); //Push in first ONE-side entity
+                            }
+                        }
+                        //Find current entity and iterate through its attributes
+                        for (var j = 0; j < allEntityList.length; j++) {
+                            //Second ONE-side entity
+                            if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                                foreign.push(ERRelationData[i][1][0]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign.push(allEntityList[j][1][k]);
+                                }
+                            }
+                        }
+                        //Find current entity and push found foreign attributes
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                            }
+                        }
+                    }
+                }
+                // MANY to ONE relation, key from the ONE is foreign for MANY,case 2
+                else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
+                    // If normal relation
+                    if (ERRelationData[i][0].state == 'normal') {
+                        //If array is empty
+                        if (ERForeignData.length < 1) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                        }
+                        else {
+                            var exist = false; // If entity already exist in ERForeignData
+                            for (var j = 0; j < ERForeignData.length; j++) {
+                                //First ONE-side entity
+                                if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                            }
+                        }
+                        //Find current entity and iterate through its attributes
+                        for (var j = 0; j < allEntityList.length; j++) {
+                            //Second ONE-side entity
+                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                                foreign.push(ERRelationData[i][2][0]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign.push(allEntityList[j][1][k]);
+                                }
+                            }
+                        }
+                        //Find current entity and push found foreign attributes
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                            }
+                        }
+                    }    
+                }
+                //MANY to MANY relation, key from both is stored together with relation
+                else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
+                    ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
+                    //Find currentEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                            foreign.push([ERRelationData[i][1][0]]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign[0].push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find otherEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                                foreign.push([ERRelationData[i][2][0]]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign[1].push(allEntityList[j][1][k]);
+                                }
+                            }
+                        }
+                    }
+                    //Find relation in ERForeignData and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //MANY-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
+                            //Every key-attribute is pushed into array
+                            for (var k = 0; k < foreign.length; k++) {
+                                ERForeignData[j].push(foreign[k]);
+                            }
+                        }
+                    }
+                }
             }
             // Case 3, one weak and one string entity in relation
-            if (ERRelationData[i][1][0].state == 'weak' && ERRelationData[i][2][0].state == 'normal' ||
-            ERRelationData[i][1][0].state == 'normal' && ERRelationData[i][2][0].state == 'weak') {
-                
-            }
-        }
-    }
-    console.log(ERForeignData);
-    //Just for testing
-    //Add foreign attribute to correct entity in allEntityList
-    for (var i = 0; i < allEntityList.length; i++) {
-        for(var j = 0; j < ERForeignData.length; j++) {
-            if(allEntityList[i][0].id == ERForeignData[j][0].id) {
-                for(var k = 1; k < ERForeignData[j].length; k++) {
-                    allEntityList[i].push(ERForeignData[j][k]);
+            if (ERRelationData[i][1][0].state == 'weak' && ERRelationData[i][2][0].state == 'normal') {
+                // ONE to ONE relation, key from second ONE-side is stored in the other side
+                if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                    }
+                    else {
+                        var exist = false; // If entity already exist in ERForeignData
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        //Second ONE-side entity
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push(ERRelationData[i][2][0]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign.push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //First ONE-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                            ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                        }
+                    }
+                }     
+                //ONE to MANY relation, key from the ONE is foreign for MANY, case 1
+                else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
+                    // If normal relation
+                    if (ERRelationData[i][0].state == 'normal') {
+                        //If array is empty
+                        if (ERForeignData.length < 1) {
+                            ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
+                        }
+                        else {
+                            var exist = false; // If entity already exist in ERForeignData
+                            for (var j = 0; j < ERForeignData.length; j++) {
+                                //First ONE-side entity
+                                if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                ERForeignData.push([ERRelationData[i][2][0]]); //Push in first ONE-side entity
+                            }
+                        }
+                        //Find current entity and iterate through its attributes
+                        for (var j = 0; j < allEntityList.length; j++) {
+                            //Second ONE-side entity
+                            if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                                foreign.push(ERRelationData[i][1][0]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign.push(allEntityList[j][1][k]);
+                                }
+                            }
+                        }
+                        //Find current entity and push found foreign attributes
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                            }
+                        }
+                    }
                 }
-                break;
+                //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
+                else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
+                    // If normal relation
+                    if (ERRelationData[i][0].state == 'normal') {
+                        //If array is empty
+                        if (ERForeignData.length < 1) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                        }
+                        else {
+                            var exist = false; // If entity already exist in ERForeignData
+                            for (var j = 0; j < ERForeignData.length; j++) {
+                                //First ONE-side entity
+                                if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                            }
+                        }
+                        //Find current entity and iterate through its attributes
+                        for (var j = 0; j < allEntityList.length; j++) {
+                            //Second ONE-side entity
+                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                                foreign.push(ERRelationData[i][2][0]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign.push(allEntityList[j][1][k]);
+                                }
+                            }
+                        }
+                        //Find current entity and push found foreign attributes
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                            }
+                        }
+                    }
+                }
+                //MANY to MANY relation, key from both is stored together with relation
+                else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
+                    ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
+                    //Find currentEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                            foreign.push([ERRelationData[i][1][0]]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign[0].push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find otherEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                                foreign.push([ERRelationData[i][2][0]]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign[1].push(allEntityList[j][1][k]);
+                               
+                                }
+                            }
+                        }
+                    }
+                    //Find relation in ERForeignData and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //MANY-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
+                            //Every key-attribute is pushed into array
+                            for (var k = 0; k < foreign.length; k++) {
+                                ERForeignData[j].push(foreign[k]);
+                            }
+                        }
+                    }
+                }
+            }
+            // Case 3, one weak and one string entity in relation
+            if (ERRelationData[i][1][0].state == 'normal' && ERRelationData[i][2][0].state == 'weak') {
+                // ONE to ONE relation, key from second ONE-side is stored in the other side
+                if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
+                    //If array is empty
+                    if (ERForeignData.length < 1) {
+                        ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                    }
+                    else {
+                        var exist = false; // If entity already exist in ERForeignData
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                exist = true;
+                            }
+                        }
+                        if (!exist) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                        }
+                    }
+                    //Find current entity and iterate through its attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        //Second ONE-side entity
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            foreign.push(ERRelationData[i][2][0]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign.push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find current entity and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //First ONE-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                            ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                        }
+                    }
+                }     
+                //ONE to MANY relation, key from the ONE is foreign for MANY, case 1
+                else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
+                    // If normal relation
+                    if (ERRelationData[i][0].state == 'normal') {
+                        console.log('Waa');
+                        //If array is empty
+                        if (ERForeignData.length < 1) {
+                            ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
+                        }
+                        else {
+                            var exist = false; // If entity already exist in ERForeignData
+                            for (var j = 0; j < ERForeignData.length; j++) {
+                                //First ONE-side entity
+                                if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                ERForeignData.push([ERRelationData[i][2][0]]); //Push in first ONE-side entity
+                            }
+                        }
+                        //Find current entity and iterate through its attributes
+                        for (var j = 0; j < allEntityList.length; j++) {
+                            //Second ONE-side entity
+                            if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                                foreign.push(ERRelationData[i][1][0]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign.push(allEntityList[j][1][k]);
+                                }
+                            }
+                        }
+                        //Find current entity and push found foreign attributes
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
+                                ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                            }
+                        }
+                    }
+                }
+                //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
+                else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
+                    // If normal relation
+                    if (ERRelationData[i][0].state == 'normal') {
+                        console.log('Reee');
+                        //If array is empty
+                        if (ERForeignData.length < 1) {
+                            ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
+                        }
+                        else {
+                            var exist = false; // If entity already exist in ERForeignData
+                            for (var j = 0; j < ERForeignData.length; j++) {
+                                //First ONE-side entity
+                                if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                ERForeignData.push([ERRelationData[i][1][0]]); //Push in first ONE-side entity
+                            }
+                        }
+                        //Find current entity and iterate through its attributes
+                        for (var j = 0; j < allEntityList.length; j++) {
+                            //Second ONE-side entity
+                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                                foreign.push(ERRelationData[i][2][0]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign.push(allEntityList[j][1][k]);
+                                }
+                            }
+                        }
+                        //Find current entity and push found foreign attributes
+                        for (var j = 0; j < ERForeignData.length; j++) {
+                            //First ONE-side entity
+                            if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
+                                ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
+                            }
+                        }
+                    }
+                }
+                //MANY to MANY relation, key from both is stored together with relation
+                else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {
+                    ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
+                    //Find currentEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                            foreign.push([ERRelationData[i][1][0]]);
+                            // Push every key in the key list located at [1]
+                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                foreign[0].push(allEntityList[j][1][k]);
+                            }
+                        }
+                    }
+                    //Find otherEntity and find its key-attributes
+                    for (var j = 0; j < allEntityList.length; j++) {
+                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                                foreign.push([ERRelationData[i][2][0]]);
+                                // Push every key in the key list located at [1]
+                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                    foreign[1].push(allEntityList[j][1][k]);
+                                
+                                }
+                            }
+                        }
+                    }
+                    //Find relation in ERForeignData and push found foreign attributes
+                    for (var j = 0; j < ERForeignData.length; j++) {
+                        //MANY-side entity
+                        if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
+                            //Every key-attribute is pushed into array
+                            for (var k = 0; k < foreign.length; k++) {
+                                ERForeignData[j].push(foreign[k]);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+    //Just for testing
+    // Iterate and add each entity's foreign attribute to the correct place
+    for(var i = 0; i < ERForeignData.length; i++) {
+        // Iterate throught all entities
+        for (var j = 0; j < allEntityList.length; j++ ) {
+            // Check if correct entity were found
+            if (ERForeignData[i][0].id == allEntityList[j][0].id) {
+                var row = [];
+                // Push in every foreign attribute
+                for (var k = 1; k < ERForeignData[i].length; k++) {
+                    row.push(ERForeignData[i][k]); // Push in entity
+                }
+                allEntityList[j].push(row); // Push in list
+            }
+        }
+    }
+    // Actual creating the string. Step one, strong / normal entities
     for (var i = 0; i < allEntityList.length; i++) {
-        stringList.push(new String(`<p>${allEntityList[i][0].name} ( `));
-        if (allEntityList[i][0].state == 'normal'){
-            var existPrimary = false;
-            for (var j = 1; j < allEntityList[i][1].length; j++) {
-                if(allEntityList[i][1][j].state == 'primary') {
+        var currentString = ''; // Current table row
+        if (allEntityList[i][0].state == 'normal') {
+            currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
+            var existPrimary = false; // Determine if a primary key exist
+            // ITerate and determine if primary keys are present
+            for (var j = 0; j < allEntityList[i][1].length; j++) {
+                if (allEntityList[i][1][j].state == 'primary') {
                     existPrimary = true;
                     break;
                 }
             }
+            // Once again iterate through through the entity's key attributes and add them to string
             for (var j = 0; j < allEntityList[i][1].length; j++) {
+                // Print only primary keys if at least one is present
                 if (existPrimary) {
-                    if(allEntityList[i][1][j].state == 'primary') {
-                        stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                    if (allEntityList[i][1][j].state == 'primary') {
+                        currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
                     }
                 }
-                else if (!existPrimary) {
-                    if(allEntityList[i][1][j].state == 'candidate') {
-                        stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                //Print only candidate keys if no primary keys are present
+                if (!existPrimary) {
+                    if (allEntityList[i][1][j].state == 'candidate') {
+                        currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
                     }
                 }
             }
-        }
-        /*if (allEntityList[i][0].state == 'weak'){
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
-                if(j == 0){
-                    stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
-                }
-                else if(j ==  allEntityList[i][1].length - 1 && allEntityList[i].length == 2 ){
-                    stringList[i] += `<span style='text-decoration: overline underline black solid 2px;'>`;
-                    for(var k = 1; k < allEntityList[i][1][j].length; k++){
-                        var currentLevel = allEntityList[i][1][j];
-                        stringList[i] += currentLevel[0].name.toLowerCase();
-                        if(Array.isArray(currentLevel[k])){
-                            stringList[i] += `${currentLevel[k].name}, `;
+            // Check if entity has foreign keys, aka last element is an list
+            if (Array.isArray(allEntityList[i][allEntityList[i].length - 1])) {
+                // Again iterate through the list and push in only normal attributes
+                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                    //Not array
+                    if (!Array.isArray(allEntityList[i][j])) {
+                        if (allEntityList[i][j].state == 'normal') {
+                            currentString += `${allEntityList[i][j].name}, `;
                         }
-                        else{
-                            for(var l = 1; l < currentLevel[k].length; l++){
-                                stringList[i] += currentLevel[k][0].name.toLowerCase();
-                                if(Array.isArray(currentLevel[k][l])){
-                                    stringList[i] += `${currentLevel[k][l].name}, `;
-                                }
-                                else{
-                                    for(var m = 1; m < currentLevel[k][l].length; m++){
-                                        stringList[i] += currentLevel[k][l][0].name.toLowerCase();
-                                        if(getArrayDepth(currentLevel[k][l][m]) < 1){
-                                            stringList[i] += `${currentLevel[k][l][m].name}, `;
-                                        }
-                                    }
-                                }
-                            }
+                    }
+                }
+                var lastList = allEntityList[i].length - 1;
+                if (Array.isArray(allEntityList[i][lastList])) {
+                    // Push in foregin attributes, for every list push in entity followed by its value
+                    for (var k = 0; k < allEntityList[i][lastList].length; k++) {
+                        currentString += `<span style='text-decoration: overline black solid 2px;'>`;
+                        // Iterate through all the lists with foreign keys
+                        for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
+                            currentString += `${allEntityList[i][lastList][k][l].name}`;
                         }
-                    }              
-                    stringList[i] += `</span>)</p>`;
-                }
-                else if(j > 0){
-                    stringList[i] += `<span style='text-decoration: overline underline black solid 2px;'>`;
-                    for(var k = 1; k < allEntityList[i][1][j].length; k++){
-                        var currentLevel = allEntityList[i][1][j];
-                        stringList[i] += currentLevel[0].name.toLowerCase();
-                        if(Array.isArray(currentLevel[k])){
-                            stringList[i] += `${currentLevel[k].name}, `;
-                        }
-                        else{
-                            for(var l = 1; l < currentLevel[k].length; l++){
-                                stringList[i] += currentLevel[k][0].name.toLowerCase();
-                                if(Array.isArray(currentLevel[k][l])){
-                                    stringList[i] += `${currentLevel[k][l].name}, `;
-                                }
-                                else{
-                                    for(var m = 1; m < currentLevel[k][l].length; m++){
-                                        stringList[i] += currentLevel[k][l][0].name.toLowerCase();
-                                        if(Array.isArray(currentLevel[k][l][m])){
-                                            stringList[i] += `${currentLevel[k][l][m].name}, `;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }                     
-                    stringList[i] += `</span>, `;
-                }
-            }
-        }*/
-        for (var j = 2; j < allEntityList[i].length; j++) {
-            //If not last attribute
-            if (j < allEntityList[i].length - 1) {
-                //Check if foreign key
-                if (Array.isArray(allEntityList[i][j]) && j != 1) {
-                    for(var k = 1; k < allEntityList[i][j].length; k++) {
-                        stringList[i] += `<span style='text-decoration: overline black solid 2px;'>${allEntityList[i][j][0].name.toLowerCase() + allEntityList[i][j][k].name}</span>, `;
+                        currentString += `</span>, `;
                     }
                 }
-                else {
-                    // Write out normal attributes
-                    if(allEntityList[i][j].state == 'normal') {
-                        stringList[i] += `<span>${allEntityList[i][j].name}</span>, `;
-                    }
-                }                
-            }
-            //If last attribute
-            else if (j == allEntityList[i].length - 1) {
-                if (Array.isArray(allEntityList[i][j]) && j != 1) {
-                    for(var k = 1; k < allEntityList[i][j].length; k++) {
-                        stringList[i] += `<span style='text-decoration: overline black solid 2px;'>${allEntityList[i][j][0].name.toLowerCase() + allEntityList[i][j][k].name}</span>)</p>`;
-                    }
-                }
-                else {
-                    // Write out normal attributes
-                    if(allEntityList[i][j].state == 'normal') {
-                        stringList[i] += `<span>${allEntityList[i][j].name}</span>)</p>`;
-                    }
-                }
-            }
-        }
-    }
-
-    for (var i = 0; i < weakEntityList.length; i++) {
-        var temp = "";
-        temp = new String(`<p>${weakEntityList[i][0].name} ( `);
-        for (var j = 0; j < weakEntityList[i][1].length; j++) {
-            if (weakEntityList[i][1][j].length <= 0 || weakEntityList[i][1][j].kind == 'ERAttr' || weakEntityList[i][1][j].kind == 'EREntity') {
-                temp += `<span style='text-decoration: underline black solid 2px;'>${weakEntityList[i][1][j].name}</span>, `;
-            }
-            else if (weakEntityList[i][1][1].length > 0) {
-                temp += `<span style='text-decoration: underline overline black solid 2px;'>`;
-                for (var k = 1; k < weakEntityList[i][1][j].length; k++) {
-                    temp += `${weakEntityList[i][1][1][k].name}_`;
-                }
-                temp += `</span>, `;
             }
             else {
-                temp += `<span>${weakEntityList[i][1][j].name}</span>`;
-            }
-        }
-        stringList.push(temp);
-
-
-    }
-    /*for(var i = 0; i < ERForeignData.length; i++) {
-        if(ERForeignData[i][0].kind == 'ERRelation') {
-            stringList.push(new String(`<p>${ERForeignData[i][0].name} (`));
-            //Check if primary key is present
-            var existPrimary = false;
-            for (var j = 1; j < ERForeignData[i].length; j++) {
-                if (ERAttributeData[i][j].state == 'primary') {
-                    existPrimary = true;
-                    break;
-                }
-            }
-            for(var j = 1; j < ERForeignData[i].length; j++) {
-                for (var k = 1; k < ERForeignData[i][j].length; k++) {
-                    //If attribute has foreign attributes
-                    if (ERForeignData[i][j].length > 1) {
-                        if (j < ERForeignData[i].length - 1) {
-                            stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][k].name}</span>, `;
-                        }
-                        else if (j == ERForeignData[i].length - 1) {
-                            stringList[control] += `<span style='text-decoration: overline underline black solid 2px;'>${ERForeignData[i][j][0].name.toLowerCase() + ERForeignData[i][j][k].name}</span>)</p>`;
+                // Again iterate through the list and push in only normal attributes
+                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                    //Not array
+                    if (!Array.isArray(allEntityList[i][j])) {
+                        if (allEntityList[i][j].state == 'normal') {
+                            currentString += `${allEntityList[i][j].name}, `;
                         }
                     }
                 }
             }
-            control++;
+            currentString += `)</p>`;
+            stringList.push(currentString);
         }
-    }*/
+    }
+    for (var i = 0; i < allEntityList.length; i++) {
+        var currentString = ''; // Current table row
+        if (allEntityList[i][0].state == 'weak') {
+            currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
+            // Once again iterate through through the entity's key attributes and add them to string
+            for (var j = 0; j < allEntityList[i][1].length; j++) {
+                if (!Array.isArray(allEntityList[i][1][j])) {
+                    // Print only weakKeys
+                    if (allEntityList[i][1][j].state == 'weakKey') {
+                        currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                    }
+                }
+            }
+            // Once again iterate through through the entity's key attributes and add them to string
+            for (var j = 0; j < allEntityList[i][1].length; j++) {
+                if (Array.isArray(allEntityList[i][1][j])) {
+                    currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
+                    for (var k = 0; k < allEntityList[i][1][j].length; k++) {
+                        currentString += `${allEntityList[i][1][j][k].name}`;
+                    }
+                    currentString += `</span>, `;
+                }
+            }
+            // Check if entity has foreign keys, aka last element is an list
+            if (Array.isArray(allEntityList[i][allEntityList[i].length - 1])) {
+                // Again iterate through the list and push in only normal attributes
+                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                    //Not array
+                    if (!Array.isArray(allEntityList[i][j])) {
+                        if (allEntityList[i][j].state == 'normal') {
+                            currentString += `${allEntityList[i][j].name}, `;
+                        }
+                    }
+                }
+                var lastList = allEntityList[i].length - 1;
+                if (Array.isArray(allEntityList[i][lastList])) {
+                    // Push in foregin attributes, for every list push in entity followed by its value
+                    for (var k = 0; k < allEntityList[i][lastList].length; k++) {
+                        currentString += `<span style='text-decoration: overline black solid 2px;'>`;
+                        // Iterate through all the lists with foreign keys
+                        for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
+                            currentString += `${allEntityList[i][lastList][k][l].name}`;
+                        }
+                        currentString += `</span>, `;
+                    }
+                }
+            }
+            else {
+                // Again iterate through the list and push in only normal attributes
+                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                    //Not array
+                    if (!Array.isArray(allEntityList[i][j])) {
+                        if (allEntityList[i][j].state == 'normal') {
+                            currentString += `${allEntityList[i][j].name}, `;
+                        }
+                    }
+                }
+            }
+            currentString += `)</p>`;
+            stringList.push(currentString);
+        }
+    }
+    // Iterate through ERForeignData to find many to many relation
+    for (var i = 0; i < ERForeignData.length; i++) {
+        // If relation is exist in ERForeignData
+        if (ERForeignData[i][0].kind == 'ERRelation') {
+            var currentString = '';
+            currentString += `<p>${ERForeignData[i][0].name} (`; // Push in relation's name
+            currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
+            // Add left side of relation
+            for (var j = 0; j < ERForeignData[i][1].length; j++) {
+                currentString += `${ERForeignData[i][1][j].name}`;
+            }
+            currentString += `</span>, `;
+            currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
+            // Add right side of relation
+            for (var j = 0; j < ERForeignData[i][2].length; j++) {
+                currentString += `${ERForeignData[i][2][j].name}`;
+            }
+            currentString += `</span>, `;
+            currentString += `)</p>`;
+            stringList.push(currentString)
+        }
+    }
     //Add each string element in stringList[] into a single string.
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
