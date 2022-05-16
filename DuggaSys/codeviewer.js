@@ -138,8 +138,9 @@ function returned(data)
 
 			retData['after'].push(sectionData['entries'][posAfter + j]);
 			if(sectionData['entries'][posAfter + j]['kind'] == 1){
-				// Text after title in list
-				retData['after'][j][2] = "	Below ⬇";
+				/* Text added after in all titles. 
+				If not set text "undefined" will be displayed. */
+				retData['after'][j][2] = " ";
 			}
 			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
 			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
@@ -180,8 +181,9 @@ function returned(data)
 				}
 			}
 			if(sectionData['entries'][posBefore - j]['kind']== 1){
-				// Text after title in list
-				retData['before'][j][2] = "		Above ⬆";
+				/* Text added after in all titles. 
+				If not set text "undefined" will be displayed. */
+				retData['before'][j][2] = " ";
 			}			
 			retData['exampleno'] = posBefore;
 			j++;
@@ -1253,18 +1255,31 @@ function execSkip() {
 	//Holding backwards button
 	if (dmd == 1) {
 		for (i = 0; i < retData['before'].length; i++) {
-			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";		
+			/* RetData['before'][i][0] navigates to the onclick value of all dropdown items
+			in the "before" array. "UNK" is the onclick value of each title.
+			Below states that if the dropdown item is a title then don't include the onclick and else applies to all other items. */
+			if (retData['before'][i][0] == "UNK"){
+				str += "<span id='F" + retData['before'][i][1] + "' class='dropdownitem dropdownitemStyle'> ⬆ " + retData['before'][i][1] + " " + retData['before'][i][2] + "</span>";
+			} else {
+				str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";
+			}
 		}
 		document.getElementById("backwdropc").innerHTML = str;
 		document.getElementById("backwdrop").style.display = "block";
-		dmd = 0;
+		dmd = 0
 	} 
 	
 	//Holding forwards button
 	else if (dmd == 2) {
-
 		for (i = 0; i < retData['after'].length; i++) {
-			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
+			/* RetData['after'][i][0] navigates to the onclick value of all dropdown items
+			in the "after" array. "UNK" is the onclick value of each title.
+			Below states that if the dropdown item is a title then don't include the onclick and else applies to all other items. */
+			if (retData['after'][i][0] == "UNK"){
+				str += "<span id='F" + retData['after'][i][1] + "' class='dropdownitem dropdownitemStyle'> ⬇ " + retData['after'][i][1] + " " + retData['after'][i][2] + "</span>";
+			} else {
+				str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
+			}
 		}
 		document.getElementById("forwdropc").innerHTML = str;
 		document.getElementById("forwdrop").style.display = "block";
