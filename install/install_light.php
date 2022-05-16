@@ -6,59 +6,51 @@
 
 <body>
 <?php
-$rootUser = "";
-$rootPwd = "";
-$serverName ="";
+$serverName = "";
 $databaseName = "";
 $connection = "";
-$dbUsername = "";
-$dbHostname = "";
-$dbName = "";
-$dbPassword = "";
+$rootUser = "root";
+$rootPwd = "";
+$serverName = "";
+
+
+
 function init_db(){
-    $rootUser = "root";
-    $rootPwd = "";
-    $serverName =
-    //$serverName = $_POST["hostname"];
-    //$databaseName = $_POST["DBName"];
-   
-  
-          $credentialsFile = "../../coursesyspw.php";
-            // check if the credentials exists in the file, store them if they do
-          if(file_exists($credentialsFile)) {
-            $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-            foreach($credentialsArray as $cred) {
-              if(stripos(trim($cred), 'DB_') !== FALSE){
-              $tArray = explode('"', trim($cred));
-                if(count($tArray) == 5) {
-                  if($tArray[1]=="DB_USER"){
+$credentialsFile = "../../coursesyspw.php";
+    if(file_exists($credentialsFile)) {
+        $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+        foreach($credentialsArray as $cred) {
+            if(stripos(trim($cred), 'DB_') !== FALSE){
+                $tArray = explode('"', trim($cred));
+            if(count($tArray) == 5) {
+                if($tArray[1]=="DB_USER"){
                   $dbUsername = $tArray[3];
-                  }else if($tArray[1]=="DB_HOST"){
-                  $dbHostname = $tArray[3];
-                  $serverName = $tArray[3];
-                  }else if($tArray[1]=="DB_NAME"){
-                  $dbName = $tArray[3];
-                  $databaseName = $tArray[3];
-                  }else if($tArray[1]=="DB_PASSWORD"){
+                }else if($tArray[1]=="DB_HOST"){
+                 $GLOBALS['serverName'] = $tArray[3];
+                   
+                }else if($tArray[1]=="DB_NAME"){
+                  $GLOBALS['databaseName'] = $tArray[3];
+                }else if($tArray[1]=="DB_PASSWORD"){
                   $dbPassword = $tArray[3];
-                  }
                 }
-              }
             }
-          }
-          $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
-          
-          $connection->query("DROP DATABASE {$databaseName}");
-          $connection->query("CREATE DATABASE {$databaseName}");
-          
+            }
         }
+    }                  
+}
 
+function recreate_db() {
+    global $serverName,$rootUser,$rootPwd,$databaseName,$connection;
+    $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
+    $connection->query("DROP DATABASE {$databaseName}");
+    $connection->query("CREATE DATABASE {$databaseName}");
+}
 
+function fillDatabase(){
+
+}
         init_db();
-
-
-
-
+        recreate_db();
 
     ?>
 </body>
