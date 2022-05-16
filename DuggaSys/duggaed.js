@@ -273,7 +273,7 @@ function selectVariant(vid, el) {
 			document.getElementById('variantparameterText').value = "";
 			document.getElementById('notes').value = "";
 			document.getElementById('variantanswerText').value = "";
-			document.getElementById('notes').value = "";
+			
 		}
 
 
@@ -302,6 +302,7 @@ function selectVariant(vid, el) {
   				}
 				else if(result == "notes"){
 					document.getElementById('notes').value = obj[result];
+					console.log(document.getElementById('notes').value = obj[result]);
 				}
 				else if(result =="errorActive"){
 					document.getElementById("errorActive").checked = obj[result];
@@ -372,7 +373,6 @@ function updateVariant(status, note) {
 
 	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, notes: notes, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
-  $$('#notes').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 
 	// Remove extra submission rows
@@ -531,7 +531,7 @@ function createJSONString(formData) {
 
 // Does the reverse of what createJSONString does.
 function createJSONFormData(){
-  var jsonData = $("#notes").val();
+  var jsonData = $("#variantparameterText").val();
 
   try {
     var obj = JSON.parse(jsonData);
@@ -799,8 +799,7 @@ function renderVariant(clickedElement) {
 		variantTable.renderTable();
     newVariant();
     $('#did').val(globalData['entries'][clickedElement].arrow);
-    //$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
-	$('#notes').val(createJSONString($('#jsonForm').serializeArray()));
+    $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 
 }
 
