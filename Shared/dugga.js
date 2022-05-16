@@ -2694,7 +2694,8 @@ $(document).on('keydown', function(e) {
             var filtered = [];
 
             for(i=0 ; i < var_1.length ; i++){
-				filtered.push(var_1[i][1]);
+
+				filtered.push(var_1[i][1].replace(/['"]+/g, ''));
             }
 
 
