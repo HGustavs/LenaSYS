@@ -241,7 +241,7 @@ function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
 	var parameter = $("#variantparameterText").val(); 
-	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter,notes: notes, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 function selectVariant(vid, el) {
@@ -354,7 +354,7 @@ function updateVariant(status) {
 	var answer = $("#variantanswerText").val();
   	var parameter = $("#variantparameterText").val();
 
-	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter,notes: notes, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 
