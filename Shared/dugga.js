@@ -949,7 +949,6 @@ function getUrlParam(param){
 
 function AJAXService(opt,apara,kind)
 {
-	console.log(apara);
 	var tex = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for(var i=0; i<15; i++){
@@ -1023,7 +1022,6 @@ function AJAXService(opt,apara,kind)
 			success: returnedanswersDugga
 		});
 	}else if(kind=="DUGGA"){
-		console.log("opt="+opt+para);
 		$.ajax({
 			url: "duggaedservice.php",
 			type: "POST",
