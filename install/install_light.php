@@ -16,11 +16,12 @@ $dbHostname = "";
 $dbName = "";
 $dbPassword = "";
 function init_db(){
-    $rootUser = $_POST["mysqlRoot"];
-    $rootPwd = $_POST["rootPwd"];
-    $serverName = $_POST["hostname"];
-    $databaseName = $_POST["DBName"];
-    $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
+    $rootUser = "root";
+    $rootPwd = "";
+    $serverName =
+    //$serverName = $_POST["hostname"];
+    //$databaseName = $_POST["DBName"];
+   
   
           $credentialsFile = "../../coursesyspw.php";
             // check if the credentials exists in the file, store them if they do
@@ -34,8 +35,10 @@ function init_db(){
                   $dbUsername = $tArray[3];
                   }else if($tArray[1]=="DB_HOST"){
                   $dbHostname = $tArray[3];
+                  $serverName = $tArray[3];
                   }else if($tArray[1]=="DB_NAME"){
                   $dbName = $tArray[3];
+                  $databaseName = $tArray[3];
                   }else if($tArray[1]=="DB_PASSWORD"){
                   $dbPassword = $tArray[3];
                   }
@@ -43,8 +46,10 @@ function init_db(){
               }
             }
           }
+          $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
+          
           $connection->query("DROP DATABASE {$databaseName}");
-          $connection->query("CREATE DATABASE {'Nhodert'}");
+          $connection->query("CREATE DATABASE {$databaseName}");
           
         }
 
