@@ -1064,7 +1064,7 @@ function createboxmenu(contentid, boxid, type) {
 		// Add zoom in, zoom out and reset buttons.
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' id='zoomIn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' id='zoomOut' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' id='resetZoom' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' id='resetZoom' title='Reset zoom' onclick='resetText(" + boxid + ");' ontouchstart='touchEffect(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
 		// Show the copy to clipboard button for code views only
@@ -1080,6 +1080,15 @@ function createboxmenu(contentid, boxid, type) {
 			}
 		});
 	}
+}
+
+function touchEffect(boxid){
+	var element = document.getElementById("box" + boxid + "wrapper").childNodes[2];
+	element.classList.add("touchEffect");
+
+	setTimeout(() => {
+		element.classList.remove("touchEffect");
+	}, 1000);
 }
 
 //----------------------------------------------------------------------------------
