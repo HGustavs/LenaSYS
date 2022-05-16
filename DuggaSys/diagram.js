@@ -5923,6 +5923,15 @@ function drawLine(line, targetGhost = false)
         tx = telem.x2;
     }
 
+    // Set line end-point in center of UMLRelations.
+    if(felem.kind == "UMLRelation"){
+        fx = felem.cx;
+        fy = felem.cy;
+    } else if (telem.kind == "UMLRelation"){
+        tx = telem.cx;
+        ty = telem.cy;
+    }
+
     // Overwrite line positioning on recursive relations (2 lines pointing to same EREntity)
     var connections = felem.neighbours[telem.id].length;
     if (connections === 2) {
@@ -5992,6 +6001,15 @@ function drawLine(line, targetGhost = false)
     } else if ((fy < ty) && (line.ctype == "BT") ){
         y1Offset = -lengthConstant;
         y2Offset = lengthConstant;   
+    }
+
+    // Do not draw the lines longer for UMLRelations.
+    if (felem.kind == "UMLRelation"){
+        x1Offset = 0;
+        y1Offset = 0;
+    } else if(telem.kind == "UMLRelation"){
+        x2Offset = 0;
+        y2Offset =0;
     }
     
     if (line.kind == "Normal"){
