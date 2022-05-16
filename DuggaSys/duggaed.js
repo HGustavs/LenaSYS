@@ -240,10 +240,8 @@ function newVariant() {
 function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
-	var parameter = $("#variantparameterText").val();
-	var notes = $("#notes").val();
-	console.log(notes);
-	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, notes: notes, coursevers: querystring['coursevers'] }, "DUGGA");
+	var parameter = $("#variantparameterText").val(); 
+	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 function selectVariant(vid, el) {
@@ -264,16 +262,13 @@ function selectVariant(vid, el) {
 		if(isSelected) {
 			document.getElementById('vid').value = target_variant['vid'];
 			document.getElementById('variantparameterText').value = target_variant['param'];
-			document.getElementById('notes').value = target_variant['notes'];
 			document.getElementById('variantanswerText').value = target_variant['variantanswer'];
 			
 		} else {
 			// But hide the information if it is deselected.
 			document.getElementById('vid').value = "";
 			document.getElementById('variantparameterText').value = "";
-			document.getElementById('notes').value = "";
 			document.getElementById('variantanswerText').value = "";
-			
 		}
 
 
@@ -302,7 +297,6 @@ function selectVariant(vid, el) {
   				}
 				else if(result == "notes"){
 					document.getElementById('notes').value = obj[result];
-					console.log(document.getElementById('notes').value = obj[result]);
 				}
 				else if(result =="errorActive"){
 					document.getElementById("errorActive").checked = obj[result];
@@ -326,9 +320,7 @@ function selectVariant(vid, el) {
   				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
   				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
   				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
-  				  document.getElementById('variantparameterText').value = target_variant['param'];
-				  document.getElementById('notes').value = target_variant['notes'];
-					
+  				  document.getElementById('variantparameterText').value = target_variant['param'];					
   			 }
   		  }
       } catch (e) {
@@ -340,9 +332,7 @@ function selectVariant(vid, el) {
 				document.getElementById('filelink').value = "";
 				document.getElementById('gType').value = "";
 				document.getElementById('gFilelink').value = "";
-				document.getElementById('extraparam').value = "";
-  				document.getElementById('notes').value = "";
-  				
+				document.getElementById('extraparam').value = "";  				
 		}
 
   var disabled = (target_variant['disabled']);
@@ -359,19 +349,12 @@ function selectVariant(vid, el) {
 }
 
 
-function updateVariant(status, note) {
+function updateVariant(status) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   	var parameter = $("#variantparameterText").val();
-	var notes =  $("#notes").val();;
 
-	  /*if(note != null) {
-		notes = note;
-	  } else {
-		notes = $("#notes").val();
-	  }*/
-
-	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, notes: notes, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 
@@ -490,7 +473,7 @@ function removeExtraSubmissionRows() {
 
 function createJSONString(formData) {
 	var submission_types = [];
-	var type, fieldname, instruction, diagramFile ,notesText;
+	var type, fieldname, instruction, diagramFile;
 
 	formData.forEach(element => {
 		if (element.name == "s_type") type = element;
@@ -582,7 +565,6 @@ function createJSONFormData(){
         document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
         document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
         document.getElementById('variantparameterText').value = jsonData;
-		document.getElementById('notes'+i).value = submissionTypes[i].notes;
 
       }
     }
@@ -862,16 +844,13 @@ function renderCell(col, celldata, cellid) {
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 
-		case "notes":
+		case "notes":		// DUGGA-TABLE - Notes column
+			// Parse JSON to get the note
 			var note = JSON.parse(celldata).notes;
 			retString = `<span class='unik'>${note}</span>`;
-			
 			break;
 			
-			case "param":		// DUGGA-TABLE - Parameter column
-			
-			
-			//console.log(celldata);
+		case "param":		// DUGGA-TABLE - Parameter column
 			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
 

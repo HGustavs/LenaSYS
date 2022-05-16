@@ -22,7 +22,6 @@ $vid = getOP('vid');
 
 $param = getOP('parameter');
 $answer = getOP('variantanswer');
-$notes = getOP('notes');
 $disabled = getOP('disabled');
 
 $uid = getOP('uid');
@@ -45,7 +44,7 @@ $coursename=getOP('coursename');
 $debug="NONE!";
 
 $log_uuid = getOP('log_uuid');
-$info=$opt." ".$cid." ".$qid." ".$vid." ".$param." ".$notes." ".$answer." ".$disabled." ".$uid." ".$name;
+$info=$opt." ".$cid." ".$qid." ".$vid." ".$param." ".$answer." ".$disabled." ".$uid." ".$name;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
@@ -106,27 +105,23 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 		}
 
     }else if(strcmp($opt,"ADDVARI")===0){
-		$querystring="INSERT INTO variant(quizID,creator,disabled,param,notes,variantanswer) VALUES (:qid,:uid,:disabled,:param,:notes,:variantanswer)";
+		$querystring="INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
 		$stmt->bindParam(':uid', $userid);
 		$stmt->bindParam(':disabled', $disabled);
 		$stmt->bindParam(':param', $param);
 		$stmt->bindParam(':variantanswer', $answer);
-		$stmt->bindParam(':notes', $notes);
-
-		
 
 		if(!$stmt->execute()) {
 			$error=$stmt->errorInfo();
 			$debug="Error updating entries".$error[2];
 		}
 	}else if(strcmp($opt,"SAVVARI")===0){
-		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,notes=:notes,variantanswer=:variantanswer WHERE vid=:vid");
+		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid");
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':disabled', $disabled);
 		$query->bindParam(':param', $param);
-		$query->bindParam(':notes', $notes);
 		$query->bindParam(':variantanswer', $answer);
 
 		if(!$query->execute()) {
