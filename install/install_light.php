@@ -173,7 +173,7 @@
   if(substr($lenaInstall, 0 , 2) == '/') {
     $lenaInstall = substr($lenaInstall, 1);
   }
-  header("Location: {$lenaInstall}/DuggaSys/courseed.php\");    
+  header("Location: {$lenaInstall}/DuggaSys/courseed.php");    
 
   ?>
 </body>
