@@ -5170,9 +5170,6 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
-  #hideElement{
-    display: block;
-  }
   .maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn {
     height: 35px;
   }
@@ -5651,12 +5648,6 @@ only screen and (max-device-width: 480px) {
   #searchbar button#searchbutton{
     padding: 8px 10px 5px 10px;
   }
-
-  #hideElement{
-    width: 20px;
-    height: 20px;
-  }
-
 }
 @media only screen and (max-width: 390px),
 only screen and (max-device-width: 390px) {
@@ -5672,19 +5663,6 @@ only screen and (max-device-width: 390px) {
     visibility: visible;
     opacity: 1;
 
-  }
-
-  #hideElement{
-    width: 20px;
-    height: 20px;
-  }
-
-}
-
-@media only screen and (max-width: 320px),
-only screen and (max-device-width: 320px) {
-  #Sectionlist .course {
-    font-size: 12px;
   }
 }
 
@@ -6715,6 +6693,24 @@ only screen and (max-device-width: 320px) {
     display:none !important;
   }
 
+  #showElements {
+    margin-right: 10px !important;
+  }
+
+  #course-label {
+    min-width: 135px;
+    margin-right: 150px;
+  }
+}
+@media only screen and (max-width: 430px),
+only screen and (max-device-width: 430px) {
+  #course-label {
+    font-size: 12px;
+    margin-right: 25px;
+  }
+  #showElements, #hideElement {
+    display: none;
+  }
 }
 
 #Courselist div.fixed-action-button a:hover {
