@@ -106,7 +106,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 		}
 
     }else if(strcmp($opt,"ADDVARI")===0){
-		$querystring="INSERT INTO variant(quizID,creator,disabled,param,notes,variantanswer) VALUES (:qid,:uid,:disabled,:param,notes,:variantanswer)";
+		$querystring="INSERT INTO variant(quizID,creator,disabled,param,notes,variantanswer) VALUES (:qid,:uid,:disabled,:param,:notes,:variantanswer)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
 		$stmt->bindParam(':uid', $userid);
@@ -122,10 +122,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 			$debug="Error updating entries".$error[2];
 		}
 	}else if(strcmp($opt,"SAVVARI")===0){
-		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid");
+		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,notes=:notes,variantanswer=:variantanswer WHERE vid=:vid");
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':disabled', $disabled);
 		$query->bindParam(':param', $param);
+		$query->bindParam(':notes', $notes);
 		$query->bindParam(':variantanswer', $answer);
 
 		if(!$query->execute()) {

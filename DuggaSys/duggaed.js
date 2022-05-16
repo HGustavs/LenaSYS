@@ -221,7 +221,7 @@ function newVariant() {
 	document.getElementById('gFilelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
-	//document.getElementById('notes').value = '';
+	document.getElementById('notes').value = '';
 	document.getElementById('notes').placeholder = 'Notes';
 	document.getElementById('variantparameterText').value = '';
 	document.getElementById('variantparameterText').placeholder = 'Undefined JSON parameter';
@@ -363,7 +363,7 @@ function updateVariant(status, note) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   	var parameter = $("#variantparameterText").val();
-	var notes = "hej";
+	var notes =  $("#notes").val();;
 
 	  /*if(note != null) {
 		notes = note;
@@ -672,7 +672,7 @@ function returnedQuiz(data) {
 // START OF RENDERING TABELS
 //Table for duggas
 function returnedDugga(data) {
-	console.log(data);
+	
 	//If the user dont have writeaccess, the user gets send to the startpage
 	if (!data.writeaccess) {
 		window.location.href = 'courseed.php';
@@ -863,7 +863,7 @@ function renderCell(col, celldata, cellid) {
 			break;
 
 		case "notes":
-			console.log(celldata);
+			//sconsole.log(celldata);
 			//var dv = JSON.parse(celldata);
 			//var test = document.getElementById("notes").value;
 			retString = `<span class='unik'>${celldata}</span>`;
@@ -873,7 +873,7 @@ function renderCell(col, celldata, cellid) {
 			case "param":		// DUGGA-TABLE - Parameter column
 			
 			
-			console.log(celldata);
+			//console.log(celldata);
 			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
 
