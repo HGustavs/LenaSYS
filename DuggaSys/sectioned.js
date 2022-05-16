@@ -3112,7 +3112,7 @@ function validateForm(formid) {
       setTimeout(function(){
       updateItem();
       updateDeadline();
-      },1000);
+      },10);
       //Toggle for alert when update a item
       var element = document.getElementById("updateAlert");
       element.classList.toggle("createAlertToggle");
