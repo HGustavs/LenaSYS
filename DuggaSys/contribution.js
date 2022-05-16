@@ -2187,6 +2187,7 @@ function createSidebar(){
 function accountInformation(data){
   var str = "";
   for (var row = 0; row < data.length; row++) {
+    str+= "<div id='" +data[row][0] +"'>";
     str+= "<tr class='accountRequestTable'"+ row +">";
     str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
     
@@ -2213,6 +2214,7 @@ function accountInformation(data){
         str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Give access'></input>"; 
       str+= "</td>";
     }
+    str+="</div>";
     str+= "</tr>";
   }
 
@@ -2252,7 +2254,7 @@ function placeSideBarInfo(data){
 
 
 function showError(){
-  console.log("showError() has been called. AJAXService had a error");
+  console.log("showError() has been called. AJAXService had a error accessing git_user table, ");
 }
 
 console.error
