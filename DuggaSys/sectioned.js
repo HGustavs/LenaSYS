@@ -23,6 +23,8 @@ var delArr = [];
 var delTimer;
 var lid;
 var collectedLid = [];
+var updatedLidsection;
+
 var isLoggedIn = false;
 
 function IsLoggedIn(bool){
@@ -714,6 +716,7 @@ function hideMarkedItems() {
 //----------------------------------------------------------------------------------
 
 function updateItem() {
+  console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
   $("#sectionConfirmBox").css("display", "none");
@@ -727,6 +730,9 @@ function updateDeadline() {
     }
 }
 
+function setActiveLid(lid){
+  updatedLidsection = lid;
+};
 //----------------------------------------------------------------------------------
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
@@ -1381,7 +1387,7 @@ function returnedSection(data) {
 
 
           str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
+          str += " onclick='setActiveLid("+item['lid']+");selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
@@ -3116,21 +3122,33 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
-      
+      //delay added so that the loading process works correctly.
+      setTimeout(function(){
+      updateItem();
+      updateDeadline();
+      },10);
       //Toggle for alert when update a item
       var element = document.getElementById("updateAlert");
       element.classList.toggle("createAlertToggle");
       //Set text for the alert when update a item
       document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+      //Add class to element so it will be highlighted.
+      setTimeout(function(){
+        var element = document.getElementById('I'+updatedLidsection).firstChild;
+        if(element.tagName == 'DIV') {
+        element = element.firstChild;
+        element.classList.add("highlightChange");
+        }else if (element.tagName == 'A'){
+          document.getElementById('I'+updatedLidsection).classList.add("highlightChange");
+        }else if (element.tagName == 'SPAN'){
+          document.getElementById('I'+updatedLidsection).firstChild.classList.add("highlightChange");
+        }
+      },200);
       //Duration time for the alert before remove
       setTimeout(function(){
         $("#updateAlert").removeClass("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       },3000);
-
-      updateItem();
-      updateDeadline();
-
     } else {
       alert("You have entered incorrect information");
     }
