@@ -83,46 +83,46 @@
 		//if parameter exists in current variant json param string, assign value. Otherwise, set it to "UNK". Error checking should check if string is "UNK" and "".
 		if(!empty($parameterArray))
 		{
-			if(isset($parameterArray['diagram_File']))
-				$splicedFileName=$parameterArray["diagram_File"];
-			else
-				$splicedFileName = "UNK";
-			if(isset($parameterArray['filelink']))
-				$fileName=$parameterArray["filelink"];
-			else
-				$fileName = "UNK";
-			if(isset($parameterArray['type']))
-				$fileType=$parameterArray["type"];
-			else
-				$fileType = "UNK";
-			if(isset($parameterArray['gFilelink']))
-				$gFileName=$parameterArray["gFilelink"];
-			else
-				$gFileName = "UNK";
-			if(isset($parameterArray['gType']))
-				$gFileType=$parameterArray["gType"];
-			else
-				$gFileType = "UNK";
+			if(isset($parameterArray['diagram_File'])){
+				$splicedFileName=$parameterArray["diagram_File"];}
+			else{
+				$splicedFileName = "UNK";}
+			if(isset($parameterArray['filelink'])){
+				$fileName=$parameterArray["filelink"];}
+			else{
+				$fileName = "UNK";}
+			if(isset($parameterArray['type'])){
+				$fileType=$parameterArray["type"];}
+			else{
+				$fileType = "UNK";}
+			if(isset($parameterArray['gFilelink'])){
+				$gFileName=$parameterArray["gFilelink"];}
+			else{
+				$gFileName = "UNK";}
+			if(isset($parameterArray['gType'])){
+				$gFileType=$parameterArray["gType"];}
+			else{
+				$gFileType = "UNK";}
 
 			//for fetching file content. If file exists in directory path, fetch. Otherwise, go to the next directory and check.
 			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != "")
 			{
-				if(file_exists("../courses/global/"."$fileName"))
-					$instructions = file_get_contents("../courses/global/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$fileName"))
-					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
-					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+				if(file_exists("../courses/global/"."$fileName")){
+					$instructions = file_get_contents("../courses/global/"."$fileName");}
+				else if(file_exists("../courses/".$cid."/"."$fileName")){
+					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");}
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName")){
+					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");}
 			}
 
 			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != "")
 			{
-				if(file_exists("../courses/global/"."$gFileName"))
-					$information = file_get_contents("../courses/global/"."$gFileName");
-				else if(file_exists("../courses/".$cid."/"."$gFileName"))
-					$information = file_get_contents("../courses/".$cid."/"."$gFileName");
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))
-					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
+				if(file_exists("../courses/global/"."$gFileName")){
+					$information = file_get_contents("../courses/global/"."$gFileName");}
+				else if(file_exists("../courses/".$cid."/"."$gFileName")){
+					$information = file_get_contents("../courses/".$cid."/"."$gFileName");}
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
+					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
 			}
 
 			#Think this removes certain escape string characters.
@@ -141,12 +141,12 @@
 	#after itterating through query results, finally load the json file content into $fileContent variable.
 	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
 	{
-		if(file_exists("../courses/global/"."$splicedFileName"))
-			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))
-			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))
-			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
+		if(file_exists("../courses/global/"."$splicedFileName")){
+			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");}
+		else if(file_exists("../courses/".$cid."/"."$splicedFileName")){
+			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");}
+		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName")){
+			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");}
 	}
 
 	if($fileContent === "UNK" || $fileContent === "")
@@ -156,7 +156,7 @@
 	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
 	{
-		$t1pDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
