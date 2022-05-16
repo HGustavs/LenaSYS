@@ -527,9 +527,11 @@ function preventDefaults (e)
 function highlight(e) 
 {
 	e.target.closest(".box").classList.add('highlight');
+
 	var normtext = document.querySelectorAll(".normtext");
 	var impword = document.querySelectorAll(".impword");
-	
+	var impo = document.querySelectorAll(".impo");
+
 	normtext.forEach(box => {
 		box.style.backgroundColor = 'transparent';
 	  });
@@ -537,6 +539,10 @@ function highlight(e)
 	impword.forEach(box => {
 		box.style.backgroundColor = 'transparent';
 	  });
+
+	impo.forEach(box => {
+	box.style.backgroundColor = 'transparent';
+	});
 }
 
 function unhighlight(e) 
@@ -545,7 +551,8 @@ function unhighlight(e)
 
 	var normtext = document.querySelectorAll(".normtext");
 	var impword = document.querySelectorAll(".impword");
-	
+	var impo = document.querySelectorAll(".impo");
+
 	normtext.forEach(box => {
 		box.style.backgroundColor = 'none';
 	  });
@@ -553,6 +560,10 @@ function unhighlight(e)
 	impword.forEach(box => {
 		box.style.backgroundColor = 'none';
 	  });
+
+	impo.forEach(box => {
+	box.style.backgroundColor = 'none';
+	});
 } 
 
 //---------------------------------------------------------------------------------
