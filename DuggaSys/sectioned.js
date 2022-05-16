@@ -3109,6 +3109,7 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
+      //delay added so that the loading process works correctly.
       setTimeout(function(){
       updateItem();
       updateDeadline();
@@ -3135,10 +3136,6 @@ function validateForm(formid) {
         $("#updateAlert").removeClass("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       },3000);
-
-      
-    ttt 
-
     } else {
       alert("You have entered incorrect information");
     }
