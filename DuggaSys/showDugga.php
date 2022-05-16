@@ -83,35 +83,35 @@
 		//if parameter exists in current variant json param string, assign value. Otherwise, set it to "UNK". Error checking should check if string is "UNK" and "".
 		if(!empty($parameterArray))
 		{
-			if(isset($parameterArray['diagram_File'])) 									
+			if(isset($parameterArray['diagram_File']))
 				$splicedFileName=$parameterArray["diagram_File"];
-			else 	
+			else
 				$splicedFileName = "UNK";
-			if(isset($parameterArray['filelink']))										
+			if(isset($parameterArray['filelink']))
 				$fileName=$parameterArray["filelink"];
-			else	
+			else
 				$fileName = "UNK";
-			if(isset($parameterArray['type']))											
+			if(isset($parameterArray['type']))
 				$fileType=$parameterArray["type"];
-			else	
+			else
 				$fileType = "UNK";
-			if(isset($parameterArray['gFilelink']))										
+			if(isset($parameterArray['gFilelink']))
 				$gFileName=$parameterArray["gFilelink"];
-			else	
+			else
 				$gFileName = "UNK";
-			if(isset($parameterArray['gType']))											
+			if(isset($parameterArray['gType']))
 				$gFileType=$parameterArray["gType"];
-			else	
+			else
 				$gFileType = "UNK";
 
 			//for fetching file content. If file exists in directory path, fetch. Otherwise, go to the next directory and check.
 			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != "")
 			{
-				if(file_exists("../courses/global/"."$fileName"))						
+				if(file_exists("../courses/global/"."$fileName"))
 					$instructions = file_get_contents("../courses/global/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$fileName"))				
+				else if(file_exists("../courses/".$cid."/"."$fileName"))
 					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))
 					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
 			}
 
@@ -141,15 +141,15 @@
 	#after itterating through query results, finally load the json file content into $fileContent variable.
 	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
 	{
-		if(file_exists("../courses/global/"."$splicedFileName"))						
+		if(file_exists("../courses/global/"."$splicedFileName"))
 			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))					
+		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))
 			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))		
+		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))
 			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
 	}
 
-	if($fileContent === "UNK" || $fileContent === "")															
+	if($fileContent === "UNK" || $fileContent === "")
 		$fileContent = "NO_FILE_FETCHED";
 
     #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
@@ -188,13 +188,13 @@
 	}
 	
 	#I have no idea why this is here. Seems like it does the same as the code within the above query loop.
-	if(file_exists("../courses/global/"."$fileName" && $fileName != ""))								
+	if(file_exists("../courses/global/"."$fileName" && $fileName != ""))
 		$instructions = file_get_contents("../courses/global/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$fileName") && $fileName != "")							
+	else if(file_exists("../courses/".$cid."/"."$fileName") && $fileName != "")
 		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && $fileName != "")				
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && $fileName != "")
 		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-	if($instructions === "UNK")																			
+	if($instructions === "UNK")
 		$instructions = "NO_FILE_FETCHED";
 	
 	$pattern = '/\s*/m';
