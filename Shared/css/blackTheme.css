@@ -639,3 +639,10 @@ body {
     border: 2px solid  var(--color-sectioned-table-lo);
 }
 /* END */
+
+/* Style for "Float Right Box" */
+.floatRightBox{
+    background-color: var(--color-sectioned-table-hi);
+    border: 2px solid var(--color-sectioned-table-lo);
+}
+/* END */
