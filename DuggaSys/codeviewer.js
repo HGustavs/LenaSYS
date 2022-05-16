@@ -4891,6 +4891,116 @@ function resizeBoxes(parent, templateId)
 				});
 			}
 		}
+		else {
+			if(templateId == 1){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 2){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 3){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+				if ($('#box3wrapper').resizable()) {
+					$('#box3wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 4){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+				if ($('#box3wrapper').resizable()) {
+					$('#box3wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 5){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+				if ($('#box3wrapper').resizable()) {
+					$('#box3wrapper').resizable("destroy");
+				}
+				if ($('#box4wrapper').resizable()) {
+					$('#box4wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 6){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+				if ($('#box3wrapper').resizable()) {
+					$('#box3wrapper').resizable("destroy");
+				}
+				if ($('#box4wrapper').resizable()) {
+					$('#box4wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 7){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+				if ($('#box3wrapper').resizable()) {
+					$('#box3wrapper').resizable("destroy");
+				}
+				if ($('#box4wrapper').resizable()) {
+					$('#box4wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 8){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+				if ($('#box3wrapper').resizable()) {
+					$('#box3wrapper').resizable("destroy");
+				}
+			}
+			if(templateId == 9){
+				if ($('#box1wrapper').resizable()) {
+					$('#box1wrapper').resizable("destroy");
+				}
+				if ($('#box2wrapper').resizable()) {
+					$('#box2wrapper').resizable("destroy");
+				}
+				if ($('#box3wrapper').resizable()) {
+					$('#box3wrapper').resizable("destroy");
+				}
+				if ($('#box4wrapper').resizable()) {
+					$('#box4wrapper').resizable("destroy");
+				}
+				if ($('#box5wrapper').resizable()) {
+					$('#box5wrapper').resizable("destroy");
+				}
+			}
+		}
 	} 
 }
 //------------------------------------------------------------------------------------------------------------------------------
