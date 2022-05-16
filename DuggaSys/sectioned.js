@@ -3109,7 +3109,10 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
-      
+      setTimeout(function(){
+      updateItem();
+      updateDeadline();
+      },1000);
       //Toggle for alert when update a item
       var element = document.getElementById("updateAlert");
       element.classList.toggle("createAlertToggle");
@@ -3126,15 +3129,15 @@ function validateForm(formid) {
         }else if (element.tagName == 'SPAN'){
           document.getElementById('I'+updatedLidsection).firstChild.classList.add("highlightChange");
         }
-      },100);
+      },200);
       //Duration time for the alert before remove
       setTimeout(function(){
         $("#updateAlert").removeClass("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       },3000);
 
-      updateItem();
-      updateDeadline();
+      
+    ttt 
 
     } else {
       alert("You have entered incorrect information");
