@@ -162,7 +162,7 @@ function returned(data)
 	j = 0;
 	var posBefore = currentPos-1;
 
-	// Holds all items shown on forward button press
+	// Holds all items shown on backward button press
 	retData['before'] = [];
 	for(i = currentPos; i > 0; i--){
 		if(j < 5){
@@ -1212,7 +1212,7 @@ function Skip(skipkind)
 		dmd = 1;
 	} else if (skipkind == "bu") {
 		if (retData['before'].length != 0 && dmd == 1) {
-			// skip title examples when skipping through examples
+			// Skip title examples when skipping through examples
 			if(retData['before'][0]['kind'] == 1) {
 				navigateExample(retData['before'][1][0]);
 			} else {
@@ -1225,7 +1225,7 @@ function Skip(skipkind)
 		dmd = 2;
 	} else if (skipkind == "fu") {
 		if (retData['after'].length != 0 && dmd == 2) {
-			// skip title examples when skipping through examples
+			// Skip title examples when skipping through examples
 			if(retData['after'][0]['kind'] == 1) {
 				navigateExample(retData['after'][1][0]);
 			} else {
