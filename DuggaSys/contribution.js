@@ -2180,24 +2180,61 @@ function createSidebar(){
 
   let git_username = null;
   let status = null
-  AJAXService("yoyo", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
 }
 
+//status codes 101=pending 102=denied 0=accepted
 function accountInformation(data){
   var str = "";
   for (var row = 0; row < data.length; row++) {
+    str+= "<div id='" +data[row][0] +"'>";
     str+= "<tr class='accountRequestTable'"+ row +">";
-    
     str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
-    str+= "<td class='accountRequestTable'>" + data[row][1] + "</td>";
-    str+= "<td class='accountRequestTable'>" + "buttons for changing stuff" + "</td>";
+    
+    //status codes 101=pending 102=denied 0=accepted
+    if(data[row][1]==101){  //pending account
+      str+="<td class='accountRequestTable'>" + 'Pending'+ "</td>";
+      str+="<td class='accountRequestTable'>";
+        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept'></input>" ;
+        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny '></input>";
+        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc()', value='Delete '></input>";
+      str+= "</td>";
+    }
+    else if(data[row][1]==0){ //accepted account
+      str+= "<td class='accountRequestTable'>" + 'Accepted'+ "</td>";
+      str+= "<td class='accountRequestTable'>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete '></input>";
+        str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc()' value='Revoke '></input>"; 
+      str+= "</td>";
+    }
+    else{ //if not accepted or pending its denied
+      str+= "<td class='accountRequestTable'>" + 'Denied' + "</td>";
+      str+= "<td class='accountRequestTable'>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete'></input>";
+        str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Accept'></input>"; 
+      str+= "</td>";
+    }
+    str+="</div>";
     str+= "</tr>";
   }
 
   return str; 
 }
 
-function testconsoleLog(data){
+function denyAcc(){
+  console.log("denied this account");
+}
+
+function deleteAcc(){
+  console.log("deleted this account");
+
+}
+
+function acceptAcc(){
+  console.log("accepted this account");
+}
+
+function placeSideBarInfo(data){
   var text = document.getElementById('accountRequests-pane');
   text.style.display="inline-block";
   str = "";
@@ -2206,8 +2243,7 @@ function testconsoleLog(data){
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
   str+= "<th class='accountRequestTable'></th>";
   str+= "<th class='accountRequestTable'>Name </th>";
-  str+= "<th class='accountRequestTable'>Status</th>";
-  str+= "<th class='accountRequestTable'></th>";
+  str+= "<th class='accountRequestTable'>Status</th>";;
   str+= "</tr>";
   str+=accountInformation(data);
 
@@ -2218,7 +2254,7 @@ function testconsoleLog(data){
 
 
 function showError(){
-  console.log("showError() has been called. AJAXService had a error");
+  console.log("showError() has been called. AJAXService had a error accessing git_user table, ");
 }
 
 console.error
