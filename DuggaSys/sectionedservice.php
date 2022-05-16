@@ -361,6 +361,15 @@ if($gradesys=="UNK") $gradesys=0;
 						$error=$deadlinequery->errorInfo();
 						$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
 					}
+				}else if(strcmp($opt,"UPDATETABS")===0){
+					$query = $pdo->prepare("UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;");
+					$query->bindParam(':lid', $sectid);
+					$query->bindParam(':tabs',$tabs);
+					
+					if(!$query->execute()){
+						$error=$query->errorInfo();
+						$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
+					}
 				}else if(strcmp($opt,"UPDATEVRS")===0) {
 						// After column 'motd' exist on all releases this query can be merged with the original 'UPDATEVERS' below
 						$query = $pdo->prepare("UPDATE vers SET motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");

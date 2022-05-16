@@ -397,6 +397,7 @@ function confirmBox(operation, item = null) {
   } else if (operation == "openTabConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#tabConfirmBox").css("display", "flex");
+    $("#tabs").val(0).change();
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
@@ -697,7 +698,11 @@ function hideMarkedItems() {
   // tabMarkedItems: Tabs Item from Section List
   //----------------------------------------------------------------------------------
   function tabMarkedItems(lid) {
-
+    var tabs = $("#tabs").val();
+    AJAXService("UPDATETABS", {
+      lid: lid,
+      tabs: tabs
+    }, "SECTION");
   }
     
 //----------------------------------------------------------------------------------
@@ -1326,7 +1331,7 @@ function returnedSection(data) {
         }
 
         // Tab example button
-        if (data['writeaccess'] || data['studentteacher']) {
+        if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement' 
