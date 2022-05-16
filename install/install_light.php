@@ -162,19 +162,21 @@
       closedir($dir);
   }
 
-
-
-  load_values();
-  recreate_db();
-  init_db();
-  fillDatabase();
+function redirectToHomePage(){
   $lenaInstall = null;
   $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
   if(substr($lenaInstall, 0 , 2) == '/') {
     $lenaInstall = substr($lenaInstall, 1);
   }
   header("Location: {$lenaInstall}/DuggaSys/courseed.php");    
+  exit();
+}
 
+  load_values();
+  recreate_db();
+  init_db();
+  fillDatabase();
+  redirectToHomePage();
   ?>
 </body>
 
