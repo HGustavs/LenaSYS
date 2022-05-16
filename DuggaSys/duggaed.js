@@ -846,8 +846,9 @@ function renderCell(col, celldata, cellid) {
 
 		case "notes":		// DUGGA-TABLE - Notes column
 			// Parse JSON to get the note
-			object = JSON.parse(celldata).notes;
-			retString = `<span class='unik'>${object}</span>`;
+			object = JSON.parse(celldata);
+			const note = object.note;
+			retString = `<span class='unik'>${note}</span>`;
 			break;
 			
 		case "param":		// DUGGA-TABLE - Parameter column
