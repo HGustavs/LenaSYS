@@ -863,10 +863,8 @@ function renderCell(col, celldata, cellid) {
 			break;
 
 		case "notes":
-			//sconsole.log(celldata);
-			var dv = JSON.parse(celldata);
-			//var test = document.getElementById("notes").value;
-			retString = `<span class='unik'>${celldata}</span>`;
+			var note = JSON.parse(celldata).notes;
+			retString = `<span class='unik'>${note}</span>`;
 			
 			break;
 			
