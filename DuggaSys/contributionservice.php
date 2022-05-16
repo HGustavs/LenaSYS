@@ -780,7 +780,7 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
-else if(strcmp($opt,"AccountStatus") == 0){
+else if(strcmp($opt,"ACC_SIDE_PANEL") == 0){
 	
 	global $pdo;
 	if($pdo == null){

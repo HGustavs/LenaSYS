@@ -2180,7 +2180,7 @@ function createSidebar(){
 
   let git_username = null;
   let status = null
-  AJAXService("AccountStatus", {username: git_username, status_account:status},'CONT_ACCOUNT_STATUS');
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
 }
 
 //status codes 101=pending 102=denied 0=accepted
@@ -2195,23 +2195,23 @@ function accountInformation(data){
     if(data[row][1]==101){  //pending account
       str+="<td class='accountRequestTable'>" + 'Pending'+ "</td>";
       str+="<td class='accountRequestTable'>";
-        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept request'></input>" ;
-        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny request'></input>";
-        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc()', value='Delete account'></input>";
+        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept'></input>" ;
+        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny '></input>";
+        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc()', value='Delete '></input>";
       str+= "</td>";
     }
     else if(data[row][1]==0){ //accepted account
       str+= "<td class='accountRequestTable'>" + 'Accepted'+ "</td>";
       str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete account'></input>";
-        str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc()' value='Revoke access'></input>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete '></input>";
+        str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc()' value='Revoke '></input>"; 
       str+= "</td>";
     }
-    else if(data[row][1]==102){
+    else{ //if not accepted or pending its denied
       str+= "<td class='accountRequestTable'>" + 'Denied' + "</td>";
       str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete account'></input>";
-        str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Give access'></input>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete'></input>";
+        str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Accept'></input>"; 
       str+= "</td>";
     }
     str+="</div>";
