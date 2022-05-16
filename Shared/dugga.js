@@ -2727,20 +2727,31 @@ $(document).on('keydown', function(e) {
 			showCanvasLinkBox("open", box[0]);
 		}
 		else if (box[0].classList.contains("traschcanDelItemTab")){
-			confirmBox("openConfirmBox", box[0]);
+			box[0].click();
 		}
 		else if (box[0].classList.contains("markdownIconTab")){
+			renderVariant(clickedElement);
 			showVariantEditor();
 		}
 		else if (box[0].classList.contains("trashcanTab")){
-			deleteFile(box[0]);
+			box[0].click();
 		}
 		else if (box[0].classList.contains("showeditorTab")){
 			loadPreview(box[0]);
 		}
-		else if (box[0].classList.contains("traschcanDelDuggaTab")){
-			confirmBox("openConfirmBox", box, "dugga");
+		else if (box[0].classList.contains("traschcanDelDugga")){
+			confirmBox("openConfirmBox", box[0], "dugga");
+			
 		}
+		else if (box[0].classList.contains("settingIcon")){
+			selectDugga(object);
+			
+		}
+		else if (box[0].classList.contains("markdownIconeditFile")){
+			box[0].click();
+			
+		}
+		
 		
 		
 	}
