@@ -2641,7 +2641,12 @@ function editDuggaInstruction(){
 $(document).on('keydown', function(e) {
 	if(e.key === 'Enter'){
 		var box = $(e.target);
-		
+		var allSort = document.getElementById("all-files-sort");
+		var globalSort = document.getElementById("global-files-sort");
+		var courseLocalSort = document.getElementById("course-local-sort");
+		var versionLocalSort = document.getElementById("version-local-sort");
+		var linksSort = document.getElementById("links-sort");
+		var dummySort = document.getElementById("dummyEmptyFile-sort");	
 		if (box[0].classList.contains("home-nav")){
 			box.parents('td').click();
 		}
@@ -2688,20 +2693,29 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("searchTab")){
 			searchByFilter();
 		}
+		else if (box[0].classList.contains("allFilesSortTab")){
+			filterFilesByKind('All');
+			allSort.checked= true;
+		}
 		else if (box[0].classList.contains("globalSortTab")){
 			filterFilesByKind('Global');
+			globalSort.checked= true;
 		}
 		else if (box[0].classList.contains("courselocalSortTab")){
 			filterFilesByKind('CourseLocal');
+			courseLocalSort.checked= true;
 		}
 		else if (box[0].classList.contains("versionLocalSortTab")){
 			filterFilesByKind('Local');
+			versionLocalSort.checked = true;
 		}
 		else if (box[0].classList.contains("linkSortTab")){
 			filterFilesByKind('Link');
+			linksSort.checked = true;
 		}
 		else if (box[0].classList.contains("dummyFileSortTab")){
 			filterFilesByKind('DummyFiles');
+			dummySort.checked = true;
 		}
 		else if (box[0].classList.contains("fabBtnEditfile") || (box[0].classList.contains("fabBtnEditDugga"))){
 			createQuickItem();
