@@ -633,3 +633,9 @@ body {
     color:white;
 }
 /* END */
+
+/* Style for "Fouter border" */
+.fouter{
+    border: 2px solid  var(--color-sectioned-table-lo);
+}
+/* END */
