@@ -2689,7 +2689,9 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("newVers")){
 			showCreateVersion();
 		}
-		
+		else if (box[0].classList.contains("settingIconTab")){
+			box[0].click();
+        }
 	}
 	else if(e.key === 'Escape'){
 		if ($('.fab-btn-list').is(':visible')) {
