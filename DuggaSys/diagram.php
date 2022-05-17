@@ -41,7 +41,7 @@
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
-                        <p>Allows you to select and move different elements as well as navigate the diagram</p><br>
+                        <p>Allows you to select and move different elements as well as navigate the workspace</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -72,8 +72,8 @@
                         </div>
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML Entity</b><br>
-                                <p>Change to UML entity</p>
+                            <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                <p>Change to UML class</p>
                             </span>
                         </div>
                     </div>
@@ -81,8 +81,8 @@
                 <div>
                     <div id="elementPlacement4" class="diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                        <span class="toolTipText"><b>Entity</b><br>
-                            <p>Add an UML entity to the diagram</p><br>
+                        <span class="toolTipText"><b>Class</b><br>
+                            <p>Add an UML class to the diagram</p><br>
                             <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton4" class="placementTypeIcon togglePlacementTypeButton">
@@ -98,8 +98,8 @@
                         </div>
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML Entity</b><br>
-                                <p>Change to UML entity</p>
+                            <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                <p>Change to UML class</p>
                             </span>
                         </div>
                     </div>
