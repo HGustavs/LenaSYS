@@ -6489,6 +6489,15 @@ function drawElement(element, ghosted = false)
             }
             //end of svg for background
             str += `</svg>`;
+        // Draw UML-content if there are no attributes.
+        } else {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            //end of svg for background
+            str += `</svg>`;
         }
         //end of div for UML content
         str += `</div>`;
@@ -6504,6 +6513,15 @@ function drawElement(element, ghosted = false)
             for (var i = 0; i < elemFunc; i++) {
                 str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
             }
+            //end of svg for background
+            str += `</svg>`;
+        // Draw UML-footer if there are no functions
+        } else {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
             str += `</svg>`;
         }
