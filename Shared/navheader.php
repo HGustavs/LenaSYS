@@ -69,8 +69,9 @@
 					echo"</div>";					
 				}
 			
-			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a></div></td>";
+			// Always show home button which links to course homepage			
+			// Home button original code <a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a>
+			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><img alt='home button icon' src='../Shared/icons/Home.svg'></div></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
 			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><div class='motd-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
@@ -91,8 +92,6 @@
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></div></td>";
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
 				echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
-			}if (($noup == 'COURSE') && checkLogin()) {
-				echo "<td class='navButt' id='announcement' title='Announcement'><div class='announcement-nav' tabindex='0'><img style='margin-bottom: 5px;' alt='announcement icon' src='../Shared/icons/new_announcement_iconShadow.svg'></div></td>";
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
 				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
@@ -182,7 +181,7 @@
 
 								echo "<td class='coursePage' style='display: inline-block;'>";
 								echo "    <div class='course menuButton'>";
-								echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+								echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."' target='_blank'>";
 								echo "        <img alt='course page icon' id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
 								echo "		</a>";
 								echo "    </div>";
@@ -304,7 +303,7 @@
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo 	"</div><div>";
 					echo "</td>";
-					echo "<td class='navButt'>";
+					echo "<td class='navButt' id='searchNavButt'>";
 
 					if ($requestedService == "fileed.php")
 						echo   "<button id='searchbutton' class='switchContent' type='button'>";
@@ -341,12 +340,12 @@
 
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
-					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
-					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
+					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'ontouchstart='Skip(\"bd\");' ontouchend='Skip(\"bu\");'><img src='../Shared/icons/backward_button.svg'></td>";
+					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");' ontouchstart='Skip(\"fd\");' ontouchend='Skip(\"fu\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play(event);'><img src='../Shared/icons/play_button.svg' /></td>";
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {
 						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
-						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+						echo "<td class='navButt' id='editbutton' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/files_icon.svg' /></td>";
 					}
 					echo "<td class='navButt' id='codeBurger' onclick='showBurgerMenu();' title='Show box' ><img src='../Shared/icons/hotdog_button.svg' /></td>";

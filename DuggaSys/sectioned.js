@@ -397,23 +397,29 @@ function confirmBox(operation, item = null) {
   } else if (operation == "openTabConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#tabConfirmBox").css("display", "flex");
+    $("#tabs").val(0).change();
+  } else if (operation == "openItemsConfirmBox"){
+    $("#sectionShowConfirmBox").css("display", "flex");
+    $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
     $("#sectionHideConfirmBox").css("display", "none");
-  }else if (operation == "tabItem" && !hideItemList.length == 0) {
-    tabMarkedItems(hideItemList);
+  }else if (operation == "tabItem") {
+    tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
     $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
+    $("#sectionShowConfirmBox").css("display", "none");
   }
   else if (operation == "showItems"&& !hideItemList.length == 0) {
     showMarkedItems(hideItemList);
+    $("#sectionShowConfirmBox").css("display", "none");
   }
 }
 
@@ -696,11 +702,12 @@ function hideMarkedItems() {
   //----------------------------------------------------------------------------------
   // tabMarkedItems: Tabs Item from Section List
   //----------------------------------------------------------------------------------
-  function tabMarkedItems() {
-    for (i=0; i < hideItemList.length; i++) {  
-      var lid = hideItemList[i]; 
-    }
-      hideItemList = [];
+  function tabMarkedItems(lid) {
+    var tabs = $("#tabs").val();
+    AJAXService("UPDATETABS", {
+      lid: lid,
+      tabs: tabs
+    }, "SECTION");
   }
     
 //----------------------------------------------------------------------------------
@@ -962,10 +969,15 @@ function returnedSection(data) {
       document.getElementById("HIDEStatic").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
+      
+      // Disable div used for table spacing in the navheader
+      document.getElementById("menuHook").style.display =  "none"
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
+      // remove course-label margin
+      document.getElementById("course-label").style.marginRight = "10px";
     }
 
     // Hide som elements if to narrow
@@ -1074,7 +1086,8 @@ function returnedSection(data) {
 
             }
           }
-
+          
+          if (retdata['writeaccess'] == "w") {
           if (itemKind === 3) {
             str += "<td  class='LightBox" + hideState + "'>";
             str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
@@ -1088,7 +1101,8 @@ function returnedSection(data) {
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
           str += "</td>";
-        }
+      }
+      }
 
         // Make tabs to align each section element
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
@@ -1126,14 +1140,18 @@ function returnedSection(data) {
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          if(retdata['writeaccess'] != false) {
+            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += "<td class='LightBox" + hideState + "'>";
-          str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          if(retdata['writeaccess'] != false) {
+            str += "<td class='LightBox" + hideState + "'>";
+            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
 
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
@@ -1328,12 +1346,23 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        // Tab example button
+        if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement' 
+            title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
+          str += "</td>";
+        }
+        // <input id='tabElement'  type='button' value='&#8633' style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
+
+
         if (itemKind != 4){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
+            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' 
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
             str += "</td>";
 
