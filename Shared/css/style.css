@@ -6766,7 +6766,6 @@ only screen and (max-device-width: 430px) {
   color: var(--color-primary);
   font-size: 30px;
   vertical-align: middle;
-  margin-bottom: 30px;
 }
 
 .fab-btn-lg:hover {
