@@ -573,6 +573,7 @@ function updateVariant(status) {
 }
 
 function deleteVariant(vid) {
+	clearActiveDiagram();
 	AJAXService("DELVARI", { cid: querystring['courseid'], vid: vid, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -1043,7 +1044,7 @@ function renderCell(col, celldata, cellid) {
 		case "trashcan":	// DUGGA-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
 			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
-			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");clearActiveDiagram();' >`;
+			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 
 		case "param":		// DUGGA-TABLE - Parameter column

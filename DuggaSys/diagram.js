@@ -8681,4 +8681,8 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
+function refreshDiagram(){
+    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    fetchDiagramFileContentOnLoad();
+}
 //#endregion =====================================================================================
