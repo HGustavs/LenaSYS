@@ -1372,15 +1372,24 @@ function returnedSection(data) {
           // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
           if ((deadline !== null && deadline !== "undefined") && retdata['startdate'] !== null) {
             deadline = convertDateToDeadline(new Date(deadline));
-            str += deadline.split(" ")[0];
-            if (!/^[0:]+$/.test(deadline.split(" ")[1])) {
-              str += " "+deadline.split(" ")[1].split(":")[0]+":"+deadline.split(" ")[1].split(":")[1];
+            deadlineArr = deadline.split(" ");
+            str += deadlineArr[0];
+
+            // If minute and hour contains nothing but 0 we dont show it
+            if (!/^[0:]+$/.test(deadlineArr[1])) {
+              str += " "+deadlineArr[1].split(":")[0]+":"+deadlineArr[1].split(":")[1];
             }
+
             // If there is only a relative deadline we display it instead
           } else if (rDeadline !== null && rDeadline !== "undefined") {
             rDeadlineArr = rDeadline.split(":");
             rDeadlineArr[1] = rDeadlineArr[1] == 1 ? "Day" : (rDeadlineArr[1] == 2 ? "Week" : "Month");
-            str += "Course " + rDeadlineArr[1] + " " + rDeadlineArr[0] + ", " + rDeadlineArr[2] + ":" + rDeadlineArr[3];
+            str += "Course " + rDeadlineArr[1] + " " + rDeadlineArr[0];
+
+            // If minute and hour contains nothing but 0 we dont show it
+            if (!/^[0]+$/.test(new String(rDeadlineArr[2] + rDeadlineArr[3]))) {
+              str += ", " + rDeadlineArr[2] + ":"+ rDeadlineArr[3]
+            }
 
           }
           str += "</div></td>";
