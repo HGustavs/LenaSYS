@@ -530,6 +530,44 @@ foreach($queryz->fetchAll(PDO::FETCH_ASSOC) as $row){
 	$userCourse[$row['cid']] = $row['access'];
 }
 
+//Delete course matterial from courses that have been marked as deleted.
+$deleted = 3;
+$query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+$query = $pdo->prepare("DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+$query = $pdo->prepare("DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+$query = $pdo->prepare("DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+//Delete Courses that have been marked as deleted.
+$query = $pdo->prepare("DELETE course FROM course WHERE visibility=:deleted;");
+$query->bindParam(':deleted', $deleted);
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+}
+
 
 $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 
@@ -552,29 +590,29 @@ if(!$query->execute()) {
 					if ($userCourse[$row['cid']] == "W") $writeAccess = true;
 			}
 			if ($isSuperUserVar ||
-					$row['visibility']==1 ||
-					($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) ||
-					($row['visibility']==0 && $writeAccess)){
-					$isRegisteredToCourse = false;
-					foreach($userRegCourses as $userRegCourse){
-							if($userRegCourse == $row['cid']){
-								$isRegisteredToCourse = true;
-								break;
-							}
-						}
-					array_push(
-						$entries,
-						array(
-							'cid' => $row['cid'],
-							'coursename' => $row['coursename'],
-							'coursecode' => $row['coursecode'],
-							'visibility' => $row['visibility'],
-							'activeversion' => $row['activeversion'],
-							'activeedversion' => $row['activeedversion'],
-							'registered' => $isRegisteredToCourse
-							)
-						);
+			$row['visibility']==1 ||
+			($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) ||
+			($row['visibility']==0 && $writeAccess)){
+				$isRegisteredToCourse = false;
+				foreach($userRegCourses as $userRegCourse){
+					if($userRegCourse == $row['cid']){
+						$isRegisteredToCourse = true;
+						break;
+					}
 				}
+				array_push(
+					$entries,
+					array(
+						'cid' => $row['cid'],
+						'coursename' => $row['coursename'],
+						'coursecode' => $row['coursecode'],
+						'visibility' => $row['visibility'],
+						'activeversion' => $row['activeversion'],
+						'activeedversion' => $row['activeedversion'],
+						'registered' => $isRegisteredToCourse
+						)
+					);
+			}
 		}
 }
 
