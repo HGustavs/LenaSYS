@@ -8747,6 +8747,11 @@ border: none !important;
   background-color: #938C8C;
   cursor: pointer;
 }
+.touchEffectCopy #copyClipboard{ 
+  animation-name: touchAnimationEffect;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
 
 .boxtitleEditable{
   color: white;
