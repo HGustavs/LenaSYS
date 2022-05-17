@@ -2,6 +2,7 @@
 	include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
 
+	// Connect to database and start/resume session
  	session_start();
 ?>
 <!DOCTYPE html>
@@ -28,9 +29,9 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	// Connect to database and start session
 	pdoConnect();
 
+	#general vars regarding current dugga.
 	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
 	$quizid=getOPG('did');
@@ -51,22 +52,19 @@
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
-//	$queryArray = array($cid, $vers, $quizid);
 
 	#vars for handling fetching of diagram variant file name
 	$variantParams = "UNK";
-	$filePath ="UNK";
-	$finalArray = array();
 	$fileContent="UNK";
 	$splicedFileName = "UNK";
-	$isGlobal = -1;
-	$count = 0;
+
 	#vars for handling fetching of diagram instruction file name and type
 	$json = "UNK";
 	$fileName = "UNK";
 	$gFileName = "UNK";
 	$instructions = "UNK";
 	$information = "UNK";
+	$finalArray = array();
 	
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
@@ -74,38 +72,60 @@
 	$i=0;
 
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row){
+	#this should probably be re-worked as this foreach loops through all rows, but over-writes variables meaning it's only the latest variant version that's shown to the user.
+	#another alternvative could be to add each result in an array and loop through the array in diagram.js to properly filter out wrong variant results.
+	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
+	{
 		$variantParams=$row['jparam'];
-		/* $start = strpos($variantParams, "diagram File&quot;:&quot;") + 25; Old way to get the filename
-		$end = strpos($variantParams, "&quot;:&quot;&quot;,&quot;diagram_type") - 176;
-		$splicedFileName = substr($variantParams, strpos($variantParams, "diagram File&quot;:") + 25, ($end - $start));*/
 		$variantParams = str_replace('&quot;','"',$variantParams);
 		$parameterArray = json_decode($variantParams,true);
-		if(!empty($parameterArray)){
-			if(isset($parameterArray['diagram_File'])) 									$splicedFileName=$parameterArray["diagram_File"];
-																				else 	$splicedFileName = "UNK";
-			if(isset($parameterArray['filelink']))										$fileName=$parameterArray["filelink"];
-																				else	$fileName = "UNK";
-			if(isset($parameterArray['type']))											$fileType=$parameterArray["type"];
-																				else	$fileType = "UNK";
-			if(isset($parameterArray['gFilelink']))										$gFileName=$parameterArray["gFilelink"];
-																				else	$gFileName = "UNK";
-			if(isset($parameterArray['gType']))											$gFileType=$parameterArray["gType"];
-																				else	$gFileType = "UNK";
 
-			// for fetching file content
-			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != ""){
-				if(file_exists("../courses/global/"."$fileName"))						$instructions = file_get_contents("../courses/global/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$fileName"))				$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName"))	$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+		//if parameter exists in current variant json param string, assign value. Otherwise, set it to "UNK". Error checking should check if string is "UNK" and "".
+		if(!empty($parameterArray))
+		{
+			if(isset($parameterArray['diagram_File'])){
+				$splicedFileName=$parameterArray["diagram_File"];}
+			else{
+				$splicedFileName = "UNK";}
+			if(isset($parameterArray['filelink'])){
+				$fileName=$parameterArray["filelink"];}
+			else{
+				$fileName = "UNK";}
+			if(isset($parameterArray['type'])){
+				$fileType=$parameterArray["type"];}
+			else{
+				$fileType = "UNK";}
+			if(isset($parameterArray['gFilelink'])){
+				$gFileName=$parameterArray["gFilelink"];}
+			else{
+				$gFileName = "UNK";}
+			if(isset($parameterArray['gType'])){
+				$gFileType=$parameterArray["gType"];}
+			else{
+				$gFileType = "UNK";}
+
+			//for fetching file content. If file exists in directory path, fetch. Otherwise, go to the next directory and check.
+			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != "")
+			{
+				if(file_exists("../courses/global/"."$fileName")){
+					$instructions = file_get_contents("../courses/global/"."$fileName");}
+				else if(file_exists("../courses/".$cid."/"."$fileName")){
+					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");}
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName")){
+					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");}
 			}
 
-			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != ""){
-				if(file_exists("../courses/global/"."$gFileName"))						$information = file_get_contents("../courses/global/"."$gFileName");
-				else if(file_exists("../courses/".$cid."/"."$gFileName"))				$information = file_get_contents("../courses/".$cid."/"."$gFileName");
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName"))	$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");
+			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != "")
+			{
+				if(file_exists("../courses/global/"."$gFileName")){
+					$information = file_get_contents("../courses/global/"."$gFileName");}
+				else if(file_exists("../courses/".$cid."/"."$gFileName")){
+					$information = file_get_contents("../courses/".$cid."/"."$gFileName");}
+				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
+					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
 			}
-      
+
+			#Think this removes certain escape string characters.
 			$pattern = '/\s*/m';
 			$replace = '';
 			$instructions = preg_replace( $pattern, $replace,$instructions);
@@ -115,24 +135,34 @@
 			$i++;
 		}
 	}
+	#closes pdo connection to database. Causes error if not used as query results are stockpiled and prevents next query usage.
 	$response->closeCursor();
 
-	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != ""){
-		if(file_exists("../courses/global/"."$splicedFileName"))						$fileContent = file_get_contents("../courses/global/"."$splicedFileName");
-		else if(file_exists("../courses/".$cid."/"."$splicedFileName"))					$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName"))		$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");
+	#after itterating through query results, finally load the json file content into $fileContent variable.
+	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
+	{
+		if(file_exists("../courses/global/"."$splicedFileName")){
+			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");}
+		else if(file_exists("../courses/".$cid."/"."$splicedFileName")){
+			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");}
+		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName")){
+			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");}
 	}
 
-	if($fileContent === "UNK" || $fileContent === "")															$fileContent = "NO_FILE_FETCHED";
+	if($fileContent === "UNK" || $fileContent === "")
+		$fileContent = "NO_FILE_FETCHED";
 
-    // if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
-	if(isset($_GET['hash']) && $_GET['hash'] != "UNK"){
+    #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
+	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
+	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
+	{
 		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
+		#loop through the directory, fetching all files within and comparing time stamps. If a file has changes made more recently, set that file name as current file.
+		#don't check files called "." or ".." as they are hiden directory re-direct files.
 		if(is_dir($tempDir)){
-			//try and catch for using test data
 			try{
 				foreach(new DirectoryIterator($tempDir) as $file){
 					$ctime = $file->getCTime();    // Time file was created
@@ -147,6 +177,7 @@
 				}
 				$latest = $current;
 
+				#seriously, why does this work?
 				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
 				$fileContent = file_get_contents("{$tempDir}{$latest}");
 			}
@@ -156,60 +187,23 @@
 		}
 	}
 	
-  // for fetching file content
-	if(file_exists("../courses/global/"."$fileName" && $fileName != ""))								$instructions = file_get_contents("../courses/global/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$fileName") && $fileName != "")							$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && $fileName != "")				$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-	if($instructions === "UNK")																			$instructions = "NO_FILE_FETCHED";
+	#I have no idea why this is here. Seems like it does the same as the code within the above query loop.
+	if(file_exists("../courses/global/"."$fileName" && $fileName != ""))
+		$instructions = file_get_contents("../courses/global/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$fileName") && $fileName != "")
+		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
+	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && $fileName != "")
+		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
+	if($instructions === "UNK")
+		$instructions = "NO_FILE_FETCHED";
 	
 	$pattern = '/\s*/m';
   	$replace = '';
 	$instructions = preg_replace( $pattern, $replace,$instructions);
-
-	#I have no idea what the things below
-	// if(isset($_SESSION['hashpassword'])){
-	// 	$hashpassword=$_SESSION['hashpassword'];
-	// }else{
-	// 	$hashpassword='UNK';
-	// }	
-
-	// if(isset($_SESSION['uid'])){
-	// 	$userid=$_SESSION['uid'];
-	// }else{
-	// 	$userid="UNK";
-	// }
-
-	// if(!isset($_SESSION['hasUploaded'])){
-	// 	$_SESSION['hasUploaded'] = "UNK";
-	// }
-
-	// if(!isset($_SESSION['pwdentrance'])){
-	// 	$_SESSION['pwdentrance'] = 0;
-	// }
-	//logDuggaLoadEvent($cid, $userid, $username, $vers, $quizid, EventTypes::pageLoad);
-
-// if($cid != "UNK") $_SESSION['courseid'] = $cid;
-// 	$hr=false;
-// 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
-// 	$query->bindParam(':cid', $cid);
-// 	$result = $query->execute();
-// 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
-// 			$visibility=$row['visibility'];
-// 	}
 	
-/*
-		//Give permit if the user is logged in and has access to the course or if it is public
-		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
 
-		if(!$hr){
-			if (checklogin()){
-				$hr = isSuperUser($userid);$hr;
-			}
-		}
-*/
-
-  // can see all duggas and deleted ones
-
+  
+// can see all duggas and deleted ones
   if(isSuperUser($userid)){
 	$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 }
@@ -251,14 +245,6 @@
 		}
 ?>
 
-<!--<script type="text/javascript">
-
-	setHash("<?php /*echo $hash*/ ?>");
-
-</script>-->
-
-
-
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
@@ -298,19 +284,12 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	}
 	
 	$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"]=$variant;
-	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
-	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
 }else{
 	$hash=$_SESSION["submission-$cid-$vers-$duggaid-$moment"];
 	$hashpwd=$_SESSION["submission-password-$cid-$vers-$duggaid-$moment"];
 	$variant=$_SESSION["submission-variant-$cid-$vers-$duggaid-$moment"];
-	//echo "<br>submission-$cid-$vers-$duggaid-$moment<br>";
-	//echo "|$hash|$hashpwd|$variant|$moment|<br>";
-}
 
-//Remove if you want the password to be persistent.
-//$_SESSION['hashpassword'] = 'UNK';
-?>
+}?>
 
 </div>
 <script type="text/javascript">
@@ -335,24 +314,13 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	<!-- content START -->
 	<div id="content">
 		<?php
-		//echo "<script>console.log('".$duggafile."');</script>";
-			// Log USERID for Dugga Access
-			// commented out because we are unsure about the usage of logs
-			//makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-			//Retrieved from 'password' input field
-			// Put information in event log irrespective of whether we are allowed to or not.
-			// If we have access rights, read the file securely to document
-			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
-			// if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
-
-			$btnDisable = "btn-disable";
-			
 			if($duggafile!="UNK"){
+				#depending of the type of dugga being loaded, use the appropriate layout and elements.
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
 					if(isSuperUser($userid)){
-						// A teacher may not submit any duggas
+						#a teacher may not submit any duggas
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='rigth'>";
@@ -365,9 +333,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						echo "<table id='submitButtonTable' class='navheader'>";
 						echo "<tr>";
 						echo "<td align='left'>";
-						echo "<input id='saveDuggaButton' class='".$btnDisable." submit-button large-button' type='button' value='Save' onclick='uploadFile(); showReceiptPopup();' />";
+						echo "<input id='saveDuggaButton' class='btn-disable submit-button large-button' type='button' value='Save' onclick='uploadFile(); showReceiptPopup();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
-							echo "<input class='".$btnDisable." submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+							echo "<input class='btn-disable submit-button large-button' type='button' value='Reset' onclick='reset();' />";
 							echo "<td align='right'>";
 							echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 							echo "</td>";
@@ -451,6 +419,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			<div id='receiptInfo'></div>
 
 			<?php 
+			#determine if it's https or http, add $_SERVER[HTTP_HOST] (url) and add hash. Might need to change s to either a or c, depending on type of submit.
 			$receiptLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
 			?>
     		<div id='emailPopup' style="display:block">
@@ -476,13 +445,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
 	<?php
-	if(isSuperUser($userid) || hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st')){
-		if($hash == "UNK"){		//A teacher should not be able to change the variant (local) if they are grading an assignment.
-			//echo '<script type="text/javascript">toggleLoadVariant(true);</script>';
-		}
-    	//echo '<script type="text/javascript">','displayDownloadIcon();', 'noUploadForTeacher();','</script>';
-	}
-
+	#see no functionality for session var below. Is set to 1 in hashpasswordauth.php but never used.
 	$_SESSION['pwdentrance'] = 0;
 	?>
 	
@@ -507,6 +470,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
       </div>
 	</div>
 	<script type="text/javascript">
+
 	function getVariantParam()
 	{
 		var variantArray = [<?php echo "'$variantParams'"?>];
