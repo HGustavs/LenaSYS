@@ -49,7 +49,9 @@
         -webkit-filter: invert(80%);
     }
     #NewTabLink{
-        cursor: pointer;
+        cursor: pointer; 
+    }
+    .code #NewTabLink{
         filter: invert(80%);
         -webkit-filter: invert(80%);   
     }
