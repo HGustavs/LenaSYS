@@ -5106,6 +5106,7 @@ function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
+        document.getElementById("BGColorMenu").style.visibility = "hidden";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
