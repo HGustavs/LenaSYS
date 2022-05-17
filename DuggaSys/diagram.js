@@ -4464,7 +4464,7 @@ function generateErTableString()
                     }
                 }
             }
-            // Case 3, one weak and one string entity in relation
+            // Case 3, one weak and one strong entity in relation
             if (ERRelationData[i][1][0].state == 'weak' && ERRelationData[i][2][0].state == 'normal') {
                 // ONE to ONE relation, key from second ONE-side is stored in the other side
                 if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
@@ -4621,7 +4621,7 @@ function generateErTableString()
                     }
                 }
             }
-            // Case 3, one weak and one string entity in relation
+            // Case 4, one weak and one strong entity in relation
             if (ERRelationData[i][1][0].state == 'normal' && ERRelationData[i][2][0].state == 'weak') {
                 // ONE to ONE relation, key from second ONE-side is stored in the other side
                 if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'ONE') {
@@ -4705,7 +4705,6 @@ function generateErTableString()
                 else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') {
                     // If normal relation
                     if (ERRelationData[i][0].state == 'normal') {
-                        console.log('Reee');
                         //If array is empty
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
@@ -4844,7 +4843,15 @@ function generateErTableString()
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;
                         // Iterate through all the lists with foreign keys
                         for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
-                            currentString += `${allEntityList[i][lastList][k][l].name}`;
+                            // If element is array, aka strong key for weak entity
+                            if (Array.isArray(allEntityList[i][lastList][k][l])) {
+                                for (var m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
+                                    currentString += `${allEntityList[i][lastList][k][l][m].name}`;
+                                }
+                            }
+                            else {
+                                currentString += `${allEntityList[i][lastList][k][l].name}`;
+                            }
                         }
                         currentString += `</span>, `;
                     }
@@ -4852,7 +4859,7 @@ function generateErTableString()
             }
             else {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                for (var j = 2; j < allEntityList[i].length; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -4906,7 +4913,15 @@ function generateErTableString()
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;
                         // Iterate through all the lists with foreign keys
                         for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
-                            currentString += `${allEntityList[i][lastList][k][l].name}`;
+                            // If element is array, aka strong key for weak entity
+                            if (Array.isArray(allEntityList[i][lastList][k][l])) {
+                                for (var m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
+                                    currentString += `${allEntityList[i][lastList][k][l][m].name}`;
+                                }
+                            }
+                            else {
+                                currentString += `${allEntityList[i][lastList][k][l].name}`;
+                            }
                         }
                         currentString += `</span>, `;
                     }
@@ -4914,7 +4929,7 @@ function generateErTableString()
             }
             else {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                for (var j = 2; j < allEntityList[i].length; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -4936,13 +4951,29 @@ function generateErTableString()
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
             // Add left side of relation
             for (var j = 0; j < ERForeignData[i][1].length; j++) {
-                currentString += `${ERForeignData[i][1][j].name}`;
+                // If element is array, aka strong key for weak entity
+                if (Array.isArray(ERForeignData[i][1][j])) {
+                    for (var l = 0; l < ERForeignData[i][1][j].length; l++) {
+                        currentString += `${ERForeignData[i][1][j][l].name}`;
+                    }
+                }
+                else {
+                    currentString += `${ERForeignData[i][1][j].name}`;
+                }
             }
             currentString += `</span>, `;
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
             // Add right side of relation
             for (var j = 0; j < ERForeignData[i][2].length; j++) {
-                currentString += `${ERForeignData[i][2][j].name}`;
+                // If element is array, aka strong key for weak entity
+                if (Array.isArray(ERForeignData[i][2][j])) {
+                    for (var l = 0; l < ERForeignData[i][2][j].length; l++) {
+                        currentString += `${ERForeignData[i][2][j][l].name}`;
+                    }
+                }
+                else {
+                    currentString += `${ERForeignData[i][2][j].name}`;
+                }
             }
             currentString += `</span>, `;
             currentString += `)</p>`;
