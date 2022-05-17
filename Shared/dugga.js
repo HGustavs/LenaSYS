@@ -568,6 +568,14 @@ function closeWindows(){
 		var tempString2 = e.outerHTML;
 		if(!tempString2.includes('<div id="TopMenuStatic"')) {
 			e.style.display= "none";
+			//if the window is one of these ids also enable tab functionality again
+			var searchForId=['editSection', 'editCourseVersion', 'newCourseVersion'];
+			for (var i = 0; i < searchForId.length; i++) {
+				if(e==document.getElementById(searchForId[i])) {
+					toggleTab(false);
+				}
+			}
+			
 		}
 		if (index_highest < 10000) {
 			status=1;
