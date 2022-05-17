@@ -130,6 +130,9 @@
       addTestData("testingCourseData", $connection);
       $putFileHere = cdirname(getcwd(),1);
       copyTestFiles("{$putFileHere}/install/md/", "{$putFileHere}/DuggaSys/templates/");
+      copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/global/");
+      copyTestFiles("{$putFileHere}/install/courses/1/", "{$putFileHere}/courses/1/");
+      copyTestFiles("{$putFileHere}/install/courses/2/", "{$putFileHere}/courses/2/");
       $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
       foreach ($checkBoxes AS $boxName) { //Loop trough each field
           addTestData("keywords_{$boxName}", $connection);
