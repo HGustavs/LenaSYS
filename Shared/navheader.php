@@ -181,7 +181,7 @@
 
 								echo "<td class='coursePage' style='display: inline-block;'>";
 								echo "    <div class='course menuButton'>";
-								echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+								echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."' target='_blank'>";
 								echo "        <img alt='course page icon' id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
 								echo "		</a>";
 								echo "    </div>";
