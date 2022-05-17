@@ -56,7 +56,7 @@
         <div id='login' class='loginBox' style="display:"> <!-- Initial login screen display -->
             <div class="loginBoxheader">
                 <h3>Login</h3>
-                <div class="cursorPointer" onclick="history.back();">x</div>
+                <div class="cursorPointer" onclick="contribution_closeLogin();">x</div>
             </div>
                 <div > 
                         <table class="loginBoxTable">
@@ -94,7 +94,7 @@
     <div id='UserExistslogin' class='loginBox' style="display:none"> <!-- Initial login screen display -->
             <div class="loginBoxheader">
                 <h3>Login</h3>
-                <div class="cursorPointer" onclick="history.back();">x</div>
+                <div class="cursorPointer" onclick="contribution_closeLogin();">x</div>
             </div>
                 <div > 
                         <table class="loginBoxTable">
@@ -139,7 +139,7 @@
     <div id='newGit-UserCreation' class='loginBox' style="display:none"> <!-- Initial login screen display -->
             <div class="loginBoxheader">
                 <h3>Login</h3>
-                <div class="cursorPointer" onclick="history.back();">x</div>
+                <div class="cursorPointer" onclick="contribution_closeLogin();">x</div>
             </div>
                 <div > 
                         <table class="loginBoxTable">
