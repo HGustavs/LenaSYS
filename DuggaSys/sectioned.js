@@ -1093,26 +1093,34 @@ function returnedSection(data) {
             }
           }
           
-          if (retdata['writeaccess'] == "w") {
+          if (retdata['writeaccess']) {
           if (itemKind === 3) {
             str += "<td  class='LightBox" + hideState + "'>";
             str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             
-            str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
             str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-            str += "<td class='LightBoxFilled" + hideState + "'>";
-            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
           str += "</td>";
       }
       }
 
+      if (retdata['writeaccess']) {
+        console.log(itemKind);
+        if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
+          str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
+          str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+          
+        } else if (itemKind === 0 || itemKind === 1) { // Draggable area with purple background
+          str += "<td style='background-color: #614875;text-align: left;' class='LightBox" + hideState + "'  >";
+          str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+        }
+        str += "</td>";
+      }
         // Make tabs to align each section element
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
-        if (itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) {
+        if (itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 3 || itemKind === 5 || itemKind === 6 || itemKind === 7) {
           var itemGradesys = parseInt(item['gradesys']);
           if (itemGradesys > 0 && itemGradesys < 4) {
             for (var numSpacers = 0; numSpacers < itemGradesys; numSpacers++) {
@@ -1145,24 +1153,20 @@ function returnedSection(data) {
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          if(retdata['writeaccess'] != false) {
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-          }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          if(retdata['writeaccess'] != false) {
-            str += "<td class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-          }
-
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
 
         } else if (itemKind === 3) {
+          if (retdata['writeaccess']) {
+            str += "<td class='LightBox" + hideState + "'>";
+            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+          }
+
           if (item['highscoremode'] != 0 && itemKind == 3) {
             str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png' 
             onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
@@ -1171,6 +1175,9 @@ function returnedSection(data) {
           kk++;
 
         } else if (itemKind === 4) {
+          str += "<td class='LightBoxFilled" + hideState + "'>";
+          str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
+
           // New moment bool equals true
           momentexists = item['lid'];
           str += `<td class='moment item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' style='cursor:pointer;' `;
