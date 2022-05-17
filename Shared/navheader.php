@@ -452,10 +452,6 @@
 		$(".dropdown-list-container").css("display", "none");
 	}
 
-/*Shadow hover effect for home button START -------------*/
-document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
-document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
-
 function mouseOverHome() {
 	var obj = document.getElementById("homeIcon");
    if(obj != null)
