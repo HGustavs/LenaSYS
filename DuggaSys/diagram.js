@@ -1516,7 +1516,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
         if(isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-        if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck();
+        //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
             // Remove the preivous copy-paste data from localstorage.
@@ -4372,6 +4372,12 @@ function toggleErrorCheck(){
 function hideErrorCheck(show){
     if(show == true){
         document.getElementById("errorCheckField").style.display = "flex";
+        // Enables error check by pressing 'h', only when error check button is visible
+        document.addEventListener("keyup", event => {
+            if (event.key === 'h') {
+                toggleErrorCheck();                   
+            }
+        });
     }
     else{
         document.getElementById("errorCheckField").style.display = "none";
