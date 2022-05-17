@@ -171,7 +171,7 @@
 		
 			<!-- end hide button -->
 			
-			<div style='flex-grow:1'>
+			<div id='course-label' style='flex-grow:1'>
 					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
 					<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 					<span id='course-versname' class='courseVersionField'>UNK</span>
