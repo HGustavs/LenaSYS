@@ -8316,6 +8316,9 @@ function updateCSSForAllElements()
                         
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
+                            if (element.fill == "#000000") {
+                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            }
                         }
                     }
                 }
