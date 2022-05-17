@@ -8481,6 +8481,7 @@ background-color: #614875;
 }
 
 .codeborder .impono {
+  user-select: none;
   color: white;
   width: 22px;
   background-color: #9569BD;
@@ -8504,6 +8505,7 @@ background-color: #614875;
 }
 
 .impo {
+  user-select: none;
   color: #000;
   background-color: rgba(186, 96, 255, 0.09);
   white-space:nowrap;
