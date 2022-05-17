@@ -45,6 +45,7 @@ var template8maximizebuttonpressed = false;
 var sectionData; // Variable that stores all the data that is sent from Section, which contains the ordering of the code examples.
 var codeExamples = []; // Array that contains all code examples in the same order that was assigned in Section before pressing one of the examples.
 var currentPos; // Variable for the current position that determines where in the list of code examples you are.
+var selectionRange; // Variable that stores range of selected text.
 
 
 /********************************************************************************
@@ -4671,15 +4672,38 @@ function copyCodeToClipboard(boxid) {
 	// Select the code
 	var selection = window.getSelection();
 	
-	// Add Code to just copy impo code
-	for(i = 0; i<impo.length;i++){
-		var range = document.createRange();
-		range.selectNode(impo[i]);
-		selection.addRange(range);
+	if (selectionRange != null && selectionRange.toString() != "") {
+		// Copy selected code
+		selection.removeAllRanges();
+		selection.addRange(selectionRange);
+	} else if (impo.length > 0) {
+		// Copy impo code if no selection is made
+		selection.removeAllRanges();
+		for(i = 0; i<impo.length;i++){
+			var range = document.createRange();
+			range.selectNode(impo[i]);
+			selection.addRange(range);
+		}
+	} else {
+		// Retain previous clipboard if no code is selected and there is no impo code
+		return;
 	}
 	
-	document.execCommand("Copy");
+	if (navigator.clipboard) {
+		// Write selection to clipboard
+		navigator.clipboard.writeText(selection).catch(function (err) {
+			// Display errors as a warning
+			console.warn("Error occurred.", err);
+		});
+	} else {
+		// If clipboard API is not available
+		document.execCommand("Copy");
+		console.warn("Depricated feature \'documnet.execCommand()\' was used");
+	}
+
 	selection.removeAllRanges();
+	selectionRange = "";
+
 
 	// Notification animation
 	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
@@ -4689,6 +4713,14 @@ function copyCodeToClipboard(boxid) {
 	});
 }
 
+// Selectionchange EventListener
+document.addEventListener('selectionchange', function () {
+	// 0.5 second delay to update selectionRange (Needed for copyCodeToClipboard() to work on mobile)
+	setTimeout(function () {
+		if (window.getSelection().rangeCount > 0)
+			selectionRange = window.getSelection().getRangeAt(0);
+	}, 500);
+  });
 
 // Detects clicks
 $(document).mousedown(function (e) {
