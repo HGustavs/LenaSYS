@@ -1124,7 +1124,7 @@ function touchEffectCopy(boxid){
     setTimeout(() => {
         element.classList.remove("touchEffectCopy");
     }, 1000);
-
+}
 function touchEffect(boxid){
 	var element = document.getElementById("box" + boxid + "wrapper").childNodes[2];
 	element.classList.add("touchEffect");
