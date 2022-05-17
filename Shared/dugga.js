@@ -2692,6 +2692,9 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("settingIconTab")){
 			box[0].click();
         }
+		else if(box[0].classList.contains("checkboxIconTab")){
+			box[0].click();
+		}
 	}
 	else if(e.key === 'Escape'){
 		if ($('.fab-btn-list').is(':visible')) {
