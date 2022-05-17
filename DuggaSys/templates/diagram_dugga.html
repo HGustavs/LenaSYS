@@ -85,34 +85,44 @@
         
     </style>
     <script>
-        function openCloseDescription() { 
-            if ($("#pvalue").val() == "0") {
-                // hides description when open
-                $("#assignment_discrb").css('visibility', 'hidden');
-                $("#container__left").animate({
-                    width: "10px"
-                }, "slow");
-                $("#close_open").css({
-                    'display': 'fixed',
-                    'left': '7px',
-                    'transform': 'scaleX(-1)',
-                    'transition': '0.55s ease-in-out'
-                });
-                $("#pvalue").val("1");
-            } else {
-                // opens description when closed
-                $("#container__left").animate({
-                    width: "300px"
-                }, "slow");
-                $("#assignment_discrb").css('visibility', 'visible');
-                $("#close_open").css({
-                    'display': 'block',
-                    'transform': 'scaleX(1)',
-                    'left': '272px'
-                });
-                $("#pvalue").val("0");
-            }
-        }
+        $(document).ready(function() {
+            $('#close_open_border').click(function() {
+                if ($("#pvalue").val() == "0") {
+                    // Closed mode
+                    $("#assignment_discrb").css('display', 'none');
+                    $("#container__left").animate({
+                        width: "10px"
+                    }, "slow");
+
+                    $("#diagram-iframe").css({
+                        'margin-left':'12px'
+                    });
+
+                    $(".canvas_right").css({
+                        'margin-left':'12px'
+                    });
+
+                    $("#pvalue").val("1");
+                } else {
+                    // Open mode
+                    $("#container__left").animate({
+                        width: "300px"
+                    }, "slow");
+
+                    $("#assignment_discrb").css('display', 'block');
+
+                    $("#diagram-iframe").css({
+                        'margin-left':'0px'
+                    });
+
+                    $(".canvas_right").css({
+                        'margin-left':'0px'
+                    });
+
+                    $("#pvalue").val("0");
+                }
+            });
+        });
     </script>
 </head>
 
@@ -126,12 +136,17 @@
                 <div id="feedbackTable" style="margin-top: -3px;"></div>
             </div>
         </div>
-        <div id="instructionsContainer" class='instructions-container'>
+        <div class='instructions-container'>
             <div class='instructions-button' onclick='toggleInstructions(this)'>
                 <h3>General information</h3>
             </div>
             <div class="instructions-content" id="diagram_instructions">
-                
+                <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.
+                </p>
+                <p style="margin-left: 4px;">Lägg till element med hjälp av att byta till respective läge och klicka på canvasen.
+                </p>
+                <!-- <p style="margin-left: 4px;"><strong>Uppgiftsbeskrivning:</strong></p>
+                <p style="margin-left: 4px;" id="assigment-instructions"></p> -->
             </div>
         </div>
         <div class="container">
@@ -139,12 +154,25 @@
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
                 <div id="container_header"><h3>Instructions</h3></div>
-                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 4px; ">
-                    
+                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 12px; ">
+                    <h2 style="margin-left: 14px;">Modellering</h2>
+                    <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
+                    <ol type="1">
+                        <li>En person identifieras av ett personnummer och har ett namn.</li><br>
+                        <li>Lägg till så att personen också har ett efternamn samt att man kan härleda åldern med hjälp av personnumret.</li><br>
+                        <li>Lägg till så att personen kan ha många olika adresser.</li><br>
+                        <li>En bil identifieras av dess registreringsnummer och är av ett visst bilmärke. Bilen tillhör dessutom en viss typ, har en färg.</li><br>
+                        <li>Lägg till så att en person kan äga många bilar, men endast en bil kan ägas av en person. Vi vill inte lagra några egenskaper person, eftersom det anses onödigt, exempel namn, ålder, eller adress.</li><br>
+                        <li>En kaffekopp identifieras av en färg och har en viss storlek. En person identifieras av ett personnummer och äger en kaffekopp. En kaffekopp kan endast ägas av en person.</li><br>
+                        <li>En person har ett namn och personnummer och kan äta många maträtter från en buffé. Från buffén kan många personer äta. En maträtt hare en smak och identifieras av dess namn.</li><br>
+                        <li>Ett husdjur identifieras av dess namn och i kombination med personen som äger husdjuret. Personen har ett namn och ett personnummer.</li><br>
+                        <li>Lägg till så att ett husdjur också har en unik matskål. Matskålen identifieras av dess namn samt i kombination med husdjuret som äter ur matskålen.
+                        </li><br>
+                        <li>Lägg till så att ett husdjur kan ha en skötare. En skötare identifieras av ett anställningsnummer och har ett namn. En skötare kan ta hand om många husdjur.
+                        </li><br>
+                    </ol>
                 </div>
-                <div id="close_open" onclick="openCloseDescription();">
-
-                </div>
+                <div id="close_open_border"></div>
             </div>
             <div id="container" class="canvas_right">
 
