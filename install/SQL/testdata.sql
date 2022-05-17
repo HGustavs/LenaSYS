@@ -668,6 +668,7 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.txt",2,1,1
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("minimikrav_m2.md",3,2,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("test.png",3,2,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("cssdugga-site-1.png",3,2,0);
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("diagram.json",2,1,1);
 
 INSERT INTO fileLink (filename,kind,cid,isGlobal, filesize) VALUES ("helloWorld.html",3,2,0,137);
 INSERT INTO fileLink (filename,kind,cid,isGlobal, filesize) VALUES ("helloWorld.html",2,2,1,137);

@@ -10,6 +10,7 @@
             height: 50.1rem;
             width: 100%;
             justify-content: space-between;
+            position: relative;
         }
 
         #container_header{
@@ -17,7 +18,7 @@
             width:100%;
             display:inline-block;
             position:relative;
-            padding:3px 10px;
+            padding:3px 26px;
             box-sizing: border-box;
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
@@ -40,33 +41,48 @@
             width: 300px;
             height: 800px;
             overflow: auto;
-            margin: 0px;
+            margin-left: 0px;
             border: 1px solid #ccc;
-        }
-        
-        #close_open {
-            width: 23px;
-            position: absolute;
-            top: 520px;
-            left: 272px;
-            border-top: 14px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-right: 14px solid #d4d2d2;
-            margin-left:10px;
-        }
-        
-        #close_open:hover {
-            border-top: 14px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-right: 14px solid #8e8e8e;
         }
         
         .canvas_right {
             flex: 1;
             display: flex;
             justify-content: space-around;
-            margin-left:10px;
+            margin-left:0px;
         }
+
+        #close_open_border {
+            position: absolute;
+            background-color: #ccc;
+            width:20px;
+            height:803px;
+            top:0px;
+            cursor: pointer;
+        }
+
+        #close_open_border:after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top:383px;
+            border-top: 14px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 14px solid transparent;
+            border-left: 14px solid #ccc;
+        }
+
+        #close_open_border:hover:after {
+            border-top: 14px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 14px solid transparent;
+            border-left: 14px solid #8e8e8e;
+        }
+
+        #close_open_border:hover {
+            background-color:#8e8e8e;
+        }
+        
     </style>
     <script>
         function openCloseDescription() { 
@@ -133,7 +149,7 @@
             <div id="container" class="canvas_right">
 
 
-                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;margin-left: 10px;" src="
+                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" src="
                                     ./diagram.php" title="Diagram"></iframe>
 
 
