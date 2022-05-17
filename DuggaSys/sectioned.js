@@ -1388,6 +1388,8 @@ function returnedSection(data) {
 
             // If minute and hour contains nothing but 0 we dont show it
             if (!/^[0]+$/.test(new String(rDeadlineArr[2] + rDeadlineArr[3]))) {
+              rDeadlineArr[2] = rDeadlineArr[2].length == 1 ? "0" + rDeadlineArr[2] : rDeadlineArr[2];
+              rDeadlineArr[3] = rDeadlineArr[3].length == 1 ? "0" + rDeadlineArr[3] : rDeadlineArr[3];
               str += ", " + rDeadlineArr[2] + ":"+ rDeadlineArr[3]
             }
 
