@@ -1285,13 +1285,13 @@ function getData()
 {
     container = document.getElementById("container");
     onSetup();
-    showdata();
-    drawRulerBars(scrollx,scrolly);
     generateToolTips();
     toggleGrid();
     updateGridPos();
     updateA4Pos();
     updateGridSize();
+    showdata();
+    drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
 }
@@ -2214,7 +2214,7 @@ function mouseMode_onMouseMove(event)
  * @param {MouseEvent} event Triggered mouse event.
  */
 function mmoving(event)
-{
+{ 
     lastMousePos = getPoint(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
@@ -2749,6 +2749,7 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
         if (!context.includes(ctxelement)) {
             context.push(ctxelement);
             showdata();
+            clearContext
         // The element is already selected    
         } else {
             context = context.filter(function (element)
@@ -2928,7 +2929,7 @@ function clearContextLine()
  * @returns {Point} Point containing the calculated coordinates.
  * @see diagramToScreenPosition() For converting the other way.
  */
-function screenToDiagramCoordinates(mouseX, mouseY)
+function screenToDiagramCoordinates(mouseX,mouseY)
 {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
     // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
