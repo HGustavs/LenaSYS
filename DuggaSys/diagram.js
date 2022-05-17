@@ -5068,7 +5068,7 @@ function generateContextProperties()
               menuSet[i].classList.remove('options-fieldset-show');  
           }
 
-          str += `<div style="color: white">BG Color</div>`;
+          str += `<div style="color: white">Color</div>`;
           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
       }
