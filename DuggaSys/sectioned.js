@@ -379,7 +379,7 @@ function calculateRelativeDeadline(rDeadline) {
 }
 // Takes a date object and returns it as a string as deadlines are stored in the database
 function convertDateToDeadline(date) {
-  var rDeadlineArr = date.toLocaleDateString().split("/");
+  var rDeadlineArr = date.toLocaleDateString("en-US").split("/");
   rDeadlineArr[0] = rDeadlineArr[0].length < 2 ? "0" + rDeadlineArr[0] : rDeadlineArr[0];
   rDeadlineArr[1] = rDeadlineArr[1].length < 2 ? "0" + rDeadlineArr[1] : rDeadlineArr[1];
   var newDeadline = rDeadlineArr[2] + "-" + rDeadlineArr[0]+ "-" + rDeadlineArr[1] + " " + date.toString().split(" ")[4];
