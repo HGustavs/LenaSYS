@@ -316,7 +316,7 @@
         <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
             <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
-                <p class="key_tooltip">Keybinding:</p>
+                <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
             </span>
         </div>
         <div id ="fieldsetBox">
