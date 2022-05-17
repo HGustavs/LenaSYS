@@ -188,6 +188,11 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
+  console.log("myConsole lid: "+ lid);
+  console.log("myConsole typeof: "+ typeof lid);
+  document.getElementById("sectionname").focus();
+  toggleTab(true);
+  enableTab(document.getElementById("editSection"));
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -342,6 +347,8 @@ function changedType(kind) {
 
 function showEditVersion() {
   var tempMotd = motd;
+  toggleTab(true);
+  enableTab(document.getElementById("editCourseVersion"));
 	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
   "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
   $("#eversname").val(versnme);
@@ -368,6 +375,7 @@ window.addEventListener('beforeunload', function(event) {
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
+    toggleTab(false);
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
     $("#userFeedbackDialog").css("display", "none");
@@ -538,6 +546,7 @@ function clearHideItemList(){
 
 
 function closeSelect() {
+  toggleTab(false);
   $(".item").css("border", "none");
   $(".item").css("box-shadow", "none");
   $("#editSection").css("display", "none");
@@ -554,6 +563,8 @@ function defaultNewItem() {
 
 function showCreateVersion() {
     $("#newCourseVersion").css("display", "flex");
+    toggleTab(true);
+    enableTab(document.getElementById("newCourseVersion"));
 }
 
 
@@ -709,6 +720,52 @@ function hideMarkedItems() {
       hideItemList = [];
   }
     
+//----------------------------------------------------------------------------------
+// toggleTab: Toggles tab on all elements of the webpage
+//----------------------------------------------------------------------------------
+
+  function toggleTab(tabEnabled){
+    var tabSwitch;
+    if(tabEnabled){
+      tabEnabled = false;
+      tabSwitch = -1;
+    } 
+    else {
+      tabEnabled= true;
+      tabSwitch = 0;
+    }
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+    var tabbable = ['settingIconTab', 'home-nav', 'theme-toggle-nav', 'messagedialog-nav', 'announcement-nav', 'editVers', 'newVers', 'loginbutton-nav'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByClassName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+  }
+
+//----------------------------------------------------------------------------------
+// enableTab: Enables tab on all children of of the id element
+//----------------------------------------------------------------------------------
+
+  function enableTab(id){
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = id.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', 0);
+      }
+    }
+    
+  }
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
 //----------------------------------------------------------------------------------
@@ -1410,7 +1467,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:25px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
+            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' class='checkboxIconTab' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         

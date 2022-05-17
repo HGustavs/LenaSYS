@@ -568,6 +568,14 @@ function closeWindows(){
 		var tempString2 = e.outerHTML;
 		if(!tempString2.includes('<div id="TopMenuStatic"')) {
 			e.style.display= "none";
+			//if the window is one of these ids also enable tab functionality again
+			var searchForId=['editSection', 'editCourseVersion', 'newCourseVersion'];
+			for (var i = 0; i < searchForId.length; i++) {
+				if(e==document.getElementById(searchForId[i])) {
+					toggleTab(false);
+				}
+			}
+			
 		}
 		if (index_highest < 10000) {
 			status=1;
@@ -2764,6 +2772,9 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("settingIconTab")){
 			box[0].click();
         }
+		else if(box[0].classList.contains("checkboxIconTab")){
+			box[0].click();
+		}
 	}
 	else if(e.key === 'Escape'){
 		if ($('.fab-btn-list').is(':visible')) {
