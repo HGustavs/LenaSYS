@@ -751,3 +751,9 @@ body {
 }
 /* END */
 
+/* Style for "Info Box" in Dugga 3 START */
+option:checked{
+    background-color: var(--color-sectioned-table-lo);
+    color: white;
+}
+/* END */
