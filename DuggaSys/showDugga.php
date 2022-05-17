@@ -303,10 +303,20 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
 				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
 					document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
+
+					// Checks if index[3] i.e. the "Instruction file" is empty 
+					if(<?php echo json_encode($finalArray);?>[index][3]=='') {
+						document.getElementById("container__left").style.display="none";
+					}
 				}
 				if(<?php echo json_encode($finalArray);?>[index][5]==fileName){
 					document.getElementById("diagram_instructions").innerHTML =<?php echo json_encode($finalArray);?>[index][6];
-				}
+
+					// Checks if index[6] i.e. the "General information file" is empty 
+					if(<?php echo json_encode($finalArray);?>[index][6]=='') {
+						document.getElementById("instructionsContainer").style.display="none";
+					}
+				}	
 			}
 		}			
 	}
