@@ -188,8 +188,6 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
-  console.log("myConsole lid: "+ lid);
-  console.log("myConsole typeof: "+ typeof lid);
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -398,7 +396,6 @@ function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
   } else if (operation == "openHideConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
@@ -1365,18 +1362,21 @@ function returnedSection(data) {
         if (itemKind != 4 && itemKind != 1 && itemKind != 0){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="newTabCanvasLink" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+            str += `</div>`;
             str += "</td>";
 
           // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
             str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
             src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += `</div>`;
             str += "</td>";
           }
         }
@@ -1401,7 +1401,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
+          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }

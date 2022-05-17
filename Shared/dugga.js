@@ -2651,7 +2651,12 @@ function editDuggaInstruction(){
 $(document).on('keydown', function(e) {
 	if(e.key === 'Enter'){
 		var box = $(e.target);
-
+		var allSort = document.getElementById("all-files-sort");
+		var globalSort = document.getElementById("global-files-sort");
+		var courseLocalSort = document.getElementById("course-local-sort");
+		var versionLocalSort = document.getElementById("version-local-sort");
+		var linksSort = document.getElementById("links-sort");
+		var dummySort = document.getElementById("dummyEmptyFile-sort");	
 		if (box[0].classList.contains("home-nav")){
 			box.parents('td').click();
 		}
@@ -2688,6 +2693,73 @@ $(document).on('keydown', function(e) {
 		}
 		else if (box[0].classList.contains("newVers")){
 			showCreateVersion();
+		}
+		else if (box[0].classList.contains("showDuggaFiltTab")){
+			showAvailableDuggaFilter();
+		}
+		else if (box[0].classList.contains("showColumnFiltTab")){
+			showAvailableColumnFilter();
+		}
+		else if (box[0].classList.contains("searchTab")){
+			searchByFilter();
+		}
+		else if (box[0].classList.contains("allFilesSortTab")){
+			filterFilesByKind('All');
+			allSort.checked= true;
+		}
+		else if (box[0].classList.contains("globalSortTab")){
+			filterFilesByKind('Global');
+			globalSort.checked= true;
+		}
+		else if (box[0].classList.contains("courselocalSortTab")){
+			filterFilesByKind('CourseLocal');
+			courseLocalSort.checked= true;
+		}
+		else if (box[0].classList.contains("versionLocalSortTab")){
+			filterFilesByKind('Local');
+			versionLocalSort.checked = true;
+		}
+		else if (box[0].classList.contains("linkSortTab")){
+			filterFilesByKind('Link');
+			linksSort.checked = true;
+		}
+		else if (box[0].classList.contains("dummyFileSortTab")){
+			filterFilesByKind('DummyFiles');
+			dummySort.checked = true;
+		}
+		else if (box[0].classList.contains("fabBtnEditfile") || (box[0].classList.contains("fabBtnEditDugga"))){
+			createQuickItem();
+		}
+		else if (box[0].classList.contains("newTabCanvasLink")){
+			openCanvasLink(box[0]);
+		}
+		else if (box[0].classList.contains("showCanvasLinkBoxTab")){
+			showCanvasLinkBox("open", box[0]);
+		}
+		else if (box[0].classList.contains("traschcanDelItemTab")){
+			box[0].click();
+		}
+		else if (box[0].classList.contains("markdownIconTab")){
+			renderVariant(clickedElement);
+			showVariantEditor();
+		}
+		else if (box[0].classList.contains("trashcanTab")){
+			box[0].click();
+		}
+		else if (box[0].classList.contains("showeditorTab")){
+			loadPreview(box[0]);
+		}
+		else if (box[0].classList.contains("traschcanDelDugga")){
+			box[0].click();
+			
+		}
+		else if (box[0].classList.contains("settingIcon")){
+			selectDugga(object);
+			
+		}
+		else if (box[0].classList.contains("markdownIconeditFile")){
+			box[0].click();
+			
 		}
 		else if (box[0].classList.contains("settingIconTab")){
 			box[0].click();
