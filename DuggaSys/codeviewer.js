@@ -1106,7 +1106,7 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
-			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ontouchstart='touchEffectCopy(" + boxid + ");'><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		
 		str += '</tr></table>';
@@ -1118,6 +1118,12 @@ function createboxmenu(contentid, boxid, type) {
 		});
 	}
 }
+function touchEffectCopy(boxid){
+    var element = document.getElementById("box" + boxid + "wrapper").childNodes[2];
+    element.classList.add("touchEffectCopy");
+    setTimeout(() => {
+        element.classList.remove("touchEffectCopy");
+    }, 1000);
 
 function touchEffect(boxid){
 	var element = document.getElementById("box" + boxid + "wrapper").childNodes[2];

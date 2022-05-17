@@ -8790,6 +8790,11 @@ border: none !important;
   animation-duration: 1s;
   animation-iteration-count: 1;
 }
+.touchEffectCopy #copyClipboard{ 
+  animation-name: touchAnimationEffect;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
 .boxtitleEditable{
   color: white;
   cursor:text;
