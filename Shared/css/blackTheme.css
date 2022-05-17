@@ -692,3 +692,62 @@ body {
     background-color: var(--color-sectioned-table-lo);
 } 
 /* END */
+
+/* ***Style for "Submission Input Table"*** */
+
+/* In "createSmallerViewportForm" */
+#timesheetPrev{
+    background-color: var(--color-background);
+}
+
+.ViewportHeadBorder{
+    background-color: var(--color-sectioned-table-lo);
+}
+
+.ViewportBorder{
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+
+.tsSmallInput{
+    color: white;
+    background-color: #212121;
+    border: 2px solid #212121;
+    color-scheme: dark; 
+}
+/* In "createFileUploadArea" (Big screen) */
+.tsTable input{
+    padding: 5px;
+    color: white;
+    background-color: #212121;
+    border: 2px solid #212121;
+    color-scheme: dark; 
+}
+
+.tsTable select{
+    background-color: #212121;
+    color: white;
+}
+
+.tsTableDeleteCell{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+/* END */
+
+/* Style for ALL borders in Submission Input Table */
+.tsTable td{
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+
+.tsTable td:first-of-type {
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+.tsTable td:last-of-type {
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+.tsTable td, .tsTable th {
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+/* END */
+

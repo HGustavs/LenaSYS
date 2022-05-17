@@ -8807,3 +8807,18 @@ border: none !important;
   background-color: var(--color-sectioned-table-lo);
 }
 /* END */
+
+/* Style for "Submission Input Table"  */
+#timesheetPrev{
+  background-color: white;
+}
+
+.ViewportHeadBorder{
+  background-color: #614875;
+}
+
+.ViewportBorder{
+  border:1px solid #614875;
+  margin-bottom: 15px;
+}
+/* END */
