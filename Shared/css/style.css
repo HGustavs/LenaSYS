@@ -1294,6 +1294,8 @@ header {
 
 header td {
   white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 #scoreElement {
@@ -1327,6 +1329,7 @@ header td {
 }
 
 .navheader {
+  table-layout: fixed;
   height: 20px;
   margin-bottom: 10px;
   width: 100%;
@@ -1346,7 +1349,6 @@ header td {
 }
 
 .navButt img {
-  margin-left: 10px;
   vertical-align: middle;
   height: 32px;
 }
@@ -1497,11 +1499,6 @@ div .navButt:hover {
   width: 50px;
   vertical-align: middle;
   text-align: center;
-}
-@media only screen and (max-width: 342px) {
-  #loginbutton {
-    width: 35px;
-  }
 }
 
 #div2 {
@@ -5430,7 +5427,7 @@ only screen and (max-device-width: 380px) {
     display: block;
   }
 
- #homeIcon, #upIcon, #theme-toggle{
+ #home, #back, #theme-toggle{
     display: none;
   }
 }
@@ -5605,12 +5602,18 @@ only screen and (max-device-width: 530px) {
   /* Mobile resulted end */
 }
 
-@media only screen and (max-width: 480px),
-only screen and (max-device-width: 480px) {
+@media only screen and (max-width: 520px),
+only screen and (max-device-width: 520px) {
 
   table.navheader td.tests,
-  table.navheader td.results {
+  table.navheader td.results,
+  table.navheader td.editVers,
+  table.navheader td.newVers,
+  table.navheader td.files,
+  table.navheader td.coursePage,
+  table.navheader td.access {
     margin-right: 0px;
+    padding: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
     -moz-transition: margin-right 0.5s, width 0.5s;
@@ -8128,16 +8131,6 @@ textarea#filecont {
 
   table.navheader div.menuButton{
     margin-right: 0px;
-  }
-}
-
-@media only screen and (max-width: 339px) {
-  .navheader .course-dropdown{
-    height: 20px;
-    width: 120px;
-  }
-  .navName{
-    width: 0px;
   }
 }
 

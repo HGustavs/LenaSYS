@@ -969,6 +969,9 @@ function returnedSection(data) {
       document.getElementById("HIDEStatic").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
+      
+      // Disable div used for table spacing in the navheader
+      document.getElementById("menuHook").style.display =  "none"
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
