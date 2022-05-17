@@ -546,3 +546,161 @@ body {
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
+/* --------------================################================-------------- *
+ *                    Style for ALL duggas (showDugga.php) in Demo-Course.                                     *
+ * --------------================################================-------------- */
+
+/*Style for "Instructions Container "START */
+.feedback-button, .instructions-button{
+    /* border-top: 10px solid var(--color-sectioned-table-lo); */
+    background-color: var(--color-sectioned-table-lo);
+}
+
+.feedback-button:after, .instructions-button:after{
+    /* background-color: var(--color-sectioned-table-lo); */
+    border-top: 10px solid var(--color-sectioned-table-lo);
+}
+
+.instructions-content{
+    border: 2px solid  var(--color-sectioned-table-lo);
+} 
+
+.feedback-button:hover:after, .instructions-button:hover:after {
+    border-top: 10px solid  var(--color-sectioned-table-hi);
+
+}
+
+.feedback-button:hover, .instructions-button:hover {
+    background-color:  var(--color-sectioned-table-hi);
+}
+/* END */
+
+/* Style for "pane-container text" START */
+.pane{
+    color:white;
+}
+/* END */
+
+/* Style for "Fouter border" */
+.fouter{
+    border: 2px solid  var(--color-sectioned-table-lo);
+}
+/* END */
+
+/* Style for "Float Right Box" */
+.floatRightBox{
+    background-color: var(--color-sectioned-table-hi);
+    border: 2px solid var(--color-sectioned-table-lo);
+}
+/* END */
+
+/* Style for Tool Box START */
+#toolbox{
+    width:395px;
+	margin:0 4px 5px 4px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+    border:2px solid var(--color-sectioned-table-lo);
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+    background-color: #121212;
+}
+
+#opTableContainer{
+	height:355px;
+	background-color: #212121; 
+	overflow-y:scroll;
+}
+
+.OperationListTableOdd {  
+    background: var(--color-sectioned-table-hi) ;
+}
+
+.OperationListTableEven { 
+    background: var(--color-sectioned-table-lo) ;
+}
+/* END */
+
+/* Style for "Info Box" in Curve Dugga START  */
+#infobox{
+    background-color: #212121;
+    border: 2px solid var(--color-sectioned-table-lo);
+}
+
+#operations{
+    background: #121212 ;
+}
+
+.ColorForTextinInfoBox{
+    color: white;
+}
+
+.ColorForTextinInfoBox:checked {
+    background-color: var(--color-sectioned-table-lo);
+} 
+/* END */
+
+/* ***Style for "Submission Input Table"*** */
+
+/* In "createSmallerViewportForm" */
+#timesheetPrev{
+    background-color: var(--color-background);
+}
+
+.ViewportHeadBorder{
+    background-color: var(--color-sectioned-table-lo);
+}
+
+.ViewportBorder{
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+
+.tsSmallInput{
+    color: white;
+    background-color: #212121;
+    border: 2px solid #212121;
+    color-scheme: dark; 
+}
+/* In "createFileUploadArea" (Big screen) */
+.tsTable input{
+    padding: 5px;
+    color: white;
+    background-color: #212121;
+    border: 2px solid #212121;
+    color-scheme: dark; 
+}
+
+.tsTable select{
+    background-color: #212121;
+    color: white;
+}
+
+.tsTableDeleteCell{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+/* END */
+
+/* Style for ALL borders in Submission Input Table */
+.tsTable td{
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+
+.tsTable td:first-of-type {
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+.tsTable td:last-of-type {
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+.tsTable td, .tsTable th {
+    border:1px solid  var(--color-sectioned-table-lo); 
+}
+/* END */
+
+/* Style for "Info Box" in Dugga 3 START */
+option:checked{
+    background-color: var(--color-sectioned-table-lo);
+    color: white;
+}
+/* END */

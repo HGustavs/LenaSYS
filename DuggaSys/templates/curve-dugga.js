@@ -425,7 +425,7 @@ function newOp(operation, operationText)
 		alert('Unknown draw operation:"'+drawOp+'"');
 	}
 
-	document.getElementById('operations').innerHTML += "<option id='op" + (objectCounter++) + "' value='" + drawOpParams + "'>" + operationText + "</option>";
+	document.getElementById('operations').innerHTML += "<option class='ColorForTextinInfoBox' id='op" + (objectCounter++) + "' value='" + drawOpParams + "'>" + operationText + "</option>";
 
 }
 

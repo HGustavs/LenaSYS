@@ -7944,7 +7944,7 @@ textarea#filecont {
 
 /* Styling for timesheet table */
 .tsTable {
-  margin: 20px 0px 20px 50px;
+  margin: 20px 50px 20px 50px;
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -8843,6 +8843,33 @@ border: none !important;
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
 
+/* Style for Tool Box START */
+.OperationListTableOdd {  
+  background-color: var(--color-sectioned-table-hi);
+}
+
+.OperationListTableEven { 
+  background-color: var(--color-sectioned-table-lo);
+}
+/* END */
+
+/* Style for "Submission Input Table"  */
+#timesheetPrev{
+  background-color: white;
+}
+
+.ViewportHeadBorder{
+  background-color: #614875;
+}
+
+.ViewportBorder{
+  border:1px solid #614875;
+  margin-bottom: 15px;
+}
+
 .LightBox:hover {
     cursor: grab;
 }
+/* END */
+
+
