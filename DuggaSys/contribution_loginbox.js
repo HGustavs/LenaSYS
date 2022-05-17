@@ -407,56 +407,7 @@ function git_logout()
     }
 }
 
-function contribution_AJAX_prepareOPTPARA(opt_, apara_)
-{
-    let para="";
-    let apara = apara_;
-    let opt = opt_;
 
-    { // add log_uuid, added this to hold same standard as dugga ajaxservice
-        var tex = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for(var i=0; i<15; i++)
-        {
-            tex += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        apara.log_uuid = tex;    
-    }
-
-
-    let old;
-    for (let key in apara) 
-    {
-        if(typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null)
-        {
-
-            // Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
-            // This handles the important words that are sent from the codeviewer
-            if (apara[key].constructor === Array)
-            {
-                var array = [];
-                for (var i = 0; i < apara[key].length; i++) {
-                        array.push(encodeURIComponent(htmlEntities(apara[key][i])));
-                }
-                para+="&"+key+"="+array;
-            }
-            else
-            {
-                para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-            }
-
-        }
-        else
-        {
-            console.log("Your input contained nothing in " + key);
-        }
-
-		old = apara[key];
-    }
-
-    return ("&opt="+opt+para);
-
-}
 
 function CONT_LOGINBOX_SERVICE_RETURN(data)
 {
@@ -482,6 +433,7 @@ function CONT_LOGINBOX_SERVICE_RETURN(data)
     }
 
 }
+
 
 
 
