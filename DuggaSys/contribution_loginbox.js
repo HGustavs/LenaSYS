@@ -435,7 +435,30 @@ function CONT_LOGINBOX_SERVICE_RETURN(data)
 }
 
 
+{ // scope to hold variable saying if we are on the loaded page or not, 
+  let contribution_loaded = true; // gets set in contribution, true by default
+  function set_contribution_loaded(_input) // i gave it a set function as we cant modify contribution_loaded in global function space but i dont want contribution_loaded to be exposed to global scope either
+  {
+    contribution_loaded = _input;
+  }
 
+  function contribution_closeLogin() 
+  {
+    // this login exists both on the fully loaded contribution page and the page that prompts you to login, 
+    // on the fully loaded page we dont want to return to home but instead simply close it, on the prompted page we return to home
+
+    if(contribution_loaded)
+    {
+      console.log("not yet implemented");
+    }
+    else // you got prompted, this will return to courseed, aka homepage of sorts
+    {
+      window.location.href = "courseed.php"; 
+    }
+
+
+  }
+}
 
 
 
