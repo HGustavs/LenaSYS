@@ -673,3 +673,22 @@ body {
     background: var(--color-sectioned-table-lo) ;
 }
 /* END */
+
+/* Style for "Info Box" in Curve Dugga START  */
+#infobox{
+    background-color: #212121;
+    border: 2px solid var(--color-sectioned-table-lo);
+}
+
+#operations{
+    background: #121212 ;
+}
+
+.ColorForTextinInfoBox{
+    color: white;
+}
+
+.ColorForTextinInfoBox:checked {
+    background-color: var(--color-sectioned-table-lo);
+} 
+/* END */
