@@ -131,9 +131,13 @@
 			<!-- Hide button -->
 		
 			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
-				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
+				<!-- <input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
-				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 55px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("showItems");'>
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("showItems");'>
+				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
+				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+				<input id='addElement'  type='button' value='+' style="top:-493px; margin-right:10px;" class='submit-button-newitem' title='New Item'>
 			</div>
 		
 			<!-- end hide button -->
@@ -145,7 +149,7 @@
 				<img src="../Shared/icons/desc_complement.svg" alt='Hide List Content' id="sectionList_arrowStatisticsClosed">
 			</div>
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
+				<input id='addElement'  type='button' value='+' style="margin-right:20px; top:-493px" class='submit-button-newitem' title='New Item' >
 				<ol class='fab-btn-list2' style='display: none;'  reversed id='fabBtnList2'>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
@@ -160,14 +164,14 @@
 			
 			<!-- Hide button -->
 		
-			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
+			<!-- <div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
 				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
-			</div>
+			</div> -->
 		
 			<!-- end hide button -->
 			
-			<div style='flex-grow:1'>
+			<div id='course-label' style='flex-grow:1'>
 					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
 					<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 					<span id='course-versname' class='courseVersionField'>UNK</span>
@@ -277,7 +281,7 @@
 								<p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;max-height:20px;">Deadline has to be between start date and end date</p>
 							</span>
 					</div>
-					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
+					<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
@@ -344,6 +348,24 @@
 			</div>
 			<div style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
+				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			</div>
+		</div>
+	</div>
+	<!-- Confirm Edit Section Hide Dialog END -->
+
+	<!-- Confirm Section Hide Dialog START -->
+	<div id='sectionShowConfirmBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div class='loginBoxheader'>
+					<h3>Confirm show items</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			</div>
+			<div style='text-align: center;'>
+					<h4>Are you sure you want to show this item?</h4>
+			</div>
+			<div style='display:flex; align-items:center; justify-content: center;'>
+				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
 				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>

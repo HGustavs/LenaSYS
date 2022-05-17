@@ -349,7 +349,7 @@
 
 .normtext {
 
-    height: 15px;
+    height: 21px;
 }
 
 .normtextend {
@@ -606,11 +606,6 @@
 
 /* BOXMENU STYLING START */
 
-.butto2:hover{
-    background-color: #938C8C;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
 .boxtitleEditable{
 	color: white;
 	cursor:text;
@@ -983,11 +978,16 @@
 
 
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 520px) {
         #mobileNavHeading {
             font-size: 13px;
     }
-    .maximizebtn, .minimizebtn {
+    .maximizebtn, .minimizebtn, #templatebutton, #codeburger, #editbutton {
+        display: none;
+    }
+}
+@media only screen and (max-width: 440px) {
+    .navName {
         display: none;
     }
 }

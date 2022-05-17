@@ -53,7 +53,7 @@
     }
     .code #NewTabLink{
         filter: invert(80%);
-        -webkit-filter: invert(20%);   
+        -webkit-filter: invert(80%);   
     }
     .whiteIcon {
         cursor: pointer;
@@ -456,11 +456,6 @@
 .buttomenu2Style select:hover{
   background-color: #938C8C;
   cursor: pointer;
-}
-
-.butto2:hover{
-    background-color: #938C8C;
-    cursor: pointer;
 }
 .boxtitleEditable{
 	color: white;

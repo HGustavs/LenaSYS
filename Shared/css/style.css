@@ -841,6 +841,11 @@ p {
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
+#Sectionlist .section #NewTabLink {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);  
+} 
+
 #Sectionlist .section #dorf {
    filter: invert(100%);
   -webkit-filter: invert(100%);
@@ -1293,6 +1298,8 @@ header {
 
 header td {
   white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 #scoreElement {
@@ -1326,6 +1333,7 @@ header td {
 }
 
 .navheader {
+  table-layout: fixed;
   height: 20px;
   margin-bottom: 10px;
   width: 100%;
@@ -1345,7 +1353,6 @@ header td {
 }
 
 .navButt img {
-  margin-left: 10px;
   vertical-align: middle;
   height: 32px;
 }
@@ -1497,11 +1504,6 @@ div .navButt:hover {
   vertical-align: middle;
   text-align: center;
 }
-@media only screen and (max-width: 342px) {
-  #loginbutton {
-    width: 35px;
-  }
-}
 
 #div2 {
   position: absolute;
@@ -1509,8 +1511,6 @@ div .navButt:hover {
   display: grid;
   justify-items: stretch;
   grid-gap: 0px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas: 
     'a a b b'
     'c c d d'
@@ -1714,7 +1714,8 @@ div .navButt:hover {
     width: 110px;
 
   }.logoutBox  .logoutboxTr input[type="button"]:last-child{
-    margin-left: 10px;
+    margin-left: 20px;
+    
   }
   .viewOldFeedbacks{
     display: none;
@@ -3194,6 +3195,7 @@ div.submit-button:disabled {
 #dorf {
   display: block;
   margin: auto;
+  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
 }
 
 #plorf {
@@ -3564,6 +3566,7 @@ span.arrow {
 
 .filter-label {
   display: block;
+  margin:2px;
 }
 
 .resultTableCell {
@@ -5168,9 +5171,6 @@ only screen and (max-device-width: 800px) {
   #addElement {
     display: none;
   }
-  #hideElement{
-    display: block;
-  }
   .maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn {
     height: 35px;
   }
@@ -5431,7 +5431,7 @@ only screen and (max-device-width: 380px) {
     display: block;
   }
 
- #homeIcon, #upIcon, #theme-toggle{
+ #home, #back, #theme-toggle{
     display: none;
   }
 }
@@ -5526,6 +5526,17 @@ only screen and (max-device-width: 530px) {
 
 
   /* Mobile view resulted filter / search */
+  .resulted-filter-container {
+    padding: 5px 0px 5px 20px;
+    display:inline;
+    margin-right: 20px;
+    align-items: center;
+  }
+
+  .filter-btn{
+    margin:2px;
+  }
+
   #searchBarMobile,
   #tooltip-mobile {
     display: block;
@@ -5595,12 +5606,18 @@ only screen and (max-device-width: 530px) {
   /* Mobile resulted end */
 }
 
-@media only screen and (max-width: 480px),
-only screen and (max-device-width: 480px) {
+@media only screen and (max-width: 520px),
+only screen and (max-device-width: 520px) {
 
   table.navheader td.tests,
-  table.navheader td.results {
+  table.navheader td.results,
+  table.navheader td.editVers,
+  table.navheader td.newVers,
+  table.navheader td.files,
+  table.navheader td.coursePage,
+  table.navheader td.access {
     margin-right: 0px;
+    padding: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
     -moz-transition: margin-right 0.5s, width 0.5s;
@@ -5649,12 +5666,6 @@ only screen and (max-device-width: 480px) {
   #searchbar button#searchbutton{
     padding: 8px 10px 5px 10px;
   }
-
-  #hideElement{
-    width: 20px;
-    height: 20px;
-  }
-
 }
 @media only screen and (max-width: 390px),
 only screen and (max-device-width: 390px) {
@@ -5670,19 +5681,6 @@ only screen and (max-device-width: 390px) {
     visibility: visible;
     opacity: 1;
 
-  }
-
-  #hideElement{
-    width: 20px;
-    height: 20px;
-  }
-
-}
-
-@media only screen and (max-width: 320px),
-only screen and (max-device-width: 320px) {
-  #Sectionlist .course {
-    font-size: 12px;
   }
 }
 
@@ -6713,6 +6711,24 @@ only screen and (max-device-width: 320px) {
     display:none !important;
   }
 
+  #showElements {
+    margin-right: 10px !important;
+  }
+
+  #course-label {
+    min-width: 135px;
+    margin-right: 150px;
+  }
+}
+@media only screen and (max-width: 430px),
+only screen and (max-device-width: 430px) {
+  #course-label {
+    font-size: 12px;
+    margin-right: 25px;
+  }
+  #showElements, #hideElement {
+    display: none;
+  }
 }
 
 #Courselist div.fixed-action-button a:hover {
@@ -6758,7 +6774,6 @@ only screen and (max-device-width: 320px) {
   color: var(--color-primary);
   font-size: 30px;
   vertical-align: middle;
-  margin-bottom: 30px;
 }
 
 .fab-btn-lg:hover {
@@ -8123,16 +8138,6 @@ textarea#filecont {
   }
 }
 
-@media only screen and (max-width: 339px) {
-  .navheader .course-dropdown{
-    height: 20px;
-    width: 120px;
-  }
-  .navName{
-    width: 0px;
-  }
-}
-
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
   width: 100%;
@@ -8743,11 +8748,19 @@ border: none !important;
   background-color: #938C8C;
   cursor: pointer;
 }
-.butto2:hover{
-  background-color: #938C8C;
-  cursor: pointer;
+@media (hover: hover) {
+  .butto2:hover {
+    background-color: #938C8C;
+  }
 }
-
+@keyframes touchAnimationEffect {
+  from {background-color: #938C8C;}
+}
+.touchEffect #resetZoom{ 
+  animation-name: touchAnimationEffect;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
 .boxtitleEditable{
   color: white;
   cursor:text;
@@ -8777,6 +8790,7 @@ border: none !important;
 
 #NewTabLink{
   cursor: pointer;
+  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
   display: block;
   margin: auto; 
 }
@@ -8800,4 +8814,6 @@ border: none !important;
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
 
-
+.LightBox:hover {
+    cursor: grab;
+}
