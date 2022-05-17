@@ -568,6 +568,14 @@ function closeWindows(){
 		var tempString2 = e.outerHTML;
 		if(!tempString2.includes('<div id="TopMenuStatic"')) {
 			e.style.display= "none";
+			//if the window is one of these ids also enable tab functionality again
+			var searchForId=['editSection', 'editCourseVersion', 'newCourseVersion'];
+			for (var i = 0; i < searchForId.length; i++) {
+				if(e==document.getElementById(searchForId[i])) {
+					toggleTab(false);
+				}
+			}
+			
 		}
 		if (index_highest < 10000) {
 			status=1;
@@ -1223,6 +1231,16 @@ function AJAXService(opt,apara,kind)
 			data: "&opt="+opt+para,
 			dataType: "json",
 			success: CONT_LOGINBOX_SERVICE_RETURN
+		});
+	}
+	else if(kind=="CONT_ACCOUNT_STATUS"){
+		$.ajax({
+			url: "contributionservice.php",
+			type:"POST",
+			data: "&opt="+opt+para,
+			dataType: "json",
+			success: placeSideBarInfo,
+			error: showError
 		});
 	}
 	else if(kind=="INPUTCHECK") {
@@ -2641,7 +2659,12 @@ function editDuggaInstruction(){
 $(document).on('keydown', function(e) {
 	if(e.key === 'Enter'){
 		var box = $(e.target);
-
+		var allSort = document.getElementById("all-files-sort");
+		var globalSort = document.getElementById("global-files-sort");
+		var courseLocalSort = document.getElementById("course-local-sort");
+		var versionLocalSort = document.getElementById("version-local-sort");
+		var linksSort = document.getElementById("links-sort");
+		var dummySort = document.getElementById("dummyEmptyFile-sort");	
 		if (box[0].classList.contains("home-nav")){
 			box.parents('td').click();
 		}
@@ -2679,7 +2702,79 @@ $(document).on('keydown', function(e) {
 		else if (box[0].classList.contains("newVers")){
 			showCreateVersion();
 		}
-		
+		else if (box[0].classList.contains("showDuggaFiltTab")){
+			showAvailableDuggaFilter();
+		}
+		else if (box[0].classList.contains("showColumnFiltTab")){
+			showAvailableColumnFilter();
+		}
+		else if (box[0].classList.contains("searchTab")){
+			searchByFilter();
+		}
+		else if (box[0].classList.contains("allFilesSortTab")){
+			filterFilesByKind('All');
+			allSort.checked= true;
+		}
+		else if (box[0].classList.contains("globalSortTab")){
+			filterFilesByKind('Global');
+			globalSort.checked= true;
+		}
+		else if (box[0].classList.contains("courselocalSortTab")){
+			filterFilesByKind('CourseLocal');
+			courseLocalSort.checked= true;
+		}
+		else if (box[0].classList.contains("versionLocalSortTab")){
+			filterFilesByKind('Local');
+			versionLocalSort.checked = true;
+		}
+		else if (box[0].classList.contains("linkSortTab")){
+			filterFilesByKind('Link');
+			linksSort.checked = true;
+		}
+		else if (box[0].classList.contains("dummyFileSortTab")){
+			filterFilesByKind('DummyFiles');
+			dummySort.checked = true;
+		}
+		else if (box[0].classList.contains("fabBtnEditfile") || (box[0].classList.contains("fabBtnEditDugga"))){
+			createQuickItem();
+		}
+		else if (box[0].classList.contains("newTabCanvasLink")){
+			openCanvasLink(box[0]);
+		}
+		else if (box[0].classList.contains("showCanvasLinkBoxTab")){
+			showCanvasLinkBox("open", box[0]);
+		}
+		else if (box[0].classList.contains("traschcanDelItemTab")){
+			box[0].click();
+		}
+		else if (box[0].classList.contains("markdownIconTab")){
+			renderVariant(clickedElement);
+			showVariantEditor();
+		}
+		else if (box[0].classList.contains("trashcanTab")){
+			box[0].click();
+		}
+		else if (box[0].classList.contains("showeditorTab")){
+			loadPreview(box[0]);
+		}
+		else if (box[0].classList.contains("traschcanDelDugga")){
+			box[0].click();
+			
+		}
+		else if (box[0].classList.contains("settingIcon")){
+			selectDugga(object);
+			
+		}
+		else if (box[0].classList.contains("markdownIconeditFile")){
+			box[0].click();
+			
+		}
+		else if (box[0].classList.contains("settingIconTab")){
+			box[0].click();
+        }
+		else if(box[0].classList.contains("checkboxIconTab")){
+			box[0].click();
+		}
 	}
 	else if(e.key === 'Escape'){
 		if ($('.fab-btn-list').is(':visible')) {

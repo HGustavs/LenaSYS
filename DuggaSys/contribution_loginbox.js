@@ -47,18 +47,6 @@ function contribution_resetLoginStatus() // return to initial login
 
 }
 
-function contribution_toggleloginnewpass()
-{
-  contribution_resetFields();
-  $("#login").css("display","none"); 
-  $("#UserExistslogin").css("display","none"); 
-  $("#newGit-UserCreation").css("display","none"); 
-
-  $("#newpassword").css("display",""); // show reset
-  $("#usernamereset").focus();     
-
-}
-
 
 function contribution_resetFields()
 {
@@ -97,9 +85,9 @@ function contribution_showLoginPopup()
 
 function returned_git_user_login(data)
 {
-  if(data)
+  if(data['success'])
     window.location.reload(true);  // TODO should I just reload the page here perhaps? 
-  else
+  else if(data['status'] == "wrong pass")
   {
     displayAlertText("#UserExistslogin_message", "Invalid password <br />");
 
@@ -114,6 +102,33 @@ function returned_git_user_login(data)
         displayAlertText("#UserExistslogin_message", "");
       }, 2000);
 
+
+    }, 2000);
+  }
+  else if(data['status'] == "revoked")
+  {
+    displayAlertText("#UserExistslogin_message", "User revoked <br />");
+
+    $("#UserExistslogin_password").addClass("loginFail");
+
+    setTimeout(function()
+    {
+      $("#UserExistslogin_password").removeClass("loginFail");
+      displayAlertText("#UserExistslogin_message", "");
+
+
+    }, 2000);
+  }
+  else if(data['status'] == "pending")
+  {
+    displayAlertText("#UserExistslogin_message", "User pending <br />");
+
+    $("#UserExistslogin_password").addClass("loginFail");
+
+    setTimeout(function()
+    {
+      $("#UserExistslogin_password").removeClass("loginFail");
+      displayAlertText("#UserExistslogin_message", "");
 
     }, 2000);
   }
@@ -381,6 +396,12 @@ function git_logout()
                         $("input#username").removeClass("loginFail");
                   $("input#password").removeClass("loginFail");
                   displayAlertText("#login #message", "Try again");
+
+                    setTimeout(() => {
+                      displayAlertText("#login #message", ""); // hide it
+                    }, 2000);
+
+
                           }, 2000);
               }
             }
@@ -400,7 +421,12 @@ function git_logout()
                       $("input#username").removeClass("loginFail");
                 $("input#password").removeClass("loginFail");
                 displayAlertText("#login #message", "Try again");
-                        }, 2000);
+
+                setTimeout(() => {
+                  displayAlertText("#login #message", ""); // hide it
+                }, 2000);
+
+                }, 2000);
   
             }
           });    
@@ -408,56 +434,7 @@ function git_logout()
     }
 }
 
-function contribution_AJAX_prepareOPTPARA(opt_, apara_)
-{
-    let para="";
-    let apara = apara_;
-    let opt = opt_;
 
-    { // add log_uuid, added this to hold same standard as dugga ajaxservice
-        var tex = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for(var i=0; i<15; i++)
-        {
-            tex += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        apara.log_uuid = tex;    
-    }
-
-
-    let old;
-    for (let key in apara) 
-    {
-        if(typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null)
-        {
-
-            // Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
-            // This handles the important words that are sent from the codeviewer
-            if (apara[key].constructor === Array)
-            {
-                var array = [];
-                for (var i = 0; i < apara[key].length; i++) {
-                        array.push(encodeURIComponent(htmlEntities(apara[key][i])));
-                }
-                para+="&"+key+"="+array;
-            }
-            else
-            {
-                para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-            }
-
-        }
-        else
-        {
-            console.log("Your input contained nothing in " + key);
-        }
-
-		old = apara[key];
-    }
-
-    return ("&opt="+opt+para);
-
-}
 
 function CONT_LOGINBOX_SERVICE_RETURN(data)
 {
@@ -485,6 +462,30 @@ function CONT_LOGINBOX_SERVICE_RETURN(data)
 }
 
 
+{ // scope to hold variable saying if we are on the loaded page or not, 
+  let contribution_loaded = true; // gets set in contribution, true by default
+  function set_contribution_loaded(_input) // i gave it a set function as we cant modify contribution_loaded in global function space but i dont want contribution_loaded to be exposed to global scope either
+  {
+    contribution_loaded = _input;
+  }
+
+  function contribution_closeLogin() 
+  {
+    // this login exists both on the fully loaded contribution page and the page that prompts you to login, 
+    // on the fully loaded page we dont want to return to home but instead simply close it, on the prompted page we return to home
+
+    if(contribution_loaded)
+    {
+      console.log("not yet implemented");
+    }
+    else // you got prompted, this will return to courseed, aka homepage of sorts
+    {
+      window.location.href = "courseed.php"; 
+    }
+
+
+  }
+}
 
 
 

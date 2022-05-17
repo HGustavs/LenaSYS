@@ -22,6 +22,14 @@ let width = screen.width;
 var delArr = [];
 var delTimer;
 var lid;
+var collectedLid = [];
+var updatedLidsection;
+
+var isLoggedIn = false;
+
+function IsLoggedIn(bool){
+  bool ? isLoggedIn = true : isLoggedIn = false ;
+}
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -179,8 +187,12 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
-
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
+  console.log("myConsole lid: "+ lid);
+  console.log("myConsole typeof: "+ typeof lid);
+  document.getElementById("sectionname").focus();
+  toggleTab(true);
+  enableTab(document.getElementById("editSection"));
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -417,6 +429,8 @@ function changedType(kind) {
 
 function showEditVersion() {
   var tempMotd = motd;
+  toggleTab(true);
+  enableTab(document.getElementById("editCourseVersion"));
 	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
   "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
   $("#eversname").val(versnme);
@@ -443,6 +457,7 @@ window.addEventListener('beforeunload', function(event) {
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
+    toggleTab(false);
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
     $("#userFeedbackDialog").css("display", "none");
@@ -471,7 +486,6 @@ function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
   } else if (operation == "openHideConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
@@ -614,6 +628,7 @@ function clearHideItemList(){
 
 
 function closeSelect() {
+  toggleTab(false);
   $(".item").css("border", "none");
   $(".item").css("box-shadow", "none");
   $("#editSection").css("display", "none");
@@ -630,6 +645,8 @@ function defaultNewItem() {
 
 function showCreateVersion() {
     $("#newCourseVersion").css("display", "flex");
+    toggleTab(true);
+    enableTab(document.getElementById("newCourseVersion"));
 }
 
 
@@ -790,10 +807,57 @@ function hideMarkedItems() {
   }
     
 //----------------------------------------------------------------------------------
+// toggleTab: Toggles tab on all elements of the webpage
+//----------------------------------------------------------------------------------
+
+  function toggleTab(tabEnabled){
+    var tabSwitch;
+    if(tabEnabled){
+      tabEnabled = false;
+      tabSwitch = -1;
+    } 
+    else {
+      tabEnabled= true;
+      tabSwitch = 0;
+    }
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+    var tabbable = ['settingIconTab', 'home-nav', 'theme-toggle-nav', 'messagedialog-nav', 'announcement-nav', 'editVers', 'newVers', 'loginbutton-nav'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByClassName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+  }
+
+//----------------------------------------------------------------------------------
+// enableTab: Enables tab on all children of of the id element
+//----------------------------------------------------------------------------------
+
+  function enableTab(id){
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = id.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', 0);
+      }
+    }
+    
+  }
+//----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
 //----------------------------------------------------------------------------------
 
 function updateItem() {
+  console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
   $("#sectionConfirmBox").css("display", "none");
@@ -807,6 +871,9 @@ function updateDeadline() {
     }
 }
 
+function setActiveLid(lid){
+  updatedLidsection = lid;
+};
 //----------------------------------------------------------------------------------
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
@@ -821,6 +888,21 @@ function newItem(itemtitle) {
   element.classList.toggle("createAlertToggle");
   // Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
+  // Here we have to wait 1 tenth of a second so that the ajax service completes.
+  setTimeout(function(){
+    collectedLid.sort(function(a, b) {
+    return b - a;
+    });
+    var element = document.getElementById('I'+collectedLid[0]).firstChild;
+    if(element.tagName == 'DIV') {
+    element = element.firstChild;
+    element.classList.add("highlightChange");
+    }else if (element.tagName == 'A'){
+      document.getElementById('I'+collectedLid[0]).classList.add("highlightChange");
+    }else if (element.tagName == 'SPAN'){
+      document.getElementById('I'+collectedLid[0]).firstChild.classList.add("highlightChange");
+    }
+  },100);
   // Duration time for the alert before remove
   setTimeout(function(){
     $("#createAlert").removeClass("createAlertToggle");
@@ -1163,14 +1245,18 @@ function returnedSection(data) {
           }
 
           if (itemKind === 3) {
-            str += "<td  class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-            
+            if(isLoggedIn){
+              str += "<td  class='LightBox" + hideState + "'>";
+              str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            }
+           
             str += "<td class='LightBox" + hideState + "'>";
             str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            if(isLoggedIn){
+              str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
+              str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            }
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
@@ -1202,9 +1288,8 @@ function returnedSection(data) {
             str += addColorsToTabSections(itemKind, itemVisible, "E");
           }
         }
-
-
-      
+        // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+        collectedLid.push(item['lid']);
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
@@ -1212,16 +1297,19 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 1) {
-          // Styling for Section row
-          str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          if(isLoggedIn){
+            // Styling for Section row
+            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += "<td class='LightBox" + hideState + "'>";
-          str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-
+          if(isLoggedIn){
+            str += "<td class='LightBox" + hideState + "'>";
+            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
@@ -1422,21 +1510,24 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        if (itemKind != 4){ // dont create buttons for moments only for specific assignments
+        if (itemKind != 4 && itemKind != 1 && itemKind != 0){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="newTabCanvasLink" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+            str += `</div>`;
             str += "</td>";
 
           // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
             str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
             src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += `</div>`;
             str += "</td>";
           }
         }
@@ -1447,11 +1538,13 @@ function returnedSection(data) {
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
 
-          str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+
           str += "</td>";
         }
         
@@ -1459,7 +1552,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
+          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
@@ -1468,7 +1561,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:25px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
+            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' class='checkboxIconTab' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
@@ -2036,7 +2129,8 @@ $(window).keyup(function (event) {
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
-      updateItem();
+      //I don't know who did this but this call is not necessory
+      // updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
@@ -3191,21 +3285,33 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
-      
+      //delay added so that the loading process works correctly.
+      setTimeout(function(){
+      updateItem();
+      updateDeadline();
+      },10);
       //Toggle for alert when update a item
       var element = document.getElementById("updateAlert");
       element.classList.toggle("createAlertToggle");
       //Set text for the alert when update a item
       document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+      //Add class to element so it will be highlighted.
+      setTimeout(function(){
+        var element = document.getElementById('I'+updatedLidsection).firstChild;
+        if(element.tagName == 'DIV') {
+        element = element.firstChild;
+        element.classList.add("highlightChange");
+        }else if (element.tagName == 'A'){
+          document.getElementById('I'+updatedLidsection).classList.add("highlightChange");
+        }else if (element.tagName == 'SPAN'){
+          document.getElementById('I'+updatedLidsection).firstChild.classList.add("highlightChange");
+        }
+      },200);
       //Duration time for the alert before remove
       setTimeout(function(){
         $("#updateAlert").removeClass("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       },3000);
-
-      updateItem();
-      updateDeadline();
-
     } else {
       alert("You have entered incorrect information");
     }

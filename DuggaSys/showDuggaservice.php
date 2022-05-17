@@ -135,15 +135,25 @@ function processDuggaFiles()
 	$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
 	$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
 	$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-		
+	
 	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash ORDER BY subid,fieldnme,updtime asc;");  
 	$query->bindParam(':hash', $tmphash);
 	$result = $query->execute();
+	$rows = $query->fetchAll();
+	
+	//if the hash didn't work and the user is a superuser then retrive all submissions
+	if(isSuperUser($_SESSION['uid']) && $rows == NULL){
+		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE segment=:moment ORDER BY subid,fieldnme,updtime asc;");  
+		$query->bindParam(':moment', $moment);
+		$result = $query->execute();
+		$rows = $query->fetchAll();
+	}
+	//if the hash worked or the user was not a superuser then retrive the submission
 	
 	// Store current day in string
 	$today = date("Y-m-d H:i:s");
 	
-	foreach($query->fetchAll() as $row) {
+	foreach($rows as $row) {
 			
 			$content = "UNK";
 			$feedback = "UNK";
@@ -153,12 +163,12 @@ function processDuggaFiles()
 			
 
 			$ziptemp = $row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
-
+			
 			if(!file_exists($ziptemp)) {
 				$isFileSubmitted = false;
 				$zipdir="UNK";
 			}else{	
-				$isFileSubmitted = true;			
+				$isFileSubmitted = true; 		
 				if ($zip->open($ziptemp) == TRUE) {
 					for ($i = 0; $i < $zip->numFiles; $i++) {
 						$zipdir .= $zip->getNameIndex($i).'<br />';
@@ -196,6 +206,7 @@ function processDuggaFiles()
 			}else{
 					$content="Not a text-submit or URL";
 			}
+			
 			$entry = array(
 				'subid' => $row['subid'],
 				'vers' => $row['vers'],
@@ -214,7 +225,7 @@ function processDuggaFiles()
 				'username' => $$tmphash,
 				'zipdir' => $zipdir
 			);
-	
+			
 			// If the filednme key isn't set, create it now
 			 if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
 	

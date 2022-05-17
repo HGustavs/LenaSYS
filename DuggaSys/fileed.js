@@ -335,7 +335,7 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            str = "<span class='iconBox'><img alt='delete file icon' id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+            str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
             str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
         }
     } else if (col == "filename") {
@@ -355,7 +355,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "editor") {
         if(obj.showeditor){
         if (obj.extension == "md" || obj.extension == "txt" || obj.extension == "html") {
-            str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str = "<span class='iconBox' ><img alt='edit file icon' tabindex='0' id='dorf'  title='Edit file' class='markdownIcon markdownIconeditFile' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         } else if (obj.extension == "js"  || obj.extension == "css" || obj.extension == "php") {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
