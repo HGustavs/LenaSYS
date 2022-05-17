@@ -828,7 +828,7 @@ function hideMarkedItems() {
         elem[j].setAttribute('tabindex', tabSwitch);
       }
     }
-    var tabbable = ['settingIconTab', 'home-nav', 'theme-toggle-nav', 'messagedialog-nav', 'announcement-nav', 'editVers', 'newVers', 'loginbutton-nav'];
+    var tabbable = ['settingIconTab', 'home-nav', 'theme-toggle-nav', 'messagedialog-nav', 'announcement-nav', 'editVers', 'newVers', 'loginbutton-nav', 'newTabCanvasLink', 'showCanvasLinkBoxTab', 'traschcanDelItemTab'];
 
     for (var i = 0; i < tabbable.length; i++) {
       var elem = document.getElementsByClassName(tabbable[i]);
