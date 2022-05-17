@@ -394,7 +394,11 @@ function returned(data)
 	// Add all drop zones
 	if (retData['writeaccess'] == "w") {
 		initFileDropZones();
-	}	
+	} else {
+		$('.codebox').each(function() {
+			$(this).find('*').addClass('unselectable');
+		  });
+	}
 
 	var ranges = getBlockRanges(allBlocks);
 	for (var i = 0; i < Object.keys(ranges).length; i++) {
@@ -4606,7 +4610,6 @@ document.onreadystatechange = function () {
 	}
 }
 
-
 //----------------------------------------------------------------------------------
 // addHtmlLineBreak: This function will replace all '\n' line breaks in a string
 //					 with <br> tags.
@@ -4624,21 +4627,29 @@ function addHtmlLineBreak(inString) {
 function copyCodeToClipboard(boxid) {
 	var box = document.getElementById("box" + boxid);
 	var code = box.getElementsByClassName("normtextwrapper")[0];
+	var lines = "";
 
-	var impo = code.getElementsByClassName("impo"); // Add code to just copy impo code
+	// Get important lines based on code window
+	var impo = code.getElementsByClassName("impo"); 
 
-	// Select the code
-	var selection = window.getSelection();
-	
-	// Add Code to just copy impo code
-	for(i = 0; i<impo.length;i++){
-		var range = document.createRange();
-		range.selectNode(impo[i]);
-		selection.addRange(range);
+	// Check if a teacher is logged in
+	if (retData['writeaccess'] != "w") {
+		// Add Code to just copy impo code
+		for(i = 0; i<impo.length;i++){
+			lines += impo[i].innerText  + "\n";
+		}
+	} else {
+		for(i = 0; i<code.childNodes.length;i++){
+			lines += code.childNodes[i].innerText  + "\n";
+		}
 	}
-	
-	document.execCommand("Copy");
-	selection.removeAllRanges();
+
+	// Now using clipboard api, but fals back to execCommand incase it's not supported
+	if (!navigator.clipboard){
+		document.execCommand("Copy", false, lines)
+	} else {
+		navigator.clipboard.writeText(lines);
+	}
 
 	// Notification animation
 	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
