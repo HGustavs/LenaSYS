@@ -14,9 +14,7 @@
   $serverName = "";
   $username = "";
   $password = "";
-
-
-
+  //Loads in the user values from the coursesyspw.php file.
   function load_values(){
   $credentialsFile = "../../coursesyspw.php";
       if(file_exists($credentialsFile)) {
@@ -40,20 +38,16 @@
           }
       }                  
   }
-
+  //Drops the database and recreates it with the same name.
   function recreate_db() {
       global $serverName,$rootUser,$rootPwd,$databaseName,$connection,$username,$password;
       $GLOBALS['connection'] =new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
       $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
       $connection->query("DROP DATABASE {$databaseName}");
       $connection->query("CREATE DATABASE {$databaseName}");
-      
 
-      // $connection->query("FLUSH PRIVILEGES");
-      // $connection->query("CREATE USER '{$username}@{$serverName}' IDENTIFIED BY '{$password}'");
-      // $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}@{$serverName}'");
-      // $connection->query("FLUSH PRIVILEGES");
   }
+  //Filepath compatability. 
   function cdirname($path, $level) {
       $prefix = '';
       // Check if $path starts with a windows style 'C:\' prefix
@@ -75,13 +69,14 @@
         if($i > 1) {
           $r .= '/';
         }
-        $r .= $paths[$i];
-        }
+      $r .= $paths[$i];
       }
-      // Re-add the drive letter if there was one ('C:' + '/.../')
-      return $prefix . $r;
-    };
+    }
+    // Re-add the drive letter if there was one ('C:' + '/.../')
+    return $prefix . $r;
+  };
 
+  //Loads in all the tables for the database.
   function init_db(){
     global $connection,$databaseName;
     $initQuery = file_get_contents("../Shared/SQL/init_db.sql");
@@ -122,7 +117,8 @@
       $initSuccess = true;
 
       //$connection->commit();
-  }  
+  }
+  //Fills the database with all the duggas and files.  
   function fillDatabase(){
       global $connection;
       addTestData("testdata", $connection);
@@ -138,6 +134,7 @@
           addTestData("keywords_{$boxName}", $connection);
       }  
   }
+  //Function for finding and moving testdata from the install to the live version folder.
   function addTestData($file, $connection){
       $testDataQuery = @file_get_contents("SQL/{$file}.sql");
       # Split SQL file at semi-colons to send each query separated.
@@ -154,6 +151,7 @@
     
       }
   }
+  //Function for finding and moving testfiles from the install folder to the live version folder.
   function copyTestFiles($fromDir,$destDir){
       $dir = opendir($fromDir);
       @mkdir($destDir);
