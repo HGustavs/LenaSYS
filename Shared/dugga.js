@@ -2740,7 +2740,7 @@ $(document).on('keydown', function(e) {
 			loadPreview(box[0]);
 		}
 		else if (box[0].classList.contains("traschcanDelDugga")){
-			confirmBox("openConfirmBox", box[0], "dugga");
+			box[0].click();
 			
 		}
 		else if (box[0].classList.contains("settingIcon")){
