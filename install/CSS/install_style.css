@@ -83,6 +83,18 @@ input[type="text"], input[type="password"] {
     padding-bottom: 10px;
 }
 
+#installHeader{
+    background-color: rgb(97,73,116); /* Dark purple */
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+#installHeader h1 {
+    color: white;
+    margin-left: 10px;
+}
+
 /* Title inside header */
 #header h1 {
     color: white;
