@@ -2818,6 +2818,19 @@ document.getElementById("box" + boxid).style.fontSize = "9px";
 }
 
 //-----------------------------------------------------------------------------
+//updateLineHeight: Updates the line height based on the font size.
+//-----------------------------------------------------------------------------
+function updateLineHeight(boxid)
+{
+	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
+	//Needs to get parent to change style="line-height:21px, since all rows of text currently in their own div.
+	//lineHeight is currently 2.333..... times fontSize. 
+	//var lineHeight = (document.getElementById("box" + boxid).style.line-height);
+
+
+}
+
+//-----------------------------------------------------------------------------
 // maximizeBoxes: Adding maximize functionality for the boxes
 //					Is called with onclick() by maximizeButton
 //-----------------------------------------------------------------------------
