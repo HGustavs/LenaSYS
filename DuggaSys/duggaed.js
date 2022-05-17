@@ -552,6 +552,7 @@ function selectVariant(vid, el) {
 
 
 function updateVariant(status) {
+	clearActiveDiagram();
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   var parameter = $("#variantparameterText").val();
@@ -1042,7 +1043,7 @@ function renderCell(col, celldata, cellid) {
 		case "trashcan":	// DUGGA-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
 			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
-			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
+			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");clearActiveDiagram();' >`;
 			break;
 
 		case "param":		// DUGGA-TABLE - Parameter column
@@ -1348,3 +1349,6 @@ function checkDiagramTypes(num){
 	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 }
 
+function clearActiveDiagram(){
+	localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+}
