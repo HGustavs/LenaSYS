@@ -155,13 +155,14 @@
     $testDataQuery = @file_get_contents("SQL/{$file}.sql");
     # Split SQL file at semi-colons to send each query separated.
     $testDataQueryArray = explode(";", $testDataQuery);
-      
+    $completeQuery="";
     foreach ($testDataQueryArray AS $query) {
-      $completeQuery = $query . ";"; // Add semi-colon to each query.
-      if (trim($query) != '') { // do not send if empty query.
-        $connection->query($completeQuery);
+      $queryToAdd = $query . ";"; // Add semi-colon to each query.
+       if (trim($query) != '') { // do not send if empty query.
+        $completeQuery = $completeQuery . $queryToAdd;
       }
     }
+    $connection->query($completeQuery);
     $GLOBALS['canProceed'] = true; 
   }
     
