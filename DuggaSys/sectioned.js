@@ -424,6 +424,19 @@ function confirmBox(operation, item = null) {
   else if (operation == "showItems"&& !hideItemList.length == 0) {
     showMarkedItems(hideItemList);
   }
+  document.addEventListener("keypress", event => {
+		if (event.key === 'Enter') {	
+			if(event.target.classList.contains("traschcanDelItemTab")){
+        setTimeout(function(){ 
+          $("#delete-item-button"). focus (); 
+        }, 400);
+			}
+			if(event.target.id == "delete-item-button"){
+				deleteItem(active_lid);
+        $("#sectionConfirmBox").css("display", "none");
+			}
+		}
+	});
 }
 
 // Creates an array over all checked items
