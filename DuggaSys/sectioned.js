@@ -566,7 +566,13 @@ function createFABItem(kind, itemtitle, comment) {
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
-  var retStr = "<td style='width:32px;overflow:hidden;";
+  var retStr;
+  if (kind === 0 || kind === 1) { // purple background
+    retStr = `<td class='LightBoxFilled${visible}`;
+  } else {
+    retStr = `<td class='LightBox${visible}`;
+  }
+
   if (spkind == "E") {
     retStr += "'><div class='spacerEnd'></div></td>";
   } else {
@@ -1101,25 +1107,24 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
         if (itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) {
           var itemGradesys = parseInt(item['gradesys']);
-          var itemVisible = item['visible'];
           if (itemGradesys > 0 && itemGradesys < 4) {
             for (var numSpacers = 0; numSpacers < itemGradesys; numSpacers++) {
-              str += addColorsToTabSections(itemKind, itemVisible, "L");
+              str += addColorsToTabSections(itemKind, hideState, "L");
             }
           } else if (itemGradesys == 4) {
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           } else if (itemGradesys == 5) {
-            str += addColorsToTabSections(itemKind, itemVisible, "L");            
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "L");            
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           } else if (itemGradesys == 6) {
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           }else if (itemGradesys == 7) {
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           }
         }
 

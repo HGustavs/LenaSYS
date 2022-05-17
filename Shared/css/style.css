@@ -1131,7 +1131,7 @@ p {
 
 .LightBox {
   width: 32px;
-  /*vertical-align: middle;*/
+  vertical-align: middle;
   overflow: hidden;
 }
 
