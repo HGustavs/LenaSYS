@@ -276,7 +276,7 @@
 
 .normtext {
     color: #fff;
-    background-color: #2c2c2c;
+    background-color: var(--color-background);
     white-space:nowrap;
 }
 
@@ -455,11 +455,6 @@
   background-color: #938C8C;
   cursor: pointer;
 }
-
-.butto2:hover{
-    background-color: #938C8C;
-    cursor: pointer;
-}
 .boxtitleEditable{
 	color: white;
 	cursor:text;
@@ -541,8 +536,8 @@ body {
 
 .item a {
     text-decoration: none;
-    color: white;
-    opacity: 65%;
+    color: #BFC9CA ;
+    
   }
 
 .toggle-0{
@@ -587,9 +582,15 @@ body {
 
 .DateColorInDarkMode{
     cursor: pointer;
-    filter: invert(80%);
-    -webkit-filter: invert(100%);
+    filter: invert(30%);
+    -webkit-filter: invert(30%);
 }
 /* } */
 /* BOXMENU STYLING STOP */
 /* } */
+
+.highlight{
+    background-image: url(../icons/draganddropBlack.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}

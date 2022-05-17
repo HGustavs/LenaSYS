@@ -37,7 +37,7 @@
 				<table class="loginBoxTable">
 					<tr class="loginboxTr">
 						<td>
-							<label id="loginBoxTitle">Sign in</label>
+							
 						</td>
 					</tr>
 					<tr  class="loginboxTr">

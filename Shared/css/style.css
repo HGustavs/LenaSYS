@@ -841,6 +841,11 @@ p {
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
+#Sectionlist .section #NewTabLink {
+  filter: invert(0%);
+  -webkit-filter: invert(0%);  
+} 
+
 #Sectionlist .section #dorf {
    filter: invert(100%);
   -webkit-filter: invert(100%);
@@ -1505,8 +1510,6 @@ div .navButt:hover {
   display: grid;
   justify-items: stretch;
   grid-gap: 0px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas: 
     'a a b b'
     'c c d d'
@@ -1710,7 +1713,8 @@ div .navButt:hover {
     width: 110px;
 
   }.logoutBox  .logoutboxTr input[type="button"]:last-child{
-    margin-left: 10px;
+    margin-left: 20px;
+    
   }
   .viewOldFeedbacks{
     display: none;
@@ -2656,7 +2660,7 @@ button.option {
  left: auto;
 }
 
-@media only screen and (max-width: 420px) {
+@media only screen and (max-width: 430px) {
   #MOTDbutton {
     width:20%;
    }
@@ -3560,6 +3564,7 @@ span.arrow {
 
 .filter-label {
   display: block;
+  margin:2px;
 }
 
 .resultTableCell {
@@ -4735,7 +4740,7 @@ rect[class*="activitymarker"]:hover {
 }
 #searchBar,
 #testSearchContainer {
-  padding-left: 0px;
+  padding-left: 15px;
   padding-right: 5px;
 }
 
@@ -4763,6 +4768,7 @@ rect[class*="activitymarker"]:hover {
 #lookingGlassSVG {
   top: 3px;
   left: 3px;
+  transform: scale(1.5);
 }
 
 #searchBarMobile {
@@ -5392,7 +5398,7 @@ only screen and (max-device-width: 860px) {
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement{
+  #editCourse, #announcement, #messagedialog{
     display: none;
   }
 }
@@ -5405,8 +5411,8 @@ only screen and (max-device-width: 860px) {
   display: none;
   
 }
-@media only screen and (max-width: 320px),
-only screen and (max-device-width: 320px) {
+@media only screen and (max-width: 380px),
+only screen and (max-device-width: 380px) {
 
   #navBurgerIcon { 
     display: block;
@@ -5521,6 +5527,17 @@ only screen and (max-device-width: 530px) {
 
 
   /* Mobile view resulted filter / search */
+  .resulted-filter-container {
+    padding: 5px 0px 5px 20px;
+    display:inline;
+    margin-right: 20px;
+    align-items: center;
+  }
+
+  .filter-btn{
+    margin:2px;
+  }
+
   #searchBarMobile,
   #tooltip-mobile {
     display: block;
@@ -8738,11 +8755,19 @@ border: none !important;
   background-color: #938C8C;
   cursor: pointer;
 }
-.butto2:hover{
-  background-color: #938C8C;
-  cursor: pointer;
+@media (hover: hover) {
+  .butto2:hover {
+    background-color: #938C8C;
+  }
 }
-
+@keyframes touchAnimationEffect {
+  from {background-color: #938C8C;}
+}
+.touchEffect #resetZoom{ 
+  animation-name: touchAnimationEffect;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
 .boxtitleEditable{
   color: white;
   cursor:text;
@@ -8797,4 +8822,6 @@ border: none !important;
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
 
-
+.LightBox:hover {
+    cursor: grab;
+}
