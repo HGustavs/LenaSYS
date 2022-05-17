@@ -23,6 +23,13 @@ var delArr = [];
 var delTimer;
 var lid;
 var collectedLid = [];
+var updatedLidsection;
+
+var isLoggedIn = false;
+
+function IsLoggedIn(bool){
+  bool ? isLoggedIn = true : isLoggedIn = false ;
+}
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -181,7 +188,6 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
-  
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -708,6 +714,7 @@ function hideMarkedItems() {
 //----------------------------------------------------------------------------------
 
 function updateItem() {
+  console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
   $("#sectionConfirmBox").css("display", "none");
@@ -721,6 +728,9 @@ function updateDeadline() {
     }
 }
 
+function setActiveLid(lid){
+  updatedLidsection = lid;
+};
 //----------------------------------------------------------------------------------
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
@@ -1091,14 +1101,18 @@ function returnedSection(data) {
           }
 
           if (itemKind === 3) {
-            str += "<td  class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-            
+            if(isLoggedIn){
+              str += "<td  class='LightBox" + hideState + "'>";
+              str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            }
+           
             str += "<td class='LightBox" + hideState + "'>";
             str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            if(isLoggedIn){
+              str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
+              str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            }
             str += "<td class='LightBoxFilled" + hideState + "'>";
             str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
@@ -1139,16 +1153,19 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 1) {
-          // Styling for Section row
-          str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-          str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          if(isLoggedIn){
+            // Styling for Section row
+            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += "<td class='LightBox" + hideState + "'>";
-          str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-
+          if(isLoggedIn){
+            str += "<td class='LightBox" + hideState + "'>";
+            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
@@ -1370,11 +1387,13 @@ function returnedSection(data) {
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
 
-          str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+
           str += "</td>";
         }
         
@@ -1959,7 +1978,8 @@ $(window).keyup(function (event) {
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
-      updateItem();
+      //I don't know who did this but this call is not necessory
+      // updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
@@ -3106,21 +3126,33 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
-      
+      //delay added so that the loading process works correctly.
+      setTimeout(function(){
+      updateItem();
+      updateDeadline();
+      },10);
       //Toggle for alert when update a item
       var element = document.getElementById("updateAlert");
       element.classList.toggle("createAlertToggle");
       //Set text for the alert when update a item
       document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+      //Add class to element so it will be highlighted.
+      setTimeout(function(){
+        var element = document.getElementById('I'+updatedLidsection).firstChild;
+        if(element.tagName == 'DIV') {
+        element = element.firstChild;
+        element.classList.add("highlightChange");
+        }else if (element.tagName == 'A'){
+          document.getElementById('I'+updatedLidsection).classList.add("highlightChange");
+        }else if (element.tagName == 'SPAN'){
+          document.getElementById('I'+updatedLidsection).firstChild.classList.add("highlightChange");
+        }
+      },200);
       //Duration time for the alert before remove
       setTimeout(function(){
         $("#updateAlert").removeClass("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       },3000);
-
-      updateItem();
-      updateDeadline();
-
     } else {
       alert("You have entered incorrect information");
     }

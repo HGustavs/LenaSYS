@@ -1225,6 +1225,16 @@ function AJAXService(opt,apara,kind)
 			success: CONT_LOGINBOX_SERVICE_RETURN
 		});
 	}
+	else if(kind=="CONT_ACCOUNT_STATUS"){
+		$.ajax({
+			url: "contributionservice.php",
+			type:"POST",
+			data: "&opt="+opt+para,
+			dataType: "json",
+			success: placeSideBarInfo,
+			error: showError
+		});
+	}
 	else if(kind=="INPUTCHECK") {
 		alert(JSON.stringify(querystring));
 		$.ajax({
@@ -2751,9 +2761,9 @@ $(document).on('keydown', function(e) {
 			box[0].click();
 			
 		}
-		
-		
-		
+		else if (box[0].classList.contains("settingIconTab")){
+			box[0].click();
+        }
 	}
 	else if(e.key === 'Escape'){
 		if ($('.fab-btn-list').is(':visible')) {

@@ -10,6 +10,8 @@
 		$userid="00";
 	}
 
+	
+
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +46,20 @@
 		$noup="COURSE";
 		include '../Shared/navheader.php';
 		$_SESSION['should-validate'] = "TRUE";
+
+		if(checklogin()){
+			echo '<script type="text/javascript">',
+				'IsLoggedIn(true);',
+				'</script>'
+			;
+			
+		}else if(!checklogin()){
+			echo '<script type="text/javascript">',
+			'IsLoggedIn(false);',
+			'</script>'
+		;
+			
+		}
 	?>
 
 	<!-- content START -->

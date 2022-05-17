@@ -85,9 +85,9 @@ function contribution_showLoginPopup()
 
 function returned_git_user_login(data)
 {
-  if(data)
+  if(data['success'])
     window.location.reload(true);  // TODO should I just reload the page here perhaps? 
-  else
+  else if(data['status'] == "wrong pass")
   {
     displayAlertText("#UserExistslogin_message", "Invalid password <br />");
 
@@ -102,6 +102,33 @@ function returned_git_user_login(data)
         displayAlertText("#UserExistslogin_message", "");
       }, 2000);
 
+
+    }, 2000);
+  }
+  else if(data['status'] == "revoked")
+  {
+    displayAlertText("#UserExistslogin_message", "User revoked <br />");
+
+    $("#UserExistslogin_password").addClass("loginFail");
+
+    setTimeout(function()
+    {
+      $("#UserExistslogin_password").removeClass("loginFail");
+      displayAlertText("#UserExistslogin_message", "");
+
+
+    }, 2000);
+  }
+  else if(data['status'] == "pending")
+  {
+    displayAlertText("#UserExistslogin_message", "User pending <br />");
+
+    $("#UserExistslogin_password").addClass("loginFail");
+
+    setTimeout(function()
+    {
+      $("#UserExistslogin_password").removeClass("loginFail");
+      displayAlertText("#UserExistslogin_message", "");
 
     }, 2000);
   }
