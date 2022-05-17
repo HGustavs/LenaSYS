@@ -224,6 +224,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
   }
+  // Handles relative deadlines
   if(relativeDeadline !== undefined) {
     var splitdeadline = relativeDeadline.split(":");
     // relativeDeadline = amount:type:hour:minute
@@ -242,6 +243,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     } else {
       checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
     }
+  }
+  if (relativeDeadline == "null" && deadline == "null") {
+    checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -335,13 +339,21 @@ function checkDeadlineCheckbox(e, check) {
 // Calculates the relative deadline string into a real date relative to the course startdate
 function calculateRelativeDeadline(rDeadline) {
   // rDeadline = [amount, type, hour, minute]
-  if(rDeadline === null ){
-    rDeadline = "1:1:0:0";
+
+  // This is a failsafe which will probably not be used
+  // If this function is run but there's no startdate we simply return a arbituary date
+  if (retdata['startdate'] === "UNK") {
+    console.log("Course has no startdate, deadlines set to 2015-01-01");
+    return new Date("2015-01-01 00:00:00");
   }
+
+  rDeadline = rDeadline === null ? "1:1:0:0" : rDeadline; 
+
   if (typeof rDeadline === "undefined") {
     rDeadline =  $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlineminutes").val() + ":" + $("#relativedeadlinehours").val();
     console.log("sets the deadline to " + rDeadline);
   }
+
   rDeadlineArr = rDeadline.split(":");
   var daysToAdd;
   switch (rDeadlineArr[1]) {
@@ -358,10 +370,7 @@ function calculateRelativeDeadline(rDeadline) {
       var daysToAdd = parseInt(rDeadlineArr[0]);
       break;
   }
-  if (retdata['startdate'] === "UNK") {
-    console.log("Course has no startdate, deadlines set to 2015-01-01");
-    return new Date("2015-01-01 00:00:00");
-  }
+
   var newDeadline = new Date(retdata['startdate']);
   newDeadline.setDate(newDeadline.getDate() + daysToAdd);
   newDeadline.setHours(parseInt(rDeadlineArr[2]));
@@ -1353,37 +1362,30 @@ function returnedSection(data) {
 
         str += "</td>";
         
-        // If the deadline is null the relative deadline should be used
-        if (itemKind === 3 && deadline === null){
-          deadline = convertDateToDeadline(calculateRelativeDeadline(rDeadline));
-        }
-        // Add generic td for deadlines if one exists
-        if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
-          var dl = deadline.split(" ");
-          var timeFilterAndFormat = "00:00:00"; // time to filter away
-          var yearFormat = "0000-";
-          var dateFormat = "00-00";
-
+        // If none of the deadlines are null or undefined we need to add it to the page
+        if ((itemKind === 3) && ((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
+          // Both of them will need this html
           str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
           "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
+          str += "<div class='dateField'>";
 
-          if (dl[1] == timeFilterAndFormat) {
-            str += "<div class='dateField'>";
-            str += deadline.slice(0, yearFormat.length)
-            str += "</div>";
-            str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
-          } else {
-            str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
-            if(width > 430){
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
+          // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
+          if ((deadline !== null && deadline !== "undefined") && retdata['startdate'] !== null) {
+            deadline = convertDateToDeadline(new Date(deadline));
+            str += deadline.split(" ")[0];
+            if (!/^[0:]+$/.test(deadline.split(" ")[1])) {
+              str += " "+deadline.split(" ")[1].split(":")[0]+":"+deadline.split(" ")[1].split(":")[1];
             }
-            else{
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1);
-            }
+            // If there is only a relative deadline we display it instead
+          } else if (rDeadline !== null && rDeadline !== "undefined") {
+            rDeadlineArr = rDeadline.split(":");
+            rDeadlineArr[1] = rDeadlineArr[1] == 1 ? "Day" : (rDeadlineArr[1] == 2 ? "Week" : "Month");
+            str += "Course " + rDeadlineArr[1] + " " + rDeadlineArr[0] + ", " + rDeadlineArr[2] + ":" + rDeadlineArr[3];
+
           }
-
           str += "</div></td>";
         }
+        
 
         // Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
         if (submitted) {
