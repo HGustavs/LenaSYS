@@ -123,6 +123,7 @@
 }
 
 .codeborder .impono {
+    user-select: none;
     color: white;
     width: 22px;
     background-color: #5D5D5D;
@@ -144,6 +145,7 @@
 }
 
 .impo {
+    user-select: none;
     color: #000;
     background-color: rgba(204, 203, 203, 0.28);
     white-space:nowrap;

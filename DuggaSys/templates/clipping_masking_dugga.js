@@ -329,8 +329,9 @@ function refreshOpNum(){
 	$("*[id^=opNum]").each(function (){
 			this.innerHTML = idx++;
 	});
-	$("#operationList").find("tr:odd").css('background-color', '#dad8db');
-	$("#operationList").find("tr:even").css('background-color', '#ffffff');
+    
+	$("#operationList").find("tr:odd").addClass("OperationListTableOdd");
+	$("#operationList").find("tr:even").addClass("OperationListTableEven");
   render();
 }
 

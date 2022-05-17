@@ -242,14 +242,14 @@ function createFileUploadArea(params){
 	form +="<span class='newRowButton' onclick='newRow()'>Add row</span>";
 	form +="</td></tfoot></table>";
 	form +="<input class='tsSubmit' type='submit' value='Upload' /></form>";
-	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
-	str += "<div id='"+fieldname+"Instruction' style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
+	str += "<div class='ViewportBorder' style='margin: 5px auto; margin-bottom:10px;'>";
+	str += "<div class='ViewportHeadBorder' id='"+fieldname+"Instruction' style='height:20px;padding:9px;color:#FFF;'>";
 	str += "</div>";
 	str += "<div>";
 	str += form;
 	str += "</div>";
 	str += "</div>";
-	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str +="<div class='ViewportHeadBorder' id='"+fieldname+"Prev' style='height:100px;overflow:scroll;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
 	document.getElementById("tomten").innerHTML=str;
@@ -289,14 +289,14 @@ function createSmallerViewportForm(params){
 	form +="</td></tfoot></table>";
 	form += "</div>";
 	form +="<input class='tsSubmit' type='submit' value='Upload' /></form>";
-	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
-	str += "<div id='"+fieldname+"Instruction' style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
+	str += "<div class='ViewportBorder' style='margin: 5px auto; margin-bottom:10px;'>";
+	str += "<div class='ViewportHeadBorder' id='"+fieldname+"Instruction' style='height:20px;;padding:9px;color:#FFF;'>";
 	str += "</div>";
 	str += "<div>";
 	str += form;
 	str += "</div>";
 	str += "</div>";
-	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
 	document.getElementById("tomten").innerHTML=str;

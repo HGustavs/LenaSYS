@@ -397,6 +397,7 @@ function confirmBox(operation, item = null) {
   } else if (operation == "openTabConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#tabConfirmBox").css("display", "flex");
+    $("#tabs").val(0).change();
   } else if (operation == "openItemsConfirmBox"){
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
@@ -406,8 +407,8 @@ function confirmBox(operation, item = null) {
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
     $("#sectionHideConfirmBox").css("display", "none");
-  }else if (operation == "tabItem" && !hideItemList.length == 0) {
-    tabMarkedItems(hideItemList);
+  }else if (operation == "tabItem") {
+    tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
   } else if (operation == "closeConfirmBox") {
     $("#sectionConfirmBox").css("display", "none");
@@ -566,7 +567,13 @@ function createFABItem(kind, itemtitle, comment) {
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
-  var retStr = "<td style='width:32px;overflow:hidden;";
+  var retStr;
+  if (kind === 0 || kind === 1) { // purple background
+    retStr = `<td class='LightBoxFilled${visible}`;
+  } else {
+    retStr = `<td class='LightBox${visible}`;
+  }
+
   if (spkind == "E") {
     retStr += "'><div class='spacerEnd'></div></td>";
   } else {
@@ -701,11 +708,12 @@ function hideMarkedItems() {
   //----------------------------------------------------------------------------------
   // tabMarkedItems: Tabs Item from Section List
   //----------------------------------------------------------------------------------
-  function tabMarkedItems() {
-    for (i=0; i < hideItemList.length; i++) {  
-      var lid = hideItemList[i]; 
-    }
-      hideItemList = [];
+  function tabMarkedItems(lid) {
+    var tabs = $("#tabs").val();
+    AJAXService("UPDATETABS", {
+      lid: lid,
+      tabs: tabs
+    }, "SECTION");
   }
     
 //----------------------------------------------------------------------------------
@@ -967,10 +975,15 @@ function returnedSection(data) {
       document.getElementById("HIDEStatic").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
+      
+      // Disable div used for table spacing in the navheader
+      document.getElementById("menuHook").style.display =  "none"
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
+      // remove course-label margin
+      document.getElementById("course-label").style.marginRight = "10px";
     }
 
     // Hide som elements if to narrow
@@ -1080,46 +1093,53 @@ function returnedSection(data) {
             }
           }
           
-          if (retdata['writeaccess'] == "w") {
+          if (retdata['writeaccess']) {
           if (itemKind === 3) {
             str += "<td  class='LightBox" + hideState + "'>";
             str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             
-            str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
           } else if (itemKind === 4) {
             str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
             str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-            str += "<td class='LightBoxFilled" + hideState + "'>";
-            str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
           }
           str += "</td>";
       }
       }
 
+      if (retdata['writeaccess']) {
+        console.log(itemKind);
+        if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
+          str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
+          str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+          
+        } else if (itemKind === 0 || itemKind === 1) { // Draggable area with purple background
+          str += "<td style='background-color: #614875;text-align: left;' class='LightBox" + hideState + "'  >";
+          str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+        }
+        str += "</td>";
+      }
         // Make tabs to align each section element
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
-        if (itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) {
+        if (itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 3 || itemKind === 5 || itemKind === 6 || itemKind === 7) {
           var itemGradesys = parseInt(item['gradesys']);
-          var itemVisible = item['visible'];
           if (itemGradesys > 0 && itemGradesys < 4) {
             for (var numSpacers = 0; numSpacers < itemGradesys; numSpacers++) {
-              str += addColorsToTabSections(itemKind, itemVisible, "L");
+              str += addColorsToTabSections(itemKind, hideState, "L");
             }
           } else if (itemGradesys == 4) {
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           } else if (itemGradesys == 5) {
-            str += addColorsToTabSections(itemKind, itemVisible, "L");            
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "L");            
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           } else if (itemGradesys == 6) {
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "L");
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "L");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           }else if (itemGradesys == 7) {
-            str += addColorsToTabSections(itemKind, itemVisible, "E");
+            str += addColorsToTabSections(itemKind, hideState, "E");
           }
         }
 
@@ -1133,24 +1153,20 @@ function returnedSection(data) {
 
         } else if (itemKind === 1) {
           // Styling for Section row
-          if(retdata['writeaccess'] != false) {
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-          }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
-          if(retdata['writeaccess'] != false) {
-            str += "<td class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-          }
-
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
 
         } else if (itemKind === 3) {
+          if (retdata['writeaccess']) {
+            str += "<td class='LightBox" + hideState + "'>";
+            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+          }
+
           if (item['highscoremode'] != 0 && itemKind == 3) {
             str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png' 
             onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
@@ -1159,6 +1175,9 @@ function returnedSection(data) {
           kk++;
 
         } else if (itemKind === 4) {
+          str += "<td class='LightBoxFilled" + hideState + "'>";
+          str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
+
           // New moment bool equals true
           momentexists = item['lid'];
           str += `<td class='moment item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' style='cursor:pointer;' `;
@@ -1339,12 +1358,23 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        // Tab example button
+        if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement' 
+            title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
+          str += "</td>";
+        }
+        // <input id='tabElement'  type='button' value='&#8633' style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
+
+
         if (itemKind != 4){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
+            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' 
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
             str += "</td>";
 

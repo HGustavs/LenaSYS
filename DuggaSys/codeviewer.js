@@ -45,6 +45,7 @@ var template8maximizebuttonpressed = false;
 var sectionData; // Variable that stores all the data that is sent from Section, which contains the ordering of the code examples.
 var codeExamples = []; // Array that contains all code examples in the same order that was assigned in Section before pressing one of the examples.
 var currentPos; // Variable for the current position that determines where in the list of code examples you are.
+var selectionRange; // Variable that stores range of selected text.
 
 
 /********************************************************************************
@@ -123,6 +124,7 @@ function returned(data)
 	var j = 0;
 	var posAfter = currentPos+1;
 
+	// Holds all items shown on forward button press
 	retData['after'] = [];
 	for(i = currentPos; i <= sectionData['entries'].length-1; i++){
 		if(j < 5){
@@ -134,12 +136,13 @@ function returned(data)
 				//Not ideal to have this here but this is needed to not get an arrayOutOfBounds Error.
 				break;
 			}
-			if(sectionData['entries'][posAfter + j]['kind'] == 1){
-				posAfter++;
-				continue;
-			}
 
 			retData['after'].push(sectionData['entries'][posAfter + j]);
+			if(sectionData['entries'][posAfter + j]['kind'] == 1){
+				/* Text added after in all titles. 
+				If not set text "undefined" will be displayed. */
+				retData['after'][j][2] = " ";
+			}
 			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
 			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
 
@@ -159,6 +162,8 @@ function returned(data)
 	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
 	j = 0;
 	var posBefore = currentPos-1;
+
+	// Holds all items shown on backward button press
 	retData['before'] = [];
 	for(i = currentPos; i > 0; i--){
 		if(j < 5){
@@ -166,11 +171,6 @@ function returned(data)
 				retData['before'] = [];
 				break;
 			}
-			if(sectionData['entries'][posBefore - j]['kind']== 1){
-				posBefore--;
-				continue;
-			}
-
 			retData['before'].push(sectionData['entries'][posBefore - j]);
 			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
 			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
@@ -181,6 +181,11 @@ function returned(data)
 					break;
 				}
 			}
+			if(sectionData['entries'][posBefore - j]['kind']== 1){
+				/* Text added after in all titles. 
+				If not set text "undefined" will be displayed. */
+				retData['before'][j][2] = " ";
+			}			
 			retData['exampleno'] = posBefore;
 			j++;
 		}else{
@@ -520,11 +525,43 @@ function preventDefaults (e)
 function highlight(e) 
 {
 	e.target.closest(".box").classList.add('highlight');
+
+	var normtext = document.querySelectorAll(".normtext");
+	var impword = document.querySelectorAll(".impword");
+	var impo = document.querySelectorAll(".impo");
+
+	normtext.forEach(box => {
+		box.style.backgroundColor = 'transparent';
+	  });
+	  
+	impword.forEach(box => {
+		box.style.backgroundColor = 'transparent';
+	  });
+
+	impo.forEach(box => {
+	box.style.backgroundColor = 'transparent';
+	});
 }
 
 function unhighlight(e) 
 {
 	e.target.closest(".box").classList.remove('highlight');
+
+	var normtext = document.querySelectorAll(".normtext");
+	var impword = document.querySelectorAll(".impword");
+	var impo = document.querySelectorAll(".impo");
+
+	normtext.forEach(box => {
+		box.style.backgroundColor = 'none';
+	  });
+	  
+	impword.forEach(box => {
+		box.style.backgroundColor = 'none';
+	  });
+
+	impo.forEach(box => {
+	box.style.backgroundColor = 'none';
+	});
 } 
 
 //---------------------------------------------------------------------------------
@@ -1064,7 +1101,7 @@ function createboxmenu(contentid, boxid, type) {
 		// Add zoom in, zoom out and reset buttons.
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' id='zoomIn' title='Zoom in' onclick='zoomText(" + boxid + ", 3);'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' id='zoomOut' title='Zoom out' onclick='zoomText(" + boxid + ", -3);'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' id='resetZoom' title='Reset zoom' onclick='resetText(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' id='resetZoom' title='Reset zoom' onclick='resetText(" + boxid + ");' ontouchstart='touchEffect(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
     
 
 		// Show the copy to clipboard button for code views only
@@ -1084,11 +1121,19 @@ function createboxmenu(contentid, boxid, type) {
 function touchEffectCopy(boxid){
     var element = document.getElementById("box" + boxid + "wrapper").childNodes[2];
     element.classList.add("touchEffectCopy");
-
     setTimeout(() => {
         element.classList.remove("touchEffectCopy");
     }, 1000);
+
+function touchEffect(boxid){
+	var element = document.getElementById("box" + boxid + "wrapper").childNodes[2];
+	element.classList.add("touchEffect");
+
+	setTimeout(() => {
+		element.classList.remove("touchEffect");
+	}, 1000);
 }
+
 //----------------------------------------------------------------------------------
 // toggleClass: Modifies class using Jquery to contain "activebox" class selector
 //				Used by createboxmenu(contentid, boxid, type) in codeviewer.js
@@ -1208,7 +1253,12 @@ function Skip(skipkind)
 		dmd = 1;
 	} else if (skipkind == "bu") {
 		if (retData['before'].length != 0 && dmd == 1) {
-			navigateExample(retData['before'][0][0]);
+			// Skip title examples when skipping through examples
+			if(retData['before'][0]['kind'] == 1) {
+				navigateExample(retData['before'][1][0]);
+			} else {
+				navigateExample(retData['before'][0][0]);
+			}
 		}
 		dmd = 0;
 	}
@@ -1216,7 +1266,12 @@ function Skip(skipkind)
 		dmd = 2;
 	} else if (skipkind == "fu") {
 		if (retData['after'].length != 0 && dmd == 2) {
-			navigateExample(retData['after'][0][0]);
+			// Skip title examples when skipping through examples
+			if(retData['after'][0]['kind'] == 1) {
+				navigateExample(retData['after'][1][0]);
+			} else {
+				navigateExample(retData['after'][0][0]);
+			}
 		}
 		dmd = 0;
 	}
@@ -1240,20 +1295,32 @@ function execSkip() {
 	
 	//Holding backwards button
 	if (dmd == 1) {
-
 		for (i = 0; i < retData['before'].length; i++) {
-			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";		
+			/* RetData['before'][i][0] navigates to the onclick value of all dropdown items
+			in the "before" array. "UNK" is the onclick value of each title.
+			Below states that if the dropdown item is a title then don't include the onclick and else applies to all other items. */
+			if (retData['before'][i][0] == "UNK"){
+				str += "<span id='F" + retData['before'][i][1] + "' class='dropdownitem dropdownitemStyle'> ⬆ " + retData['before'][i][1] + " " + retData['before'][i][2] + "</span>";
+			} else {
+				str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";
+			}
 		}
 		document.getElementById("backwdropc").innerHTML = str;
 		document.getElementById("backwdrop").style.display = "block";
-		dmd = 0;
+		dmd = 0
 	} 
 	
 	//Holding forwards button
 	else if (dmd == 2) {
-
 		for (i = 0; i < retData['after'].length; i++) {
-			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
+			/* RetData['after'][i][0] navigates to the onclick value of all dropdown items
+			in the "after" array. "UNK" is the onclick value of each title.
+			Below states that if the dropdown item is a title then don't include the onclick and else applies to all other items. */
+			if (retData['after'][i][0] == "UNK"){
+				str += "<span id='F" + retData['after'][i][1] + "' class='dropdownitem dropdownitemStyle'> ⬇ " + retData['after'][i][1] + " " + retData['after'][i][2] + "</span>";
+			} else {
+				str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
+			}
 		}
 		document.getElementById("forwdropc").innerHTML = str;
 		document.getElementById("forwdrop").style.display = "block";
@@ -4637,15 +4704,38 @@ function copyCodeToClipboard(boxid) {
 	// Select the code
 	var selection = window.getSelection();
 	
-	// Add Code to just copy impo code
-	for(i = 0; i<impo.length;i++){
-		var range = document.createRange();
-		range.selectNode(impo[i]);
-		selection.addRange(range);
+	if (selectionRange != null && selectionRange.toString() != "") {
+		// Copy selected code
+		selection.removeAllRanges();
+		selection.addRange(selectionRange);
+	} else if (impo.length > 0) {
+		// Copy impo code if no selection is made
+		selection.removeAllRanges();
+		for(i = 0; i<impo.length;i++){
+			var range = document.createRange();
+			range.selectNode(impo[i]);
+			selection.addRange(range);
+		}
+	} else {
+		// Retain previous clipboard if no code is selected and there is no impo code
+		return;
 	}
 	
-	document.execCommand("Copy");
+	if (navigator.clipboard) {
+		// Write selection to clipboard
+		navigator.clipboard.writeText(selection).catch(function (err) {
+			// Display errors as a warning
+			console.warn("Error occurred.", err);
+		});
+	} else {
+		// If clipboard API is not available
+		document.execCommand("Copy");
+		console.warn("Depricated feature \'documnet.execCommand()\' was used");
+	}
+
 	selection.removeAllRanges();
+	selectionRange = "";
+
 
 	// Notification animation
 	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
@@ -4655,6 +4745,14 @@ function copyCodeToClipboard(boxid) {
 	});
 }
 
+// Selectionchange EventListener
+document.addEventListener('selectionchange', function () {
+	// 0.5 second delay to update selectionRange (Needed for copyCodeToClipboard() to work on mobile)
+	setTimeout(function () {
+		if (window.getSelection().rangeCount > 0)
+			selectionRange = window.getSelection().getRangeAt(0);
+	}, 500);
+  });
 
 // Detects clicks
 $(document).mousedown(function (e) {

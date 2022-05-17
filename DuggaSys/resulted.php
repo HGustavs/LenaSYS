@@ -16,7 +16,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 	<meta name="google" content="notranslate">
 	<title>Result Editor</title>
 
@@ -53,31 +53,7 @@ pdoConnect();
   <!-- content START -->
 	<div id="content">
 	
-	<!-- Legend content which includes icons that are used in the database of the resultEd. -->
-	<!-- Each icon has a description. legendBtn, legendList and legendListItem was created in style.css to build -->
-	<!-- design of the whole legend. The button "?" is an icon which sticks out in the right of the resultEd.php site. -->
-	
-	<div id="resultedLegendContainer" >
-	
-		<div id="legendBtn"> ? </div>
-		<ul class="legendList">
-			<li class="legendListItem"><img alt="pass icon" src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
-			<li class="legendListItem"><img alt="fail icon" src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>
-			<li class="legendListItem"><img alt="pending icon" src="../Shared/icons/Uc.png"><img src="../Shared/icons/Gc.png"> Pending / not graded</li>
-			<li class="legendListItem"><img alt="stats icon" src="../Shared/icons/FistV.png"> Dugga stats</li>
-			<li class="legendListItem"><img alt="deadline passed icon" src="../Shared/icons/warningTriangle.png"> Deadline passed</li>
-			<li class="legendListItem"><span> (9) </span><span> Grading changes</span></li>
-			<li class="legendListItem"><img alt="not submitted icon" src="../Shared/icons/not_announced_icon.svg"> Dugga not yet submitted</li>
-			<li class="legendListItem"><div class="dugga-moment"></div> Dugga moment</li>
-			<li class="legendListItem"><div class="dugga-pending-late-submission"></div> Dugga pending: Late submission</li>
-			<li class="legendListItem"><div class="dugga-pending"></div> Dugga pending: Submitted in time</li>
-			<li class="legendListItem"><div class="dugga-pass"></div> Dugga passed</li>
-			<li class="legendListItem"><div class="dugga-moment dugga-pass"></div> Moment passed</li>
-			<li class="legendListItem"><div class="dugga-moment dugga-fail"></div> Moment failed</li>
-			<li class="legendListItem"><div class="dugga-moment dugga-assigned"></div> Dugga assigned</li>
-			<li class="legendListItem"><span>Unassigned</span><span> No moment assigned</span></li>
-		</ul>
-	</div>
+
     <div id="resultedFormContainer">
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
