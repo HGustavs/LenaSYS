@@ -385,7 +385,10 @@
 				}else{
 					echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><div class='loginbutton-nav' tabindex='0'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></div></td>";
 				}
-			}else{
+			} else if(git_checklogin()){
+				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['git_loginname']."&#39;s profile'>".$_SESSION['git_loginname']."</a></td>";
+				echo "<td id='loginbutton' class='loggedin' onclick='git_logout();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+			} else {
 				//---  original --- echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'></label></td>";
 				
