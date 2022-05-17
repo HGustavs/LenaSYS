@@ -3802,6 +3802,23 @@ function toggleErTable()
     }
     generateContextProperties();
 }
+
+/**
+ * @description Fetches the parent element of the current element ID
+ * @returns The parent element object
+ */
+ function getParentElementOfID(ID){
+    for (var i = 0; i < lines.length; i++){
+        if(lines[i].toID == ID){
+            for (var j = 0; j < data.length; j++){
+                if(lines[i].fromID == data[j].id){
+                    return data[j];
+                }
+            }
+        }
+    }
+}
+
 /**
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
@@ -4256,24 +4273,7 @@ function generateErTableString()
                             stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
                         }
                         else {
-                            //this function checks if the attribute connected from is a candidate or primary key,
-                            //which it will then underline the attribute if it is
-                            for (var z = 0; z < lines.length; z++){
-                                //get the line data, connected to and from
-                                if(ERAttributeData[i][j].id == lines[z].toID){
-                                    for (var x = 0; x < attrList.length; x++){
-                                        //get attribute from the line data and check what kind of key it is
-                                        if(lines[z].fromID == attrList[x].id){
-                                            if(attrList[x].state == 'primary' || attrList[x].state == 'candidate'){
-                                                stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
-                                            }
-                                            else{
-                                                stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
                         }
                     }
                 }
