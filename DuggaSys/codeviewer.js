@@ -520,11 +520,43 @@ function preventDefaults (e)
 function highlight(e) 
 {
 	e.target.closest(".box").classList.add('highlight');
+
+	var normtext = document.querySelectorAll(".normtext");
+	var impword = document.querySelectorAll(".impword");
+	var impo = document.querySelectorAll(".impo");
+
+	normtext.forEach(box => {
+		box.style.backgroundColor = 'transparent';
+	  });
+	  
+	impword.forEach(box => {
+		box.style.backgroundColor = 'transparent';
+	  });
+
+	impo.forEach(box => {
+	box.style.backgroundColor = 'transparent';
+	});
 }
 
 function unhighlight(e) 
 {
 	e.target.closest(".box").classList.remove('highlight');
+
+	var normtext = document.querySelectorAll(".normtext");
+	var impword = document.querySelectorAll(".impword");
+	var impo = document.querySelectorAll(".impo");
+
+	normtext.forEach(box => {
+		box.style.backgroundColor = 'none';
+	  });
+	  
+	impword.forEach(box => {
+		box.style.backgroundColor = 'none';
+	  });
+
+	impo.forEach(box => {
+	box.style.backgroundColor = 'none';
+	});
 } 
 
 //---------------------------------------------------------------------------------
