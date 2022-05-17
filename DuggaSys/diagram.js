@@ -4256,7 +4256,20 @@ function generateErTableString()
                             stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
                         }
                         else {
-                            stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                            for (var z = 0; z < lines.length; z++){
+                                if(ERAttributeData[i][j].id == lines[z].toID){
+                                    for (var x = 0; x < attrList.length; x++){
+                                        if(lines[z].fromID == attrList[x].id){
+                                            if(attrList[x].state == 'primary' || attrList[x].state == 'candidate'){
+                                                stringList[i] += `<span style='text-decoration: underline black solid 2px;'>${ERAttributeData[i][j].name}</span>, `;
+                                            }
+                                            else{
+                                                stringList[i] += `<span>${ERAttributeData[i][j].name}</span>, `;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
