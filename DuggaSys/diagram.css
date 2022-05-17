@@ -209,20 +209,21 @@
 .diagramIcons{
     position: relative;
     margin: auto;
-    width: 31px;
-    height: 31px;
+    width: 36px;
+    height: 36px;
     cursor:pointer;
-    border-radius: 30%;
     border: solid 1px var(--color-primary);
-    margin-top:5px;
+    margin-top:2px;
+    display: flex;
+    justify-content: center;
 }
 .diagramIcons:hover, .active{
     background: var(--color-primary-hover);
     border: solid 1px var(--color-primary-light);
 }
 .diagramIcons img{
-    width:30px;
-    height:30px;
+    width:36px;
+    height:36px;
 }
 .node {
     position: absolute;
