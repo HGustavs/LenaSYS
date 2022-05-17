@@ -3564,6 +3564,7 @@ span.arrow {
 
 .filter-label {
   display: block;
+  margin:2px;
 }
 
 .resultTableCell {
@@ -5526,6 +5527,17 @@ only screen and (max-device-width: 530px) {
 
 
   /* Mobile view resulted filter / search */
+  .resulted-filter-container {
+    padding: 5px 0px 5px 20px;
+    display:inline;
+    margin-right: 20px;
+    align-items: center;
+  }
+
+  .filter-btn{
+    margin:2px;
+  }
+
   #searchBarMobile,
   #tooltip-mobile {
     display: block;
