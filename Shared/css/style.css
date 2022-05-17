@@ -842,8 +842,8 @@ p {
 }
 
 #Sectionlist .section #NewTabLink {
-  filter: invert(0%);
-  -webkit-filter: invert(0%);  
+  filter: invert(100%);
+  -webkit-filter: invert(100%);  
 } 
 
 #Sectionlist .section #dorf {
@@ -3194,6 +3194,7 @@ div.submit-button:disabled {
 #dorf {
   display: block;
   margin: auto;
+  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
 }
 
 #plorf {
@@ -8792,8 +8793,7 @@ border: none !important;
 
 #NewTabLink{
   cursor: pointer;
-  filter: invert(80%);
-  -webkit-filter: invert(100%); 
+  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
   display: block;
   margin: auto; 
 }
