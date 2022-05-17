@@ -37,7 +37,6 @@ function setup() {
 
 	$("#menuHook").before(filt);
 	*/
-	localStorage.setItem("CurrentlyActiveDiagram","");
 	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
 }
 

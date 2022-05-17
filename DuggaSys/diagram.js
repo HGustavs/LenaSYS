@@ -2207,7 +2207,6 @@ function mouseMode_onMouseMove(event)
             console.error(`State ${mouseMode} missing implementation at switch-case in mouseMode_onMouseMove()!`);
             break;
     }
-    storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 /**
@@ -8502,21 +8501,6 @@ function exportWithoutHistory()
 
     // Download the file
     downloadFile("diagram", objToSave);
-}
-/**
- * @description Stores the current diagram as JSON in localstorage
- */
-function storeDiagramInLocalStorage(){
-    // Remove all future states to the history
-    stateMachine.removeFutureStates();
-
-    // The content of the save file
-    var objToSave = {
-        historyLog: stateMachine.historyLog,
-        initialState: stateMachine.initialState
-    };
-    console.log(JSON.stringify(objToSave));
-    localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
 }
 /**
  * @description Gets the content of the file in parameter.
