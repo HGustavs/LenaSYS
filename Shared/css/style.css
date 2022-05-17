@@ -7855,6 +7855,10 @@ textarea#filecont {
 .variant-param {
   max-width: 0;
 }
+.variant-notes {
+  max-width: 100px;
+}
+
 
 /* Content in paramater coulumn */
 .variants-param-col {
@@ -7865,13 +7869,13 @@ textarea#filecont {
   text-overflow: ellipsis;
 }
 
-/*.variants-note-col {
+.variants-notes-col {
   display: inline-block;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}*/
+}
 
 /* Modified column */
 .variant-modified {
