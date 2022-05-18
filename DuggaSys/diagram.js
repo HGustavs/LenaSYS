@@ -6465,6 +6465,12 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         return;
     }
 
+    // Prevent a line to be drawn between UML- and ER-elements.
+    if (fromElement.type != toElement.type) {
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
+        return;
+    }
+
     // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
     var exists = false;
     for (i = 0; i < allAttrToEntityRelations.length; i++) {
