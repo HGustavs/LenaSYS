@@ -611,7 +611,6 @@ function confirmBox(operation, item, type) {
 				deleteDugga(itemToDelete);
 				$("#sectionConfirmBox").css("display", "none");
 			}
-
 		}
 	});
 }

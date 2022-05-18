@@ -190,15 +190,18 @@ function toggleHamburger() {
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
   console.log("myConsole lid: "+ lid);
   console.log("myConsole typeof: "+ typeof lid);
+  document.getElementById("sectionname").focus();
+  toggleTab(true);
+  enableTab(document.getElementById("editSection"));
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
-  var weekArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12"];
-  var weekArrValue=[1,2,3,4,5,6,7,8,9,10,11,12];
-  var weekdayArrOptions=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  var weekdayArrValue=[1,2,3,4,5,6,7];
+  var amountArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23", "24"];
+  var amountArrValue=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+  var typeArrOptions=["Days", "Weeks", "Months"];
+  var typeArrValue=[1,2,3];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -233,14 +236,28 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
   }
-  if(relativedeadline !== undefined) {
-    var splitdeadline = relativedeadline.split(":");
-    // relativedeadline -> week:weekday:hour:minute
+  // Handles relative deadlines
+  if(relativeDeadline !== undefined) {
+    var splitdeadline = relativeDeadline.split(":");
+    // relativeDeadline = amount:type:hour:minute
     $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
     $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
 
-    $("#relativedeadlineweeks").html(makeoptions(splitdeadline[0],weekArrOptions,weekArrValue ));
-    $("#relativedeadlineweekdays").html(makeoptions(splitdeadline[1],weekdayArrOptions,weekdayArrValue));
+    $("#relativedeadlineamount").html(makeoptions(splitdeadline[0],amountArrOptions,amountArrValue ));
+    $("#relativedeadlinetype").html(makeoptions(splitdeadline[1],typeArrOptions,typeArrValue));
+
+    if (relativeDeadline !== "null") {
+      if (calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime()) {
+        checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+      } else {
+        checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
+      }
+    } else {
+      checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+    }
+  }
+  if (relativeDeadline == "null" && deadline == "null") {
+    checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -313,6 +330,74 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 }
 
+// Handles the logic behind the checkbox for absolute deadline
+function checkDeadlineCheckbox(e, check) {
+
+  if (check !== undefined) e.checked = check;
+
+  if (e.checked) {
+    $("#absolutedeadlinecheck").prop("checked", true);
+    $("#setDeadlineValue").prop("disabled", false);
+    $("#deadlineminutes").prop("disabled", false);
+    $("#deadlinehours").prop("disabled", false);
+  } else {
+    $("#absolutedeadlinecheck").prop("checked", false);
+    $("#setDeadlineValue").prop("disabled", true);
+    $("#deadlineminutes").prop("disabled", true);
+    $("#deadlinehours").prop("disabled", true);
+  }
+}
+
+// Calculates the relative deadline string into a real date relative to the course startdate
+function calculateRelativeDeadline(rDeadline) {
+  // rDeadline = [amount, type, hour, minute]
+
+  // This is a failsafe which will probably not be used
+  // If this function is run but there's no startdate we simply return a arbituary date
+  if (retdata['startdate'] === "UNK") {
+    console.log("Course has no startdate, deadlines set to 2015-01-01");
+    return new Date("2015-01-01 00:00:00");
+  }
+
+  rDeadline = rDeadline === null ? "1:1:0:0" : rDeadline; 
+
+  if (typeof rDeadline === "undefined") {
+    rDeadline =  $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlineminutes").val() + ":" + $("#relativedeadlinehours").val();
+    console.log("sets the deadline to " + rDeadline);
+  }
+
+  rDeadlineArr = rDeadline.split(":");
+  var daysToAdd;
+  switch (rDeadlineArr[1]) {
+    case "1":
+      var daysToAdd = parseInt(rDeadlineArr[0]);
+      break;
+    case "2":
+      var daysToAdd = parseInt(rDeadlineArr[0]) * 7;
+      break;
+    case "3":
+      var daysToAdd = parseInt(rDeadlineArr[0]) * 30;
+      break;
+    default:
+      var daysToAdd = parseInt(rDeadlineArr[0]);
+      break;
+  }
+
+  var newDeadline = new Date(retdata['startdate']);
+  newDeadline.setDate(newDeadline.getDate() + daysToAdd);
+  newDeadline.setHours(parseInt(rDeadlineArr[2]));
+  newDeadline.setMinutes(parseInt(rDeadlineArr[3]));
+  return newDeadline;
+}
+// Takes a date object and returns it as a string as deadlines are stored in the database
+function convertDateToDeadline(date) {
+  var rDeadlineArr = date.toLocaleDateString("en-US").split("/");
+  rDeadlineArr[0] = rDeadlineArr[0].length < 2 ? "0" + rDeadlineArr[0] : rDeadlineArr[0];
+  rDeadlineArr[1] = rDeadlineArr[1].length < 2 ? "0" + rDeadlineArr[1] : rDeadlineArr[1];
+  var newDeadline = rDeadlineArr[2] + "-" + rDeadlineArr[0]+ "-" + rDeadlineArr[1] + " " + date.toString().split(" ")[4];
+  return newDeadline;
+}
+
 //---------------------------------------------------------------------------------------------
 // changedType: When kind of section has been changed we must update dropdown lists accordingly
 //---------------------------------------------------------------------------------------------
@@ -344,6 +429,8 @@ function changedType(kind) {
 
 function showEditVersion() {
   var tempMotd = motd;
+  toggleTab(true);
+  enableTab(document.getElementById("editCourseVersion"));
 	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
   "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
   $("#eversname").val(versnme);
@@ -370,6 +457,7 @@ window.addEventListener('beforeunload', function(event) {
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
+    toggleTab(false);
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
     $("#userFeedbackDialog").css("display", "none");
@@ -398,7 +486,6 @@ function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
   } else if (operation == "openHideConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
@@ -554,6 +641,7 @@ function clearHideItemList(){
 
 
 function closeSelect() {
+  toggleTab(false);
   $(".item").css("border", "none");
   $(".item").css("box-shadow", "none");
   $("#editSection").css("display", "none");
@@ -570,6 +658,8 @@ function defaultNewItem() {
 
 function showCreateVersion() {
     $("#newCourseVersion").css("display", "flex");
+    toggleTab(true);
+    enableTab(document.getElementById("newCourseVersion"));
 }
 
 
@@ -623,8 +713,12 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.relativedeadline = $("#relativedeadlineweeks").val()+":"+$("#relativedeadlineweekdays").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+  param.relativedeadline = $("#relativedeadlineamount").val()+":"+$("#relativedeadlinetype").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
 
+  // If absolute deadline is not checked, always use relative deadline
+  if (!$('#absolutedeadlinecheck').prop('checked')) {
+    param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
+  }
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
     param.feedbackquestion = $("#fdbckque").val();
@@ -725,6 +819,52 @@ function hideMarkedItems() {
       hideItemList = [];
   }
     
+//----------------------------------------------------------------------------------
+// toggleTab: Toggles tab on all elements of the webpage
+//----------------------------------------------------------------------------------
+
+  function toggleTab(tabEnabled){
+    var tabSwitch;
+    if(tabEnabled){
+      tabEnabled = false;
+      tabSwitch = -1;
+    } 
+    else {
+      tabEnabled= true;
+      tabSwitch = 0;
+    }
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+    var tabbable = ['settingIconTab', 'home-nav', 'theme-toggle-nav', 'messagedialog-nav', 'announcement-nav', 'editVers', 'newVers', 'loginbutton-nav', 'newTabCanvasLink', 'showCanvasLinkBoxTab', 'traschcanDelItemTab'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByClassName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+  }
+
+//----------------------------------------------------------------------------------
+// enableTab: Enables tab on all children of of the id element
+//----------------------------------------------------------------------------------
+
+  function enableTab(id){
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = id.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', 0);
+      }
+    }
+    
+  }
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
 //----------------------------------------------------------------------------------
@@ -1038,6 +1178,7 @@ function returnedSection(data) {
       for (i = 0; i < data['entries'].length; i++) {
         var item = data['entries'][i];
         var deadline = item['deadline'];
+        var rDeadline = item['relativedeadline'];
         var released = item['release'];
 
         // Separating sections into different classes
@@ -1322,34 +1463,41 @@ function returnedSection(data) {
 
         str += "</td>";
         
-
-        // Add generic td for deadlines if one exists
-        if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
-          var dl = deadline.split(" ");
-          var timeFilterAndFormat = "00:00:00"; // time to filter away
-          var yearFormat = "0000-";
-          var dateFormat = "00-00";
-
+        // If none of the deadlines are null or undefined we need to add it to the page
+        if ((itemKind === 3) && ((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
+          // Both of them will need this html
           str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
           "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
+          str += "<div class='dateField'>";
 
-          if (dl[1] == timeFilterAndFormat) {
-            str += "<div class='dateField'>";
-            str += deadline.slice(0, yearFormat.length)
-            str += "</div>";
-            str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
-          } else {
-            str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
-            if(width > 430){
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
+          // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
+          if ((deadline !== null && deadline !== "undefined") && retdata['startdate'] !== null) {
+            deadline = convertDateToDeadline(new Date(deadline));
+            deadlineArr = deadline.split(" ");
+            str += deadlineArr[0];
+
+            // If minute and hour contains nothing but 0 we dont show it
+            if (!/^[0:]+$/.test(deadlineArr[1])) {
+              str += " "+deadlineArr[1].split(":")[0]+":"+deadlineArr[1].split(":")[1];
             }
-            else{
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1);
+
+            // If there is only a relative deadline we display it instead
+          } else if (rDeadline !== null && rDeadline !== "undefined") {
+            rDeadlineArr = rDeadline.split(":");
+            rDeadlineArr[1] = rDeadlineArr[1] == 1 ? "Day" : (rDeadlineArr[1] == 2 ? "Week" : "Month");
+            str += "Course " + rDeadlineArr[1] + " " + rDeadlineArr[0];
+
+            // If minute and hour contains nothing but 0 we dont show it
+            if (!/^[0]+$/.test(new String(rDeadlineArr[2] + rDeadlineArr[3]))) {
+              rDeadlineArr[2] = rDeadlineArr[2].length == 1 ? "0" + rDeadlineArr[2] : rDeadlineArr[2];
+              rDeadlineArr[3] = rDeadlineArr[3].length == 1 ? "0" + rDeadlineArr[3] : rDeadlineArr[3];
+              str += ", " + rDeadlineArr[2] + ":"+ rDeadlineArr[3]
             }
+
           }
-
           str += "</div></td>";
         }
+        
 
         // Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
         if (submitted) {
@@ -1378,18 +1526,21 @@ function returnedSection(data) {
         if (itemKind != 4 && itemKind != 1 && itemKind != 0){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="newTabCanvasLink" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+            str += `</div>`;
             str += "</td>";
 
           // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
             str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
             src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += `</div>`;
             str += "</td>";
           }
         }
@@ -1414,7 +1565,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
+          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
@@ -1423,7 +1574,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:25px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
+            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' class='checkboxIconTab' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
@@ -2874,12 +3025,14 @@ function validateDate(startDate, endDate, dialogID) {
 
 function showCourseDate(ddate, dialogid){
   var isCorrect = validateDate2(ddate,dialogid);
-  var startdate = new Date(retdata['startdate']);;
-  var enddate = new Date(retdata['enddate']);
-  var startdate = new String(startdate.getFullYear()+ "-" + startdate.getMonth() + "-" + startdate.getDate());
-  var enddate = new String(enddate.getFullYear()+ "-" + ("0" + enddate.getMonth()).slice(-2) + "-" + ("0" + enddate.getDate()).slice(-2));
-  document.getElementById("dialog8").innerHTML =
-  "The date has to be between " + startdate + " and " + enddate;
+  var startdate = convertDateToDeadline(new Date(retdata['startdate'])).split(" ")[0];
+  var enddate = convertDateToDeadline(new Date(retdata['enddate'])).split(" ")[0];
+
+  if (!$("#absolutedeadlinecheck").is(":checked")) {
+    $("#dialog8").html("The relative deadline will be set to " + convertDateToDeadline(calculateRelativeDeadline()));
+  } else {
+    $("#dialog8").html("The date has to be between " + startdate + " and " + enddate);
+  }
   return isCorrect;
 }
 
@@ -2898,9 +3051,15 @@ function validateDate2(ddate, dialogid) {
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
-  // Correct the fetched dates from database
-  startdate.setMonth(startdate.getMonth() - 1);
-  enddate.setMonth(enddate.getMonth() - 1);
+   // If absolute deadline is not being used
+   if (!$("#absolutedeadlinecheck").is(":checked")) {
+    ddate.style.borderWidth = "0px";
+    x.style.display = "block";
+    window.bool8 = true;
+
+    return true;
+
+  }
 
   // If deadline is between start date and end date
   if (startdate <= deadline && enddate >= deadline) {
