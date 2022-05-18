@@ -8919,4 +8919,21 @@ border: none !important;
 }
 /* END */
 
-
+/* This is used to highlight updated and new items (ex coursees, duggas)*/
+.highlightChange > a{
+  animation: glowAnimation 4s ease-out;
+}
+@keyframes glowAnimation {
+  0%{
+    text-shadow: 0px 0px 0px #FF0000;
+  }
+  50%{
+    text-shadow: 1px 1px 5px #FF0000;
+  }
+  0%{
+    text-shadow: 0px 0px 0px #FF0000;
+  }
+}
+.highlightChange{
+  animation: glowAnimation 4s ease-out;
+}

@@ -123,7 +123,7 @@ session_start();
   				    <h4>Are you sure you want to delete this item?</h4>
   				</div>
   				<div style='display:flex; align-items:center; justify-content: center;'>
-  				    <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+  				    <input id="confirmDelSubmit" style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
   				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='closeWindows();' />
   				</div>
   	    </div>
@@ -292,9 +292,11 @@ session_start();
   	<!-- Edit Variant Dialog END -->
 
     <div class="fixed-action-button extra-margin" id="fabButtonAcc">
+      <div class="fabBtnEditDugga" tabIndex="0">
         <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
-        <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-        </ol>
+      </div>
+      <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+      </ol>
 	</div>
 
   

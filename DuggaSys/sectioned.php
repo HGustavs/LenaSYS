@@ -10,6 +10,8 @@
 		$userid="00";
 	}
 
+	
+
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +46,20 @@
 		$noup="COURSE";
 		include '../Shared/navheader.php';
 		$_SESSION['should-validate'] = "TRUE";
+
+		if(checklogin()){
+			echo '<script type="text/javascript">',
+				'IsLoggedIn(true);',
+				'</script>'
+			;
+			
+		}else if(!checklogin()){
+			echo '<script type="text/javascript">',
+			'IsLoggedIn(false);',
+			'</script>'
+		;
+			
+		}
 	?>
 
 	<!-- content START -->
@@ -262,23 +278,21 @@
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
 							<span style='float:right'>
-								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
+								<input onchange="showCourseDate('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
+								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this)'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
 							<span style='float:right'>
-								<select style='width:140px;' id='relativedeadlineweekdays'title="Weekday"></select>
-								<select style='width:55px;' id='relativedeadlineweeks' title="Course Week"></select>
-								<select style='width:55px;' id='relativedeadlineminutes'title="Minute"></select>
-								<select style='width:55px;' id='relativedeadlinehours' title="Hour"></select>
+								<select style='width:140px;' id='relativedeadlinetype'></select>
+								<select style='width:55px;' id='relativedeadlineamount'></select>
+								<select style='width:55px;' id='relativedeadlineminutes'></select>
+								<select style='width:55px;' id='relativedeadlinehours'></select>
 							</span>
 							<span style='float:left'>
-								<div class="formDialog" style="display: block; left:-10px; top:-30px;">
-  		      						<span id="dialog8" style="display: none; left:0px;" class="formDialogText">Deadline has to be between start date and end date.</span>
-  		      					</div>
-								<!--<p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;max-height:20px;">Deadline has to be between start date and end date</p>-->
+								<p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p>
 							</span>
 					</div>
 					<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->

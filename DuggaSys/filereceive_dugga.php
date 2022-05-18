@@ -117,7 +117,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
-		$submissionpath=$currcvd."/../../submissions";
+		$currcvd = substr($currcvd, 0, strpos($currcvd, "/DuggaSYS"));
+		$submissionpath=$currcvd."submissions";
 		if(!file_exists($submissionpath)) {
 				if(!mkdir($submissionpath,0775,true)) {
 						echo "Error creating folder: ".$submissionpath;
@@ -338,13 +339,13 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 				$seq++;
 
 				$filepath=$submissionpath;
-				if ($fieldkind = 4) {
+				if ($fieldkind == 4) {
 					$extension = "json";
 					$mime = "json";
 				}
 				$movname=$submissionpath."/".$fname.$seq.".".$extension;
 
-				if ($fieldkind = 4){ // JSON-data
+				if ($fieldkind == 4){ // JSON-data
 					file_put_contents($movname, $inputtext);
 				}else{
 					file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));

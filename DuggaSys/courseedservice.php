@@ -35,6 +35,7 @@ $enddate=getOP('enddate');
 $makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
+$LastCourseCreated=array();
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -69,6 +70,8 @@ if(checklogin()){
 	$ha = $isSuperUserVar;
 
 	if($ha){
+
+
 		// The code for modification using sessions
 		if(strcmp($opt,"DEL")===0){
 
@@ -87,6 +90,26 @@ if(checklogin()){
 			// Logging for creating new course
 			$description=$coursename." ".$coursecode." "."Hidden";
 			logUserEvent($userid, $username, EventTypes::AddCourse, $description);
+
+			//////////////////////////////
+			// Gets username based on uid, USED FOR LOGGING
+			$query_1 = $pdo->prepare( "SELECT cid FROM course ORDER BY cid DESC LIMIT 1");
+			$query_1-> execute();
+
+			if(!$query_1->execute()) {
+				$error=$query_1->errorInfo();
+				$debug="Error reading courses\n".$error[2];
+			}else{
+				foreach($query_1->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$LastCourseCreated,
+						array(
+							'LastCourseCreatedId' => $row['cid'],
+						)
+					);
+				}
+			}
+			/////////////////////////////////
 
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
@@ -194,7 +217,7 @@ if(checklogin()){
 						$debug="Error reading quiz\n".$error[2];
 				}else{
 						foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-								$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
+								$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,relativedeadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,qrelease,relativedeadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
 								$ruery->bindParam(':oldid', $row['id']);
 								$ruery->bindParam(':newvers', $versid);
 								if(!$ruery->execute()) {
@@ -471,6 +494,8 @@ if(checklogin()){
 			$debug="Error updating entries\n".$error[2];
 		}
 	}
+
+
 	}
 }
 //------------------------------------------------------------------------------------------------
@@ -505,6 +530,44 @@ foreach($queryz->fetchAll(PDO::FETCH_ASSOC) as $row){
 	$userCourse[$row['cid']] = $row['access'];
 }
 
+//Delete course matterial from courses that have been marked as deleted.
+$deleted = 3;
+$query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+$query = $pdo->prepare("DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+$query = $pdo->prepare("DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+$query = $pdo->prepare("DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+//Delete Courses that have been marked as deleted.
+$query = $pdo->prepare("DELETE course FROM course WHERE visibility=:deleted;");
+$query->bindParam(':deleted', $deleted);
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+}
+
 
 $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 
@@ -527,29 +590,29 @@ if(!$query->execute()) {
 					if ($userCourse[$row['cid']] == "W") $writeAccess = true;
 			}
 			if ($isSuperUserVar ||
-					$row['visibility']==1 ||
-					($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) ||
-					($row['visibility']==0 && $writeAccess)){
-					$isRegisteredToCourse = false;
-					foreach($userRegCourses as $userRegCourse){
-							if($userRegCourse == $row['cid']){
-								$isRegisteredToCourse = true;
-								break;
-							}
-						}
-					array_push(
-						$entries,
-						array(
-							'cid' => $row['cid'],
-							'coursename' => $row['coursename'],
-							'coursecode' => $row['coursecode'],
-							'visibility' => $row['visibility'],
-							'activeversion' => $row['activeversion'],
-							'activeedversion' => $row['activeedversion'],
-							'registered' => $isRegisteredToCourse
-							)
-						);
+			$row['visibility']==1 ||
+			($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) ||
+			($row['visibility']==0 && $writeAccess)){
+				$isRegisteredToCourse = false;
+				foreach($userRegCourses as $userRegCourse){
+					if($userRegCourse == $row['cid']){
+						$isRegisteredToCourse = true;
+						break;
+					}
 				}
+				array_push(
+					$entries,
+					array(
+						'cid' => $row['cid'],
+						'coursename' => $row['coursename'],
+						'coursecode' => $row['coursecode'],
+						'visibility' => $row['visibility'],
+						'activeversion' => $row['activeversion'],
+						'activeedversion' => $row['activeedversion'],
+						'registered' => $isRegisteredToCourse
+						)
+					);
+			}
 		}
 }
 
@@ -593,6 +656,7 @@ if(!$query->execute()) {
 
 
 $array = array(
+	'LastCourseCreated' => $LastCourseCreated,
 	'entries' => $entries,
 	'versions' => $versions,
 	"debug" => $debug,

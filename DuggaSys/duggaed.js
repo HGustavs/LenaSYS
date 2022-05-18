@@ -829,7 +829,7 @@ function confirmBox(operation, item, type) {
 	if (operation == "openConfirmBox") {
 		typeOfItem = type;
 		itemToDelete = item; // save the item to delete in this variable
-		$("#sectionConfirmBox").css("display", "flex");
+		$("#sectionConfirmBox").css("display", "flex");	
 	} else if (operation == "deleteItem") {
 		if (typeOfItem == "dugga") {
 			deleteDugga(itemToDelete);
@@ -842,11 +842,16 @@ function confirmBox(operation, item, type) {
 	}
 
 	// Allows for duggor & dugga variants to be deleted by pressing the enter-key when the confirmBox is visible.
-	document.addEventListener("keyup", event => {
-		if (event.key === 'Enter') {
-			deleteVariant(itemToDelete);
-			deleteDugga(itemToDelete);
-			$("#sectionConfirmBox").css("display", "none");
+	document.addEventListener("keypress", event => {
+		if (event.key === 'Enter') {	
+			if(event.target.classList.contains("traschcanDelDugga")){
+				$("#confirmDelSubmit").focus();
+			}
+			if(event.target.id == "confirmDelSubmit"){
+				deleteVariant(itemToDelete);
+				deleteDugga(itemToDelete);
+				$("#sectionConfirmBox").css("display", "none");
+			}
 		}
 	});
 }
@@ -1051,19 +1056,19 @@ function renderCell(col, celldata, cellid) {
 
 		case "arrow":		// DUGGA-TABLE - Arrow icon
 			clickedElement = JSON.parse(cellid.match(/\d+/));
-			retString = "<img alt='edit dugga icon' id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
+			retString = "<img alt='edit dugga icon' tabindex='0' id='dorf' class='markdownIcon markdownIconTab' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
 			retString += ` onclick='renderVariant(\"${clickedElement}\"); showVariantEditor();'>`;
 			break;
 
 		case "cogwheel":	// DUGGA-TABLE - Cogwheel icon
 			object = JSON.parse(celldata);
-			retString = "<img alt='dugga settings icon' id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
+			retString += "<img class='settingIcon' tabindex='0' alt='dugga settings icon' id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
 			retString += ` onclick='selectDugga(\"${object}\");' >`;
 			break;
 
 		case "trashcan":	// DUGGA-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
-			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
+			retString = "<img alt='delete dugga icon' tabindex='0'  class='traschcanDelDugga' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 
