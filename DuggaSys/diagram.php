@@ -171,8 +171,8 @@
                     </span>
                 </div>
 
-                <div class="diagramIcons">
-                    <img src="../Shared/icons/crying.svg"/>
+                <div id="elementPlacement6" class="diagramIcons toolbarMode" onclick='setElementPlacementType(6); setMouseMode(2);'>
+                    <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
                     <span class="toolTipText"><b>IE Inheritence</b><br>
                         <p>Add IE-inheritence to the diagram</p><br>
                         <p id="tooltip-IE_INHERITANCE" class="key_tooltip">Keybinding:</p>
