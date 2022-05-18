@@ -521,7 +521,7 @@ body {
 .logoutBox{
   background-color: var(--color-background);
   color:white;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-sectioned-table-lo);
 }
 
 .iconColorInDarkMode{
@@ -809,6 +809,7 @@ input{
     background-color: #464646;
     color:white;
     color-scheme: dark; /*For date picker */
+    border: 2px solid #212121;
 }
 /* END */
 
