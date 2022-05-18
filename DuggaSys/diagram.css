@@ -354,6 +354,7 @@
 
 .diagramIcons:hover .toolTipText{
     visibility: visible;
+    transition-delay: 700ms;
 }
 
 #tooltip-OPTIONS{
