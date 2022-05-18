@@ -112,7 +112,7 @@ function returnedDugga(data)
 		//document.getElementById("target-text").innerHTML = retdata["target-text"];
 
 
-		if (data["answer"] == null || data["answer"] !== "UNK") {
+		if (data["answer"] !== null && data["answer"] !== "UNK") {
 			var userCode = data["answer"].substr(data["answer"].indexOf("###HTMLSTART###")+15,data["answer"].indexOf("###HTMLEND###")-28);
 			userCode =  reverseHtmlEntities(userCode);
 
