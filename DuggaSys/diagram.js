@@ -4869,7 +4869,18 @@ function generateErTableString()
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
-                            currentString += `${allEntityList[i][j].name}, `;
+                            //currentString += `${allEntityList[i][j].name}, `;
+                            if(getParentElementOfID(allEntityList[i][j].id) != undefined && getParentElementOfID(allEntityList[i][j].id).kind == 'ERAttr'){
+                                if(getParentElementOfID(allEntityList[i][j].id).state == 'primary' || getParentElementOfID(allEntityList[i][j].id.state == 'candidate')){
+                                    currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][j].name}</span>, `;
+                                }
+                                else{
+                                    currentString += `${allEntityList[i][j].name}, `;
+                                }
+                            }
+                            else{
+                                currentString += `${allEntityList[i][j].name}, `;
+                            }
                         }
                     }
                 }
@@ -5021,10 +5032,6 @@ function generateErTableString()
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
-    }
-
-    for (var i = 0; i < data.length; i++){
-        
     }
     return stri;
 }
