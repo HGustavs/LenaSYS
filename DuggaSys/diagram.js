@@ -935,7 +935,7 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100"];
+const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
@@ -5410,8 +5410,6 @@ function setElementColors(clickedCircleID)
         var color = colors[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
-            elementIDs[i] = context[i].id;
-
             /*
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
@@ -8334,6 +8332,7 @@ function updateCSSForAllElements()
                         } else{
                             fillColor.style.fill = `${element.fill}`;
                             fontColor.style.fill = `${"#000000"}`;
+                             fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
                         }
                     }
                 }else{ // Update normal elements, and relations
@@ -8356,9 +8355,14 @@ function updateCSSForAllElements()
                         }
                     }else{
                         fillColor.style.fill = `${element.fill}`;
-                        fontColor.style.fill = `${"#000000"}`;
+                        
+                        fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+                        
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
+                            if (element.fill == "#000000") {
+                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            }
                         }
                     }
                 }
