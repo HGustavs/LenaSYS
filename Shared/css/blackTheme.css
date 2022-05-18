@@ -153,11 +153,11 @@
 }
 
 .buttomenuStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
 }
 
 .mbuttoStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
 }
 
 .mbuttoStyleLight {
@@ -181,30 +181,30 @@
 
 .dropdownStyle {
     color: white;
-    /*background: #614875;*/
+    /*background: var(--color-primary);*/
 }
 
 .dropdownbackStyle {
-	background-color: #614875;
+	background-color: var(--color-primary);
     color: #fff;
 }
 
 .codedropStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
     border-color: rgb(0,0,0) transparent;
 }
 
 .docudropStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
     background: rgb(0, 0, 0) transparent;
 }
 
 .themedropStyle {
-	background-color: #614875;
+	background-color: var(--color-primary);
 }
 
 .imgdropStyle{
-	background-color: #614875;
+	background-color: var(--color-primary);
 }
 .imgdropStyle img:hover{
 	border-style:solid;
@@ -213,7 +213,7 @@
 }
 
 .dropdownitemStyle {
-    background: #614875;
+    background: var(--color-primary);
     color: white;
 }
 
@@ -222,14 +222,14 @@
 }
 
 .codeborder{
-	background-color: #614875;
+	background-color: var(--color-primary);
 	text-align: right;
 }
 
 .codeborder .no {
     color: #D8D8D8;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
-	background-color: #614875;
+	background-color: var(--color-primary);
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -370,9 +370,9 @@
 	background-color: #7D5CA0;
 }
 .settingsTabMenuStyle .activeSetMenuLink{
-	border-bottom-color: #614875;
+	border-bottom-color: var(--color-primary);
 	border-bottom-width:3px;
-	background-color: #614875;
+	background-color: var(--color-primary);
 }
 
 .templatethumbicon:hover{
@@ -440,13 +440,13 @@
 	======================*/
 
 .list {
-	  border-bottom: 2px solid #614875;
+	  border-bottom: 2px solid var(--color-primary);
    	font-size: 16px;
 }
 
 .list td {
-    border-left: 2px solid #614875;
-    border-right: 2px solid #614875;
+    border-left: 2px solid var(--color-primary);
+    border-right: 2px solid var(--color-primary);
 }
 
 .changeColorInDarkModeTable:nth-of-type(even) { 
@@ -458,7 +458,7 @@
 }
 
 .bottomBorderColor{
-    border-top: 2px solid #614875;
+    border-top: 2px solid var(--color-primary);
 }
 
 .descbox code{
