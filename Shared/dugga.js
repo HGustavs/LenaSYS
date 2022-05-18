@@ -1312,12 +1312,16 @@ function localStorageHandler(ajaxdata) {
 }
 
 function createDuggaLocalStorageData(ajaxVid, ajaxVariantArr) {
+	console.log(ajaxVid);
+	console.log(ajaxVariantArr);
  	var data = {
 		variant: getVariant(ajaxVid,ajaxVariantArr),
 		expireTime: createExpireTime()
 	};
 
 	return JSON.stringify(data);
+	
+
 }
 
 function getVariant(ajaxVid, ajaxVariantArr){

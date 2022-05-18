@@ -7885,9 +7885,21 @@ textarea#filecont {
 .variant-param {
   max-width: 0;
 }
+.variant-notes {
+  max-width: 100px;
+}
+
 
 /* Content in paramater coulumn */
 .variants-param-col {
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.variants-notes-col {
   display: inline-block;
   width: 100%;
   white-space: nowrap;

@@ -429,6 +429,8 @@ function newVariant() {
 	document.getElementById('gFilelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
+	document.getElementById('notes').value = '';
+	document.getElementById('notes').placeholder = 'Notes';
 	document.getElementById('variantparameterText').value = '';
 	document.getElementById('variantparameterText').placeholder = 'Undefined JSON parameter';
 	document.getElementById('variantanswerText').value = '';
@@ -446,7 +448,7 @@ function newVariant() {
 function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
-	var parameter = $("#variantparameterText").val();
+	var parameter = $("#variantparameterText").val(); 
 	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -469,6 +471,7 @@ function selectVariant(vid, el) {
 			document.getElementById('vid').value = target_variant['vid'];
 			document.getElementById('variantparameterText').value = target_variant['param'];
 			document.getElementById('variantanswerText').value = target_variant['variantanswer'];
+			
 		} else {
 			// But hide the information if it is deselected.
 			document.getElementById('vid').value = "";
@@ -500,6 +503,9 @@ function selectVariant(vid, el) {
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
+				else if(result == "notes"){
+					document.getElementById('notes').value = obj[result];
+				}
 				else if(result =="errorActive"){
 					document.getElementById("errorActive").checked = obj[result];
 				}else if(result == "diagram_File"){
@@ -522,7 +528,7 @@ function selectVariant(vid, el) {
   				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
   				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
   				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
-  				  document.getElementById('variantparameterText').value = target_variant['param'];
+  				  document.getElementById('variantparameterText').value = target_variant['param'];					
   			 }
   		  }
       } catch (e) {
@@ -534,7 +540,7 @@ function selectVariant(vid, el) {
 				document.getElementById('filelink').value = "";
 				document.getElementById('gType').value = "";
 				document.getElementById('gFilelink').value = "";
-				document.getElementById('extraparam').value = "";
+				document.getElementById('extraparam').value = "";  				
 		}
 
   var disabled = (target_variant['disabled']);
@@ -555,7 +561,8 @@ function updateVariant(status) {
 	clearActiveDiagram();
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
-  var parameter = $("#variantparameterText").val();
+  	var parameter = $("#variantparameterText").val();
+
 	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
@@ -695,21 +702,24 @@ function createJSONString(formData) {
 		if (element.name == "s_type") type = element;
 		if (element.name == "s_fieldname") fieldname = element;
 		if (element.name == "s_instruction") instruction = element;
+		
 
 		if (type && fieldname && instruction) {
 			submission_types.push({
 				"type":type.value,
 				"fieldname":fieldname.value,
-				"instruction":instruction.value
+				"instruction":instruction.value,
+				
 			});
 
 			type = undefined;
 			fieldname = undefined;
 			instruction = undefined;
+			
 		}
 	});
 
-
+	//Adds values to the JSON object.
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
@@ -718,9 +728,11 @@ function createJSONString(formData) {
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
+		"notes":$('#notes').val(),
 		"submissions":submission_types,
 		"errorActive":document.getElementById("errorActive").checked
 	});
+	
 }
 
 // Does the reverse of what createJSONString does.
@@ -754,9 +766,14 @@ function createJSONFormData(){
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];
       }
+	  else if(result == "notes"){
+        document.getElementById('notes').value = obj[result];
+      }
+	 
 	  else if(result =="file"){
 		document.getElementById('file').value = "hejsan";
 	  }
+	  
     }
 
     var submissionTypes = obj.submissions;
@@ -771,6 +788,7 @@ function createJSONFormData(){
         document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
         document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
         document.getElementById('variantparameterText').value = jsonData;
+
       }
     }
   } catch (e) {
@@ -859,6 +877,7 @@ function returnedQuiz(data) {
 // START OF RENDERING TABELS
 //Table for duggas
 function returnedDugga(data) {
+	
 	//If the user dont have writeaccess, the user gets send to the startpage
 	if (!data.writeaccess) {
 		window.location.href = 'courseed.php';
@@ -956,8 +975,9 @@ function renderVariant(clickedElement) {
 		globalVariant = clickedElement;
 		updateVariantTitle(clickedElement);
 		var tabledata = {
-				tblhead: {
+				tblhead: {					//Add header to variant window.
 						vid: "",
+						notes: "Note",
 						param: "Parameter",
 						modified: "Modified",
 						disabled: "Status",
@@ -968,7 +988,7 @@ function renderVariant(clickedElement) {
 				tblbody: globalData['entries'][clickedElement].variants,
 				tblfoot: {}
 		}
-		var colOrderVariant=["vid","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
+		var colOrderVariant=["vid","notes","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
 		variantTable = new SortableTable({
 				data:tabledata,
 				tableElementId:"variant",
@@ -1047,6 +1067,12 @@ function renderCell(col, celldata, cellid) {
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 
+		case "notes":		// DUGGA-TABLE - Notes column
+			// Parse JSON to get the note
+			object = JSON.parse(celldata).notes;
+			retString = `<span class='variants-notes-col'>${object}</span>`;
+			break;
+			
 		case "param":		// DUGGA-TABLE - Parameter column
 			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
