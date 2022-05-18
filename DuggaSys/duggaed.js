@@ -540,7 +540,8 @@ function selectVariant(vid, el) {
 				document.getElementById('filelink').value = "";
 				document.getElementById('gType').value = "";
 				document.getElementById('gFilelink').value = "";
-				document.getElementById('extraparam').value = "";  				
+				document.getElementById('extraparam').value = "";
+				document.getElementById('notes').value = ""; 				
 		}
 
   var disabled = (target_variant['disabled']);
