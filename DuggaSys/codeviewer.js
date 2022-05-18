@@ -4723,8 +4723,9 @@ function copyCodeToClipboard(boxid) {
 	if (navigator.clipboard){
 		navigator.clipboard.writeText(lines);
 	} else {
-		var dummy = $('<input>').val(lines).appendTo('body').select();
+		var dummy = $('<textarea>').val(lines).appendTo('body').select();
 		document.execCommand("Copy")
+		dummy.remove();
 	}
 
 	// Notification animation
