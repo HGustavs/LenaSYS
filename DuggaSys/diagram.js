@@ -1285,13 +1285,13 @@ function getData()
 {
     container = document.getElementById("container");
     onSetup();
-    showdata();
-    drawRulerBars(scrollx,scrolly);
     generateToolTips();
     toggleGrid();
     updateGridPos();
     updateA4Pos();
     updateGridSize();
+    showdata();
+    drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
 }
@@ -1516,7 +1516,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
         if(isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-        if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck();
+        //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
             // Remove the preivous copy-paste data from localstorage.
@@ -2214,7 +2214,7 @@ function mouseMode_onMouseMove(event)
  * @param {MouseEvent} event Triggered mouse event.
  */
 function mmoving(event)
-{
+{ 
     lastMousePos = getPoint(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
@@ -2750,6 +2750,7 @@ function updateSelection(ctxelement) // TODO : Default null value since we use i
         if (!context.includes(ctxelement)) {
             context.push(ctxelement);
             showdata();
+            clearContext
         // The element is already selected    
         } else {
             context = context.filter(function (element)
@@ -2929,7 +2930,7 @@ function clearContextLine()
  * @returns {Point} Point containing the calculated coordinates.
  * @see diagramToScreenPosition() For converting the other way.
  */
-function screenToDiagramCoordinates(mouseX, mouseY)
+function screenToDiagramCoordinates(mouseX,mouseY)
 {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
     // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
@@ -4372,6 +4373,12 @@ function toggleErrorCheck(){
 function hideErrorCheck(show){
     if(show == true){
         document.getElementById("errorCheckField").style.display = "flex";
+        // Enables error check by pressing 'h', only when error check button is visible
+        document.addEventListener("keyup", event => {
+            if (event.key === 'h') {
+                toggleErrorCheck();                   
+            }
+        });
     }
     else{
         document.getElementById("errorCheckField").style.display = "none";
@@ -5069,7 +5076,7 @@ function generateContextProperties()
               menuSet[i].classList.remove('options-fieldset-show');  
           }
 
-          str += `<div style="color: white">BG Color</div>`;
+          str += `<div style="color: white">Color</div>`;
           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
       }
@@ -5106,6 +5113,7 @@ function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
+        document.getElementById("BGColorMenu").style.visibility = "hidden";
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
@@ -5924,6 +5932,15 @@ function drawLine(line, targetGhost = false)
         tx = telem.x2;
     }
 
+    // Set line end-point in center of UMLRelations.
+    if(felem.kind == "UMLRelation"){
+        fx = felem.cx;
+        fy = felem.cy;
+    } else if (telem.kind == "UMLRelation"){
+        tx = telem.cx;
+        ty = telem.cy;
+    }
+
     // Overwrite line positioning on recursive relations (2 lines pointing to same EREntity)
     var connections = felem.neighbours[telem.id].length;
     if (connections === 2) {
@@ -5993,6 +6010,15 @@ function drawLine(line, targetGhost = false)
     } else if ((fy < ty) && (line.ctype == "BT") ){
         y1Offset = -lengthConstant;
         y2Offset = lengthConstant;   
+    }
+
+    // Do not draw the lines longer for UMLRelations.
+    if (felem.kind == "UMLRelation"){
+        x1Offset = 0;
+        y1Offset = 0;
+    } else if(telem.kind == "UMLRelation"){
+        x2Offset = 0;
+        y2Offset =0;
     }
     
     if (line.kind == "Normal"){
@@ -6489,6 +6515,15 @@ function drawElement(element, ghosted = false)
             }
             //end of svg for background
             str += `</svg>`;
+        // Draw UML-content if there are no attributes.
+        } else {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            //end of svg for background
+            str += `</svg>`;
         }
         //end of div for UML content
         str += `</div>`;
@@ -6504,6 +6539,15 @@ function drawElement(element, ghosted = false)
             for (var i = 0; i < elemFunc; i++) {
                 str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
             }
+            //end of svg for background
+            str += `</svg>`;
+        // Draw UML-footer if there are no functions
+        } else {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
             str += `</svg>`;
         }
