@@ -2209,22 +2209,22 @@ function accountInformation(data){
     if(data[row][1]==101){  //pending account
       str+="<td class='accountRequestTable'>" + 'Pending'+ "</td>";
       str+="<td class='accountRequestTable'>";
-        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept'></input>" ;
-        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny '></input>";
+        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept'></input><br>" ;
+        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny '></input><br>";
         str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc()', value='Delete '></input>";
       str+= "</td>";
     }
     else if(data[row][1]==0){ //accepted account
       str+= "<td class='accountRequestTable'>" + 'Accepted'+ "</td>";
       str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete '></input>";
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete '></input> <br>";
         str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc()' value='Revoke '></input>"; 
       str+= "</td>";
     }
     else{ //if not accepted or pending its denied
       str+= "<td class='accountRequestTable'>" + 'Denied' + "</td>";
       str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete'></input>";
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete'></input><br>";
         str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Accept'></input>"; 
       str+= "</td>";
     }
@@ -2255,9 +2255,9 @@ function placeSideBarInfo(data){
   str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
-  str+= "<th class='accountRequestTable'></th>";
-  str+= "<th class='accountRequestTable'>Name </th>";
-  str+= "<th class='accountRequestTable'>Status</th>";;
+  str+= "<th class='accountRequestTable'>Name</th>";
+  str+= "<th class='accountRequestTable'> Status</th>";
+  str+= "<th class='accountRequestTable'>Action</th>";;
   str+= "</tr>";
   str+=accountInformation(data);
 
