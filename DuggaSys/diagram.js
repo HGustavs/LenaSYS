@@ -9158,10 +9158,10 @@ function checkElementError(element)
             }
 
             // Checking for non-normal attributes on relation
-            if (fElement.id == element.id && tElement.kind == "ERRelation" && fElement.state != null) {
+            if (fElement.id == element.id && tElement.kind == "ERRelation" && fElement.state != "normal") {
                 errorData.push(element);
             }
-            if (tElement.id == element.id && fElement.kind == "ERRelation" && tElement.state != null) {
+            if (tElement.id == element.id && fElement.kind == "ERRelation" && tElement.state != "normal") {
                 errorData.push(element);
             }
 
