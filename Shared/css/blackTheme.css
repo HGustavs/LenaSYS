@@ -610,8 +610,8 @@ body {
 }
 
 #opTableContainer{
-	height:355px;
-	background-color: #212121; 
+	background-color: #121212; 
+    margin: 7px;
 	overflow-y:scroll;
 }
 
