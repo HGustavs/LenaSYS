@@ -216,14 +216,15 @@
     margin-top:2px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .diagramIcons:hover, .active{
     background: var(--color-primary-hover);
     border: solid 1px var(--color-primary-light);
 }
 .diagramIcons img{
-    width:36px;
-    height:36px;
+    width:35px;
+    height:35px;
 }
 .node {
     position: absolute;
