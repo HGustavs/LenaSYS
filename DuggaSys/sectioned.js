@@ -1210,6 +1210,10 @@ function returnedSection(data) {
           str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
           str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
           
+        } else if (itemKind === 0 || itemKind === 1) { // Draggable area with purple background
+          // str += "<td style='background-color: #614875;text-align: left;' class='LightBox" + hideState + "'  >";
+          // str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+        }
         str += "</td>";
       }
         // Make tabs to align each section element
@@ -1254,6 +1258,8 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 2) {
+
+       
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
