@@ -48,8 +48,14 @@
         filter: invert(80%);
         -webkit-filter: invert(80%);
     }
-    #NewTabLink{
+    #tabElement{
+        filter: invert(80%);
+        -webkit-filter: invert(80%);
+    }
+    .test #NewTabLink{
         cursor: pointer; 
+        filter: invert(80%);
+        -webkit-filter: invert(80%);
     }
     .code #NewTabLink{
         filter: invert(80%);
