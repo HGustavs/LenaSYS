@@ -154,43 +154,43 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,ro
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1024,1,'PHP Example 3 - EN',3,2,4,1,1,'45657',0);
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2001,2,'Biträkningsduggor 1HP','',4,0,1,1,'97732',2001,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2002,2,'Biträkningsdugga 1','1',3,1,1,1,'97732',2001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2003,2,'Biträkningsdugga 2','2',3,2,1,1,'97732',2001,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2002,2,'Biträkningsdugga 1','1',3,1,1,1,'97732',2001,0,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2003,2,'Biträkningsdugga 2','2',3,2,1,1,'97732',2001,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2004,2,'Färgduggor 1HP','',4,3,1,1,'97732',2004,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2005,2,'Färgdugga 1','3',3,4,1,1,'97732',2004,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2006,2,'Färgdugga 2','4',3,5,1,1,'97732',2004,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2005,2,'Färgdugga 1','3',3,4,1,1,'97732',2004,0,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2006,2,'Färgdugga 2','4',3,5,1,1,'97732',2004,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2007,2,'Geometri 2HP','',4,6,1,1,'97732',2007,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2008,2,'Linjedugga 1','5',3,7,1,1,'97732',2007,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2009,2,'Linjedugga 2','6',3,8,1,1,'97732',2007,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2008,2,'Linjedugga 1','5',3,7,1,1,'97732',2007,0,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2009,2,'Linjedugga 2','6',3,8,1,1,'97732',2007,0,2,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2010,2,'Transformationer 3,5HP','',4,9,1,1,'97732',2010,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2011,2,'Transformationsdugga 1','7',3,10,1,1,'97732',2010,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2012,2,'Transformationsdugga 2','8',3,11,1,1,'97732',2010,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2011,2,'Transformationsdugga 1','7',3,10,1,1,'97732',2010,0,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2012,2,'Transformationsdugga 2','8',3,11,1,1,'97732',2010,0,2,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2013,2,'Frågeduggor 1HP','',4,12,1,1,'97732',2013,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2014,2,'Frågedugga 1','9',3,13,1,1,'97732',2013,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2014,2,'Frågedugga 1','9',3,13,1,1,'97732',2013,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2015,2,'Rapport 1HP', '',4,14,2,1,'97732',2015,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2016,2,'Rapport inlämning','10',3,15,2,1,'97732',2015,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2016,2,'Rapport inlämning','10',3,15,2,1,'97732',2015,0,1,0);
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2017,2,'Bit count test 1HP','',4,0,1,1,'97731',2017,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2018,2,'Bit count test 1','1',3,1,1,1,'97731',2017,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2018,2,'Bit count test 1','1',3,1,1,1,'97731',2017,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2019,2,'Bit count test 2','2',3,2,1,1,'97731',2017,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2020,2,'Color test 1HP','',4,3,1,1,'97731',2020,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2021,2,'Hex color test 1','3',3,4,1,1,'97731',2020,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2022,2,'Hex color test 2','4',3,5,1,1,'97731',2020,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2021,2,'Hex color test 1','3',3,4,1,1,'97731',2020,0,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2022,2,'Hex color test 2','4',3,5,1,1,'97731',2020,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2023,2,'Geometry 2HP','',4,6,1,1,'97731',2023,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2024,2,'Geometry test 1','5',3,7,1,1,'97731',2022,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2025,2,'Geometry test 2','6',3,8,1,1,'97731',2022,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2024,2,'Geometry test 1','5',3,7,1,1,'97731',2022,0,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2025,2,'Geometry test 2','6',3,8,1,1,'97731',2022,0,2,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2026,2,'Transforms 3,5HP','',4,9,1,1,'97731',2026,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2027,2,'Transforms test 1','7',3,10,1,1,'97731',2026,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2028,2,'Transforms test 2','8',3,11,1,1,'97731',2026,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2027,2,'Transforms test 1','7',3,10,1,1,'97731',2026,0,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2028,2,'Transforms test 2','8',3,11,1,1,'97731',2026,0,2,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2029,2,'Quizzes 1HP','',4,12,1,1,'97731',2029,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2030,2,'Quiz 1','9',3,13,1,1,'97731',2029,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2030,2,'Quiz 1','9',3,13,1,1,'97731',2029,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2031,2,'Report 1HP', '',4,14,2,1,'97731',2031,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2032,2,'Report submission','10',3,15,2,1,'97731',2031,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2032,2,'Report submission','10',3,15,2,1,'97731',2031,0,1,0);
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2033,2,'HTML and CSS 1HP', '',4,16,2,1,'97732',2033,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2034,2,'Random css dugga','11',3,17,2,1,'97732',2033,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2034,2,'Random css dugga','11',3,17,2,1,'97732',2033,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2035,2,'Clipping', '',4,18,2,1,'97732',2035,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2036,2,'Random clipping dugga','12',3,19,2,1,'97732',2035,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2036,2,'Random clipping dugga','12',3,19,2,1,'97732',2035,0,1,0);
 
 /* Insert access for users */
 INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers,examiner,`groups`) VALUES (1010,1,'0.0','1','R',0,'VT-20',45656,6,'Le_A');
