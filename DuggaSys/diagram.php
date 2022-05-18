@@ -86,7 +86,7 @@
 			$instructions = preg_replace( $pattern, $replace,$instructions);
 			$information = preg_replace( $pattern, $replace,$information);
 
-			$finalArray[$i]=($splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information);
+			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
 			$i++;
 		}
 	}
@@ -133,13 +133,18 @@
 	 * */
 	function getInstructions(fileName)
 	{
-		if(<?php echo json_encode($finalArray);?>.length > 0){
-			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
-				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
-					document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
+        Array=<?php echo json_encode($finalArray);?>;
+		if(Array.length > 0){
+			for (let index = 0; index < Array.length; index++) {
+				if(Array[index][2]==fileName){
+                    if(Array[index][3] != null && Array[index][3] != "UNK"){
+					    document.getElementById("assignment_discrb").innerHTML = Array[index][3];
+                    }
 				}
-				if(<?php echo json_encode($finalArray);?>[index][5]==fileName){
-					document.getElementById("diagram_instructions").innerHTML =<?php echo json_encode($finalArray);?>[index][6];
+				if(Array[index][5]==fileName){
+                    if(Array[index][6] != null && Array[index][6] != "UNK"){
+					    document.getElementById("diagram_instructions").innerHTML =Array[index][6];
+                    }
 				}
 			}
 		}			
