@@ -3804,6 +3804,40 @@ function toggleErTable()
     }
     generateContextProperties();
 }
+
+/**
+ * @description Fetches the parent element of the current element ID
+ * @returns The parent element object
+ */
+ function getParentElementOfID(ID){
+    for (var i = 0; i < lines.length; i++){
+        if(lines[i].toID == ID){
+            for (var j = 0; j < data.length; j++){
+                if(lines[i].fromID == data[j].id){
+                    return data[j];
+                }
+            }
+        }
+    }
+}
+
+/**
+ * @description checks the element ID and determines if it has child elements
+ * @returns true or false
+ */
+function hasChildElement(ID){
+    for (var i = 0; i < lines.length; i++){
+        if(lines[i].fromID == ID){
+            for (var j = 0; j < data.length; j++){
+                if(lines[i].toID == data[j].id){
+                    return data[j];
+                }
+            }
+        }
+    }
+    return false;
+}
+
 /**
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
@@ -4987,6 +5021,10 @@ function generateErTableString()
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
+    }
+
+    for (var i = 0; i < data.length; i++){
+        
     }
     return stri;
 }
