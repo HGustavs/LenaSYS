@@ -2325,6 +2325,7 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
+    storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -8504,6 +8505,20 @@ function exportWithHistory()
     downloadFile("diagram", objToSave);
 }
 /**
+ * @description Stores the current diagram as JSON in localstorage
+ */
+ function storeDiagramInLocalStorage(){
+    // Remove all future states to the history
+    stateMachine.removeFutureStates();
+
+    // The content of the save file
+    var objToSave = {
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
+    };
+    localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+}
+/**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
  */
 function exportWithoutHistory()
@@ -8713,5 +8728,9 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
     }else{
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
+}
+function refreshDiagram(){
+    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    fetchDiagramFileContentOnLoad();
 }
 //#endregion =====================================================================================

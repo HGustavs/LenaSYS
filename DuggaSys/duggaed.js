@@ -552,6 +552,7 @@ function selectVariant(vid, el) {
 
 
 function updateVariant(status) {
+	clearActiveDiagram();
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   var parameter = $("#variantparameterText").val();
@@ -572,6 +573,7 @@ function updateVariant(status) {
 }
 
 function deleteVariant(vid) {
+	clearActiveDiagram();
 	AJAXService("DELVARI", { cid: querystring['courseid'], vid: vid, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -1348,3 +1350,6 @@ function checkDiagramTypes(num){
 	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 }
 
+function clearActiveDiagram(){
+	localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+}

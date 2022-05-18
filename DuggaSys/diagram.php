@@ -226,6 +226,12 @@
         </fieldset>
         <fieldset>
             <legend>History</legend>
+            <div id="erTableToggle" class="diagramIcons" onclick="refreshDiagram()">
+                <img src="../Shared/icons/diagram_ER_table_info.svg"/>
+                <span class="toolTipText"><b>Refresh Diagram</b><br>
+                    <p>Click to reset the diagram to its original look</p><br>
+                </span>
+            </div>
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
                 <span class="toolTipText"><b>Redo</b><br>

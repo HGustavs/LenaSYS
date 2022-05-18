@@ -24,6 +24,10 @@ function setup()
     AJAXService("GETPARAM", { }, "PDUGGA");
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
+    // checking if user has an stored active diagram and loading it if they have
+    if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != ""){
+        document.getElementById("diagram-iframe").contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
+    }
 }
 
 /**
