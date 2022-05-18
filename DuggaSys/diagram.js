@@ -736,6 +736,7 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
         PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
+        IE_INHERITANCE: {key: "9", ctrl: false},  //<-- IE inheritance functionality
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},

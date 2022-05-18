@@ -133,7 +133,7 @@
                 <div>
                     <div id="elementPlacement5" class="diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_inheritance.svg"/>
-                        <span class="toolTipText"><b>Inheritance</b><br>
+                        <span class="toolTipText"><b>UML Inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p><br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                         </span>
@@ -170,6 +170,15 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+
+                <div class="diagramIcons">
+                    <img src="../Shared/icons/crying.svg"/>
+                    <span class="toolTipText"><b>IE Inheritence</b><br>
+                        <p>Add IE-inheritence to the diagram</p><br>
+                        <p id="tooltip-IE_INHERITANCE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
