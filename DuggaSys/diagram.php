@@ -41,7 +41,7 @@
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
                     <span class="toolTipText"><b>Pointer</b><br>
-                        <p>Allows you to select and move different elements as well as navigate the diagram</p><br>
+                        <p>Allows you to select and move different elements as well as navigate the workspace</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -72,8 +72,8 @@
                         </div>
                         <div class="placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML Entity</b><br>
-                                <p>Change to UML entity</p>
+                            <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                <p>Change to UML class</p>
                             </span>
                         </div>
                     </div>
@@ -81,8 +81,8 @@
                 <div>
                     <div id="elementPlacement4" class="diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                        <span class="toolTipText"><b>Entity</b><br>
-                            <p>Add an UML entity to the diagram</p><br>
+                        <span class="toolTipText"><b>Class</b><br>
+                            <p>Add an UML class to the diagram</p><br>
                             <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton4" class="placementTypeIcon togglePlacementTypeButton">
@@ -98,8 +98,8 @@
                         </div>
                         <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
-                            <span class="placementTypeToolTipText"><b>UML Entity</b><br>
-                                <p>Change to UML entity</p>
+                            <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                <p>Change to UML class</p>
                             </span>
                         </div>
                     </div>
@@ -226,6 +226,12 @@
         </fieldset>
         <fieldset>
             <legend>History</legend>
+            <div id="erTableToggle" class="diagramIcons" onclick="refreshDiagram()">
+                <img src="../Shared/icons/diagram_ER_table_info.svg"/>
+                <span class="toolTipText"><b>Refresh Diagram</b><br>
+                    <p>Click to reset the diagram to its original look</p><br>
+                </span>
+            </div>
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg"/>
                 <span class="toolTipText"><b>Redo</b><br>
@@ -258,7 +264,7 @@
                 </span>
             </div>
         </fieldset>     
-        <fieldset>
+        <fieldset id = "errorCheckField">
         <legend>Check</legend>
             <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
                 <img src="../Shared/icons/diagram_errorCheck.svg"/>
@@ -267,7 +273,15 @@
                     <p id="tooltip-TOGGLE_ERROR_CHECK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-        </fieldset>        
+        </fieldset>   
+        <fieldset>
+            <legend>Include</legend>
+            <div id="Include" class="diagramIcons" onclick="toggleErTable()">
+                <img src="../Shared/icons/angelBrackets.svg"/>
+                <span class="toolTipText"><b>To use less than</b><br>
+                    <p>To use less than type & #60; <br><strong>"EX: <& #60;Include>>"</STRONG> </p><br>
+                </span>
+        </fieldset>      
     </div>
 
     <!-- Message prompt -->
@@ -314,7 +328,7 @@
     </div>  
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
-            <span class="toolTipText"><b>Show Option Panel</b><br>
+            <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
                 <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
             </span>
