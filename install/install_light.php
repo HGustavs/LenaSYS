@@ -21,6 +21,8 @@
     echo '<div class="inputContent" id="td1">';
     echo '<p id="infoText" style="text-align: center;"><b>By clicking install the database will be dropped and reinitialized with the original courses. This is done to clean the table of contents in sectioneed.</b></p><hr>';
     echo '<form method="POST" action="install_light.php">';
+	echo '<label for="fname">Root Password:</label><br>';
+    echo '<input type="text" id="fname" name="fname" ><br>';
     echo '<input id="submitInput" class="button" type="submit" name="install" value="Install!"/>';
     echo '</form>';
     echo '</div>';
@@ -68,8 +70,8 @@
       //Drops the database and recreates it with the same name.
       function recreate_db() {
         $GLOBALS['canProceed'] = false; 
-        global $serverName,$rootUser,$rootPwd,$databaseName,$connection,$username,$password;
-        
+        global $serverName,$rootUser,$databaseName,$connection,$username,$password;
+		$rootPwd = $_POST['fname'];
         $GLOBALS['connection'] =new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
         $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
         $connection->query("DROP DATABASE {$databaseName}");
@@ -172,7 +174,7 @@
         }
         $GLOBALS['canProceed'] = true;   
       }
-      
+	  
       //Function for finding and moving testdata from the install to the live version folder.
       function addTestData($file, $connection){
         $GLOBALS['canProceed'] = false; 
