@@ -86,7 +86,7 @@
 			$instructions = preg_replace( $pattern, $replace,$instructions);
 			$information = preg_replace( $pattern, $replace,$information);
 
-			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
+			$finalArray[$i]=($splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information);
 			$i++;
 		}
 	}
