@@ -1441,7 +1441,9 @@ document.addEventListener('keydown', function (e)
                 saveProperties(); 
                 propField.blur();
             }
-            displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
+            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
+            }
         }
     }
 });
