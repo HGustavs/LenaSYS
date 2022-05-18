@@ -2968,6 +2968,36 @@ div.submit-button:disabled {
   line-height: 48px !important;
 }
 
+/* Form Pointing Dialogs */
+
+.formDialog {
+  position: relative;
+  display: inline-block;
+}
+
+.formDialog .formDialogText {
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 5;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.formDialog .formDialogText::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
 
 /* Tooltip */
 
@@ -7885,9 +7915,21 @@ textarea#filecont {
 .variant-param {
   max-width: 0;
 }
+.variant-notes {
+  max-width: 100px;
+}
+
 
 /* Content in paramater coulumn */
 .variants-param-col {
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.variants-notes-col {
   display: inline-block;
   width: 100%;
   white-space: nowrap;
