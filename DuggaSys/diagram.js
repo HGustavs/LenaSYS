@@ -4869,9 +4869,9 @@ function generateErTableString()
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
-                            //currentString += `${allEntityList[i][j].name}, `;
+                            //If parent attribute is a primary or candidate key, it'll be added as underlined
                             if(getParentElementOfID(allEntityList[i][j].id) != undefined && getParentElementOfID(allEntityList[i][j].id).kind == 'ERAttr'){
-                                if(getParentElementOfID(allEntityList[i][j].id).state == 'primary' || getParentElementOfID(allEntityList[i][j].id.state == 'candidate')){
+                                if(getParentElementOfID(allEntityList[i][j].id).state == 'primary' || getParentElementOfID(allEntityList[i][j].id).state == 'candidate'){
                                     currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][j].name}</span>, `;
                                 }
                                 else{
