@@ -2242,7 +2242,7 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
-
+		$("#menuHook").hide();
 		// Adds dugga title next to the text "Instructions"
 		$('h3:contains("Instructions")').html(duggaTitle + " - Instructions");
 }
