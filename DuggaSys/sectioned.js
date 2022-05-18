@@ -716,6 +716,25 @@ function hideDeleted()
   }
 }
 
+//             Work in progress
+//-----------------------------------------//
+function createDeletedItemsFrame(){
+  var iFrame = document.createElement("frame");
+  iFrame.setAttribute("src", "http://google.com/");
+  iFrame.style.width = "500px";
+  iFrame.style.width = "500px";
+  document.body.appendChild(iFrame); 
+}
+
+function getDeletedItems(){
+
+}
+
+function loadDeletedItems(){
+
+}
+//-------------------------------------------//
+
 //----------------------------------------------------------------------------------
 // hideMarkedItems: Hides Item from Section List
 //----------------------------------------------------------------------------------
