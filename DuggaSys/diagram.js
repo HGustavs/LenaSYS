@@ -1433,17 +1433,26 @@ document.addEventListener('keydown', function (e)
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
-            var propField = document.getElementById("elementProperty_name");
-            if(!!document.getElementById("lineLabel")){
-                changeLineProperties();
+            if (/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
+                if (e.ctrlKey){
+                    changeState();
+                    saveProperties(); 
+                    propField.blur();
+                    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
+                }
             }else{
-                changeState();
-                saveProperties(); 
-                propField.blur();
-            }
-            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
+                var propField = document.getElementById("elementProperty_name");
+                if(!!document.getElementById("lineLabel")){
+                    changeLineProperties();
+                }else{
+                    changeState();
+                    saveProperties(); 
+                    propField.blur();
+                }
                 displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
+            
+           
         }
     }
 });
