@@ -1232,7 +1232,7 @@ function getVariantPreview(vid) {
 		.fail(function (jqxhr, settings, exception) {
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer));
 		});
-
+	$.getScript(`duggaed.js`);
 
 	$("#resultpopover").css("display", "flex");
 }
