@@ -1433,14 +1433,7 @@ document.addEventListener('keydown', function (e)
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
-            if (/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
-                if (e.ctrlKey){
-                    changeState();
-                    saveProperties(); 
-                    propField.blur();
-                    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
-                }
-            }else{
+            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
                 var propField = document.getElementById("elementProperty_name");
                 if(!!document.getElementById("lineLabel")){
                     changeLineProperties();
@@ -1451,8 +1444,6 @@ document.addEventListener('keydown', function (e)
                 }
                 displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
-            
-           
         }
     }
 });
