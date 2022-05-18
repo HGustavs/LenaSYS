@@ -8558,7 +8558,7 @@ span[id$="examples"]:hover{
 
 .normtext {
   color: #000;
-  background-color: #F2F2F2;
+  background-color: transparent;
   white-space:nowrap;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
