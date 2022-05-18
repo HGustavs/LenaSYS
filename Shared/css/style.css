@@ -1,4 +1,4 @@
-/* --------------================################================-------------- *
+/* --------------===============################================-------------- *
  *                                    Colors                                    *
  * --------------================################================-------------- */
 
@@ -8886,6 +8886,9 @@ border: none !important;
 .changeColorInDarkModeTable:nth-of-type(odd) {
   background: #ccc;
 }
+.changeColorInDarkModeTable:nth-of-type(even) {
+  background-color: var(--color-sectioned-table-lo);
+}
 
 /* }  /* END of "@media (prefers-color-scheme: light)" */
 /* White Theme code END */
@@ -8937,3 +8940,54 @@ border: none !important;
 .highlightChange{
   animation: glowAnimation 4s ease-out;
 }
+
+.lineDiagramDark{
+  border: 2px solid var(--color-border-list);
+  background-color: var(--color-sectioned-table-lo);
+}
+
+/* Style for "CommitTree" START   */
+.commitTreeBarsEven {
+  fill: var(--color-sectioned-table-lo);
+}
+
+.commitTreeBarsOdd {
+  fill: var(--color-sectioned-table-hi);
+}
+
+.commitTreeLine{
+  stroke: black;
+}
+/* END */
+
+/* Style for "Weekly Bar Chart" START  */
+.WeeklyBarChartEven{
+  fill: var(--color-sectioned-table-lo);
+}
+
+.WeeklyBarChartOdd{
+  fill: var(--color-sectioned-table-hi);
+}
+
+.WeeklyBarChartLine{
+  stroke: black;
+}
+
+.WeeklyBarChartNumberText{
+  fill: black;
+}
+
+.chart, .fumho{
+  /* fill: white; */
+  background-color: var(--color-sectioned-table-hi);
+}
+/* END */
+
+/* Style for "Input elements" */
+select{
+  background-color: white;
+  color: black;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+/* END */

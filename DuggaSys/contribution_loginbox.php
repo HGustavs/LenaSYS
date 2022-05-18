@@ -46,6 +46,12 @@
 </style>
 
 <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+
+<!-- To enable dark mode, these 3 files were added. -->
+<link type="text/css" href="../Shared/css/style.css" rel="stylesheet"> 
+<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+<script src="darkmodeToggle.js"></script>
+
 <script src="contribution_loginbox.js"></script> <!-- scripts to implement functions -->
 
 

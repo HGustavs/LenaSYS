@@ -448,12 +448,15 @@
     border-left: 2px solid #614875;
     border-right: 2px solid #614875;
 }
-.list tr {
-    background-color: var(--color-sectioned-table-hi);
+
+.changeColorInDarkModeTable:nth-of-type(even) { 
+    background: var(--color-sectioned-table-hi);
 }
+
 .changeColorInDarkModeTable:nth-of-type(odd) { 
     background: var(--color-sectioned-table-lo);
 }
+
 .bottomBorderColor{
     border-top: 2px solid #614875;
 }
@@ -677,6 +680,62 @@ body {
 
 .tsTableDeleteCell{
     cursor: pointer;
+}
+/* --------------================################================-------------- *
+ *                           BlackTheme for Contribution site 
+                                  code START
+ * --------------================################================-------------- */
+
+ /* SVG img on circle Graph*/ /*START */
+ .circleGraphCircle{
+    cursor: pointer;
+    filter: invert(10%);
+    -webkit-filter: invert(10%);
+}
+#circleGraphHours{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+.circleGraphBigline {
+    cursor: pointer;
+    filter: invert(20%);
+    -webkit-filter: invert(20%);
+}
+/* END */
+
+/* Style for "LineDagram" "START" */
+.lineDiagramDark{
+    background-color: var(--color-sectioned-table-lo);
+}
+.graphLabels{
+   fill:white;
+}
+.lineDiagramDark text{
+    fill:white;
+}
+.lineDiagramDark{
+    border: 2px solid #614875;
+    background-color: var(--color-sectioned-table-lo);
+  }
+/* END */
+
+/* Style for "CommitTree" START   */
+.commitTreeBarsEven {
+    fill: var(--color-sectioned-table-lo);
+}
+
+.commitTreeBarsOdd {
+    fill: var(--color-sectioned-table-hi);
+}
+
+.commitTreeText{
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
+
+.commitTreeLine{
+
     filter: invert(80%);
     -webkit-filter: invert(80%);
 }
@@ -702,5 +761,59 @@ body {
 option:checked{
     background-color: var(--color-sectioned-table-lo);
     color: white;
+}
+/* END */
+
+/* Style for "Weekly Bar Chart" START */
+.WeeklyBarChartEven{
+    fill: var(--color-sectioned-table-lo);
+}
+
+.WeeklyBarChartOdd{
+    fill: var(--color-sectioned-table-hi);
+}
+
+.WeeklyBarChartLine{
+    stroke:white;
+}
+
+.WeeklyBarChartText{
+    fill: white;
+}
+
+.WeeklyBarChartNumberText{
+    stroke: white;
+}
+
+.chart, .fumho{
+    fill: white;
+    background-color: var(--color-sectioned-table-hi);
+}
+/* END */
+
+/* Style for "Input elements" */
+button{
+    background-color: #464646;
+    color:white;
+    border-radius: 5px;
+}
+
+select{
+    background-color: #464646;
+    color:white;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+input{
+    background-color: #464646;
+    color:white;
+    color-scheme: dark; /*For date picker */
+}
+/* END */
+
+/* Style for "Date Picker" START:    */
+::-webkit-calendar-picker-indicator:hover {
+    filter: invert(1) ; 
 }
 /* END */
