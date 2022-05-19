@@ -1296,9 +1296,6 @@ function returnedSection(data) {
           str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
           str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
           
-        } else if (itemKind === 0 || itemKind === 1) { // Draggable area with purple background
-          str += "<td style='background-color: #614875;text-align: left;' class='LightBox" + hideState + "'  >";
-          str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
         }
         str += "</td>";
       }
@@ -1345,10 +1342,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 2) {
 
-          if(isLoggedIn){
-            str += "<td class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
-          }
+       
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
