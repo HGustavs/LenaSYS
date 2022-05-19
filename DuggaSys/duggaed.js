@@ -1074,6 +1074,7 @@ function renderCell(col, celldata, cellid) {
 
 		case "notes":		// DUGGA-TABLE - Notes column
 			// Parse JSON to get the note
+			console.log(celldata);
 			object = JSON.parse(celldata).notes;
 			retString = `<span class='variants-notes-col'>${object}</span>`;
 			break;
@@ -1232,7 +1233,7 @@ function getVariantPreview(vid) {
 		.fail(function (jqxhr, settings, exception) {
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer));
 		});
-
+	$.getScript(`duggaed.js`);
 
 	$("#resultpopover").css("display", "flex");
 }
