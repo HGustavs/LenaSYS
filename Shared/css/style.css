@@ -140,7 +140,7 @@ table {
 }
 
 h1 {
-  /*color: #fff;
+  /*color: var(--color-text-header);
   font-size: 1.8em;
   line-height: 1.4em;
   */
@@ -465,7 +465,7 @@ p {
 }
 .announcementForm button {
   background-color: var(--color-logo-background);
-  color: white;
+  color: var(--color-text-header);
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
@@ -552,7 +552,7 @@ p {
 #displayAnnouncements .announcementCard .actionBtns span.editBtn:hover,
 #displayAnnouncements .announcementCard .actionBtns span.editBtn:focus{
   background-color: var(--color-logo-background);
-  color: #fff;
+  color: var(--color-text-header);
 
 }
 #displayAnnouncements .announcementCard .actionBtns span.deleteBtn a,
@@ -608,7 +608,7 @@ p {
 }
 #displayAnnouncements #btnContainer .btn.active {
   background-color: var(--color-logo-background);
-  color: white;
+  color: var(--color-text-header);
 }
 /*Show all the announcements*/
 .showmoreBtnContainer{
@@ -621,7 +621,7 @@ p {
   font-family: 'Varela', sans-serif;
   font-size: 16px;
   border: none;
-  color: #fff;
+  color: var(--color-text-header);
   background-color: var(--color-logo-background);
 }
 .hvr-icon-forward {
@@ -763,7 +763,7 @@ p {
   align-self: center;
 }
 .viewOldFeedbacks{
-  color: #fff !important;
+  color: var(--color-text-header) !important;
   text-decoration: none;
   background: var(--color-logo-background);
   padding: 10px 20px 10px 20px;
@@ -1241,7 +1241,7 @@ p {
   display: none;
   width: 160px;
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-text-header);
   text-align: center;
   border-radius: 6px;
   margin: 0 5px;
@@ -1380,7 +1380,7 @@ header td {
 
 .burgerButtText {
   text-decoration:none;
-  font-size:16px;Color:white;
+  font-size:16px;Color:var(--color-text-header);
 }
 .burgerHover:hover{
   color: #B06DC3;
@@ -1421,7 +1421,7 @@ div .navButt:hover {
 
 .navName {
   font-size: 0.8em;
-  color: #FFFFFF;
+  color: var(--color-text-header);
   text-decoration: none;
   text-align: right;
   overflow: hidden;
@@ -1431,20 +1431,20 @@ div .navButt:hover {
 
 .navName a:hover {
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
-  color: #FFFFFF;
+  color: var(--color-text-header);
   text-decoration: underline;
   text-align: right;
   overflow: hidden;
 }
 
 .navName a {
-  color: #FFFFFF;
+  color: var(--color-text-header);
   text-decoration: none;
   overflow: hidden;
 }
 
 .navName a:hover {
-  color: #FFFFFF;
+  color: var(--color-text-header);
   text-decoration: underline;
   overflow: hidden;
 }
@@ -1564,7 +1564,7 @@ div .navButt:hover {
         display: block;
         height: 25px;
         text-align: center;
-        color:white;
+        color:var(--color-text-header);
         margin-top: 50px;
         background:#927b9e;
         padding: 4px;
@@ -1864,7 +1864,7 @@ div .navButt:hover {
 #createNewEmptyFile input[type="submit"] {
   width: 100%;
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-text-header);
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
@@ -1960,7 +1960,7 @@ div .navButt:hover {
   border: 0px;
   width: 110px;
   height: 30px;
-  color: #fff;
+  color: var(--color-text-header);
   cursor: pointer;
   margin-top: 6px;
   margin-bottom: 2px;
@@ -1995,7 +1995,7 @@ div .navButt:hover {
   border: 0px;
   width: 110px;
   height: 30px;
-  color: #fff;
+  color: var(--color-text-header);
   cursor: pointer;
   margin-top: 6px;
   margin-bottom: 2px;
@@ -2136,7 +2136,7 @@ input.inactive-button {
   border: 0px;
   width: 110px;
   height: 30px;
-  color: #fff;
+  color: var(--color-text-header);
   margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
@@ -2362,7 +2362,7 @@ label.login-label {
 .loginBox .submit{
   width: 80px;
   height: 25px;
-  color: #fff;
+  color: var(--color-text-header);
   background-color: var(--color-primary);
   border: 0px;
   border-radius: 4px;
@@ -2420,7 +2420,7 @@ label.login-label {
   border: none;
   width: 260px;
   height: 40px;
-  color: #fff;
+  color: var(--color-text-header);
   cursor: pointer;
   margin-top: 20px;
   margin-bottom: 2px;
@@ -2505,7 +2505,7 @@ label.login-label {
   border: 1px solid var(--color-border-4);
   display: none;
   width: 260px;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--color-background);
 }
 
 .drop-down-item:focus-within .side-drop-down {
@@ -2704,7 +2704,7 @@ input.submit-button {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   height: 30px;
-  color: #fff;
+  color: var(--color-text-header);
   cursor: pointer;
   margin: 8px 2px 4px 2px;
   font-size: 14px;
@@ -2719,7 +2719,7 @@ div.submit-button {
   border: 0px;
   width: 30px;
   height: 30px;
-  color: #fff;
+  color: var(--color-text-header);
   cursor: pointer;
   margin-bottom: 5px;
   margin-left: 4px;
@@ -2777,7 +2777,7 @@ input.diagram-sidebar-buttons {
   border: 0px;
   width: 130px;
   height: 30px;
-  color: #fff;
+  color: var(--color-text-header);
   cursor: pointer;
   margin-top: 6px;
   margin-bottom: 2px;
@@ -2799,7 +2799,7 @@ button.diagram-menu-buttons {
   border: 0px;
   width: 130px;
   height: 30px;
-  color: #fff;
+  color: var(--color-text-header);
   cursor: pointer;
   margin-top: 6px;
   margin-bottom: 2px;
@@ -2853,7 +2853,7 @@ input.hide-moments-button {
   opacity: 0;
   width: 100px;
   position: absolute;
-  background: white;
+  background: var(--color-background);
   padding: 10px 10px 0;
   border-radius: 5px;
   text-align: center;
@@ -2939,7 +2939,7 @@ div.submit-button:disabled {
   margin: 5px auto;
   background-color: var(--color-primary);
   padding: 4px 8px;
-  color: #ffffff;
+  color: var(--color-text-header);
   cursor: pointer;
   border-radius: 4px;
   border: none;
@@ -2978,7 +2978,7 @@ div.submit-button:disabled {
 .formDialog .formDialogText {
   width: 200px;
   background-color: black;
-  color: #fff;
+  color: var(--color-text-header);
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -3009,7 +3009,7 @@ div.submit-button:disabled {
 .tooltipDugga .tooltipDuggatext {
   width: 200px;
   background-color: black;
-  color: #fff;
+  color: var(--color-text-header);
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -3040,7 +3040,7 @@ div.submit-button:disabled {
 .tooltipDuggaType .tooltipDuggaTypeTxt {
   width: 200px;
   background-color: black;
-  color: #fff;
+  color: var(--color-text-header);
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -3093,7 +3093,7 @@ div.submit-button:disabled {
   font-weight: 300;
   padding: 5px;
   padding-right: 10px;
-  color: white;
+  color: var(--color-text-header);
   background-color: var(--color-primary);
   display: inline-block;
   cursor: pointer;
@@ -3118,7 +3118,7 @@ div.submit-button:disabled {
   padding: 5px;
   margin-bottom: 10px;
   margin-top: -1px;
-  color: white;
+  color: var(--color-text-header);
   background-color: var(--color-primary);
   cursor: pointer;
   border: none;
@@ -3370,7 +3370,7 @@ span.arrow {
 .feedback-list caption {
   border-bottom: 1px solid var(--color-border-list);
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-text-header);
   line-height: 28px;
 }
 
@@ -3536,7 +3536,7 @@ span.arrow {
   padding: 8px 25px;
   margin-left: 10px;
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-text-header);
   font-size: 16px;
   font-weight: 300;
   border-radius: 5px;
@@ -3585,7 +3585,7 @@ span.arrow {
 }
 
 .toggle-1 {
-  background-color: #fff;
+  background-color: var(--color-background);
 }
 
 .show-dugga-filter-popup.hidden, .show-column-filter-popup.hidden {
