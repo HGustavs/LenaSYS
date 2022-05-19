@@ -2091,7 +2091,7 @@ $(window).keyup(function (event) {
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       //I don't know who did this but this call is not necessory
-      // updateItem();
+      updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
