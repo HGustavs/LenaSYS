@@ -468,6 +468,7 @@ function SortableTable(param)
       str += "<tfoot class='bottomBorderColor'>";
       str += "<tr class='changeColorInDarkModeTable' style='font-style:italic;'>";
 
+      /* Empty row - Doesn't appear to be used for anything?
       if(this.hasCounter) {
           str += "<td>&nbsp;</td>";
           mhvstr += "<td>&nbsp;</td>";
@@ -495,7 +496,7 @@ function SortableTable(param)
               }          
           }
       }
-
+      */
       str+= "</tr></tfoot>";
       mhvstr+= "</tr></tfoot>";
     	str += "</table>";
