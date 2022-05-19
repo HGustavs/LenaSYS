@@ -4989,6 +4989,7 @@ function generateErTableString()
             stringList.push(currentString)
         }
     }
+    // Adding multi-valued attributes to the string
     for (var i = 0; i < allEntityList.length; i++) {
         for (var j = 2; j < allEntityList[i].length; j++) {
             // Write out multi attributes
