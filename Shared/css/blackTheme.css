@@ -83,11 +83,11 @@
 #picktemplate h1{
 	text-align: center;
   font-family: Arial, Sans-Serif;
-	color: #000;
+	color: var(--color-text-list);
 }
 
 #docucontent h1 {
-	color:#000;
+	color:var(--color-text-list);
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -332,13 +332,13 @@
 }
 
 .impo .impword {
-    color: #000000;
+    color: var(--color-text-list);
     background-color: #fff;
     border: 1px solid #f44;
 }
 
 .descbox .impword {
-    color: #000000;
+    color: var(--color-text-list);
     background-color: #fff;
     border: 1px solid #f44;
 }
