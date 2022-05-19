@@ -36,7 +36,7 @@ pdoConnect();
 	<script src="resulted.js"></script>
 	<script src="backToTop.js"></script>
 </head>
-<body onload="setup();">
+<body onload="setup(); displayNavIcons();">
 	<?php
 		$noup="SECTION";
 		$resultedkind = true;
