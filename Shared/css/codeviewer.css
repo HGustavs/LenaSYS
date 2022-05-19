@@ -966,8 +966,8 @@
     opacity:100;
     transform:scale(0.2);
 }
-/* original 725px */
-@media only screen and (max-device-width : 480px) {
+
+@media only screen and (max-device-width : 725px) {
     .hidden{
         display:block;
     }
