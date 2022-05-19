@@ -7280,20 +7280,22 @@ function drawElement(element, ghosted = false)
         //svg for inheritance symbol
         str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);'>`;
 
-        //Disjoint inheritance
+        //Overlapping inheritance
         if (element.state == 'overlapping') {
            /*  str += `    <path d="M170 100 A 40 40 30 0 1 250 100" fill="white" stroke="blue"/>
     <line x1="250" y1="100" x2="170" y2="100" style="stroke:rgb(255,0,0);stroke-width:2"  />` */
-             str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="green"; stroke-width:${linew};'/> 
-             <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="green";>`
+             str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew};'/> 
+             <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";>`
              
             //str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
             //style='fill:yellow;stroke:green;stroke-width:${linew};'/>`; 
         }
-        //Overlapping inheritance
+        // Disjoint inheritance
         else {
-            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="red"; stroke-width:${linew+linew};'/>
-             <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="red";>`
+            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew+linew};'/>
+             <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";/>
+             <line x1="${boxw/1.42}" y1="${boxw/2.6}" x2="${boxw/4}" y2="${boxw/12.5}" stroke="black" />
+             <line x1="${boxw/3.3}" y1="${boxw/2.5}" x2="${boxw/1.42}" y2="${boxw/12.5}" stroke="black" />`
             /* str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
             style='fill:brown;stroke:blue;stroke-width:${linew};'/>`; */
         }
