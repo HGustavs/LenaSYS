@@ -69,6 +69,40 @@ if (strcmp($opt, "checkForGitUser")==0)
 
 
 }
+
+else if(strcmp($opt,"gitUserAdmin") == 0)
+{
+
+	global $pdo;
+
+	if($pdo == null) 
+	{
+		pdoConnect();
+	}
+	$gituser = getOP('username');
+	$gitUserChange = getOP('gitUserChange');
+
+	if($gitUserChange == 1){
+		$query = $pdo->prepare("UPDATE git_user SET status_account=102 WHERE username=:gituser;");
+		//$query->bindParam(':GU', $gituser);
+	}
+
+	elseif($gitUserChange == 2){
+		//$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
+		//$query->bindParam(':GU', $gituser);
+	}
+
+	elseif($gitUserChange == 3){
+		//$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
+		//$query->bindParam(':GU', $gituser);
+	}
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error updating user\n".$error[2];
+	}
+}
+
 else if(strcmp($opt, "checkForLenasysUser")==0)
 {
 	global $pdo;
