@@ -580,7 +580,7 @@ body {
 
 /* Style for "pane-container text" START */
 .pane{
-    color:white;
+    color: var(--color-text-header);
 }
 /* END */
 
@@ -606,7 +606,7 @@ body {
 	justify-content: flex-start;
     border:2px solid var(--color-sectioned-table-lo);
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
-    background-color: #121212;
+    background-color: var(--color-background);
 }
 
 #opTableContainer{
@@ -631,11 +631,11 @@ body {
 }
 
 #operations{
-    background: #121212 ;
+    background: var(--color-background) ;
 }
 
 .ColorForTextinInfoBox{
-    color: white;
+    color: var(--color-text-header);
 }
 
 .ColorForTextinInfoBox:checked {
@@ -659,7 +659,7 @@ body {
 }
 
 .tsSmallInput{
-    color: white;
+    color: var(--color-text-header);
     background-color: #212121;
     border: 2px solid #212121;
     color-scheme: dark; 
@@ -667,7 +667,7 @@ body {
 /* In "createFileUploadArea" (Big screen) */
 .tsTable input{
     padding: 5px;
-    color: white;
+    color: var(--color-text-header);
     background-color: #212121;
     border: 2px solid #212121;
     color-scheme: dark; 
@@ -675,7 +675,7 @@ body {
 
 .tsTable select{
     background-color: #212121;
-    color: white;
+    color: var(--color-text-header);
 }
 
 .tsTableDeleteCell{
@@ -715,7 +715,7 @@ body {
     fill:white;
 }
 .lineDiagramDark{
-    border: 2px solid #614875;
+    border: 2px solid var(--color-primary);
     background-color: var(--color-sectioned-table-lo);
   }
 /* END */
@@ -760,7 +760,7 @@ body {
 /* Style for "Info Box" in Dugga 3 START */
 option:checked{
     background-color: var(--color-sectioned-table-lo);
-    color: white;
+    color: var(--color-text-header);
 }
 /* END */
 
@@ -794,20 +794,20 @@ option:checked{
 /* Style for "Input elements" */
 button{
     background-color: #464646;
-    color:white;
+    color:var(--color-text-header);
     border-radius: 5px;
 }
 
 select{
     background-color: #464646;
-    color:white;
+    color:var(--color-text-header);
     margin-right: 10px;
     border-radius: 5px;
 }
 
 input{
     background-color: #464646;
-    color:white;
+    color:var(--color-text-header);
     color-scheme: dark; /*For date picker */
 }
 /* END */
