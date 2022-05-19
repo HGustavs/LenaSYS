@@ -259,7 +259,7 @@
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
 
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" style="margin-right:10px;"/>
 
 				</div>
 				<div class="formDialog" style="display: block; left:0px; top:45px;">
@@ -277,7 +277,7 @@
 					<div id='inputwrapper-deadline' class='inputwrapper'>
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
-							<span style='float:right'>
+							<span style='float:right;margin-right:10px;'>
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
@@ -285,7 +285,7 @@
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
-							<span style='float:right;'>
+							<span style='float:right;margin-right:10px;'>
 								<select style='width:130px;margin:0 0 0 10px;' id='relativedeadlinetype'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineamount'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
