@@ -104,13 +104,13 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
-                <div id="elementPlacement6" class="diagramIcons" onclick='setElementPlacementType(6); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                <div class="diagramIcons">
+                    <img src="../Shared/icons/confused.svg"/>
                     <span class="toolTipText"><b>IE entity</b><br>
                         <p>Add an IE entity to the diagram</p><br>
-                        <p id="tooltip-IE_ENTITY" class="key_tooltip">Keybinding:</p>
+                        <!-- <p id="tooltip-IEEntity" class="key_tooltip">Keybinding:</p> --> 
                     </span>
-                </div>              
+                </div>                
                 <div>
                     <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
