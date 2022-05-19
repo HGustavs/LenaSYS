@@ -827,9 +827,10 @@ function setActiveLid(lid){
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
 
-function newItem(itemtitle) {
+async function newItem(itemtitle) {
 
-  AJAXService("NEW", prepareItem(), "SECTION");
+  // Continues when AJAX call is completed
+  await AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
   // Toggle for alert when create a New Item
