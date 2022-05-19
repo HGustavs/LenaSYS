@@ -10021,6 +10021,14 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
+//Alert function to give user a warning/choice before reseting diagram data.
+function refreshDiagramAlert(){
+    let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
+    if(refreshConfirm){
+        refreshDiagram();
+    }
+    
+}
 function refreshDiagram(){
     localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     fetchDiagramFileContentOnLoad();
