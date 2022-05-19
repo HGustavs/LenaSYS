@@ -475,9 +475,34 @@ function selectVariant(vid, el) {
 		} else {
 			// But hide the information if it is deselected.
 			document.getElementById('vid').value = "";
-			document.getElementById('variantparameterText').value = "";
+			document.getElementById("variantparameterText").value = "";
 			document.getElementById('variantanswerText').value = "";
+			
 		}
+		
+		//Disable and enable update/disable/enable buttons depending on isSelect and if item in list is set enable/disable.
+		if(isSelected){
+			document.getElementById("disableVariant").disabled = false;
+			document.getElementById("saveVariant").disabled = false;
+
+			var disabled = (target_variant['disabled']);
+			$("#disabled").val(disabled);
+			  if (disabled == 0) {
+				//showVariantDisableButton();
+				$("#disableVariant").attr('disabled',false);
+				$("#enableVariant").attr('disabled',true);
+			  }else{
+				//showVariantEnableButton();
+				$("#disableVariant").attr('disabled',true);
+				$("#enableVariant").attr('disabled',false);
+			  }
+		}else{
+			document.getElementById("disableVariant").disabled = true;
+			document.getElementById("saveVariant").disabled = true;
+			document.getElementById("enableVariant").disabled = true;
+		}
+			
+		
 
 
 		//Get information for leftDivDialog and display it.
@@ -543,17 +568,6 @@ function selectVariant(vid, el) {
 				document.getElementById('extraparam').value = "";  				
 		}
 
-  var disabled = (target_variant['disabled']);
-  $("#disabled").val(disabled);
-	if (disabled == 0) {
-      //showVariantDisableButton();
-      $("#disableVariant").attr('disabled',false);
-      $("#enableVariant").attr('disabled',true);
-	}else{
-      //showVariantEnableButton();
-      $("#disableVariant").attr('disabled',true);
-      $("#enableVariant").attr('disabled',false);
-	}
 }
 
 
