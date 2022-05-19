@@ -2404,6 +2404,9 @@ label.login-label {
 .loginBox .hide {
   display: none;
 }
+#undoButton{
+  position: absolute; padding-right:5px; margin-right:164px; display: none;
+}
 
 .loginBox td {
   margin-left: 4px;
