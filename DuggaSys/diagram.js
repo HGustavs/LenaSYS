@@ -1294,6 +1294,7 @@ function getData()
     drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
+    setPreviewValues();
 }
 //<-- UML functionality start
 /**
@@ -9956,7 +9957,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileContentOnLoad()
 {
-        let temp = window.parent.getVariantParam();
+        let temp = getVariantParam();
         var fullParam = temp[0];
         cid = temp[1];
         cvers = temp[2];
@@ -10021,6 +10022,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
+
 //Alert function to give user a warning/choice before reseting diagram data.
 function resetDiagramAlert(){
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
@@ -10029,8 +10031,21 @@ function resetDiagramAlert(){
     }
     
 }
+
 function refreshDiagram(){
     localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     fetchDiagramFileContentOnLoad();
+}
+/**
+ *  @description Function to set the values of the current variant in the preivew
+ */
+function setPreviewValues(){
+    if(window.parent.parameterArray.length>0){
+        diagramType=window.parent.parameterArray[0];
+        showDiagramTypes();
+        hideErrorCheck(window.parent.parameterArray[1]);
+        getInstructions(window.parent.parameterArray[2]);
+        getInstructions(window.parent.parameterArray[3]);
+    }
 }
 //#endregion =====================================================================================

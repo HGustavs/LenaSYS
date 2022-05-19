@@ -1,6 +1,7 @@
 var lastFile = null;
 var diagramWindow;
 var response = "";
+var parameterArray = [];
 /** 
  * @description Alert message appears before closing down or refreshing the dugga viewer page window.
 
@@ -94,13 +95,13 @@ function returnedDugga(data)
             // getting the error checker allowed or not
             document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
-            if(param.filelink != undefined)
+             if(param.filelink != undefined)
             {
-                window.parent.getInstructions(param.filelink);
+                document.getElementById("diagram-iframe").contentWindow.getInstructions(param.filelink);
             }
             if(param.gFilelink != undefined)
             {
-                window.parent.getInstructions(param.gFilelink);
+                document.getElementById("diagram-iframe").contentWindow.getInstructions(param.gFilelink);
             }
         }
         else{
@@ -177,5 +178,7 @@ function canSaveController()
  * Keep in mind that this is currently not supported in the diagram dugga
  */
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
-{
+{ 
+    var parameters = JSON.parse(param);
+    parameterArray.push(parameters.diagram_type,parameters.errorActive,parameters.filelink,parameters.gFilelink);
 }
