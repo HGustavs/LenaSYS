@@ -3830,7 +3830,7 @@ function hasChildElement(ID){
         if(lines[i].fromID == ID){
             for (var j = 0; j < data.length; j++){
                 if(lines[i].toID == data[j].id){
-                    return data[j];
+                    return true;
                 }
             }
         }
@@ -3972,9 +3972,18 @@ function generateErTableString()
                             // looking if the parent attribute is in the parentAttributeList 
                             if(findIndex(parentAttribeList,currentEntityAttrList[j].id) == -1){
                                 parentAttribeList.push(currentEntityAttrList[j]);
+                                currentEntityAttrList[j].newKeyName = "";
+                            }
+                            if(currentEntityAttrList[j].newKeyName == ""){
+                                currentEntityAttrList[j].newKeyName += attrList[k].name;
+                            }
+                            else{
+                                currentEntityAttrList[j].newKeyName += " "+attrList[k].name;
+                            }
+                            if(currentEntityAttrList[j].state != 'primary' && currentEntityAttrList[j].state != 'candidate'){
+                                currentRow.push(attrList[k]);
                             }
                             currentEntityAttrList.push(attrList[k]);
-                            currentRow.push(attrList[k]);
                             idList.push(attrList[k].id);
                         }
                     }   
@@ -3983,9 +3992,9 @@ function generateErTableString()
         }
 
         //removes all attributes in parent attribute list from current entity attribute list
-        for (let index = 0; index < parentAttribeList.length; index++) {
-            currentRow.splice(findIndex(currentRow,parentAttribeList[index].id),1);
-        }
+        //for (let index = 0; index < parentAttribeList.length; index++) {
+        //    currentRow.splice(findIndex(currentRow,parentAttribeList[index].id),1);
+        //}
         //Push list with entity at index 0 followed by its attributes
         ERAttributeData.push(currentRow);
     }
@@ -4852,13 +4861,23 @@ function generateErTableString()
                 // Print only primary keys if at least one is present
                 if (existPrimary) {
                     if (allEntityList[i][1][j].state == 'primary') {
-                        currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        if(allEntityList[i][1][j].newKeyName != undefined){
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].newKeyName}</span>, `;
+                        }
+                        else{
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        }
                     }
                 }
                 //Print only candidate keys if no primary keys are present
                 if (!existPrimary) {
                     if (allEntityList[i][1][j].state == 'candidate') {
-                        currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        if(allEntityList[i][1][j].newKeyName != undefined){
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].newKeyName}</span>, `;
+                        }
+                        else{
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        }
                     }
                 }
             }
@@ -4869,16 +4888,7 @@ function generateErTableString()
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
-                            //If parent attribute is a primary or candidate key, it'll be added as underlined
-                            if(getParentElementOfID(allEntityList[i][j].id) != undefined && getParentElementOfID(allEntityList[i][j].id).kind == 'ERAttr'){
-                                if(getParentElementOfID(allEntityList[i][j].id).state == 'primary' || getParentElementOfID(allEntityList[i][j].id).state == 'candidate'){
-                                    currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][j].name}</span>, `;
-                                }
-                                else{
-                                    currentString += `${allEntityList[i][j].name}, `;
-                                }
-                            }
-                            else{
+                            if(!hasChildElement(allEntityList[i][j].id)){
                                 currentString += `${allEntityList[i][j].name}, `;
                             }
                         }
