@@ -140,7 +140,7 @@
 			
 			<!-- Undo button -->
 					
-			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:198px; display: none;" onclick="cancelDelete();">
+			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" onclick="cancelDelete();">
 			
 			<!-- Undo button END -->
 
