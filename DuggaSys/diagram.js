@@ -10031,8 +10031,17 @@ function resetDiagramAlert(){
     }
     
 }
+/**
+ * @description Cleares the diagram.
+ */
+function resetDiagram(){
+    // Goto the beginning of the diagram
+    stateMachine.gotoInitialState();
 
-function refreshDiagram(){
+    // Remove the previous history
+    stateMachine.currentHistoryIndex = -1;
+    stateMachine.lastFlag = {};
+    stateMachine.removeFutureStates();
     localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     fetchDiagramFileContentOnLoad();
 }
