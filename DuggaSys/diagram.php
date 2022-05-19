@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
-                <div class="diagramIcons">
+                <div id="elementPlacement6" class="diagramIcons" onclick='setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_IE_entity.svg"/>
                     <span class="toolTipText"><b>IE entity</b><br>
                         <p>Add an IE entity to the diagram</p><br>
