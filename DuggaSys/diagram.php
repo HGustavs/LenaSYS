@@ -108,7 +108,7 @@
                     <img src="../Shared/icons/diagram_IE_entity.svg"/>
                     <span class="toolTipText"><b>IE entity</b><br>
                         <p>Add an IE entity to the diagram</p><br>
-                        <!-- <p id="tooltip-IEEntity" class="key_tooltip">Keybinding:</p> --> 
+                        <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>                
                 <div>
