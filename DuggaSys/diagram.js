@@ -10025,7 +10025,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
 /**
  * @description Cleares the diagram.
  */
-function refreshDiagram(){
+function resetDiagram(){
     // Goto the beginning of the diagram
     stateMachine.gotoInitialState();
 
