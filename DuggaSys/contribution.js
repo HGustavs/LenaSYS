@@ -2250,6 +2250,7 @@ function deleteAcc(userName){
     {username: userName, gitUserChange: 2}, "CONT_LOGINBOX_SERVICE");
 
     window.location.reload();
+    $("#loginBox").load(" #accountRequests-pane > *");
 
 }
 
