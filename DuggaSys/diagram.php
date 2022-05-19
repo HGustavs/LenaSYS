@@ -104,13 +104,19 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
-                <div id="elementPlacement6" class="diagramIcons" onclick='setMouseMode(2);'>
+
+                <!--<-- Temporary icon for IE entity -->
+                <div id="elementPlacement6" class="diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_IE_entity.svg"/>
                     <span class="toolTipText"><b>IE entity</b><br>
                         <p>Add an IE entity to the diagram</p><br>
-                        <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
+                        <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>                
+                    <div id="togglePlacementTypeButton4" class="placementTypeIcon togglePlacementTypeButton">
+                        <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
+                    </div>
+                </div>
+
                 <div>
                     <div id="elementPlacement1" class="diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
