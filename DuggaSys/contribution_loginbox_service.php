@@ -84,17 +84,17 @@ else if(strcmp($opt,"gitUserAdmin") == 0)
 
 	if($gitUserChange == 1){
 		$query = $pdo->prepare("UPDATE git_user SET status_account=102 WHERE username=:gituser;");
-		//$query->bindParam(':GU', $gituser);
+		$query->bindParam(':gituser', $gituser);
 	}
 
 	elseif($gitUserChange == 2){
-		//$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
-		//$query->bindParam(':GU', $gituser);
+		$query = $pdo->prepare("DELETE FROM git_user WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
 	}
 
 	elseif($gitUserChange == 3){
-		//$query = $pdo->prepare("SELECT username FROM git_user WHERE username=:GU;");
-		//$query->bindParam(':GU', $gituser);
+		$query = $pdo->prepare("UPDATE git_user SET status_account=0 WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
 	}
 
 	if(!$query->execute()) {

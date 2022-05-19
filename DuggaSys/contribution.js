@@ -2239,25 +2239,21 @@ function accountInformation(data){
 }
 
 function denyAcc(userName){
-  console.log("denied this account");
-  console.log('Username is '+userName);
 
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 1}, "CONT_LOGINBOX_SERVICE");
 }
 
 function deleteAcc(userName){
-  console.log("deleted this account");
-  console.log('Username is '+userName);
 
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 2}, "CONT_LOGINBOX_SERVICE");
 
+    window.location.reload();
+
 }
 
 function acceptAcc(userName){
-  console.log("accepted this account");
-  console.log('Username is '+userName);
 
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 3}, "CONT_LOGINBOX_SERVICE");
