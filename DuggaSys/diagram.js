@@ -1504,7 +1504,7 @@ document.addEventListener('keyup', function (e)
         }
 
         //=================================================== //<-- UML functionality
-        //Temp for UML functionality
+        //Keybinding for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
@@ -1512,7 +1512,7 @@ document.addEventListener('keyup', function (e)
         //======================================================
 
         //=================================================== //<-- IE functionality
-        //Temp for IE functionality
+        //Keybinding for IE entity
         if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
             setElementPlacementType(elementTypes.IEEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
