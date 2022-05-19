@@ -5141,9 +5141,10 @@ ul.hamburgerList button.menuButton {
   overflow: hidden;
   width: 100%;
 }
-
+/* iPhone <5 width 320-480    iPhone 5 width 320-568*/
+/* min-device-width: 1085px */
 @media only screen and (min-width: 1085px),
-only screen and (min-device-width: 1085px) {
+only screen and (min-device-width: 320px) {
   #TopMenuStatic {
     position: fixed;
     top: 3px;
@@ -5154,7 +5155,7 @@ only screen and (min-device-width: 1085px) {
 }
 
 @media only screen and (max-width: 1085px),
-only screen and (max-device-width: 1085px) {
+only screen and (max-device-width: 480px) {
   #sortingBar {
     width: 135px;
     position: relative;
@@ -5203,7 +5204,7 @@ only screen and (max-device-width: 1085px) {
 }
 
 @media only screen and (max-width: 800px),
-only screen and (max-device-width: 800px) {
+only screen and (max-device-width: 480px) {
   #addElement {
     display: none;
   }
@@ -5223,7 +5224,7 @@ only screen and (max-device-width: 800px) {
 }
 
 @media only screen and (max-width: 768px),
-only screen and (max-device-width: 768px) {
+only screen and (max-device-width: 480px) {
 
   .hideAll,
   .showAll {
@@ -5379,7 +5380,7 @@ only screen and (max-device-width: 768px) {
 }
 
 @media only screen and (max-width: 860px),
-only screen and (max-device-width: 860px) {
+only screen and (max-device-width: 480px) {
   table.navheader td.hamburger {
     pointer-events: auto;
     width: 32px;
@@ -5447,7 +5448,7 @@ only screen and (max-device-width: 860px) {
   
 }
 @media only screen and (max-width: 380px),
-only screen and (max-device-width: 380px) {
+only screen and (max-device-width: 480px) {
 
   #navBurgerIcon { 
     display: block;
@@ -5473,7 +5474,7 @@ only screen and (max-device-width: 380px) {
 }
 
 @media only screen and (max-width: 790px),
-only screen and (max-device-width: 790px) {
+only screen and (max-device-width: 480px) {
   table.navheader td.files {
     margin-right: 0px;
     width: 0px;
@@ -5500,7 +5501,7 @@ only screen and (max-device-width: 790px) {
 }
 
 @media only screen and (max-width: 670px),
-only screen and (max-device-width: 670px) {
+only screen and (max-device-width: 480px) {
 
   table.navheader td.results,
   table.navheader td.tests {
@@ -5530,7 +5531,7 @@ only screen and (max-device-width: 670px) {
 }
 
 @media only screen and (max-width: 530px),
-only screen and (max-device-width: 530px) {
+only screen and (max-device-width: 480px) {
 
   .hideAll,
   .showAll {
@@ -5647,7 +5648,7 @@ only screen and (max-device-width: 530px) {
 }
 
 @media only screen and (max-width: 520px),
-only screen and (max-device-width: 520px) {
+only screen and (max-device-width: 480px) {
 
   table.navheader td.tests,
   table.navheader td.results,
@@ -5708,7 +5709,7 @@ only screen and (max-device-width: 520px) {
   }
 }
 @media only screen and (max-width: 390px),
-only screen and (max-device-width: 390px) {
+only screen and (max-device-width: 480px) {
 
   #searchbar input#searchinput,
   #searchbar button#searchbutton{
@@ -6023,7 +6024,7 @@ only screen and (max-device-width: 390px) {
 }
 
 @media only screen and (max-width: 320px),
-only screen and (max-device-width: 320px) {
+only screen and (max-device-width: 480px) {
   .migration-row {
     width: 95%;
     margin: 1rem auto;
@@ -6761,7 +6762,7 @@ only screen and (max-device-width: 320px) {
   }
 }
 @media only screen and (max-width: 430px),
-only screen and (max-device-width: 430px) {
+only screen and (max-device-width: 480px) {
   #course-label {
     font-size: 12px;
     margin-right: 25px;
