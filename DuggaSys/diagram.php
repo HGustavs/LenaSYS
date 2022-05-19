@@ -228,8 +228,8 @@
             <legend>History</legend>
             <div id="erTableToggle" class="diagramIcons" onclick="refreshDiagram()">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg"/>
-                <span class="toolTipText"><b>Refresh Diagram</b><br>
-                    <p>Click to reset the diagram to its original look</p><br>
+                <span class="toolTipText"><b>Reset diagram</b><br>
+                    <p>Reset diagram to default state</p><br>
                 </span>
             </div>
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
