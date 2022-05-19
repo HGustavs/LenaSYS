@@ -609,6 +609,16 @@ body {
     background-color: #121212;
 }
 
+#toolboxTransform{
+    border:2px solid var(--color-sectioned-table-lo);
+    margin-left: 3px;
+    padding: 3px;
+}
+
+#toolboxTransform #opTableContainer{
+    padding: 5px;   
+}
+
 #opTableContainer{
 	height:355px;
 	background-color: #212121; 
