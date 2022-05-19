@@ -3113,10 +3113,6 @@ function validateDate2(ddate, dialogid) {
 
   }
 
-  // Correct the fetched dates from database
-  startdate.setMonth(startdate.getMonth() - 1);
-  enddate.setMonth(enddate.getMonth() - 1);
-
   // If deadline is between start date and end date
   if (startdate <= deadline && enddate >= deadline) {
     ddate.style.borderColor = "#383";
