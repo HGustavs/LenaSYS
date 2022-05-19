@@ -43,25 +43,11 @@
         --color-red-hover: #ce3d3d;
     }
 
-    #dorf {
+    #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
         cursor: pointer;
         filter: invert(80%);
         -webkit-filter: invert(80%);
     }
-    #NewTabLink{
-        cursor: pointer; 
-    }
-    .code #NewTabLink{
-        filter: invert(80%);
-        -webkit-filter: invert(80%);   
-    }
-    .whiteIcon {
-        cursor: pointer;
-        filter: invert(80%);
-        -webkit-filter: invert(80%);
-    }
-
-
       
 #div2{
 	background-color: #2c2c2c;
@@ -522,12 +508,6 @@ body {
   background-color: var(--color-background);
   color:white;
   border: 2px solid var(--color-border);
-}
-
-.iconColorInDarkMode{
-    cursor: pointer;
-    filter: invert(80%);
-    -webkit-filter: invert(80%);
 }
 
 #statisticsSwimlanes{
