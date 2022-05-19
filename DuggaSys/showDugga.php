@@ -38,13 +38,15 @@
 	#general vars regarding current dugga.
 	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
+	?>
+		<script>var cid = <?php echo $cid ?>,vers = <?php echo $vers ?>;</script>
+	<?php
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
 	$comments=getOPG('comments');
 	$hash = getOPG("hash");
 	$test=getOPG('test');
 	$isNewDugga=getOPG("newDugga");
-	
 	$duggatitle="UNK";
 	$duggafile="UNK";
 	$duggarel="UNK";
@@ -57,105 +59,7 @@
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
 
-	#vars for handling fetching of diagram variant file name
-	$variantParams = "UNK";
-	$fileContent="UNK";
-	$splicedFileName = "UNK";
-
-	#vars for handling fetching of diagram instruction file name and type
-	$json = "UNK";
-	$fileName = "UNK";
-	$gFileName = "UNK";
-	$instructions = "UNK";
-	$information = "UNK";
-	$finalArray = array();
 	
-	#create request to database and execute it
-	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
-	$response->execute();
-	$i=0;
-
-	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
-	#this should probably be re-worked as this foreach loops through all rows, but over-writes variables meaning it's only the latest variant version that's shown to the user.
-	#another alternvative could be to add each result in an array and loop through the array in diagram.js to properly filter out wrong variant results.
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
-	{
-		$variantParams=$row['jparam'];
-		$variantParams = str_replace('&quot;','"',$variantParams);
-		$parameterArray = json_decode($variantParams,true);
-
-		//if parameter exists in current variant json param string, assign value. Otherwise, set it to "UNK". Error checking should check if string is "UNK" and "".
-		if(!empty($parameterArray))
-		{
-			if(isset($parameterArray['diagram_File'])){
-				$splicedFileName=$parameterArray["diagram_File"];}
-			else{
-				$splicedFileName = "UNK";}
-			if(isset($parameterArray['filelink'])){
-				$fileName=$parameterArray["filelink"];}
-			else{
-				$fileName = "UNK";}
-			if(isset($parameterArray['type'])){
-				$fileType=$parameterArray["type"];}
-			else{
-				$fileType = "UNK";}
-			if(isset($parameterArray['gFilelink'])){
-				$gFileName=$parameterArray["gFilelink"];}
-			else{
-				$gFileName = "UNK";}
-			if(isset($parameterArray['gType'])){
-				$gFileType=$parameterArray["gType"];}
-			else{
-				$gFileType = "UNK";}
-
-			//for fetching file content. If file exists in directory path, fetch. Otherwise, go to the next directory and check.
-			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != "")
-			{
-				if(file_exists("../courses/global/"."$fileName")){
-					$instructions = file_get_contents("../courses/global/"."$fileName");}
-				else if(file_exists("../courses/".$cid."/"."$fileName")){
-					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName")){
-					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");}
-			}
-
-			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != "")
-			{
-				if(file_exists("../courses/global/"."$gFileName")){
-					$information = file_get_contents("../courses/global/"."$gFileName");}
-				else if(file_exists("../courses/".$cid."/"."$gFileName")){
-					$information = file_get_contents("../courses/".$cid."/"."$gFileName");}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
-					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
-			}
-
-			#Think this removes certain escape string characters.
-			$pattern = '/\s*/m';
-			$replace = '';
-			$instructions = preg_replace( $pattern, $replace,$instructions);
-			$information = preg_replace( $pattern, $replace,$information);
-
-			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
-			$i++;
-		}
-	}
-	#closes pdo connection to database. Causes error if not used as query results are stockpiled and prevents next query usage.
-	$response->closeCursor();
-
-	#after itterating through query results, finally load the json file content into $fileContent variable.
-	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
-	{
-		if(file_exists("../courses/global/"."$splicedFileName")){
-			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");}
-		else if(file_exists("../courses/".$cid."/"."$splicedFileName")){
-			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");}
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName")){
-			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");}
-	}
-
-	if($fileContent === "UNK" || $fileContent === "")
-		$fileContent = "NO_FILE_FETCHED";
-
     #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
 	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
@@ -190,20 +94,6 @@
 			}
 		}
 	}
-	
-	#I have no idea why this is here. Seems like it does the same as the code within the above query loop.
-	if(file_exists("../courses/global/"."$fileName" && $fileName != ""))
-		$instructions = file_get_contents("../courses/global/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$fileName") && $fileName != "")
-		$instructions = file_get_contents("../courses/".$cid."/"."$fileName");
-	else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName") && $fileName != "")
-		$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");
-	if($instructions === "UNK")
-		$instructions = "NO_FILE_FETCHED";
-	
-	$pattern = '/\s*/m';
-  	$replace = '';
-	$instructions = preg_replace( $pattern, $replace,$instructions);
 	
 
   
@@ -296,25 +186,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 }?>
 
 </div>
-<script type="text/javascript">
-	/**
-	 * @description get the contents of a instruction file
-	 * @param fileName the name of the file t.ex. test.html
-	 * */
-	function getInstructions(fileName)
-	{
-		if(<?php echo json_encode($finalArray);?>.length > 0){
-			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
-				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
-					document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
-				}
-				if(<?php echo json_encode($finalArray);?>[index][5]==fileName){
-					document.getElementById("diagram_instructions").innerHTML =<?php echo json_encode($finalArray);?>[index][6];
-				}
-			}
-		}			
-	}
-</script>
 	<!-- content START -->
 	<div id="content">
 		<?php
@@ -473,18 +344,6 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
     		</div>
       </div>
 	</div>
-	<script type="text/javascript">
-
-	function getVariantParam()
-	{
-		var variantArray = [<?php echo "'$variantParams'"?>];
-		variantArray.push(<?php echo "$cid"?>);
-		variantArray.push(<?php echo "$vers"?>);
-		variantArray.push(<?php echo "'$splicedFileName'"?>);
-		variantArray.push(<?php echo "'$fileContent'"?>);
-		return variantArray;
-	} 
-	</script>
 
 	<script>
 </script>

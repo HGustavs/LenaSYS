@@ -1,7 +1,13 @@
 <?php
 include_once "../Shared/sessions.php";
+include_once "../Shared/basic.php";
 session_start();
 //pdoConnect();
+$cid=getOPG('courseid');
+$vers=getOPG('coursevers');
+?>
+<script>var cid = <?php echo $cid ?>,vers = <?php echo $vers ?>;</script>
+<?php
 ?>
 <!DOCTYPE html>
 <html lang="en">
