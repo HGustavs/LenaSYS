@@ -10023,9 +10023,16 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
     }
 }
 /**
- * 
+ * @description Cleares the diagram.
  */
 function refreshDiagram(){
+    // Goto the beginning of the diagram
+    stateMachine.gotoInitialState();
+
+    // Remove the previous history
+    stateMachine.currentHistoryIndex = -1;
+    stateMachine.lastFlag = {};
+    stateMachine.removeFutureStates();
     localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     fetchDiagramFileContentOnLoad();
 }
