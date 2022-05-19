@@ -187,7 +187,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
   console.log("myConsole lid: "+ lid);
   console.log("myConsole typeof: "+ typeof lid);
   document.getElementById("sectionname").focus();
@@ -198,10 +198,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
-  var weekArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12"];
-  var weekArrValue=[1,2,3,4,5,6,7,8,9,10,11,12];
-  var weekdayArrOptions=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  var weekdayArrValue=[1,2,3,4,5,6,7];
+  var amountArrOptions=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23", "24", "25", "26", "27", "28", "29", "30"];
+  var amountArrValue=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+  var typeArrOptions=["Days", "Weeks", "Months"];
+  var typeArrValue=[1,2,3];
+
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -236,14 +237,28 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
     $("#setDeadlineValue").val(deadline.substr(0,10));
   }
-  if(relativedeadline !== undefined) {
-    var splitdeadline = relativedeadline.split(":");
-    // relativedeadline -> week:weekday:hour:minute
+  // Handles relative deadlines
+  if(relativeDeadline !== undefined) {
+    var splitdeadline = relativeDeadline.split(":");
+    // relativeDeadline = amount:type:hour:minute
     $("#relativedeadlinehours").html(makeoptions(splitdeadline[2],hourArrOptions,hourArrValue));
     $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3],minuteArrOptions,minuteArrValue));
 
-    $("#relativedeadlineweeks").html(makeoptions(splitdeadline[0],weekArrOptions,weekArrValue ));
-    $("#relativedeadlineweekdays").html(makeoptions(splitdeadline[1],weekdayArrOptions,weekdayArrValue));
+    $("#relativedeadlineamount").html(makeoptions(splitdeadline[0],amountArrOptions,amountArrValue ));
+    $("#relativedeadlinetype").html(makeoptions(splitdeadline[1],typeArrOptions,typeArrValue));
+
+    if (relativeDeadline !== "null") {
+      if (calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime()) {
+        checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+      } else {
+        checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
+      }
+    } else {
+      checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+    }
+  }
+  if (relativeDeadline == "null" && deadline == "null") {
+    checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -314,6 +329,72 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $('#inputwrapper-Feedback').css("display","none");
     $( "#fdbck" ).prop( "checked", false );
   }
+}
+// Handles the logic behind the checkbox for absolute deadline
+function checkDeadlineCheckbox(e, check) {
+
+  if (check !== undefined) e.checked = check;
+
+  if (e.checked) {
+    $("#absolutedeadlinecheck").prop("checked", true);
+    $("#setDeadlineValue").prop("disabled", false);
+    $("#deadlineminutes").prop("disabled", false);
+    $("#deadlinehours").prop("disabled", false);
+  } else {
+    $("#absolutedeadlinecheck").prop("checked", false);
+    $("#setDeadlineValue").prop("disabled", true);
+    $("#deadlineminutes").prop("disabled", true);
+    $("#deadlinehours").prop("disabled", true);
+  }
+}
+
+// Calculates the relative deadline string into a real date relative to the course startdate
+function calculateRelativeDeadline(rDeadline) {
+  // rDeadline = [amount, type, hour, minute]
+
+  // This is a failsafe which will probably not be used
+  // If this function is run but there's no startdate we simply return a arbituary date
+  if (retdata['startdate'] === "UNK") {
+    console.log("Course has no startdate, deadlines set to 2015-01-01");
+    return new Date("2015-01-01 00:00:00");
+  }
+
+  rDeadline = rDeadline === null ? "1:1:0:0" : rDeadline; 
+
+  if (typeof rDeadline === "undefined") {
+    rDeadline =  $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlineminutes").val() + ":" + $("#relativedeadlinehours").val();
+  }
+
+  rDeadlineArr = rDeadline.split(":");
+  var daysToAdd;
+  switch (rDeadlineArr[1]) {
+    case "1":
+      var daysToAdd = parseInt(rDeadlineArr[0]);
+      break;
+    case "2":
+      var daysToAdd = parseInt(rDeadlineArr[0]) * 7;
+      break;
+    case "3":
+      var daysToAdd = parseInt(rDeadlineArr[0]) * 30;
+      break;
+    default:
+      var daysToAdd = parseInt(rDeadlineArr[0]);
+      break;
+  }
+
+  var newDeadline = new Date(retdata['startdate']);
+  newDeadline.setDate(newDeadline.getDate() + daysToAdd);
+  newDeadline.setHours(parseInt(rDeadlineArr[2]));
+  newDeadline.setMinutes(parseInt(rDeadlineArr[3]));
+  return newDeadline;
+}
+// Takes a date object and returns it as a string as deadlines are stored in the database
+function convertDateToDeadline(date) {
+  var rDeadlineArr = date.toLocaleDateString("en-US").split("/");
+  rDeadlineArr[0] = rDeadlineArr[0].length < 2 ? "0" + rDeadlineArr[0] : rDeadlineArr[0];
+  rDeadlineArr[1] = rDeadlineArr[1].length < 2 ? "0" + rDeadlineArr[1] : rDeadlineArr[1];
+  var newDeadline = rDeadlineArr[2] + "-" + rDeadlineArr[0]+ "-" + rDeadlineArr[1] + " " + date.toString().split(" ")[4];
+  return newDeadline;
 }
 
 //---------------------------------------------------------------------------------------------
@@ -643,8 +724,12 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.relativedeadline = $("#relativedeadlineweeks").val()+":"+$("#relativedeadlineweekdays").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
+  param.relativedeadline = $("#relativedeadlineamount").val()+":"+$("#relativedeadlinetype").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
 
+  // If absolute deadline is not checked, always use relative deadline
+  if (!$('#absolutedeadlinecheck').prop('checked')) {
+    param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
+  }
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
     param.feedbackquestion = $("#fdbckque").val();
@@ -1110,6 +1195,7 @@ function returnedSection(data) {
       for (i = 0; i < data['entries'].length; i++) {
         var item = data['entries'][i];
         var deadline = item['deadline'];
+        var rDeadline = item['relativedeadline'];
         var released = item['release'];
 
         // Separating sections into different classes
@@ -1411,32 +1497,37 @@ function returnedSection(data) {
 
         str += "</td>";
         
-
-        // Add generic td for deadlines if one exists
-        if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
-          var dl = deadline.split(" ");
-          var timeFilterAndFormat = "00:00:00"; // time to filter away
-          var yearFormat = "0000-";
-          var dateFormat = "00-00";
-
+        // If none of the deadlines are null or undefined we need to add it to the page
+        if ((itemKind === 3) && ((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
+          // Both of them will need this html
           str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>"+
           "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
 
-          if (dl[1] == timeFilterAndFormat) {
-            str += "<div class='dateField'>";
-            str += deadline.slice(0, yearFormat.length)
-            str += "</div>";
-            str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
-          } else {
-            str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
-            if(width > 430){
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
-            }
-            else{
-              str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1);
-            }
-          }
+          // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
+          if ((deadline !== null && deadline !== "undefined") && retdata['startdate'] !== null) {
+            deadline = convertDateToDeadline(new Date(deadline));
+            deadlineArr = deadline.split(" ");
+            str += deadlineArr[0];
 
+            // If minute and hour contains nothing but 0 we dont show it
+            if (!/^[0:]+$/.test(deadlineArr[1])) {
+              str += " "+deadlineArr[1].split(":")[0]+":"+deadlineArr[1].split(":")[1];
+            }
+
+            // If there is only a relative deadline we display it instead
+          } else if (rDeadline !== null && rDeadline !== "undefined") {
+            rDeadlineArr = rDeadline.split(":");
+            rDeadlineArr[1] = rDeadlineArr[1] == 1 ? "Day" : (rDeadlineArr[1] == 2 ? "Week" : "Month");
+            str += "Course " + rDeadlineArr[1] + " " + rDeadlineArr[0];
+
+            // If minute and hour contains nothing but 0 we dont show it
+            if (!/^[0]+$/.test(new String(rDeadlineArr[2] + rDeadlineArr[3]))) {
+              rDeadlineArr[2] = rDeadlineArr[2].length == 1 ? "0" + rDeadlineArr[2] : rDeadlineArr[2];
+              rDeadlineArr[3] = rDeadlineArr[3].length == 1 ? "0" + rDeadlineArr[3] : rDeadlineArr[3];
+              str += ", " + rDeadlineArr[2] + ":"+ rDeadlineArr[3]
+            }
+
+          }
           str += "</div></td>";
         }
 
@@ -2986,12 +3077,14 @@ function validateDate(startDate, endDate, dialogID) {
 
 function showCourseDate(ddate, dialogid){
   var isCorrect = validateDate2(ddate,dialogid);
-  var startdate = new Date(retdata['startdate']);;
-  var enddate = new Date(retdata['enddate']);
-  var startdate = new String(startdate.getFullYear()+ "-" + startdate.getMonth() + "-" + startdate.getDate());
-  var enddate = new String(enddate.getFullYear()+ "-" + ("0" + enddate.getMonth()).slice(-2) + "-" + ("0" + enddate.getDate()).slice(-2));
-  document.getElementById("dialog8").innerHTML =
-  "The date has to be between " + startdate + " and " + enddate;
+  var startdate = convertDateToDeadline(new Date(retdata['startdate'])).split(" ")[0];
+  var enddate = convertDateToDeadline(new Date(retdata['enddate'])).split(" ")[0];
+
+  if (!$("#absolutedeadlinecheck").is(":checked")) {
+    $("#dialog8").html("The relative deadline will be set to " + convertDateToDeadline(calculateRelativeDeadline()));
+  } else {
+    $("#dialog8").html("The date has to be between " + startdate + " and " + enddate);
+  }
   return isCorrect;
 }
 
@@ -3009,6 +3102,16 @@ function validateDate2(ddate, dialogid) {
   // Dates from database
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
+
+  // If absolute deadline is not being used
+  if (!$("#absolutedeadlinecheck").is(":checked")) {
+    ddate.style.borderWidth = "0px";
+    x.style.display = "block";
+    window.bool8 = true;
+
+    return true;
+
+  }
 
   // Correct the fetched dates from database
   startdate.setMonth(startdate.getMonth() - 1);
