@@ -892,7 +892,7 @@ p {
   font-size: 10px;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
   #swimlaneSVG text {
       font-size: 14px;
   }
@@ -1549,7 +1549,7 @@ div .navButt:hover {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
         #div2 {
         top: 80px;
         }
@@ -5203,7 +5203,8 @@ only screen and (max-device-width: 1085px) {
 }
 
 @media only screen and (max-width: 800px),
-only screen and (max-device-width: 800px) {
+only screen and (max-device-width: 800px),
+only screen and (orientation:portrait){
   #addElement {
     display: none;
   }
