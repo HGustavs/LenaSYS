@@ -5850,7 +5850,7 @@ function generateContextProperties()
             }
         }
 
-        // Creates button for selecting element background color if not a IE relation since they should not be able change color
+        // Creates button for selecting element background color if not a IE- or UML relation since they should not be able change color
         if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
             // Creates button for selecting element background color
            str += `<div style="white">Color</div>`;
@@ -7377,46 +7377,39 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
     }
 
-        //=====================IE RELATION===============================================
-        else if (element.kind == 'IERelation') {
-            //div to encapuslate IE element
-            str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-            style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
-    
-            if(context.includes(element)){
-                str += `z-index: 1;`;
-            }
-            if (ghosted) {
-                str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
-            }
-            str += `'>`;
-    
-            //svg for inheritance symbol
-            str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);'>`;
-    
-            //Overlapping inheritance
-            if (element.state == 'overlapping') {
-               /*  str += `    <path d="M170 100 A 40 40 30 0 1 250 100" fill="white" stroke="blue"/>
-        <line x1="250" y1="100" x2="170" y2="100" style="stroke:rgb(255,0,0);stroke-width:2"  />` */
-                 str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew};'/> 
-                 <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";>`
-                 
-                //str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
-                //style='fill:yellow;stroke:green;stroke-width:${linew};'/>`; 
-            }
-            // Disjoint inheritance
-            else {
-                str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew};'/>
-                 <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";/>
-                 <line x1="${boxw/1.42}" y1="${boxw/2.6}" x2="${boxw/4}" y2="${boxw/12.5}" stroke="black" />
-                 <line x1="${boxw/3.3}" y1="${boxw/2.5}" x2="${boxw/1.42}" y2="${boxw/12.5}" stroke="black" />`
-                /* str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
-                style='fill:brown;stroke:blue;stroke-width:${linew};'/>`; */
-            }
-            //end of svg
-            str += `</svg>`;
+    //=====================IE RELATION===============================================
+    else if (element.kind == 'IERelation') {
+        //div to encapuslate IE element
+        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
         }
-        //====================================================================
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+
+        //svg for inheritance symbol
+        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);'>`;
+
+        //Overlapping inheritance
+        if (element.state == 'overlapping') {
+                str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew};'/> 
+                <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";>`
+        }
+        // Disjoint inheritance
+        else {
+            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew};'/>
+                <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";/>
+                <line x1="${boxw/1.42}" y1="${boxw/2.6}" x2="${boxw/4}" y2="${boxw/12.5}" stroke="black" />
+                <line x1="${boxw/3.3}" y1="${boxw/2.5}" x2="${boxw/1.42}" y2="${boxw/12.5}" stroke="black" />`
+        }
+        //end of svg
+        str += `</svg>`;
+    }
+ 
 //====================================================================
     //ER element
     else {
