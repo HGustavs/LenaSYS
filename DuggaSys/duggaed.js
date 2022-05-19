@@ -490,12 +490,14 @@ function selectVariant(vid, el) {
 
   				if(result == "type"){
   					document.getElementById('type').value = obj[result];
+					  updateInstructions();
   				}
   				else if(result == "filelink"){
   					document.getElementById('filelink').value = obj[result];
   				}
 				  if(result == "gType"){
 					document.getElementById('gType').value = obj[result];
+					updateInformation();
 				}
 				else if(result == "gFilelink"){
 					document.getElementById('gFilelink').value = obj[result];
