@@ -260,7 +260,7 @@
 }
 
 .comment {
-    color: #888;
+    color: var(--color-border-5);
 }
 
 .normtext .oper {
@@ -403,7 +403,7 @@
 
    background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
    background-size:15px 15px;
-   border: 1px solid #ccc;
+   border: 1px solid var(--color-border-2);
 }
 
 .buttomenu2Style .boxcontentselect{
@@ -411,13 +411,13 @@
 
    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
-   border: 1px solid #ccc;
+   border: 1px solid var(--color-border-2);
 }
 .buttomenu2Style .chooseContentSelect{
    color: var(--color-text-header);
    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
-   border: 1px solid #ccc;
+   border: 1px solid var(--color-border-2);
 }
 
 .buttomenu2Style select:hover{
