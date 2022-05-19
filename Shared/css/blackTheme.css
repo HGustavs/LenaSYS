@@ -97,7 +97,7 @@
 }
 
 #content {
-    background-color: #121212;
+    background-color: var(--color-background);
 	color: var(--color-text-header);
 }
 
@@ -487,7 +487,7 @@ body {
 
 #announcementBoxOverlay{
     display: none;
-    background-color:#121212;
+    background-color: var(--color-background);
     overflow: auto;
     overflow-x: auto;
     font-family: 'Varela', sans-serif;
