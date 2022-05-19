@@ -4888,7 +4888,7 @@ function generateErTableString()
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
-                            if(!hasChildElement(allEntityList[i][j].id)){
+                            if(allEntityList[i][j].newKeyName == undefined){
                                 currentString += `${allEntityList[i][j].name}, `;
                             }
                         }
