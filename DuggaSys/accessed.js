@@ -14,7 +14,19 @@ var activeDropdown;
 var activeArrow;
 var shouldReRender = false;
 var str = "W";
+var x = window.matchMedia('(max-width: 380px)');
 
+x.onchange = (e) => {
+    if (e.matches) {
+        displayNavIcons();
+    }
+}  
+
+function displayNavIcons() {
+    document.getElementById("home").style.display="revert";
+    document.getElementById("theme-toggle").style.display="revert";
+    document.getElementById("back").style.display="revert";    
+}
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
 //----------------------------------------------------------------------------
