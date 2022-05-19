@@ -736,6 +736,7 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
         PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
+        PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -780,6 +781,7 @@ const elementTypes = {
     Ghost: 3,
     UMLEntity: 4,       //<-- UML functionality
     UMLRelation: 5, //<-- UML functionality
+    IEEntity: 6,       //<-- IE functionality
 };
 
 /**
@@ -792,6 +794,7 @@ const elementTypesNames = {
     ERAttr: "ERAttr",
     Ghost: "Ghost",
     UMLEntity: "UMLEntity",
+    IEEntity: "IEEntity",
 }
 
 /**
@@ -1049,6 +1052,7 @@ var defaults = {
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
+    IEEntity: {name: "Entity", kind: "IEEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1503,6 +1507,14 @@ document.addEventListener('keyup', function (e)
         //Temp for UML functionality
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity)
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        //======================================================
+
+        //=================================================== //<-- IE functionality
+        //Temp for IE functionality
+        if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
+            setElementPlacementType(elementTypes.IEEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
         //======================================================
