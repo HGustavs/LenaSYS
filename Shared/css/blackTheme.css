@@ -1,6 +1,6 @@
 /* @media (prefers-color-scheme: dark){ */ /*This comment must remain, do not delete it when you "clean code" . */
     :root {
-         --color-text-primary: #775886;
+         --color-text-primary: #BFC9CA;
         --color-text-primary-darker: #620C5B;
         --color-text-secondary: #434343;
         --color-text-header: #fff;
@@ -13,7 +13,7 @@
         --color-logo-background: #775886;
       
         --color-primary: #614875;
-        --color-primary-2: #775886;
+        --color-primary-2: #BFC9CA;
         --color-primary-hover: #7b5a96;
         --color-primary-light: #927b9e;
         --color-new-user: #93A561;
