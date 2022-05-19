@@ -28,6 +28,7 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (36,1894,1,2,'Transforms Dugga','transforms-dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (37,1894,1,2,'XMLAPI Report','XMLAPI_report1','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (38,1894,1,2,'Seminar Dugga','seminar_dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (39,1894,1,2,'SVG Dugga','svg-dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3001,1894,'Tillgängliga Duggor','',4,0,1,1,'52432',3001,2,0,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3002,1894,'3D Dugga','13',3,1,1,1,'52432',3001,2,1,0);
@@ -55,7 +56,8 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3024,1894,'Shapes Dugga','35',3,23,1,1,'52432',3001,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3025,1894,'Transforms Dugga','36',3,24,1,1,'52432',3001,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3026,1894,'XMLAPI Report','37',3,25,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3027,1894,'Seminar Dugga','38',3,25,1,1,'52432',3001,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3027,1894,'Seminar Dugga','38',3,26,1,1,'52432',3001,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3028,1894,'SVG Dugga','39',3,27,1,1,'52432',3001,2,1,0);
 
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,13,'{\"variant\":\"3D\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (25,14,'{\"tal\":\"129\"}','{"danswer":\"10000001 8 1\"}',NOW(),2);
@@ -83,6 +85,7 @@ INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (46
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (47,36,'{\"variant\":\"Transforms\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (48,37,'{\"variant\":\"XMLAPI Report\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (49,38,'{\"variant\":\"Seminar\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (50,39,'{\"variant\":\"SVG-Dugga\"}','{Variant}',NOW(),2);
 
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
 VALUES ('83','1894','13','24','3002',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','99889603','b76870af','3','3');
@@ -140,3 +143,5 @@ INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitt
 VALUES ('107','1894','37','48','3026',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','9988961B','b76870c7','3','3');
 INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
 VALUES ('108','1894','38','49','3027',NULL,NULL,NULL,'2022-05-09 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','9988961C','b76870c8','3','3');
+INSERT INTO userAnswer (aid,cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,feedback,gradeExpire,gradeLastExported,seen_status,hash,password, timesSubmitted, timesAccessed) 
+VALUES ('109','1894','39','50','3028',NULL,NULL,NULL,'2022-05-19 14:17:02',NULL,'52432',NULL,NULL,0,NULL,'0',NULL,'0',NULL,NULL,NULL,'0','9988961D','b76870c9','1','1');

@@ -1,0 +1,46 @@
+<style id="animStyle"></style>
+<div class='feedback-container' style="display: none;">
+<div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>	
+    <div class="feedback-content">	
+        <div id="feedbackTable" style="margin-top: -3px;"></div>	
+    </div>
+</div>
+
+<div class='instructions-container'>
+<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>	
+	<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="snus">
+		<p>SVG assignment går ut på att skapa en figur med hjälp av SVG grafik. Till ert förfogande finns en ruta där både HTML, CSS och SVG kod kan implementeras. 
+            Exekveringen av koden görs samtidigt som koden implementeras. När du är klar klickar du på save och uppgiften är inskickad. Vill du börja om klickar du på reset knappen. 
+            Lycka till!</p>
+	</div>
+</div>
+
+<div id="svg-duggaContainer">
+    <div id="svg-leftpane">
+        <span>SVG Preview</span>
+        <div id="svg-content"></div>
+    </div>
+    
+    <div id="svg-rightpane">
+        <span id="Title">SVG Editor: </span><span id="drop"><select id="filename" onchange="selectFile();"></select></span<br>
+        <textarea id="svg-editor" oninput="processContent()" placeholder="SVG editor" style="font-size:14px"></textarea><br>
+        <span>CSS</span><br>
+        <textarea id="svg-styleed" oninput="processStyleContent()" placeholder="CSS editor" style="font-size:14px"></textarea>
+    </div>
+</div>
+
+<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Dugga Stats</h3>
+        <div class='cursorPointer' onclick="hideDuggaStatsPopup()">x</div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th></th><th>Highscore</th><th>Total</th></tr>
+            <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
+            <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
+            <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
+        </table>
+    </div>
+</div>
+

@@ -8991,3 +8991,51 @@ select{
   border-radius: 5px;
 }
 /* END */
+
+/*svg-dugga css */
+#svg-leftpane{
+  left:0px;
+  right:40%;
+  top:0px;
+  bottom:0px;
+  border:1px solid blue;
+  background: #def;
+  width:35%;
+  
+}
+
+#svg-rightpane{
+  top:0px;
+  bottom:0px;
+  left:60%;
+  right:0px;
+  border:1px solid orange;
+  background: #fed;
+  width:60%;
+  
+}
+
+#svg-editor{
+height:55%;
+width:95%;
+}
+
+#svg-styleed{
+height:35%;
+width:95%;
+}      
+
+#svg-content{
+width:100%;
+border:1px dotted green;
+margin:2px;
+}
+
+#svg-duggaContainer{
+  display:flex;
+  justify-content: center;
+  font-family:Arial Narrow; 
+  font-size:18px;
+}
+
+/* END */
