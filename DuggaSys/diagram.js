@@ -794,7 +794,7 @@ const elementTypesNames = {
     ERAttr: "ERAttr",
     Ghost: "Ghost",
     UMLEntity: "UMLEntity",
-    //IERelation: "IERelation"
+    IERelation: "IERelation"
 }
 
 /**
@@ -869,8 +869,8 @@ const relationState = {
  * @description State of inheritance between IE entities. <-- IE functionality
  */
  const inheritanceStateIE = {
-    DISJOINT: "disjointIE",
-    OVERLAPPING: "overlappingIE",
+    DISJOINT: "disjoint",
+    OVERLAPPING: "overlapping",
 };
 
 
@@ -1315,7 +1315,7 @@ function getData()
  */
 function showDiagramTypes(){
     //if both diagramtypes are allowed hides the uml elements and adds the function to show the toggle box
-    if(!!diagramType.ER && !!diagramType.UML){
+    if(!!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement0").onmousedown = function() {
@@ -5831,7 +5831,7 @@ function generateContextProperties()
                 var value;
                 var selected = context[0].state;
                 if(selected == undefined) {
-                    selected = "disjointIE"
+                    selected = "disjoint"
                 }
 
                 if(element.kind=="IERelation") {
@@ -7278,17 +7278,24 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}'>`;
+        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);'>`;
 
         //Disjoint inheritance
-        if (element.state == 'overlappingIE') {
-            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
-            style='fill:yellow;stroke:green;stroke-width:${linew};'/>`;
+        if (element.state == 'overlapping') {
+           /*  str += `    <path d="M170 100 A 40 40 30 0 1 250 100" fill="white" stroke="blue"/>
+    <line x1="250" y1="100" x2="170" y2="100" style="stroke:rgb(255,0,0);stroke-width:2"  />` */
+             str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="green"; stroke-width:${linew};'/> 
+             <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="green";>`
+             
+            //str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            //style='fill:yellow;stroke:green;stroke-width:${linew};'/>`; 
         }
         //Overlapping inheritance
         else {
-            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
-            style='fill:brown;stroke:blue;stroke-width:${linew};'/>`;
+            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="red"; stroke-width:${linew+linew};'/>
+             <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="red";>`
+            /* str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            style='fill:brown;stroke:blue;stroke-width:${linew};'/>`; */
         }
         //end of svg
         str += `</svg>`;
@@ -7549,7 +7556,7 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation")) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation"  && context[0].kind != "IERelation")) addNodes(context[0]);
     
 
 }
