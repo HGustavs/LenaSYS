@@ -6721,21 +6721,36 @@ function drawLine(line, targetGhost = false)
         y2Offset =0;
     }
     
-    if (line.kind == "Normal"){
-        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
-    } else if (line.kind == "Double") {
-        // We mirror the line vector
-        dy = -(tx - fx);
-        dx = ty - fy;
-        var len = Math.sqrt((dx * dx) + (dy * dy));
-        dy = dy / len;
-        dx = dx / len;
-        var cstmOffSet = 1.4;
-
-       	str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    if (telem.type == 'UML') {
+        console.log('Waa');
+        str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${tx + x2Offset},${fy + y1Offset} ${tx + x2Offset},${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
     }
-
+    else if (felem.type == 'UML') {
+        console.log('Reeeee');
+        var tex = (fx-tx)/2;
+        var tey = (fy-ty)/2; 
+        console.log('Delta X: ' + tex);
+        console.log('Delta Y: ' + tey);
+        str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${tx + x2Offset},${fy + y1Offset} ${tx + x2Offset},${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
+    }
+    else {
+        console.log('Lines');
+        if (line.kind == "Normal"){
+            str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
+        } else if (line.kind == "Double") {
+            // We mirror the line vector
+            dy = -(tx - fx);
+            dx = ty - fy;
+            var len = Math.sqrt((dx * dx) + (dy * dy));
+            dy = dy / len;
+            dx = dx / len;
+            var cstmOffSet = 1.4;
+    
+               str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        }
+    }
+    
     if (contextLine.includes(line)) {
 
         var x = (fx + tx) /2;
