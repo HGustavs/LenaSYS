@@ -818,3 +818,28 @@ input{
     filter: invert(1) ; 
 }
 /* END */
+
+/* Style for Dugga "HTML CSS Dugga" */
+#input-col{
+    background-color: #212121;
+}
+
+#url-input::-webkit-input-placeholder {
+    color: rgb(198, 192, 192);
+}
+
+#url-preview-label {
+    background-color: #212121;
+}
+
+#url-preview-label p{
+    color:white;
+}
+#code-preview-label{
+    background-color: #212121;   
+}
+
+#target-col p{
+    color: black;
+}
+/* END */
