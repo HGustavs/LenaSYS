@@ -699,7 +699,7 @@ function deleteAll()
 
 // Cancel deletion
 function cancelDelete() {
-  clearTimeout(time);
+  clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for(i = 0; i < deletedElements.length; i++) { 
     deletedElements[i].classList.remove("deleted");
