@@ -2204,28 +2204,31 @@ function accountInformation(data){
     str+= "<div id='" +data[row][0] +"'>";
     str+= "<tr class='accountRequestTable'"+ row +">";
     str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
+    var userName = data[row][0];
+    console.log("dataTES: "+ typeof data[row][0]);
+    
     
     //status codes 101=pending 102=denied 0=accepted
     if(data[row][1]==101){  //pending account
       str+="<td class='accountRequestTable'>" + 'Pending'+ "</td>";
       str+="<td class='accountRequestTable'>";
-        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept'></input>" ;
-        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny '></input>";
-        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc()', value='Delete '></input>";
+        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc(\""+userName+"\")', value='Accept'></input>" ;
+        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc(\""+userName+"\")', value='Deny '></input>";
+        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc(\""+userName+"\")', value='Delete '></input>";
       str+= "</td>";
     }
     else if(data[row][1]==0){ //accepted account
       str+= "<td class='accountRequestTable'>" + 'Accepted'+ "</td>";
       str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete '></input>";
-        str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc()' value='Revoke '></input>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc(\""+userName+"\")' value='Delete '></input>";
+        str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc(\""+userName+"\")' value='Revoke '></input>"; 
       str+= "</td>";
     }
     else{ //if not accepted or pending its denied
       str+= "<td class='accountRequestTable'>" + 'Denied' + "</td>";
       str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete'></input>";
-        str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Accept'></input>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc(\""+userName+"\")' value='Delete'></input>";
+        str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc(\""+userName+"\")' value='Accept'></input>"; 
       str+= "</td>";
     }
     str+="</div>";
@@ -2235,17 +2238,20 @@ function accountInformation(data){
   return str; 
 }
 
-function denyAcc(){
+function denyAcc(userName){
   console.log("denied this account");
+  console.log('Username is '+userName);
 }
 
-function deleteAcc(){
+function deleteAcc(userName){
   console.log("deleted this account");
+  console.log('Username is '+userName);
 
 }
 
-function acceptAcc(){
+function acceptAcc(userName){
   console.log("accepted this account");
+  console.log('Username is '+userName);
 }
 
 function placeSideBarInfo(data){
