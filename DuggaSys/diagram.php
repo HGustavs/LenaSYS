@@ -226,7 +226,7 @@
         </fieldset>
         <fieldset>
             <legend>History</legend>
-            <div id="erTableToggle" class="diagramIcons" onclick="refreshDiagramAlert()">
+            <div id="erTableToggle" class="diagramIcons" onclick="resetDiagramAlert()">
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Refresh Diagram</b><br>
                     <p>Click to reset the diagram to its original look</p><br>
