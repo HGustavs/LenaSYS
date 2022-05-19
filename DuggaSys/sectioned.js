@@ -1277,12 +1277,12 @@ function returnedSection(data) {
           if (retdata['writeaccess']) {
           if (itemKind === 3) {
             if(isLoggedIn){
-              str += "<td  class='LightBox" + hideState + "'>";
+              str += "<td onmouseup='hideDeleted()' class='LightBox" + hideState + "'>";
               str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             }
           } else if (itemKind === 4) {
             if(isLoggedIn){
-              str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
+              str += "<td onmouseup='hideDeleted()' style='background-color: #614875;' class='LightBox" + hideState + "'  >";
               str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             }
           }
@@ -1293,7 +1293,7 @@ function returnedSection(data) {
       if (retdata['writeaccess']) {
         console.log(itemKind);
         if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
-          str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
+          str += "<td onmouseup='hideDeleted()' style'text-align: left;' class='LightBox" + hideState + "'>";
           str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
           
         }
@@ -1334,7 +1334,7 @@ function returnedSection(data) {
         } else if (itemKind === 1) {
           if(isLoggedIn){
             // Styling for Section row
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+            str += "<td onmouseup='hideDeleted()' style='background-color: #614875;' class='LightBox" + hideState + "'>";
             str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
           }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
