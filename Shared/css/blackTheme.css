@@ -1,6 +1,6 @@
 /* @media (prefers-color-scheme: dark){ */ /*This comment must remain, do not delete it when you "clean code" . */
     :root {
-         --color-text-primary: #775886;
+         --color-text-primary: #BFC9CA;
         --color-text-primary-darker: #620C5B;
         --color-text-secondary: #434343;
         --color-text-header: #fff;
@@ -13,8 +13,8 @@
         --color-logo1: #775886;
         --color-logo2: #573866;
         --color-logo-background: #775886;
-      
-        --color-primary: #614875;
+
+        --color-primary: #432a5a;
         --color-primary-2: #775886;
         --color-primary-hover: #7b5a96;
         --color-primary-light: #927b9e;
@@ -54,25 +54,11 @@
         --color-table: #212121;
     }
 
-    #dorf {
+    #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
         cursor: pointer;
         filter: invert(80%);
         -webkit-filter: invert(80%);
     }
-    #NewTabLink{
-        cursor: pointer; 
-    }
-    .code #NewTabLink{
-        filter: invert(80%);
-        -webkit-filter: invert(80%);   
-    }
-    .whiteIcon {
-        cursor: pointer;
-        filter: invert(80%);
-        -webkit-filter: invert(80%);
-    }
-
-
       
 #div2{
 	background-color: var(--color-background);
@@ -127,6 +113,7 @@
     outline: 0 none;
     background-color: var(--color-background);
     color: var(--color-text-light);
+
 }
 
 .box h1{
@@ -260,6 +247,7 @@
 .normtext {
     color: var(--color-text-light);
     background-color: var(--color-background);
+
     white-space:nowrap;
 }
 
@@ -396,7 +384,7 @@
 
 .codebox{
   font-family:Hack;
-  background-color: var(--color-background);
+  /* Inherits background-color from .box */
 }
 
 .descbox{
@@ -620,9 +608,20 @@ body {
     background-color: var(--color-background);
 }
 
+#toolboxTransform{
+    border:2px solid var(--color-sectioned-table-lo);
+    margin-left: 3px;
+    padding: 3px;
+}
+
+#toolboxTransform #opTableContainer{
+    padding: 5px;   
+}
+
 #opTableContainer{
 	height:355px;
 	background-color: var(--color-table); 
+  margin: 7px;
 	overflow-y:scroll;
 }
 
@@ -773,7 +772,6 @@ option:checked{
     background-color: var(--color-sectioned-table-lo);
     color: var(--color-text-light);
 }
-/* END */
 
 /* Style for "Weekly Bar Chart" START */
 .WeeklyBarChartEven{
@@ -800,7 +798,6 @@ option:checked{
     fill: var(--color-fill);
     background-color: var(--color-sectioned-table-hi);
 }
-/* END */
 
 /* Style for "Input elements" */
 button{
@@ -820,11 +817,45 @@ input{
     background-color: var(--color-background-codeviewer-nav);
     color: var(--color-text-light);
     color-scheme: dark; /*For date picker */
+    border: 2px solid #212121;
 }
-/* END */
 
 /* Style for "Date Picker" START:    */
 ::-webkit-calendar-picker-indicator:hover {
     filter: invert(1) ; 
+}
+
+/* Style for "Date Picker" START:    */
+::-webkit-calendar-picker-indicator:hover {
+    filter: invert(1) ; 
+}
+
+/* Style for Dugga "HTML CSS Dugga" */
+#input-col{
+    background-color: #212121;
+}
+
+#url-input::-webkit-input-placeholder {
+    color: rgb(198, 192, 192);
+}
+
+#url-preview-label {
+    background-color: #212121;
+}
+
+#url-preview-label p{
+    color:white;
+}
+#code-preview-label{
+    background-color: #212121;   
+}
+
+#target-col p{
+    color: black;
+}
+
+/* Style for "Upload PDF of Presentation" */
+#Inl1DocumentPrev {
+    background-color:#242729;
 }
 /* END */

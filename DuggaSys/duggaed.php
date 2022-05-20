@@ -30,7 +30,7 @@ session_start();
 	<script src="backToTop.js"></script>
 
 </head>
-<body onload="setup();">
+<body onload="setup(); displayNavIcons();">
 
 	<!-- Navigation Header START -->
 	<?php

@@ -15,6 +15,19 @@ var checkboxElements;
 var searchBarElement;
 var searchDelayTimeout;
 var colOrder = ["duggaName","hash", "password","teacherVisited", "submitted", "timesSubmitted", "timesAccessed"];
+var x = window.matchMedia('(max-width: 380px)');
+
+x.onchange = (e) => {
+    if (e.matches) {
+        displayNavIcons();
+    }
+}  
+
+function displayNavIcons() {
+    document.getElementById("home").style.display="revert";
+    document.getElementById("theme-toggle").style.display="revert";
+    document.getElementById("back").style.display="revert";    
+}
 
 function searchByFilter() {
 	// Date object requires string to not apply random time zone.
