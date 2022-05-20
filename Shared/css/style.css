@@ -8313,6 +8313,9 @@ textarea#filecont {
   #hamburgerBox{
     display:none;
   }
+  #hamburgerIcon{
+    display:none;
+  }
 }
 
 #selectdir{
