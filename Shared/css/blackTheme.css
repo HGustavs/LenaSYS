@@ -29,6 +29,7 @@
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
         --color-background-4: #c8c8c8;
+        --color-background-light-surface: #fff;
         --color-sectioned-table-hi: #242729;
         --color-sectioned-table-lo: #2d3133;
         --color-statistics: #d8d7da;
@@ -338,13 +339,13 @@
 
 .impo .impword {
     color: var(--color-text-dark);
-    background-color: #fff;
+    background-color: var(--color-background-light-surface);
     border: 1px solid #f44;
 }
 
 .descbox .impword {
     color: var(--color-text-dark);
-    background-color: #fff;
+    background-color: var(--color-background-light-surface);
     border: 1px solid #f44;
 }
 
