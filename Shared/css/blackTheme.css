@@ -25,6 +25,7 @@
         --color-accent-hover: #ffd369;
         --color-background: #121212; 
         --color-background-codeviewer: #272822;
+        --color-background-codeviewer-nav: #464646;
         --color-background-normtext: #5d5d5d;
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
@@ -403,7 +404,7 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #464646;
+	background-color: var(--color-background-codeviewer-nav);
 }
 
 .buttomenu2Style .wordlistselect{
@@ -801,20 +802,20 @@ option:checked{
 
 /* Style for "Input elements" */
 button{
-    background-color: #464646;
+    background-color: var(--color-background-codeviewer-nav);
     color: var(--color-text-light);
     border-radius: 5px;
 }
 
 select{
-    background-color: #464646;
+    background-color: var(--color-background-codeviewer-nav);
     color: var(--color-text-light);
     margin-right: 10px;
     border-radius: 5px;
 }
 
 input{
-    background-color: #464646;
+    background-color: var(--color-background-codeviewer-nav);
     color: var(--color-text-light);
     color-scheme: dark; /*For date picker */
 }
