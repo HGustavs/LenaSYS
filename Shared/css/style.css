@@ -1357,6 +1357,16 @@ header td {
   height: 32px;
 }
 
+#downloadButt {
+  margin-top: 2px;
+  height: 40px;
+}
+
+/* Hide download button when in mobile view */
+@media screen and (max-width:480px) {
+  #downloadBTN {display: none;}
+}
+
 #homeImg{
   transform: scale(1.3);
   height: 32px;
