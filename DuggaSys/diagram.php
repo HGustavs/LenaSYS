@@ -138,13 +138,12 @@
 				echo 'Message: ' .$e->getMessage();
 			}
 		}
+        print_r($fileContent);
+        exit();
 	}
 
 	if($fileContent === "UNK" || $fileContent === "")
 		$fileContent = "NO_FILE_FETCHED";
-
-    print_r($fileContent);
-    exit();
 
 ?>
 
