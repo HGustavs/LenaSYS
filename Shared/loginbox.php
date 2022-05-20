@@ -57,7 +57,7 @@
 					</tr>
 					<tr class="loginboxTr">
 						<td class="nowrap">
-							<label class='text forgotPw' onclick='returntoCoursePage();' title='Return to course page'>Login is only possible from course page!</label>
+							<label class='text forgotPw' onclick='navigateToUrl("../DuggaSys/courseed.php")' title='Return to course page'>Login is only possible from course page!</label>
 						</td>
 					</tr>
 					<tr class="loginboxTr">

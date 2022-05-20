@@ -188,10 +188,6 @@ function toggleloginnewpass(){
 		showing= 3;
 	}
 }
-function returntoCoursePage(){
-	console.log("return to course page");
-
-}
 
 // This function only resets login and forgot password fields
 function resetFields(){
