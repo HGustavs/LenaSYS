@@ -70,6 +70,8 @@ if (strcmp($opt, "checkForGitUser")==0)
 
 }
 
+
+//To edit the status of git accounts on contribution
 else if(strcmp($opt,"gitUserAdmin") == 0)
 {
 

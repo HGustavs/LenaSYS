@@ -2238,10 +2238,15 @@ function accountInformation(data){
   return str; 
 }
 
+
+//These funtions sends the AJAX call to contribution_loginbox_service
 function denyAcc(userName){
 
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 1}, "CONT_LOGINBOX_SERVICE");
+
+  window.location.reload();
+  //$("#accountRequests-pane").load(" #accountRequests-pane > *");
 }
 
 function deleteAcc(userName){
@@ -2249,8 +2254,8 @@ function deleteAcc(userName){
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 2}, "CONT_LOGINBOX_SERVICE");
 
-    window.location.reload();
-    //$("#loginBox").load(" #accountRequests-pane > *");
+  window.location.reload();
+  //$("#'userName'").load(" #accountRequests-pane > *");
 
 }
 
@@ -2258,7 +2263,11 @@ function acceptAcc(userName){
 
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 3}, "CONT_LOGINBOX_SERVICE");
-}
+
+  window.location.reload();
+  //$("#accountRequests-pane").load(" #accountRequests-pane > *");
+
+ }
 
 function placeSideBarInfo(data){
   var text = document.getElementById('accountRequests-pane');
