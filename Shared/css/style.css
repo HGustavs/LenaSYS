@@ -2177,6 +2177,9 @@ input.inactive-button {
   border-color: rgb(169, 169, 169);
   width: 100%;
 }
+#submitMotd{
+  margin-left: 340px;
+}
 
 #impwords,
 #impword {
