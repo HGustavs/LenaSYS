@@ -1047,12 +1047,12 @@ var ghostLine = null;
  */
 var defaults = {
 
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", width: 60, height: 60, type: "ER" },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", width: 90, height: 45, type: "ER", state: 'normal'},
-    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", width: 5, height: 5, type: "ER" },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
-    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", width: 50, height: 50, type: "UML" }, //<-- UML functionality
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER" },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal'},
+    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
+    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
 }
 var defaultLine = { kind: "Normal" };
@@ -2909,6 +2909,7 @@ function pasteClipboard(elements, elementsLines)
             id: idMap[element.id],
             state: element.state,
             fill: element.fill,
+            stroke: element.stroke,
             type: element.type,
             attributes: element.attributes,
             functions: element.functions
@@ -5613,7 +5614,7 @@ function propFieldSelected(isSelected)
  * @param {*} arr Input array with all elements that should be seperated by newlines
  * @returns Formated string containing all the elements in arr
  */
-function umlFormatString(arr)
+function textboxFormatString(arr)
 {
     var content = '';
     for (var i = 0; i < arr.length; i++) {
@@ -5621,15 +5622,6 @@ function umlFormatString(arr)
     }
     return content;
 }
-function ieFormatString(arr)
-{
-    var content = '';
-    for (var i = 0; i < arr.length; i++) {
-        content += arr[i] + '\n';   
-    }
-    return content;
-}
-
 
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
@@ -5756,11 +5748,11 @@ function generateContextProperties()
                               break;
                           case 'attributes':
                               str += `<div style='color:white'>Attributes</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                               break;
                           case 'functions':
                               str += `<div style='color:white'>Functions</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                               break;
                           default:
                               break;
@@ -5817,7 +5809,7 @@ function generateContextProperties()
                                 break;
                             case 'attributes':
                                 str += `<div style='color:white'>Attributes</div>`;
-                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                                 break;
                             default:
                                 break;
@@ -7356,7 +7348,7 @@ function drawElement(element, ghosted = false)
     //Check if the element is a IE entity
     else if (element.kind == "IEEntity") { 
         elemAttri = element.attributes.length;
-        elemFunc = element.functions.length;
+        //elemFunc = element.functions.length;
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -7407,7 +7399,7 @@ function drawElement(element, ghosted = false)
         //end of div for IE content
         str += `</div>`;
 
-        //div for IE footer
+        /*//div for IE footer
         str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw IE-footer if there exist at least one function
         if (elemFunc != 0) {
@@ -7431,7 +7423,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         //end of div for IE footer
-        str += `</div>`;
+        str += `</div>`;*/
     }
     //====================================================================    
 
@@ -9748,8 +9740,8 @@ function updateCSSForAllElements()
             updateElementDivCSS(element, elementDiv, useDelta);
             // Edge creation does not highlight selected elements
             if(mouseMode != mouseModes.EDGE_CREATION){
-                // Update UMLEntity
-                if(element.kind == "UMLEntity" && element.kind == "IEEntity"){
+                // Update UMLEntity or IEEntity
+                if(element.kind == "UMLEntity"){
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -9763,7 +9755,22 @@ function updateCSSForAllElements()
                         }
                     }
                 // Update Elements with double borders.
-                }else if(element.state == "weak" || element.state == "multiple"){
+                }
+                if(element.kind == "IEEntity"){
+                    for (let index = 0; index < 3; index++) {
+                        fillColor = elementDiv.children[index].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        // If more than one element is marked.
+                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                            fillColor.style.fill = `${"#927b9e"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                        } else{
+                            fillColor.style.fill = `${element.fill}`;
+                            fontColor.style.fill = `${"#000000"}`;
+                        }
+                    }
+                }
+                else if(element.state == "weak" || element.state == "multiple"){
                     for (let index = 0; index < 2; index++){
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
