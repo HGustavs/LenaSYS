@@ -33,7 +33,7 @@
 }
 
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
     #box1wrapper{
      overflow: hidden;
     position: absolute;
