@@ -179,7 +179,11 @@
 
                 <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" title="Diagram"></iframe>
                 <script>
-                    if(cid){
+
+                    if(cid && hash != "UNK"){
+                        document.getElementById("diagram-iframe").src = "./diagram.php?courseid="+cid+"&coursevers="+vers+"&hash="+hash;
+                    }
+                    else if(cid && !hash){
                         document.getElementById("diagram-iframe").src = "./diagram.php?courseid="+cid+"&coursevers="+vers;
                     }
                     else{
