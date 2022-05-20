@@ -138,6 +138,8 @@
 				echo 'Message: ' .$e->getMessage();
 			}
 		}
+        print_r($_SESSION['tempHash']);
+        exit();
 	}
 
 	if($fileContent === "UNK" || $fileContent === "")
