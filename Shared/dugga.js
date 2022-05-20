@@ -89,7 +89,7 @@ function loadDugga(){
 	var hash = document.getElementById('hash').value;
 	/*when adding `${hash}` it redirects to validateHash.php whereas if it was just raw 
 	hash it wouldn't validate anything*/
-	sessionStorage.setItem("cameFromHash","Yes");
+	sessionStorage.setItem("cameFromHash","Yes");// To ensure the hashed version is loaded in
 	window.location.href = createUrl(`${hash}`);
 }
 

@@ -2048,7 +2048,7 @@ function mouseDown(e) {
   } else {
     isClickedElementBox = false;
   }
-	sessionStorage.setItem("cameFromHash","No");
+	sessionStorage.setItem("cameFromHash","No"); // to get the current dugga rather than from hash when loading diagram dugga
 }
 
 //----------------------------------------------------------------------------------

@@ -24,7 +24,7 @@ function setup()
     AJAXService("GETPARAM", { }, "PDUGGA");
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
-    // checking if user has an stored active diagram and loading it if they have
+    // checking if user has an stored active diagram and not coming from hash and loading it if they have
     if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != "" && sessionStorage.getItem("cameFromHash") != "Yes"){
         diagramWindow.contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
     }
