@@ -25,6 +25,7 @@
         --color-accent-hover: #ffd369;
         --color-background: #121212; 
         --color-background-codeviewer: #272822;
+        --color-background-normtext: #5d5d5d;
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
         --color-background-4: #c8c8c8;
@@ -299,7 +300,7 @@
 }
 
 .normtext .hi {
-    background-color: #5d5d5d;
+    background-color: var(--color-background-normtext);
     color: var(--color-text-light);
 }
 
@@ -348,7 +349,7 @@
 }
 
 .normtext .imphi {
-    background-color: #5d5d5d;
+    background-color: var(--color-background-normtext);
     color: var(--color-text-light);
 
 }
