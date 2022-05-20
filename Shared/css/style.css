@@ -841,11 +841,22 @@ p {
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
-/* Turn the icons white */
-#Sectionlist .section #dorf {
-  cursor: pointer;
+#Sectionlist .section #NewTabLink {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);  
+} 
+
+#Sectionlist .section #tabElement {
    filter: invert(100%);
   -webkit-filter: invert(100%);
+}
+#Sectionlist .section #dorf {
+  filter: invert(100%);
+ -webkit-filter: invert(100%);
+}
+#Sectionlist .moment #dorf {
+  filter: invert(100%);
+ -webkit-filter: invert(100%);
 }
 
 #Sectionlist .header {
@@ -919,6 +930,9 @@ p {
 }
 
 /*Swimlane styling Ends*/
+#dorf, #tabElement {
+  cursor: pointer;
+}
 
 /*Styling for indented tabs*/
 .tabs0, .tabsnull{
@@ -3219,8 +3233,7 @@ div.submit-button:disabled {
   cursor: pointer;
 }
 
-#plorf,
-#dorf, #NewTabLink {
+#plorf, #dorf, #tabElement {
   display: block;
   margin: auto;
   /* Makes the icons purple */
