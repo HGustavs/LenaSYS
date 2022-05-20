@@ -109,7 +109,7 @@
 	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
 	if(isset($_SESSION['tempHash']) && $_SESSION['tempHash'] != "UNK")
 	{
-		$tempDir = "";
+		$tempDir = strval(dirname(__DIR__,2)."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/");
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
@@ -138,7 +138,7 @@
 				echo 'Message: ' .$e->getMessage();
 			}
 		}
-        print_r("{$tempDir}{$latest}");
+        print_r("{$tempDir}.{$latest}");
         exit();
 	}
 
