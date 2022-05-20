@@ -139,9 +139,7 @@
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 			
 			<!-- Undo button -->
-					
-			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" onclick="cancelDelete();">
-			
+			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
 			<!-- Undo button END -->
 
 			<!-- Hide button -->
