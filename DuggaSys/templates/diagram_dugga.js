@@ -136,18 +136,14 @@ function returnedDugga(data)
  * */
 function reset()
 {
-    let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
-    if(refreshConfirm){
-        localStorage.setItem("CurrentlyActiveDiagram","");
-        if (lastFile == null)
-        {
-            diagramWindow.contentWindow.stateMachine.gotoInitialState();
-            diagramWindow.contentWindow.stateMachine.currentHistoryIndex = -1;
-            diagramWindow.contentWindow.stateMachine.lastFlag = {};
-            diagramWindow.contentWindow.stateMachine.removeFutureStates();
-        }else{
-            diagramWindow.contentWindow.loadDiagram(lastFile, false);
-        }
+    if (lastFile == null)
+    {
+        diagramWindow.contentWindow.stateMachine.gotoInitialState();
+        diagramWindow.contentWindow.stateMachine.currentHistoryIndex = -1;
+        diagramWindow.contentWindow.stateMachine.lastFlag = {};
+        diagramWindow.contentWindow.stateMachine.removeFutureStates();
+    }else{
+        diagramWindow.contentWindow.loadDiagram(lastFile, false);
     }
 }
 /**
