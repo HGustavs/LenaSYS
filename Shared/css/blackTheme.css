@@ -10,7 +10,7 @@
       
         --color-logo1: #775886;
         --color-logo2: #573866;
-        --color-logo-background: #775886;
+        --color-logo-background: #432a5a;
 
         --color-primary: #432a5a;
         --color-primary-2: #775886;
@@ -100,7 +100,7 @@
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
-    background-color: #2c2c2c;
+    background-color: var(--color-background);
     color: #FFF;
 }
 
@@ -234,7 +234,7 @@
 
 .normtext {
     color: #fff;
-    background-color: var(--color-background);
+    background-color: transparent;
     white-space:nowrap;
 }
 
@@ -371,12 +371,12 @@
 
 .codebox{
   font-family:Hack;
-  background-color: var(--color-background);
+  /* Inherits background-color from .box */
 }
 
 .descbox{
-	background-color: var(--color-background);
 	color: #fff;
+    /* Inherits background-color from .box */
 }
 
 /* BOXMENU STYLING START */
@@ -839,7 +839,6 @@ input{
     background-color:#242729;
 }
 /* END */
-
 /* Style for fieldset elements in #Show Test" editor.  START */
 .loginBox select{
     background-color: #212121;
@@ -858,4 +857,21 @@ input{
 #variant{
     border-bottom: var(--color-sectioned-table-hi) solid 3px;
 }
-/* END */
+
+/*/ Style for lenasys icon START /*/
+.lena { 
+    color: var(--color-text-primary);
+    background: #121212;
+    padding: inherit;
+    margin: 6px;
+  }
+  
+  .sys {
+    border-radius: 6px;
+    color:var(--color-text-primary) ;
+    border: 2px solid var(--color-logo-background);
+    background: linear-gradient(90deg, rgba(18,18,18,1) 21%, rgba(67,42,90,1) 55%);
+  
+  }
+
+  /*/ END /*/

@@ -1482,6 +1482,12 @@ function tokenize(instring, inprefix, insuffix) {
 	currentCharacter = instring.charAt(i);
 	while (currentCharacter) { // currentCharacter == first character in each word
 		from = i;
+		// \r\n is used as a new line character in Windows \r and \n both represent a new line character in Unix and Mac OS
+		if (currentCharacter == '\r' && instring.charAt(i + 1) == '\n') {
+			i++
+			currentCharacter = instring.charAt(i);
+		}
+
 		if (currentCharacter <= ' ') { // White space and carriage return
 			if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
 				maketoken('newline',"",i,i,row);
