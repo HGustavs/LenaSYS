@@ -44,6 +44,8 @@
   --color-green: #50a750;
   --color-red: #c75050;
   --color-red-hover: #ce3d3d;
+  --color-completed: #00cc00;
+  --color-removed: #ff0000;
 }
 
 /* --------------================################================-------------- *
@@ -394,12 +396,12 @@ p {
   margin-top: -12px;
 }
 .announcementcreated{
-  border: 2px solid #00cc00;
-  color: #00cc00;
+  border: 2px solid var(--color-completed);
+  color: var(--color-completed);
 }
 .announcementdeleted{
-  border: 2px solid #ff0000;
-  color: #ff0000;
+  border: 2px solid var(--color-removed);
+  color: var(--color-removed);
 }
 .announcementupdated{
   border: 2px solid var(--color-logo-background);
