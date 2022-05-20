@@ -56,6 +56,11 @@
 						</td>
 					</tr>
 					<tr class="loginboxTr">
+						<td class="nowrap">
+							<label class='text forgotPw' onclick='returntoCoursePage();' title='Return to course page'>Login is only possible from course page!</label>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
 						</td>
