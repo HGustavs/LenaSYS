@@ -1178,13 +1178,13 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
@@ -1194,13 +1194,13 @@ function renderAllRankSortOptions(col, status, colname) {
 
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='allRankTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
@@ -1209,13 +1209,13 @@ function renderAllRankSortOptions(col, status, colname) {
 function renderRankSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='rankTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0'onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
@@ -1224,13 +1224,13 @@ function renderRankSortOptions(col, status, colname) {
 function renderGitHubSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='ghContibTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
