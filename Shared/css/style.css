@@ -2178,10 +2178,6 @@ input.inactive-button {
   width: 100%;
 }
 
-#editContent input.submit-button {
-  margin: 0;
-}
-
 #impwords,
 #impword {
   max-width: 184px;
@@ -7555,6 +7551,11 @@ textarea#mrkdwntxt {
   margin-left: 342px;
   margin-top: 20px;
 }
+#editContentSaveBtn{
+  margin-bottom: 20px;
+  margin-right: 2px;
+}
+
 
 @media only screen and (max-width: 1350px) {
   .previewWindow {
