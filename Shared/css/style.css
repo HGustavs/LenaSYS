@@ -5441,7 +5441,9 @@ only screen and (max-device-width: 860px) {
 #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
   display:none;
 }
-
+#homeBurger,#goBackBurger,#darkModeBurger{
+display: none;
+}
 #navBurgerIcon { 
   display: none;
   
@@ -5451,6 +5453,7 @@ only screen and (max-device-width: 380px) {
 
   #navBurgerIcon { 
     display: block;
+    
   }
  
   #navBurgerBox{
