@@ -2193,6 +2193,13 @@ input.inactive-button {
 #inputwrapper-name{
   width: 440px;
 }
+#copyvers{
+  margin-right: 0px;
+}
+#editCourse #visib{
+  margin-right: 0px;
+}
+
 
 #impwords,
 #impword {
