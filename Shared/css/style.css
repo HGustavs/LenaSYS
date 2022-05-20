@@ -49,6 +49,7 @@
   --color-completed: #00cc00;
   --color-removed: #ff0000;
   --box-shadow: rgba(0,0,0,0.2);
+  --color-line-dashed: rgba(97, 72, 117, 0);
 }
 
 /* --------------================################================-------------- *
@@ -3770,10 +3771,10 @@ div.reset-pw:hover{
 
 #user td {
   padding: 0px;
-  border-right: 3px dashed rgba(97, 72, 117, 0);
-  border-left: 3px dashed rgba(97, 72, 117, 0);
-  border-bottom: 3px dashed rgba(97, 72, 117, 0);
-  border-top: 3px dashed rgba(97, 72, 117, 0);
+  border-right: 3px dashed var(--color-line-dashed);
+  border-left: 3px dashed var(--color-line-dashed);
+  border-bottom: 3px dashed var(--color-line-dashed);
+  border-top: 3px dashed var(--color-line-dashed);
 }
 
 .tooltip-searchbar {
