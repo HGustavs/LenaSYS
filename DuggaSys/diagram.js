@@ -8784,6 +8784,44 @@ function checkElementError(element)
             var fElement0;
             var tElement0;
 
+            // Checking for non-normal attributes on a attribute
+            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                        if (fElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                    if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                        if (fElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                }
+            }
+            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                        if (tElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                    if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                        if (tElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                }
+            }
+
             // Checking for 2nd line attribute connected with a 3rd attribute
             if (fElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr") {
                 for (var j = 0; j < lines.length; j++) {
