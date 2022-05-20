@@ -19,6 +19,7 @@
 	$gFileName = "UNK";
 	$instructions = "UNK";
 	$information = "UNK";
+    $hash = getOPG('hash');
 	$finalArray = array();
 	
 	#create request to database and execute it
@@ -108,9 +109,7 @@
 	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
 	{
-		$tempDir = strval(dirname(__DIR__, 1))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
-        print_r($tempDir);
-        exit();
+		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
