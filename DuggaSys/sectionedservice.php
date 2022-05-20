@@ -190,7 +190,40 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					}
 
-				} else if(strcmp($opt,"NEW")===0) {
+				}
+				//This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
+				if(strcmp($opt,"DELETED")===0) {
+					$query = $pdo->prepare("UPDATE listentries SET visible = '3' WHERE lid=:lid");
+					$query->bindParam(':lid', $sectid);
+
+					if(!$query->execute()) {
+						if($query->errorInfo()[0] == 23000) {
+							$debug = "The item could not be deleted because of a foreign key constraint.";
+						} else {
+							$debug = "The item could not be deleted.";
+						}
+					}
+				}
+
+				//This will enable fetching every listentry with visibility DELETED and will enable restoring deleted items
+				if(strcmp($opt,"DISPLAYDELETED")===0) {
+					$query = $pdo->prepare("SELECT * FROM listentries WHERE visible = '3'");
+					$query -> execute();
+					$result = $query -> fetchAll();
+					foreach( $result as $row ) {
+    					echo $row["listentries"];
+						}
+
+					if(!$query->execute()) {
+						if($query->errorInfo()[0] == 23000) {
+							$debug = "The item could not be deleted because of a foreign key constraint.";
+						} else {
+							$debug = "The item could not be deleted.";
+						}
+					}
+				}
+				
+				else if(strcmp($opt,"NEW")===0) {
 
 					// Insert a new code example and update variables accordingly.
 					if($link==-1) {
