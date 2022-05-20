@@ -2338,7 +2338,7 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    storeDiagramInLocalStorage();// storing the diagram in localstorage
+    //storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
