@@ -304,6 +304,12 @@
                                 <p>Change to UML inheritance</p>
                             </span>
                         </div>
+                        <div class="placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                            <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
+                            <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <p>Change to IE inheritance</p>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -330,8 +336,46 @@
                                 <p>Change to UML inheritance</p>
                             </span>
                         </div>
+                        <div class="placementTypeBoxIcons " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                            <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
+                            <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <p>Change to IE inheritance</p>
+                            </span>
+                        </div>
                     </div>
-                </div><!--<-- UML functionality end -->
+                </div>
+                <div>
+                    <div id="elementPlacement7" class="diagramIcons toolbarMode" onclick='setElementPlacementType(7); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
+                        <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
+                        <span class="toolTipText"><b>IE inheritance</b><br>
+                            <p>Add an IE inheritance to the diagram</p><br>
+                            <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
+                        </div>
+                    </div>    
+                    <div id="togglePlacementTypeBox5" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                        <div class="placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                            <img src="../Shared/icons/diagram_relation.svg"/>
+                            <span class="placementTypeToolTipText"><b>ER Relation</b><br>
+                                <p>Change to ER relation</p>
+                            </span>
+                        </div>
+                        <div class="placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
+                            <img src="../Shared/icons/diagram_inheritance.svg"/>
+                            <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <p>Change to UML inheritance</p>
+                            </span>
+                        </div>
+                        <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                            <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
+                            <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <p>Change to IE inheritance</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg"/>
                     <span class="toolTipText"><b>Attribute</b><br>
@@ -346,14 +390,14 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-
+<!-- 
                 <div id="elementPlacement7" class="diagramIcons" onclick='setElementPlacementType(7); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
                     <span class="toolTipText"><b>IE Inheritence</b><br>
                         <p>Add IE-inheritence to the diagram</p><br>
                         <p id="tooltip-IE_INHERITANCE" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>
+                </div> -->
 
         </fieldset>
         <fieldset>
