@@ -8534,7 +8534,7 @@ span[id$="examples"]:hover{
   left:0px;
   margin: 0px !important;
   padding: 5px 0px 0px 0px !important;
-  background-color: #614875;
+  background-color: var(--color-primary);
   text-align: right;
   /* Width of .no and .impo */
   width: 32px !important;
@@ -8545,8 +8545,7 @@ span[id$="examples"]:hover{
   color: #D8D8D8;
   padding-left: 4px;
   padding-right: 6px;
-  width: 22px;    
-  background-color: #614875;
+  width: 22px;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
   line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
   -moz-user-select: none;
