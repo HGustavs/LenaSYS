@@ -234,6 +234,7 @@ function SortableTable(param)
     this.updateCell = getparam(param.updateCellCallback,null);
 		this.hasMagicHeadings = getparam(param.hasMagicHeadings,false);
     this.hasCounter = getparam(param.hasCounterColumn,false);
+    this.hasFooter = getparam(param.hasFooter, false);
 
 		// Prepare head and order with columns from rowsum list
 		for(let i=0;i<rowsumList.length;i++){
@@ -468,35 +469,36 @@ function SortableTable(param)
       str += "<tfoot class='bottomBorderColor'>";
       str += "<tr class='changeColorInDarkModeTable' style='font-style:italic;'>";
 
-      /* Empty row - Doesn't appear to be used for anything?
-      if(this.hasCounter) {
+      if(this.hasFooter) {
+        if(this.hasCounter) {
           str += "<td>&nbsp;</td>";
           mhvstr += "<td>&nbsp;</td>";
-      }
-      for(var columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
+        }
+        for(var columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
           if (columnfilter[columnOrderIdx] !== null) {
-              if (typeof(sumContent[columnOrder[columnOrderIdx]])!=='undefined') {
-                  if(columnOrder[columnOrderIdx]== 'rank'){
-                    str += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]].toFixed(2)+"</td>";
-                  }else{
-                    str += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]]+"</td>";
-                  }
-                  if (columnOrderIdx < freezePaneIndex) {
-                      mhvstr += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]]+"</td>";                  
-                  }
+            if (typeof(sumContent[columnOrder[columnOrderIdx]])!=='undefined') {
+              if(columnOrder[columnOrderIdx]== 'rank'){
+                str += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]].toFixed(2)+"</td>";
               }else{
-                if(columnOrder[columnOrderIdx]== 'kind'){
-                    str += "<td>Sum/Average</td>";
-                }else {
-                    str += "<td>&nbsp;</td>";
+                str += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]]+"</td>";
+              }
+              if (columnOrderIdx < freezePaneIndex) {
+                mhvstr += "<td style='whitespace:nowrap;'>"+sumContent[columnOrder[columnOrderIdx]]+"</td>";                  
+              }
+            }else{
+              if(columnOrder[columnOrderIdx]== 'kind'){
+                str += "<td>Sum/Average</td>";
+              }else {
+                str += "<td>&nbsp;</td>";
                 if (columnOrderIdx < freezePaneIndex) {
-                    mhvstr += "<td>&nbsp;</td>";
-                  }
+                  mhvstr += "<td>&nbsp;</td>";
                 }
-              }          
+              }
+            }          
           }
+        }
       }
-      */
+      
       str+= "</tr></tfoot>";
       mhvstr+= "</tr></tfoot>";
     	str += "</table>";
