@@ -736,6 +736,7 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
         PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
+        PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
         IE_INHERITANCE: {key: "9", ctrl: false},  //<-- IE inheritance functionality
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
@@ -781,7 +782,8 @@ const elementTypes = {
     Ghost: 3,
     UMLEntity: 4,       //<-- UML functionality
     UMLRelation: 5, //<-- UML functionality
-    IERelation: 6, // IE inheritance functionality
+    IEEntity: 6,       //<-- IE functionality
+    IERelation: 7, // IE inheritance functionality
 };
 
 /**
@@ -794,6 +796,7 @@ const elementTypesNames = {
     ERAttr: "ERAttr",
     Ghost: "Ghost",
     UMLEntity: "UMLEntity",
+    IEEntity: "IEEntity",
     IERelation: "IERelation"
 }
 
@@ -1004,7 +1007,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false};
+var diagramType = {ER:false,UML:false,IE:false};
 
 //Grid Settings
 var settings = {
@@ -1056,12 +1059,13 @@ var ghostLine = null;
  */
 var defaults = {
 
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", attributes: ['Attribute'], functions: ['Function'] },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER" },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal'},
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['Attribute'], functions: ['Function'] },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal' },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-attribute'], functions: ['+function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
+    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
 }
 var defaultLine = { kind: "Normal" };
@@ -1308,6 +1312,7 @@ function getData()
     drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
+    setPreviewValues();
 }
 //<-- UML functionality start
 /**
@@ -1447,15 +1452,17 @@ document.addEventListener('keydown', function (e)
 
     } else { 
         if (isKeybindValid(e, keybinds.ENTER)) { 
-            var propField = document.getElementById("elementProperty_name");
-            if(!!document.getElementById("lineLabel")){
-                changeLineProperties();
-            }else{
-                changeState();
-                saveProperties(); 
-                propField.blur();
+            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
+                var propField = document.getElementById("elementProperty_name");
+                if(!!document.getElementById("lineLabel")){
+                    changeLineProperties();
+                }else{
+                    changeState();
+                    saveProperties(); 
+                    propField.blur();
+                }
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
-            displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
         }
     }
 });
@@ -1520,9 +1527,17 @@ document.addEventListener('keyup', function (e)
         }
 
         //=================================================== //<-- UML functionality
-        //Temp for UML functionality
+        //Temp for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        //======================================================
+
+        //=================================================== //<-- IE functionality
+        //Temp for IE entity
+        if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
+            setElementPlacementType(elementTypes.IEEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
         //======================================================
@@ -2345,7 +2360,7 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    storeDiagramInLocalStorage();// storing the diagram in localstorage
+    //storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -2579,39 +2594,9 @@ function changeState()
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-
-   
-
-    else if (element.type=='IE') {
-        //Save the current property if not an IE entity since IE entities does not have variants.
-        if (element.kind != 'IEEntity') {
-            var property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-
-        var oldType = element.type;
-        var newType = document.getElementById("typeSelect").value;
-        //Check if type has been changed
-        if (oldType != newType) {
-            var newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            //Update element kind
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        //Update element type
-        element.type = newType;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    }
-
-
-
-
-    
-    else {
-        //Save the current property if not an UML entity since UML entities does not have variants.
-        if (element.kind != 'UMLEntity') {
+    else if(element.type=='UML' || element.type=='IE') {
+        //Save the current property if not an UML or IE entity since niether entities does have variants.
+        if (element.kind != 'UMLEntity' && element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -5248,10 +5233,12 @@ function toggleRuler()
 
     // Toggle active ruler + color change of button to clarify if button is pressed or not
     if(settings.ruler.isRulerActive){
-        ruler.style.display = "none";
+        ruler.style.left = "-100px";
+        ruler.style.top = "-100px";
         rulerToggleButton.style.backgroundColor = "#614875";
     } else {
-        ruler.style.display = "block";
+        ruler.style.left = "50px";
+        ruler.style.top = "0px";
         rulerToggleButton.style.backgroundColor = "#362049";
 
     }
@@ -5626,15 +5613,15 @@ function propFieldSelected(isSelected)
     propFieldState = isSelected;
 }
 /**
- * @description Function used to format the attribute and function textareas in UML-entities. Every entry is written on new row.
+ * @description Function used to format the attribute and function textareas in UML- and IE-entities. Every entry is written on new row.
  * @param {*} arr Input array with all elements that should be seperated by newlines
  * @returns Formated string containing all the elements in arr
  */
-function umlFormatString(arr)
+function textboxFormatString(arr)
 {
     var content = '';
     for (var i = 0; i < arr.length; i++) {
-            content += arr[i] + '\n';   
+        content += arr[i] + '\n';   
     }
     return content;
 }
@@ -5764,11 +5751,11 @@ function generateContextProperties()
                               break;
                           case 'attributes':
                               str += `<div style='color:white'>Attributes</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                               break;
                           case 'functions':
                               str += `<div style='color:white'>Functions</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                               break;
                           default:
                               break;
@@ -5852,13 +5839,50 @@ function generateContextProperties()
 
         // Creates button for selecting element background color if not a IE- or UML relation since they should not be able change color
         if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
-            // Creates button for selecting element background color
-           str += `<div style="white">Color</div>`;
-           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+            //If IE entity
+            else if (element.type == 'IE') {
+                if (element.kind == 'IEEntity') {
+                    //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+                    for (const property in element) {
+                        switch (property.toLowerCase()) {
+                            case 'name':
+                                str += `<div style='color:white'>Name</div>`;
+                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                break;
+                            case 'attributes':
+                                str += `<div style='color:white'>Attributes</div>`;
+                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            if(element.kind=="IERelation") {
+                    value = Object.values(inheritanceStateIE);
+            }
+
+            str += '<select id="propertySelect">';
+                for (i = 0; i < value.length; i++) {
+                    if (selected != value[i]) {
+                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                    } else if(selected == value[i]) {
+                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                    }
+                }
+                str += '</select>'; 
+            }
+
+          // Creates button for selecting element background color if not a UML relation since they should not be able change color
+          if (element.kind != 'UMLRelation') {
+              // Creates button for selecting element background color
+            str += `<div style="white">Color</div>`;
+            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+          }
+          str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
-      }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
       if (contextLine.length == 1 && context.length == 0) {
@@ -6551,6 +6575,12 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
+        return;
+    }
+
+    // Prevent a line to be drawn between UML- and ER-elements.
+    if (fromElement.type != toElement.type) {
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
     }
 
@@ -7295,7 +7325,7 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
         
         //div to encapuslate UML content
-        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
@@ -7303,7 +7333,7 @@ function drawElement(element, ghosted = false)
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -7320,21 +7350,23 @@ function drawElement(element, ghosted = false)
         //end of div for UML content
         str += `</div>`;
 
-        //div for UML footer
-        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw UML-footer if there exist at least one function
         if (elemFunc != 0) {
+            //div for UML footer
+            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh/2 + (boxh * elemFunc/2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemFunc/2)}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemFunc/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemFunc; i++) {
-                str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
+                str += `<text x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
         // Draw UML-footer if there are no functions
         } else {
+            //div for UML footer
+            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh / 2 + (boxh / 2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
@@ -7382,7 +7414,7 @@ function drawElement(element, ghosted = false)
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
-
+      
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
@@ -7390,7 +7422,7 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
-
+      
         //svg for inheritance symbol
         str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);  stroke-width:${linew};'>`;
 
@@ -7409,8 +7441,64 @@ function drawElement(element, ghosted = false)
         //end of svg
         str += `</svg>`;
     }
- 
-//====================================================================
+  
+    //=============================================== <-- IE functionality
+    //Check if the element is a IE entity
+    else if (element.kind == "IEEntity") { 
+        elemAttri = element.attributes.length;
+        //elemFunc = element.functions.length;
+        //div to encapuslate IE element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+
+         //div to encapuslate IE header
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
+        //svg for IE header, background and text
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        //end of svg for IE header
+        str += `</svg>`;
+        //end of div for IE header
+        str += `</div>`;
+        
+        //div to encapuslate IE content
+        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        //Draw IE-content if there exist at least one attribute
+        if (elemAttri != 0) {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemAttri/2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            for (var i = 0; i < elemAttri; i++) {
+                str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+            }
+            //end of svg for background
+            str += `</svg>`;
+        // Draw IE-content if there are no attributes.
+        } else {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            //end of svg for background
+            str += `</svg>`;
+        }
+        //end of div for IE content
+        str += `</div>`;
+    }
+    //====================================================================    
+
     //ER element
     else {
         // Create div & svg element
@@ -9283,10 +9371,10 @@ function checkElementError(element)
             }
 
             // Checking for non-normal attributes on relation
-            if (fElement.id == element.id && tElement.kind == "ERRelation" && fElement.state != null) {
+            if (fElement.id == element.id && tElement.kind == "ERRelation" && fElement.state != "normal") {
                 errorData.push(element);
             }
-            if (tElement.id == element.id && fElement.kind == "ERRelation" && tElement.state != null) {
+            if (tElement.id == element.id && fElement.kind == "ERRelation" && tElement.state != "normal") {
                 errorData.push(element);
             }
 
@@ -9738,8 +9826,24 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#000000"}`;
                         }
                     }
+                }
+                // Update IEEntity
+                else if(element.kind == "IEEntity"){
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        // If more than one element is marked.
+                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                            fillColor.style.fill = `${"#927b9e"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                        } else{
+                            fillColor.style.fill = `${element.fill}`;
+                            fontColor.style.fill = `${"#000000"}`;
+                        }
+                    }
+                }
                 // Update Elements with double borders.
-                }else if(element.state == "weak" || element.state == "multiple"){
+                else if(element.state == "weak" || element.state == "multiple"){
                     for (let index = 0; index < 2; index++){
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
@@ -10076,7 +10180,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileContentOnLoad()
 {
-        let temp = window.parent.getVariantParam();
+        let temp = getVariantParam();
         var fullParam = temp[0];
         cid = temp[1];
         cvers = temp[2];
@@ -10141,8 +10245,39 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
-function refreshDiagram(){
+
+//Alert function to give user a warning/choice before reseting diagram data.
+function resetDiagramAlert(){
+    let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
+    if(refreshConfirm){
+        refreshDiagram();
+    }
+    
+}
+/**
+ * @description Cleares the diagram.
+ */
+function resetDiagram(){
+    // Goto the beginning of the diagram
+    stateMachine.gotoInitialState();
+
+    // Remove the previous history
+    stateMachine.currentHistoryIndex = -1;
+    stateMachine.lastFlag = {};
+    stateMachine.removeFutureStates();
     localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     fetchDiagramFileContentOnLoad();
+}
+/**
+ *  @description Function to set the values of the current variant in the preivew
+ */
+function setPreviewValues(){
+    if(window.parent.parameterArray.length>0){
+        diagramType=window.parent.parameterArray[0];
+        showDiagramTypes();
+        hideErrorCheck(window.parent.parameterArray[1]);
+        getInstructions(window.parent.parameterArray[2]);
+        getInstructions(window.parent.parameterArray[3]);
+    }
 }
 //#endregion =====================================================================================

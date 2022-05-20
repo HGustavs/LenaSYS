@@ -490,12 +490,14 @@ function selectVariant(vid, el) {
 
   				if(result == "type"){
   					document.getElementById('type').value = obj[result];
+					  updateInstructions();
   				}
   				else if(result == "filelink"){
   					document.getElementById('filelink').value = obj[result];
   				}
 				  if(result == "gType"){
 					document.getElementById('gType').value = obj[result];
+					updateInformation();
 				}
 				else if(result == "gFilelink"){
 					document.getElementById('gFilelink').value = obj[result];
@@ -540,7 +542,8 @@ function selectVariant(vid, el) {
 				document.getElementById('filelink').value = "";
 				document.getElementById('gType').value = "";
 				document.getElementById('gFilelink').value = "";
-				document.getElementById('extraparam').value = "";  				
+				document.getElementById('extraparam').value = "";
+				document.getElementById('notes').value = ""; 				
 		}
 
   var disabled = (target_variant['disabled']);
@@ -1074,6 +1077,7 @@ function renderCell(col, celldata, cellid) {
 
 		case "notes":		// DUGGA-TABLE - Notes column
 			// Parse JSON to get the note
+			console.log(celldata);
 			object = JSON.parse(celldata).notes;
 			retString = `<span class='variants-notes-col'>${object}</span>`;
 			break;
@@ -1232,7 +1236,7 @@ function getVariantPreview(vid) {
 		.fail(function (jqxhr, settings, exception) {
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer));
 		});
-
+	$.getScript(`duggaed.js`);
 
 	$("#resultpopover").css("display", "flex");
 }
