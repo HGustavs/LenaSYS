@@ -10,8 +10,8 @@ Example seed
 ---------------------
 
 	 Example seed
-	 Param: {"variant":"40 13 7 20 0"} - placeholder
-	 Answer: Variant
+	 Param: {""} - placeholder 
+	 Answer: {"1894 52432 3028 |#=#|<svg viewBox="0 0 225 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">\n   <rect x="0" y="0" width="225" height="150" fill="blue" />   \n<line x1="0" y1="75" x2="225" y2="75" stroke="yellow" stroke-width="15" />   \n<rect x="70" y="0" width="15" height="150" fill="yellow" />\n</svg> |#=#|Swe"}
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -21,7 +21,7 @@ var retdata = null;
 var dataV;
 
 var current=0;
-var editorTabbing=false;
+var hash;
 //----------------------------------------------------------------------------------
 // Setup
 //----------------------------------------------------------------------------------
@@ -52,7 +52,27 @@ function returnedDugga(data)
 	} else{
         retdata = jQuery.parseJSON(data['param']);
         if (data["answer"] !== null && data["answer"] !== "UNK") {
-            //do something if this is true
+          var str = data['answer']
+          str = str.replace(/\&amp\;/g, '&');
+          str = str.replace(/\&lt\;/g, '<');
+          str = str.replace(/\&gt\;/g, '>');
+          str = str.replace(/\&ouml\;/g, 'ö');
+          str = str.replace(/\&Ouml\;/g, 'Ö');
+          str = str.replace(/\&auml\;/g, 'ä');
+          str = str.replace(/\&Auml\;/g, 'Ä');
+          str = str.replace(/\&aring\;/g, 'å');
+          str = str.replace(/\&Aring\;/g, 'Å');
+          str = str.replace(/\&quot\;/g, '"');
+          str = str.replace(/\&#47\;/g, '/');
+          str = str.replace(/\&#92\;/g, '\\');
+          str = str.replace(/\&#63\;/g, '?');
+          str = str.replace(/\\n/g, '\n');
+          var editorData = str.split("|#=#|");
+          //console.log(str); 
+
+          //adds the submission to the dropdown menu
+          svgdata.push({name:editorData[3], kind:1, content:editorData[1], style:editorData[2]});
+          current = svgdata.length-1;
         }
         
     }
@@ -74,7 +94,7 @@ function returnedDugga(data)
     $("#submitButtonTable").appendTo("#content");
     $("#lockedDuggaInfo").appendTo("#content");
     displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
-    
+    hash = data["hash"];
     svgSetup();
 }
 
@@ -82,77 +102,63 @@ function returnedDugga(data)
 //----------------------------------------------------------------------------------
 // saveClick: Save the dugga and get a receipt
 //----------------------------------------------------------------------------------
-function saveClick()
-{
-    $.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
-		url: "showDuggaservice.php",
-		type: "POST",
-		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
-		dataType: "json",
-		success: function(data) {
-			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true && blockhashgen ==true || ishashindb==true && blockhashgen ==false && ishashinurl==true || ishashindb==true && locallystoredhash != "null"){				//If the hash already exist in database.
-				if (confirm("You already have a saved version!")) {
-	Timer.stopTimer();
+function saveClick() {
+  $.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
+    url: "showDuggaservice.php",
+    type: "POST",
+    data: "&hash=" + hash, 					//This ajax call is only to refresh the userAnswer database query.
+    dataType: "json",
+    success: function (data) {
+      ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
+      if (ishashindb == true && blockhashgen == true || ishashindb == true && blockhashgen == false && ishashinurl == true || ishashindb == true && locallystoredhash != "null") {				//If the hash already exist in database.
+        if (confirm("You already have a saved version!")) {
+          Timer.stopTimer();
 
-	timeUsed = Timer.score;
-	stepsUsed = ClickCounter.score;
+          timeUsed = Timer.score;
+          stepsUsed = ClickCounter.score;
 
-	if (querystring['highscoremode'] == 1) {	
-		score = Timer.score;
-	} else if (querystring['highscoremode'] == 2) {
-		score = ClickCounter.score;
-	}
+          if (querystring['highscoremode'] == 1) {
+            score = Timer.score;
+          } else if (querystring['highscoremode'] == 2) {
+            score = ClickCounter.score;
+          }
 
-	// Loop through all operations
-	bitstr = ",";
-	
-	$("*[id*=opCode_]").each(function (){
-			bitstr+=this.innerHTML + ",";
-	});
-	//bitstr += "T " + elapsedTime;
+          // Loop through all bits
+          bitstr = "";
 
-	bitstr += " " + window.screen.width;
-	bitstr += " " + window.screen.height;
+          //|#=#| is used to split the string later since space doesn't work for this case
+          bitstr += "|#=#|" + document.getElementById("svg-editor").value;
+          bitstr += "|#=#|" + document.getElementById("svg-styleed").value;
+          bitstr += "|#=#|" + hash;
+          // Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+          saveDuggaResult(bitstr);
+        }
+      } else {
+        Timer.stopTimer();
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+        timeUsed = Timer.score;
+        stepsUsed = ClickCounter.score;
 
-	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-	saveDuggaResult(bitstr);
-}
-} else {
-	Timer.stopTimer();
+        if (querystring['highscoremode'] == 1) {
+          score = Timer.score;
+        } else if (querystring['highscoremode'] == 2) {
+          score = ClickCounter.score;
+        }
 
-	timeUsed = Timer.score;
-	stepsUsed = ClickCounter.score;
+        // Loop through all bits
+        bitstr = "";
 
-	if (querystring['highscoremode'] == 1) {	
-		score = Timer.score;
-	} else if (querystring['highscoremode'] == 2) {
-		score = ClickCounter.score;
-	}
+        //|#=#| is used to split the string later since space doesn't work for this case
+        bitstr += "|#=#|" + document.getElementById("svg-editor").value;
+        bitstr += "|#=#|" + document.getElementById("svg-styleed").value;
+        bitstr += "|#=#|" + hash;
 
-	// Loop through all operations
-	bitstr = ",";
-	
-	$("*[id*=opCode_]").each(function (){
-			bitstr+=this.innerHTML + ",";
-	});
-	//bitstr += "T " + elapsedTime;
+        // Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+        saveDuggaResult(bitstr);
 
-	bitstr += " " + window.screen.width;
-	bitstr += " " + window.screen.height;
-
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
-
-	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-	saveDuggaResult(bitstr);
-
-			}
-		}
-	});
+      }
+    }
+  });
 }
 
 function reset()
@@ -192,7 +198,7 @@ function svgSetup() {
         str += `<option value='${i}'>${svgdata[i].name}</option>`;
     }
     document.getElementById("filename").innerHTML = str;
-
+    document.getElementById("filename").value = current;
     instantiate();
 }
 
@@ -235,7 +241,9 @@ function startDuggaHighScore(){
 	}
 }
 
-
+function uploadFile(){
+  saveClick();
+}
 
 //--------------------================############================--------------------
 //                                      svgdata 
