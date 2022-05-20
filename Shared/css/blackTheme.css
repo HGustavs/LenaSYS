@@ -8,6 +8,7 @@
         --color-text-logo: #fff;
         --color-text-label: #000;
         --color-text-dark: #000;
+        --color-text-light: #fff;
       
         --color-logo1: #775886;
         --color-logo2: #573866;
@@ -99,7 +100,7 @@
 
 #content {
     background-color: var(--color-background);
-	color: #fff;
+	color: var(--color-text-light);
 }
 
 .filter-label {
@@ -108,7 +109,7 @@
 }
 
 .docucontentStyle h1 {
-    color: white;
+    color: var(--color-text-light);
 }
 
 .box {
@@ -116,11 +117,11 @@
     font-size: 14px;
     outline: 0 none;
     background-color: #2c2c2c;
-    color: #FFF;
+    color: var(--color-text-light);
 }
 
 .box h1{
-    color: white;
+    color: var(--color-text-light);
 }
 
 .box iframe {
@@ -130,12 +131,12 @@
 
 .docucontentStyle {
      background-color: #272822;
-     color: white;
+     color: var(--color-text-light);
 
 }
 .box1Style {
      background-color: #272822;
-     color: white;
+     color: var(--color-text-light);
 }
 .codeboxStyle {
     background-color: #272822;
@@ -170,24 +171,24 @@
 }
 
 .menutextStyle {
-   	color: white;
+   	color: var(--color-text-light);
 }
 
 .hotdogdropStyle{
-	color: white;
+	color: var(--color-text-light);
 }
 .hotdogdropStyle table td{
-	color: white;
+	color: var(--color-text-light);
 }
 
 .dropdownStyle {
-    color: white;
+    color: var(--color-text-light);
     /*background: #614875;*/
 }
 
 .dropdownbackStyle {
 	background-color: #614875;
-    color: #fff;
+    color: var(--color-text-light);
 }
 
 .codedropStyle {
@@ -215,7 +216,7 @@
 
 .dropdownitemStyle {
     background: #614875;
-    color: white;
+    color: var(--color-text-light);
 }
 
 .dropdownitem:hover {
@@ -239,7 +240,7 @@
 
 .codeborder .impono {
     user-select: none;
-    color: white;
+    color: var(--color-text-light);
     background-color: #9569BD;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 }
@@ -248,14 +249,14 @@
 }
 
 .normtext {
-    color: #fff;
+    color: var(--color-text-light);
     background-color: var(--color-background);
     white-space:nowrap;
 }
 
 .impo {
     user-select: none;
-    color: #fff;
+    color: var(--color-text-light);
     background-color: #270c27;
     white-space:nowrap;
 }
@@ -265,39 +266,39 @@
 }
 
 .normtext .oper {
-    color: white;
+    color: var(--color-text-light);
     font-weight: bold;
     line-height: 15px;
 }
 
 .impo .oper {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .normtext .string {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .impo .string {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .normtext .number {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .impo .number {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .normtext .hi {
     background-color: #5d5d5d;
-    color: #fff;
+    color: var(--color-text-light);
 }
 
 .impo .hi {
@@ -323,7 +324,7 @@
 }
 
 .normtext .impword {
-    color: white;
+    color: var(--color-text-light);
 		background-color: #2c2c2c;
 }
 
@@ -346,7 +347,7 @@
 
 .normtext .imphi {
     background-color: #5d5d5d;
-    color: #fff;
+    color: var(--color-text-light);
 
 }
 
@@ -391,7 +392,7 @@
 
 .descbox{
 	background-color: var(--color-background);
-	color: #fff;
+	color: var(--color-text-light);
 }
 
 /* BOXMENU STYLING START */
@@ -400,7 +401,7 @@
 }
 
 .buttomenu2Style .wordlistselect{
-	color: white;
+	color: var(--color-text-light);
 
    background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
    background-size:15px 15px;
@@ -408,14 +409,14 @@
 }
 
 .buttomenu2Style .boxcontentselect{
-   color: white;
+   color: var(--color-text-light);
 
    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
 }
 .buttomenu2Style .chooseContentSelect{
-   color: white;
+   color: var(--color-text-light);
    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
@@ -426,14 +427,14 @@
   cursor: pointer;
 }
 .boxtitleEditable{
-	color: white;
+	color: var(--color-text-light);
 	cursor:text;
     font-family: Arial, Sans-Serif;
 }
 .boxtitle{
 	font-family: Arial, Sans-Serif !important;
 	cursor:default !important;
-	color: white !important;
+	color: var(--color-text-light) !important;
 }
 
 /* ========================
@@ -471,7 +472,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);
-  color: white;
+  color: var(--color-text-light);
 }
     /*A global styling for darkmode, added the class where there needed darkbackgrounds*/
 .DarkModeBackgrounds{
@@ -480,7 +481,7 @@ body {
 
 /*A global styling for darkmode, a class for white text on darkbackgrounds*/
 .DarkModeText{
-    color: white;
+    color: var(--color-text-light);
 }
 #inputwrapperText{
     color:rgba(255,255,255,0.6);
@@ -514,14 +515,14 @@ body {
     overflow-y: auto;
     display: none;
     background: var(--color-sectioned-table-hi);
-    color: white;
+    color: var(--color-text-light);
     box-shadow: none;
 }
 
 .loginBox,
 .logoutBox{
   background-color: var(--color-background);
-  color:white;
+  color: var(--color-text-light);
   border: 2px solid var(--color-border);
 }
 
@@ -581,7 +582,7 @@ body {
 
 /* Style for "pane-container text" START */
 .pane{
-    color:white;
+    color: var(--color-text-light);
 }
 /* END */
 
@@ -636,7 +637,7 @@ body {
 }
 
 .ColorForTextinInfoBox{
-    color: white;
+    color: var(--color-text-light);
 }
 
 .ColorForTextinInfoBox:checked {
@@ -660,7 +661,7 @@ body {
 }
 
 .tsSmallInput{
-    color: white;
+    color: var(--color-text-light);
     background-color: #212121;
     border: 2px solid #212121;
     color-scheme: dark; 
@@ -668,7 +669,7 @@ body {
 /* In "createFileUploadArea" (Big screen) */
 .tsTable input{
     padding: 5px;
-    color: white;
+    color: var(--color-text-light);
     background-color: #212121;
     border: 2px solid #212121;
     color-scheme: dark; 
@@ -676,7 +677,7 @@ body {
 
 .tsTable select{
     background-color: #212121;
-    color: white;
+    color: var(--color-text-light);
 }
 
 .tsTableDeleteCell{
@@ -761,7 +762,7 @@ body {
 /* Style for "Info Box" in Dugga 3 START */
 option:checked{
     background-color: var(--color-sectioned-table-lo);
-    color: white;
+    color: var(--color-text-light);
 }
 /* END */
 
@@ -795,20 +796,20 @@ option:checked{
 /* Style for "Input elements" */
 button{
     background-color: #464646;
-    color:white;
+    color: var(--color-text-light);
     border-radius: 5px;
 }
 
 select{
     background-color: #464646;
-    color:white;
+    color: var(--color-text-light);
     margin-right: 10px;
     border-radius: 5px;
 }
 
 input{
     background-color: #464646;
-    color:white;
+    color: var(--color-text-light);
     color-scheme: dark; /*For date picker */
 }
 /* END */
