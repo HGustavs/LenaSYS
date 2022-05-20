@@ -10,7 +10,7 @@
       
         --color-logo1: #775886;
         --color-logo2: #573866;
-        --color-logo-background: #775886;
+        --color-logo-background: #432a5a;
 
         --color-primary: #432a5a;
         --color-primary-2: #775886;
@@ -839,3 +839,22 @@ input{
     background-color:#242729;
 }
 /* END */
+
+
+/*/ Style for lenasys icon START /*/
+.lena { 
+    color: var(--color-text-primary);
+    background: #121212;
+    padding: inherit;
+    margin: 6px;
+  }
+  
+  .sys {
+    border-radius: 6px;
+    color:var(--color-text-primary) ;
+    border: 2px solid var(--color-logo-background);
+    background: linear-gradient(90deg, rgba(18,18,18,1) 21%, rgba(67,42,90,1) 55%);
+  
+  }
+
+  /*/ END /*/
