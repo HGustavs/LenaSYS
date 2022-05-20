@@ -892,7 +892,7 @@ p {
   font-size: 10px;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
   #swimlaneSVG text {
       font-size: 14px;
   }
@@ -1549,7 +1549,7 @@ div .navButt:hover {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
         #div2 {
         top: 80px;
         }
@@ -1591,7 +1591,7 @@ div .navButt:hover {
       vertical-align: middle;
     }
     .editbtn{
-      display: none;
+      display: block;
     }
     .buttomenu2{
         height: 35px;
@@ -2403,6 +2403,9 @@ label.login-label {
 
 .loginBox .hide {
   display: none;
+}
+#undoButton{
+  position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
 .loginBox td {
@@ -5203,7 +5206,8 @@ only screen and (max-device-width: 1085px) {
 }
 
 @media only screen and (max-width: 800px),
-only screen and (max-device-width: 800px) {
+only screen and (max-device-width: 800px),
+only screen and (orientation:portrait){
   #addElement {
     display: none;
   }
@@ -6828,7 +6832,7 @@ only screen and (max-device-width: 430px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 85px;
+  bottom: 50px;
 }
 
 .fab-btn-list2 {
@@ -7219,9 +7223,12 @@ only screen and (max-device-width: 430px) {
   height: 100%;
     position: relative;
   */
-  height: 100%;
+  width: 100%;
+  overflow: auto;
+  height: 95%;
   box-sizing: border-box;
   display:flex;
+  flex-wrap: wrap;
   align-items:stretch;
 }
 
@@ -7544,14 +7551,14 @@ textarea#mrkdwntxt {
   
   .markdown {
     height: 38%;
-    width: 97%;
+    min-width: 97%;
     position: relative;
     float: left;
   }
 
   .markdownPrev {
     height: 38%;
-    width: 97%;
+    min-width: 97%;
     float: left;
   }
 
@@ -7565,13 +7572,29 @@ textarea#mrkdwntxt {
 
 
     .save-button-md{
+    margin-bottom: -24px;
     bottom: 25px;
     }
     .close-button-md {
+    margin-bottom: -24px;
     bottom: 25px;
     }
 }
 
+@media only screen and (max-width: 653px) { 
+  .markdown {
+    display: none !important;
+  }
+
+  .markdownPrev {
+    display: none !important;
+  }
+
+  .markdownPart::after {
+    font-weight: bold;
+    content: "GO INTO LANDSCAPE MODE";
+  }
+}
 
 /* Mode Switch */
 
@@ -7747,7 +7770,7 @@ div > div > .shortcut-keys:hover {
  * --------------================################================-------------- */
 .markdown-icons {
   cursor: pointer;
-  width: 24px;
+  width: 100%;
   height: 24px;
   text-align: center;
   line-height: 24px;
