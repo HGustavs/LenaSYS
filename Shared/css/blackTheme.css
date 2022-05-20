@@ -772,7 +772,6 @@ option:checked{
     background-color: var(--color-sectioned-table-lo);
     color: white;
 }
-/* END */
 
 /* Style for "Weekly Bar Chart" START */
 .WeeklyBarChartEven{
@@ -799,7 +798,6 @@ option:checked{
     fill: white;
     background-color: var(--color-sectioned-table-hi);
 }
-/* END */
 
 /* Style for "Input elements" */
 button{
@@ -820,13 +818,40 @@ input{
     color:white;
     color-scheme: dark; /*For date picker */
 }
-/* END */
 
 /* Style for "Date Picker" START:    */
 ::-webkit-calendar-picker-indicator:hover {
     filter: invert(1) ; 
 }
-/* END */
+
+/* Style for "Date Picker" START:    */
+::-webkit-calendar-picker-indicator:hover {
+    filter: invert(1) ; 
+}
+
+/* Style for Dugga "HTML CSS Dugga" */
+#input-col{
+    background-color: #212121;
+}
+
+#url-input::-webkit-input-placeholder {
+    color: rgb(198, 192, 192);
+}
+
+#url-preview-label {
+    background-color: #212121;
+}
+
+#url-preview-label p{
+    color:white;
+}
+#code-preview-label{
+    background-color: #212121;   
+}
+
+#target-col p{
+    color: black;
+}
 
 /* Style for "Upload PDF of Presentation" */
 #Inl1DocumentPrev {
