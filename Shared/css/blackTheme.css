@@ -24,6 +24,7 @@
         --color-accent-transparent: rgba(254, 204, 86, 0.5);
         --color-accent-hover: #ffd369;
         --color-background: #121212; 
+        --color-background-codeviewer: #272822;
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
         --color-background-4: #c8c8c8;
@@ -130,28 +131,28 @@
 
 
 .docucontentStyle {
-     background-color: #272822;
+     background-color: var(--color-background-codeviewer);
      color: var(--color-text-light);
 
 }
 .box1Style {
-     background-color: #272822;
+     background-color: var(--color-background-codeviewer);
      color: var(--color-text-light);
 }
 .codeboxStyle {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
 }
 
 .box2Style {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
 }
 
 .temp3Style{
-	background-color: #272822;
+	background-color: var(--color-background-codeviewer);
 }
 
 .temp4Style{
-	background-color: #272822;
+	background-color: var(--color-background-codeviewer);
 }
 
 .buttomenuStyle {
@@ -302,7 +303,7 @@
 }
 
 .impo .hi {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
     color: #fed;
 }
 
@@ -352,7 +353,7 @@
 }
 
 .impo .imphi {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
     color: #fed;
 }
 
