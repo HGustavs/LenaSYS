@@ -1505,7 +1505,7 @@ document.addEventListener('keyup', function (e)
         }
 
         //=================================================== //<-- UML functionality
-        //Keybinding for UML class
+        //Temp for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
@@ -1513,7 +1513,7 @@ document.addEventListener('keyup', function (e)
         //======================================================
 
         //=================================================== //<-- IE functionality
-        //Keybinding for IE entity
+        //Temp for IE entity
         if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
             setElementPlacementType(elementTypes.IEEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
@@ -7225,20 +7225,20 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
 
-        //div to encapuslate IE header
+        //div to encapuslate UML header
         str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
-        //svg for IE header, background and text
+        //svg for UML header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for IE header
+        //end of svg for UML header
         str += `</svg>`;
-        //end of div for IE header
+        //end of div for UML header
         str += `</div>`;
         
         //div to encapuslate UML content
-        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
@@ -7246,7 +7246,7 @@ function drawElement(element, ghosted = false)
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -7263,21 +7263,23 @@ function drawElement(element, ghosted = false)
         //end of div for UML content
         str += `</div>`;
 
-        //div for UML footer
-        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw UML-footer if there exist at least one function
         if (elemFunc != 0) {
+            //div for UML footer
+            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh/2 + (boxh * elemFunc/2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemFunc/2)}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemFunc/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemFunc; i++) {
-                str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
+                str += `<text x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
         // Draw UML-footer if there are no functions
         } else {
+            //div for UML footer
+            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh / 2 + (boxh / 2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
@@ -9731,9 +9733,9 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#000000"}`;
                         }
                     }
-                // Update Elements with double borders.
                 }
-                if(element.kind == "IEEntity"){
+                // Update IEEntity
+                else if(element.kind == "IEEntity"){
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -9747,6 +9749,7 @@ function updateCSSForAllElements()
                         }
                     }
                 }
+                // Update Elements with double borders.
                 else if(element.state == "weak" || element.state == "multiple"){
                     for (let index = 0; index < 2; index++){
                         fillColor = elementDiv.children[0].children[index];
