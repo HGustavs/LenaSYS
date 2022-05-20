@@ -2774,7 +2774,10 @@ $(document).on('keydown', function(e) {
 			
 		}
 		else if (box[0].classList.contains("settingIconTab")){
-			box[0].click();
+			setTimeout(function(){
+				box[0].click();
+			  },200);
+			
         }
 		else if(box[0].classList.contains("checkboxIconTab")){
 			box[0].click();
