@@ -138,7 +138,7 @@
 				echo 'Message: ' .$e->getMessage();
 			}
 		}
-        print_r($_SESSION['tempHash']);
+        print_r("{$tempDir}{$latest}");
         exit();
 	}
 
