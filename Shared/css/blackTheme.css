@@ -79,7 +79,7 @@
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
-	background-color: white;
+	background-color: var(--color-background-light-surface);
 }
 
 #picktemplate img{
@@ -129,7 +129,7 @@
 }
 
 .box iframe {
-    background-color: white;
+    background-color: var(--color-background-light-surface);
 }
 
 
