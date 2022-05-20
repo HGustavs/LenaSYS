@@ -737,6 +737,7 @@ const keybinds = {
         PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
         PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
+        IE_INHERITANCE: {key: "9", ctrl: false},  //<-- IE inheritance functionality
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -782,6 +783,7 @@ const elementTypes = {
     UMLEntity: 4,       //<-- UML functionality
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
+    IERelation: 7, // IE inheritance functionality
 };
 
 /**
@@ -795,6 +797,7 @@ const elementTypesNames = {
     Ghost: "Ghost",
     UMLEntity: "UMLEntity",
     IEEntity: "IEEntity",
+    IERelation: "IERelation"
 }
 
 /**
@@ -864,6 +867,15 @@ const relationState = {
     DISJOINT: "disjoint",
     OVERLAPPING: "overlapping",
 };
+
+/**
+ * @description State of inheritance between IE entities. <-- IE functionality
+ */
+ const inheritanceStateIE = {
+    DISJOINT: "disjoint",
+    OVERLAPPING: "overlapping",
+};
+
 
 /**
  * @description Available types of lines to draw between different elements.
@@ -1054,6 +1066,7 @@ var defaults = {
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-attribute'], functions: ['+function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
+    IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1507,10 +1520,16 @@ document.addEventListener('keyup', function (e)
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
+        // IE inheritance keybind
+        if(isKeybindValid(e, keybinds.IE_INHERITANCE)){
+            setElementPlacementType(elementTypes.IERelation);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
+
         //=================================================== //<-- UML functionality
         //Temp for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
-            setElementPlacementType(elementTypes.UMLEntity)
+            setElementPlacementType(elementTypes.UMLEntity);
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
         //======================================================
@@ -2575,7 +2594,6 @@ function changeState()
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-    // 
     else if(element.type=='UML' || element.type=='IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity' && element.kind != 'IEEntity') {
@@ -5318,6 +5336,9 @@ function togglePlacementType(num,type){
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
+
+
+
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
@@ -5776,9 +5797,48 @@ function generateContextProperties()
                       }
                   }
                   str += '</select>'; 
-              }            
+              }     
           }
+          //If IE inheritance
+          else if (element.type == 'IE') {
+            if(element.kind = 'IERelation') {
+              //ID MUST START WITH "elementProperty_"!!!!!
+              for (const property in element) {
+                  switch (property.toLowerCase()) {
+                      case 'name':
+                          str += `<div style='display:none;'>Name</div>`;
+                          str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                          break;
+                      default:
+                          break;
+                  }
+              }
+                str += `<div style='color:white'>Inheritance</div>`;
+                //Creates drop down for changing state of IE elements
+                var value;
+                var selected = context[0].state;
+                if(selected == undefined) {
+                    selected = "disjoint"
+                }
 
+                if(element.kind=="IERelation") {
+                    value = Object.values(inheritanceStateIE);
+                }
+
+                str += '<select id="propertySelect">';
+                for (i = 0; i < value.length; i++) {
+                    if (selected != value[i]) {
+                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                    } else if(selected == value[i]) {
+                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                    }
+                }
+                str += '</select>'; 
+            }
+        }
+
+        // Creates button for selecting element background color if not a IE- or UML relation since they should not be able change color
+        if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
             //If IE entity
             else if (element.type == 'IE') {
                 if (element.kind == 'IEEntity') {
@@ -5799,17 +5859,30 @@ function generateContextProperties()
                     }
                 }
             }
+            if(element.kind=="IERelation") {
+                    value = Object.values(inheritanceStateIE);
+            }
 
+            str += '<select id="propertySelect">';
+                for (i = 0; i < value.length; i++) {
+                    if (selected != value[i]) {
+                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                    } else if(selected == value[i]) {
+                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                    }
+                }
+                str += '</select>'; 
+            }
 
-        // Creates button for selecting element background color if not a UML relation since they should not be able change color
-        if (element.kind != 'UMLRelation') {
-            // Creates button for selecting element background color
-           str += `<div style="color: white">Color</div>`;
-           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+          // Creates button for selecting element background color if not a UML relation since they should not be able change color
+          if (element.kind != 'UMLRelation') {
+              // Creates button for selecting element background color
+            str += `<div style="white">Color</div>`;
+            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+          }
+          str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
-      }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
       if (contextLine.length == 1 && context.length == 0) {
@@ -7191,7 +7264,7 @@ function drawElement(element, ghosted = false)
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
-
+    
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -7218,6 +7291,9 @@ function drawElement(element, ghosted = false)
             if (element.id == errorData[i].id) element.stroke = 'red';
         }
     }
+
+
+
 
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
@@ -7332,8 +7408,40 @@ function drawElement(element, ghosted = false)
         //end of svg
         str += `</svg>`;
     }
-    //====================================================================
 
+    //=====================IE RELATION===============================================
+    else if (element.kind == 'IERelation') {
+        //div to encapuslate IE element
+        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
+      
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+      
+        //svg for inheritance symbol
+        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);  stroke-width:${linew};'>`;
+
+        //Overlapping inheritance
+        if (element.state == 'overlapping') {
+                str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black"; stroke-width:${linew};'/> 
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; stroke-width:${linew}; />`
+        }
+        // Disjoint inheritance
+        else {
+            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black"; stroke-width:${linew};'/>
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; stroke-width:${linew}; />
+                <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" stroke-width:${linew}; />
+                <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" stroke-width:${linew}; />`
+        }
+        //end of svg
+        str += `</svg>`;
+    }
+  
     //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == "IEEntity") { 
@@ -7351,7 +7459,7 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
 
-        //div to encapuslate IE header
+         //div to encapuslate IE header
         str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
         //svg for IE header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
@@ -7533,7 +7641,7 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation")) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation"  && context[0].kind != "IERelation")) addNodes(context[0]);
     
 
 }
@@ -9761,13 +9869,8 @@ function updateCSSForAllElements()
                             weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                         }
                         // If UMLRelation is not marked.
-                    } else if(element.kind == "UMLRelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                        }
-                    }else{
+                    } 
+                    else{
                         fillColor.style.fill = `${element.fill}`;
                         
                         fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;

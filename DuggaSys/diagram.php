@@ -346,6 +346,15 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+
+                <div id="elementPlacement6" class="diagramIcons" onclick='setElementPlacementType(6); setMouseMode(2);'>
+                    <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
+                    <span class="toolTipText"><b>IE Inheritence</b><br>
+                        <p>Add IE-inheritence to the diagram</p><br>
+                        <p id="tooltip-IE_INHERITANCE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
@@ -371,25 +380,6 @@
                 </span>
             </div>
         </fieldset>
-        <!--
-         <fieldset>
-            <legend>Toggle</legend>
-            <div id="rulerToggle" class="diagramIcons active" onclick='toggleRuler()'>
-                <img src="../Shared/icons/diagram_ruler.svg"/>
-                <span class="toolTipText"><b>Toggle Ruler</b><br>
-                    <p>Enable/disable the ruler</p><br>
-                    <p id="tooltip-TOGGLE_RULER" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div id="a4TemplateToggle" class="diagramIcons" onclick="toggleA4Template()">
-                <img src="../Shared/icons/diagram_a4.svg"/>
-                <span class="toolTipText"><b>Toggle A4 template</b><br>
-                    <p>Enable/disable the A4 template</p><br>
-                    <p id="tooltip-TOGGLE_A4" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-
-        </fieldset>  --> 
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
