@@ -2048,7 +2048,7 @@ function mouseDown(e) {
   } else {
     isClickedElementBox = false;
   }
-
+	sessionStorage.setItem("cameFromHash","No");
 }
 
 //----------------------------------------------------------------------------------

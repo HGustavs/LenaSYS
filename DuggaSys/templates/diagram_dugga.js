@@ -14,7 +14,6 @@ function beforeUnloadingPage()
     }
 
 }
-
 /**
  * @description Setup the dugga, this is the first thing that happens
  * */
@@ -26,8 +25,8 @@ function setup()
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
     // checking if user has an stored active diagram and loading it if they have
-    if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != ""){
-        document.getElementById("diagram-iframe").contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
+    if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != "" && sessionStorage.getItem("cameFromHash") != "Yes"){
+        diagramWindow.contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
     }
 }
 
@@ -91,25 +90,25 @@ function returnedDugga(data)
         //checking if the user is a teacher or if there's no variant by checking if the paramater object is empty
         if(!(Object.keys(param).length === 0) && data.isTeacher == 0){
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
-            document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
+            diagramWindow.contentWindow.diagramType = param.diagram_type;
             // getting the error checker allowed or not
-            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
+            diagramWindow.contentWindow.hideErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
              if(param.filelink != undefined)
             {
-                document.getElementById("diagram-iframe").contentWindow.getInstructions(param.filelink);
+                diagramWindow.contentWindow.getInstructions(param.filelink);
             }
             if(param.gFilelink != undefined)
             {
-                document.getElementById("diagram-iframe").contentWindow.getInstructions(param.gFilelink);
+                diagramWindow.contentWindow.getInstructions(param.gFilelink);
             }
         }
         else{
             var diagramType={ER:true,UML:true};
-            document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
-            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(true);
+            diagramWindow.contentWindow.diagramType = diagramType;
+            diagramWindow.contentWindow.hideErrorCheck(true);
         }
-        document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();//<-- UML functionality end
+        diagramWindow.contentWindow.showDiagramTypes();//<-- UML functionality end
     }
 
     if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {
