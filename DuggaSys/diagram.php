@@ -138,8 +138,6 @@
 				echo 'Message: ' .$e->getMessage();
 			}
 		}
-        print_r("{$tempDir}.{$latest}");
-        exit();
 	}
 
 	if($fileContent === "UNK" || $fileContent === "")
