@@ -7547,6 +7547,11 @@ textarea#mrkdwntxt {
   margin-top: 20px;
 }
 
+#submitEditCourse{
+  margin-left: 343px;
+  margin-top: 20px;
+}
+
 @media only screen and (max-width: 1350px) {
   .previewWindow {
     height: 89%;
