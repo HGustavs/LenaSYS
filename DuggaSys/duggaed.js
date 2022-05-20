@@ -19,6 +19,19 @@ var duggaPages;
 var isClickedElementBox = false;
 var searchterm = "";
 var targetfile;
+var x = window.matchMedia('(max-width: 380px)');
+
+x.onchange = (e) => {
+    if (e.matches) {
+        displayNavIcons();
+    }
+}  
+
+function displayNavIcons() {
+    document.getElementById("home").style.display="revert";
+    document.getElementById("theme-toggle").style.display="revert";
+    document.getElementById("back").style.display="revert";    
+}
 
 function setup() {
 	/* Replaced by search bar in navheader.php. Remove this code when the new search bar has been properly tested
@@ -128,7 +141,6 @@ function selectDugga(qid) {
 	}
 }
 
-
 function updateDugga() {
 	var did = $("#did").val();
 	var nme = $("#name").val();
@@ -191,6 +203,213 @@ function isNameValid(){
 	return false;
 }
 
+function quickValidateDugga(formid, submitButton){
+	const saveButton = document.getElementById(submitButton);
+	valid = true;
+	valid2 = true;
+	valid3 = true;
+	valid = validateDuggaName()
+	valid2 = validateDeadlineComments()
+	valid3 = validateDeadlines()
+
+
+	valid = valid && valid2 && valid3;
+	if (valid){
+		saveButton.disabled = false;
+	}else{
+		saveButton.disabled = true;
+	}
+	
+}
+
+function validateDeadlineComments(){
+ cmt1 = document.getElementById('deadlinecomments1')
+ cmtdialog1 = document.getElementById('deadlinecomments1Dialog')
+ cmt2 = document.getElementById('deadlinecomments2')
+ cmtdialog2 = document.getElementById('deadlinecomments2Dialog')
+ cmt3 = document.getElementById('deadlinecomments3')
+ cmtdialog3 = document.getElementById('deadlinecomments3Dialog')
+ valid = true;
+
+
+  	var regComment = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
+  	var rangeComment = /^.{0,50}$/;
+	if (cmt1.value.match(regComment) && cmt1.value.match(rangeComment)) {
+		$(cmtdialog1).fadeOut();
+		cmt1.style.backgroundColor = "#ffff";
+		cmt1.style.borderColor = "#383";
+		cmt1.style.borderWidth = "2px";
+	}else{
+		$(cmtdialog1).fadeIn();
+		cmt1.style.backgroundColor = "#f57";
+		cmt1.style.borderColor = "#E54";
+		cmt1.style.borderWidth = "2px";
+		valid = false
+	}
+	if (cmt2.value.match(regComment) && cmt2.value.match(rangeComment) ) {
+		$(cmtdialog2).fadeOut();
+		cmt2.style.backgroundColor = "#ffff";
+		cmt2.style.borderColor = "#383";
+		cmt2.style.borderWidth = "2px";
+	}else{
+		$(cmtdialog2).fadeIn();
+		cmt2.style.backgroundColor = "#f57";
+		cmt2.style.borderColor = "#E54";
+		cmt2.style.borderWidth = "2px";
+		valid = false
+	}
+	if (cmt3.value.match(regComment) && cmt3.value.match(rangeComment)) {
+		$(cmtdialog3).fadeOut();
+		cmt3.style.backgroundColor = "#ffff";
+		cmt3.style.borderColor = "#383";
+		cmt3.style.borderWidth = "2px";
+	}else{
+		$(cmtdialog3).fadeIn();
+		cmt3.style.backgroundColor = "#f57";
+		cmt3.style.borderColor = "#E54";
+		cmt3.style.borderWidth = "2px";
+		valid = false
+	}
+	return valid;
+}
+
+function validateDeadlines(){
+  startdialog = document.getElementById('StartDateDialog')
+  dldialog1 = document.getElementById('Deadline1Dialog')
+  dldialog2 = document.getElementById('Deadline2Dialog')
+  dldialog3 = document.getElementById('Deadline3Dialog')
+  rrtdialog = document.getElementById('ResultReleaseDialog')
+
+  var qstart1 = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
+  var qstartbox = document.getElementById('qstart')
+
+  var qdeadline1 = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
+  var deadlinebox = document.getElementById('deadline')
+
+  var qdeadline2 = $("#deadline2").val()+" "+$("#deadlinet2").val()+":"+$("#deadlinem2").val();
+  var deadline2box = document.getElementById('deadline2')
+
+  var qdeadline3 = $("#deadline3").val()+" "+$("#deadlinet3").val()+":"+$("#deadlinem3").val();
+  var deadline3box = document.getElementById('deadline3')
+
+  var qrelease = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
+  var releasebox = document.getElementById('release')
+
+
+  var valid = true;
+
+    if($("#qstart").val()=="") {
+		//alert("Missing Start Date");
+		startdialog.innerHTML = "Missing Start Date."
+		$(startdialog).fadeIn()
+		formStatusAppearance(qstartbox.id, 1);
+		valid = false;
+    }else{
+		$(startdialog).fadeOut()
+		formStatusAppearance(qstartbox.id, 0);
+    }
+	
+	if($("#deadline").val()==""){
+		//alert("Missing Deadline 1");
+		dldialog1.innerHTML = "Missing Deadline 1";
+		$(dldialog1).fadeIn()
+		formStatusAppearance(deadlinebox.id, 1);
+		valid = false;
+
+	}else{
+		if(qdeadline1 < qstart1) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			dldialog1.innerHTML = "Cannot be before Start";
+			$(dldialog1).fadeIn()
+			formStatusAppearance(deadlinebox.id, 1);
+		  	valid = false;
+
+		 }else{
+			$(dldialog1).fadeOut()
+			formStatusAppearance(deadlinebox.id, 0);
+		 }
+	}
+	//The other deadlines are not required.
+  	if($("#deadline2").val()!=""){
+		if(qdeadline2 < qstart1 || qdeadline2 < qdeadline1) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			dldialog2.innerHTML = "Cannot be before above dates";
+			$(dldialog2).fadeIn()
+			formStatusAppearance(deadline2box.id, 1);
+			valid = false;
+
+		 }else{
+			$(dldialog2).fadeOut()
+			formStatusAppearance(deadline2box.id, 0);
+		 }
+  	}else{
+		$(dldialog2).fadeOut()
+		formStatusAppearance(deadline2box.id, 3);
+	}
+	
+  	if($("#deadline3").val()!=""){
+		if(qdeadline3 < qstart1 || qdeadline3 < qdeadline2 || qdeadline3 < qdeadline1) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			dldialog3.innerHTML = "Cannot be before above dates";
+			$(dldialog3).fadeIn()
+			formStatusAppearance(deadline3box.id, 1);
+			valid = false;
+
+		 }else{
+			$(dldialog3).fadeOut()
+			formStatusAppearance(deadline3box.id, 0);
+		 }
+
+  	} else{
+		$(dldialog3).fadeOut()
+		formStatusAppearance(deadline3box.id, 3);
+	}
+	
+	if($("#release").val()==""){
+		//alert("Missing release date");
+		rrtdialog.innerHTML = "Missing release date";
+		$(rrtdialog).fadeIn()
+		formStatusAppearance(releasebox.id, 1);
+		valid = false;
+		
+	}else{
+		if(qrelease < qstart1 || qrelease < qdeadline1) {
+			//alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+			rrtdialog.innerHTML = "Cannot be before first deadline";
+			$(rrtdialog).fadeIn()
+			formStatusAppearance(releasebox.id, 1);
+			valid = false;
+
+		 }else{
+			$(rrtdialog).fadeOut()
+			formStatusAppearance(releasebox.id, 0);
+		 }
+	}
+return valid;
+}
+
+function formStatusAppearance(id, status){
+	//0 = success, 1 = failure, else = neutral.
+	var box = document.getElementById(id);
+ switch(status){
+	case 0:
+		box.style.backgroundColor = "#ffff";
+		box.style.borderColor = "#383";
+		box.style.borderWidth = "2px";
+		break;
+	case 1:
+		box.style.backgroundColor = "#f57";
+		box.style.borderColor = "#E54";
+		box.style.borderWidth = "2px";
+		break;
+	default:
+		box.style.backgroundColor = "#ffff";
+		box.style.borderColor = "#383";
+		box.style.borderWidth = "0px";
+ } 
+
+}
+
 // Checks if the title name includes any invalid characters
 function validateDuggaName() {
 	var retValue = false;
@@ -198,14 +417,16 @@ function validateDuggaName() {
 
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
 		$('#tooltipTxt').fadeOut();
-		$('#saveDugga').removeAttr('disabled');
-		$('#submitDugga').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
+		//$('#saveDugga').removeAttr('disabled');
+		//$('#submitDugga').removeAttr('disabled');
+		formStatusAppearance(nme.id, 0);
+		//nme.style.backgroundColor = "#fff";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
-		$('#submitDugga').attr('disabled', 'disabled');
-		$('#saveDugga').attr('disabled', 'disabled');
+		//$('#submitDugga').attr('disabled', 'disabled');
+		//$('#saveDugga').attr('disabled', 'disabled');
+		formStatusAppearance(nme.id, 1);
 		nme.style.backgroundColor = "#f57";
 	}
 	return retValue;
@@ -221,6 +442,8 @@ function newVariant() {
 	document.getElementById('gFilelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
+	document.getElementById('notes').value = '';
+	document.getElementById('notes').placeholder = 'Notes';
 	document.getElementById('variantparameterText').value = '';
 	document.getElementById('variantparameterText').placeholder = 'Undefined JSON parameter';
 	document.getElementById('variantanswerText').value = '';
@@ -238,7 +461,7 @@ function newVariant() {
 function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
-	var parameter = $("#variantparameterText").val();
+	var parameter = $("#variantparameterText").val(); 
 	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -261,6 +484,7 @@ function selectVariant(vid, el) {
 			document.getElementById('vid').value = target_variant['vid'];
 			document.getElementById('variantparameterText').value = target_variant['param'];
 			document.getElementById('variantanswerText').value = target_variant['variantanswer'];
+			
 		} else {
 			// But hide the information if it is deselected.
 			document.getElementById('vid').value = "";
@@ -292,6 +516,9 @@ function selectVariant(vid, el) {
   				else if(result == "extraparam"){
   					document.getElementById('extraparam').value = obj[result];
   				}
+				else if(result == "notes"){
+					document.getElementById('notes').value = obj[result];
+				}
 				else if(result =="errorActive"){
 					document.getElementById("errorActive").checked = obj[result];
 				}else if(result == "diagram_File"){
@@ -314,7 +541,7 @@ function selectVariant(vid, el) {
   				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
   				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
   				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
-  				  document.getElementById('variantparameterText').value = target_variant['param'];
+  				  document.getElementById('variantparameterText').value = target_variant['param'];					
   			 }
   		  }
       } catch (e) {
@@ -326,7 +553,7 @@ function selectVariant(vid, el) {
 				document.getElementById('filelink').value = "";
 				document.getElementById('gType').value = "";
 				document.getElementById('gFilelink').value = "";
-				document.getElementById('extraparam').value = "";
+				document.getElementById('extraparam').value = "";  				
 		}
 
   var disabled = (target_variant['disabled']);
@@ -344,9 +571,11 @@ function selectVariant(vid, el) {
 
 
 function updateVariant(status) {
+	clearActiveDiagram();
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
-  var parameter = $("#variantparameterText").val();
+  	var parameter = $("#variantparameterText").val();
+
 	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
@@ -364,6 +593,7 @@ function updateVariant(status) {
 }
 
 function deleteVariant(vid) {
+	clearActiveDiagram();
 	AJAXService("DELVARI", { cid: querystring['courseid'], vid: vid, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -412,9 +642,22 @@ function returnedFile(data){
 		filearray[i] = JSON.parse(retdata['entries'][i].filename);
 	}
 	filteredarray = filearray.filter(x => x.extension === "json");
+	instrArray = filearray.filter(x => x.extension === $("#type").val());
+	infArray = filearray.filter(x => x.extension === $("#gType").val());
 
-	//Not sure how the first parameter works yet, suspect it's to know which object is selected
 	$("#file").html(makeoptionsItem("AddEmptyField", filteredarray, 'filename','filename'));
+	$("#filelink").html(makeoptionsItem("AddEmptyField", instrArray, 'filename', 'filename'));
+	$("#gFilelink").html(makeoptionsItem("AddEmptyField", infArray, 'filename', 'filename'));
+}
+
+function updateInstructions(){
+	instrArray = filearray.filter(x => x.extension === $("#type").val());
+	$("#filelink").html(makeoptionsItem("AddEmptyField", instrArray, 'filename', 'filename'));
+}
+
+function updateInformation(){
+	infArray = filearray.filter(x => x.extension === $("#gType").val());
+	$("#gFilelink").html(makeoptionsItem("AddEmptyField", infArray, 'filename', 'filename'));
 }
 
 // Adds a submission row
@@ -472,32 +715,37 @@ function createJSONString(formData) {
 		if (element.name == "s_type") type = element;
 		if (element.name == "s_fieldname") fieldname = element;
 		if (element.name == "s_instruction") instruction = element;
+		
 
 		if (type && fieldname && instruction) {
 			submission_types.push({
 				"type":type.value,
 				"fieldname":fieldname.value,
-				"instruction":instruction.value
+				"instruction":instruction.value,
+				
 			});
 
 			type = undefined;
 			fieldname = undefined;
 			instruction = undefined;
+			
 		}
 	});
 
-
+	//Adds values to the JSON object.
 	return JSON.stringify({
 		"type":formData[0].value,
 		"filelink":formData[1].value,
 		"gType":formData[2].value,
-		"gFilelink":formData[3].value,
+		"gFilelink":$("#gFilelink option:selected").val(),
 		"diagram_File":$("#file option:selected").val(),
 		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
+		"notes":$('#notes').val(),
 		"submissions":submission_types,
 		"errorActive":document.getElementById("errorActive").checked
 	});
+	
 }
 
 // Does the reverse of what createJSONString does.
@@ -531,9 +779,14 @@ function createJSONFormData(){
       else if(result == "extraparam"){
         document.getElementById('extraparam').value = obj[result];
       }
+	  else if(result == "notes"){
+        document.getElementById('notes').value = obj[result];
+      }
+	 
 	  else if(result =="file"){
 		document.getElementById('file').value = "hejsan";
 	  }
+	  
     }
 
     var submissionTypes = obj.submissions;
@@ -548,6 +801,7 @@ function createJSONFormData(){
         document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
         document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
         document.getElementById('variantparameterText').value = jsonData;
+
       }
     }
   } catch (e) {
@@ -588,7 +842,7 @@ function confirmBox(operation, item, type) {
 	if (operation == "openConfirmBox") {
 		typeOfItem = type;
 		itemToDelete = item; // save the item to delete in this variable
-		$("#sectionConfirmBox").css("display", "flex");
+		$("#sectionConfirmBox").css("display", "flex");	
 	} else if (operation == "deleteItem") {
 		if (typeOfItem == "dugga") {
 			deleteDugga(itemToDelete);
@@ -601,11 +855,16 @@ function confirmBox(operation, item, type) {
 	}
 
 	// Allows for duggor & dugga variants to be deleted by pressing the enter-key when the confirmBox is visible.
-	document.addEventListener("keyup", event => {
-		if (event.key === 'Enter') {
-			deleteVariant(itemToDelete);
-			deleteDugga(itemToDelete);
-			$("#sectionConfirmBox").css("display", "none");
+	document.addEventListener("keypress", event => {
+		if (event.key === 'Enter') {	
+			if(event.target.classList.contains("traschcanDelDugga")){
+				$("#confirmDelSubmit").focus();
+			}
+			if(event.target.id == "confirmDelSubmit"){
+				deleteVariant(itemToDelete);
+				deleteDugga(itemToDelete);
+				$("#sectionConfirmBox").css("display", "none");
+			}
 		}
 	});
 }
@@ -636,6 +895,7 @@ function returnedQuiz(data) {
 // START OF RENDERING TABELS
 //Table for duggas
 function returnedDugga(data) {
+	
 	//If the user dont have writeaccess, the user gets send to the startpage
 	if (!data.writeaccess) {
 		window.location.href = 'courseed.php';
@@ -733,8 +993,9 @@ function renderVariant(clickedElement) {
 		globalVariant = clickedElement;
 		updateVariantTitle(clickedElement);
 		var tabledata = {
-				tblhead: {
+				tblhead: {					//Add header to variant window.
 						vid: "",
+						notes: "Note",
 						param: "Parameter",
 						modified: "Modified",
 						disabled: "Status",
@@ -745,7 +1006,7 @@ function renderVariant(clickedElement) {
 				tblbody: globalData['entries'][clickedElement].variants,
 				tblfoot: {}
 		}
-		var colOrderVariant=["vid","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
+		var colOrderVariant=["vid","notes","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
 		variantTable = new SortableTable({
 				data:tabledata,
 				tableElementId:"variant",
@@ -808,22 +1069,28 @@ function renderCell(col, celldata, cellid) {
 
 		case "arrow":		// DUGGA-TABLE - Arrow icon
 			clickedElement = JSON.parse(cellid.match(/\d+/));
-			retString = "<img alt='edit dugga icon' id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
+			retString = "<img alt='edit dugga icon' tabindex='0' id='dorf' class='markdownIcon markdownIconTab' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
 			retString += ` onclick='renderVariant(\"${clickedElement}\"); showVariantEditor();'>`;
 			break;
 
 		case "cogwheel":	// DUGGA-TABLE - Cogwheel icon
 			object = JSON.parse(celldata);
-			retString = "<img alt='dugga settings icon' id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
+			retString += "<img class='settingIcon' tabindex='0' alt='dugga settings icon' id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
 			retString += ` onclick='selectDugga(\"${object}\");' >`;
 			break;
 
 		case "trashcan":	// DUGGA-TABLE - Trashcan icon
 			object = JSON.parse(celldata);
-			retString = "<img alt='delete dugga icon' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
+			retString = "<img alt='delete dugga icon' tabindex='0'  class='traschcanDelDugga' id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 			retString += ` onclick='confirmBox(\"openConfirmBox\",\"${object}\",\"dugga\");' >`;
 			break;
 
+		case "notes":		// DUGGA-TABLE - Notes column
+			// Parse JSON to get the note
+			object = JSON.parse(celldata).notes;
+			retString = `<span class='variants-notes-col'>${object}</span>`;
+			break;
+			
 		case "param":		// DUGGA-TABLE - Parameter column
 			retString = `<span class='variants-param-col'>${celldata}</span>`;
 			break;
@@ -1127,3 +1394,6 @@ function checkDiagramTypes(num){
 	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 }
 
+function clearActiveDiagram(){
+	localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+}

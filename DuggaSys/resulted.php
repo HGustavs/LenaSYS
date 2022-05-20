@@ -36,7 +36,7 @@ pdoConnect();
 	<script src="resulted.js"></script>
 	<script src="backToTop.js"></script>
 </head>
-<body onload="setup();">
+<body onload="setup(); displayNavIcons();">
 	<?php
 		$noup="SECTION";
 		$resultedkind = true;
@@ -69,12 +69,16 @@ pdoConnect();
 			</div>
 			<div class="select-dugga-filter">
 				<div class="dugga-filter-container">
-					<div class="filter-btn filter-btn-duggaName" onclick="showAvailableDuggaFilter()">Show dugga filter</div>
-					<div class="show-dugga-filter-popup hidden"></div>
+					<div class="showDuggaFiltTab" tabIndex="0">
+						<div class="filter-btn filter-btn-duggaName" onclick="showAvailableDuggaFilter()">Show dugga filter</div>
+						<div class="show-dugga-filter-popup hidden"></div>
+					</div>
 				</div>
 				<div class="column-filter-container">
-				<div class="filter-btn filter-btn-duggaName" onclick="showAvailableColumnFilter()">Show column filter</div>
-					<div class="show-column-filter-popup hidden"></div>
+					<div class="showColumnFiltTab" tabIndex="0">
+						<div class="filter-btn filter-btn-duggaName" onclick="showAvailableColumnFilter()">Show column filter</div>
+						<div class="show-column-filter-popup hidden"></div>
+					</div>
 				</div>
 			</div>
 			<div class="select-date-interval">
@@ -87,7 +91,9 @@ pdoConnect();
 					<input class="date-interval-selector" type="date" id="datepicker-interval-2">
 				</div>
 			</div>
-			<div class="filter-btn" onclick="searchByFilter()">Search</div>
+			<div class="searchTab" tabIndex="0">
+				<div class="filter-btn" onclick="searchByFilter()">Search</div>
+			</div>
 		</div>
 		<div class="resulted-filter-container">
 			<div>

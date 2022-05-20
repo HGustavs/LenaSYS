@@ -239,14 +239,20 @@ function renderBarDiagram(data) {
   var str = "<h2 style='padding-left:5px'>Weekly bar chart</h2>";
   str += "<p style 'padding-top:10px'>Showing activities for " + dailyCount[0][0] + " - " + dailyCount[7*numOfWeeks-1][0] + " </p>";
   str += "<div style='overflow-x:scroll;'>"
-  str += `<svg  class='chart fumho'  style='background-color:#efefef;'
-  width='1300' height='250' aria-labelledby='title desc' role='img'>`;
+  str += `<svg  class='chart fumho' width='1300' height='250' aria-labelledby='title desc' role='img'>`;
+  // str += `<svg  class='chart fumho' width='1300' height='250' aria-labelledby='title desc' role='img'>`;
+
+  // Reuse old code. A new class and an if state were created to make the stipes vary between two shades of gray. 
   for (var i = 0; i < numOfWeeks; i++) {
-    str += `<rect x='${(65 + 120 * i)}' y='0%' width='120' height='100%' 
-    style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
+    if(i % 2 == 1) {
+      str += `<rect class='WeeklyBarChartEven' x='${(65 + 120 * i)}' y='0%' width='120' height='100%';' />`    
+    } else {
+      str += `<rect class='WeeklyBarChartOdd' x='${(65 + 120 * i)}' y='0%' width='120' height='100%';' />` 
+    }
   }
-  str += "<line style='stroke:#000;' x1='65' x2='65' y1='5%' y2='220'></line>";
-  str += "<line style='stroke:#000;' x1='65' x2='99%' y1='220' y2='220'></line>";
+
+  // str += "<line class='WeeklyBarChartText' style='stroke:green;' x1='65' x2='65' y1='5%' y2='220'></line>";
+  str += "<line class='WeeklyBarChartLine' x1='65' x2='100%' y1='220' y2='220'></line>";
 
   // Calculates and render scale numbers on the left
   var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
@@ -256,8 +262,9 @@ function renderBarDiagram(data) {
     if (highRange > 100) {
       range = Math.round(range);
     }
-    str += `<text x='${(62 - (range.toString().length * 9))}' y='${(225 - (range / highRange) * 200)}'>${range}</text>`;
-    str += `<line style='stroke:#ccc;' x1='65' x2='99%' y1='${(220 - (range / highRange) * 200)}'
+    
+    str += `<text class'WeeklyBarChartNumber;'  x='${(62 - (range.toString().length * 9))}' y='${(225 - (range / highRange) * 200)}'>${range}</text>`;
+    str += `<line style='stroke:#ccc;' x1='65' x2='100%' y1='${(220 - (range / highRange) * 200)}'
      y2='${(220 - (range / highRange) * 200)}'></line>`;
   }
 
@@ -291,7 +298,7 @@ function renderBarDiagram(data) {
       str += "</g>";
     }
     
-    str += "<text x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
+    str += "<text class='WeeklyBarChartText' x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
     str += "</g>";
   }
   str += '</svg>';
@@ -358,10 +365,16 @@ function renderCommits(data) {
       }
     }
     
-    str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%'  style='fill:${(i % 2 == 1 ? "#cccccc" : "#efefef")};' />`
-    str += "<text x='" + (120 * i + -260) + "' y='20'>week " + (i + 1) + "</text>";
+    // Reuse old code. A new class and an if state were created to make the stipes vary between two shades of gray. 
+    if(i % 2 == 1) {
+      str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%' class='commitTreeBarsEven';' />`
+
+    } else {
+      str += `<rect x='${(-300 + 120 * i)}' y='0%' width='120' height='100%' class='commitTreeBarsOdd';' />`
+    }
+    str += "<text class='commitTreeText' x='" + (120 * i + -260) + "' y='20'>Week " + (i + 1) + "</text>";
   }
-  str += "<line style='stroke:#000;' x1='-300' x2='200%' y1='25' y2='25'></line>";
+  str += "<line class='commitTreeLine' ' x1='-300' x2='200%' y1='25' y2='25'></line>";
 
   var xMul = 25;
   var yMul = 10;
@@ -468,8 +481,7 @@ function renderLineDiagram(data) {
 }
 
 function lineDiagram() {
-  str = `<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;
-  min-width:700px;background-color:#efefef;margin-top:10px;'>`;
+  str = `<svg class='lineDiagramDark' viewBox='0 0 580 250' class='lineChart' style='max-width:900px; min-width:700px;margin-top:10px;'>`;
 
   // Calculates and render scale numbers on the left
   var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
@@ -847,7 +859,7 @@ function renderActivityPoints(activities) {
       var activityCount = commentsCounted.length;
       var percentage = hoursComments[hour] / activityCount;
       
-      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      var angleFactor = (RADIUS * percentage) + BASELINE+30;
       angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
       var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
       var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
@@ -871,7 +883,7 @@ function renderActivityPoints(activities) {
       var activityCount = commitsCounted.length;
       var percentage = hoursCommits[hour] / activityCount;
       //console.log(percentage, hours[hour], activityCount );
-      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      var angleFactor = (RADIUS * percentage) + BASELINE+15;
       angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
       var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
       var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
@@ -896,7 +908,7 @@ function renderActivityPoints(activities) {
       var type = entry.type;
       var activityCount = issuesCounted.length;
       var percentage = hoursIssues[hour] / activityCount;
-      var angleFactor = ((RADIUS - BASELINE) * percentage) + BASELINE;
+      var angleFactor = (RADIUS * percentage) + BASELINE;
       angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
       var xCoord = (Math.cos(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
       var yCoord = (Math.sin(toRadians(houroffset * 15)) * angleFactor) + MIDDLE;
@@ -1871,20 +1883,22 @@ function showMoreContribContent(id,status){
 
 //Loads or Create a default localStorage if localStorage doesn't exists. Used onload.
 function loadContribFormLocalStorage(){
+  var user = localStorage.getItem('GitHubUser')
   if(localStorage.getItem('contribToggleArr') == null){
-    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault()));
+    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault())); 
   }
 }
 
-//creates the default localStorage values. All tabs should be open from start.
+//creates the default localStorage values. All tabs should be closed from start.
 function createDefault(){
   var contibArr = [];
+
   for(var i =0; i<10; i++){ // 10 represents 10 weeks in the course.
     var values = {
-      commit:1,
-      issues:1,
-      comments:1,
-      events:1
+      commit:0,
+      issues:0,
+      comments:0,
+      events:0
     }
     contibArr.push(values);
   }
@@ -2177,6 +2191,64 @@ function mouseUp(e) {
 
 //Creates the sidebar for accepting and rejecting students when logged in as a superUser
 function createSidebar(){
+
+  let git_username = null;
+  let status = null
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
+}
+
+//status codes 101=pending 102=denied 0=accepted
+function accountInformation(data){
+  var str = "";
+  for (var row = 0; row < data.length; row++) {
+    str+= "<div id='" +data[row][0] +"'>";
+    str+= "<tr class='accountRequestTable'"+ row +">";
+    str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
+    
+    //status codes 101=pending 102=denied 0=accepted
+    if(data[row][1]==101){  //pending account
+      str+="<td class='accountRequestTable'>" + 'Pending'+ "</td>";
+      str+="<td class='accountRequestTable'>";
+        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept'></input>" ;
+        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny '></input>";
+        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc()', value='Delete '></input>";
+      str+= "</td>";
+    }
+    else if(data[row][1]==0){ //accepted account
+      str+= "<td class='accountRequestTable'>" + 'Accepted'+ "</td>";
+      str+= "<td class='accountRequestTable'>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete '></input>";
+        str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc()' value='Revoke '></input>"; 
+      str+= "</td>";
+    }
+    else{ //if not accepted or pending its denied
+      str+= "<td class='accountRequestTable'>" + 'Denied' + "</td>";
+      str+= "<td class='accountRequestTable'>"; 
+        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete'></input>";
+        str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Accept'></input>"; 
+      str+= "</td>";
+    }
+    str+="</div>";
+    str+= "</tr>";
+  }
+
+  return str; 
+}
+
+function denyAcc(){
+  console.log("denied this account");
+}
+
+function deleteAcc(){
+  console.log("deleted this account");
+
+}
+
+function acceptAcc(){
+  console.log("accepted this account");
+}
+
+function placeSideBarInfo(data){
   var text = document.getElementById('accountRequests-pane');
   text.style.display="inline-block";
   str = "";
@@ -2185,23 +2257,18 @@ function createSidebar(){
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
   str+= "<th class='accountRequestTable'></th>";
   str+= "<th class='accountRequestTable'>Name </th>";
-  str+= "<th class='accountRequestTable'>Status</th>";
-  str+= "<th class='accountRequestTable'></th>";
+  str+= "<th class='accountRequestTable'>Status</th>";;
   str+= "</tr>";
-
-  for (var row = 0; row < 10; row++) {
-    str+= "<tr class='accountRequestTable'>";
-
-    for (var col = 1; col <= 4; col++) {
-      str+= "<td class='accountRequestTable'>" + (col + (row * 4)) +"</td>";
-    }
-
-    str+= "</tr>";
-  }
+  str+=accountInformation(data);
 
   str+= "</table>";
   str+= "</div>";
   text.innerHTML = str;
+}
+
+
+function showError(){
+  console.log("showError() has been called. AJAXService had a error accessing git_user table, ");
 }
 
 console.error

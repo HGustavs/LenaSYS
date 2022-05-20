@@ -29,7 +29,20 @@ var filepath;
 var filekind;
 var aceData;
 var editor;
-var filedata;
+var filedata;   
+var x = window.matchMedia('(max-width: 380px)');
+
+x.onchange = (e) => {
+    if (e.matches) {
+        displayNavIcons();
+    }
+}  
+
+function displayNavIcons() {
+    document.getElementById("home").style.display="revert";
+    document.getElementById("theme-toggle").style.display="revert";
+    document.getElementById("back").style.display="revert";    
+}
 
 function setup() {
     AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
@@ -335,7 +348,7 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            str = "<span class='iconBox'><img alt='delete file icon' id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+            str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
             str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
         }
     } else if (col == "filename") {
@@ -355,7 +368,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "editor") {
         if(obj.showeditor){
         if (obj.extension == "md" || obj.extension == "txt" || obj.extension == "html") {
-            str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str = "<span class='iconBox' ><img alt='edit file icon' tabindex='0' id='dorf'  title='Edit file' class='markdownIcon markdownIconeditFile' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         } else if (obj.extension == "js"  || obj.extension == "css" || obj.extension == "php") {
             str = "<span class='iconBox'><img alt='edit file icon' id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";

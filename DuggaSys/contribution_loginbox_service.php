@@ -14,6 +14,10 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
+$git_pending = 101;
+$git_revoked = 102;
+$git_accepted = 0;
+
 $debug="NONE!";
 
 //This uses an hardcoded path to a database file containing all Github data and run all funtions on that data. No other connection to a database at the moment.
@@ -214,14 +218,12 @@ else if(strcmp($opt,"requestGitUserCreation") == 0)
 
 			  At this point we have done the server side check and we can create a pending user creation from here
         	 */
-			$git_pending = 101;
-			$git_revoked = 102;
-			$git_accepted = 103;
+			
 		
 			$temp_null_str = "NULL";
 			
 			$rnd=standardPasswordHash($gitpass);
-			if(preg_match('/^[\w]+$/',$gitpass ) && strlen($gitpass) >= 8 && strlen($gitpass) <=64){
+			if(preg_match('/[a-z|A-Z|0-9]+$/',$gitpass ) && strlen($gitpass) >= 8 && strlen($gitpass) <=64){
 
 				$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
 				$stmt = $pdo->prepare($querystring);
@@ -300,10 +302,10 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
 	}
 
 
-	if($gituser != "UNK" && $status != "super")
+	if($gituser != "UNK" && $status != "super") // we are either a git_user or not a user at all
 	{
 		// retrieve a user with the same name
-		$query = $pdo->prepare("SELECT git_uid,username,password FROM git_user WHERE username=:username LIMIT 1");
+		$query = $pdo->prepare("SELECT git_uid,username,password,status_account FROM git_user WHERE username=:username LIMIT 1");
 		$query->bindParam(':username',$gituser);
 
 		if(!$query->execute()) // execute and check for errors
@@ -318,25 +320,69 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
 			
 			if(password_verify($gitpass, $row['password'])) // entered gitpass matched hashed password
 			{
-				$_SESSION['git_uid'] = $row['git_uid'];
-        		$_SESSION["git_loginname"]=$row['username'];
-				$_SESSION["git_passwd"]=$row['password'];
-                echo json_encode(array(
-                    "returnMethod" => getOP('return'),
-                    "debug" => $debug,
-                    "returnData" => json_encode(true)
-                ));			
+                $status_account_int = (int)$row['status_account'];
+                if($status_account_int == $git_pending)
+                {
+                   /* $_SESSION['git_uid'] = $row['git_uid'];
+                    $_SESSION["git_loginname"]=$row['username'];
+                    $_SESSION["git_passwd"]=$row['password']; */
+
+
+                    echo json_encode(array(
+                        "returnMethod" => getOP('return'),
+                        "debug" => $debug,
+                        "returnData" => json_encode(array(
+                            "success" => false,
+                            "status" => "pending",
+                            "debug" => $debug
+                        )
+                    )));
+                }
+                else if($status_account_int == $git_revoked)
+                {
+                    echo json_encode(array(
+                        "returnMethod" => getOP('return'),
+                        "debug" => $debug,
+                        "returnData" => json_encode(array(
+                            "success" => false,
+                            "status" => "revoked",
+                            "debug" => $debug
+                        )
+                    )));
+                }
+                else if($status_account_int == $git_accepted)
+                {
+                    $_SESSION['git_uid'] = $row['git_uid'];
+                    $_SESSION["git_loginname"]=$row['username'];
+                    $_SESSION["git_passwd"]=$row['password'];
+
+                    echo json_encode(array(
+                        "returnMethod" => getOP('return'),
+                        "debug" => $debug,
+                        "returnData" => json_encode(array(
+                            "success" => true,
+                            "status" => "accepted",
+                            "debug" => $debug
+                        )
+                    )));
+
+                }			
             }
 			else // wrong password entered
 			{
+
                 echo json_encode(array(
                     "returnMethod" => getOP('return'),
                     "debug" => $debug,
-                    "returnData" => json_encode(false)
-                ));
+                    "returnData" => json_encode(array(
+                        "success" => false,
+                        "status" => "wrong pass",
+                        "debug" => $debug
+                    )
+                )));
+
 			}
 		}
-
 
 	}
 	else if($status == "super") // user exists on the lenasys database login with this instead of the git database
@@ -346,16 +392,27 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
             echo json_encode(array(
                 "returnMethod" => getOP('return'),
                 "debug" => $debug,
-                "returnData" => json_encode(true)
-            ));
+                "returnData" => json_encode(array(
+                    "success" => true,
+                    "status" => "super",
+                    "debug" => $debug
+                )
+            )));
+
 		}
 		else
 		{
             echo json_encode(array(
                 "returnMethod" => getOP('return'),
                 "debug" => $debug,
-                "returnData" => json_encode(false)
-            ));
+                "returnData" => json_encode(array(
+                    "success" => false,
+                    "status" => "wrong pass",
+                    "debug" => $debug
+                )
+            )));
+
+
 		}
 	}
 	else // logout the git
@@ -373,11 +430,15 @@ else if(strcmp($opt,"requestContributionUserLogin") == 0)
         echo json_encode(array(
             "returnMethod" => getOP('return'),
             "debug" => $debug,
-            "returnData" => json_encode(true)
-        ));
-	
+            "returnData" => json_encode(array(
+                "success" => true,
+                "status" => "logged out",
+                "debug" => $debug
+            )
+        )));
 	}
 }
+
 
 
 

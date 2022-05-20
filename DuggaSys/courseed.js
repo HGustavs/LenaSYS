@@ -10,6 +10,9 @@ var versions;
 var entries;
 var motd;
 var readonly;
+var LastCourseCreated;
+var lastCC = false; 
+var updateCourseName = false;
 
 $(document).ready(function(){
     $('#startdate').datepicker({
@@ -32,12 +35,18 @@ function updateCourse()
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
 	var visib = $("#visib").val();
+	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-
+	
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
+	localStorage.setItem('courseid', courseid);
+	localStorage.setItem('updateCourseName', true);
+}
+function updateCourseColor(courseid){
+	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
 
 function closeEditCourse()
@@ -45,7 +54,7 @@ function closeEditCourse()
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#editCourse").css("display", "none");
-
+	
 	//resets all inputs
 	resetinputs();
 }
@@ -70,6 +79,8 @@ function createNewCourse()
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
+
+    localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -103,7 +114,7 @@ function createVersion()
 	var cid = $("#cid").val();
 
 	AJAXService("NEWVRS", {	cid : cid, versid : versid, versname : versname	}, "COURSE");
-
+	
 	//resets all inputs
 	resetinputs();
 }
@@ -131,7 +142,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);
-
+	
 	// Set Visibiliy
 	str = "";
 
@@ -395,6 +406,12 @@ function returnedCourse(data)
 {
 	versions = data['versions'];
 	entries = data['entries'];
+	if(data['LastCourseCreated'][0] != undefined){
+		LastCourseCreated = data['LastCourseCreated'][0]['LastCourseCreatedId'];
+		localStorage.setItem('lastCourseCreatedId', LastCourseCreated);
+
+	}
+
 	var uname=document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
@@ -545,11 +562,10 @@ const regex = {
 //Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
-
 	//Standard styling for a failed validation that will be changed if element passes validation
-	element.style.borderWidth = "2px";
-	element.style.borderColor = "#E54";
-	messageElement.style.display = "block";
+	element.style.backgroundColor = "#f57";
+	$(messageElement.firstChild.id).fadeIn();
+	//messageElement.style.display = "block";
 
 	//Check if value of element matches regex based on name attribute same as key for regex object
 	if(element.value.match(regex[element.name])) {
@@ -566,21 +582,25 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
+		element.style.backgroundColor = "#ffff";
 		element.style.borderColor = "#383";
-		messageElement.style.display = "none";
+		$(messageElement.firstChild).fadeOut();
+		//messageElement.style.display = "none";
 		return true;
 	} else if(element.value.trim() === "") {
 		//If empty string or ettempty of only spaces remove styling and spaces and hide validation message
+		$(messageElement.firstChild).fadeOut();
 		element.removeAttribute("style");
 		element.value = "";
-		messageElement.style.display = "none";
+		//messageElement.style.display = "none";
+		return false;
 	}
 
 	//Change back to original validation error message if it has been changed when knowing course code is not duplicate
 	if(element.name === "coursecode") {
-		messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
+		messageElement.firstChild.innerHTML = "2 Letters, 3 digits, 1 letter";
 	}
-
+	$(messageElement.firstChild).hide().fadeIn();
 	//Validation falied if getting here without returning
 	return false;
 }
@@ -660,30 +680,32 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
 	var x4 = document.getElementById(syntaxdialogid);
 	var x8 = document.getElementById(rangedialogid);
 	if (emotd.value.match(Emotd) ) {
-	  emotd.style.borderColor = "#383";
-	  emotd.style.borderWidth = "2px";
-	  x4.style.display = "none";
-	  window.bool9 = true;
+		$(x4).fadeOut()
+		//x4.style.display = "none";
+		window.bool9 = true;
 	} else {
-	  emotd.style.borderColor = "#E54";
-	  x4.style.display = "block";
-	  emotd.style.borderWidth = "2px";
-	  window.bool9 = false;
+		$(x4).fadeIn()
+		//x4.style.display = "block";
+		window.bool9 = false;
 	}
 	if (emotd.value.match(EmotdRange)){
-		emotd.style.borderColor = "#383";
-		emotd.style.borderWidth = "2px";
-		x8.style.display = "none";
+		$(x8).fadeOut()
+		//x8.style.display = "none";
 		window.bool9 = true;
 	}else{
-		emotd.style.borderColor = "#E54";
-		x8.style.display = "block";
-		emotd.style.borderWidth = "2px";
+		$(x8).fadeIn()
+		//x8.style.display = "block";
 		window.bool9 = false;
 	}
 	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+		emotd.style.backgroundColor = "#ffff";
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
 	}else{
+		emotd.style.backgroundColor = "#f57";
+		emotd.style.borderColor = "#E54";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = true;
 	}
   
@@ -710,3 +732,30 @@ document.addEventListener('keydown', function(event) {
 		}
 	}
 });
+
+//Run after ajax is completed
+$( document ).ajaxComplete(function() {
+    localStorageCourse();
+});
+
+function localStorageCourse(){
+	// check if lastcourse created is true to add glow to the relative text 
+    if(localStorage.getItem("lastCC") == "true"){
+        var StorageCourseId = localStorage.getItem("lastCourseCreatedId");
+        glowNewCourse(StorageCourseId);
+        localStorage.setItem('lastCourseCreatedId', " ");
+        localStorage.setItem('lastCC', false);
+    }
+
+	// check if updateCourseName is true to add glow to the relative text 
+	if(localStorage.getItem("updateCourseName") == "true"){
+        var StorageCourseId= localStorage.getItem("courseid");
+        updateCourseColor(StorageCourseId);
+        localStorage.setItem('courseid', " ");
+        localStorage.setItem('updateCourseName', false);
+    }
+}
+
+function glowNewCourse(courseid){
+    document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
+}

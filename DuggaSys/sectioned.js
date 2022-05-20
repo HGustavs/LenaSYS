@@ -22,6 +22,15 @@ let width = screen.width;
 var delArr = [];
 var delTimer;
 var lid;
+var collectedLid = [];
+var updatedLidsection;
+var numberOfItems;
+
+var isLoggedIn = false;
+
+function IsLoggedIn(bool){
+  bool ? isLoggedIn = true : isLoggedIn = false ;
+}
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -74,6 +83,7 @@ function setup() {
   document.querySelector('#showElements').disabled = true;
   document.querySelector('#showElements').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
+  numberOfItems = 1;
 }
 
 // -------------==============######## Internal Help Functions ###########==============-------------
@@ -180,7 +190,11 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativedeadline, tabs, feedbackenabled, feedbackquestion) {
-
+  console.log("myConsole lid: "+ lid);
+  console.log("myConsole typeof: "+ typeof lid);
+  document.getElementById("sectionname").focus();
+  toggleTab(true);
+  enableTab(document.getElementById("editSection"));
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
@@ -335,6 +349,8 @@ function changedType(kind) {
 
 function showEditVersion() {
   var tempMotd = motd;
+  toggleTab(true);
+  enableTab(document.getElementById("editCourseVersion"));
 	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
   "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
   $("#eversname").val(versnme);
@@ -361,6 +377,7 @@ window.addEventListener('beforeunload', function(event) {
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
+    toggleTab(false);
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
     $("#userFeedbackDialog").css("display", "none");
@@ -389,7 +406,6 @@ function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
   } else if (operation == "openHideConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
@@ -421,6 +437,19 @@ function confirmBox(operation, item = null) {
     showMarkedItems(hideItemList);
     $("#sectionShowConfirmBox").css("display", "none");
   }
+  document.addEventListener("keypress", event => {
+		if (event.key === 'Enter') {	
+			if(event.target.classList.contains("traschcanDelItemTab")){
+        setTimeout(function(){ 
+          $("#delete-item-button"). focus (); 
+        }, 400);
+			}
+			if(event.target.id == "delete-item-button"){
+				deleteItem(active_lid);
+        $("#sectionConfirmBox").css("display", "none");
+			}
+		}
+	});
 }
 
 // Creates an array over all checked items
@@ -538,6 +567,7 @@ function clearHideItemList(){
 
 
 function closeSelect() {
+  toggleTab(false);
   $(".item").css("border", "none");
   $(".item").css("box-shadow", "none");
   $("#editSection").css("display", "none");
@@ -554,15 +584,24 @@ function defaultNewItem() {
 
 function showCreateVersion() {
     $("#newCourseVersion").css("display", "flex");
+    toggleTab(true);
+    enableTab(document.getElementById("newCourseVersion"));
 }
 
+function incrementItemsToCreate() {
+  numberOfItems++;
+}
 
 // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
-function createFABItem(kind, itemtitle, comment) {
+async function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
-    clearHideItemList();
-    newItem(itemtitle);
+    for (var i = 0; i < numberOfItems; i++) {
+      selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
+      clearHideItemList();
+      await newItem(itemtitle); // Wait until the current item is created before creating the next item
+    }
+    console.log(numberOfItems + " " + itemtitle + "(s) created");
+    numberOfItems = 1; // Reset number of items to create
   }
 }
 
@@ -669,7 +708,7 @@ function deleteAll()
 
 // Cancel deletion
 function cancelDelete() {
-  clearTimeout(time);
+  clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for(i = 0; i < deletedElements.length; i++) { 
     deletedElements[i].classList.remove("deleted");
@@ -717,10 +756,57 @@ function hideMarkedItems() {
   }
     
 //----------------------------------------------------------------------------------
+// toggleTab: Toggles tab on all elements of the webpage
+//----------------------------------------------------------------------------------
+
+  function toggleTab(tabEnabled){
+    var tabSwitch;
+    if(tabEnabled){
+      tabEnabled = false;
+      tabSwitch = -1;
+    } 
+    else {
+      tabEnabled= true;
+      tabSwitch = 0;
+    }
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+    var tabbable = ['settingIconTab', 'home-nav', 'theme-toggle-nav', 'messagedialog-nav', 'announcement-nav', 'editVers', 'newVers', 'loginbutton-nav', 'newTabCanvasLink', 'showCanvasLinkBoxTab', 'traschcanDelItemTab'];
+
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = document.getElementsByClassName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', tabSwitch);
+      }
+    }
+  }
+
+//----------------------------------------------------------------------------------
+// enableTab: Enables tab on all children of of the id element
+//----------------------------------------------------------------------------------
+
+  function enableTab(id){
+    var tabbable = ['a', 'input', 'select', 'button', 'textarea'];
+    for (var i = 0; i < tabbable.length; i++) {
+      var elem = id.getElementsByTagName(tabbable[i]);
+      for (var j = 0; j < elem.length; j++) {
+        elem[j].setAttribute('tabindex', 0);
+      }
+    }
+    
+  }
+//----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
 //----------------------------------------------------------------------------------
 
 function updateItem() {
+  console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
   $("#sectionConfirmBox").css("display", "none");
@@ -734,13 +820,17 @@ function updateDeadline() {
     }
 }
 
+function setActiveLid(lid){
+  updatedLidsection = lid;
+};
 //----------------------------------------------------------------------------------
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
 
-function newItem(itemtitle) {
+async function newItem(itemtitle) {
 
-  AJAXService("NEW", prepareItem(), "SECTION");
+  // Continues when AJAX call is completed
+  await AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
   // Toggle for alert when create a New Item
@@ -748,6 +838,21 @@ function newItem(itemtitle) {
   element.classList.toggle("createAlertToggle");
   // Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
+  // Here we have to wait 1 tenth of a second so that the ajax service completes.
+  setTimeout(function(){
+    collectedLid.sort(function(a, b) {
+    return b - a;
+    });
+    var element = document.getElementById('I'+collectedLid[0]).firstChild;
+    if(element.tagName == 'DIV') {
+    element = element.firstChild;
+    element.classList.add("highlightChange");
+    }else if (element.tagName == 'A'){
+      document.getElementById('I'+collectedLid[0]).classList.add("highlightChange");
+    }else if (element.tagName == 'SPAN'){
+      document.getElementById('I'+collectedLid[0]).firstChild.classList.add("highlightChange");
+    }
+  },100);
   // Duration time for the alert before remove
   setTimeout(function(){
     $("#createAlert").removeClass("createAlertToggle");
@@ -1095,19 +1200,21 @@ function returnedSection(data) {
           
           if (retdata['writeaccess']) {
           if (itemKind === 3) {
-            str += "<td  class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-            
+            if(isLoggedIn){
+              str += "<td  class='LightBox" + hideState + "'>";
+              str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            }
           } else if (itemKind === 4) {
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            if(isLoggedIn){
+              str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
+              str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            }
           }
           str += "</td>";
       }
-      }
+    }
 
       if (retdata['writeaccess']) {
-        console.log(itemKind);
         if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
           str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
           str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
@@ -1142,9 +1249,8 @@ function returnedSection(data) {
             str += addColorsToTabSections(itemKind, hideState, "E");
           }
         }
-
-
-      
+        // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+        collectedLid.push(item['lid']);
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
@@ -1152,11 +1258,20 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 1) {
-          // Styling for Section row
+          if(isLoggedIn){
+            // Styling for Section row
+            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+            str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
 
         } else if (itemKind === 2) {
+
+          if(isLoggedIn){
+            str += "<td class='LightBox" + hideState + "'>";
+            str += "<div class='dragbleArea'><img alt='pen icon dugga' style='width: 53%; padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+          }
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
@@ -1357,7 +1472,6 @@ function returnedSection(data) {
           onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
           str += "</td>";
         }
-
         // Tab example button
         if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
@@ -1366,24 +1480,24 @@ function returnedSection(data) {
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
-        // <input id='tabElement'  type='button' value='&#8633' style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
-
-
-        if (itemKind != 4){ // dont create buttons for moments only for specific assignments
+        if (itemKind != 4 && itemKind != 1 && itemKind != 0){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' 
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="newTabCanvasLink" tabIndex="0">`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+            str += `</div>`;
             str += "</td>";
 
           // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
             str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
             src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += `</div>`;
             str += "</td>";
           }
         }
@@ -1394,11 +1508,13 @@ function returnedSection(data) {
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
 
-          str += "<img alt='settings icon' id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+
           str += "</td>";
         }
         
@@ -1406,7 +1522,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img alt='trashcan icon' id='dorf' title='Delete item' class='' 
+          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
@@ -1415,7 +1531,7 @@ function returnedSection(data) {
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:25px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' onclick='markedItems(this)'>";
+            str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' class='checkboxIconTab' onclick='markedItems(this)'>";
             str += "</td>";      
         }
         
@@ -1753,7 +1869,6 @@ function drawSwimlanes() {
     }
   }
 
-  console.log(deadlineEntries,momentEntries);
   deadlineEntries.sort(function(a,b){
     return a.pos-b.pos;
   });
@@ -1983,7 +2098,8 @@ $(window).keyup(function (event) {
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
-      updateItem();
+      //I don't know who did this but this call is not necessory
+      // updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
@@ -2689,27 +2805,23 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
     return false;
   }
 }
+
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
-  var Name = /^[A-Za-z0-9_ \-.]+$/;
+  //var Name = /^[A-Za-z0-9_ \-.]+$/;
+  var Name = /^(HT|VT|ST){1}\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  
-  if (versionName === 'versname') {
-    var Name = /^[A-Z]{2}[0-9]{2}$/;
-    var val = document.getElementById("versname").value;
-  }
-  if (versionName === 'eversname') {
-    var Name = /^[A-Z]{2}[0-9]{2}$/;
-    var val = document.getElementById("eversname").value;
-  }
+  var val = document.getElementById(versionName).value;
 
   //if versionname is 2 capital letters, 2 numbers
   if (val.match(Name)) {
+    $(x).fadeOut();
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
-    x.style.display = "none";
+    name.style.backgroundColor = "#fff";
+    //x.style.display = "none";
     if (versionName === 'versname') {
       window.bool3 = true;
     }
@@ -2719,9 +2831,10 @@ function validateVersionName(versionName, dialogid) {
 
     return true;
   } else {
-
+    $(x).fadeIn();
     name.style.borderColor = "#E54";
-    x.style.display = "block";
+    name.style.backgroundColor = "#f57";
+    //x.style.display = "block";
     name.style.borderWidth = "2px";
 
     if (versionName === 'versname') {
@@ -2738,32 +2851,37 @@ function validateVersionName(versionName, dialogid) {
 function validateCourseID(courseid, dialogid) {
 
   //regex numbers, letters and dashes, between 3 and 8 numbers
-  var Code = /^[A-Za-z0-9_.]{3,8}$/;
+  var Code = /^[0-9]{3,8}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
-  var val = document.getElementById("cversid").value;
+  var val = document.getElementById(courseid).value;
 
   if (val.match(Code)) {
+    $(x2).fadeOut();
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
-    x2.style.display = "none";
+    code.style.backgroundColor = "#fff";
+    //x2.style.display = "none";
     window.bool = true;
   } else {
-
+    $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    x2.innerHTML = "numbers, letters and dashes(between 3-8)";
-    x2.style.display = "block";
+    code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
+    //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
+    //x2.style.display = "block";
     window.bool = false;
     return false;
   }
 
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
   if(versionIsValid) {
+    $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    x2.innerHTML = "Version ID already exists, try another";
-    x2.style.display = "block";
+    code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
+    x2.innerHTML = "Version ID already exists, try another";
+    //x2.style.display = "block";
     window.bool = false;
   }else{
     return true;
@@ -2780,32 +2898,34 @@ function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
   var x4 = document.getElementById(syntaxdialogid);
 	var x8 = document.getElementById(rangedialogid);
 	if (emotd.value.match(Emotd) ) {
-    emotd.style.borderColor = "#383";
-    emotd.style.borderWidth = "2px";
-    x4.style.display = "none";
-    window.bool9 = true;
+    $(x4).fadeOut()
+		//x4.style.display = "none";
+		window.bool9 = true;
   } else {
-    emotd.style.borderColor = "#E54";
-    x4.style.display = "block";
-    emotd.style.borderWidth = "2px";
-    window.bool9 = false;
+    $(x4).fadeIn()
+		//x4.style.display = "block";
+		window.bool9 = false;
   }
 
 	if (emotd.value.match(EmotdRange)){
-		emotd.style.borderColor = "#383";
-		emotd.style.borderWidth = "2px";
-		x8.style.display = "none";
+		$(x8).fadeOut()
+		//x8.style.display = "none";
 		window.bool9 = true;
 	}else{
-		emotd.style.borderColor = "#E54";
-		x8.style.display = "block";
-		emotd.style.borderWidth = "2px";
+		$(x8).fadeIn()
+		//x8.style.display = "block";
 		window.bool9 = false;
 	}
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+    emotd.style.backgroundColor = "#ffff";
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
     return true;
 	}else{
+    emotd.style.backgroundColor = "#f57";
+		emotd.style.borderColor = "#E54";
+		emotd.style.borderWidth = "2px";
 		saveButton.disabled = true;
     return false;
 	}
@@ -2826,8 +2946,11 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#E54";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
+    sdate.style.backgroundColor = "#f57";
+    edate.style.backgroundColor = "#f57";
+    $(x3).fadeIn();
     x3.innerHTML = "Both start date and end date must be filled in";
-    x3.style.display = "block";
+    //x3.style.display = "block";
     return false;
   }
  // If start date is less than end date
@@ -2836,7 +2959,10 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#383";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
-    x3.style.display = "none";
+    sdate.style.backgroundColor = "#fff";
+    edate.style.backgroundColor = "#fff";
+    $(x3).fadeOut();
+    //x3.style.display = "none";
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
     }
@@ -2849,8 +2975,11 @@ function validateDate(startDate, endDate, dialogID) {
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
+    sdate.style.backgroundColor = "#f57";
+    edate.style.backgroundColor = "#f57";
+    $(x3).fadeIn();
     x3.innerHTML = "Start date has to be before end date";
-    x3.style.display = "block";
+    //x3.style.display = "block";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
     if (startDate === 'startdate' && endDate === 'enddate') {
@@ -2897,17 +3026,19 @@ function validateDate2(ddate, dialogid) {
   if (startdate <= deadline && enddate >= deadline) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
-    x.style.display = "none";
+    ddate.style.backgroundColor = "#fff";
+    $(x).fadeOut();
+    //x.style.display = "none";
     window.bool8 = true;
 
     return true;
   } else {
-
+    $(x).fadeIn();
     ddate.style.borderColor = "#E54";
-    x.style.display = "block";
+    ddate.style.backgroundColor = "#f57";
+    //x.style.display = "block";
     ddate.style.borderWidth = "2px";
     window.bool8 = false;
-
     }
   }
   else{
@@ -2925,11 +3056,15 @@ function validateSectName(name){
   // Valid string
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    emotd.style.backgroundColor = "#fff";
     $('#dialog10').fadeOut();
     window.bool10 = true;
     return true;
   } else { // Invalid string
     emotd.style.borderColor = "#E54";
+    emotd.style.backgroundColor = "#f57";
+    emotd.style.borderWidth = "2px";
     window.bool10 = false;
     $('#dialog10').fadeIn();
     return false;
@@ -3005,13 +3140,16 @@ function quickValidateForm(formid, submitButton){
     valid = valid && validateSectName('sectionname');
 
     // Validates Deadline
-    showCourseDate('setDeadlineValue','dialog8');
+    if (deadlinedisplayattribute != 'none'){
+      valid = valid && showCourseDate('setDeadlineValue','dialog8');
+    }
+   
 
     //If fields empty
     if (sName == null || sName == "") {
       //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
-      valid = valid && false;
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
     }
 
     //Name is a duplicate
@@ -3020,16 +3158,6 @@ function quickValidateForm(formid, submitButton){
 
     }
 
-    // if all information is correct
-    if (window.bool10 == true && window.bool11 == true) {
-      
-      //updateItem();
-      //updateDeadline();
-
-    } else {
-      //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
-    }
     if (valid){
       saveButton.disabled = false;
     }else{
@@ -3043,23 +3171,30 @@ function quickValidateForm(formid, submitButton){
     var endialog = document.getElementById("EndDialog2");
     endialog.innerHTML = "";
     valid = true;
+    //Compilator is stupid. Cannot use one bool. Does not execute other methods if bool is already false.
+    valid2 = true;
+    valid3 = true;
+    valid4 = true;
 
-    valid = valid && validateCourseID('cversid', 'dialog2');
-    valid = valid && validateVersionName('versname', 'dialog');
-    valid = valid && validateDate('startdate','enddate','dialog3');
-    valid = valid && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd');
 
-    //If fields empty
-    if (versName == null || versName == "", versId == null || versId == "") {
+    valid = (valid && validateCourseID('cversid', 'dialog2'));
+
+    //valid = (valid && validateVersionName('versname', 'dialog')); >:|
+    valid2 = (valid2 && validateVersionName('versname', 'dialog'));
+
+    valid3 = (valid3 && validateDate('startdate','enddate','dialog3'));
+
+    valid4 = (valid4 && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd'));
+
+    valid = valid && valid2 && valid3 && valid4
+
+     //If fields empty
+     if (versName == null || versName == "", versId == null || versId == "") {
       //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
     }
-    // if all information is correct
-    if (window.bool5 === true && window.bool3 === true && window.bool === true) {
-    } else {
-      //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
-    }
+
     if (valid){
       saveButton.disabled = false;
     }else{
@@ -3078,19 +3213,14 @@ function quickValidateForm(formid, submitButton){
     valid = valid && validateDate('estartdate','eenddate','dialog6')
     valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
 
-
     //If fields empty
     if (eversName == null || eversName == "") {
       //alert("Fill in all fields");
-      endialog.innerHTML += "Fill in all fields </br>";
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
     }
 
-    // if all information is correct
-    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
-    } else {
-      //alert("You have entered incorrect information");
-      endialog.innerHTML += "Entered information is incorrect </br>";
-    }
+
     if (valid){
       saveButton.disabled = false;
     }else{
@@ -3130,21 +3260,33 @@ function validateForm(formid) {
 
     // if all information is correct
     if (window.bool10 == true && window.bool11 == true) {
-      
+      //delay added so that the loading process works correctly.
+      setTimeout(function(){
+      updateItem();
+      updateDeadline();
+      },10);
       //Toggle for alert when update a item
       var element = document.getElementById("updateAlert");
       element.classList.toggle("createAlertToggle");
       //Set text for the alert when update a item
       document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+      //Add class to element so it will be highlighted.
+      setTimeout(function(){
+        var element = document.getElementById('I'+updatedLidsection).firstChild;
+        if(element.tagName == 'DIV') {
+        element = element.firstChild;
+        element.classList.add("highlightChange");
+        }else if (element.tagName == 'A'){
+          document.getElementById('I'+updatedLidsection).classList.add("highlightChange");
+        }else if (element.tagName == 'SPAN'){
+          document.getElementById('I'+updatedLidsection).firstChild.classList.add("highlightChange");
+        }
+      },200);
       //Duration time for the alert before remove
       setTimeout(function(){
         $("#updateAlert").removeClass("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       },3000);
-
-      updateItem();
-      updateDeadline();
-
     } else {
       alert("You have entered incorrect information");
     }

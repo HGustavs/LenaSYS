@@ -212,7 +212,7 @@ function SortableTable(param)
 {
 		//------------==========########### Fenced paramters ###########==========------------    
 		
-    var tbl = getparam(param.data,{tblhead:{},tblbody:[],tblfoot:{}});
+    var tbl = getparam(param.data,{tblhead:{},tblbody:[],tblfoot:{}}); 
     this.tableid = getparam(param.tableElementId,"UNK");
     var filterid = getparam(param.filterElementId,"UNK");	
     var caption = getparam(param.tableCaption,"UNK");
@@ -466,7 +466,7 @@ function SortableTable(param)
       mhvstr += "<tfoot class='bottomBorderColor'>";
       mhvstr += "<tr style='font-style:italic;'>";
       str += "<tfoot class='bottomBorderColor'>";
-      str += "<tr style='font-style:italic;'>";
+      str += "<tr class='changeColorInDarkModeTable' style='font-style:italic;'>";
 
       if(this.hasCounter) {
           str += "<td>&nbsp;</td>";

@@ -24,6 +24,10 @@ function setup()
     AJAXService("GETPARAM", { }, "PDUGGA");
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
+    // checking if user has an stored active diagram and loading it if they have
+    if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != ""){
+        document.getElementById("diagram-iframe").contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
+    }
 }
 
 /**
@@ -90,8 +94,14 @@ function returnedDugga(data)
             // getting the error checker allowed or not
             document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
-            window.parent.getInstructions(param.filelink);
-            window.parent.getInstructions(param.gFilelink);
+            if(param.filelink != undefined)
+            {
+                window.parent.getInstructions(param.filelink);
+            }
+            if(param.gFilelink != undefined)
+            {
+                window.parent.getInstructions(param.gFilelink);
+            }
         }
         else{
             var diagramType={ER:true,UML:true};
