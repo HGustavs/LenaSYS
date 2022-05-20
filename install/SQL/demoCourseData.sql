@@ -57,30 +57,31 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3026,1894,'XMLAPI Report','37',3,25,1,1,'52432',3001,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3027,1894,'Seminar Dugga','38',3,25,1,1,'52432',3001,2,1,0);
 
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,13,'{\"variant\":\"3D\"}','{Variant}',NOW(),2);
+/*Params can be found in duggas javascript file in templates*/
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,13,'{"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (25,14,'{\"tal\":\"129\"}','{"danswer":\"10000001 8 1\"}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (26,15,'{\"variant\":\"Boxmodell\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (26,15,'{"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding"}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (27,16,'{\"target\":\"test.png\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (28,17,'{\"color\":\"green\",\"colorname\":\"Grön\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (29,18,'{\"variant\":\"Contribution\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (30,19,'{\"linje\":\"10,30,19 20 40 20 50 30 50,81 65 50\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (31,20,'{\"variant\":\"Daily Minutes\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (31,20,'{"type":"html","filelink":"daily-minutes-instructions.html","submissions":[{"type":"timesheet","fieldname":"timesheet","instruction":"Fyll i din aktivitet i projektet"}]}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (32,21,'{\”type\”:\”md\”,\”filelink\”:\”HTML_Ex1.txt\”,\”gType\”:\”md\”,\”gFilelink\”:\”HTML_Ex1.txt\”,\”diagram_File\”:\”diagram.json\”,\”diagram_type\”:{\”ER\”:true,\”UML\”:true},\”extraparam\”:\”\”,\”submissions\”:[{\”type\”:\”pdf\”,\”fieldname\”:\”\”,\”instruction\”:\”\”}],\”errorActive\”:true}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (33,22,'{\"tal\":\"127\"}','{"danswer":\"01111111 7 F\"}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (34,23,'{\"color\":\"yellow\",\"colorname\":\"Gul\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (35,24,'{\"linje\":\"10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (36,25,'{\"target\":\"test.png\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (37,26,'{\"variant\":\"Dugga 5\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (36,25,'{"variant":"40 13 7 20 0"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (37,26,'{"vertice":[{"x":"400","y":"0","z":"0"},{"x":"-400","y":"0","z":"0"},{"x":"400","y":"0","z":"0"},{"x":"400","y":"0","z":"-800"}],"triangles":["0,1,2","1,2,3"]}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (38,27,'{\"variant\":\"Dugga 6\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (39,28,'{\"variant\":\"Feedback\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (39,28,'{"type":"pdf","filelink":"instructions.pdf","submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip","instruction":"Zip your project folder and submit the file here."},{"fieldname":"Inl3Document","type":"multi","instruction":"Upload all of your graphics, i.e., all the generated png and svg files."}]}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (40,29,'{"type":"md","filelink":"duggainstruction.md", "submissions":[{"fieldname":"SubmissionText","type":"text", "instruction":"Type in your submission. Only text is allowed."}]}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (41,30,'{\"variant\":\"Group assignment\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (42,31,'{\"instructions\" : \"Målet med denna duggan är att du skall skapa den html- och css-kod som krävs för att återskapa det du ser i target-fönstret.\", \"target\" : \"cssdugga-site-1.png\", \"target-text\" : \"1) Skall tåla att storleken på skärmen påverkas. 2) Sidan får inte bli mindre i x-led än att alla knappar,Sture 1-5, i #eilert syns. 3) Endast span-element i body skall användas, Inga andra placeholder-element ellerövriga container-element är tillåtna 4) Float får ej användas 5) html och css skall klara validering 6) Internal css style skall användas\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (43,32,'{\"variant\":\"HTML CSS Dugga Light\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (41,30,'{"type":"pdf","filelink":"instructions.pdf", "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip", "instruction":"Zip your project folder and submit the file here."},{"fieldname":"Inl3Document","type":"multi", "instruction":"Upload all of your graphics, i.e., all the generated png and svg files."}]}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (42,31,'{"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding"}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (43,32,'{"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding"}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (44,33,'{\"variant\":\"Kryss\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (45,34,'{\"variant\":\"Placeholder\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (46,35,'{\"variant\":\"Shapes\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (47,36,'{\"variant\":\"Transforms\"}','{Variant}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (45,34,'{"tal":"2","text":"Placeholder"}','{"danswer":"00000010 0 2"}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (46,35,'{"tal":"2","text":"Shapes dugga #helptxt."}','{"danswer":"00000010 0 2"}',NOW(),2);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (47,36,'{"variant":"26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (48,37,'{\"variant\":\"XMLAPI Report\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (49,38,'{\"variant\":\"Seminar\"}','{Variant}',NOW(),2);
 

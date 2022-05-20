@@ -106,7 +106,7 @@ function returnedDugga(data)
 	// }
 	// $("#submitButtonTable").appendTo("#content");
 	// $("#lockedDuggaInfo").prependTo("#content");
-	// displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 
 	if(response.danswer!="UNK"){
 		showFacit(response.param, response.answer, response.danswer, null, null, null, null)

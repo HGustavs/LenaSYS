@@ -35,6 +35,7 @@ function setup()
 
 function returnedDugga(data)
 {
+	dataV = data;
 	Timer.startTimer();
 	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
@@ -66,7 +67,7 @@ function returnedDugga(data)
 				document.getElementById('instructions').innerHTML = msg;
 			});
 		}		
-		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
+		displayDuggaStatus(dataV["answer"],dataV["grade"],dataV["submitted"],dataV["marked"],dataV["duggaTitle"]);
 }
 
 //--------------------================############================--------------------
