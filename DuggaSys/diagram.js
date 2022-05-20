@@ -2908,7 +2908,6 @@ function pasteClipboard(elements, elementsLines)
             id: idMap[element.id],
             state: element.state,
             fill: element.fill,
-            stroke: element.stroke,
             type: element.type,
             attributes: element.attributes,
             functions: element.functions
@@ -5609,7 +5608,7 @@ function propFieldSelected(isSelected)
     propFieldState = isSelected;
 }
 /**
- * @description Function used to format the attribute and function textareas in UML-entities. Every entry is written on new row.
+ * @description Function used to format the attribute and function textareas in UML- and IE-entities. Every entry is written on new row.
  * @param {*} arr Input array with all elements that should be seperated by newlines
  * @returns Formated string containing all the elements in arr
  */
@@ -5617,10 +5616,19 @@ function umlFormatString(arr)
 {
     var content = '';
     for (var i = 0; i < arr.length; i++) {
-            content += arr[i] + '\n';   
+        content += arr[i] + '\n';   
     }
     return content;
 }
+function ieFormatString(arr)
+{
+    var content = '';
+    for (var i = 0; i < arr.length; i++) {
+        content += arr[i] + '\n';   
+    }
+    return content;
+}
+
 
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context. These fields can be used to modify the selected element/line.
@@ -5733,6 +5741,27 @@ function generateContextProperties()
               }
               str += '</select>'; 
           }
+          
+            /*//Selected IE type
+            else if (element.type == 'IE') {
+            //If IE entity
+            if (element.kind == 'IEEntity') {
+                //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'attributes':
+                            str += `<div style='color:white'>Attributes</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${ieFormatString(element[property])}</textarea>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }*/
 
           //Selected UML type
           else if (element.type == 'UML') {

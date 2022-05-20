@@ -106,7 +106,7 @@
                 </div><!--<-- UML functionality end -->
 
                 <!--<-- Temporary icon for IE entity -->
-                <div id="elementPlacement6" class="diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement6" class="diagramIcons toolbarMode" onclick='setElementPlacementType(6); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_IE_entity.svg"/>
                     <span class="toolTipText"><b>IE entity</b><br>
                         <p>Add an IE entity to the diagram</p><br>
