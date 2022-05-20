@@ -107,7 +107,7 @@
 
     #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
 	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
-	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
+	if(isset($_SESSION['tempHash']) && $_SESSION['tempHash'] != "UNK")
 	{
 		$tempDir = "";
 		$latest = time() - (365 * 24 * 60 * 60);
@@ -138,8 +138,6 @@
 				echo 'Message: ' .$e->getMessage();
 			}
 		}
-        print_r($fileContent);
-        exit();
 	}
 
 	if($fileContent === "UNK" || $fileContent === "")

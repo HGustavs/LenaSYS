@@ -58,6 +58,14 @@
 	$duggaid=getOPG('did');
 	$moment=getOPG('moment');
 	$courseid=getOPG('courseid');
+
+	
+    if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
+	{
+		$_SESSION['tempHash'] = $hash;
+	}
+	
+
   
 // can see all duggas and deleted ones
   if(isSuperUser($userid)){
