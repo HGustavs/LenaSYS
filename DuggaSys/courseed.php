@@ -109,7 +109,7 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
+					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
 				<div class="formDialog" style="display: block; left:50px; top:-10px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
