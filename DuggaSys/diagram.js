@@ -5840,7 +5840,7 @@ function generateContextProperties()
         // Creates button for selecting element background color if not a IE- or UML relation since they should not be able change color
         if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
             //If IE entity
-            else if (element.type == 'IE') {
+            if (element.type == 'IE') {
                 if (element.kind == 'IEEntity') {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
                     for (const property in element) {
@@ -5875,7 +5875,7 @@ function generateContextProperties()
             }
 
           // Creates button for selecting element background color if not a UML relation since they should not be able change color
-          if (element.kind != 'UMLRelation') {
+          if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
               // Creates button for selecting element background color
             str += `<div style="white">Color</div>`;
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +

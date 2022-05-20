@@ -347,7 +347,7 @@
                     </span>
                 </div>
 
-                <div id="elementPlacement6" class="diagramIcons" onclick='setElementPlacementType(6); setMouseMode(2);'>
+                <div id="elementPlacement7" class="diagramIcons" onclick='setElementPlacementType(7); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
                     <span class="toolTipText"><b>IE Inheritence</b><br>
                         <p>Add IE-inheritence to the diagram</p><br>
