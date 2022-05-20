@@ -3806,39 +3806,6 @@ function toggleErTable()
 }
 
 /**
- * @description Fetches the parent element of the current element ID
- * @returns The parent element object
- */
- function getParentElementOfID(ID){
-    for (var i = 0; i < lines.length; i++){
-        if(lines[i].toID == ID){
-            for (var j = 0; j < data.length; j++){
-                if(lines[i].fromID == data[j].id){
-                    return data[j];
-                }
-            }
-        }
-    }
-}
-
-/**
- * @description checks the element ID and determines if it has child elements
- * @returns true or false
- */
-function hasChildElement(ID){
-    for (var i = 0; i < lines.length; i++){
-        if(lines[i].fromID == ID){
-            for (var j = 0; j < data.length; j++){
-                if(lines[i].toID == data[j].id){
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-/**
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
  */
@@ -3990,11 +3957,6 @@ function generateErTableString()
                 }
             }
         }
-
-        //removes all attributes in parent attribute list from current entity attribute list
-        //for (let index = 0; index < parentAttribeList.length; index++) {
-        //    currentRow.splice(findIndex(currentRow,parentAttribeList[index].id),1);
-        //}
         //Push list with entity at index 0 followed by its attributes
         ERAttributeData.push(currentRow);
     }
