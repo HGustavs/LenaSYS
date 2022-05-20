@@ -9016,13 +9016,15 @@ select{
 }
 
 #svg-editor{
-height:55%;
-width:95%;
+  height:200px;
+  width:95%;
+max-width:95%;
 }
 
 #svg-styleed{
-height:35%;
+  height:200px;
 width:95%;
+max-width:95%;
 }      
 
 #svg-content{
