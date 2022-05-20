@@ -26,6 +26,7 @@
         --color-background: #121212; 
         --color-background-codeviewer: #272822;
         --color-background-codeviewer-nav: #464646;
+        --color-background-buttomenu: #5C5A5A;
         --color-background-normtext: #5d5d5d;
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
@@ -411,7 +412,7 @@
 .buttomenu2Style .wordlistselect{
 	color: var(--color-text-light);
 
-   background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
+   background: url("../new icons/expand_button.svg") no-repeat 50px var(--color-background-buttomenu);
    background-size:15px 15px;
    border: 1px solid var(--color-border-2);
 }
@@ -419,13 +420,13 @@
 .buttomenu2Style .boxcontentselect{
    color: var(--color-text-light);
 
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background: url("../new icons/expand_button.svg") no-repeat 120px var(--color-background-buttomenu);
    background-size:15px 15px;
    border: 1px solid var(--color-border-2);
 }
 .buttomenu2Style .chooseContentSelect{
    color: var(--color-text-light);
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background: url("../new icons/expand_button.svg") no-repeat 120px var(--color-background-buttomenu);
    background-size:15px 15px;
    border: 1px solid var(--color-border-2);
 }
