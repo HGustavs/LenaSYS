@@ -28,6 +28,7 @@
   --color-background-2: #ccc;
   --color-background-3: #f0f0f0;
   --color-background-4: #c8c8c8;
+  --color-background-5: #f2f2f2;
   --color-sectioned-table-hi: #dad8db;
   --color-sectioned-table-lo: #eae8eb;
   --color-statistics: #d8d7da;
@@ -8681,7 +8682,7 @@ span[id$="examples"]:hover{
   color: var(--color-text-header);
   background-color: #9971AF;
   */
-  background-color: #F2F2F2;
+  background-color: var(--color-background-5);
   color: #000;
   border-bottom: 2px solid #9971AF; 
 }
@@ -8690,7 +8691,7 @@ span[id$="examples"]:hover{
   color: var(--color-text-header);
   background-color: #9971AF;
   */
-  background-color: #F2F2F2;
+  background-color: var(--color-background-5);
   color: #000;
   border-bottom: 2px solid #9971AF; 
 }
@@ -8699,7 +8700,7 @@ span[id$="examples"]:hover{
   color: var(--color-text-header);
   background-color: #614875;
   */
-  background-color: #F2F2F2;
+  background-color: var(--color-background-5);
   color: #000;
   border-bottom: 2px solid #9971AF; 
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
@@ -8710,7 +8711,7 @@ span[id$="examples"]:hover{
   color: var(--color-text-header);
   background-color: #9971AF;
   */
-  background-color: #F2F2F2;
+  background-color: var(--color-background-5);
   color: #000;
   border-bottom: 2px solid #9971AF; 
 }
@@ -8806,7 +8807,7 @@ border: none !important;
   /* font-family: Arial,Sans-Serif;*/
   font-size: 14px;
   outline: 0 none;
-  background-color: #F2F2F2; 
+  background-color: var(--color-background-5); 
   height: auto;
 }
 
