@@ -2572,33 +2572,10 @@ function changeState()
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-
-    else if (element.type=='IE') {
-        //Save the current property if not an IE entity since IE entities does not have variants.
-        if (element.kind != 'IEEntity') {
-            var property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-
-        var oldType = element.type;
-        var newType = document.getElementById("typeSelect").value;
-        //Check if type has been changed
-        if (oldType != newType) {
-            var newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            //Update element kind
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        //Update element type
-        element.type = newType;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    }
-    
-    else {
-        //Save the current property if not an UML entity since UML entities does not have variants.
-        if (element.kind != 'UMLEntity') {
+    // 
+    else if(element.type=='UML' || element.type=='IE') {
+        //Save the current property if not an UML or IE entity since niether entities does have variants.
+        if (element.kind != 'UMLEntity' && element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -7248,16 +7225,16 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
 
-        //div to encapuslate UML header
+        //div to encapuslate IE header
         str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
-        //svg for UML header, background and text
+        //svg for IE header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for UML header
+        //end of svg for IE header
         str += `</svg>`;
-        //end of div for UML header
+        //end of div for IE header
         str += `</div>`;
         
         //div to encapuslate UML content
@@ -9740,7 +9717,7 @@ function updateCSSForAllElements()
             updateElementDivCSS(element, elementDiv, useDelta);
             // Edge creation does not highlight selected elements
             if(mouseMode != mouseModes.EDGE_CREATION){
-                // Update UMLEntity or IEEntity
+                // Update UMLEntity
                 if(element.kind == "UMLEntity"){
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
@@ -9757,8 +9734,8 @@ function updateCSSForAllElements()
                 // Update Elements with double borders.
                 }
                 if(element.kind == "IEEntity"){
-                    for (let index = 0; index < 3; index++) {
-                        fillColor = elementDiv.children[index].children[0];
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         // If more than one element is marked.
                         if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
