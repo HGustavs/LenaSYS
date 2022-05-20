@@ -274,8 +274,7 @@
     border-right: solid black 1px;
     background-color: var(--color-primary);
     z-index: 1000;
-    overflow-y: auto;
-    
+    overflow-y: scroll;
 }
 /* Hides the  scrollbar for Chrome, Safari and Opera */
 #diagram-toolbar::-webkit-scrollbar {
