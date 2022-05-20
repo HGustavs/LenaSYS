@@ -841,19 +841,12 @@ p {
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
-#Sectionlist .section #NewTabLink {
-  filter: invert(100%);
-  -webkit-filter: invert(100%);  
-} 
-
+/* Turn the icons white */
 #Sectionlist .section #dorf {
+  cursor: pointer;
    filter: invert(100%);
   -webkit-filter: invert(100%);
 }
-.code #NewTabLink{
-  filter: invert(100%);
-  -webkit-filter: invert(100%);
-} 
 
 #Sectionlist .header {
   color: var(--color-text-header);
@@ -926,10 +919,6 @@ p {
 }
 
 /*Swimlane styling Ends*/
-
-#dorf {
-  cursor: pointer;
-}
 
 /*Styling for indented tabs*/
 .tabs0, .tabsnull{
@@ -3231,9 +3220,10 @@ div.submit-button:disabled {
 }
 
 #plorf,
-#dorf {
+#dorf, #NewTabLink {
   display: block;
   margin: auto;
+  /* Makes the icons purple */
   filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
 }
 
@@ -8885,13 +8875,6 @@ border: none !important;
   height: 32px;
   vertical-align: middle;
   padding: 0px 5px;
-}
-
-#NewTabLink{
-  cursor: pointer;
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
-  display: block;
-  margin: auto; 
 }
 
 .iconColorInDarkMode{
