@@ -7,6 +7,7 @@
         --color-text-list: #000;
         --color-text-logo: #fff;
         --color-text-label: #000;
+        --color-text-dark: #000;
       
         --color-logo1: #775886;
         --color-logo2: #573866;
@@ -83,11 +84,11 @@
 #picktemplate h1{
 	text-align: center;
   font-family: Arial, Sans-Serif;
-	color: #000;
+	color: var(--color-text-dark);
 }
 
 #docucontent h1 {
-	color:#000;
+	color: var(--color-text-dark);
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -332,13 +333,13 @@
 }
 
 .impo .impword {
-    color: #000000;
+    color: var(--color-text-dark);
     background-color: #fff;
     border: 1px solid #f44;
 }
 
 .descbox .impword {
-    color: #000000;
+    color: var(--color-text-dark);
     background-color: #fff;
     border: 1px solid #f44;
 }
