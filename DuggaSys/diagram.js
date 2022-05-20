@@ -838,6 +838,7 @@ const attrState = {
 const entityType = {
     UML: "UML",
     ER: "ER",
+    IE: "IE",
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -994,7 +995,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false};
+var diagramType = {ER:false,UML:false,IE:false};
 
 //Grid Settings
 var settings = {
@@ -1052,7 +1053,7 @@ var defaults = {
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", width: 5, height: 5, type: "ER" },
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", width: 50, height: 50, type: "UML" }, //<-- UML functionality
-    IEEntity: {name: "Entity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
+    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -5741,27 +5742,6 @@ function generateContextProperties()
               }
               str += '</select>'; 
           }
-          
-            /*//Selected IE type
-            else if (element.type == 'IE') {
-            //If IE entity
-            if (element.kind == 'IEEntity') {
-                //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-                for (const property in element) {
-                    switch (property.toLowerCase()) {
-                        case 'name':
-                            str += `<div style='color:white'>Name</div>`;
-                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                            break;
-                        case 'attributes':
-                            str += `<div style='color:white'>Attributes</div>`;
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${ieFormatString(element[property])}</textarea>`;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }*/
 
           //Selected UML type
           else if (element.type == 'UML') {
@@ -5824,6 +5804,28 @@ function generateContextProperties()
                   str += '</select>'; 
               }            
           }
+
+            //If IE entity
+            else if (element.type == 'IE') {
+                if (element.kind == 'IEEntity') {
+                    //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+                    for (const property in element) {
+                        switch (property.toLowerCase()) {
+                            case 'name':
+                                str += `<div style='color:white'>Name</div>`;
+                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                break;
+                            case 'attributes':
+                                str += `<div style='color:white'>Attributes</div>`;
+                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
 
         // Creates button for selecting element background color if not a UML relation since they should not be able change color
         if (element.kind != 'UMLRelation') {
@@ -7355,8 +7357,8 @@ function drawElement(element, ghosted = false)
     else if (element.kind == "IEEntity") { 
         elemAttri = element.attributes.length;
         elemFunc = element.functions.length;
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        //div to encapuslate IE element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
@@ -7368,7 +7370,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //div to encapuslate IE header
-        str += `<div class='ie-header' style='width: ${boxw}; height: ${boxh};'>`; 
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
         //svg for IE header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
@@ -7380,7 +7382,7 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
         
         //div to encapuslate IE content
-        str += `<div class='ie-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw IE-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
@@ -7406,7 +7408,7 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
 
         //div for IE footer
-        str += `<div class='ie-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `<div class='uml-footer' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw IE-footer if there exist at least one function
         if (elemFunc != 0) {
             //svg for background
@@ -9747,7 +9749,7 @@ function updateCSSForAllElements()
             // Edge creation does not highlight selected elements
             if(mouseMode != mouseModes.EDGE_CREATION){
                 // Update UMLEntity
-                if(element.kind == "UMLEntity"){
+                if(element.kind == "UMLEntity" && element.kind == "IEEntity"){
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
