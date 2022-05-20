@@ -41,6 +41,7 @@
         --color-border-4: #c8c8c8;
         --color-border-5: #888;
       
+        --color-primary-hover: #7D5CA0;
         --color-green: #50a750;
         --color-red: #c75050;
         --color-red-hover: #ce3d3d;
@@ -168,7 +169,7 @@
 }
 
 .mbuttoStyle:hover{
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 
 .menutextStyle {
@@ -221,7 +222,7 @@
 }
 
 .dropdownitem:hover {
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 
 .codeborder{
@@ -370,7 +371,7 @@
 }
 
 .settingsTabMenuStyle li{
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 .settingsTabMenuStyle .activeSetMenuLink{
 	border-bottom-color: var(--color-primary);
@@ -379,11 +380,11 @@
 }
 
 .templatethumbicon:hover{
-    background-color: #7D5CA0;
+    background-color: var(--color-primary-hover);
 }
 
 .themeicon:hover {
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 
 .codebox{
