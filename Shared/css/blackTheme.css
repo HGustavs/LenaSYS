@@ -47,6 +47,7 @@
         --color-green: #50a750;
         --color-red: #c75050;
         --color-red-hover: #ce3d3d;
+        --color-fill: #fff;
     }
 
     #dorf {
@@ -715,10 +716,10 @@ body {
     background-color: var(--color-sectioned-table-lo);
 }
 .graphLabels{
-   fill:white;
+   fill: var(--color-fill);
 }
 .lineDiagramDark text{
-    fill:white;
+    fill: var(--color-fill);
 }
 .lineDiagramDark{
     border: 2px solid var(--color-primary);
@@ -784,7 +785,7 @@ option:checked{
 }
 
 .WeeklyBarChartText{
-    fill: white;
+    fill: var(--color-fill);
 }
 
 .WeeklyBarChartNumberText{
@@ -792,7 +793,7 @@ option:checked{
 }
 
 .chart, .fumho{
-    fill: white;
+    fill: var(--color-fill);
     background-color: var(--color-sectioned-table-hi);
 }
 /* END */
