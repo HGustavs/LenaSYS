@@ -24,7 +24,7 @@
 	<script src="accessed.js"></script>
 
 </head>
-<body onload="setup();">
+<body onload="setup(); displayNavIcons();">
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
