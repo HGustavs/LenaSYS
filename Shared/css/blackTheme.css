@@ -48,6 +48,7 @@
         --color-red: #c75050;
         --color-red-hover: #ce3d3d;
         --color-fill: #fff;
+        --color-stroke: #fff;
     }
 
     #dorf {
@@ -781,7 +782,7 @@ option:checked{
 }
 
 .WeeklyBarChartLine{
-    stroke:white;
+    stroke: var(--color-stroke);
 }
 
 .WeeklyBarChartText{
@@ -789,7 +790,7 @@ option:checked{
 }
 
 .WeeklyBarChartNumberText{
-    stroke: white;
+    stroke: var(--color-stroke);
 }
 
 .chart, .fumho{
