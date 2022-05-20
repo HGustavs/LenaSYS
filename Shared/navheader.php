@@ -35,7 +35,7 @@
 				$_SESSION['coursevers'] = "UNK";
 
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
-				if(checklogin() == false|| $_SESSION['uid'] == 0){
+				if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid']))){
 					
 					echo "<td class='navBurger fa fa-bars' id='navBurgerIcon' style='font-size:24px; width: 29px; vertical-align: middle; margin-top: 15px; margin-left: 15px' onclick='navBurgerChange()'</td>";
 					echo "<td id='navBurgerIcon' style='display: none;'> </td>";
