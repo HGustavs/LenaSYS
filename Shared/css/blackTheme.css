@@ -507,7 +507,7 @@ body {
 .logoutBox{
   background-color: var(--color-background);
   color:white;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-sectioned-table-lo);
 }
 
 #statisticsSwimlanes{
@@ -600,8 +600,8 @@ body {
 }
 
 #opTableContainer{
-	height:355px;
-	background-color: #212121; 
+	background-color: #121212; 
+    margin: 7px;
 	overflow-y:scroll;
 }
 
@@ -797,6 +797,7 @@ input{
     background-color: #464646;
     color:white;
     color-scheme: dark; /*For date picker */
+    border: 2px solid #212121;
 }
 
 /* Style for "Date Picker" START:    */
