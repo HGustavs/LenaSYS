@@ -109,6 +109,8 @@
 	if(isset($_GET['hash']) && $_GET['hash'] != "UNK")
 	{
 		$tempDir = strval(dirname(__DIR__, 2))."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/";
+        print_r($tempDir);
+        exit();
 		$latest = time() - (365 * 24 * 60 * 60);
 		$current = "diagramSave1.json";	 
 
