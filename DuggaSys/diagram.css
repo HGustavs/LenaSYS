@@ -274,7 +274,20 @@
     border-right: solid black 1px;
     background-color: var(--color-primary);
     z-index: 1000;
+    overflow-y: auto;
+    
 }
+/* Hides the  scrollbar for Chrome, Safari and Opera */
+#diagram-toolbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hides the  scrollbar for IE, Edge and Firefox */
+#diagram-toolbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 #diagram-toolbar>fieldset {
     padding: 2px;
     border-color: var(--color-primary-hover);
