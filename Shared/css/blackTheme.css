@@ -50,6 +50,7 @@
         --color-red-hover: #ce3d3d;
         --color-fill: #fff;
         --color-stroke: #fff;
+        --color-table: #212121;
     }
 
     #dorf {
@@ -620,7 +621,7 @@ body {
 
 #opTableContainer{
 	height:355px;
-	background-color: #212121; 
+	background-color: var(--color-table); 
 	overflow-y:scroll;
 }
 
@@ -635,7 +636,7 @@ body {
 
 /* Style for "Info Box" in Curve Dugga START  */
 #infobox{
-    background-color: #212121;
+    background-color: var(--color-table);
     border: 2px solid var(--color-sectioned-table-lo);
 }
 
@@ -669,21 +670,21 @@ body {
 
 .tsSmallInput{
     color: var(--color-text-light);
-    background-color: #212121;
-    border: 2px solid #212121;
+    background-color: var(--color-table);
+    border: 2px solid var(--color-table);
     color-scheme: dark; 
 }
 /* In "createFileUploadArea" (Big screen) */
 .tsTable input{
     padding: 5px;
     color: var(--color-text-light);
-    background-color: #212121;
-    border: 2px solid #212121;
+    background-color: var(--color-table);
+    border: 2px solid var(--color-table);
     color-scheme: dark; 
 }
 
 .tsTable select{
-    background-color: #212121;
+    background-color: var(--color-table);
     color: var(--color-text-light);
 }
 
