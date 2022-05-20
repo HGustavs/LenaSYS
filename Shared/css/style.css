@@ -841,19 +841,12 @@ p {
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
 
-#Sectionlist .section #NewTabLink {
-  filter: invert(100%);
-  -webkit-filter: invert(100%);  
-} 
-
+/* Turn the icons white */
 #Sectionlist .section #dorf {
+  cursor: pointer;
    filter: invert(100%);
   -webkit-filter: invert(100%);
 }
-.code #NewTabLink{
-  filter: invert(100%);
-  -webkit-filter: invert(100%);
-} 
 
 #Sectionlist .header {
   color: var(--color-text-header);
@@ -892,7 +885,7 @@ p {
   font-size: 10px;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
   #swimlaneSVG text {
       font-size: 14px;
   }
@@ -926,10 +919,6 @@ p {
 }
 
 /*Swimlane styling Ends*/
-
-#dorf {
-  cursor: pointer;
-}
 
 /*Styling for indented tabs*/
 .tabs0, .tabsnull{
@@ -1549,7 +1538,7 @@ div .navButt:hover {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
         #div2 {
         top: 80px;
         }
@@ -1591,7 +1580,7 @@ div .navButt:hover {
       vertical-align: middle;
     }
     .editbtn{
-      display: none;
+      display: block;
     }
     .buttomenu2{
         height: 35px;
@@ -2403,6 +2392,9 @@ label.login-label {
 
 .loginBox .hide {
   display: none;
+}
+#undoButton{
+  position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
 .loginBox td {
@@ -3228,9 +3220,10 @@ div.submit-button:disabled {
 }
 
 #plorf,
-#dorf {
+#dorf, #NewTabLink {
   display: block;
   margin: auto;
+  /* Makes the icons purple */
   filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
 }
 
@@ -5238,6 +5231,7 @@ only screen and (max-device-width: 568px) {
 
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 568px) {
+
   #addElement {
     display: none;
   }
@@ -6862,7 +6856,7 @@ only screen and (max-device-width: 568px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 85px;
+  bottom: 50px;
 }
 
 .fab-btn-list2 {
@@ -7253,9 +7247,12 @@ only screen and (max-device-width: 568px) {
   height: 100%;
     position: relative;
   */
-  height: 100%;
+  width: 100%;
+  overflow: auto;
+  height: 95%;
   box-sizing: border-box;
   display:flex;
+  flex-wrap: wrap;
   align-items:stretch;
 }
 
@@ -7578,14 +7575,14 @@ textarea#mrkdwntxt {
   
   .markdown {
     height: 38%;
-    width: 97%;
+    min-width: 97%;
     position: relative;
     float: left;
   }
 
   .markdownPrev {
     height: 38%;
-    width: 97%;
+    min-width: 97%;
     float: left;
   }
 
@@ -7599,13 +7596,29 @@ textarea#mrkdwntxt {
 
 
     .save-button-md{
+    margin-bottom: -24px;
     bottom: 25px;
     }
     .close-button-md {
+    margin-bottom: -24px;
     bottom: 25px;
     }
 }
 
+@media only screen and (max-width: 653px) { 
+  .markdown {
+    display: none !important;
+  }
+
+  .markdownPrev {
+    display: none !important;
+  }
+
+  .markdownPart::after {
+    font-weight: bold;
+    content: "GO INTO LANDSCAPE MODE";
+  }
+}
 
 /* Mode Switch */
 
@@ -7781,7 +7794,7 @@ div > div > .shortcut-keys:hover {
  * --------------================################================-------------- */
 .markdown-icons {
   cursor: pointer;
-  width: 24px;
+  width: 100%;
   height: 24px;
   text-align: center;
   line-height: 24px;
@@ -8334,6 +8347,9 @@ textarea#filecont {
   #hamburgerBox{
     display:none;
   }
+  #hamburgerIcon{
+    display:none;
+  }
 }
 
 #selectdir{
@@ -8552,7 +8568,7 @@ span[id$="examples"]:hover{
   left:0px;
   margin: 0px !important;
   padding: 5px 0px 0px 0px !important;
-  background-color: #614875;
+  background-color: var(--color-primary);
   text-align: right;
   /* Width of .no and .impo */
   width: 32px !important;
@@ -8563,8 +8579,7 @@ span[id$="examples"]:hover{
   color: #D8D8D8;
   padding-left: 4px;
   padding-right: 6px;
-  width: 22px;    
-  background-color: #614875;
+  width: 22px;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
   line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
   -moz-user-select: none;
@@ -8592,7 +8607,7 @@ span[id$="examples"]:hover{
 
 .normtext {
   color: #000;
-  background-color: #F2F2F2;
+  background-color: transparent;
   white-space:nowrap;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
@@ -8898,13 +8913,6 @@ border: none !important;
   padding: 0px 5px;
 }
 
-#NewTabLink{
-  cursor: pointer;
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
-  display: block;
-  margin: auto; 
-}
-
 .iconColorInDarkMode{
   cursor: pointer;
   filter: invert(80%);
@@ -9025,3 +9033,11 @@ select{
   border-radius: 5px;
 }
 /* END */
+
+.unselectable {
+  -moz-user-select: none;  
+  -webkit-user-select: none;  
+  -ms-user-select: none;  
+  -o-user-select: none;  
+  user-select: none;
+}

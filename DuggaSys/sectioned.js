@@ -24,6 +24,7 @@ var delTimer;
 var lid;
 var collectedLid = [];
 var updatedLidsection;
+var numberOfItems;
 
 var isLoggedIn = false;
 
@@ -82,6 +83,7 @@ function setup() {
   document.querySelector('#showElements').disabled = true;
   document.querySelector('#showElements').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
+  numberOfItems = 1;
 }
 
 // -------------==============######## Internal Help Functions ###########==============-------------
@@ -586,13 +588,20 @@ function showCreateVersion() {
     enableTab(document.getElementById("newCourseVersion"));
 }
 
+function incrementItemsToCreate() {
+  numberOfItems++;
+}
 
 // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
-function createFABItem(kind, itemtitle, comment) {
+async function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
-    clearHideItemList();
-    newItem(itemtitle);
+    for (var i = 0; i < numberOfItems; i++) {
+      selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", "undefined", 0, null);
+      clearHideItemList();
+      await newItem(itemtitle); // Wait until the current item is created before creating the next item
+    }
+    console.log(numberOfItems + " " + itemtitle + "(s) created");
+    numberOfItems = 1; // Reset number of items to create
   }
 }
 
@@ -699,7 +708,7 @@ function deleteAll()
 
 // Cancel deletion
 function cancelDelete() {
-  clearTimeout(time);
+  clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for(i = 0; i < deletedElements.length; i++) { 
     deletedElements[i].classList.remove("deleted");
@@ -818,9 +827,10 @@ function setActiveLid(lid){
 // newItem: New Item for Section List
 //----------------------------------------------------------------------------------
 
-function newItem(itemtitle) {
+async function newItem(itemtitle) {
 
-  AJAXService("NEW", prepareItem(), "SECTION");
+  // Continues when AJAX call is completed
+  await AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
   // Toggle for alert when create a New Item
@@ -1205,7 +1215,6 @@ function returnedSection(data) {
     }
 
       if (retdata['writeaccess']) {
-        console.log(itemKind);
         if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
           str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
           str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
@@ -1860,7 +1869,6 @@ function drawSwimlanes() {
     }
   }
 
-  console.log(deadlineEntries,momentEntries);
   deadlineEntries.sort(function(a,b){
     return a.pos-b.pos;
   });

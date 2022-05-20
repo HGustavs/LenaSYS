@@ -566,7 +566,7 @@
 					$content.="File: ".$filename." not found.";
 			}
 
-			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename'], $row['fontsize']));
+			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename'], $row['fontsize'], $file, $filekind));
 		}
 		$array = array(
 			'opt' => $opt,
