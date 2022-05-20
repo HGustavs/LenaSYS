@@ -967,7 +967,7 @@
     transform:scale(0.2);
 }
 
-@media only screen and (max-device-width : 725px) {
+@media only screen and (max-device-width : 480px) {
     .hidden{
         display:block;
     }
