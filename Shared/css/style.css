@@ -7537,6 +7537,16 @@ textarea#mrkdwntxt {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 
+#visib{
+  margin-right: 0px;
+  border-radius: 0px;
+}
+
+#saveCourse{
+  margin-left: 347px;
+  margin-top: 20px;
+}
+
 @media only screen and (max-width: 1350px) {
   .previewWindow {
     height: 89%;
