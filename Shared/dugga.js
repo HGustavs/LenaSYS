@@ -2592,6 +2592,14 @@ function addAlertOnUnload(){
 			}catch(e){}
 			return "Changes will be discarded by leaving page.";
 		}
+		// For the diagram dugga there is a diffrent condition
+		else if(document.getElementById("diagram-iframe")){			
+			document.getElementById("diagram-iframe").contentWindow.storeDiagramInLocalStorage();// storing the diagram in localstorage
+			if (document.getElementById("diagram-iframe").contentWindow.stateMachine.historyLog.length != 0) {
+				return "Are you sure you want to leave the diagram?";
+			}
+		}
+		
 	}
 }
 

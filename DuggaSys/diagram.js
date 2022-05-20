@@ -2328,7 +2328,6 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -10039,7 +10038,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
 function resetDiagramAlert(){
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if(refreshConfirm){
-        refreshDiagram();
+        resetDiagram();
     }
     
 }

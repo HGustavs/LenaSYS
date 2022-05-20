@@ -179,10 +179,11 @@
 
                 <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" title="Diagram"></iframe>
                 <script>
-
-                    if(cid && hash != "UNK"){
+                    // If there is a hash add it to the src for the iframe with the course id(cid) and version id(vers)
+                    if(cid && hash){
                         document.getElementById("diagram-iframe").src = "./diagram.php?courseid="+cid+"&coursevers="+vers+"&hash="+hash;
                     }
+                    // Else if there's no hash add only the course id(cid) and version id(vers) to the src for the iframe
                     else if(cid && !hash){
                         document.getElementById("diagram-iframe").src = "./diagram.php?courseid="+cid+"&coursevers="+vers;
                     }
