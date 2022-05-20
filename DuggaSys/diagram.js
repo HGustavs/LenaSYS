@@ -734,8 +734,7 @@ const keybinds = {
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
-        EDGE_CREATION: {key: "7", ctrl: false},
+        EDGE_CREATION: {key: "6", ctrl: false},
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -1488,12 +1487,20 @@ document.addEventListener('keyup', function (e)
         }
 
         if(isKeybindValid(e, keybinds.PLACE_ENTITY)){
-            setElementPlacementType(elementTypes.EREntity);
+            if(isHidden(elementTypes.EREntity)){
+                setElementPlacementType(elementTypes.UMLEntity);
+            } else {
+                setElementPlacementType(elementTypes.EREntity);
+            }
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if(isKeybindValid(e, keybinds.PLACE_RELATION)){
-            setElementPlacementType(elementTypes.ERRelation);
+            if(isHidden(elementTypes.ERRelation)){
+                setElementPlacementType(elementTypes.UMLRelation);
+            } else{
+                setElementPlacementType(elementTypes.ERRelation);
+            }
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
@@ -1501,14 +1508,6 @@ document.addEventListener('keyup', function (e)
             setElementPlacementType(elementTypes.ERAttr);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-
-        //=================================================== //<-- UML functionality
-        //Temp for UML functionality
-        if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
-            setElementPlacementType(elementTypes.UMLEntity)
-            setMouseMode(mouseMode.PLACING_ELEMENT);
-        }
-        //======================================================
 
         if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
@@ -1577,6 +1576,20 @@ document.addEventListener("mouseleave", function(event){
         pointerState = pointerStates.DEFAULT;
     }
 });
+
+/**
+ * Used to determine if a div is visible in the toolbar, e.g. UMLEntity or EREntity.
+ * @param num used to target the right div in the toolbar. I recommend to use elementTypes, e.g. elementTypes.EREntity.
+ * @returns true or false.
+ */
+function isHidden(num){
+    if(document.getElementById("elementPlacement" + num).classList.contains("hiddenPlacementType")){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 // --------------------------------------- Mouse Events    --------------------------------
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
