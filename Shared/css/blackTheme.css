@@ -817,3 +817,9 @@ input{
     filter: invert(1) ; 
 }
 /* END */
+
+/* Style for "Upload PDF of Presentation" */
+#Inl1DocumentPrev {
+    background-color:#242729;
+}
+/* END */
