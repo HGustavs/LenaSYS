@@ -7392,19 +7392,19 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);'>`;
+        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);  stroke-width:${linew};'>`;
 
         //Overlapping inheritance
         if (element.state == 'overlapping') {
-                str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew};'/> 
-                <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";>`
+                str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black"; stroke-width:${linew};'/> 
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; stroke-width:${linew}; />`
         }
         // Disjoint inheritance
         else {
-            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2)}" stroke="black"; stroke-width:${linew};'/>
-                <line x1="0" y1="0" x2="${boxw}" y2="0" stroke="black";/>
-                <line x1="${boxw/1.42}" y1="${boxw/2.6}" x2="${boxw/4}" y2="${boxw/12.5}" stroke="black" />
-                <line x1="${boxw/3.3}" y1="${boxw/2.5}" x2="${boxw/1.42}" y2="${boxw/12.5}" stroke="black" />`
+            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black"; stroke-width:${linew};'/>
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; stroke-width:${linew}; />
+                <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" stroke-width:${linew}; />
+                <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" stroke-width:${linew}; />`
         }
         //end of svg
         str += `</svg>`;
