@@ -2181,6 +2181,18 @@ input.inactive-button {
 #editContent input.submit-button {
   margin: 0;
 }
+.inputwrapper{
+  display: flex;
+  justify-content: space-between;
+  width: 445px;
+  border-radius: 0px;
+}
+.inputwrapper select{
+  border-radius: 0px;
+}
+#inputwrapper-name{
+  width: 440px;
+}
 
 #impwords,
 #impword {
