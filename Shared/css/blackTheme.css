@@ -839,3 +839,15 @@ input{
     background-color:#242729;
 }
 /* END */
+
+/* Style for submission-receipt in "Diagram_Dugga" START*/
+#submission-receipt{
+    background-color: var(--color-sectioned-table-hi);
+    border: 1px solid #464646;
+    padding-left: 3px;
+}
+
+#submission-receipt a:-webkit-any-link {
+    color: #3B3BCF;
+}
+/* END */
