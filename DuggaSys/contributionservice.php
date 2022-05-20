@@ -270,18 +270,18 @@ if(strcmp($opt,"get")==0) {
 		if($row['author']==$gituser){
 			$eventrank=$i;
 			$eventrankno=$row['rowk'];
-      if($groupMembers != "UNK"){
-        $eventgrouprank = $j;
-      }
+			if($groupMembers != "UNK"){
+				$eventgrouprank = $j;
+			}
 		}
 
 		if($draught) array_push($alleventranks, $row);
 
 		$i++;
-    // If the person is in your group, increment j.
-    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
-      $j++;
-    }
+		// If the person is in your group, increment j.
+		if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+			$j++;
+		}
 	}
 
 	$commentrankno="NOT FOUND";
@@ -301,25 +301,25 @@ if(strcmp($opt,"get")==0) {
 		if($row['author']==$gituser){
 			$commentrank=$i;
 			$commentrankno=$row['rowk'];
-      if($groupMembers != "UNK"){
-        $commentgrouprank = $j;
-      }
+    		if($groupMembers != "UNK"){
+        		$commentgrouprank = $j;
+	    	}
 		}
 
 		if($draught) array_push($allcommentranks, $row);
 
 		$i++;
     // If the person is in your group, increment j.
-    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
-      $j++;
-    }
+		if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+		$j++;
+		}
 	}
 
 	$issuerank="NOT FOUND";
 	$issuerankno="NOT FOUND";
-  $issuegrouprank="NOT FOUND";
+    $issuegrouprank="NOT FOUND";
 	$i=1;
-  $j=1;
+    $j=1;
 	$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>:startDate and issuetime<:endDate and issuetime!="undefined" group by author order by rowk desc;');
 	$query->bindParam(':startDate', $startdate);
 	$query->bindParam(':endDate', $enddate);
@@ -332,16 +332,16 @@ if(strcmp($opt,"get")==0) {
 		if($row['author']==$gituser){
 			$issuerank=$i;
 			$issuerankno=$row['rowk'];
-      if($groupMembers != "UNK"){
-        $issuegrouprank = $j;
-      }
+			if($groupMembers != "UNK"){
+				$issuegrouprank = $j;
+			}
 		}
 
 		$i++;
     // If the person is in your group, increment j.
-    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
-      $j++;
-    }
+		if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+		$j++;
+		}
 	}
 
 	do{
@@ -696,8 +696,26 @@ if(strcmp($opt,"get")==0) {
 		);			
 		array_push($commitchanges, $commitchange);
 	}
-
+	
+	//	-------------- Overview tag Cloud Start ------------- issue #12467
+	//import all files and send in ajax call.
+	$query = $log_db->prepare('SELECT filename,path FROM Bfile');
 	//Prepare encode
+	if(!$query->execute()){
+		showError();
+	}
+
+	$rows= $query->fetchAll();
+	$Bfiles = array();
+	foreach($rows as $row){
+		$temp = array(
+			$name = $row['filename'],
+			$filePath=$row['path']
+		);
+		array_push($Bfiles,$temp);
+	}
+
+	// ---------------- Overview Tag Cloud End ----------------
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
@@ -730,7 +748,8 @@ if(strcmp($opt,"get")==0) {
 		'hourlyevents' => $hourlyevents,
 		'timesheets' => $timesheets,
 		'commitchange' => $commitchanges,
-		'isSuperUser' => isSuperUser($_SESSION['uid'])
+		'isSuperUser' => isSuperUser($_SESSION['uid']),
+		'filename' => $Bfiles
 	);
 
 	echo json_encode($array);

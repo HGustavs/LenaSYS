@@ -1375,10 +1375,24 @@ function returnedSection(data) {
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
+  document.getElementById('overview').innerHTML = renderOverview(data);
   document.getElementById('content').innerHTML = str;
   
   //only create sidebar if the user is a superuser
   if(data['isSuperUser']) createSidebar();
+}
+
+function renderOverview(data){
+  var str = "<h1>hello world</h1>";
+  
+  data['filename'].forEach(element => {
+    str += (element[0] + " | " + element[1]+ " <br>");
+  });
+  
+  
+   //reset before full implementation is done algorithm not finished yet
+  str = "";
+  return str;
 }
 
 // Update the "Select Course" dropdown options
@@ -2265,6 +2279,8 @@ function placeSideBarInfo(data){
   str+= "</div>";
   text.innerHTML = str;
 }
+
+
 
 
 function showError(){
