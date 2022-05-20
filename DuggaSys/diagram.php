@@ -143,10 +143,8 @@
 	if($fileContent === "UNK" || $fileContent === "")
 		$fileContent = "NO_FILE_FETCHED";
 
-    if($fileContent == "NO_FILE_FETCHED" || $fileContent == "" || $fileContent == "UNK" || $fileContent == ""){
-        print_r($fileContent);
-        exit();
-    }
+    print_r($fileContent);
+    exit();
 
 ?>
 
