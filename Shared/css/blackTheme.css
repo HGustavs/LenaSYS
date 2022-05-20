@@ -794,10 +794,10 @@ select{
 }
 
 input{
-    background-color: #464646;
+    background-color: #212121;
     color:white;
     color-scheme: dark; /*For date picker */
-    border: 2px solid #212121;
+    border: 2px solid #121212;
 }
 
 /* Style for "Date Picker" START:    */
@@ -839,7 +839,24 @@ input{
     background-color:#242729;
 }
 /* END */
+/* Style for fieldset elements in #Show Test" editor.  START */
+.loginBox select{
+    background-color: #212121;
+    color:white;
+}
 
+.loginBox textarea, #receipt{
+    background-color: #212121;
+    color:white;
+}
+
+.ColorForBorderInDuggaed{
+    border: 3px solid var(--color-sectioned-table-hi) ;
+}
+
+#variant{
+    border-bottom: var(--color-sectioned-table-hi) solid 3px;
+}
 
 /*/ Style for lenasys icon START /*/
 .lena { 

@@ -153,7 +153,7 @@ session_start();
         </div>
 
         <div class='loginBoxbody' id='variantBody' style='width:100%; height:100%;'>
-            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99; min-height: 220px;' ></div> <!-- A div to place the variant-table within. -->
+            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60;  overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99; min-height: 220px;' ></div> <!-- A div to place the variant-table within. -->
           <div id='editVariantDiv' style="display:flex; flex-shrink: 0;">
             <input type='hidden' id='vid' value='Toddler'/>
             <input type='hidden' id='disabled' value='0'/>
@@ -167,7 +167,7 @@ session_start();
                   </div>
                       <!-- Instruction for assignment -->
                   <div>
-                    <fieldset style="width:90%;">
+                    <fieldset class="ColorForBorderInDuggaed" style="width:90%;">
                       <legend>Instruction file</legend>
                       <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
                         <select name="type" id="type" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray())), updateInstructions();">
@@ -180,7 +180,7 @@ session_start();
                     </fieldset>
                   </div>
                   <div>
-                    <fieldset style="width:90%;">
+                    <fieldset class="ColorForBorderInDuggaed" style="width:90%;">
                       <legend>General information file</legend>
                       <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
                         <select name="gType" id="gType" style="flex:1" onchange="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray())), updateInformation();">
@@ -194,7 +194,7 @@ session_start();
                   </div>
                   <div>
                     <div id="duggaExtraParamForm">
-                      <fieldset style="width:90%">
+                      <fieldset class="ColorForBorderInDuggaed" style="width:90%">
                         <legend>Extra parameters</legend>
                         <textarea id='extraparam' rows="4" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>
                       </fieldset>
@@ -202,7 +202,7 @@ session_start();
                   </div>
                   <div>
                       <div id="duggaNotes">  <!-- CHANGE TEXT--> 
-                      <fieldset style="width:90%">
+                      <fieldset class="ColorForBorderInDuggaed" style="width:90%">
                         <legend>Note</legend>
                         <textarea id="notes" value="notes" name="notes" rows="3" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>  <!-- CHANGE TEXT--> 
                       </fieldset>
@@ -241,7 +241,7 @@ session_start();
                       <!-- Submissions for dugga -->
                   <div>
                     <div id="duggaSubmissionForm">
-                      <fieldset style="width:90%;">
+                      <fieldset  class="ColorForBorderInDuggaed" style="width:90%;">
                         <legend>Submission types</legend>
                         <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:column;overflow:hidden;"></div>
                       </fieldset>
@@ -253,7 +253,7 @@ session_start();
                 </form>
               </div>
               <div id="rightDivDialog" style='width: 50%; height:100%; display: inline-block;'>
-                <fieldset style="width:90%; margin-left:5%;">
+                <fieldset class="ColorForBorderInDuggaed" style="width:90%; margin-left:5%;">
                   <legend>Search in the Table</legend>
                   <div style="width:100%; height: 25px; display:flex; flex-wrap:nowrap; flex-direction:row;">
                     <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
@@ -263,13 +263,13 @@ session_start();
                     </button>
                   </div>
                 </fieldset>
-                <fieldset style="width:90%; margin-left:5%;">
+                <fieldset class="ColorForBorderInDuggaed" style="width:90%; margin-left:5%;">
                   <legend>Generated Param JSON</legend>
                   <div id='parameter' style='min-height:75px'>
                     <textarea id='variantparameterText' rows="2" style="min-height:80px" onchange="createJSONFormData()"></textarea>
                   </div>
                 </fieldset>
-                <fieldset style="width:90%; margin-left:5%;">
+                <fieldset class="ColorForBorderInDuggaed" style="width:90%; margin-left:5%;">
                   <legend>Answer</legend>
                     <div id='variantanswer' style='min-height:15px;'>
                       <textarea id='variantanswerText' rows="2" style="min-height:40px; height:53px;"></textarea>
