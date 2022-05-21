@@ -2594,9 +2594,31 @@ function changeState()
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-    else if(element.type=='UML' || element.type=='IE') {
+    else if(element.type=='UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != 'UMLEntity' && element.kind != 'IEEntity') {
+        if (element.kind != 'UMLEntity') {
+            var property = document.getElementById("propertySelect").value;
+            element.state = property;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        var oldType = element.type;
+        var newType = document.getElementById("typeSelect").value;
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    }
+    else if(element.type=='IE') {
+        //Save the current property if not an UML or IE entity since niether entities does have variants.
+        if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -5799,9 +5821,27 @@ function generateContextProperties()
                   str += '</select>'; 
               }     
           }
-          //If IE inheritance
+          //Selected IE type
           else if (element.type == 'IE') {
-            if(element.kind = 'IERelation') {
+            //If IE entity
+            if (element.kind == 'IEEntity') {
+                //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'attributes':
+                            str += `<div style='color:white'>Attributes</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else if(element.kind = 'IERelation') {
               //ID MUST START WITH "elementProperty_"!!!!!
               for (const property in element) {
                   switch (property.toLowerCase()) {
@@ -5824,58 +5864,20 @@ function generateContextProperties()
                 if(element.kind=="IERelation") {
                     value = Object.values(inheritanceStateIE);
                 }
-
                 str += '<select id="propertySelect">';
-                for (i = 0; i < value.length; i++) {
-                    if (selected != value[i]) {
-                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                    } else if(selected == value[i]) {
-                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                    for (i = 0; i < value.length; i++) {
+                        if (selected != value[i]) {
+                            str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                        } else if(selected == value[i]) {
+                            str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                        }
                     }
-                }
                 str += '</select>'; 
             }
         }
 
-        // Creates button for selecting element background color if not a IE- or UML relation since they should not be able change color
+        /// Creates button for selecting element background color if not a UML relation since they should not be able change color
         if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
-            //If IE entity
-            if (element.type == 'IE') {
-                if (element.kind == 'IEEntity') {
-                    //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            case 'attributes':
-                                str += `<div style='color:white'>Attributes</div>`;
-                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
-            if(element.kind=="IERelation") {
-                    value = Object.values(inheritanceStateIE);
-            }
-
-            str += '<select id="propertySelect">';
-                for (i = 0; i < value.length; i++) {
-                    if (selected != value[i]) {
-                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                    } else if(selected == value[i]) {
-                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                    }
-                }
-                str += '</select>'; 
-            }
-
-          // Creates button for selecting element background color if not a UML relation since they should not be able change color
-          if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
               // Creates button for selecting element background color
             str += `<div style="white">Color</div>`;
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
@@ -7292,9 +7294,6 @@ function drawElement(element, ghosted = false)
         }
     }
 
-
-
-
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") { 
@@ -7409,39 +7408,6 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
     }
 
-    //=====================IE RELATION===============================================
-    else if (element.kind == 'IERelation') {
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
-      
-        if(context.includes(element)){
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
-        }
-        str += `'>`;
-      
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);  stroke-width:${linew};'>`;
-
-        //Overlapping inheritance
-        if (element.state == 'overlapping') {
-                str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black";'/> 
-                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
-        }
-        // Disjoint inheritance
-        else {
-            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black";'/>
-                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
-                <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" />
-                <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" />`
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-  
     //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == "IEEntity") { 
@@ -7497,8 +7463,42 @@ function drawElement(element, ghosted = false)
         //end of div for IE content
         str += `</div>`;
     }
-    //====================================================================    
+    
+    //IE inheritance
+    else if (element.kind == 'IERelation') {
+        //div to encapuslate IE element
+        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
+      
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+      
+        //svg for inheritance symbol
+        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);  stroke-width:${linew};'>`;
 
+        //Overlapping inheritance
+        if (element.state == 'overlapping') {
+                str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black";'/> 
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
+        }
+        // Disjoint inheritance
+        else {
+            str+= `<circle cx="${(boxw/2)}" cy="100;" r="${(boxw/2.08)}" stroke="black";'/>
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
+                <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" />
+                <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" />`
+        }
+        //end of svg
+        str += `</svg>`;
+    }    
+    //=============================================== <-- End of IE functionality
+
+    //=============================================== <-- Start ER functionality
     //ER element
     else {
         // Create div & svg element
@@ -7611,6 +7611,7 @@ function drawElement(element, ghosted = false)
         }
         str += "</svg>";
     }
+    //=============================================== <-- End ER functionality
     if (element.isLocked) {
         str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
     }
@@ -9872,9 +9873,7 @@ function updateCSSForAllElements()
                     } 
                     else{
                         fillColor.style.fill = `${element.fill}`;
-                        
                         fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
-                        
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
                             if (element.fill == "#000000") {
