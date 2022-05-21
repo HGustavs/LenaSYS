@@ -120,14 +120,14 @@ function returnedDugga(data)
         var filePath = lastFile.filepath + "/" + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
         
-        $.ajax({
+        /*$.ajax({
             method: "GET",
             url: filePath,
         }).done(function(file) {
             setLastFile(file);
             diagramWindow.contentWindow.loadDiagram(file);
         });
-        
+        */
     }
 }
 /**
