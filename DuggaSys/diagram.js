@@ -5218,8 +5218,12 @@ function toggleRuler()
  */
 function setElementPlacementType(type = elementTypes.EREntity)
 {
+    
     elementTypeSelected = type;
+       
 }
+
+
 //<-- UML functionality start
 /**
  * @description starts a mousepress on placecment type.
@@ -5232,7 +5236,9 @@ function holdPlacementButtonDown(num){
     }
     setTimeout(() => {
         if(!!mousePressed){
+            document.getElementById("diagram-toolbar").style.overflow = "initial";
             togglePlacementTypeBox(num);
+            
         }
     }, 500);
 }
@@ -5247,13 +5253,16 @@ function holdPlacementButtonUp(){
  * @param {Number} num the number connected to the element selected.
  */
 function togglePlacementTypeBox(num){
+   
     if(!document.getElementById("togglePlacementTypeButton"+num).classList.contains("activeTogglePlacementTypeButton")){ 
         for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButton").length; index++) {
             if(document.getElementsByClassName("togglePlacementTypeButton")[index].classList.contains("activeTogglePlacementTypeButton")) {
                 document.getElementsByClassName("togglePlacementTypeButton")[index].classList.remove("activeTogglePlacementTypeButton");
+            
             }
             if(document.getElementsByClassName("togglePlacementTypeBox")[index].classList.contains("activeTogglePlacementTypeBox")) {
                 document.getElementsByClassName("togglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
+                
             }
         }       
         document.getElementById("togglePlacementTypeButton"+num).classList.add("activeTogglePlacementTypeButton");
@@ -5285,6 +5294,7 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement4").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton4").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("diagram-toolbar").style.overflow = "scroll";
     }
     else if(type==1){
         document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
@@ -5297,8 +5307,11 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("diagram-toolbar").style.overflow = "scroll";
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
+    document.getElementById("diagram-toolbar").style.overflow = "scroll";
+    
 }//<-- UML functionality end
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
