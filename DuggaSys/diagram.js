@@ -2739,7 +2739,7 @@ function changeLineProperties()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // End label, opposite side
-        if(line.startLabel != endLabel.value){
+        if(line.endLabel != endLabel.value){
             endLabel.value = endLabel.value.trim();
             line.endLabel = endLabel.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -6905,12 +6905,12 @@ function drawLine(line, targetGhost = false)
                 else posX += offset;
             }else if(line.ctype == "RL"){
                 if (telem.right.indexOf(line.id) == 0) posY -= offset;
-                else if (felem.right.indexOf(line.id) == telem.right.length - 1) posY += offset;
+                else if (telem.right.indexOf(line.id) == telem.right.length - 1) posY += offset;
             }else if (line.ctype == "LR") {
                 if (telem.left.indexOf(line.id) == 0) posY -= offset;
-                else if (felem.left.indexOf(line.id) == telem.left.length - 1) posY += offset;
+                else if (telem.left.indexOf(line.id) == telem.left.length - 1) posY += offset;
             }
-            str += `<rect class="text" id=${line.id + "startLabel"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<rect class="text" id=${line.id + "endLabel"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
             str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
         }
     }
