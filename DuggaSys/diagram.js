@@ -2695,14 +2695,19 @@ function changeLineProperties()
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
     var label = document.getElementById("lineLabel");
+    var startLabel = document.getElementById("lineStartLabel");
+    var endLabel = document.getElementById("lineEndLabel");
     var line = contextLine[0];
-
-    if(radio1.checked && line.kind != radio1.value) {
-        line.kind = radio1.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if(radio2.checked && line.kind != radio2.value){
-        line.kind = radio2.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    
+    // If normal line
+    if (line.type == 'ER') {
+        if(radio1.checked && line.kind != radio1.value) {
+            line.kind = radio1.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        } else if(radio2.checked && line.kind != radio2.value){
+            line.kind = radio2.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
     }
     
     // Check if this element exists
@@ -2725,7 +2730,21 @@ function changeLineProperties()
         line.label = label.value
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-
+    // UML line
+    if (line.type == 'UML') {
+        // Start label, near side
+        if(line.startLabel != startLabel.value){
+            startLabel.value = startLabel.value.trim();
+            line.startLabel = startLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // End label, opposite side
+        if(line.startLabel != endLabel.value){
+            endLabel.value = endLabel.value.trim();
+            line.endLabel = endLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
     showdata();
 }
 
@@ -5809,53 +5828,64 @@ function generateContextProperties()
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
       if (contextLine.length == 1 && context.length == 0) {
-          //Show properties and hide the other options
-          propSet.classList.add('options-fieldset-show');
-          propSet.classList.remove('options-fieldset-hidden');
-          for (var i = 0; i < menuSet.length; i++) {
-              menuSet[i].classList.add('options-fieldset-hidden');
-              menuSet[i].classList.remove('options-fieldset-show');  
-          }
+        //Show properties and hide the other options
+        propSet.classList.add('options-fieldset-show');
+        propSet.classList.remove('options-fieldset-hidden');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-hidden');
+            menuSet[i].classList.remove('options-fieldset-show');  
+        }
 
-          str = "<legend>Properties</legend>";
+        str = "<legend>Properties</legend>";
 
-          var value;
-          var selected = contextLine[0].kind;
-          if(selected == undefined) selected = normal;
+        var value;
+        if (contextLine[0].type == 'ER') {
+            var selected = contextLine[0].kind;
+            if(selected == undefined) selected = normal;
 
-          value = Object.values(lineKind);
-          str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-          for(var i = 0; i < value.length; i++){
-              if(selected == value[i]){
-                  str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
-                  str += `<label for='${value[i]}'>${value[i]}</label><br>`
-              }else {
-                  str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
-                  str += `<label for='${value[i]}'>${value[i]}</label><br>` 
-              }
-          }
-
-          // Cardinality
-          // If FROM or TO has an entity, print option for change if its not connected to an attribute
-          if (findAttributeFromLine(contextLine[0]) == null){
-          if (findEntityFromLine(contextLine[0]) != null){
-              str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
-              str  += `<option value=''>None</option>`
-              Object.keys(lineCardinalitys).forEach(cardinality => {
-                  if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
-                      str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
-                  }else {
-                      str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
-                  }
-              });
-              str += `</select></label>`;
-          }
-          str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
-          if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
-          str += `/>`;
-      }   
-
-          str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+            value = Object.values(lineKind);
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+            for(var i = 0; i < value.length; i++){
+                if(selected == value[i]){
+                    str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
+                    str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                }else {
+                    str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
+                    str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+                }
+            }
+            if (findAttributeFromLine(contextLine[0]) == null){
+                if (findEntityFromLine(contextLine[0]) != null){
+                    str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
+                    str  += `<option value=''>None</option>`
+                    Object.keys(lineCardinalitys).forEach(cardinality => {
+                        if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
+                            str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
+                        }else {
+                            str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
+                        }
+                    });
+                    str += `</select></label>`;
+                    str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+                    if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+                    str += `/>`;
+                }
+            }
+        }
+        if (contextLine[0].type == 'UML') {
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+            str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+            if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+            str += `/>`;
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`;
+            str += `<input id="lineStartLabel" maxlength="50" type="text" placeholder="Start cardinality"`;
+            if(contextLine[0].startLabel && contextLine[0].startLabel != "") str += `value="${contextLine[0].startLabel}"`;
+            str += `/>`;
+            str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
+            if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
+            str += `/>`;
+        }
+        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
 
       //If more than one element is selected
@@ -6598,7 +6628,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // If there is no existing lines or is a special case
     if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
-
         var newLine = {
             id: makeRandomID(),
             fromID: fromElement.id,
@@ -6643,7 +6672,6 @@ function drawLine(line, targetGhost = false)
     if(contextLine.includes(line)){
         lineColor = selectedColor;
     }
-
     felem = data[findIndex(data, line.fromID)];
 
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
@@ -6763,6 +6791,12 @@ function drawLine(line, targetGhost = false)
         y2Offset = 0;
     }
 
+    if (felem.type != 'ER' || telem.type != 'ER') {
+        line.type = 'UML';
+    } else {
+        line.type = 'ER';
+    }
+
     // If element is UML or IE (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
@@ -6772,6 +6806,112 @@ function drawLine(line, targetGhost = false)
         }
         else if (line.ctype == 'LR' || line.ctype == 'RL') {
             str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        }
+        if (line.startLabel && line.startLabel != '') {
+            const offsetOnLine = 20 * zoomfact;
+            var offset = Math.round(zoomfact * textheight / 2);
+            var posX, posY, distance;
+
+            var canvas = document.getElementById('canvasOverlay');
+            var canvasContext = canvas.getContext('2d');
+            var textWidth = canvasContext.measureText(line.cardinality).width;
+
+            // Used to tweak the cardinality position when the line gets very short.
+            var tweakOffset = 0.30;
+            // Set the correct distance depending on the place where the line is connected
+            if (line.ctype == 'TB' || line.ctype == 'BT') {
+                distance = Math.abs(dy);
+                //Set position on line for the given offset
+                if (offsetOnLine > distance *0.5) {
+                    posX = fx;
+                    posY = fy - (offsetOnLine * (dy) / distance) * tweakOffset;
+                } else {
+                    posX = fx;
+                    posY = fy - (offsetOnLine * (dy) / distance);
+                }
+            } else if (line.ctype == 'LR' || line.ctype == 'RL') {
+                distance = Math.abs(dx);
+                //Set position on line for the given offset
+                if (offsetOnLine > distance *0.5) {
+                    posX = fx - (offsetOnLine * (dx) / distance) * tweakOffset;
+                    posY = fy;
+                } else {
+                    posX = fx - (offsetOnLine * (dx) / distance);
+                    posY = fy;
+                }
+            }
+            /*
+            * Depending on the side of the element that the line is connected to
+            * and the number of lines from that side, set the offset.
+            */
+            if (line.ctype == "TB") {
+                if (felem.top.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "BT"){
+                if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "RL"){
+                if (felem.right.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+            }else if (line.ctype == "LR") {
+                if (felem.left.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+            }
+            str += `<rect class="text" id=${line.id + "startLabel"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
+        }
+        if (line.endLabel && line.endLabel != '') {
+            const offsetOnLine = 20 * zoomfact;
+            var offset = Math.round(zoomfact * textheight / 2);
+            var posX, posY, distance;
+
+            var canvas = document.getElementById('canvasOverlay');
+            var canvasContext = canvas.getContext('2d');
+            var textWidth = canvasContext.measureText(line.cardinality).width;
+
+            // Used to tweak the cardinality position when the line gets very short.
+            var tweakOffset = 0.30;
+            // Set the correct distance depending on the place where the line is connected
+            if (line.ctype == 'TB' || line.ctype == 'BT') {
+                distance = Math.abs(dy);
+                //Set position on line for the given offset
+                if (offsetOnLine > distance *0.5) {
+                    posX = tx;
+                    posY = ty + (offsetOnLine * (dy) / distance) * tweakOffset;
+                } else {
+                    posX = tx;
+                    posY = ty + (offsetOnLine * (dy) / distance);
+                }
+            } else if (line.ctype == 'LR' || line.ctype == 'RL') {
+                distance = Math.abs(dx);
+                //Set position on line for the given offset
+                if (offsetOnLine > distance *0.5) {
+                    posX = tx + (offsetOnLine * (dx) / distance) * tweakOffset;
+                    posY = ty;
+                } else {
+                    posX = tx + (offsetOnLine * (dx) / distance);
+                    posY = ty;
+                }
+            }
+            /*
+            * Depending on the side of the element that the line is connected to
+            * and the number of lines from that side, set the offset.
+            */
+            if (line.ctype == "TB") {
+                if (telem.top.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "BT"){
+                if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
+                else posX += offset;
+            }else if(line.ctype == "RL"){
+                if (telem.right.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.right.indexOf(line.id) == telem.right.length - 1) posY += offset;
+            }else if (line.ctype == "LR") {
+                if (telem.left.indexOf(line.id) == 0) posY -= offset;
+                else if (felem.left.indexOf(line.id) == telem.left.length - 1) posY += offset;
+            }
+            str += `<rect class="text" id=${line.id + "startLabel"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
         }
     }
     else {
@@ -6789,89 +6929,86 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
+
+        // If the line got cardinality
+        if (line.cardinality) {
+            const offsetOnLine = 20 * zoomfact;
+            var offset = Math.round(zoomfact * textheight / 2);
+            var posX, posY;
+            var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
+
+            var canvas = document.getElementById('canvasOverlay');
+            var canvasContext = canvas.getContext('2d');
+            var textWidth = canvasContext.measureText(line.cardinality).width;
+
+            // Used to tweak the cardinality position when the line gets very short.
+            var tweakOffset = 0.30; 
+
+            if(findEntityFromLine(line) == -1){
+                if(offsetOnLine > distance *0.5){
+                    posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
+                    posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+                }else{
+                    // Set position on line for the given offset
+                    posX = fx + (offsetOnLine * (tx - fx) / distance);
+                    posY = fy + (offsetOnLine * (ty - fy) / distance);
+                }
+
+                /*
+                * Depending on the side of the element that the line is connected to
+                * and the number of lines from that side, set the offset.
+                * */
+                if (line.ctype == "TB") {
+                    if (felem.top.indexOf(line.id) == 0) posX -= offset;
+                    else posX += offset;
+                }else if(line.ctype == "BT"){
+                    if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
+                    else posX += offset;
+                }else if(line.ctype == "RL"){
+                    if (felem.right.indexOf(line.id) == 0) posY -= offset;
+                    else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+                }else if (line.ctype == "LR") {
+                    if (felem.left.indexOf(line.id) == 0) posY -= offset;
+                    else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+                }
+            } else {
+                if(offsetOnLine > distance *0.5){
+                    posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
+                    posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+                }else{
+                    // Set position on line for the given offset
+                    posX = fx + (offsetOnLine * (tx - fx) / distance);
+                    posY = fy + (offsetOnLine * (ty - fy) / distance);
+                }
+
+                /*
+                * Depending on the side of the element that the line is connected to
+                * and the number of lines from that side, set the offset.
+                * */
+                if (line.ctype == "TB") {
+                    if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
+                    else posX += offset;
+                }else if(line.ctype == "BT"){
+                    if (telem.top.indexOf(line.id) == 0) posX -= offset;
+                    else posX += offset;
+                }else if(line.ctype == "RL"){
+                    if (telem.left.indexOf(line.id) == 0) posY -= offset;
+                    else if (telem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+                }else if (line.ctype == "LR") {
+                    if (telem.right.indexOf(line.id) == 0) posY -= offset;
+                    else if (telem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+                }
+            }
+            // Add the line to the str 12.84 10.11
+            str += `<rect class="text" id=${line.id + "Cardinality"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
+        }
     }
 
     if (contextLine.includes(line)) {
         var x = (fx + tx) /2;
         var y = (fy + ty) /2;
         str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
-    }
-
-    // If the line got cardinality
-    if (line.cardinality) {
-
-        const offsetOnLine = 20 * zoomfact;
-        var offset = Math.round(zoomfact * textheight / 2);
-        var posX, posY;
-        var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
-
-        var canvas = document.getElementById('canvasOverlay');
-        var canvasContext = canvas.getContext('2d');
-        var textWidth = canvasContext.measureText(line.cardinality).width;
-
-        // Used to tweak the cardinality position when the line gets very short.
-        var tweakOffset = 0.30; 
-
-        if(findEntityFromLine(line) == -1){
-            if(offsetOnLine > distance *0.5){
-                posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
-                posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
-            }else{
-                // Set position on line for the given offset
-                posX = fx + (offsetOnLine * (tx - fx) / distance);
-                posY = fy + (offsetOnLine * (ty - fy) / distance);
-            }
-
-
-            /*
-            * Depending on the side of the element that the line is connected to
-            * and the number of lines from that side, set the offset.
-            * */
-            if (line.ctype == "TB") {
-                if (felem.top.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-            }else if(line.ctype == "BT"){
-                if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-            }else if(line.ctype == "RL"){
-                if (felem.right.indexOf(line.id) == 0) posY -= offset;
-                else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
-            }else if (line.ctype == "LR") {
-                if (felem.left.indexOf(line.id) == 0) posY -= offset;
-                else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
-            }
-        } else {
-            if(offsetOnLine > distance *0.5){
-                posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
-                posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
-            }else{
-                // Set position on line for the given offset
-                posX = fx + (offsetOnLine * (tx - fx) / distance);
-                posY = fy + (offsetOnLine * (ty - fy) / distance);
-            }
-
-            /*
-            * Depending on the side of the element that the line is connected to
-            * and the number of lines from that side, set the offset.
-            * */
-            if (line.ctype == "TB") {
-                if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-            }else if(line.ctype == "BT"){
-                if (telem.top.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-            }else if(line.ctype == "RL"){
-                if (telem.left.indexOf(line.id) == 0) posY -= offset;
-                else if (telem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
-            }else if (line.ctype == "LR") {
-                if (telem.right.indexOf(line.id) == 0) posY -= offset;
-                else if (telem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
-            }
-        }
-
-        // Add the line to the str 12.84 10.11
-        str += `<rect class="text" id=${line.id + "Cardinality"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
-        str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
     }
 
     if (line.label && line.label != ""){
