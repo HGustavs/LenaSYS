@@ -2053,7 +2053,6 @@ function determineLineSelect(mouseX, mouseY)
     }
     
     for(var i = 0; i < allLines.length; i++) {
-        
         // Copy the IDs.
         bLayerLineIDs[i] = allLines[i].id;
 
@@ -2061,6 +2060,42 @@ function determineLineSelect(mouseX, mouseY)
         bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
         bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
   
+        var hasPoints = allLines[i].getAttribute('points'); // If line has attribute point (polyline)
+        if (hasPoints != null) {
+            var points = hasPoints.split(' '); // Split points attribute in pairs
+            // Get the points in polyline
+            for (var j = 0; j < points.length-1; j++) {
+                currentLineSegment = {
+                    x1: points[j].split(',')[0],
+                    x2: points[j+1].split(',')[0],
+                    y1: points[j].split(',')[1],
+                    y2: points[j+1].split(',')[1]
+                }
+                // Used later to make sure the current mouse-position is in the span of a line.
+                highestX = Math.max(currentLineSegment.x1, currentLineSegment.x2);
+                lowestX = Math.min(currentLineSegment.x1, currentLineSegment.x2);
+                highestY = Math.max(currentLineSegment.y1, currentLineSegment.y2);
+                lowestY = Math.min(currentLineSegment.y1, currentLineSegment.y2);
+                lineData = {
+                    hX: highestX,
+                    lX: lowestX,
+                    hY: highestY,
+                    lY: lowestY
+                }
+                lineCoeffs = {
+                    a: (currentLineSegment.y1 - currentLineSegment.y2),
+                    b: (currentLineSegment.x2 - currentLineSegment.x1),
+                    c: ((currentLineSegment.x1 - currentLineSegment.x2)*currentLineSegment.y1 + (currentLineSegment.y2-currentLineSegment.y1)*currentLineSegment.x1)
+                }
+                lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
+                if(lineWasHit == true && labelWasHit == false) {
+                    // Return the current line that registered as a "hit".;
+                    return lines.filter(function(line) {
+                        return line.id == bLayerLineIDs[i];
+                    })[0];
+                }
+            }
+        }
         // Get all X and Y -coords for current line in iteration.
         currentline = {
             x1: allLines[i].getAttribute("x1"),
@@ -2098,14 +2133,12 @@ function determineLineSelect(mouseX, mouseY)
             labelWasHit = didClickLabel(centerPoint, labelWidth, labelHeight, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius);
         }
         
-
         // Determines if a line was clicked
         lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
         //document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="#000000" stroke-width="3" fill="red" /> '
         // ---------------------------
-
         if(lineWasHit == true && labelWasHit == false) {
             // Return the current line that registered as a "hit".
             return lines.filter(function(line) {
@@ -2114,7 +2147,6 @@ function determineLineSelect(mouseX, mouseY)
         }
         else if(labelWasHit == true)
         {
-
             return lineLabelList.filter(function(label) {
                 return label.id == bLayerLineIDs[i]+"Label";
             })[0];
@@ -4670,7 +4702,6 @@ function generateErTableString()
                 else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {
                     // If normal relation
                     if (ERRelationData[i][0].state == 'normal') {
-                        console.log('Waa');
                         //If array is empty
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
@@ -6406,7 +6437,7 @@ function determineLine(line, targetGhost = false)
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
     var ctype = 0;
     if (overlapY || ((majorX) && (!overlapX))){
-        if (line.dx > 0) line.ctype = "LR"
+        if (line.dx > 0) line.ctype = "LR";
         else line.ctype = "RL";
     }else{
         if (line.dy > 0) line.ctype = "TB";
@@ -6729,26 +6760,38 @@ function drawLine(line, targetGhost = false)
         y1Offset = 0;
     } else if(telem.kind == "UMLRelation"){
         x2Offset = 0;
-        y2Offset =0;
+        y2Offset = 0;
     }
-    
-    if (line.kind == "Normal"){
-        str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
-    } else if (line.kind == "Double") {
-        // We mirror the line vector
-        dy = -(tx - fx);
-        dx = ty - fy;
-        var len = Math.sqrt((dx * dx) + (dy * dy));
-        dy = dy / len;
-        dx = dx / len;
-        var cstmOffSet = 1.4;
 
-       	str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-        str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    // If element is UML or IE (use straight line segments instead)
+    if (felem.type != 'ER' || telem.type != 'ER') {
+        var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
+        var dy = ((fy + y1Offset)-(ty + y2Offset))/2; 
+        if (line.ctype == 'TB' || line.ctype == 'BT') {
+            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        }
+        else if (line.ctype == 'LR' || line.ctype == 'RL') {
+            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        }
+    }
+    else {
+        if (line.kind == "Normal"){
+            str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
+        } else if (line.kind == "Double") {
+            // We mirror the line vector
+            dy = -(tx - fx);
+            dx = ty - fy;
+            var len = Math.sqrt((dx * dx) + (dy * dy));
+            dy = dy / len;
+            dx = dx / len;
+            var cstmOffSet = 1.4;
+    
+            str += `<line id='${line.id}-1' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        }
     }
 
     if (contextLine.includes(line)) {
-
         var x = (fx + tx) /2;
         var y = (fy + ty) /2;
         str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
@@ -9473,12 +9516,23 @@ function drawSelectionBox(str)
                     tempLines.push(document.getElementById(contextLine[i].id));
                 }
             }
-
-            // Find highest and lowest x and y coordinates of the first element in lines
-            var tempX1 = tempLines[0].getAttribute("x1");
-            var tempX2 = tempLines[0].getAttribute("x2");
-            var tempY1 = tempLines[0].getAttribute("y1");
-            var tempY2 = tempLines[0].getAttribute("y2");
+            var tempX1, tempX2, tempY1, tempY2;
+            var hasPoints = tempLines[0].getAttribute('points'); // Polyline
+            if (hasPoints != null) {
+                var points = hasPoints.split(' ');
+                // Find highest and lowest x and y coordinates of the first element in lines
+                tempX1 = points[0].split(',')[0];
+                tempX2 = points[3].split(',')[0];
+                tempY1 = points[0].split(',')[1];
+                tempY2 = points[3].split(',')[1];
+            }
+            else {
+                // Find highest and lowest x and y coordinates of the first element in lines
+                tempX1 = tempLines[0].getAttribute("x1");
+                tempX2 = tempLines[0].getAttribute("x2");
+                tempY1 = tempLines[0].getAttribute("y1");
+                tempY2 = tempLines[0].getAttribute("y2");
+            }
             lineLowX = Math.min(tempX1, tempX2);
             lineHighX = Math.max(tempX1, tempX2);
             lineLowY = Math.min(tempY1, tempY2);
@@ -9486,10 +9540,22 @@ function drawSelectionBox(str)
 
             // Loop through all selected lines and find highest and lowest x and y coordinates
             for (var i = 0; i < tempLines.length; i++) {
-                tempX1 = tempLines[i].getAttribute("x1");
-                tempX2 = tempLines[i].getAttribute("x2");
-                tempY1 = tempLines[i].getAttribute("y1");
-                tempY2 = tempLines[i].getAttribute("y2");
+                var hasPoints = tempLines[i].getAttribute('points'); // Polyline
+                if (hasPoints != null) {
+                    var points = hasPoints.split(' ');
+                    // Find highest and lowest x and y coordinates of the first element in lines
+                    tempX1 = points[0].split(',')[0];
+                    tempX2 = points[3].split(',')[0];
+                    tempY1 = points[0].split(',')[1];
+                    tempY2 = points[3].split(',')[1];
+                }
+                else {
+                    // Find highest and lowest x and y coordinates of the first element in lines
+                    tempX1 = tempLines[i].getAttribute("x1");
+                    tempX2 = tempLines[i].getAttribute("x2");
+                    tempY1 = tempLines[i].getAttribute("y1");
+                    tempY2 = tempLines[i].getAttribute("y2");
+                }
                 x1 = Math.min(tempX1, tempX2);
                 x2 = Math.max(tempX1, tempX2);
                 y1 = Math.min(tempY1, tempY2);
