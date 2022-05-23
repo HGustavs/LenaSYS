@@ -52,7 +52,7 @@ function returnedDugga(data)
 	} else{
         retdata = jQuery.parseJSON(data['param']);
         if (data["answer"] !== null && data["answer"] !== "UNK") {
-          var str = data['answer']
+          var str = data['answer'];
           str = str.replace(/\&amp\;/g, '&');
           str = str.replace(/\&lt\;/g, '<');
           str = str.replace(/\&gt\;/g, '>');
