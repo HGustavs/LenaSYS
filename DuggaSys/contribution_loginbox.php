@@ -191,8 +191,29 @@
 
     <!-- New git-user creation end -->
 
-
-        
-
+    
 </div>
 
+<div id='git_logoutBox' class="logoutBoxContainer" style="display: none">
+	<div id='git_logout' class="logoutBox DarkModeBackgrounds DarkModeText">
+		<div class='logoutBoxheader'>
+			<h3>Sign out</h3>
+			<div class="cursorPointer" onclick="$('#git_logoutBox').hide();" title="Close window">x</div>
+		</div>
+		<form action="" id="git_logoutForm" method="post">
+			<div>
+				<p>Are you sure you want to log out?</p>
+			</div>
+			<table class="logoutBoxTable">
+				<tr class="logoutboxTr">
+					<td>
+						<input type='button' class='buttonLogoutBox' onclick='git_logout();' value='Log out' title='Log out'>
+					</td>
+					<td>
+						<input type='button' class='buttonLogoutBox buttonLogoutCancelBox' onclick="$('#git_logoutBox').hide();" value='Cancel' title='CancelLogout'>
+					</td>						
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
