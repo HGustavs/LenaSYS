@@ -11,7 +11,7 @@
 <body>
   <!-- Header showing the showModalButton-->
   <div id="installHeader">
-    <h1>LenaSYS Installer</h1>
+    <h1>Light LenaSYS Installer</h1>
     <div class="inputHeading" valign=top>
       <div><h2>WARNING! </h2></div>
     </div>
@@ -22,7 +22,7 @@
     echo '<p id="infoText" style="text-align: center;"><b>By clicking install the database will be dropped and reinitialized with the original courses. This is done to clean the table of contents in sectioneed.</b></p><hr>';
     echo '<form method="POST" action="install_light.php">';
 	echo '<label for="fname">Root Password:</label><br>';
-    echo '<input type="text" id="fname" name="fname" ><br>';
+    echo '<input type="password" id="fname" name="fname" ><br>';
     echo '<input id="submitInput" class="button" type="submit" name="install" value="Install!"/>';
     echo '</form>';
     echo '</div>';
