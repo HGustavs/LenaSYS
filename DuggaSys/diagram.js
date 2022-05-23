@@ -10645,7 +10645,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
 function resetDiagramAlert(){
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if(refreshConfirm){
-        refreshDiagram();
+        resetDiagram();
     }
     
 }
