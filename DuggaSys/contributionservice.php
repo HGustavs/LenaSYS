@@ -753,7 +753,7 @@ if(strcmp($opt,"get")==0) {
 		'timesheets' => $timesheets,
 		'commitchange' => $commitchanges,
 		'isSuperUser' => isSuperUser($_SESSION['uid']),
-		'filename' => $Bfiles
+		'overview' => $Bfiles
 	);
 
 	echo json_encode($array);

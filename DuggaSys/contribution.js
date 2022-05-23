@@ -1383,11 +1383,21 @@ function returnedSection(data) {
 }
 
 function renderOverview(data){
+  //data[overview][0] = Bfile.id data[overview][1] = filename data[overview][2] = path data[overview][3] = blameuser data[overview][4] = occurance
   var str = "<h1>hello world</h1>";
-  
-  data['filename'].forEach(element => {
-    console.log(element);
+  var total = 0;
+  data['overview'].forEach(element => {
+    console.log(element[4]);
+    total+= element[4];
   });
+  console.log('------------------------')
+  console.log(total)
+  var values = Array()
+  data['overview'].forEach(element =>{
+    values.push((element[4] / total), (element[2] + element[1]));
+  });
+
+  console.log(values);
 
   //reset before full implementation is done algorithm not finished yet
   //str = "";
