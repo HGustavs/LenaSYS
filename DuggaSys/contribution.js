@@ -2243,7 +2243,7 @@ function denyAcc(userName){
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 1}, "CONT_LOGINBOX_SERVICE");
 
-  //Resfreshes the side panel
+  //Refreshes the side panel
   AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
 
 }
