@@ -2237,7 +2237,7 @@ function accountInformation(data){
 }
 
 
-//These funtions sends the AJAX call to contribution_loginbox_service and dugga.js
+//These functions sends the AJAX call to contribution_loginbox_service and dugga.js
 //Choose three separate functions instead of one combined for readability
 function denyAcc(userName){
 
