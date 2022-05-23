@@ -177,9 +177,15 @@
             <div id="container" class="canvas_right">
 
 
-                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" src="
-                                    ./diagram.php" title="Diagram"></iframe>
-
+                <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" title="Diagram"></iframe>
+                <script>
+                    if(cid){
+                        document.getElementById("diagram-iframe").src = "./diagram.php?courseid="+cid+"&coursevers="+vers;
+                    }
+                    else{
+                        document.getElementById("diagram-iframe").src = "./diagram.php?courseid=1894&coursevers=52432";
+                    }
+                </script>
 
             </div>
             <div id="nextVariantBtn"></div>
