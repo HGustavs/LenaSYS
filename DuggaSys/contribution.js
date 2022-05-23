@@ -1399,20 +1399,19 @@ function renderOverview(data){
   
   for(var i = 0; i<data['allusers'].length;i++){
     var total = 0;
+
     //count total for each user
     data['overview'].forEach(element =>{
-      if(data['allusers'][i] == element[3]) total =  total + element[4];
+      if(data['allusers'][i] == element[3]) total =  total + parseInt(element[4]);
     });  
     
     //calculate % and place in array
     data['overview'].forEach(element =>{
-      if(data['allusers'][i] == element[3]) values.push(Array((element[4] / total), element[2], element[1], element[3]));
+      if(data['allusers'][i] == element[3]) values.push(Array((( parseInt(element[4]) / total), element[2], element[1], element[3])));
     });
   }
   //reset before full implementation is done algorithm not finished yet
-  //str = "";
-
-  
+  //str = "";  
   return str;
 }
 
