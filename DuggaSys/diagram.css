@@ -209,11 +209,11 @@
 .diagramIcons{
     position: relative;
     margin: auto;
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     cursor:pointer;
     border: solid 1px var(--color-primary);
-    margin-top: 0px;
+    margin-top: 3px;
     
    
 }
@@ -222,8 +222,8 @@
     border: solid 1px var(--color-primary-light);
 }
 .diagramIcons img{
-    width:35px;
-    height:35px;
+    width:34px;
+    height:34px;
 }
 .node {
     position: absolute;
@@ -508,7 +508,7 @@
     padding-top:0px;
     border-radius: 5px;
     background-color:var(--color-primary);
-    margin-left: 1px;
+    
 }
 .activeTogglePlacementTypeBox{
     display: flex;
@@ -528,6 +528,7 @@
     top: 0px;
     width: 6.2px;
     height: 6.2px;
+    z-index: 2;
 }
 .placementTypeBoxIcons{
     margin: auto;
