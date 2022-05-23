@@ -203,6 +203,8 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	// Show dialog
 	$("#editCourse").css("display", "flex");
+	// Get focus on the first input to use tab function
+	document.getElementById("coursename").focus();
 
 	//$("#overlay").css("display", "block");
 
@@ -279,6 +281,8 @@ function editSettings(){
 	}
 
 	popupContainer.style.display = "flex";
+	// Get focus on the motd to use tab function
+	document.getElementById("motd").focus();
 }
 
 function updateSettings() {
