@@ -1086,10 +1086,12 @@ var defaults = {
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal' },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-attribute'], functions: ['+function'] },     //<-- UML functionality
-    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "UML" }, //<-- UML functionality
+
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
+    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
+
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
