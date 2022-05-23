@@ -8391,6 +8391,7 @@ textarea#filecont {
   right: -308px;
 }
 .accountRequestTable {
+  min-width: 80px;
   margin-right: auto;
   margin-left: auto;
   color: #000000;

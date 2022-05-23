@@ -2204,9 +2204,7 @@ function accountInformation(data){
     str+= "<div id='" +data[row][0] +"'>";
     str+= "<tr class='accountRequestTable'"+ row +">";
     str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
-    var userName = data[row][0];
-    console.log("dataTES: "+ typeof data[row][0]);
-    
+    var userName = data[row][0];    
     
     //status codes 101=pending 102=denied 0=accepted
     if(data[row][1]==101){  //pending account
@@ -2245,6 +2243,7 @@ function denyAcc(userName){
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 1}, "CONT_LOGINBOX_SERVICE");
 
+  //Resfreshes the side panel
   AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
 
 }
