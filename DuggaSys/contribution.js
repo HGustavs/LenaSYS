@@ -1392,11 +1392,7 @@ function returnedSection(data) {
    data[overview][4]=occurance //(count of how many times each file occurs in Blame grouped by Blame.Blameuser)
       */
 function renderOverview(data){
-  
-  
   var values = Array()
- 
-  
   for(var i = 0; i<data['allusers'].length;i++){
     var total = 0;
 
@@ -1407,9 +1403,13 @@ function renderOverview(data){
     
     //calculate % and place in array
     data['overview'].forEach(element =>{
-      if(data['allusers'][i] == element[3]) values.push(Array((( parseInt(element[4]) / total), element[2], element[1], element[3])));
+      if(data['allusers'][i] == element[3]) values.push(Array((parseInt(element[4]) / total), element[2], element[1], element[3]));
     });
   }
+  values.forEach(element =>{
+    console.log(element);
+    console.log(element.length);
+  });
   //reset before full implementation is done algorithm not finished yet
   //str = "";  
   return str;
