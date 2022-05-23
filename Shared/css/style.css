@@ -850,6 +850,9 @@ p {
    filter: invert(100%);
   -webkit-filter: invert(100%);
 }
+
+.section > #tabElement {color: white; }
+
 .code #NewTabLink{
   filter: invert(100%);
   -webkit-filter: invert(100%);
