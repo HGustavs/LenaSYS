@@ -24,10 +24,6 @@ function setup()
     AJAXService("GETPARAM", { }, "PDUGGA");
     
     diagramWindow.contentWindow.addEventListener('mouseup', canSaveController);
-    // checking if user has an stored active diagram and not coming from hash and loading it if they have
-    if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != "" && sessionStorage.getItem("cameFromHash") != "Yes"){
-        diagramWindow.contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
-    }
 }
 
 /**
@@ -110,8 +106,11 @@ function returnedDugga(data)
         }
         diagramWindow.contentWindow.showDiagramTypes();//<-- UML functionality end
     }
-
-    if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {
+    // checking if user has an stored active diagram and not coming from hash and loading it if they have
+    if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != "" && sessionStorage.getItem("cameFromHash") != "Yes"){
+        diagramWindow.contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
+    }
+    else if (data.files[inParams["moment"]] && Object.keys(data.files[inParams["moment"]]).length != 0) {
         var momentFiles = data.files[inParams["moment"]];
         var lastKeyIndex = Object.keys(momentFiles).length-1;
         var lastKey = Object.keys(momentFiles)[lastKeyIndex];
