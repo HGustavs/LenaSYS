@@ -124,33 +124,37 @@
 					$file = $multiArray[$i-1][1];
 					$wordlist = $multiArray[$i-1][2];
 
-					$query = $pdo->prepare("SELECT COUNT(1) FROM box WHERE boxid = :i AND exampleid = :exampleid");
+					$query = $pdo->prepare("SELECT * FROM box WHERE boxid = :i AND exampleid = :exampleid;");
 
 					$query->bindParam(':i', $i);
 					$query->bindParam(':exampleid', $exampleId);
 					$query->execute();
 
-					if(true){	
-						// Create boxes, if some box does not exist
+					if($query->fetch(PDO::FETCH_ASSOC)){
+						// Update box, if it already exist
+						$query = $pdo->prepare("UPDATE box SET boxcontent = :boxcontent, filename = :filename, wordlistid = :wordlistid WHERE boxid = :i AND exampleid = :exampleid;");
+					} else if (!$query->fetch(PDO::FETCH_ASSOC)){
+						// Create box, if it does not exist
 						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid,fontsize) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid, :fontsize);");
-
-						$query->bindParam(':i', $i);
-						$query->bindParam(':exampleid', $exampleId);
 						$query->bindValue(':boxtitle', 'Title');
-						$query->bindValue(':boxcontent', $kind);
 						$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
-						$query->bindValue(':filename', $file);
-						$query->bindValue(':wordlistid', $wordlist);
 						$query->bindValue(':fontsize', '9');
+					} else {
+						// Should be impossible to reach, only for safety
+						continue;
+					}
 
-						// Update code example to reflect change of template
-						if(!$query->execute()) {
-							$error=$query->errorInfo();
+					$query->bindParam(':i', $i);
+					$query->bindParam(':exampleid', $exampleId);
+					$query->bindValue(':boxcontent', $kind);
+					$query->bindValue(':filename', $file);
+					$query->bindValue(':wordlistid', $wordlist);
 
-							// If we get duplicate key error message, ignore error, otherwise carry on adding to debug message
-							if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
-
-						}
+					// Update code example to reflect change of template
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						// If we get duplicate key error message, ignore error, otherwise carry on adding to debug message
+						if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
 					}
 				}
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
