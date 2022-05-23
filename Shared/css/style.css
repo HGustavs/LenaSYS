@@ -40,6 +40,7 @@
   --color-border-3: #f0f0f0;
   --color-border-4: #c8c8c8;
   --color-border-5: #888;
+  --color-border-6: #000;
 
   --color-green: #50a750;
   --color-red: #c75050;
@@ -539,7 +540,7 @@ p {
 }
 #displayAnnouncements .announcementCard .actionBtns span.editBtn {
   background-color: #fff;
-  color: black;
+  color: var(--color-text-list);
   border: 2px solid var(--color-logo-background);
   padding: 4px 8px;
   text-align: center;
@@ -584,7 +585,7 @@ p {
 }
 
 .displayAnnounceTime, .displayAuthor{
-  color: #000000;
+  color: var(--color-text-list);
 }
 
 .displayAuthor{
@@ -656,7 +657,7 @@ p {
 }
 #announcementBox button a{
     text-decoration: none;
-    color: #000;
+    color: var(--color-text-list);
 }
 
 /*End of show all the announcments*/
@@ -982,7 +983,7 @@ p {
   height: 32px;
   width: 15px;
   margin-left: 15px;
-  border-left: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
 }
 
 /*Vertical line for 1 tabs*/
@@ -990,7 +991,7 @@ p {
   height: 32px;
   width: 32px;
   margin-left: 15px;
-  border-right: 2px solid black;
+  border-right: 2px solid var(--color-border-6);
 }
 /*Vertical line for 2 tabs*/
 /*
@@ -998,14 +999,14 @@ p {
   height: 32px;
   width: 64px;
   margin-left: 15px;
-  border-right: 2px solid black;
+  border-right: 2px solid var(--color-border-6);
 }*/
 /*Vertical line for 3 tabs*/
 #Sectionlist .tabs3 .spacerRight {
   height: 32px;
   width: 96px;
   margin-left: 15px;
-  border-right: 2px solid black;
+  border-right: 2px solid var(--color-border-6);
 }
 
 /*Vertical line for end tabs for "1 tab + end"*/
@@ -1013,8 +1014,8 @@ p {
   height: 19px;
   width: 19px;
   margin: 0px 0px 11px 47px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
 }
 /*Vertical line for end tabs for "2 tabs + end"*/
@@ -1022,8 +1023,8 @@ p {
   height: 19px;
   width: 19px;
   margin: 0px 0px 11px 79px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
 }
 /*Vertical line for end tabs for "3 tabs + end"*/
@@ -1031,8 +1032,8 @@ p {
   height: 19px;
   width: 19px;
   margin: 0px 0px 11px 111px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
 }
 
@@ -1044,8 +1045,8 @@ p {
   margin-bottom: 14px;
   */
   margin: 0px 0px 15px 15px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
   overflow: hidden;
 }
@@ -1143,7 +1144,7 @@ p {
   height: 26px;
   margin: 2px 2px 2px 2px;
   border-radius: 14px;
-  border: 1px solid #000;
+  border: 1px solid var(--color-border-6);
 } */
 
 .WhiteLight {
@@ -1823,7 +1824,7 @@ div .navButt:hover {
   padding: 4px;
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
-  color:black;
+  color: var(--color-text-list);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -2114,7 +2115,7 @@ div .navButt:hover {
 .passwordBlock{
   width: 50%;
   padding: 4px 0px;
-  background-color: black;
+  background-color: var(--color-text-list);
   border-radius: 3px;
   cursor: pointer;
 }
@@ -2552,7 +2553,7 @@ label.login-label {
 
 .drop-down-item>a,
 .drop-down-option {
-  color: rgb(0, 0, 0);
+  color: var(--color-text-list);
   text-decoration: none;
   display: inline-block;
   width: 252px;
@@ -2997,7 +2998,7 @@ div.submit-button:disabled {
 
 .formDialog .formDialogText {
   width: 200px;
-  background-color: black;
+  background-color: var(--color-text-list);
   color: #fff;
   text-align: center;
   border-radius: 6px;
@@ -3016,7 +3017,7 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent black;
+  border-color: transparent transparent transparent var(--color-border-6);
 }
 
 /* Tooltip */
@@ -3028,7 +3029,7 @@ div.submit-button:disabled {
 
 .tooltipDugga .tooltipDuggatext {
   width: 200px;
-  background-color: black;
+  background-color: var(--color-border-6);
   color: #fff;
   text-align: center;
   border-radius: 6px;
@@ -3049,7 +3050,7 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent black;
+  border-color: transparent transparent transparent var(--color-border-6);
 }
 
 .tooltipDuggaType {
@@ -3080,7 +3081,7 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent black;
+  border-color: transparent transparent transparent var(--color-border-6);
 }
 
 #uploadedfile {
@@ -3357,7 +3358,7 @@ span.arrow {
   border-radius: 0px;
   font-size: 14px;
   height: 17px;
-  color: black;
+  color: var(--color-text-list);
 }
 
 #testinnertable {
@@ -3578,7 +3579,7 @@ span.arrow {
   left: 15%;
   min-width: 250px;
   background-color: var(--color-background-3);
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
 }
 .show-column-filter-popup {
   left: inherit;
@@ -3748,7 +3749,7 @@ span.arrow {
   z-index: 1;
 }
 .access-dropdown-content div {
-  color: black;
+  color: var(--color-text-list);
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -3818,7 +3819,7 @@ div.reset-pw:hover{
   padding: 5px;
   padding-bottom: 10px;
   line-height: 18px;
-  color: black;
+  color: var(--color-text-list);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -4060,7 +4061,7 @@ div.reset-pw:hover{
   position: absolute;
   bottom: 50px;
   right: 11px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
 }
 
 .facitPopover {
@@ -4070,7 +4071,7 @@ div.reset-pw:hover{
   bottom: 50px;
   right: 50px;
   left: 50px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
 }
 
 #MarkCont a:hover {
@@ -4381,7 +4382,7 @@ div.reset-pw:hover{
 .dropdown-list-container {
   padding: 8px;
   width: 200px;
-  color:#000;
+  color: var(--color-text-list);
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -4594,8 +4595,8 @@ div.reset-pw:hover{
   grid-template-rows: repeat(5, auto);
   grid-row-start: auto;
   background: lightgray;
-  color: black;
-  border: 1px solid black;
+  color: var(--color-text-list);
+  border: 1px solid var(--color-border-6);
   padding: 5px;
   text-align: center;
   font-size: 10pt;
@@ -5395,7 +5396,7 @@ only screen and (max-device-width: 568px) {
     white-space: nowrap;
     font-weight: bold;
     font-size: 16px;
-    color: #000000;
+    color: var(--color-text-list);
   }
 
   /*
@@ -6058,7 +6059,7 @@ only screen and (max-device-width: 568px) {
 }
 
 .migration-status {
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
   width: 95%;
   margin: 0 auto;
   max-height: 100vh;
@@ -6127,7 +6128,7 @@ only screen and (max-device-width: 568px) {
 
 .form-group input[type=range]::-moz-range-thumb{
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
   width: 8px;
   border-radius: 3px;
   background-color: white;
@@ -6251,8 +6252,8 @@ only screen and (max-device-width: 568px) {
   z-index: 2;
   background-color: #ffffff;
   width: fit-content;
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
+  border-right: 1px solid var(--color-border-6);
+  border-bottom: 1px solid var(--color-border-6);
 }
 
 #diagram-page-wrapper.rulers-active #diagram-header {
@@ -6292,8 +6293,8 @@ only screen and (max-device-width: 568px) {
   position: relative;
   z-index: 2;
   background-color: #ffffff;
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
+  border-right: 1px solid var(--color-border-6);
+  border-bottom: 1px solid var(--color-border-6);
 }
 
 #diagram-page-wrapper.rulers-active #diagram-tools-container {
@@ -6449,7 +6450,7 @@ only screen and (max-device-width: 568px) {
 }
 
 #diagram-canvas {
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
   width: 100%;
   height: 100%;
 }
@@ -6475,8 +6476,8 @@ only screen and (max-device-width: 568px) {
 }
 
 .ruler {
-  border-top: 1px solid #000000;
-  border-left: 1px solid #000000;
+  border-top: 1px solid var(--color-border-6);
+  border-left: 1px solid var(--color-border-6);
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
@@ -6491,7 +6492,7 @@ only screen and (max-device-width: 568px) {
   z-index: 10;
   background-color: #ffffff;
   margin: 0;
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
 }
 
 .ruler.hidden,
@@ -6503,7 +6504,7 @@ only screen and (max-device-width: 568px) {
 #ruler-x {
   height: var(--ruler-size);
   margin-right: var(--canvas-margin);
-  border-right: 1px solid #000000;
+  border-right: 1px solid var(--color-border-6);
   cursor: row-resize;
 }
 
@@ -6515,7 +6516,7 @@ only screen and (max-device-width: 568px) {
   width: var(--ruler-size);
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid var(--color-border-6);
   cursor: col-resize;
 }
 
@@ -6649,9 +6650,9 @@ only screen and (max-device-width: 568px) {
   display: flex;
   height: var(--timeline-height);
   width: calc(100% - var(--canvas-margin));
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
-  border-left: 1px solid #000000;
+  border-right: 1px solid var(--color-border-6);
+  border-bottom: 1px solid var(--color-border-6);
+  border-left: 1px solid var(--color-border-6);
   background-color: #ffffff;
 }
 
@@ -6661,7 +6662,7 @@ only screen and (max-device-width: 568px) {
   left: 0;
   right: 0;
   z-index: 10;
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
   width: 100%;
 }
 
@@ -6712,7 +6713,7 @@ only screen and (max-device-width: 568px) {
   display: flex;
   align-items: center;
   height: 100%;
-  border-left: 1px solid #000000;
+  border-left: 1px solid var(--color-border-6);
 }
 
 #diagram-timeline-speed-range {
@@ -6758,9 +6759,9 @@ only screen and (max-device-width: 568px) {
   height: 300px;
   width: 96%;
   background-color:white;
-  color:black;
+  color: var(--color-text-list);
   padding-left: 8px;
-  border:black 2px solid;
+  border: var(--color-border-6) 2px solid;
   font-size: 14px;
   line-height: 1.6;
   font-weight: bold;
@@ -7136,7 +7137,7 @@ only screen and (max-device-width: 568px) {
 }
 
 .arrow {
-  border: solid black;
+  border: solid var(--color-border-6);
   border-width: 0 6px 6px 0;
   display: inline-block;
   opacity: 0.5;
@@ -8498,7 +8499,7 @@ textarea#filecont {
 .accountRequestTable {
   margin-right: auto;
   margin-left: auto;
-  color: #000000;
+  color: var(--color-text-list);
   border: solid 1px #888;
   border-collapse: collapse;
   padding: 7px;
@@ -8568,12 +8569,12 @@ background-color: #614875;
 
 .codedropStyle {
   background-color: #614875;
-  border-color: rgb(0,0,0) transparent;	
+  border-color: var(--color-border-6) transparent;	
 }
 
 .docudropStyle {
   background-color: #614875; 
-  background: rgb(0, 0, 0) transparent;
+  background: var(--color-border-6) transparent;
 }
 
 .themedropStyle {
@@ -8661,7 +8662,7 @@ span[id$="examples"]:hover{
 }
 
 .normtext {
-  color: #000;
+  color: var(--color-text-list);
   background-color: transparent;
   white-space:nowrap;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
@@ -8669,7 +8670,7 @@ span[id$="examples"]:hover{
 
 .impo {
   user-select: none;
-  color: #000;
+  color: var(--color-text-list);
   background-color: rgba(186, 96, 255, 0.09);
   white-space:nowrap;
   min-width: 660px;
@@ -8701,12 +8702,12 @@ span[id$="examples"]:hover{
 }
 
 .normtext .oper {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .impo .oper {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
@@ -8716,35 +8717,35 @@ span[id$="examples"]:hover{
 }
 
 .impo .string {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 .normtext .number {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .impo .number {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 .normtext .hi {
   background-color: #9569BD;
-  color: #000;
+  color: var(--color-text-list);
   font-weight: bold;
 }
 .impo .hi {
   font-weight: bold;
-  color: #000000;
+  color: var(--color-text-list);
   background-color: #9569BD;
 }
 .normtext .html {
   background-color: #9569BD;
-  color: #000;
+  color: var(--color-text-list);
 }
 .impo .html {
   background-color: #9569BD;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 .keywordA {
@@ -8769,7 +8770,7 @@ span[id$="examples"]:hover{
   background-color: #9971AF;
   */
   background-color: #F2F2F2;
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 .impword2 {
@@ -8778,7 +8779,7 @@ span[id$="examples"]:hover{
   background-color: #9971AF;
   */
   background-color: #F2F2F2;
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 .impo .impword {
@@ -8787,7 +8788,7 @@ span[id$="examples"]:hover{
   background-color: #614875;
   */
   background-color: #F2F2F2;
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
@@ -8798,20 +8799,20 @@ span[id$="examples"]:hover{
   background-color: #9971AF;
   */
   background-color: #F2F2F2;
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 
 .descbox code .impword {
   background-color: #FFFFFF;
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 
 .descbox .imphi {
 /*  
 background-color: #fff;
-color: #000;
+color: var(--color-text-list);
 */
 color: #fff !important;
 background-color: #614875 !important;
@@ -8820,7 +8821,7 @@ border: none !important;
 .normtext .imphi {
   /*  
   background-color: #fff;
-  color: #000;
+  color: var(--color-text-list);
   */
   color: #fff;
   background-color: #614875;
@@ -8830,7 +8831,7 @@ border: none !important;
 .impo .imphi {
   /*  
   background-color: #fff;
-  color: #000;
+  color: var(--color-text-list);
   */
   color: #fff;
   background-color: #614875;
@@ -9083,7 +9084,7 @@ border: none !important;
 /* Style for "Input elements" */
 select{
   background-color: white;
-  color: black;
+  color: var(--color-text-list);
   margin-right: 10px;
   border-radius: 5px;
 }
