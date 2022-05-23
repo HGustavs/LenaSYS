@@ -2785,6 +2785,12 @@ $(document).on('keydown', function(e) {
 		else if(box[0].classList.contains("sortableHeading")){
 			box[0].click();
 		}
+		else if(box[0].classList.contains("whiteIcon")){
+			box[0].click();
+		}
+		else if(box[0].classList.contains("courseSettingIcon")){
+			box[0].click();
+		}
 	}
 	else if(e.key === 'Escape'){
 		if ($('.fab-btn-list').is(':visible')) {
