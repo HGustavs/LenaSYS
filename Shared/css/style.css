@@ -2506,7 +2506,7 @@ label.login-label {
   border: 1px solid var(--color-border-4);
   display: none;
   width: 260px;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--color-background);
 }
 
 .drop-down-item:focus-within .side-drop-down {
