@@ -1305,32 +1305,32 @@ function showDiagramTypes(){
     if(!!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
-        // document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        // document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
         document.getElementById("elementPlacement0").onmousedown = function() {
             holdPlacementButtonDown(0);
         };
         document.getElementById("elementPlacement4").onmousedown = function() {
             holdPlacementButtonDown(4);
         };
-        /*document.getElementById("elementPlacement6").onmousedown = function() {
+        document.getElementById("elementPlacement6").onmousedown = function() {
             holdPlacementButtonDown(6);
-        };*/
+        };
         document.getElementById("elementPlacement1").onmousedown = function() {
             holdPlacementButtonDown(1);
         };
         document.getElementById("elementPlacement5").onmousedown = function() {
             holdPlacementButtonDown(5);
         };
-        /*document.getElementById("elementPlacement7").onmousedown = function() {
+        document.getElementById("elementPlacement7").onmousedown = function() {
             holdPlacementButtonDown(7);
-        };*/
+        };
     }
     // ER + UML
     else if(!!diagramType.ER && !!diagramType.UML && !diagramType.IE){
-        /*Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
-        });*/
+        });
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
         document.getElementById("elementPlacement0").onmousedown = function() {
@@ -1351,49 +1351,49 @@ function showDiagramTypes(){
         Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        // document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        // document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
         document.getElementById("elementPlacement0").onmousedown = function() {
             holdPlacementButtonDown(0);
         };
-        /*document.getElementById("elementPlacement6").onmousedown = function() {
+        document.getElementById("elementPlacement6").onmousedown = function() {
             holdPlacementButtonDown(6);
-        };*/
+        };
         document.getElementById("elementPlacement1").onmousedown = function() {
             holdPlacementButtonDown(1);
         };
-        /*document.getElementById("elementPlacement7").onmousedown = function() {
+        document.getElementById("elementPlacement7").onmousedown = function() {
             holdPlacementButtonDown(7);
-        };*/
+        };
     }
     // UML + IE
     else if(!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
         Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        // document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        // document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
         document.getElementById("elementPlacement4").onmousedown = function() {
             holdPlacementButtonDown(4);
         };
-        /*document.getElementById("elementPlacement6").onmousedown = function() {
+        document.getElementById("elementPlacement6").onmousedown = function() {
             holdPlacementButtonDown(6);
-        };*/
+        };
         document.getElementById("elementPlacement5").onmousedown = function() {
             holdPlacementButtonDown(5);
         };
-        /*document.getElementById("elementPlacement7").onmousedown = function() {
+        document.getElementById("elementPlacement7").onmousedown = function() {
             holdPlacementButtonDown(7);
-        };*/
+        };
     }
     //ER
     else if(!!diagramType.ER && !diagramType.UML && !diagramType.IE){
         Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        /*Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
-        });*/
+        });
         document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
     }
@@ -1402,14 +1402,14 @@ function showDiagramTypes(){
         Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        /*Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
-        });*/
+        });
         document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
     }
     //IE
-    /*else if (!diagramType.ER && !diagramType.UML && !!diagramType.IE){
+    else if (!diagramType.ER && !diagramType.UML && !!diagramType.IE){
         Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
@@ -1418,7 +1418,7 @@ function showDiagramTypes(){
         });
         document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
         document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
-    }*/
+    }
 }
 //<-- UML functionality end
 /**
