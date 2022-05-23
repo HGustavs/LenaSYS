@@ -84,16 +84,19 @@ else if(strcmp($opt,"gitUserAdmin") == 0)
 	$gituser = getOP('username');
 	$gitUserChange = getOP('gitUserChange');
 
+	//Deny user
 	if($gitUserChange == 1){
 		$query = $pdo->prepare("UPDATE git_user SET status_account=102 WHERE username=:gituser;");
 		$query->bindParam(':gituser', $gituser);
 	}
 
+	//Delete user
 	elseif($gitUserChange == 2){
 		$query = $pdo->prepare("DELETE FROM git_user WHERE username=:gituser;");
 		$query->bindParam(':gituser', $gituser);
 	}
 
+	//Accept user
 	elseif($gitUserChange == 3){
 		$query = $pdo->prepare("UPDATE git_user SET status_account=0 WHERE username=:gituser;");
 		$query->bindParam(':gituser', $gituser);
