@@ -694,16 +694,17 @@ function deleteItem(item_lid = null) {
    }, 60000);
 }
 
-// Permanently delete elements
-function deleteAll()
+// Permanently delete elements. Update: This function now calls DELETED in sectionserviced.php instead of DEL
+function deleteAll(item)
 {
   for(var i = delArr.length-1; i >= 0; --i){
-    AJAXService("DEL", {
+    AJAXService("DELETED", {
       lid: delArr.pop()
     }, "SECTION");
   }
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
+  item.style.display = "none";
 }
 
 // Cancel deletion
@@ -716,15 +717,12 @@ function cancelDelete() {
   location.reload();
 }
 
-// Set all "deleted" items as hidden
-// Used when refreshing the table
-function hideDeleted()
-{
-  for(var i = 0; i < delArr.length; ++i){
-    document.getElementById("lid" + delArr[i]).style.display = "none";
-  }
+//----------------------------------------------------------------------------------
+// getDeletedItems: Used to retrieve deleted list entries
+//----------------------------------------------------------------------------------
+function getDeletedListEntries(){
+ var deletedEntries = document.write('<?php echo getDeletedEntries("DISPLAYDELETED"); ');
 }
-
 //----------------------------------------------------------------------------------
 // hideMarkedItems: Hides Item from Section List
 //----------------------------------------------------------------------------------
