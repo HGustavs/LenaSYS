@@ -18,7 +18,7 @@
         --color-primary-light: #927b9e;
         --color-new-user: #93A561;
         --color-new-user-hover: #B6C58C;
-        --color-accent: rgb(254, 204, 86);
+        --color-accent: rgb(42, 42, 42);
         --color-accent-transparent: rgba(254, 204, 86, 0.5);
         --color-accent-hover: #ffd369;
         --color-background: #121212; 
@@ -875,3 +875,20 @@ input{
   }
 
   /*/ END /*/
+
+#motdArea {
+    background-color: var(--color-accent);
+}
+
+#motdArea #motdContent {
+    background-color: var(--color-accent);
+}
+
+#motdArea .motdBoxheader {
+    background-color: var(--color-accent);
+}
+
+.arrow {
+    border: solid var(--color-accent);
+    border-width: 0 6px 6px 0;
+}
