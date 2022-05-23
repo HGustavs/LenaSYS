@@ -9870,8 +9870,13 @@ function updateCSSForAllElements()
                             weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                         }
                         // If UMLRelation is not marked.
-                    } 
-                    else{
+                    } else if(element.kind == "UMLRelation"){
+                        if(element.state == "overlapping"){
+                            fillColor.style.fill = `${"#000000"}`;
+                        }else{
+                            fillColor.style.fill = `${"#ffffff"}`;
+                        }
+                    } else{
                         fillColor.style.fill = `${element.fill}`;
                         fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
                         if(element.state == "weakKey") {
