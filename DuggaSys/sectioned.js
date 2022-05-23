@@ -235,7 +235,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
     $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
-    $("#setDeadlineValue").val(deadline.substr(0,10));
+    $("#setDeadlineValue").val( !retdata['startdate'] ? "" : deadline.substr(0,10));
   }
   // Handles relative deadlines
   if(relativeDeadline !== undefined) {
@@ -347,22 +347,27 @@ function checkDeadlineCheckbox(e, check) {
     $("#deadlinehours").prop("disabled", true);
   }
 }
-
+// Takes a relative deadline format and returns a readable string ex: "Course Week 5, 15:00" 
+function formatRelativeDeadlineToString(rDeadline) {
+  rDeadlineArr = rDeadline.split(":");
+  str = "Course ";
+  str += rDeadlineArr[1] == 1 ? "Day" : (rDeadlineArr[1] == 2 ? "Week" : "Month");
+  str += " " + rDeadlineArr[0];
+  if (!/^[0]+$/.test(new String(rDeadlineArr[2] + rDeadlineArr[3]))) {
+    rDeadlineArr[2] = rDeadlineArr[2].length == 1 ? "0" + rDeadlineArr[2] : rDeadlineArr[2];
+    rDeadlineArr[3] = rDeadlineArr[3].length == 1 ? "0" + rDeadlineArr[3] : rDeadlineArr[3];
+    str += ", " + rDeadlineArr[2] + ":"+ rDeadlineArr[3];
+  }
+  return str;
+}
 // Calculates the relative deadline string into a real date relative to the course startdate
 function calculateRelativeDeadline(rDeadline) {
   // rDeadline = [amount, type, hour, minute]
 
-  // This is a failsafe which will probably not be used
-  // If this function is run but there's no startdate we simply return a arbituary date
-  if (retdata['startdate'] === "UNK") {
-    console.log("Course has no startdate, deadlines set to 2015-01-01");
-    return new Date("2015-01-01 00:00:00");
-  }
-
   rDeadline = rDeadline === null ? "1:1:0:0" : rDeadline; 
 
   if (typeof rDeadline === "undefined") {
-    rDeadline =  $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlineminutes").val() + ":" + $("#relativedeadlinehours").val();
+    rDeadline =  getRelativeDeadlineInputValues();
   }
 
   rDeadlineArr = rDeadline.split(":");
@@ -393,8 +398,13 @@ function convertDateToDeadline(date) {
   var rDeadlineArr = date.toLocaleDateString("en-US").split("/");
   rDeadlineArr[0] = rDeadlineArr[0].length < 2 ? "0" + rDeadlineArr[0] : rDeadlineArr[0];
   rDeadlineArr[1] = rDeadlineArr[1].length < 2 ? "0" + rDeadlineArr[1] : rDeadlineArr[1];
-  var newDeadline = rDeadlineArr[2] + "-" + rDeadlineArr[0]+ "-" + rDeadlineArr[1] + " " + date.toString().split(" ")[4];
+  var newDeadline = rDeadlineArr[2] + "-" + rDeadlineArr[0]+ "-" + rDeadlineArr[1] + " " + date.toString().split(" ")[4].substr(0,5);
   return newDeadline;
+}
+
+// Returns the values of the currently chosen relative deadline input elements
+function getRelativeDeadlineInputValues() { 
+  return $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlinehours").val() + ":" + $("#relativedeadlineminutes").val();
 }
 
 //---------------------------------------------------------------------------------------------
@@ -724,12 +734,12 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-  param.relativedeadline = $("#relativedeadlineamount").val()+":"+$("#relativedeadlinetype").val()+":"+$("#relativedeadlinehours").val()+":"+$("#relativedeadlineminutes").val();
-
+  param.relativedeadline = getRelativeDeadlineInputValues();
   // If absolute deadline is not checked, always use relative deadline
   if (!$('#absolutedeadlinecheck').prop('checked')) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
+
   if ($('#fdbck').prop('checked')){
     param.feedback = 1;
     param.feedbackquestion = $("#fdbckque").val();
@@ -1342,7 +1352,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 2) {
 
-       
+
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
 
           kk++;
@@ -1510,17 +1520,7 @@ function returnedSection(data) {
 
             // If there is only a relative deadline we display it instead
           } else if (rDeadline !== null && rDeadline !== "undefined") {
-            rDeadlineArr = rDeadline.split(":");
-            rDeadlineArr[1] = rDeadlineArr[1] == 1 ? "Day" : (rDeadlineArr[1] == 2 ? "Week" : "Month");
-            str += "Course " + rDeadlineArr[1] + " " + rDeadlineArr[0];
-
-            // If minute and hour contains nothing but 0 we dont show it
-            if (!/^[0]+$/.test(new String(rDeadlineArr[2] + rDeadlineArr[3]))) {
-              rDeadlineArr[2] = rDeadlineArr[2].length == 1 ? "0" + rDeadlineArr[2] : rDeadlineArr[2];
-              rDeadlineArr[3] = rDeadlineArr[3].length == 1 ? "0" + rDeadlineArr[3] : rDeadlineArr[3];
-              str += ", " + rDeadlineArr[2] + ":"+ rDeadlineArr[3]
-            }
-
+            str += formatRelativeDeadlineToString(rDeadline);
           }
           str += "</div></td>";
         }
@@ -3088,10 +3088,18 @@ function showCourseDate(ddate, dialogid){
   var enddate = convertDateToDeadline(new Date(retdata['enddate'])).split(" ")[0];
 
   if (!$("#absolutedeadlinecheck").is(":checked")) {
-    $("#dialog8").html("The relative deadline will be set to " + convertDateToDeadline(calculateRelativeDeadline()));
+    rDate = /^[0:]+$/.test(convertDateToDeadline(calculateRelativeDeadline()).split(" ")[1]) ? convertDateToDeadline(calculateRelativeDeadline()).split(" ")[0] : convertDateToDeadline(calculateRelativeDeadline());
+    str = "The relative deadline will be set to ";
+    str += !retdata['startdate'] ? formatRelativeDeadlineToString(getRelativeDeadlineInputValues()) : rDate;
   } else {
-    $("#dialog8").html("The date has to be between " + startdate + " and " + enddate);
+    if ( !retdata['startdate']) {
+      $(ddate).val("");
+      str = "There is no course start date, please add one or use relative deadlines.";
+    } else {
+      str = "The absolute deadline date has to be between " + startdate + " and " + enddate;
+    }
   }
+  $("#dialog8").html(str);
   return isCorrect;
 }
 
@@ -3110,18 +3118,9 @@ function validateDate2(ddate, dialogid) {
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
-  // If absolute deadline is not being used
-  if (!$("#absolutedeadlinecheck").is(":checked")) {
-    ddate.style.borderWidth = "0px";
-    x.style.display = "block";
-    window.bool8 = true;
-
-    return true;
-
-  }
 
   // If deadline is between start date and end date
-  if (startdate <= deadline && enddate >= deadline) {
+  if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
     ddate.style.backgroundColor = "#fff";
@@ -3130,6 +3129,16 @@ function validateDate2(ddate, dialogid) {
     window.bool8 = true;
 
     return true;
+  } else if (!$("#absolutedeadlinecheck").is(":checked")) {
+    // If absolute deadline is not being used
+    $(x).fadeIn();
+    ddate.style.borderWidth = "2px";
+    ddate.style.backgroundColor = "#fff";
+    ddate.style.borderColor = "#aaa";
+    // x.style.display = "block";
+    window.bool8 = true;
+    return true;
+
   } else {
     $(x).fadeIn();
     ddate.style.borderColor = "#E54";
