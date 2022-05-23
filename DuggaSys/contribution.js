@@ -1392,7 +1392,6 @@ function returnedSection(data) {
    data[overview][4]=occurance //(count of how many times each file occurs in Blame grouped by Blame.Blameuser)
       */
 function renderOverview(data){
-  var str = "<h1> Hello world </h1>";
   var values = Array()
   var picketuser = localStorage.getItem('GitHubUser');
   
@@ -1408,11 +1407,23 @@ function renderOverview(data){
       if(picketuser == element[3]) values.push(Array((parseInt(element[4]) / total), element[2], element[1], element[3]));
     });
   values.forEach(element =>{
-    console.log(element);
-    console.log(element.length);
+    // console.log(element);
+    // console.log(element.length);
   });
-  //reset before full implementation is done algorithm not finished yet
-  //str = "";  
+
+  var str = "<div class='container_overview' > ";
+
+  values.forEach(element =>{
+    console.log("element[2]:"+ element[2]);
+    str += "<span  class='box_overview ";
+    if((Math.floor(Math.random()*10) %4)==0) {
+      str+="vertical_text";
+    }
+    str+= "' style='font-size:"+element[0]*5000+"%; width:fit-content; height: fit-content;'>"+element[2]+"</span>";
+  });
+
+  str += "</div> ";
+
   return str;
 }
 
