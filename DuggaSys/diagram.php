@@ -19,6 +19,7 @@
 	$gFileName = "UNK";
 	$instructions = "UNK";
 	$information = "UNK";
+    $hash = getOPG('hash');
 	$finalArray = array();
 	
 	#create request to database and execute it
@@ -102,6 +103,42 @@
 			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");}
 		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName")){
 			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");}
+	}
+
+    #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
+	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
+	if(isset($_SESSION['tempHash']) && $_SESSION['tempHash'] != "UNK")
+	{
+		$tempDir = strval(dirname(__DIR__,2)."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/");
+		$latest = time() - (365 * 24 * 60 * 60);
+		$current = "diagramSave1.json";	 
+
+		#loop through the directory, fetching all files within and comparing time stamps. If a file has changes made more recently, set that file name as current file.
+		#don't check files called "." or ".." as they are hiden directory re-direct files.
+		if(is_dir($tempDir)){
+			try{
+				foreach(new DirectoryIterator($tempDir) as $file){
+					$ctime = $file->getCTime();    // Time file was created
+					$fname = $file->GetFileName (); // File name
+
+					if($fname != "." && $fname != ".."){
+						if( $ctime > $latest ){
+							$latest = $ctime;
+							$current = $fname;
+						}
+					}
+				}
+				$latest = $current;
+                $splicedFileName = $current;
+
+				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+				$fileContent = file_get_contents("{$tempDir}{$latest}");
+
+			}
+			catch(Exception $e){
+				echo 'Message: ' .$e->getMessage();
+			}
+		}
 	}
 
 	if($fileContent === "UNK" || $fileContent === "")

@@ -76,9 +76,7 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-
         duggaData = data;
-    console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');
     //$('#submission-receipt').html(`${duggaData['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(duggaData['hash'])}'> ${createUrl(duggaData['hash'])}` + `</a> </br></br> Hash: </br> ${duggaData['hash']}</br></br>Hash password:</br>${duggaData['hashpwd']}`);
    
@@ -120,14 +118,14 @@ function returnedDugga(data)
         var filePath = lastFile.filepath + "/" + lastFile.filename + lastFile.seq + "." + lastFile.extension;
 
         
-        $.ajax({
+        /*$.ajax({
             method: "GET",
             url: filePath,
         }).done(function(file) {
             setLastFile(file);
             diagramWindow.contentWindow.loadDiagram(file);
         });
-        
+        */
     }
 }
 /**

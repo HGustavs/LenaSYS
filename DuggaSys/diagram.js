@@ -10182,6 +10182,7 @@ function fetchDiagramFileContentOnLoad()
         //check so that it is a file with content
         if(diagramToLoadContent!="NO_FILE_FETCHED" && diagramToLoadContent != ""){
             loadDiagramFromString(JSON.parse(diagramToLoadContent));
+            storeDiagramInLocalStorage();
         }
 }
 
