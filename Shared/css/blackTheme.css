@@ -7,6 +7,8 @@
         --color-text-list: #000;
         --color-text-logo: #fff;
         --color-text-label: #000;
+        --color-text-dark: #000;
+        --color-text-light: #fff;
       
         --color-logo1: #775886;
         --color-logo2: #573866;
@@ -22,9 +24,14 @@
         --color-accent-transparent: rgba(254, 204, 86, 0.5);
         --color-accent-hover: #e9b1ec;
         --color-background: #121212; 
+        --color-background-codeviewer: #272822;
+        --color-background-codeviewer-nav: #464646;
+        --color-background-buttomenu: #5C5A5A;
+        --color-background-normtext: #5d5d5d;
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
         --color-background-4: #c8c8c8;
+        --color-background-light-surface: #fff;
         --color-sectioned-table-hi: #242729;
         --color-sectioned-table-lo: #2d3133;
         --color-statistics: #d8d7da;
@@ -38,9 +45,13 @@
         --color-border-4: #c8c8c8;
         --color-border-5: #888;
       
+        --color-primary-hover: #7D5CA0;
         --color-green: #50a750;
         --color-red: #c75050;
         --color-red-hover: #ce3d3d;
+        --color-fill: #fff;
+        --color-stroke: #fff;
+        --color-table: #212121;
     }
 
     #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
@@ -50,7 +61,7 @@
     }
       
 #div2{
-	background-color: #2c2c2c;
+	background-color: var(--color-background);
 }
 
 #picktemplate{
@@ -59,7 +70,7 @@
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
-	background-color: white;
+	background-color: var(--color-background-light-surface);
 }
 
 #picktemplate img{
@@ -69,11 +80,11 @@
 #picktemplate h1{
 	text-align: center;
   font-family: Arial, Sans-Serif;
-	color: #000;
+	color: var(--color-text-dark);
 }
 
 #docucontent h1 {
-	color:#000;
+	color: var(--color-text-dark);
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -83,8 +94,8 @@
 }
 
 #content {
-    background-color: #121212;
-	color: #fff;
+    background-color: var(--color-background);
+	color: var(--color-text-light);
 }
 
 .filter-label {
@@ -93,7 +104,7 @@
 }
 
 .docucontentStyle h1 {
-    color: white;
+    color: var(--color-text-light);
 }
 
 .box {
@@ -101,49 +112,50 @@
     font-size: 14px;
     outline: 0 none;
     background-color: var(--color-background);
-    color: #FFF;
+    color: var(--color-text-light);
+
 }
 
 .box h1{
-    color: white;
+    color: var(--color-text-light);
 }
 
 .box iframe {
-    background-color: white;
+    background-color: var(--color-background-light-surface);
 }
 
 
 .docucontentStyle {
-     background-color: #272822;
-     color: white;
+     background-color: var(--color-background-codeviewer);
+     color: var(--color-text-light);
 
 }
 .box1Style {
-     background-color: #272822;
-     color: white;
+     background-color: var(--color-background-codeviewer);
+     color: var(--color-text-light);
 }
 .codeboxStyle {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
 }
 
 .box2Style {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
 }
 
 .temp3Style{
-	background-color: #272822;
+	background-color: var(--color-background-codeviewer);
 }
 
 .temp4Style{
-	background-color: #272822;
+	background-color: var(--color-background-codeviewer);
 }
 
 .buttomenuStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
 }
 
 .mbuttoStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
 }
 
 .mbuttoStyleLight {
@@ -151,46 +163,46 @@
 }
 
 .mbuttoStyle:hover{
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 
 .menutextStyle {
-   	color: white;
+   	color: var(--color-text-light);
 }
 
 .hotdogdropStyle{
-	color: white;
+	color: var(--color-text-light);
 }
 .hotdogdropStyle table td{
-	color: white;
+	color: var(--color-text-light);
 }
 
 .dropdownStyle {
-    color: white;
-    /*background: #614875;*/
+    color: var(--color-text-light);
+    /*background: var(--color-primary);*/
 }
 
 .dropdownbackStyle {
-	background-color: #614875;
-    color: #fff;
+	background-color: var(--color-primary);
+    color: var(--color-text-light);
 }
 
 .codedropStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
     border-color: rgb(0,0,0) transparent;
 }
 
 .docudropStyle {
-    background-color: #614875;
+    background-color: var(--color-primary);
     background: rgb(0, 0, 0) transparent;
 }
 
 .themedropStyle {
-	background-color: #614875;
+	background-color: var(--color-primary);
 }
 
 .imgdropStyle{
-	background-color: #614875;
+	background-color: var(--color-primary);
 }
 .imgdropStyle img:hover{
 	border-style:solid;
@@ -199,23 +211,23 @@
 }
 
 .dropdownitemStyle {
-    background: #614875;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-text-light);
 }
 
 .dropdownitem:hover {
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 
 .codeborder{
-	background-color: #614875;
+	background-color: var(--color-primary);
 	text-align: right;
 }
 
 .codeborder .no {
     color: #D8D8D8;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
-	background-color: #614875;
+	background-color: var(--color-primary);
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -224,7 +236,7 @@
 
 .codeborder .impono {
     user-select: none;
-    color: white;
+    color: var(--color-text-light);
     background-color: #9569BD;
     line-height: 21px; /* Workaround! Should be dynamically set according to selected font-size in code example. This works for font-size 16px. */
 }
@@ -233,14 +245,15 @@
 }
 
 .normtext {
-    color: #fff;
-    background-color: transparent;
+    color: var(--color-text-light);
+    background-color: var(--color-background);
+
     white-space:nowrap;
 }
 
 .impo {
     user-select: none;
-    color: #fff;
+    color: var(--color-text-light);
     background-color: #270c27;
     white-space:nowrap;
 }
@@ -250,43 +263,43 @@
 }
 
 .normtext .oper {
-    color: white;
+    color: var(--color-text-light);
     font-weight: bold;
     line-height: 15px;
 }
 
 .impo .oper {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .normtext .string {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .impo .string {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .normtext .number {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .impo .number {
-    color: #fff;
+    color: var(--color-text-light);
     font-weight: bold;
 }
 
 .normtext .hi {
-    background-color: #5d5d5d;
-    color: #fff;
+    background-color: var(--color-background-normtext);
+    color: var(--color-text-light);
 }
 
 .impo .hi {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
     color: #fed;
 }
 
@@ -308,8 +321,8 @@
 }
 
 .normtext .impword {
-    color: white;
-		background-color: #2c2c2c;
+    color: var(--color-text-light);
+		background-color: var(--color-background);
 }
 
 .normtext:hover {
@@ -318,25 +331,25 @@
 }
 
 .impo .impword {
-    color: #000000;
-    background-color: #fff;
+    color: var(--color-text-dark);
+    background-color: var(--color-background-light-surface);
     border: 1px solid #f44;
 }
 
 .descbox .impword {
-    color: #000000;
-    background-color: #fff;
+    color: var(--color-text-dark);
+    background-color: var(--color-background-light-surface);
     border: 1px solid #f44;
 }
 
 .normtext .imphi {
-    background-color: #5d5d5d;
-    color: #fff;
+    background-color: var(--color-background-normtext);
+    color: var(--color-text-light);
 
 }
 
 .impo .imphi {
-    background-color: #272822;
+    background-color: var(--color-background-codeviewer);
     color: #fed;
 }
 
@@ -353,20 +366,20 @@
 }
 
 .settingsTabMenuStyle li{
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 .settingsTabMenuStyle .activeSetMenuLink{
-	border-bottom-color: #614875;
+	border-bottom-color: var(--color-primary);
 	border-bottom-width:3px;
-	background-color: #614875;
+	background-color: var(--color-primary);
 }
 
 .templatethumbicon:hover{
-    background-color: #7D5CA0;
+    background-color: var(--color-primary-hover);
 }
 
 .themeicon:hover {
-	background-color: #7D5CA0;
+	background-color: var(--color-primary-hover);
 }
 
 .codebox{
@@ -375,35 +388,35 @@
 }
 
 .descbox{
-	color: #fff;
-    /* Inherits background-color from .box */
+	background-color: var(--color-background);
+	color: var(--color-text-light);
 }
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #464646;
+	background-color: var(--color-background-codeviewer-nav);
 }
 
 .buttomenu2Style .wordlistselect{
-	color: white;
+	color: var(--color-text-light);
 
-   background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
+   background: url("../new icons/expand_button.svg") no-repeat 50px var(--color-background-buttomenu);
    background-size:15px 15px;
-   border: 1px solid #ccc;
+   border: 1px solid var(--color-border-2);
 }
 
 .buttomenu2Style .boxcontentselect{
-   color: white;
+   color: var(--color-text-light);
 
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background: url("../new icons/expand_button.svg") no-repeat 120px var(--color-background-buttomenu);
    background-size:15px 15px;
-   border: 1px solid #ccc;
+   border: 1px solid var(--color-border-2);
 }
 .buttomenu2Style .chooseContentSelect{
-   color: white;
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   color: var(--color-text-light);
+   background: url("../new icons/expand_button.svg") no-repeat 120px var(--color-background-buttomenu);
    background-size:15px 15px;
-   border: 1px solid #ccc;
+   border: 1px solid var(--color-border-2);
 }
 
 .buttomenu2Style select:hover{
@@ -411,14 +424,14 @@
   cursor: pointer;
 }
 .boxtitleEditable{
-	color: white;
+	color: var(--color-text-light);
 	cursor:text;
     font-family: Arial, Sans-Serif;
 }
 .boxtitle{
 	font-family: Arial, Sans-Serif !important;
 	cursor:default !important;
-	color: white !important;
+	color: var(--color-text-light) !important;
 }
 
 /* ========================
@@ -426,13 +439,13 @@
 	======================*/
 
 .list {
-	  border-bottom: 2px solid #614875;
+	  border-bottom: 2px solid var(--color-primary);
    	font-size: 16px;
 }
 
 .list td {
-    border-left: 2px solid #614875;
-    border-right: 2px solid #614875;
+    border-left: 2px solid var(--color-primary);
+    border-right: 2px solid var(--color-primary);
 }
 
 .changeColorInDarkModeTable:nth-of-type(even) { 
@@ -444,11 +457,11 @@
 }
 
 .bottomBorderColor{
-    border-top: 2px solid #614875;
+    border-top: 2px solid var(--color-primary);
 }
 
 .descbox code{
-    background-color: #2c2c2c;
+    background-color: var(--color-background);
 }
 
 body {
@@ -456,16 +469,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);
-  color: white;
+  color: var(--color-text-light);
 }
     /*A global styling for darkmode, added the class where there needed darkbackgrounds*/
 .DarkModeBackgrounds{
-        background-color: #2c2c2c;
+        background-color: var(--color-background);
     } 
 
 /*A global styling for darkmode, a class for white text on darkbackgrounds*/
 .DarkModeText{
-    color: white;
+    color: var(--color-text-light);
 }
 #inputwrapperText{
     color:rgba(255,255,255,0.6);
@@ -473,7 +486,7 @@ body {
 
 #announcementBoxOverlay{
     display: none;
-    background-color:#121212;
+    background-color: var(--color-background);
     overflow: auto;
     overflow-x: auto;
     font-family: 'Varela', sans-serif;
@@ -499,15 +512,21 @@ body {
     overflow-y: auto;
     display: none;
     background: var(--color-sectioned-table-hi);
-    color: white;
+    color: var(--color-text-light);
     box-shadow: none;
 }
 
 .loginBox,
 .logoutBox{
   background-color: var(--color-background);
-  color:white;
-  border: 2px solid var(--color-sectioned-table-lo);
+  color: var(--color-text-light);
+  border: 2px solid var(--color-border);
+}
+
+.iconColorInDarkMode{
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
 }
 
 #statisticsSwimlanes{
@@ -560,7 +579,7 @@ body {
 
 /* Style for "pane-container text" START */
 .pane{
-    color:white;
+    color: var(--color-text-light);
 }
 /* END */
 
@@ -586,7 +605,7 @@ body {
 	justify-content: flex-start;
     border:2px solid var(--color-sectioned-table-lo);
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
-    background-color: #121212;
+    background-color: var(--color-background);
 }
 
 #toolboxTransform{
@@ -600,8 +619,9 @@ body {
 }
 
 #opTableContainer{
-	background-color: #121212; 
-    margin: 7px;
+	height:355px;
+	background-color: var(--color-table); 
+  margin: 7px;
 	overflow-y:scroll;
 }
 
@@ -616,16 +636,16 @@ body {
 
 /* Style for "Info Box" in Curve Dugga START  */
 #infobox{
-    background-color: #212121;
+    background-color: var(--color-table);
     border: 2px solid var(--color-sectioned-table-lo);
 }
 
 #operations{
-    background: #121212 ;
+    background: var(--color-background) ;
 }
 
 .ColorForTextinInfoBox{
-    color: white;
+    color: var(--color-text-light);
 }
 
 .ColorForTextinInfoBox:checked {
@@ -649,23 +669,23 @@ body {
 }
 
 .tsSmallInput{
-    color: white;
-    background-color: #212121;
-    border: 2px solid #212121;
+    color: var(--color-text-light);
+    background-color: var(--color-table);
+    border: 2px solid var(--color-table);
     color-scheme: dark; 
 }
 /* In "createFileUploadArea" (Big screen) */
 .tsTable input{
     padding: 5px;
-    color: white;
-    background-color: #212121;
-    border: 2px solid #212121;
+    color: var(--color-text-light);
+    background-color: var(--color-table);
+    border: 2px solid var(--color-table);
     color-scheme: dark; 
 }
 
 .tsTable select{
-    background-color: #212121;
-    color: white;
+    background-color: var(--color-table);
+    color: var(--color-text-light);
 }
 
 .tsTableDeleteCell{
@@ -699,13 +719,13 @@ body {
     background-color: var(--color-sectioned-table-lo);
 }
 .graphLabels{
-   fill:white;
+   fill: var(--color-fill);
 }
 .lineDiagramDark text{
-    fill:white;
+    fill: var(--color-fill);
 }
 .lineDiagramDark{
-    border: 2px solid #614875;
+    border: 2px solid var(--color-primary);
     background-color: var(--color-sectioned-table-lo);
   }
 /* END */
@@ -750,7 +770,7 @@ body {
 /* Style for "Info Box" in Dugga 3 START */
 option:checked{
     background-color: var(--color-sectioned-table-lo);
-    color: white;
+    color: var(--color-text-light);
 }
 
 /* Style for "Weekly Bar Chart" START */
@@ -763,39 +783,39 @@ option:checked{
 }
 
 .WeeklyBarChartLine{
-    stroke:white;
+    stroke: var(--color-stroke);
 }
 
 .WeeklyBarChartText{
-    fill: white;
+    fill: var(--color-fill);
 }
 
 .WeeklyBarChartNumberText{
-    stroke: white;
+    stroke: var(--color-stroke);
 }
 
 .chart, .fumho{
-    fill: white;
+    fill: var(--color-fill);
     background-color: var(--color-sectioned-table-hi);
 }
 
 /* Style for "Input elements" */
 button{
-    background-color: #464646;
-    color:white;
+    background-color: var(--color-background-codeviewer-nav);
+    color: var(--color-text-light);
     border-radius: 5px;
 }
 
 select{
-    background-color: #464646;
-    color:white;
+    background-color: var(--color-background-codeviewer-nav);
+    color: var(--color-text-light);
     margin-right: 10px;
     border-radius: 5px;
 }
 
 input{
-    background-color: #212121;
-    color:white;
+    background-color: var(--color-background-codeviewer-nav);
+    color: var(--color-text-light);
     color-scheme: dark; /*For date picker */
     border: 2px solid #121212;
 }
