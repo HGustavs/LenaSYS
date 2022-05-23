@@ -274,7 +274,7 @@
     border-right: solid black 1px;
     background-color: var(--color-primary);
     z-index: 1000;
-    
+    overflow-y: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
