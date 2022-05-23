@@ -494,8 +494,6 @@
     top:11.1%;
     left: 100%;
     padding:5px;
-    padding-top:0px;
-    border-radius: 5px;
     background-color:var(--color-primary);
     
 }
@@ -505,8 +503,6 @@
     top:15.9%;
     left: 100%;
     padding:5px;
-    padding-top:0px;
-    border-radius: 5px;
     background-color:var(--color-primary);
     
 }
@@ -532,22 +528,18 @@
 }
 .placementTypeBoxIcons{
     margin: auto;
-    width: 31px;
-    height: 31px;
+    width: 34px;
+    height: 34px;
     cursor:pointer;
-    border-radius: 30%;
     border: solid 1px var(--color-primary);
-    margin-top: 5px;
 }
 .placementTypeBoxIcons:hover, .active{
     background: var(--color-primary-hover);
     border: solid 1px var(--color-primary-light);
 }
 .placementTypeBoxIcons img{
-    width:35px;
-    height:35px;
-    margin-left: -2px;
-    margin-top: -2px;
+    width:34px;
+    height:34px;
 }
 .placementTypeToolTipText{
     top:0%;
