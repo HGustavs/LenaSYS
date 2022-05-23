@@ -18,9 +18,9 @@
         --color-primary-light: #927b9e;
         --color-new-user: #93A561;
         --color-new-user-hover: #B6C58C;
-        --color-accent: rgb(254, 204, 86);
+        --color-accent: rgb(233, 233, 233);
         --color-accent-transparent: rgba(254, 204, 86, 0.5);
-        --color-accent-hover: #ffd369;
+        --color-accent-hover: #e9b1ec;
         --color-background: #121212; 
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
@@ -875,3 +875,33 @@ input{
   }
 
   /*/ END /*/
+
+#motdArea {
+    background-color: var(--color-accent);
+}
+
+#motdArea #motdContent {
+    background-color: var(--color-accent);
+}
+
+#motdArea .motdBoxheader {
+    background-color: var(--color-accent);
+}
+
+.arrow {
+    border: solid var(--color-accent);
+    border-width: 0 6px 6px 0;
+}
+
+input.submit-button-newitem:hover {
+    transition: 0.4s;
+    background-color: var(--color-accent-hover);
+}
+
+.fab-btn-lg:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.arrowComp, .arrowRight,#sectionList_arrowStatisticsClosed, #sectionList_arrowStatisticsOpen {
+    filter: brightness(0) saturate(100%) invert(99%) sepia(24%) saturate(91%) hue-rotate(298deg) brightness(112%) contrast(83%);
+}
