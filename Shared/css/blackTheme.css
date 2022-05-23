@@ -875,3 +875,15 @@ input{
   }
 
   /*/ END /*/
+
+/* Style for "course-dropdown" START */
+  .course-dropdown-div {
+    background: #212121 url(../icons/desc_primary.svg) no-repeat 90% 50%;
+    border: 1px solid #121212;
+    background-position: right;
+    margin-top: 7px;
+    margin-left: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  /* END  */
