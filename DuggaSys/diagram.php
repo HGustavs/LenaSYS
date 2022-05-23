@@ -129,10 +129,11 @@
 					}
 				}
 				$latest = $current;
+                $splicedFileName = $current;
 
-				#seriously, why does this work?
 				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
 				$fileContent = file_get_contents("{$tempDir}{$latest}");
+
 			}
 			catch(Exception $e){
 				echo 'Message: ' .$e->getMessage();
