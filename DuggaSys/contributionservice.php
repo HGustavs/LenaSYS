@@ -698,8 +698,9 @@ if(strcmp($opt,"get")==0) {
 	}
 	
 	//	-------------- Overview tag Cloud Start ------------- issue #12467
+
 	//import all files and send in ajax call.
-	$query = $log_db->prepare('SELECT filename,path FROM Bfile');
+	$query = $log_db->prepare('SELECT Bfile.id, Bfile.filename, Bfile.path, Blame.blameuser ,count(Blame.fileid) as occurance FROM Bfile,Blame Where Blame.fileid=Bfile.id AND Blame.blameuser=Blame.blameuser GROUP BY Blame.blameuser,Bfile.id ');
 	//Prepare encode
 	if(!$query->execute()){
 		showError();
@@ -709,12 +710,15 @@ if(strcmp($opt,"get")==0) {
 	$Bfiles = array();
 	foreach($rows as $row){
 		$temp = array(
+			$id=$row['id'],
 			$name = $row['filename'],
-			$filePath=$row['path']
+			$filePath=$row['path'],
+			$BlameUser=$row['blameuser'],
+			$fileCount=$row['occurance']
 		);
 		array_push($Bfiles,$temp);
 	}
-
+	
 	// ---------------- Overview Tag Cloud End ----------------
 	$array = array(
 		'debug' => $debug,

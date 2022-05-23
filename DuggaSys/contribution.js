@@ -1386,12 +1386,11 @@ function renderOverview(data){
   var str = "<h1>hello world</h1>";
   
   data['filename'].forEach(element => {
-    str += (element[0] + " | " + element[1]+ " <br>");
+    console.log(element);
   });
-  
-  
-   //reset before full implementation is done algorithm not finished yet
-  str = "";
+
+  //reset before full implementation is done algorithm not finished yet
+  //str = "";
   return str;
 }
 
