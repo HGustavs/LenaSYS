@@ -2673,7 +2673,7 @@ function saveProperties()
                 //Update the attribute array
                 arrElementFunc = formatArr;
                 element[propName] = arrElementFunc;
-                propsChanged.attributes = arrElementFunc;
+                propsChanged.functions = arrElementFunc;
                 break;
 
             default:
