@@ -4837,7 +4837,7 @@ function generateErTableString()
             }
         }
     }
-    //Just for testing
+    
     // Iterate and add each entity's foreign attribute to the correct place
     for(var i = 0; i < ERForeignData.length; i++) {
         // Iterate throught all entities
@@ -4924,6 +4924,9 @@ function generateErTableString()
                     }
                 }
             }
+            if(currentString.charAt(currentString.length-2) == ","){                
+                currentString = currentString.substring(0, currentString.length - 2);
+            }
             currentString += `)</p>`;
             stringList.push(currentString);
         }
@@ -4994,6 +4997,9 @@ function generateErTableString()
                     }
                 }
             }
+            if(currentString.charAt(currentString.length-2) == ","){                
+                currentString = currentString.substring(0, currentString.length - 2);
+            }
             currentString += `)</p>`;
             stringList.push(currentString);
         }
@@ -5031,9 +5037,38 @@ function generateErTableString()
                     currentString += `${ERForeignData[i][2][j].name}`;
                 }
             }
-            currentString += `</span>, `;
+            currentString += `</span>`;
             currentString += `)</p>`;
             stringList.push(currentString)
+        }
+    }
+    // Adding multi-valued attributes to the string
+    for (var i = 0; i < allEntityList.length; i++) {
+        for (var j = 2; j < allEntityList[i].length; j++) {
+            // Write out multi attributes
+            if(allEntityList[i][j].state == 'multiple') {
+                // add the multiple attribute as relation
+                var multipleString = `<p>${allEntityList[i][j].name}( <span style='text-decoration:underline black solid 2px'>`;
+                // add keys from the entity the multiple attribute belongs to
+                for (let k = 0; k < allEntityList[i][1].length; k++) {
+                    // add the entity the key comes from in the begining of the string
+                    multipleString += `${allEntityList[i][0].name}`;
+                    // If element is array, aka strong key for weak entity
+                    if (Array.isArray(allEntityList[i][1][k])) {
+                        for (var l = 0; l < allEntityList[i][1][k].length; l++) {
+                            multipleString += `${allEntityList[i][1][k][l].name}`;
+                        }
+                    }
+                    else {
+                        multipleString += `${allEntityList[i][1][k].name}`;
+                    }
+                    multipleString += `, `;
+                }
+                // add the multiple attribute in the relation
+                multipleString += `${allEntityList[i][j].name}`;
+                multipleString += `</span>)</p>`;
+                stringList.push(multipleString);
+            }
         }
     }
     //Add each string element in stringList[] into a single string.
