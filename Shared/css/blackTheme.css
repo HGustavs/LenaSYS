@@ -12,7 +12,7 @@
       
         --color-logo1: #775886;
         --color-logo2: #573866;
-        --color-logo-background: #775886;
+        --color-logo-background: #432a5a;
 
         --color-primary: #432a5a;
         --color-primary-2: #775886;
@@ -20,9 +20,9 @@
         --color-primary-light: #927b9e;
         --color-new-user: #93A561;
         --color-new-user-hover: #B6C58C;
-        --color-accent: rgb(254, 204, 86);
+        --color-accent: rgb(233, 233, 233);
         --color-accent-transparent: rgba(254, 204, 86, 0.5);
-        --color-accent-hover: #ffd369;
+        --color-accent-hover: #e9b1ec;
         --color-background: #121212; 
         --color-background-codeviewer: #272822;
         --color-background-codeviewer-nav: #464646;
@@ -817,7 +817,7 @@ input{
     background-color: var(--color-background-codeviewer-nav);
     color: var(--color-text-light);
     color-scheme: dark; /*For date picker */
-    border: 2px solid #212121;
+    border: 2px solid #121212;
 }
 
 /* Style for "Date Picker" START:    */
@@ -859,3 +859,69 @@ input{
     background-color:#242729;
 }
 /* END */
+/* Style for fieldset elements in #Show Test" editor.  START */
+.loginBox select{
+    background-color: #212121;
+    color:white;
+}
+
+.loginBox textarea, #receipt{
+    background-color: #212121;
+    color:white;
+}
+
+.ColorForBorderInDuggaed{
+    border: 3px solid var(--color-sectioned-table-hi) ;
+}
+
+#variant{
+    border-bottom: var(--color-sectioned-table-hi) solid 3px;
+}
+
+/*/ Style for lenasys icon START /*/
+.lena { 
+    color: var(--color-text-primary);
+    background: #121212;
+    padding: inherit;
+    margin: 6px;
+  }
+  
+  .sys {
+    border-radius: 6px;
+    color:var(--color-text-primary) ;
+    border: 2px solid var(--color-logo-background);
+    background: linear-gradient(90deg, rgba(18,18,18,1) 21%, rgba(67,42,90,1) 55%);
+  
+  }
+
+  /*/ END /*/
+
+#motdArea {
+    background-color: var(--color-accent);
+}
+
+#motdArea #motdContent {
+    background-color: var(--color-accent);
+}
+
+#motdArea .motdBoxheader {
+    background-color: var(--color-accent);
+}
+
+.arrow {
+    border: solid var(--color-accent);
+    border-width: 0 6px 6px 0;
+}
+
+input.submit-button-newitem:hover {
+    transition: 0.4s;
+    background-color: var(--color-accent-hover);
+}
+
+.fab-btn-lg:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.arrowComp, .arrowRight,#sectionList_arrowStatisticsClosed, #sectionList_arrowStatisticsOpen {
+    filter: brightness(0) saturate(100%) invert(99%) sepia(24%) saturate(91%) hue-rotate(298deg) brightness(112%) contrast(83%);
+}
