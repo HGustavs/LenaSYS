@@ -1030,6 +1030,7 @@ var diagramToLoadContent = "";
 var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
+var UMLHeight = []; // List with UML Entities' real height
 
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
@@ -3198,6 +3199,14 @@ function entityIsOverlapping(id, x, y)
         var element = data[foundIndex];
         let targetX;
         let targetY;
+        var elementHeight = element.height;
+
+        // Change height if element is an UML Entity
+        for (var i = 0; i < UMLHeight.length; i++) {
+            if (element.id == UMLHeight[i].id) {
+                elementHeight = UMLHeight[i].height;
+            }
+        }
 
         targetX = element.x - (x / zoomfact);
         targetY = element.y - (y / zoomfact);
@@ -3207,10 +3216,17 @@ function entityIsOverlapping(id, x, y)
             
             //COMPARED ELEMENT
             const compX2 = data[i].x + data[i].width;
-            const compY2 = data[i].y + data[i].height;
+            var compY2 = data[i].y + data[i].height;
+
+            // Change height if element is an UML Entity
+            for (var j = 0; j < UMLHeight.length; j++) {
+                if (data[i].id == UMLHeight[j].id) {
+                    compY2 = data[i].y + UMLHeight[j].height;
+                }
+            }
 
             if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
-                (targetY < compY2) && (targetY + element.height) > data[i].y){
+                (targetY < compY2) && (targetY + elementHeight) > data[i].y){
                 
                 displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 isOverlapping = true;
@@ -7404,6 +7420,21 @@ function drawElement(element, ghosted = false)
     if (element.kind == "UMLEntity") { 
         elemAttri = element.attributes.length;
         elemFunc = element.functions.length;
+
+        // Removes the previouse value in UMLHeight for the element
+        for (var i = 0; i < UMLHeight.length; i++) {
+            if (element.id == UMLHeight[i].id) {
+                UMLHeight.splice(i, 1);
+            }
+        }
+
+        // Calculate and store the UMLEntity's real height
+        var UMLEntityHeight = {
+            id : element.id,
+            height : ((boxh + (boxh/2 + (boxh * elemAttri/2)) + (boxh/2 + (boxh * elemFunc/2))) / zoomfact)
+        }
+        UMLHeight.push(UMLEntityHeight);
+
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
