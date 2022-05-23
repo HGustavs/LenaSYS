@@ -2176,9 +2176,8 @@ input.inactive-button {
   border-color: rgb(169, 169, 169);
   width: 100%;
 }
-
-#editContent input.submit-button {
-  margin: 0;
+#submitMotd{
+  margin-left: 340px;
 }
 .inputwrapper{
   display: flex;
@@ -7599,6 +7598,30 @@ textarea#mrkdwntxt {
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
+
+#visib{
+  margin-right: 0px;
+  border-radius: 0px;
+}
+
+#saveCourse{
+  margin-left: 347px;
+  margin-top: 20px;
+}
+
+#submitEditCourse{
+  margin-left: 343px;
+  margin-top: 20px;
+}
+#submitCourseMotd{
+  margin-left: 342px;
+  margin-top: 20px;
+}
+#editContentSaveBtn{
+  margin-bottom: 20px;
+  margin-right: 2px;
+}
+
 
 @media only screen and (max-width: 1350px) {
   .previewWindow {
