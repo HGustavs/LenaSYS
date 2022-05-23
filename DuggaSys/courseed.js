@@ -203,6 +203,8 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	// Show dialog
 	$("#editCourse").css("display", "flex");
+	// Get focus on the first input to use tab function
+	document.getElementById("coursename").focus();
 
 	//$("#overlay").css("display", "block");
 
@@ -279,6 +281,8 @@ function editSettings(){
 	}
 
 	popupContainer.style.display = "flex";
+	// Get focus on the motd to use tab function
+	document.getElementById("motd").focus();
 }
 
 function updateSettings() {
@@ -425,7 +429,7 @@ function returnedCourse(data)
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
 	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS' target='_blank'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div id='CourseOrgSys'> Course Organization System</div>"
 	if (data['writeaccess']){
-		str+="<img alt='settings icon' class='whiteIcon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
+		str+="<img alt='settings icon' tabindex='0' class='whiteIcon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
 	}
 	str+="</div>";
 	// For now we only have two kinds of sections
@@ -465,7 +469,7 @@ function returnedCourse(data)
         		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
         		str += "<span style='margin-bottom: 0px'>";
 
-				    str += "<span><img alt='course settings icon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+				    str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
         
         		str += "</span>";
       		} else {

@@ -35,7 +35,7 @@
 				$_SESSION['coursevers'] = "UNK";
 
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
-				if(checklogin() == false|| $_SESSION['uid'] == 0){
+				if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid']))){
 					
 					echo "<td class='navBurger fa fa-bars' id='navBurgerIcon' style='font-size:24px; width: 29px; vertical-align: middle; margin-top: 15px; margin-left: 15px' onclick='navBurgerChange()'</td>";
 					echo "<td id='navBurgerIcon' style='display: none;'> </td>";
@@ -376,14 +376,27 @@
 					echo "<td id='menuHook' class='navSpacer' >";
 			}
 
-			if(checklogin()) {
-				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-				if($noup=='CONTRIBUTION'){
-					echo "<td id='loginbutton' class='loggedin' onclick='git_logout();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
-				}else{
-					echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><div class='loginbutton-nav' tabindex='0'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></div></td>";
+			if($noup=='CONTRIBUTION' && (checkLogin() || git_checkLogin()))
+			{
+				if(checkLogin())
+				{
+					echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
 				}
-			}else{
+				else if (git_checkLogin())
+				{
+					echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['git_loginname']."&#39;s profile'>".$_SESSION['git_loginname']."</a></td>";
+				}
+				echo "<td id='loginbutton' class='loggedin' onclick='git_showLogoutPopup();'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+			}
+			else if(checklogin()) 
+			{
+				echo "<td class='navName' id='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+			
+					echo "<td id='loginbutton' class='loggedin' onclick='showLogoutPopup();'><div class='loginbutton-nav' tabindex='0'><img alt='logout icon' id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></div></td>";
+				
+			}
+			else
+			{
 				//---  original --- echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'></label></td>";
 				

@@ -79,7 +79,7 @@ $duggainfo=array();
 $duggainfo['deadline']="UNK";
 $duggainfo['qrelease']="UNK";
 $hr=false;
-$userfeedback="UNK"
+$userfeedback="UNK";
 $feedbackquestion="UNK";
 $isFileSubmitted="UNK";
 
