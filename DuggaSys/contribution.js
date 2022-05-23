@@ -1393,24 +1393,26 @@ function returnedSection(data) {
       */
 function renderOverview(data){
   
-  var total = Array();
+  
   var values = Array()
  
   
   for(var i = 0; i<data['allusers'].length;i++){
-    total.push(0);
+    var total = 0;
     //count total for each user
     data['overview'].forEach(element =>{
-      if(data['allusers'][i] == element[3]) total[i] +  total[i] + element[4];
+      if(data['allusers'][i] == element[3]) total =  total + element[4];
     });  
     
     //calculate % and place in array
     data['overview'].forEach(element =>{
-      if(data['allusers'][i] == element[3]) values.push(Array((element[4] / total[i]), element[2], element[1], element[3]));
+      if(data['allusers'][i] == element[3]) values.push(Array((element[4] / total), element[2], element[1], element[3]));
     });
   }
   //reset before full implementation is done algorithm not finished yet
   //str = "";
+
+  
   return str;
 }
 
