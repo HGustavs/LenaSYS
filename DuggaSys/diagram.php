@@ -17,8 +17,6 @@
 	$json = "UNK";
 	$fileName = "UNK";
 	$gFileName = "UNK";
-	$instructions = "UNK";
-	$information = "UNK";
     $hash = getOPG('hash');
 	$finalArray = array();
 	
@@ -174,9 +172,19 @@
 			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
 				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
 					window.parent.document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
+
+                    // Checks if index[3] i.e. the "Instruction file" is empty 
+					if(<?php echo json_encode($finalArray);?>[index][3]=='') {
+						window.parent.document.getElementById("container__left").style.display="none";
+					}
 				}
 				if(<?php echo json_encode($finalArray);?>[index][5]==fileName){
 					window.parent.document.getElementById("diagram_instructions").innerHTML =<?php echo json_encode($finalArray);?>[index][6];
+
+                    // Checks if index[6] i.e. the "General information file" is empty 
+					if(<?php echo json_encode($finalArray);?>[index][6]=='') {
+						window.parent.document.getElementById("instructions-container").style.display="none";
+					}
 				}
 			}
 		}			
