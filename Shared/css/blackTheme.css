@@ -817,3 +817,37 @@ input{
     filter: invert(1) ; 
 }
 /* END */
+
+#container_header{
+    background-color: #2D3133;
+  }
+  
+  #assignment_discrb {
+    color: white;
+    background-color: #121212;
+  }
+
+  #close_open_border {
+    background-color: #2D3133;
+    border-top: 1px solid var(--color-sectioned-table-hi);  
+  }
+
+  #close_open_border:after {
+    border-left: 14px solid #2D3133;
+  }
+
+  #close_open_border:hover {
+    background-color:  var(--color-sectioned-table-hi);
+  }
+
+  #close_closed_border:hover {
+    background-color:  var(--color-sectioned-table-hi);
+  }
+
+  .assignment_left {
+      border: 1px solid var(--color-sectioned-table-hi);
+  }
+
+  #close_open_border:hover:after {
+    border-left: 14px solid var(--color-sectioned-table-hi);;
+}
