@@ -93,15 +93,18 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 			$debug.="Error updating dugga ".$error[2];
 		}
 	}else if(strcmp($opt,"DELDU")===0){
-        $query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
+		$query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
 		$query->bindParam(':qid', $qid);
-
-		if(!$query->execute()) {
-			if($query->errorInfo()[0] == 23000) {
-				$debug = "The item could not be deleted because of a foreign key constraint.";
-			} else {
-				$debug = "The item could not be deleted.";
+		try{
+			if(!$query->execute()) {
+				if($query->errorInfo()[0] == 23000) {
+					$debug = "The item could not be deleted because of a foreign key constraint.";
+				} else {
+					$debug = "The item could not be deleted.";
+				}
 			}
+		}catch(Exception $e){
+			$debug = "The item could not be deleted.";
 		}
 
     }else if(strcmp($opt,"ADDVARI")===0){
