@@ -9170,11 +9170,11 @@ function checkElementError(element)
                 }
             }
 
-            // Checking for non-normal attributes on relation
-            if (fElement.id == element.id && tElement.kind == "ERRelation" && fElement.state != "normal") {
+            // Checking for key attributes on relation
+            if (fElement.id == element.id && tElement.kind == "ERRelation" && (fElement.state == "primary" || fElement.state == "candidate" || fElement.state == "weakKey")) {
                 errorData.push(element);
             }
-            if (tElement.id == element.id && fElement.kind == "ERRelation" && tElement.state != "normal") {
+            if (tElement.id == element.id && fElement.kind == "ERRelation" && (tElement.state == "primary" || tElement.state == "candidate" || tElement.state == "weakKey")) {
                 errorData.push(element);
             }
 
