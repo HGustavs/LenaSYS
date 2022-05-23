@@ -19,6 +19,19 @@ var duggaPages;
 var isClickedElementBox = false;
 var searchterm = "";
 var targetfile;
+var x = window.matchMedia('(max-width: 380px)');
+
+x.onchange = (e) => {
+    if (e.matches) {
+        displayNavIcons();
+    }
+}  
+
+function displayNavIcons() {
+    document.getElementById("home").style.display="revert";
+    document.getElementById("theme-toggle").style.display="revert";
+    document.getElementById("back").style.display="revert";    
+}
 
 function setup() {
 	/* Replaced by search bar in navheader.php. Remove this code when the new search bar has been properly tested
