@@ -5387,11 +5387,11 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
-        /*document.getElementById("elementPlacement7").classList.add("hiddenPlacementType"); //IE inheritance start
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType"); //IE inheritance start
         document.getElementById("elementPlacement7").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox");*/ // IE inheritance end
+        document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
