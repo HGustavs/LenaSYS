@@ -42,6 +42,7 @@
   --color-border-3: #f0f0f0;
   --color-border-4: #c8c8c8;
   --color-border-5: #888;
+  --color-border-6: #000;
 
   --color-green: #50a750;
   --color-red: #c75050;
@@ -548,7 +549,7 @@ p {
 }
 #displayAnnouncements .announcementCard .actionBtns span.editBtn {
   background-color: var(--color-background);
-  color: black;
+  color: var(--color-text-list);
   border: 2px solid var(--color-logo-background);
   padding: 4px 8px;
   text-align: center;
@@ -593,7 +594,7 @@ p {
 }
 
 .displayAnnounceTime, .displayAuthor{
-  color: #000000;
+  color: var(--color-text-list);
 }
 
 .displayAuthor{
@@ -665,7 +666,7 @@ p {
 }
 #announcementBox button a{
     text-decoration: none;
-    color: #000;
+    color: var(--color-text-list);
 }
 
 /*End of show all the announcments*/
@@ -991,7 +992,7 @@ p {
   height: 32px;
   width: 15px;
   margin-left: 15px;
-  border-left: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
 }
 
 /*Vertical line for 1 tabs*/
@@ -999,7 +1000,7 @@ p {
   height: 32px;
   width: 32px;
   margin-left: 15px;
-  border-right: 2px solid black;
+  border-right: 2px solid var(--color-border-6);
 }
 /*Vertical line for 2 tabs*/
 /*
@@ -1007,14 +1008,14 @@ p {
   height: 32px;
   width: 64px;
   margin-left: 15px;
-  border-right: 2px solid black;
+  border-right: 2px solid var(--color-border-6);
 }*/
 /*Vertical line for 3 tabs*/
 #Sectionlist .tabs3 .spacerRight {
   height: 32px;
   width: 96px;
   margin-left: 15px;
-  border-right: 2px solid black;
+  border-right: 2px solid var(--color-border-6);
 }
 
 /*Vertical line for end tabs for "1 tab + end"*/
@@ -1022,8 +1023,8 @@ p {
   height: 19px;
   width: 19px;
   margin: 0px 0px 11px 47px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
 }
 /*Vertical line for end tabs for "2 tabs + end"*/
@@ -1031,8 +1032,8 @@ p {
   height: 19px;
   width: 19px;
   margin: 0px 0px 11px 79px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
 }
 /*Vertical line for end tabs for "3 tabs + end"*/
@@ -1040,8 +1041,8 @@ p {
   height: 19px;
   width: 19px;
   margin: 0px 0px 11px 111px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
 }
 
@@ -1053,8 +1054,8 @@ p {
   margin-bottom: 14px;
   */
   margin: 0px 0px 15px 15px;
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 2px solid var(--color-border-6);
+  border-bottom: 2px solid var(--color-border-6);
   border-bottom-left-radius: 6px;
   overflow: hidden;
 }
@@ -1152,7 +1153,7 @@ p {
   height: 26px;
   margin: 2px 2px 2px 2px;
   border-radius: 14px;
-  border: 1px solid #000;
+  border: 1px solid var(--color-border-6);
 } */
 
 .WhiteLight {
@@ -1353,6 +1354,16 @@ header td {
 .navButt img {
   vertical-align: middle;
   height: 32px;
+}
+
+#downloadButt {
+  margin-top: 2px;
+  height: 40px;
+}
+
+/* Hide download button when in mobile view */
+@media screen and (max-width:480px) {
+  #downloadBTN {display: none;}
 }
 
 #homeImg{
@@ -1822,7 +1833,7 @@ div .navButt:hover {
   padding: 4px;
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
-  color:black;
+  color: var(--color-text-list);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -2113,7 +2124,7 @@ div .navButt:hover {
 .passwordBlock{
   width: 50%;
   padding: 4px 0px;
-  background-color: black;
+  background-color: var(--color-text-list);
   border-radius: 3px;
   cursor: pointer;
 }
@@ -2175,10 +2186,28 @@ input.inactive-button {
   border-color: rgb(169, 169, 169);
   width: 100%;
 }
-
-#editContent input.submit-button {
-  margin: 0;
+#submitMotd{
+  margin-left: 340px;
 }
+.inputwrapper{
+  display: flex;
+  justify-content: space-between;
+  width: 445px;
+  border-radius: 0px;
+}
+.inputwrapper select{
+  border-radius: 0px;
+}
+#inputwrapper-name{
+  width: 440px;
+}
+#copyvers{
+  margin-right: 0px;
+}
+#editCourse #visib{
+  margin-right: 0px;
+}
+
 
 #impwords,
 #impword {
@@ -2533,7 +2562,7 @@ label.login-label {
 
 .drop-down-item>a,
 .drop-down-option {
-  color: rgb(0, 0, 0);
+  color: var(--color-text-list);
   text-decoration: none;
   display: inline-block;
   width: 252px;
@@ -2978,8 +3007,8 @@ div.submit-button:disabled {
 
 .formDialog .formDialogText {
   width: 200px;
-  background-color: black;
   color: var(--color-text-header);
+  background-color: var(--color-text-list);
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -2997,7 +3026,7 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent black;
+  border-color: transparent transparent transparent var(--color-border-6);
 }
 
 /* Tooltip */
@@ -3009,8 +3038,8 @@ div.submit-button:disabled {
 
 .tooltipDugga .tooltipDuggatext {
   width: 200px;
-  background-color: black;
   color: var(--color-text-header);
+  background-color: var(--color-border-6);
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -3030,7 +3059,7 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent black;
+  border-color: transparent transparent transparent var(--color-border-6);
 }
 
 .tooltipDuggaType {
@@ -3061,7 +3090,7 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent black;
+  border-color: transparent transparent transparent var(--color-border-6);
 }
 
 #uploadedfile {
@@ -3338,7 +3367,7 @@ span.arrow {
   border-radius: 0px;
   font-size: 14px;
   height: 17px;
-  color: black;
+  color: var(--color-text-list);
 }
 
 #testinnertable {
@@ -3559,7 +3588,7 @@ span.arrow {
   left: 15%;
   min-width: 250px;
   background-color: var(--color-background-3);
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
 }
 .show-column-filter-popup {
   left: inherit;
@@ -3729,7 +3758,7 @@ span.arrow {
   z-index: 1;
 }
 .access-dropdown-content div {
-  color: black;
+  color: var(--color-text-list);
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -3799,8 +3828,8 @@ div.reset-pw:hover{
   padding: 5px;
   padding-bottom: 10px;
   line-height: 18px;
-  color: black;
   box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  color: var(--color-text-list);
 }
 
 .tooltip-searchbar-box:before {
@@ -4041,7 +4070,7 @@ div.reset-pw:hover{
   position: absolute;
   bottom: 50px;
   right: 11px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
 }
 
 .facitPopover {
@@ -4051,7 +4080,7 @@ div.reset-pw:hover{
   bottom: 50px;
   right: 50px;
   left: 50px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
 }
 
 #MarkCont a:hover {
@@ -4362,7 +4391,7 @@ div.reset-pw:hover{
 .dropdown-list-container {
   padding: 8px;
   width: 200px;
-  color:#000;
+  color: var(--color-text-list);
   font-size: 12px;
   overflow-y: auto;
   display: none;
@@ -4575,8 +4604,8 @@ div.reset-pw:hover{
   grid-template-rows: repeat(5, auto);
   grid-row-start: auto;
   background: lightgray;
-  color: black;
-  border: 1px solid black;
+  color: var(--color-text-list);
+  border: 1px solid var(--color-border-6);
   padding: 5px;
   text-align: center;
   font-size: 10pt;
@@ -5144,8 +5173,42 @@ ul.hamburgerList button.menuButton {
   width: 100%;
 }
 
+/* ---------- Mobil View Start ---------- */
+
+@media only screen 
+and (min-device-width: 320px) 
+and (max-device-width: 480px) 
+and (-webkit-device-pixel-rati:2)
+and (device-aspect-ratio: 2/3){
+  /* write css for iPhone 4/4s Landscape & Portrait */
+}
+
+@media only screen 
+and (min-device-width: 320px) 
+and (max-device-width: 568px) 
+and (-webkit-device-pixel-rati:2){
+  /* write css for iPhone 5/5s Landscape & Portrait */
+}
+
+@media only screen 
+and (min-device-width: 375px) 
+and (max-device-width: 667px) {
+  /* write css for iPhone 6 Landscape & Portrait */
+}
+
+@media only screen 
+and (min-device-width: 768px) 
+and (: 1024px) 
+and (-webkit-device-pixel-rati:1){
+  /* write css for iPad Mini Landscape & Portrait */
+}
+
+/* ---------- Mobil View End ---------- */
+
+
+/* min-device-width: 1085px */
 @media only screen and (min-width: 1085px),
-only screen and (min-device-width: 1085px) {
+only screen and (min-device-width: 320px) {
   #TopMenuStatic {
     position: fixed;
     top: 3px;
@@ -5156,7 +5219,7 @@ only screen and (min-device-width: 1085px) {
 }
 
 @media only screen and (max-width: 1085px),
-only screen and (max-device-width: 1085px) {
+only screen and (max-device-width: 568px) {
   #sortingBar {
     width: 135px;
     position: relative;
@@ -5205,8 +5268,8 @@ only screen and (max-device-width: 1085px) {
 }
 
 @media only screen and (max-width: 800px),
-only screen and (max-device-width: 800px),
-only screen and (orientation:portrait){
+only screen and (max-device-width: 568px) {
+
   #addElement {
     display: none;
   }
@@ -5226,7 +5289,7 @@ only screen and (orientation:portrait){
 }
 
 @media only screen and (max-width: 768px),
-only screen and (max-device-width: 768px) {
+only screen and (max-device-width: 568px) {
 
   .hideAll,
   .showAll {
@@ -5342,7 +5405,7 @@ only screen and (max-device-width: 768px) {
     white-space: nowrap;
     font-weight: bold;
     font-size: 16px;
-    color: #000000;
+    color: var(--color-text-list);
   }
 
   /*
@@ -5382,7 +5445,7 @@ only screen and (max-device-width: 768px) {
 }
 
 @media only screen and (max-width: 860px),
-only screen and (max-device-width: 860px) {
+only screen and (max-device-width: 568px) {
   table.navheader td.hamburger {
     pointer-events: auto;
     width: 32px;
@@ -5444,16 +5507,19 @@ only screen and (max-device-width: 860px) {
 #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
   display:none;
 }
-
+#homeBurger,#goBackBurger,#darkModeBurger{
+display: none;
+}
 #navBurgerIcon { 
   display: none;
   
 }
 @media only screen and (max-width: 380px),
-only screen and (max-device-width: 380px) {
+only screen and (max-device-width: 568px) {
 
   #navBurgerIcon { 
     display: block;
+    
   }
  
   #navBurgerBox{
@@ -5476,7 +5542,7 @@ only screen and (max-device-width: 380px) {
 }
 
 @media only screen and (max-width: 790px),
-only screen and (max-device-width: 790px) {
+only screen and (max-device-width: 568px) {
   table.navheader td.files {
     margin-right: 0px;
     width: 0px;
@@ -5503,7 +5569,7 @@ only screen and (max-device-width: 790px) {
 }
 
 @media only screen and (max-width: 670px),
-only screen and (max-device-width: 670px) {
+only screen and (max-device-width: 568px) {
 
   table.navheader td.results,
   table.navheader td.tests {
@@ -5533,7 +5599,7 @@ only screen and (max-device-width: 670px) {
 }
 
 @media only screen and (max-width: 530px),
-only screen and (max-device-width: 530px) {
+only screen and (max-device-width: 568px) {
 
   .hideAll,
   .showAll {
@@ -5650,7 +5716,7 @@ only screen and (max-device-width: 530px) {
 }
 
 @media only screen and (max-width: 520px),
-only screen and (max-device-width: 520px) {
+only screen and (max-device-width: 568px) {
 
   table.navheader td.tests,
   table.navheader td.results,
@@ -5711,7 +5777,7 @@ only screen and (max-device-width: 520px) {
   }
 }
 @media only screen and (max-width: 390px),
-only screen and (max-device-width: 390px) {
+only screen and (max-device-width: 568px) {
 
   #searchbar input#searchinput,
   #searchbar button#searchbutton{
@@ -6002,7 +6068,7 @@ only screen and (max-device-width: 390px) {
 }
 
 .migration-status {
-  border: 1px solid black;
+  border: 1px solid var(--color-border-6);
   width: 95%;
   margin: 0 auto;
   max-height: 100vh;
@@ -6026,7 +6092,7 @@ only screen and (max-device-width: 390px) {
 }
 
 @media only screen and (max-width: 320px),
-only screen and (max-device-width: 320px) {
+only screen and (max-device-width: 568px) {
   .migration-row {
     width: 95%;
     margin: 1rem auto;
@@ -6071,7 +6137,7 @@ only screen and (max-device-width: 320px) {
 
 .form-group input[type=range]::-moz-range-thumb{
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
   width: 8px;
   border-radius: 3px;
   background-color: var(--color-background);
@@ -6195,8 +6261,8 @@ only screen and (max-device-width: 320px) {
   z-index: 2;
   background-color: var(--color-background);
   width: fit-content;
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
+  border-right: 1px solid var(--color-border-6);
+  border-bottom: 1px solid var(--color-border-6);
 }
 
 #diagram-page-wrapper.rulers-active #diagram-header {
@@ -6238,6 +6304,9 @@ only screen and (max-device-width: 320px) {
   background-color: var(--color-background);
   border-right: 1px solid #000000;
   border-bottom: 1px solid #000000;
+  background-color: #ffffff;
+  border-right: 1px solid var(--color-border-6);
+  border-bottom: 1px solid var(--color-border-6);
 }
 
 #diagram-page-wrapper.rulers-active #diagram-tools-container {
@@ -6393,7 +6462,7 @@ only screen and (max-device-width: 320px) {
 }
 
 #diagram-canvas {
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
   width: 100%;
   height: 100%;
 }
@@ -6419,8 +6488,8 @@ only screen and (max-device-width: 320px) {
 }
 
 .ruler {
-  border-top: 1px solid #000000;
-  border-left: 1px solid #000000;
+  border-top: 1px solid var(--color-border-6);
+  border-left: 1px solid var(--color-border-6);
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
@@ -6435,7 +6504,7 @@ only screen and (max-device-width: 320px) {
   z-index: 10;
   background-color: var(--color-background);
   margin: 0;
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
 }
 
 .ruler.hidden,
@@ -6447,7 +6516,7 @@ only screen and (max-device-width: 320px) {
 #ruler-x {
   height: var(--ruler-size);
   margin-right: var(--canvas-margin);
-  border-right: 1px solid #000000;
+  border-right: 1px solid var(--color-border-6);
   cursor: row-resize;
 }
 
@@ -6459,7 +6528,7 @@ only screen and (max-device-width: 320px) {
   width: var(--ruler-size);
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid var(--color-border-6);
   cursor: col-resize;
 }
 
@@ -6593,10 +6662,11 @@ only screen and (max-device-width: 320px) {
   display: flex;
   height: var(--timeline-height);
   width: calc(100% - var(--canvas-margin));
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
-  border-left: 1px solid #000000;
   background-color: var(--color-background);
+  border-right: 1px solid var(--color-border-6);
+  border-bottom: 1px solid var(--color-border-6);
+  border-left: 1px solid var(--color-border-6);
+  background-color: #ffffff;
 }
 
 #diagram-page-wrapper.fullscreen #diagram-timeline-container{
@@ -6605,7 +6675,7 @@ only screen and (max-device-width: 320px) {
   left: 0;
   right: 0;
   z-index: 10;
-  border: 1px solid #000000;
+  border: 1px solid var(--color-border-6);
   width: 100%;
 }
 
@@ -6656,7 +6726,7 @@ only screen and (max-device-width: 320px) {
   display: flex;
   align-items: center;
   height: 100%;
-  border-left: 1px solid #000000;
+  border-left: 1px solid var(--color-border-6);
 }
 
 #diagram-timeline-speed-range {
@@ -6702,9 +6772,9 @@ only screen and (max-device-width: 320px) {
   height: 300px;
   width: 96%;
   background-color: var(--color-background);
-  color:black;
+  color: var(--color-text-list);
   padding-left: 8px;
-  border:black 2px solid;
+  border: var(--color-border-6) 2px solid;
   font-size: 14px;
   line-height: 1.6;
   font-weight: bold;
@@ -6764,7 +6834,7 @@ only screen and (max-device-width: 320px) {
   }
 }
 @media only screen and (max-width: 430px),
-only screen and (max-device-width: 430px) {
+only screen and (max-device-width: 568px) {
   #course-label {
     font-size: 12px;
     margin-right: 25px;
@@ -7080,7 +7150,7 @@ only screen and (max-device-width: 430px) {
 }
 
 .arrow {
-  border: solid black;
+  border: solid var(--color-border-6);
   border-width: 0 6px 6px 0;
   display: inline-block;
   opacity: 0.5;
@@ -7542,6 +7612,30 @@ textarea#mrkdwntxt {
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
+
+#visib{
+  margin-right: 0px;
+  border-radius: 0px;
+}
+
+#saveCourse{
+  margin-left: 347px;
+  margin-top: 20px;
+}
+
+#submitEditCourse{
+  margin-left: 343px;
+  margin-top: 20px;
+}
+#submitCourseMotd{
+  margin-left: 342px;
+  margin-top: 20px;
+}
+#editContentSaveBtn{
+  margin-bottom: 20px;
+  margin-right: 2px;
+}
+
 
 @media only screen and (max-width: 1350px) {
   .previewWindow {
@@ -8418,7 +8512,7 @@ textarea#filecont {
 .accountRequestTable {
   margin-right: auto;
   margin-left: auto;
-  color: #000000;
+  color: var(--color-text-list);
   border: solid 1px #888;
   border-collapse: collapse;
   padding: 7px;
@@ -8488,12 +8582,12 @@ background-color: #614875;
 
 .codedropStyle {
   background-color: #614875;
-  border-color: rgb(0,0,0) transparent;	
+  border-color: var(--color-border-6) transparent;	
 }
 
 .docudropStyle {
   background-color: #614875; 
-  background: rgb(0, 0, 0) transparent;
+  background: var(--color-border-6) transparent;
 }
 
 .themedropStyle {
@@ -8581,7 +8675,7 @@ span[id$="examples"]:hover{
 }
 
 .normtext {
-  color: #000;
+  color: var(--color-text-list);
   background-color: transparent;
   white-space:nowrap;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
@@ -8589,7 +8683,7 @@ span[id$="examples"]:hover{
 
 .impo {
   user-select: none;
-  color: #000;
+  color: var(--color-text-list);
   background-color: rgba(186, 96, 255, 0.09);
   white-space:nowrap;
   min-width: 660px;
@@ -8621,12 +8715,12 @@ span[id$="examples"]:hover{
 }
 
 .normtext .oper {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .impo .oper {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
@@ -8636,35 +8730,35 @@ span[id$="examples"]:hover{
 }
 
 .impo .string {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 .normtext .number {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .impo .number {
-  color: #000;
+  color: var(--color-text-list);
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 .normtext .hi {
   background-color: #9569BD;
-  color: #000;
+  color: var(--color-text-list);
   font-weight: bold;
 }
 .impo .hi {
   font-weight: bold;
-  color: #000000;
+  color: var(--color-text-list);
   background-color: #9569BD;
 }
 .normtext .html {
   background-color: #9569BD;
-  color: #000;
+  color: var(--color-text-list);
 }
 .impo .html {
   background-color: #9569BD;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 .keywordA {
@@ -8684,21 +8778,13 @@ span[id$="examples"]:hover{
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 .normtext .impword {
-  /*
-  color: var(--color-text-header);
-  background-color: #9971AF;
-  */
   background-color: var(--color-background-5);
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 .impword2 {
-  /*
-  color: var(--color-text-header);
-  background-color: #9971AF;
-  */
   background-color: var(--color-background-5);
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 .impo .impword {
@@ -8707,24 +8793,20 @@ span[id$="examples"]:hover{
   background-color: #614875;
   */
   background-color: var(--color-background-5);
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
   font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .descbox .impword {
-  /*
-  color: var(--color-text-header);
-  background-color: #9971AF;
-  */
   background-color: var(--color-background-5);
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 
 .descbox code .impword {
   background-color: var(--color-background);
-  color: #000;
+  color: var(--color-text-list);
   border-bottom: 2px solid #9971AF; 
 }
 
@@ -8732,15 +8814,19 @@ span[id$="examples"]:hover{
 /*  
 background-color: var(--color-background);
 color: #000;
+background-color: #fff;
+color: var(--color-text-list);
 */
 color: var(--color-text-header) !important;
 background-color: #614875 !important;
 border: none !important;
 }
 .normtext .imphi {
-  /*  
+  /*
   background-color: var(--color-background);
   color: #000;
+  background-color: #fff;
+  color: var(--color-text-list);
   */
   color: var(--color-text-header);
   background-color: #614875;
@@ -8750,7 +8836,8 @@ border: none !important;
 .impo .imphi {
   /*  
   background-color: var(--color-background);
-  color: #000;
+  background-color: #fff;
+  color: var(--color-text-list);
   */
   color: var(--color-text-header);
   background-color: #614875;
@@ -9003,7 +9090,7 @@ border: none !important;
 /* Style for "Input elements" */
 select{
   background-color: var(--color-background);
-  color: black;
+  color: var(--color-text-list);
   margin-right: 10px;
   border-radius: 5px;
 }

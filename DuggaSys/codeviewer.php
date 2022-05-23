@@ -283,7 +283,7 @@ Testing Link:
 					</table>
 					<table width="100%">
 						<tr>
-							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateContent();' /></td>
+							<td align='right'><input id='editContentSaveBtn' class='submit-button' type='button' value='Save' onclick='updateContent();' /></td>
 						</tr>
 					</table>
 				</div>
