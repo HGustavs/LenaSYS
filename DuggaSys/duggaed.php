@@ -239,6 +239,8 @@ $vers=getOPG('coursevers');
                       <div id="diagramTypesBox" style="display:flex;flex-wrap:wrap;flex-direction:row;">
                         <label for="ER">ER</label>
                         <input type="checkbox" name="ER" id="ER" value="true" checked="true" onchange="checkDiagramTypes(0);"/>
+                        <label for="IE">IE</label>
+                        <input type="checkbox" name="IE" id="IE" value="true" onchange="checkDiagramTypes(2);"/>  
                         <label for="UML">UML</label>
                         <input type="checkbox" name="UML" id="UML" value="true" onchange="checkDiagramTypes(1);"/>  
                       </div>
