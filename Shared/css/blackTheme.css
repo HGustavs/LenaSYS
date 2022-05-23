@@ -18,7 +18,7 @@
         --color-primary-light: #927b9e;
         --color-new-user: #93A561;
         --color-new-user-hover: #B6C58C;
-        --color-accent: rgb(42, 42, 42);
+        --color-accent: rgb(233, 233, 233);
         --color-accent-transparent: rgba(254, 204, 86, 0.5);
         --color-accent-hover: #0b278d;
         --color-background: #121212; 
@@ -900,4 +900,8 @@ input.submit-button-newitem:hover {
 
 .fab-btn-lg:hover {
     background-color: var(--color-accent-hover);
+}
+
+.arrowComp, .arrowRight,#sectionList_arrowStatisticsClosed, #sectionList_arrowStatisticsOpen {
+    filter: brightness(0) saturate(100%) invert(99%) sepia(24%) saturate(91%) hue-rotate(298deg) brightness(112%) contrast(83%);
 }
