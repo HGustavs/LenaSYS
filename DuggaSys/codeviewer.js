@@ -1360,7 +1360,7 @@ $(window).resize(function () {
 	var windowHeight = $(window).height();
 	textHeight = windowHeight - 50;
 	$("#table-scroll").css("height", textHeight);
-
+	closeBurgerMenu(); // close burgerMenu when window resize
 });
 
 document.addEventListener("drop", function (e) {
