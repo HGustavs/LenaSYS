@@ -514,11 +514,12 @@ function selectVariant(vid, el) {
                     document.getElementById('file').value = obj[result];
                 }
   			}
-		var diagramType = obj.diagram_type; //<-- UML functionality start
+		var diagramType = obj.diagram_type; //<-- UML/IE functionality start
 		if(diagramType){
 			document.getElementById('ER').checked = diagramType.ER;
 			document.getElementById('UML').checked = diagramType.UML;
-		}//<-- UML functionality end
+			document.getElementById('IE').checked = diagramType.IE;
+		}//<-- UML/IE functionality end
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
@@ -729,7 +730,7 @@ function createJSONString(formData) {
 		"gType":formData[2].value,
 		"gFilelink":$("#gFilelink option:selected").val(),
 		"diagram_File":$("#file option:selected").val(),
-		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
+		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked,IE:document.getElementById("IE").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"notes":$('#notes').val(),
 		"submissions":submission_types,
@@ -1373,13 +1374,18 @@ function compare(a, b) {
 
 function checkDiagramTypes(num){
 	if(num==0){
-		if(document.getElementById("UML").checked == false){
+		if(document.getElementById("UML").checked == false && document.getElementById("IE").checked == false){
 			document.getElementById("ER").checked = true;
 		}
 	}
 	if(num==1){
-		if(document.getElementById("ER").checked == false){
+		if(document.getElementById("ER").checked == false && document.getElementById("IE").checked == false){
 			document.getElementById("UML").checked = true;
+		}
+	}
+	if(num==2){
+		if(document.getElementById("ER").checked == false && document.getElementById("UML").checked == false){
+			document.getElementById("IE").checked = true;
 		}
 	}
 	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));

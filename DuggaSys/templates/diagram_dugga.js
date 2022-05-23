@@ -105,7 +105,7 @@ function returnedDugga(data)
             }
         }
         else{
-            var diagramType={ER:true,UML:true};
+            var diagramType={ER:true,UML:true,IE:true};
             document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
             document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(true);
         }
@@ -136,14 +136,18 @@ function returnedDugga(data)
  * */
 function reset()
 {
-    if (lastFile == null)
-    {
-        diagramWindow.contentWindow.stateMachine.gotoInitialState();
-        diagramWindow.contentWindow.stateMachine.currentHistoryIndex = -1;
-        diagramWindow.contentWindow.stateMachine.lastFlag = {};
-        diagramWindow.contentWindow.stateMachine.removeFutureStates();
-    }else{
-        diagramWindow.contentWindow.loadDiagram(lastFile, false);
+    let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
+    if(refreshConfirm){
+        localStorage.setItem("CurrentlyActiveDiagram","");
+        if (lastFile == null)
+        {
+            diagramWindow.contentWindow.stateMachine.gotoInitialState();
+            diagramWindow.contentWindow.stateMachine.currentHistoryIndex = -1;
+            diagramWindow.contentWindow.stateMachine.lastFlag = {};
+            diagramWindow.contentWindow.stateMachine.removeFutureStates();
+        }else{
+            diagramWindow.contentWindow.loadDiagram(lastFile, false);
+        }
     }
 }
 /**
