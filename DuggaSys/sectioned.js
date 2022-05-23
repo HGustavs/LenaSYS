@@ -709,6 +709,12 @@ function cancelDelete() {
 }
 
 //----------------------------------------------------------------------------------
+// getDeletedItems: Used to retrieve deleted list entries
+//----------------------------------------------------------------------------------
+function getDeletedListEntries(){
+ var deletedEntries = document.write('<?php echo getDeletedEntries("DISPLAYDELETED"); ');
+}
+//----------------------------------------------------------------------------------
 // hideMarkedItems: Hides Item from Section List
 //----------------------------------------------------------------------------------
 

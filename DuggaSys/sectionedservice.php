@@ -198,27 +198,9 @@ if($gradesys=="UNK") $gradesys=0;
 
 					if(!$query->execute()) {
 						if($query->errorInfo()[0] == 23000) {
-							$debug = "The item could not be deleted because of a foreign key constraint.";
+							$debug = "foreign key constraint.";
 						} else {
-							$debug = "The item could not be deleted.";
-						}
-					}
-				}
-
-				//This will enable fetching every listentry with visibility DELETED and will enable restoring deleted items
-				if(strcmp($opt,"DISPLAYDELETED")===0) {
-					$query = $pdo->prepare("SELECT * FROM listentries WHERE visible = '3'");
-					$query -> execute();
-					$result = $query -> fetchAll();
-					foreach( $result as $row ) {
-    					echo $row["listentries"];
-						}
-
-					if(!$query->execute()) {
-						if($query->errorInfo()[0] == 23000) {
-							$debug = "The item could not be deleted because of a foreign key constraint.";
-						} else {
-							$debug = "The item could not be deleted.";
+							$debug = "Error.";
 						}
 					}
 				}
@@ -939,6 +921,31 @@ if($gradesys=="UNK") $gradesys=0;
 		  "feedbackquestion" => $feedbackquestion,
 		  "avgfeedbackscore" => $avgfeedbackscore
 		);
+
+				function getDeletedEntries($opt){
+					
+					pdoConnect();
+					session_start();
+					//This will enable fetching every listentry with visibility DELETED and will enable restoring deleted items
+				if(strcmp($opt,"DISPLAYDELETED")===0) {
+					$resultArray = array();
+					$query = $pdo->prepare("SELECT * FROM listentries WHERE visible = '3'");
+					$query -> execute();
+					$result = $query -> fetchAll();
+					
+					foreach( $result as $row ) {
+    					$resultArray = array($row);
+						}
+						return $resultArray;
+					if(!$query->execute()) {
+						if($query->errorInfo()[0] == 23000) {
+							$debug = "foreign key constraint.";
+						} else {
+							$debug = "Error.";
+						}
+					}
+				}
+			}
 
 		echo json_encode($array);
 
