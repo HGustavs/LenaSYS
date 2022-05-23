@@ -71,16 +71,16 @@ function GetAssignment ($hash){
 		$_SESSION["submission-password-$cid-$vers-$did-$moment"]=$hashpwd;
 		$_SESSION["submission-variant-$cid-$vers-$did-$moment"]=$variant;	
 		$_SESSION["hash"]=$hash;
-		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}&embed<br>";
+		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}<br>";
 		echo "|$hash|$hashpwd|<br>";
-		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}&embed");
+		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}");
 		exit();	
 	}else{
 		$_SESSION['checkhash']=$hash;
 		header("Location: ../DuggaSys/validateHash.php");
 		exit();	
 		/*
-		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&embed<br>";
+		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}<br>";
 		echo "|$hash|$hashpwd|<br>";
 		header("Location: ../errorpages/404.php");
 		exit();	*/
@@ -256,7 +256,7 @@ function GetCourse($course){
 	}
 
 	if(isset($cid)) {
-		header("Location: ../DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}&embed");
+		header("Location: ../DuggaSys/sectioned.php?courseid={$cid}&coursevers={$vers}");
 		exit();
 	}else{
 		header("Location: ../errorpages/404.php");
@@ -465,7 +465,7 @@ function CourseAndAssignment($course, $assignment) {
 	}
 
 	if(isset($cid)&&isset($vers)&&isset($link)&&isset($lid)) {
-		header("Location: ../DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$link}&moment={$lid}&embed");
+		header("Location: ../DuggaSys/showDugga.php?courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$link}&moment={$lid}");
 		exit();
 	}else{
 		header("Location: ../errorpages/404.php");
