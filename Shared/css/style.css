@@ -9096,6 +9096,7 @@ select{
 }
 /* END */
 
+/*/ Diagram.html style /*/
 .unselectable {
   -moz-user-select: none;  
   -webkit-user-select: none;  
@@ -9103,3 +9104,46 @@ select{
   -o-user-select: none;  
   user-select: none;
 }
+
+#container_header{
+  background-color: #ccc;
+  width:100%;
+  display:inline-block;
+  position:relative;
+  padding:3px 26px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+#assignment_discrb {
+  color: black;
+}
+
+#close_open_border {
+  position: absolute;
+  background-color: #ccc;
+  width:20px;
+  height:803px;
+  top:0px;
+  cursor: pointer;
+}
+
+#close_open_border:after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top:383px;
+  border-top: 14px solid transparent;
+  border-right: 0px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-left: 14px solid #ccc;
+}
+
+#close_open_border:hover:after {
+  border-top: 14px solid transparent;
+  border-right: 0px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-left: 14px solid #8e8e8e;
+}
+/*/ END /*/
