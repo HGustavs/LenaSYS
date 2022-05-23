@@ -183,7 +183,7 @@
 
                     // Checks if index[6] i.e. the "General information file" is empty 
 					if(<?php echo json_encode($finalArray);?>[index][6]=='') {
-						window.parent.document.getElementById("instructions-container").style.display="none";
+						window.parent.document.getElementById("instructionsContainer").style.display="none";
 					}
 				}
 			}
