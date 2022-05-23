@@ -51,7 +51,7 @@ $vers=getOPG('coursevers');
 
 	<div class='group2 group1' id='barchart' style='margin-left: 12px; max-width:75%; white-space: nowrap;'></div>
 
-	<div class='group3' id='overview' style='margin-left: 12px; width:50%; white-space: nowrap;'> <h1></h1></div>  <!--Placement of overview tag cloud-->
+	<div class='group3' id='overview' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>  <!--Placement of overview tag cloud-->
 
 	<div class='group2' id='lineDiagram+select' style='margin-left: 12px; white-space: nowrap;'></div>
 
