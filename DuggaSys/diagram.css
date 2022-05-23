@@ -213,10 +213,9 @@
     height: 36px;
     cursor:pointer;
     border: solid 1px var(--color-primary);
-    margin-top:2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-top: 0px;
+    
+   
 }
 .diagramIcons:hover, .active{
     background: var(--color-primary-hover);
@@ -356,6 +355,7 @@
 
 .diagramIcons:hover .toolTipText{
     visibility: visible;
+    transition-delay: 700ms;
 }
 
 #tooltip-OPTIONS{
