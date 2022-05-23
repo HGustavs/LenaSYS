@@ -105,7 +105,7 @@ function returnedDugga(data)
             }
         }
         else{
-            var diagramType={ER:true,UML:true};
+            var diagramType={ER:true,UML:true,IE:true};
             document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
             document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(true);
         }

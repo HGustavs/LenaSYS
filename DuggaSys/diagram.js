@@ -1301,10 +1301,38 @@ function getData()
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes(){
-    //if both diagramtypes are allowed hides the uml elements and adds the function to show the toggle box
-    if(!!diagramType.ER && !!diagramType.UML){
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+    //ER + UML + IE
+    if(!!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
+        // document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        // document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement0").onmousedown = function() {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function() {
+            holdPlacementButtonDown(4);
+        };
+        /*document.getElementById("elementPlacement6").onmousedown = function() {
+            holdPlacementButtonDown(6);
+        };*/
+        document.getElementById("elementPlacement1").onmousedown = function() {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function() {
+            holdPlacementButtonDown(5);
+        };
+        /*document.getElementById("elementPlacement7").onmousedown = function() {
+            holdPlacementButtonDown(7);
+        };*/
+    }
+    // ER + UML
+    else if(!!diagramType.ER && !!diagramType.UML && !diagramType.IE){
+        /*Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });*/
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
         document.getElementById("elementPlacement0").onmousedown = function() {
             holdPlacementButtonDown(0);
         };
@@ -1318,27 +1346,79 @@ function showDiagramTypes(){
             holdPlacementButtonDown(5);
         };
     }
-    //if only UML is allowed hides ER and the arrows that shows more options
-    else if(!diagramType.ER && !!diagramType.UML){
-        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
+    // ER + IE
+    else if(!!diagramType.ER && !diagramType.UML && !!diagramType.IE){
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        // document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        // document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement0").onmousedown = function() {
+            holdPlacementButtonDown(0);
+        };
+        /*document.getElementById("elementPlacement6").onmousedown = function() {
+            holdPlacementButtonDown(6);
+        };*/
+        document.getElementById("elementPlacement1").onmousedown = function() {
+            holdPlacementButtonDown(1);
+        };
+        /*document.getElementById("elementPlacement7").onmousedown = function() {
+            holdPlacementButtonDown(7);
+        };*/
     }
-    //if only ER is allowed hides UML and the arrows that shows more options
-    else if(!!diagramType.ER && !diagramType.UML){
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+    // UML + IE
+    else if(!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        // document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        // document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement4").onmousedown = function() {
+            holdPlacementButtonDown(4);
+        };
+        /*document.getElementById("elementPlacement6").onmousedown = function() {
+            holdPlacementButtonDown(6);
+        };*/
+        document.getElementById("elementPlacement5").onmousedown = function() {
+            holdPlacementButtonDown(5);
+        };
+        /*document.getElementById("elementPlacement7").onmousedown = function() {
+            holdPlacementButtonDown(7);
+        };*/
+    }
+    //ER
+    else if(!!diagramType.ER && !diagramType.UML && !diagramType.IE){
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        /*Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });*/
         document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
     }
-    // if neither are allowed hides all
-    else if (!diagramType.ER && !diagramType.UML){
-        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+    //UML
+    else if(!diagramType.ER && !!diagramType.UML && !diagramType.IE){
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        /*Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });*/
+        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
     }
+    //IE
+    /*else if (!diagramType.ER && !diagramType.UML && !!diagramType.IE){
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
+    }*/
 }
 //<-- UML functionality end
 /**
@@ -5227,7 +5307,7 @@ function setElementPlacementType(type = elementTypes.EREntity)
 }
 //<-- UML functionality start
 /**
- * @description starts a mousepress on placecment type.
+ * @description Function to open a subtoolbar when pressing down on a button for a certan period of time
  */
 function holdPlacementButtonDown(num){
     mousePressed=true;
@@ -5280,28 +5360,38 @@ function togglePlacementTypeBox(num){
  */
 function togglePlacementType(num,type){
     if(type==0){
-        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");// ER entity start
         document.getElementById("elementPlacement0").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement0").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton0").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");// ER entity end
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML entity start
         document.getElementById("elementPlacement4").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement4").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton4").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");// UML entity end
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE entity start
+        document.getElementById("elementPlacement6").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement6").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton6").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox6").classList.remove("activeTogglePlacementTypeBox");// IE entity end
     }
     else if(type==1){
-        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");// ER relation start
         document.getElementById("elementPlacement1").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement1").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton1").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");// ER relation end
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType"); // UML inheritance start
         document.getElementById("elementPlacement5").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
+        /*document.getElementById("elementPlacement7").classList.add("hiddenPlacementType"); //IE inheritance start
+        document.getElementById("elementPlacement7").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox");*/ // IE inheritance end
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
