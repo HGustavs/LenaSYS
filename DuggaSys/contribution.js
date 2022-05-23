@@ -1382,31 +1382,33 @@ function returnedSection(data) {
   if(data['isSuperUser']) createSidebar();
 }
 
+
+/*  loop through all user and count all their blame lines
+      once counted will loop and place the % of each file changed into a seperate array
+  data[overview][0]=Bfile.id 
+  data[overview][1]=Bfile.filename 
+  data[overview][2]=Bfile.path
+   data[overview][3]=Blame.blameuser 
+   data[overview][4]=occurance //(count of how many times each file occurs in Blame grouped by Blame.Blameuser)
+      */
 function renderOverview(data){
-  //data[overview][0]=Bfile.id data[overview][1]=filename data[overview][2]=path data[overview][3]=blameuser data[overview][4]=occurance
-  var str = "<h1>hello world</h1>";
+  
   var total = Array();
   var values = Array()
-  var user;
+ 
+  
   for(var i = 0; i<data['allusers'].length;i++){
-    user =data['allusers'][i];
     total.push(0);
+    //count total for each user
     data['overview'].forEach(element =>{
-      if(user == element[3]) total[i] += element[4];
+      if(data['allusers'][i] == element[3]) total[i] += element[4];
     });  
+    
+    //calculate % and place in array
     data['overview'].forEach(element =>{
-      if(user == element[3]) values.push(Array((element[4] / total[i]), element[2], element[1], element[3]));
+      if(data['allusers'][i] == element[3]) values.push(Array((element[4] / total[i]), element[2], element[1], element[3]));
     });
-
   }
-  console.log('---------------------------------');
-  console.log(values);
-  var temp = 0;
-  for(var i =0;i <values.length;i++){
-    temp += values[i][0];
-  }  
-
-  console.log(temp);
   //reset before full implementation is done algorithm not finished yet
   //str = "";
   return str;
