@@ -29,7 +29,20 @@ var filepath;
 var filekind;
 var aceData;
 var editor;
-var filedata;
+var filedata;   
+var x = window.matchMedia('(max-width: 380px)');
+
+x.onchange = (e) => {
+    if (e.matches) {
+        displayNavIcons();
+    }
+}  
+
+function displayNavIcons() {
+    document.getElementById("home").style.display="revert";
+    document.getElementById("theme-toggle").style.display="revert";
+    document.getElementById("back").style.display="revert";    
+}
 
 function setup() {
     AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
