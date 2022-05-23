@@ -20,7 +20,7 @@
         --color-new-user-hover: #B6C58C;
         --color-accent: rgb(42, 42, 42);
         --color-accent-transparent: rgba(254, 204, 86, 0.5);
-        --color-accent-hover: #ffd369;
+        --color-accent-hover: #0b278d;
         --color-background: #121212; 
         --color-background-2: #ccc;
         --color-background-3: #f0f0f0;
@@ -891,4 +891,13 @@ input{
 .arrow {
     border: solid var(--color-accent);
     border-width: 0 6px 6px 0;
+}
+
+input.submit-button-newitem:hover {
+    transition: 0.4s;
+    background-color: var(--color-accent-hover);
+}
+
+.fab-btn-lg:hover {
+    background-color: var(--color-accent-hover);
 }
