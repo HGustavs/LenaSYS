@@ -209,20 +209,21 @@
 .diagramIcons{
     position: relative;
     margin: auto;
-    width: 31px;
-    height: 31px;
+    width: 36px;
+    height: 36px;
     cursor:pointer;
-    border-radius: 30%;
     border: solid 1px var(--color-primary);
-    margin-top:5px;
+    margin-top: 0px;
+    
+   
 }
 .diagramIcons:hover, .active{
     background: var(--color-primary-hover);
     border: solid 1px var(--color-primary-light);
 }
 .diagramIcons img{
-    width:30px;
-    height:30px;
+    width:35px;
+    height:35px;
 }
 .node {
     position: absolute;
@@ -496,6 +497,7 @@
     padding-top:0px;
     border-radius: 5px;
     background-color:var(--color-primary);
+    width:72px;
 }
 .togglePlacementTypeBoxRI{
     display: none;
@@ -506,6 +508,7 @@
     padding-top:0px;
     border-radius: 5px;
     background-color:var(--color-primary);
+    margin-left: 1px;
 }
 .activeTogglePlacementTypeBox{
     display: flex;
@@ -540,8 +543,10 @@
     border: solid 1px var(--color-primary-light);
 }
 .placementTypeBoxIcons img{
-    width:30px;
-    height:30px;
+    width:35px;
+    height:35px;
+    margin-left: -2px;
+    margin-top: -2px;
 }
 .placementTypeToolTipText{
     top:0%;
