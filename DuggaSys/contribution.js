@@ -2239,14 +2239,14 @@ function accountInformation(data){
 }
 
 
-//These funtions sends the AJAX call to contribution_loginbox_service
+//These funtions sends the AJAX call to contribution_loginbox_service and dugga.js
 function denyAcc(userName){
 
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 1}, "CONT_LOGINBOX_SERVICE");
 
-  window.location.reload();
-  //$("#accountRequests-pane").load(" #accountRequests-pane > *");
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
+
 }
 
 function deleteAcc(userName){
@@ -2254,8 +2254,7 @@ function deleteAcc(userName){
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 2}, "CONT_LOGINBOX_SERVICE");
 
-  window.location.reload();
-  //$("#'userName'").load(" #accountRequests-pane > *");
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
 
 }
 
@@ -2264,8 +2263,7 @@ function acceptAcc(userName){
   AJAXService("gitUserAdmin", 
     {username: userName, gitUserChange: 3}, "CONT_LOGINBOX_SERVICE");
 
-  window.location.reload();
-  //$("#accountRequests-pane").load(" #accountRequests-pane > *");
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
 
  }
 
@@ -2276,9 +2274,9 @@ function placeSideBarInfo(data){
   str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
 	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
-  str+= "<th class='accountRequestTable'></th>";
-  str+= "<th class='accountRequestTable'>Name </th>";
-  str+= "<th class='accountRequestTable'>Status</th>";;
+  str+= "<th class='accountRequestTable'>Name</th>";
+  str+= "<th class='accountRequestTable'>Status</th>";
+  str+= "<th class='accountRequestTable'>Change</th>";;
   str+= "</tr>";
   str+=accountInformation(data);
 
