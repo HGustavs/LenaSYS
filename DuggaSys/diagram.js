@@ -10767,8 +10767,12 @@ function updateCSSForAllElements()
                     } else if(element.kind == "IERelation"){
                         if(element.state == "overlapping"){
                             fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
                         }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
