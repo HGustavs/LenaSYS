@@ -497,6 +497,7 @@
     padding-top:0px;
     border-radius: 5px;
     background-color:var(--color-primary);
+    width:72px;
 }
 .togglePlacementTypeBoxRI{
     display: none;
@@ -541,8 +542,10 @@
     border: solid 1px var(--color-primary-light);
 }
 .placementTypeBoxIcons img{
-    width:30px;
-    height:30px;
+    width:35px;
+    height:35px;
+    margin-left: -2px;
+    margin-top: -2px;
 }
 .placementTypeToolTipText{
     top:0%;
