@@ -5946,6 +5946,8 @@ function generateContextProperties()
             str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
             if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
             str += `/>`;
+        }
+        if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon'>`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
