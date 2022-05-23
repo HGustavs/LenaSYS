@@ -117,8 +117,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.ph
 
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
-		$currcvd = substr($currcvd, 0, strpos($currcvd, "/DuggaSYS"));
-		$submissionpath=$currcvd."submissions";
+		$submissionpath=$currcvd."/../../submissions";
 		if(!file_exists($submissionpath)) {
 				if(!mkdir($submissionpath,0775,true)) {
 						echo "Error creating folder: ".$submissionpath;

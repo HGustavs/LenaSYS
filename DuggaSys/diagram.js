@@ -736,6 +736,8 @@ const keybinds = {
         PLACE_ATTRIBUTE: {key: "5", ctrl: false},
         PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
+        PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
+        IE_INHERITANCE: {key: "9", ctrl: false},  //<-- IE inheritance functionality
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -780,6 +782,8 @@ const elementTypes = {
     Ghost: 3,
     UMLEntity: 4,       //<-- UML functionality
     UMLRelation: 5, //<-- UML functionality
+    IEEntity: 6,       //<-- IE functionality
+    IERelation: 7, // IE inheritance functionality
 };
 
 /**
@@ -792,6 +796,8 @@ const elementTypesNames = {
     ERAttr: "ERAttr",
     Ghost: "Ghost",
     UMLEntity: "UMLEntity",
+    IEEntity: "IEEntity",
+    IERelation: "IERelation"
 }
 
 /**
@@ -835,6 +841,7 @@ const attrState = {
 const entityType = {
     UML: "UML",
     ER: "ER",
+    IE: "IE",
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -862,11 +869,21 @@ const relationState = {
 };
 
 /**
+ * @description State of inheritance between IE entities. <-- IE functionality
+ */
+ const inheritanceStateIE = {
+    DISJOINT: "disjoint",
+    OVERLAPPING: "overlapping",
+};
+
+
+/**
  * @description Available types of lines to draw between different elements.
  */
 const lineKind = {
     NORMAL: "Normal",
-    DOUBLE: "Double"
+    DOUBLE: "Double",
+    DASHED: "Dashed"
 };
 
 /**
@@ -875,6 +892,27 @@ const lineKind = {
 const lineCardinalitys = {
     MANY: "N",
     ONE: "1"
+};
+/**
+ * @description Available options of icons to display at the end of lines connecting two UML elements.
+ */
+ const UMLLineIcons = {//TODO: Replace with actual icons for the dropdown
+    ARROW: "Arrow",
+    TRIANGLE: "Triangle",
+    WHITEDIAMOND: "White_Diamond",
+    BLACKDIAMOND: "Black_Diamond"
+};
+/**
+ * @description Available options of icons to display at the end of lines connecting two UML elements.
+ */
+ const IELineIcons = {//TODO: Replace with actual icons for the dropdown
+    ZERO_MANY: "0-M",
+    ZERO_ONE: "0-1",
+    ONE: "1",
+    FORCEDONE: "1!",
+    ONE_MANY: "1-M",
+    MANY: "M",
+    WEAK: "Weak"
 };
 //#endregion ===================================================================================
 //#region ================================ GLOBAL VARIABLES     ================================
@@ -991,7 +1029,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false};
+var diagramType = {ER:false,UML:false,IE:false};
 
 //Grid Settings
 var settings = {
@@ -1030,6 +1068,7 @@ var diagramToLoadContent = "";
 var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
+var UMLHeight = []; // List with UML Entities' real height
 
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
@@ -1043,12 +1082,16 @@ var ghostLine = null;
  */
 var defaults = {
 
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['Attribute'], functions: ['Function'] },
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'] },
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal' },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
+
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
+    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
+    IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
+
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1104,7 +1147,7 @@ function onSetup()
 
     const demoData = [
  
-        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false, state: "normal", type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+        { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false, state: "normal", type: "ER", attributes: ['-attribute'], functions: ['+function'] },
         { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "normal",  type: "ER" },
         { name: "Bdale", x: 360, y: 700, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: BdaleDependent_ID, isLocked: false, state: "normal",  type: "ER" },
         { name: "Ssn", x: 20, y: 100, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Ssn_ID, isLocked: false, state: "candidate",  type: "ER"},
@@ -1121,17 +1164,17 @@ function onSetup()
         { name: "L Name", x: 300, y: -20, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: LNID, isLocked: false, state: "normal",  type: "ER" },
         { name: "SUPERVISIONS", x: 140, y: 350, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: SUPERVISION_ID, isLocked: false,  type: "ER" },
         { name: "DEPENDENTS_OF", x: 330, y: 450, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: DEPENDENTS_OF_ID, isLocked: false, state: "weak",  type: "ER"},
-        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPENDENT_ID, isLocked: false, state: "weak",  type: "ER", attributes: ['Attribute'], functions: ['Function'] },
+        { name: "DEPENDENT", x: 265, y: 600, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPENDENT_ID, isLocked: false, state: "weak",  type: "ER", attributes: ['-attribute'], functions: ['+function'] },
         { name: "Number_of_depends", x: 0, y: 600, width: 180, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Number_of_depends_ID, isLocked: false, state: "computed",  type: "ER"},
         { name: "WORKS_ON", x: 650, y: 490, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_ON_ID, isLocked: false,  type: "ER" },
         { name: "Hours", x: 720, y: 400, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Hours_ID, isLocked: false, state: "normal",  type: "ER" },
-        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false, state: "normal",  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "PROJECT", x: 1000, y: 500, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: PROJECT_ID, isLocked: false, state: "normal",  type: "ER", attributes: ['-attribute'], functions: ['+function']  },
         { name: "Number", x: 950, y: 650, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberProject_ID, isLocked: false, state: "candidate",  type: "ER"},
         { name: "Location", x: 1060, y: 610, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Location_ID, isLocked: false, state: "normal",  type: "ER"},
         { name: "MANAGES", x: 600, y: 300, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: MANAGES_ID, isLocked: false,  type: "ER" },
         { name: "Start date", x: 510, y: 220, width: 100, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Start_date_ID, isLocked: false, state: "normal",  type: "ER" },
         { name: "CONTROLS", x: 1070, y: 345, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: CONTROLS_ID, isLocked: false,  type: "ER" },
-        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false, state: "normal",  type: "ER", attributes: ['Attribute'], functions: ['Function']  },
+        { name: "DEPARTMENT", x: 1000, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: DEPARTMENT_ID, isLocked: false, state: "normal",  type: "ER", attributes: ['-attribute'], functions: ['+function']  },
         { name: "Locations", x: 1040, y: 20, width: 120, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Locations_ID, isLocked: false, state: "multiple",  type: "ER" },
         { name: "WORKS_FOR", x: 650, y: 60, width: 60, height: 60, kind: "ERRelation", fill: "#ffffff", stroke: "#000000", id: WORKS_FOR_ID, isLocked: false,  type: "ER" },
         { name: "Number", x: 1130, y: 70, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: NumberDEPARTMENT_ID, isLocked: false, state: "candidate",  type: "ER"},
@@ -1301,10 +1344,38 @@ function getData()
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes(){
-    //if both diagramtypes are allowed hides the uml elements and adds the function to show the toggle box
-    if(!!diagramType.ER && !!diagramType.UML){
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+    //ER + UML + IE
+    if(!!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement0").onmousedown = function() {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function() {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement6").onmousedown = function() {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function() {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function() {
+            holdPlacementButtonDown(5);
+        };
+        document.getElementById("elementPlacement7").onmousedown = function() {
+            holdPlacementButtonDown(7);
+        };
+    }
+    // ER + UML
+    else if(!!diagramType.ER && !!diagramType.UML && !diagramType.IE){
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
         document.getElementById("elementPlacement0").onmousedown = function() {
             holdPlacementButtonDown(0);
         };
@@ -1318,26 +1389,78 @@ function showDiagramTypes(){
             holdPlacementButtonDown(5);
         };
     }
-    //if only UML is allowed hides ER and the arrows that shows more options
-    else if(!diagramType.ER && !!diagramType.UML){
-        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
+    // ER + IE
+    else if(!!diagramType.ER && !diagramType.UML && !!diagramType.IE){
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement0").onmousedown = function() {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement6").onmousedown = function() {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function() {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement7").onmousedown = function() {
+            holdPlacementButtonDown(7);
+        };
     }
-    //if only ER is allowed hides UML and the arrows that shows more options
-    else if(!!diagramType.ER && !diagramType.UML){
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+    // UML + IE
+    else if(!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement4").onmousedown = function() {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement6").onmousedown = function() {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function() {
+            holdPlacementButtonDown(5);
+        };
+        document.getElementById("elementPlacement7").onmousedown = function() {
+            holdPlacementButtonDown(7);
+        };
+    }
+    //ER
+    else if(!!diagramType.ER && !diagramType.UML && !diagramType.IE){
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
         document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
         document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
     }
-    // if neither are allowed hides all
-    else if (!diagramType.ER && !diagramType.UML){
-        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+    //UML
+    else if(!diagramType.ER && !!diagramType.UML && !diagramType.IE){
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
+        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
+    }
+    //IE
+    else if (!diagramType.ER && !diagramType.UML && !!diagramType.IE){
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
     }
 }
 //<-- UML functionality end
@@ -1502,10 +1625,24 @@ document.addEventListener('keyup', function (e)
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
+        // IE inheritance keybind
+        if(isKeybindValid(e, keybinds.IE_INHERITANCE)){
+            setElementPlacementType(elementTypes.IERelation);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
+
         //=================================================== //<-- UML functionality
-        //Temp for UML functionality
+        //Temp for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
-            setElementPlacementType(elementTypes.UMLEntity)
+            setElementPlacementType(elementTypes.UMLEntity);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        //======================================================
+
+        //=================================================== //<-- IE functionality
+        //Temp for IE entity
+        if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
+            setElementPlacementType(elementTypes.IEEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
         //======================================================
@@ -2360,7 +2497,7 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    storeDiagramInLocalStorage();// storing the diagram in localstorage
+    //storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -2594,10 +2731,31 @@ function changeState()
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-    
-    else {
-        //Save the current property if not an UML entity since UML entities does not have variants.
+    else if(element.type=='UML') {
+        //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity') {
+            var property = document.getElementById("propertySelect").value;
+            element.state = property;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        var oldType = element.type;
+        var newType = document.getElementById("typeSelect").value;
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    }
+    else if(element.type=='IE') {
+        //Save the current property if not an UML or IE entity since niether entities does have variants.
+        if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -2672,7 +2830,7 @@ function saveProperties()
                 //Update the attribute array
                 arrElementFunc = formatArr;
                 element[propName] = arrElementFunc;
-                propsChanged.attributes = arrElementFunc;
+                propsChanged.functions = arrElementFunc;
                 break;
 
             default:
@@ -2695,18 +2853,27 @@ function changeLineProperties()
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
     var label = document.getElementById("lineLabel");
+    var radio3 = document.getElementById("lineRadio3");
     var startLabel = document.getElementById("lineStartLabel");
     var endLabel = document.getElementById("lineEndLabel");
+    var startIcon= document.getElementById("lineStartIcon");
+    var endIcon= document.getElementById("lineEndIcon");
     var line = contextLine[0];
     
-    // If normal line
-    if (line.type == 'ER') {
-        if(radio1.checked && line.kind != radio1.value) {
-            line.kind = radio1.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        } else if(radio2.checked && line.kind != radio2.value){
+    if(radio1.checked && line.kind != radio1.value) {
+        line.kind = radio1.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } 
+    else if(radio2){
+        if(radio2.checked && line.kind != radio2.value){
             line.kind = radio2.value;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
+    else if(radio3){
+        if(radio3.checked && line.kind != radio3.value){
+            line.kind = radio3.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
     
@@ -2743,6 +2910,14 @@ function changeLineProperties()
             endLabel.value = endLabel.value.trim();
             line.endLabel = endLabel.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if(line.startIcon != startIcon.value){
+            line.startIcon = startIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if(line.endIcon != endIcon.value){
+            line.endIcon = endIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
     showdata();
@@ -3160,6 +3335,26 @@ function isKeybindValid(e, keybind)
     return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
+function findUMLEntityFromLine(lineObj)
+{
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLEntity).kind){
+        return -1;
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLEntity).kind) {
+        return 1;
+    }
+    return null;
+}
+
+function findUMLInheritanceFromLine(lineObj)
+{
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLRelation).kind){
+        return -1;
+    }else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLRelation).kind) {
+        return 1;
+    }
+    return null;
+}
+
 function findEntityFromLine(lineObj)
 {
     if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.EREntity).kind){
@@ -3198,6 +3393,14 @@ function entityIsOverlapping(id, x, y)
         var element = data[foundIndex];
         let targetX;
         let targetY;
+        var elementHeight = element.height;
+
+        // Change height if element is an UML Entity
+        for (var i = 0; i < UMLHeight.length; i++) {
+            if (element.id == UMLHeight[i].id) {
+                elementHeight = UMLHeight[i].height;
+            }
+        }
 
         targetX = element.x - (x / zoomfact);
         targetY = element.y - (y / zoomfact);
@@ -3207,10 +3410,17 @@ function entityIsOverlapping(id, x, y)
             
             //COMPARED ELEMENT
             const compX2 = data[i].x + data[i].width;
-            const compY2 = data[i].y + data[i].height;
+            var compY2 = data[i].y + data[i].height;
+
+            // Change height if element is an UML Entity
+            for (var j = 0; j < UMLHeight.length; j++) {
+                if (data[i].id == UMLHeight[j].id) {
+                    compY2 = data[i].y + UMLHeight[j].height;
+                }
+            }
 
             if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
-                (targetY < compY2) && (targetY + element.height) > data[i].y){
+                (targetY < compY2) && (targetY + elementHeight) > data[i].y){
                 
                 displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 isOverlapping = true;
@@ -3858,6 +4068,7 @@ function toggleErTable()
     }
     generateContextProperties();
 }
+
 /**
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
@@ -3992,19 +4203,23 @@ function generateErTableString()
                             // looking if the parent attribute is in the parentAttributeList 
                             if(findIndex(parentAttribeList,currentEntityAttrList[j].id) == -1){
                                 parentAttribeList.push(currentEntityAttrList[j]);
+                                currentEntityAttrList[j].newKeyName = "";
+                            }
+                            if(currentEntityAttrList[j].newKeyName == ""){
+                                currentEntityAttrList[j].newKeyName += attrList[k].name;
+                            }
+                            else{
+                                currentEntityAttrList[j].newKeyName += " "+attrList[k].name;
+                            }
+                            if(currentEntityAttrList[j].state != 'primary' && currentEntityAttrList[j].state != 'candidate'){
+                                currentRow.push(attrList[k]);
                             }
                             currentEntityAttrList.push(attrList[k]);
-                            currentRow.push(attrList[k]);
                             idList.push(attrList[k].id);
                         }
                     }   
                 }
             }
-        }
-
-        //removes all attributes in parent attribute list from current entity attribute list
-        for (let index = 0; index < parentAttribeList.length; index++) {
-            currentRow.splice(findIndex(currentRow,parentAttribeList[index].id),1);
         }
         //Push list with entity at index 0 followed by its attributes
         ERAttributeData.push(currentRow);
@@ -4837,7 +5052,7 @@ function generateErTableString()
             }
         }
     }
-    //Just for testing
+    
     // Iterate and add each entity's foreign attribute to the correct place
     for(var i = 0; i < ERForeignData.length; i++) {
         // Iterate throught all entities
@@ -4871,13 +5086,23 @@ function generateErTableString()
                 // Print only primary keys if at least one is present
                 if (existPrimary) {
                     if (allEntityList[i][1][j].state == 'primary') {
-                        currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        if(allEntityList[i][1][j].newKeyName != undefined){
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].newKeyName}</span>, `;
+                        }
+                        else{
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        }
                     }
                 }
                 //Print only candidate keys if no primary keys are present
                 if (!existPrimary) {
                     if (allEntityList[i][1][j].state == 'candidate') {
-                        currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        if(allEntityList[i][1][j].newKeyName != undefined){
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].newKeyName}</span>, `;
+                        }
+                        else{
+                            currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
+                        }
                     }
                 }
             }
@@ -4888,7 +5113,9 @@ function generateErTableString()
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
-                            currentString += `${allEntityList[i][j].name}, `;
+                            if(allEntityList[i][j].newKeyName == undefined){
+                                currentString += `${allEntityList[i][j].name}, `;
+                            }
                         }
                     }
                 }
@@ -4923,6 +5150,9 @@ function generateErTableString()
                         }
                     }
                 }
+            }
+            if(currentString.charAt(currentString.length-2) == ","){                
+                currentString = currentString.substring(0, currentString.length - 2);
             }
             currentString += `)</p>`;
             stringList.push(currentString);
@@ -4994,6 +5224,9 @@ function generateErTableString()
                     }
                 }
             }
+            if(currentString.charAt(currentString.length-2) == ","){                
+                currentString = currentString.substring(0, currentString.length - 2);
+            }
             currentString += `)</p>`;
             stringList.push(currentString);
         }
@@ -5031,9 +5264,38 @@ function generateErTableString()
                     currentString += `${ERForeignData[i][2][j].name}`;
                 }
             }
-            currentString += `</span>, `;
+            currentString += `</span>`;
             currentString += `)</p>`;
             stringList.push(currentString)
+        }
+    }
+    // Adding multi-valued attributes to the string
+    for (var i = 0; i < allEntityList.length; i++) {
+        for (var j = 2; j < allEntityList[i].length; j++) {
+            // Write out multi attributes
+            if(allEntityList[i][j].state == 'multiple') {
+                // add the multiple attribute as relation
+                var multipleString = `<p>${allEntityList[i][j].name}( <span style='text-decoration:underline black solid 2px'>`;
+                // add keys from the entity the multiple attribute belongs to
+                for (let k = 0; k < allEntityList[i][1].length; k++) {
+                    // add the entity the key comes from in the begining of the string
+                    multipleString += `${allEntityList[i][0].name}`;
+                    // If element is array, aka strong key for weak entity
+                    if (Array.isArray(allEntityList[i][1][k])) {
+                        for (var l = 0; l < allEntityList[i][1][k].length; l++) {
+                            multipleString += `${allEntityList[i][1][k][l].name}`;
+                        }
+                    }
+                    else {
+                        multipleString += `${allEntityList[i][1][k].name}`;
+                    }
+                    multipleString += `, `;
+                }
+                // add the multiple attribute in the relation
+                multipleString += `${allEntityList[i][j].name}`;
+                multipleString += `</span>)</p>`;
+                stringList.push(multipleString);
+            }
         }
     }
     //Add each string element in stringList[] into a single string.
@@ -5277,7 +5539,7 @@ function setElementPlacementType(type = elementTypes.EREntity)
 }
 //<-- UML functionality start
 /**
- * @description starts a mousepress on placecment type.
+ * @description Function to open a subtoolbar when pressing down on a button for a certan period of time
  */
 function holdPlacementButtonDown(num){
     mousePressed=true;
@@ -5330,31 +5592,44 @@ function togglePlacementTypeBox(num){
  */
 function togglePlacementType(num,type){
     if(type==0){
-        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");// ER entity start
         document.getElementById("elementPlacement0").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement0").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton0").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");// ER entity end
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML entity start
         document.getElementById("elementPlacement4").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement4").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton4").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");// UML entity end
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE entity start
+        document.getElementById("elementPlacement6").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement6").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton6").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox6").classList.remove("activeTogglePlacementTypeBox");// IE entity end
     }
     else if(type==1){
-        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");// ER relation start
         document.getElementById("elementPlacement1").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement1").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton1").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");// ER relation end
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType"); // UML inheritance start
         document.getElementById("elementPlacement5").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement5").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton5").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType"); //IE inheritance start
+        document.getElementById("elementPlacement7").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
     }
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
+
+
+
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
@@ -5629,15 +5904,15 @@ function propFieldSelected(isSelected)
     propFieldState = isSelected;
 }
 /**
- * @description Function used to format the attribute and function textareas in UML-entities. Every entry is written on new row.
+ * @description Function used to format the attribute and function textareas in UML- and IE-entities. Every entry is written on new row.
  * @param {*} arr Input array with all elements that should be seperated by newlines
  * @returns Formated string containing all the elements in arr
  */
-function umlFormatString(arr)
+function textboxFormatString(arr)
 {
     var content = '';
     for (var i = 0; i < arr.length; i++) {
-            content += arr[i] + '\n';   
+        content += arr[i] + '\n';   
     }
     return content;
 }
@@ -5767,11 +6042,11 @@ function generateContextProperties()
                               break;
                           case 'attributes':
                               str += `<div style='color:white'>Attributes</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                               break;
                           case 'functions':
                               str += `<div style='color:white'>Functions</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${umlFormatString(element[property])}</textarea>`;
+                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                               break;
                           default:
                               break;
@@ -5813,18 +6088,72 @@ function generateContextProperties()
                       }
                   }
                   str += '</select>'; 
-              }            
+              }     
           }
+          //Selected IE type
+          else if (element.type == 'IE') {
+            //If IE entity
+            if (element.kind == 'IEEntity') {
+                //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'attributes':
+                            str += `<div style='color:white'>Attributes</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else if(element.kind = 'IERelation') {
+              //ID MUST START WITH "elementProperty_"!!!!!
+              for (const property in element) {
+                  switch (property.toLowerCase()) {
+                      case 'name':
+                          str += `<div style='display:none;'>Name</div>`;
+                          str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                          break;
+                      default:
+                          break;
+                  }
+              }
+                str += `<div style='color:white'>Inheritance</div>`;
+                //Creates drop down for changing state of IE elements
+                var value;
+                var selected = context[0].state;
+                if(selected == undefined) {
+                    selected = "disjoint"
+                }
 
-        // Creates button for selecting element background color if not a UML relation since they should not be able change color
-        if (element.kind != 'UMLRelation') {
-            // Creates button for selecting element background color
-           str += `<div style="color: white">Color</div>`;
-           str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+                if(element.kind=="IERelation") {
+                    value = Object.values(inheritanceStateIE);
+                }
+                str += '<select id="propertySelect">';
+                    for (i = 0; i < value.length; i++) {
+                        if (selected != value[i]) {
+                            str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                        } else if(selected == value[i]) {
+                            str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                        }
+                    }
+                str += '</select>'; 
+            }
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
-      }
+
+        /// Creates button for selecting element background color if not a UML relation since they should not be able change color
+        if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
+              // Creates button for selecting element background color
+            str += `<div style="white">Color</div>`;
+            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
+               `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+          }
+          str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
       if (contextLine.length == 1 && context.length == 0) {
@@ -5839,21 +6168,24 @@ function generateContextProperties()
         str = "<legend>Properties</legend>";
 
         var value;
-        if (contextLine[0].type == 'ER') {
-            var selected = contextLine[0].kind;
-            if(selected == undefined) selected = normal;
+        var selected = contextLine[0].kind;
+        if(selected == undefined) selected = normal;
 
-            value = Object.values(lineKind);
-            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-            for(var i = 0; i < value.length; i++){
+        value = Object.values(lineKind);
+        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+        for(var i = 0; i < value.length; i++){
+            if(i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null){
                 if(selected == value[i]){
-                    str += `<input type="radio" id="lineRadio1" name="lineKind" value='${value[i]}' checked>`
+                    str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}' checked>`
                     str += `<label for='${value[i]}'>${value[i]}</label><br>`
                 }else {
-                    str += `<input type="radio" id="lineRadio2" name="lineKind" value='${value[i]}'>`
+                    str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}'>`
                     str += `<label for='${value[i]}'>${value[i]}</label><br>` 
                 }
             }
+        }
+            
+        if (contextLine[0].type == 'ER') {
             if (findAttributeFromLine(contextLine[0]) == null){
                 if (findEntityFromLine(contextLine[0]) != null){
                     str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
@@ -5884,6 +6216,41 @@ function generateContextProperties()
             str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
             if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
             str += `/>`;
+        }
+        if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
+            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon'>`;
+            str  += `<option value=''>None</option>`;
+            Object.keys(UMLLineIcons).forEach(icon => {
+                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
+                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                }else {
+                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                }
+            });
+            Object.keys(IELineIcons).forEach(icon => {
+                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
+                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                }else {
+                    str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                }
+            });
+            str += `</select><select id='lineEndIcon'>`;
+            str  += `<option value=''>None</option>`;
+            Object.keys(UMLLineIcons).forEach(icon => {
+                if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
+                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                }else {
+                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                }
+            });
+            Object.keys(IELineIcons).forEach(icon => {
+                if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
+                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                }else {
+                    str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                }
+            });
+            str += `</select>`;
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
@@ -5935,7 +6302,9 @@ function toggleOptionsPane()
 {
     if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
-        document.getElementById("BGColorMenu").style.visibility = "hidden";
+        if(document.getElementById("BGColorMenu") != null){
+            document.getElementById("BGColorMenu").style.visibility = "hidden";
+        }
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
         document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
@@ -6667,7 +7036,12 @@ function drawLine(line, targetGhost = false)
     var x2Offset = 0;
     var y1Offset = 0;
     var y2Offset = 0;
-    
+    if (line.kind=="Dashed") {
+        var strokeDash="10";
+    }
+    else{
+        var strokeDash="0";
+    }
     var lineColor = '#000000';
     if(contextLine.includes(line)){
         lineColor = selectedColor;
@@ -6802,10 +7176,390 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2; 
         if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+        }
+        switch (line.startIcon) {
+            case IELineIcons.ZERO_ONE:
+                if (line.ctype == 'TB') {
+                    str += `<circle cx='${fx}' cy='${fy - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy - 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<circle cx='${fx}' cy='${fy + 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy + 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<circle cx='${fx - 20 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 5 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 5 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<circle cx='${fx + 20 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx + 5 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 5 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=30;
+                break;
+            case IELineIcons.ONE:
+                if (line.ctype == 'TB') {
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<line x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<line x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=20;
+                break;
+            case IELineIcons.FORCEDONE:
+                if (line.ctype == 'TB') {
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy - 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy + 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<line x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<line x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx + 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=30;
+                break;
+            case IELineIcons.WEAK:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx}' cy='${fy + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 25 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx - 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx + 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=40;
+                break;
+            case IELineIcons.MANY:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=20;
+                    break;
+            case IELineIcons.ZERO_MANY:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx}' cy='${fy + 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx - 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${fx + 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=30;
+                break;
+            case IELineIcons.ONE_MANY:
+                if (line.ctype == 'TB') {
+                    str += `<polyline points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=20;
+                break;
+            case UMLLineIcons.ARROW:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=20;
+                break;
+            case UMLLineIcons.TRIANGLE:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=20;
+                break;
+            case UMLLineIcons.WHITEDIAMOND:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=40;
+                break;
+            case UMLLineIcons.BLACKDIAMOND:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=40;
+                break;
+            default:
+                var iconSizeStart=0;
+                break;
+        }
+        switch (line.endIcon) {
+            case IELineIcons.ZERO_ONE:
+                if (line.ctype == 'BT') {
+                    str += `<circle cx='${tx}' cy='${ty - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty - 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<circle cx='${tx}' cy='${ty + 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty + 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<circle cx='${tx - 20 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 5 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 5 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<circle cx='${tx + 20 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx + 5 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 5 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=30;
+                break;
+            case IELineIcons.ONE:
+                if (line.ctype == 'BT') {
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<line x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<line x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=20;
+                break;
+            case IELineIcons.FORCEDONE:
+                if (line.ctype == 'BT') {
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty - 30 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty + 30 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<line x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 30 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 30 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<line x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx + 30 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 30 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=30;
+                break;
+            case IELineIcons.WEAK:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx}' cy='${ty + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 25 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx - 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx + 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=40;
+                break;
+            case IELineIcons.MANY:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=20;
+                    break;
+            case IELineIcons.ZERO_MANY:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx}' cy='${ty - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx}' cy='${ty + 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx - 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<circle cx='${tx + 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=30;
+                break;
+            case IELineIcons.ONE_MANY:
+                if (line.ctype == 'BT') {
+                    str += `<polyline points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=20;
+                break;
+            case UMLLineIcons.ARROW:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10} ${ty - 20},${tx} ${ty},${tx + 10} ${ty - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10} ${ty + 20},${tx} ${ty},${tx + 10} ${ty + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 20} ${ty - 10},${tx} ${ty},${tx - 20} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 20} ${ty - 10},${tx} ${ty},${tx + 20} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=20;
+                break;
+            case UMLLineIcons.TRIANGLE:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=20;
+                break;
+            case UMLLineIcons.WHITEDIAMOND:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=40;
+                break;
+            case UMLLineIcons.BLACKDIAMOND:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=40;
+                break;
+            default:
+                var iconSizeEnd=0;
+                break;
         }
         if (line.startLabel && line.startLabel != '') {
             const offsetOnLine = 20 * zoomfact;
@@ -6814,7 +7568,7 @@ function drawLine(line, targetGhost = false)
 
             var canvas = document.getElementById('canvasOverlay');
             var canvasContext = canvas.getContext('2d');
-            var textWidth = canvasContext.measureText(line.cardinality).width;
+            var textWidth = canvasContext.measureText(line.startLabel).width;
 
             // Used to tweak the cardinality position when the line gets very short.
             var tweakOffset = 0.30;
@@ -6847,17 +7601,21 @@ function drawLine(line, targetGhost = false)
             if (line.ctype == "TB") {
                 if (felem.top.indexOf(line.id) == 0) posX -= offset;
                 else posX += offset;
+                posY -= iconSizeStart;
             }else if(line.ctype == "BT"){
                 if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
                 else posX += offset;
+                posY += iconSizeStart;
             }else if(line.ctype == "RL"){
                 if (felem.right.indexOf(line.id) == 0) posY -= offset;
                 else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
+                posX += iconSizeStart;
             }else if (line.ctype == "LR") {
                 if (felem.left.indexOf(line.id) == 0) posY -= offset;
                 else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
+                posX -= iconSizeStart;
             }
-            str += `<rect class="text" id=${line.id + "startLabel"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<rect class="text" id=${line.id + "startLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
             str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
         }
         if (line.endLabel && line.endLabel != '') {
@@ -6867,7 +7625,7 @@ function drawLine(line, targetGhost = false)
 
             var canvas = document.getElementById('canvasOverlay');
             var canvasContext = canvas.getContext('2d');
-            var textWidth = canvasContext.measureText(line.cardinality).width;
+            var textWidth = canvasContext.measureText(line.endLabel).width;
 
             // Used to tweak the cardinality position when the line gets very short.
             var tweakOffset = 0.30;
@@ -6900,17 +7658,21 @@ function drawLine(line, targetGhost = false)
             if (line.ctype == "TB") {
                 if (telem.top.indexOf(line.id) == 0) posX -= offset;
                 else posX += offset;
+                posY += iconSizeEnd;
             }else if(line.ctype == "BT"){
                 if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
                 else posX += offset;
+                posY -= iconSizeEnd;
             }else if(line.ctype == "RL"){
                 if (telem.right.indexOf(line.id) == 0) posY -= offset;
                 else if (telem.right.indexOf(line.id) == telem.right.length - 1) posY += offset;
+                posX -= iconSizeEnd;
             }else if (line.ctype == "LR") {
                 if (telem.left.indexOf(line.id) == 0) posY -= offset;
                 else if (telem.left.indexOf(line.id) == telem.left.length - 1) posY += offset;
+                posX += iconSizeEnd;
             }
-            str += `<rect class="text" id=${line.id + "endLabel"} x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<rect class="text" id=${line.id + "endLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
             str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
         }
     }
@@ -7336,7 +8098,7 @@ function drawElement(element, ghosted = false)
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
-
+    
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -7369,6 +8131,21 @@ function drawElement(element, ghosted = false)
     if (element.kind == "UMLEntity") { 
         elemAttri = element.attributes.length;
         elemFunc = element.functions.length;
+
+        // Removes the previouse value in UMLHeight for the element
+        for (var i = 0; i < UMLHeight.length; i++) {
+            if (element.id == UMLHeight[i].id) {
+                UMLHeight.splice(i, 1);
+            }
+        }
+
+        // Calculate and store the UMLEntity's real height
+        var UMLEntityHeight = {
+            id : element.id,
+            height : ((boxh + (boxh/2 + (boxh * elemAttri/2)) + (boxh/2 + (boxh * elemFunc/2))) / zoomfact)
+        }
+        UMLHeight.push(UMLEntityHeight);
+
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -7477,8 +8254,98 @@ function drawElement(element, ghosted = false)
         //end of svg
         str += `</svg>`;
     }
-    //====================================================================
 
+    //=============================================== <-- IE functionality
+    //Check if the element is a IE entity
+    else if (element.kind == "IEEntity") { 
+        elemAttri = element.attributes.length;
+        //elemFunc = element.functions.length;
+        //div to encapuslate IE element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+
+         //div to encapuslate IE header
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
+        //svg for IE header, background and text
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        //end of svg for IE header
+        str += `</svg>`;
+        //end of div for IE header
+        str += `</div>`;
+        
+        //div to encapuslate IE content
+        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        //Draw IE-content if there exist at least one attribute
+        if (elemAttri != 0) {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemAttri/2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            for (var i = 0; i < elemAttri; i++) {
+                str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+            }
+            //end of svg for background
+            str += `</svg>`;
+        // Draw IE-content if there are no attributes.
+        } else {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            //end of svg for background
+            str += `</svg>`;
+        }
+        //end of div for IE content
+        str += `</div>`;
+    }
+    
+    //IE inheritance
+    else if (element.kind == 'IERelation') {
+        //div to encapuslate IE element
+        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh/2}px;`;
+      
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+      
+        //svg for inheritance symbol
+        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg); margin-top:${-(boxw/2)};  stroke-width:${linew};'>`;
+
+        //Overlapping inheritance
+        if (element.state == 'overlapping') {
+                str+= `<circle cx="${(boxw/2)}" cy="0;" r="${(boxw/2.08)}" stroke="black";'/> 
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
+        }
+        // Disjoint inheritance
+        else {
+            str+= `<circle cx="${(boxw/2)}" cy="0;" r="${(boxw/2.08)}" stroke="black";'/>
+                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
+                <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" />
+                <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" />`
+        }
+        //end of svg
+        str += `</svg>`;
+    }    
+    //=============================================== <-- End of IE functionality
+
+    //=============================================== <-- Start ER functionality
     //ER element
     else {
         // Create div & svg element
@@ -7591,6 +8458,7 @@ function drawElement(element, ghosted = false)
         }
         str += "</svg>";
     }
+    //=============================================== <-- End ER functionality
     if (element.isLocked) {
         str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
     }
@@ -7621,7 +8489,7 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation")) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation"  && context[0].kind != "IERelation")) addNodes(context[0]);
     
 
 }
@@ -7635,6 +8503,7 @@ function checkElementError(element)
     var fElement;
     var tElement;
     var keyQuantity;
+    var primaryCount;
     var strongEntity;
     var weakrelation;
     var lineQuantity;
@@ -7781,6 +8650,7 @@ function checkElementError(element)
 
         if (element.state == "weak") {
             keyQuantity = 0;
+            primaryCount = 0;
             strongEntity = 0;
             weakrelation = 0;
             for (var i = 0; i < lines.length; i++) {
@@ -7790,12 +8660,12 @@ function checkElementError(element)
 
                 // Checking for wrong key type
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "candidate") {
+                    if (tElement.state == "candidate" || tElement.state == "primary") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "candidate") {
+                    if (fElement.state == "candidate" || fElement.state == "primary") {
                         errorData.push(tElement);
                     }
                 }
@@ -7906,6 +8776,7 @@ function checkElementError(element)
         }
         else {
             keyQuantity = 0;
+            primaryCount = 0;
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i];
                 fElement = data[findIndex(data, line.fromID)];
@@ -7925,13 +8796,19 @@ function checkElementError(element)
 
                 // Counting quantity of keys
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "candidate") {
+                    if (tElement.state == "candidate" || tElement.state == "primary") {
                         keyQuantity += 1;
+                    }
+                    if (tElement.state == "primary") {
+                        primaryCount += 1;
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "candidate") {
+                    if (fElement.state == "candidate" || fElement.state == "primary") {
                         keyQuantity += 1;
+                    }
+                    if (fElement.state == "primary") {
+                        primaryCount += 1;
                     }
                 }
 
@@ -7974,7 +8851,10 @@ function checkElementError(element)
                 // Checks if entity has any lines
                 if (fElement.id == element.id || tElement.id == element.id) {
                     //Checking for wrong quantity of keys
-                    if (keyQuantity < 1 || keyQuantity > 1) {
+                    if (keyQuantity < 1) {
+                        errorData.push(element);
+                    }
+                    if (primaryCount > 1) {
                         errorData.push(element);
                     }
                 }
@@ -8964,6 +9844,44 @@ function checkElementError(element)
             var fElement0;
             var tElement0;
 
+            // Checking for non-normal attributes on a attribute
+            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                        if (fElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                    if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                        if (fElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                }
+            }
+            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                for (var j = 0; j < lines.length; j++) {
+                    line0 = lines[j];
+                    fElement0 = data[findIndex(data, line0.fromID)];
+                    tElement0 = data[findIndex(data, line0.toID)];
+
+                    if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                        if (tElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                    if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                        if (tElement.state != "normal") {
+                            errorData.push(element);
+                        }
+                    }
+                }
+            }
+
             // Checking for 2nd line attribute connected with a 3rd attribute
             if (fElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr") {
                 for (var j = 0; j < lines.length; j++) {
@@ -9293,12 +10211,12 @@ function checkElementError(element)
             // Checking for wrong key type
             if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
                 if (fElement.id == element.id && tElement.kind == "EREntity") {
-                    if (fElement.state == "candidate") {
+                    if (fElement.state == "candidate" || fElement.state == "primary") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "EREntity") {
-                    if (tElement.state == "candidate") {
+                    if (tElement.state == "candidate" || tElement.state == "primary") {
                         errorData.push(tElement);
                     }
                 }
@@ -9386,11 +10304,11 @@ function checkElementError(element)
                     }
 
                     // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "primary" && tElement0.state == "primary") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candiaate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "primary" && fElement0.state == "primary") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
@@ -9414,12 +10332,12 @@ function checkElementError(element)
                         errorData.push(fElement0);
                     }
 
-                    // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    // Checking for more than one key attributes on the same entity (except candidate key)
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "primary" && tElement0.state == "primary") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "primary" && fElement0.state == "primary") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
@@ -9829,8 +10747,24 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#000000"}`;
                         }
                     }
+                }
+                // Update IEEntity
+                else if(element.kind == "IEEntity"){
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        // If more than one element is marked.
+                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                            fillColor.style.fill = `${"#927b9e"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                        } else{
+                            fillColor.style.fill = `${element.fill}`;
+                            fontColor.style.fill = `${"#000000"}`;
+                        }
+                    }
+                }
                 // Update Elements with double borders.
-                }else if(element.state == "weak" || element.state == "multiple"){
+                else if(element.state == "weak" || element.state == "multiple"){
                     for (let index = 0; index < 2; index++){
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
@@ -9862,11 +10796,9 @@ function updateCSSForAllElements()
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
-                    }else{
+                    } else{
                         fillColor.style.fill = `${element.fill}`;
-                        
                         fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
-                        
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
                             if (element.fill == "#000000") {
@@ -10182,6 +11114,7 @@ function fetchDiagramFileContentOnLoad()
         //check so that it is a file with content
         if(diagramToLoadContent!="NO_FILE_FETCHED" && diagramToLoadContent != ""){
             loadDiagramFromString(JSON.parse(diagramToLoadContent));
+            storeDiagramInLocalStorage();
         }
 }
 
@@ -10242,7 +11175,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
 function resetDiagramAlert(){
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if(refreshConfirm){
-        refreshDiagram();
+        resetDiagram();
     }
     
 }

@@ -475,9 +475,34 @@ function selectVariant(vid, el) {
 		} else {
 			// But hide the information if it is deselected.
 			document.getElementById('vid').value = "";
-			document.getElementById('variantparameterText').value = "";
+			document.getElementById("variantparameterText").value = "";
 			document.getElementById('variantanswerText').value = "";
+			
 		}
+		
+		//Disable and enable update/disable/enable buttons depending on isSelect and if item in list is set enable/disable.
+		if(isSelected){
+			document.getElementById("disableVariant").disabled = false;
+			document.getElementById("saveVariant").disabled = false;
+
+			var disabled = (target_variant['disabled']);
+			$("#disabled").val(disabled);
+			  if (disabled == 0) {
+				//showVariantDisableButton();
+				$("#disableVariant").attr('disabled',false);
+				$("#enableVariant").attr('disabled',true);
+			  }else{
+				//showVariantEnableButton();
+				$("#disableVariant").attr('disabled',true);
+				$("#enableVariant").attr('disabled',false);
+			  }
+		}else{
+			document.getElementById("disableVariant").disabled = true;
+			document.getElementById("saveVariant").disabled = true;
+			document.getElementById("enableVariant").disabled = true;
+		}
+			
+		
 
 
 		//Get information for leftDivDialog and display it.
@@ -514,11 +539,12 @@ function selectVariant(vid, el) {
                     document.getElementById('file').value = obj[result];
                 }
   			}
-		var diagramType = obj.diagram_type; //<-- UML functionality start
+		var diagramType = obj.diagram_type; //<-- UML/IE functionality start
 		if(diagramType){
 			document.getElementById('ER').checked = diagramType.ER;
 			document.getElementById('UML').checked = diagramType.UML;
-		}//<-- UML functionality end
+			document.getElementById('IE').checked = diagramType.IE;
+		}//<-- UML/IE functionality end
         var submissionTypes = obj.submissions;
         if (submissionTypes) {
   			  document.getElementById('submissionType0').value = submissionTypes[0].type;
@@ -546,17 +572,6 @@ function selectVariant(vid, el) {
 				document.getElementById('notes').value = ""; 				
 		}
 
-  var disabled = (target_variant['disabled']);
-  $("#disabled").val(disabled);
-	if (disabled == 0) {
-      //showVariantDisableButton();
-      $("#disableVariant").attr('disabled',false);
-      $("#enableVariant").attr('disabled',true);
-	}else{
-      //showVariantEnableButton();
-      $("#disableVariant").attr('disabled',true);
-      $("#enableVariant").attr('disabled',false);
-	}
 }
 
 
@@ -594,13 +609,9 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
-
+	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
 	//check if the selected dugga is a diagram dugga
 	if(globalData['entries'][globalVariant].quizFile == "diagram_dugga"){
-		/*For now it only fetches the files when it's a diagram dugga. 
-		This might change in the future if other duggor should have
-		additional files as parameters*/
-		AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "FILE");
 		$("#selectBox").css("display", "flex");
 		$("#typeCheckbox").css("display", "flex");
 		$("#errorCheck").css("display", "flex");
@@ -729,7 +740,7 @@ function createJSONString(formData) {
 		"gType":formData[2].value,
 		"gFilelink":$("#gFilelink option:selected").val(),
 		"diagram_File":$("#file option:selected").val(),
-		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked}, //<-- UML functionality
+		"diagram_type":{ER:document.getElementById("ER").checked,UML:document.getElementById("UML").checked,IE:document.getElementById("IE").checked}, //<-- UML functionality
 		"extraparam":$('#extraparam').val(),
 		"notes":$('#notes').val(),
 		"submissions":submission_types,
@@ -1373,13 +1384,18 @@ function compare(a, b) {
 
 function checkDiagramTypes(num){
 	if(num==0){
-		if(document.getElementById("UML").checked == false){
+		if(document.getElementById("UML").checked == false && document.getElementById("IE").checked == false){
 			document.getElementById("ER").checked = true;
 		}
 	}
 	if(num==1){
-		if(document.getElementById("ER").checked == false){
+		if(document.getElementById("ER").checked == false && document.getElementById("IE").checked == false){
 			document.getElementById("UML").checked = true;
+		}
+	}
+	if(num==2){
+		if(document.getElementById("ER").checked == false && document.getElementById("UML").checked == false){
+			document.getElementById("IE").checked = true;
 		}
 	}
 	$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
