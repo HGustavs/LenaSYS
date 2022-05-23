@@ -390,15 +390,6 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-<!-- 
-                <div id="elementPlacement7" class="diagramIcons" onclick='setElementPlacementType(7); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
-                    <span class="toolTipText"><b>IE Inheritence</b><br>
-                        <p>Add IE-inheritence to the diagram</p><br>
-                        <p id="tooltip-IE_INHERITANCE" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div> -->
-
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
