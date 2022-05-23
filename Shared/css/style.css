@@ -3512,6 +3512,7 @@ span.arrow {
   -webkit-appearance: none;
   -moz-appearance: none;
   vertical-align: text-top;
+  color: black;
 }
 
 .deadlineInfo {
