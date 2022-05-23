@@ -1401,7 +1401,7 @@ function renderOverview(data){
     total.push(0);
     //count total for each user
     data['overview'].forEach(element =>{
-      if(data['allusers'][i] == element[3]) total[i] += element[4];
+      if(data['allusers'][i] == element[3]) total[i] +  total[i] + element[4];
     });  
     
     //calculate % and place in array
