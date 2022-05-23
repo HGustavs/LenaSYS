@@ -9976,9 +9976,6 @@ function fetchDiagramFileContentOnLoad()
         diagramToLoad = temp[3];
         diagramToLoadContent = temp[4];
 
-        console.log(diagramToLoad);
-        console.log(diagramToLoadContent);
-
         //check so that it is a file with content
         if(diagramToLoadContent!="NO_FILE_FETCHED" && diagramToLoadContent != ""){
             loadDiagramFromString(JSON.parse(diagramToLoadContent));

@@ -76,9 +76,7 @@ function uploadFile()
  * */
 function returnedDugga(data)
 {
-
         duggaData = data;
-    console.log(duggaData);
     //var textBox = document.getElementById('submission-receipt');
     //$('#submission-receipt').html(`${duggaData['duggaTitle']}</br></br>Direct link (to be submitted in canvas): </br>` + `<a href='${createUrl(duggaData['hash'])}'> ${createUrl(duggaData['hash'])}` + `</a> </br></br> Hash: </br> ${duggaData['hash']}</br></br>Hash password:</br>${duggaData['hashpwd']}`);
    
