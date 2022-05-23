@@ -7720,6 +7720,7 @@ function checkElementError(element)
     var fElement;
     var tElement;
     var keyQuantity;
+    var primaryCount;
     var strongEntity;
     var weakrelation;
     var lineQuantity;
@@ -7866,6 +7867,7 @@ function checkElementError(element)
 
         if (element.state == "weak") {
             keyQuantity = 0;
+            primaryCount = 0;
             strongEntity = 0;
             weakrelation = 0;
             for (var i = 0; i < lines.length; i++) {
@@ -7875,12 +7877,12 @@ function checkElementError(element)
 
                 // Checking for wrong key type
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "candidate") {
+                    if (tElement.state == "candidate" || tElement.state == "primary") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "candidate") {
+                    if (fElement.state == "candidate" || fElement.state == "primary") {
                         errorData.push(tElement);
                     }
                 }
@@ -7991,6 +7993,7 @@ function checkElementError(element)
         }
         else {
             keyQuantity = 0;
+            primaryCount = 0;
             for (var i = 0; i < lines.length; i++) {
                 line = lines[i];
                 fElement = data[findIndex(data, line.fromID)];
@@ -8010,13 +8013,19 @@ function checkElementError(element)
 
                 // Counting quantity of keys
                 if (fElement.id == element.id && tElement.kind == "ERAttr") {
-                    if (tElement.state == "candidate") {
+                    if (tElement.state == "candidate" || tElement.state == "primary") {
                         keyQuantity += 1;
+                    }
+                    if (tElement.state == "primary") {
+                        primaryCount += 1;
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "ERAttr") {
-                    if (fElement.state == "candidate") {
+                    if (fElement.state == "candidate" || fElement.state == "primary") {
                         keyQuantity += 1;
+                    }
+                    if (fElement.state == "primary") {
+                        primaryCount += 1;
                     }
                 }
 
@@ -8059,7 +8068,10 @@ function checkElementError(element)
                 // Checks if entity has any lines
                 if (fElement.id == element.id || tElement.id == element.id) {
                     //Checking for wrong quantity of keys
-                    if (keyQuantity < 1 || keyQuantity > 1) {
+                    if (keyQuantity < 1) {
+                        errorData.push(element);
+                    }
+                    if (primaryCount > 1) {
                         errorData.push(element);
                     }
                 }
@@ -9378,12 +9390,12 @@ function checkElementError(element)
             // Checking for wrong key type
             if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
                 if (fElement.id == element.id && tElement.kind == "EREntity") {
-                    if (fElement.state == "candidate") {
+                    if (fElement.state == "candidate" || fElement.state == "primary") {
                         errorData.push(fElement);
                     }
                 }
                 if (tElement.id == element.id && fElement.kind == "EREntity") {
-                    if (tElement.state == "candidate") {
+                    if (tElement.state == "candidate" || tElement.state == "primary") {
                         errorData.push(tElement);
                     }
                 }
@@ -9471,11 +9483,11 @@ function checkElementError(element)
                     }
 
                     // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "primary" && tElement0.state == "primary") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candiaate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "primary" && fElement0.state == "primary") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
@@ -9499,12 +9511,12 @@ function checkElementError(element)
                         errorData.push(fElement0);
                     }
 
-                    // Checking for more than one key attributes on the same entity
-                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && tElement0.state == "candidate") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
+                    // Checking for more than one key attributes on the same entity (except candidate key)
+                    if (fElement0.id == currentEntity.id && ((currentAttr.state == "primary" && tElement0.state == "primary") || (currentAttr.state == "weakKey" && tElement0.state == "weakKey")) && tElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(tElement0);
                     }
-                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "candidate" && fElement0.state == "candidate") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
+                    if (tElement0.id == currentEntity.id && ((currentAttr.state == "primary" && fElement0.state == "primary") || (currentAttr.state == "weakKey" && fElement0.state == "weakKey")) && fElement0.id != currentAttr.id) {
                         errorData.push(currentAttr);
                         errorData.push(fElement0);
                     }
