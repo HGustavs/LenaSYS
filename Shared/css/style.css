@@ -859,6 +859,12 @@ p {
 }
 .section > #tabElement {color: white; }
 
+.code #NewTabLink{
+  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+} 
+#tabElement{
+  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+}
 #Sectionlist .header {
   color: var(--color-text-header);
   background-color: var(--color-primary);
