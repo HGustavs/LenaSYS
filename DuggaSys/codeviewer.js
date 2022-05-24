@@ -94,6 +94,7 @@ function fillBurger() {
 
 function returned(data) 
 {
+	allBlocks = [];
 	retData = data;
 	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
 	// User can choose template if no template has been chosen and the user has write access.
@@ -266,6 +267,8 @@ function returned(data)
 		var boxcontent = retData['box'][i][2];
 		var boxwordlist = retData['box'][i][3];
 		var boxfilename = retData['box'][i][5];
+		var boxfilepath = retData['box'][i][7];
+		var boxfilekind = retData['box'][i][8];
 		var boxmenuheight = 0;
 
 		// don't create templatebox if it already exists
@@ -279,7 +282,7 @@ function returned(data)
 			boxtypeCodebox.removeAttribute("contenteditable");
 			boxtypeCodebox.classList.remove("descbox");
 			boxtypeCodebox.classList.add("codebox");
-			createboxmenu(contentid, boxid, boxtype);
+			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
@@ -335,7 +338,7 @@ function returned(data)
 			/* Assign Content */
 			$("#" + contentid).html(desc);
 			$("#" + contentid).css("margin-top", boxmenuheight);
-			createboxmenu(contentid, boxid, boxtype);
+			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
@@ -349,7 +352,7 @@ function returned(data)
 			$("#" + contentid).css("margin-top", boxmenuheight);
 
 		} else if (boxtype === "IFRAME") {
-			createboxmenu(contentid, boxid, boxtype);
+			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 			
 			var boxtypeframebox = document.getElementById(contentid);
 			boxtypeframebox.classList.remove("codebox", "descbox");
@@ -385,7 +388,7 @@ function returned(data)
 
 		} else if (boxtype == "NOT DEFINED") {
 			if (retData['writeaccess'] == "w") {
-				createboxmenu(contentid, boxid, boxtype);
+				createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 				// Make room for the menu by setting padding-top equals to height of menubox
 				if ($("#" + contentid + "menu").height() == null) {
 					boxmenuheight = 0;
@@ -399,7 +402,11 @@ function returned(data)
 	// Add all drop zones
 	if (retData['writeaccess'] == "w") {
 		initFileDropZones();
-	}	
+	} else {
+		$('.codebox').each(function() {
+			$(this).find('*').addClass('unselectable');
+		});
+	}
 
 	var ranges = getBlockRanges(allBlocks);
 	for (var i = 0; i < Object.keys(ranges).length; i++) {
@@ -496,6 +503,8 @@ function initFileDropZones()
 {
 	for(i = 1; i <= retData["box"].length; i++) {
 		dropArea = document.getElementById("box" + i);
+		if (typeof(dropArea) == 'undefined' || dropArea == null)
+			continue;
 
 		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
 			{
@@ -853,6 +862,7 @@ function changeDirectory(kind) {
 		wordlist.disabled = false;
 	} else if ($(kind).val() == "IFRAME") {
 		dir = retData['directory'][2];
+		wordlist.value = null;
 		wordlist.disabled = 'disabled';
 	} else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
@@ -868,7 +878,7 @@ function changeDirectory(kind) {
 			str += "<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
 		} 
 		else if (dir[i].filename == "---===######===---"){
-			str += "<option disabled hidden value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>"
+			str += "<option selected hidden value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>"
 		}
 		else {
 			str += "<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
@@ -1051,7 +1061,7 @@ function addTemplatebox(id) {
 //                Is called by returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function createboxmenu(contentid, boxid, type) {
+function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 	if ($("#" + contentid + "menu").length == 0) {
 		var boxmenu = document.createElement("div");
 		$("#" + contentid + "wrapper").append(boxmenu);
@@ -1065,15 +1075,15 @@ function createboxmenu(contentid, boxid, type) {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-				str += "<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
+				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-				str += "<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
+				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-				str += "<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>";
+				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else {
 				str += "<td class='butto2 showdesktop'>";
 				str += "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\"" + boxid + "\",\"" + contentid + "\");removeboxmenu(\"" + contentid + "menu\");'>";
@@ -1354,7 +1364,7 @@ $(window).resize(function () {
 	var windowHeight = $(window).height();
 	textHeight = windowHeight - 50;
 	$("#table-scroll").css("height", textHeight);
-
+	closeBurgerMenu(); // close burgerMenu when window resize
 });
 
 document.addEventListener("drop", function (e) {
@@ -1476,6 +1486,12 @@ function tokenize(instring, inprefix, insuffix) {
 	currentCharacter = instring.charAt(i);
 	while (currentCharacter) { // currentCharacter == first character in each word
 		from = i;
+		// \r\n is used as a new line character in Windows \r and \n both represent a new line character in Unix and Mac OS
+		if (currentCharacter == '\r' && instring.charAt(i + 1) == '\n') {
+			i++
+			currentCharacter = instring.charAt(i);
+		}
+
 		if (currentCharacter <= ' ') { // White space and carriage return
 			if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
 				maketoken('newline',"",i,i,row);
@@ -2437,7 +2453,15 @@ function changetemplate(templateno)
 	}
 	templateOptions.innerHTML = str;
 	for (var i = 0; i < boxes; i++) {
-		changeDirectory(document.querySelector('#boxcontent_' + i));
+		if (i < retData['box'].length) {
+			var select = templateOptions.querySelectorAll(".templateSelect");
+			select[0 + i * 3].value = retData['box'][i][1];
+			changeDirectory(document.querySelector('#boxcontent_' + i));
+			select[1 + i * 3].value = retData['box'][i][5];
+			select[2 + i * 3].value = retData['box'][i][3];
+		} else {
+			changeDirectory(document.querySelector('#boxcontent_' + i));
+		}
 	}
 }
 
@@ -2502,6 +2526,8 @@ function closeEditExample() {
 //----------------------------------------------------------------------------------
 
 function openTemplateWindow() {
+	if (retData != null)
+		changetemplate(String(retData['templateid']));
 	document.getElementById("chooseTemplateContainer").style.display = "flex";
 }
 
@@ -4698,44 +4724,31 @@ function addHtmlLineBreak(inString) {
 function copyCodeToClipboard(boxid) {
 	var box = document.getElementById("box" + boxid);
 	var code = box.getElementsByClassName("normtextwrapper")[0];
+	var lines = "";
 
-	var impo = code.getElementsByClassName("impo"); // Add code to just copy impo code
+	// Get important lines based on code window
+	var impo = code.getElementsByClassName("impo"); 
 
-	// Select the code
-	var selection = window.getSelection();
-	
-	if (selectionRange != null && selectionRange.toString() != "") {
-		// Copy selected code
-		selection.removeAllRanges();
-		selection.addRange(selectionRange);
-	} else if (impo.length > 0) {
-		// Copy impo code if no selection is made
-		selection.removeAllRanges();
+	// Check if a teacher is logged in
+	if (retData['writeaccess'] != "w") {
+		// Add Code to just copy impo code
 		for(i = 0; i<impo.length;i++){
-			var range = document.createRange();
-			range.selectNode(impo[i]);
-			selection.addRange(range);
+			lines += impo[i].innerText  + "\n";
 		}
 	} else {
-		// Retain previous clipboard if no code is selected and there is no impo code
-		return;
+		for(i = 0; i<code.childNodes.length;i++){
+			lines += code.childNodes[i].innerText  + "\n";
+		}
 	}
-	
-	if (navigator.clipboard) {
-		// Write selection to clipboard
-		navigator.clipboard.writeText(selection).catch(function (err) {
-			// Display errors as a warning
-			console.warn("Error occurred.", err);
-		});
+
+	// Now using clipboard api, but fals back to execCommand incase it's not supported
+	if (navigator.clipboard){
+		navigator.clipboard.writeText(lines);
 	} else {
-		// If clipboard API is not available
-		document.execCommand("Copy");
-		console.warn("Depricated feature \'documnet.execCommand()\' was used");
+		var dummy = $('<textarea>').val(lines).appendTo('body').select();
+		document.execCommand("Copy")
+		dummy.remove();
 	}
-
-	selection.removeAllRanges();
-	selectionRange = "";
-
 
 	// Notification animation
 	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
@@ -4871,8 +4884,7 @@ function showBox(id) {
 }
 
 // Show preview winodow when clicking on "Edit file"
-function showIframe(boxid,kind) {
-	var fileName = retData['box'][boxid - 1][5]+'';
+function showIframe(path, name, kind) {
     
     // Fetch HTML text from fileed.php
     fetch('fileed.php').then(function (response) {
@@ -4893,11 +4905,15 @@ function showIframe(boxid,kind) {
 		previewWindow.classList.add("loginBox");
         previewWindow.style.display = "block";
         document.querySelector(".editFilePart").style.display = "none";
-        previewWindow.getElementsByTagName('div')[0].getElementsByTagName('div')[0].onclick = hideIframe;
+
+		// Clicking the save button will reload the example to display the new changes
+		previewWindow.querySelector(".save-button-md").addEventListener("click", function(){
+			location.reload();
+		});
         
         // Load the right file in to the preview window
         $.getScript("fileed.js", function(){
-            loadPreview(null, fileName, null);
+            loadPreview(path, name, kind);
         });
     }).catch(function (err) {
         // Display potential errors as a warning

@@ -12,17 +12,6 @@
             justify-content: space-between;
             position: relative;
         }
-
-        #container_header{
-            background-color: #ccc;
-            width:100%;
-            display:inline-block;
-            position:relative;
-            padding:3px 26px;
-            box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
         
          ::-webkit-scrollbar {
             width: 5px;
@@ -50,37 +39,6 @@
             display: flex;
             justify-content: space-around;
             margin-left:0px;
-        }
-
-        #close_open_border {
-            position: absolute;
-            background-color: #ccc;
-            width:20px;
-            height:803px;
-            top:0px;
-            cursor: pointer;
-        }
-
-        #close_open_border:after {
-            content: '';
-            position: absolute;
-            left: 19px;
-            top:383px;
-            border-top: 14px solid transparent;
-            border-right: 0px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-left: 14px solid #ccc;
-        }
-
-        #close_open_border:hover:after {
-            border-top: 14px solid transparent;
-            border-right: 0px solid transparent;
-            border-bottom: 14px solid transparent;
-            border-left: 14px solid #8e8e8e;
-        }
-
-        #close_open_border:hover {
-            background-color:#8e8e8e;
         }
         
     </style>
@@ -150,13 +108,12 @@
             </div>
         </div>
         <div class="container">
-
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
                 <div id="container_header"><h3>Instructions</h3></div>
-                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; color: rgb(0, 0, 0); padding: 5px; padding-left: 25px; ">
-                    <h2>Modellering</h2>
-                    <p>Modellera nedanstående uppgifter i notationerna ER och UML.</p>
+                <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0" style=" visibility: visible; padding: 12px; ">
+                    <h2 style="margin-left: 14px;">Modellering</h2>
+                    <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
                     <ol type="1">
                         <li>En person identifieras av ett personnummer och har ett namn.</li><br>
                         <li>Lägg till så att personen också har ett efternamn samt att man kan härleda åldern med hjälp av personnumret.</li><br>
@@ -175,8 +132,6 @@
                 <div id="close_open_border"></div>
             </div>
             <div id="container" class="canvas_right">
-
-
                 <iframe onclick="canSaveController()" id="diagram-iframe" height="800px" width="100%" style="pointer-events:auto;" title="Diagram"></iframe>
                 <script>
                     if(cid){
