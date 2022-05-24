@@ -434,6 +434,10 @@ function git_logout()
     }
 }
 
+function git_showLogoutPopup()
+{
+  $("#git_logoutBox").show();
+}
 
 
 function CONT_LOGINBOX_SERVICE_RETURN(data)

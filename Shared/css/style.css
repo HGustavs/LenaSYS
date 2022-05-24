@@ -8391,6 +8391,7 @@ textarea#filecont {
   right: -308px;
 }
 .accountRequestTable {
+  min-width: 80px;
   margin-right: auto;
   margin-left: auto;
   color: #000000;
@@ -8991,9 +8992,7 @@ select{
   border-radius: 5px;
 }
 
-
-
-/*  */
+/* Contribution Tag cloud css */
 .container_overview {
   margin: 0 0 20px 0;
   display: flex;
@@ -9012,4 +9011,54 @@ select{
 .vertical_text{
   writing-mode: vertical-rl;
 }
+/* END */
+
+/*svg-dugga css */
+#svg-leftpane{
+  left:0px;
+  right:40%;
+  top:0px;
+  bottom:0px;
+  border:1px solid blue;
+  background: #def;
+  width:35%;
+  
+}
+
+#svg-rightpane{
+  top:0px;
+  bottom:0px;
+  left:60%;
+  right:0px;
+  border:1px solid orange;
+  background: #fed;
+  width:60%;
+  
+}
+
+#svg-editor{
+  height:200px;
+  width:95%;
+max-width:95%;
+}
+
+#svg-styleed{
+  height:200px;
+width:95%;
+max-width:95%;
+}      
+
+#svg-content{
+width:100%;
+border:1px dotted green;
+margin:2px;
+}
+
+#svg-duggaContainer{
+  display:flex;
+  justify-content: center;
+  font-family:Arial Narrow; 
+  font-size:18px;
+}
+
 /* END */

@@ -1277,12 +1277,12 @@ function returnedSection(data) {
           if (retdata['writeaccess']) {
           if (itemKind === 3) {
             if(isLoggedIn){
-              str += "<td  class='LightBox" + hideState + "'>";
+              str += "<td onmouseup='hideDeleted()' class='LightBox" + hideState + "'>";
               str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             }
           } else if (itemKind === 4) {
             if(isLoggedIn){
-              str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
+              str += "<td onmouseup='hideDeleted()' style='background-color: #614875;' class='LightBox" + hideState + "'  >";
               str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
             }
           }
@@ -1293,7 +1293,7 @@ function returnedSection(data) {
       if (retdata['writeaccess']) {
         console.log(itemKind);
         if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
-          str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
+          str += "<td onmouseup='hideDeleted()' style'text-align: left;' class='LightBox" + hideState + "'>";
           str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
           
         }
@@ -1334,7 +1334,7 @@ function returnedSection(data) {
         } else if (itemKind === 1) {
           if(isLoggedIn){
             // Styling for Section row
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+            str += "<td onmouseup='hideDeleted()' style='background-color: #614875;' class='LightBox" + hideState + "'>";
             str += "<div id='selectionDragI"+item['lid']+"' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
           }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
@@ -1560,10 +1560,8 @@ function returnedSection(data) {
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<div class="newTabCanvasLink" tabIndex="0">`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
+            str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
-            str += `</div>`;
             str += "</td>";
 
           // Generate Canvas Link Button
@@ -1585,7 +1583,7 @@ function returnedSection(data) {
 
 
           str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'],
+          str += " onclick='setActiveLid("+item['lid']+");selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
@@ -2176,7 +2174,20 @@ $(window).keyup(function (event) {
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       //I don't know who did this but this call is not necessory
-      // updateItem();
+      updateItem();
+      //Add class to element so it will be highlighted.
+      setTimeout(function(){
+        var element = document.getElementById('I'+updatedLidsection).firstChild;
+        if(element.tagName == 'DIV') {
+        element = element.firstChild;
+        element.classList.add("highlightChange");
+        }else if (element.tagName == 'A'){
+          document.getElementById('I'+updatedLidsection).classList.add("highlightChange");
+        }else if (element.tagName == 'SPAN'){
+          document.getElementById('I'+updatedLidsection).firstChild.classList.add("highlightChange");
+        }
+      },200);
+
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();

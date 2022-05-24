@@ -263,6 +263,7 @@ if(isSuperUser($userid)){
 				$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
 				$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+				unset($grade);
 
 				$query = $pdo->prepare("SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;");
 				$query->bindParam(':hash', $hash);			
@@ -316,15 +317,22 @@ if(isSuperUser($userid)){
 		unset($param);
 		if (isSuperUser($userid)){
 			if($hash!="UNK"){
-				//changed WHERE key to moment instead of hash since hash isn't working correctly. It appears to work so long as their is an entry for that moment in userAnswer
-				$sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz 
-				FROM userAnswer 
-				LEFT JOIN variant ON userAnswer.variant=variant.vid 
-				WHERE moment=:moment";
+				$sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash";
 				$query = $pdo->prepare($sql);
-				$query->bindParam(':moment', $moment);
-				$query->execute();
-				foreach($query->fetchAll() as $row){
+				$query->bindParam(':hash', $hash);
+				$result = $query->execute();
+				$rows = $query->fetchAll();
+	
+				//if the hash didn't work then retrive all answers for that moment
+				if($rows == NULL){
+					//changed WHERE key to moment instead of hash since hash isn't working correctly. It appears to work so long as their is an entry for that moment in userAnswer
+					$sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE moment=:moment";
+					$query = $pdo->prepare($sql);
+					$query->bindParam(':moment', $moment);
+					$query->execute();
+					$rows = $query->fetchAll();
+				}
+				foreach($rows as $row){
 					$variant=$row['vid'];
 					$answer=$row['useranswer'];
 					$variantanswer=html_entity_decode($row['variantanswer']);
