@@ -9114,6 +9114,23 @@ select{
   user-select: none;
 }
 
+/* Style for "Contribution GithHub Table START */
+.PopUpContributionTable{
+  position: absolute; 
+  background: #f5e7ff;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  width:500px;
+  height: 500px; 
+  white-space: nowrap;
+  display:none; margin-top: 15px; 
+  margin-left: 50px;
+  z-index: 100; 
+  overflow-y:scroll;
+  padding-left: 10px;
+}
+/* END */
+
 #container_header{
   background-color: #ccc;
   width:100%;
