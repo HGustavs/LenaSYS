@@ -1672,7 +1672,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
             var issue = obj.issues[j];
             var issuestr = issue.issueno + " " + issue.title;
             str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' 
-            href='https://github.com/HGustavs/LenaSYS/issues/${issue.issueno.substr(1)}'>${issuestr}</a></span>`;
+            href='https://github.com/HGustavs/LenaSYS/issues/${issue.issueno}'>${issuestr}</a></span>`;
           }
           str += "</div>";
           str += "</div>";
@@ -1685,7 +1685,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
               var comment = obj.comments[j];
               var issuestr = comment.issueno + " " + comment.content;
               str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' 
-              href='https://github.com/HGustavs/LenaSYS/issues/${comment.issueno.substr(1)}'>${issuestr}</a></span>`;
+              href='https://github.com/HGustavs/LenaSYS/issues/${comment.issueno}'>${issuestr}</a></span>`;
             }
           str += "</div>";
           str += "</div>";
