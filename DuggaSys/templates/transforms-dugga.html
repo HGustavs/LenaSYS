@@ -21,7 +21,7 @@
 
     <div id="transformToolbox" style="min-width:340px;width:340px;display: flex;flex-direction: column;justify-content: flex-start;">
         <!-- Draw tools -->
-        <div style="flex-grow: 1">     
+        <div id="toolboxTransform" style="flex-grow: 1">     
             <div class='loginBoxheader'>
                 <h3>Ritverktyg</h3>
             </div>
@@ -69,7 +69,7 @@
                 
                 <input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
               </div>
-              <div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
+              <div id="opTableContainer" style="min-height:300px; overflow-y:scroll;">
                   <table id="opTable" style="width:100%;">
                       <caption>Operations</caption>
                       <thead>

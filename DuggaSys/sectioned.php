@@ -139,9 +139,7 @@
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 			
 			<!-- Undo button -->
-					
-			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:198px; display: none;" onclick="cancelDelete();">
-			
+			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
 			<!-- Undo button END -->
 
 			<!-- Hide button -->
@@ -207,16 +205,16 @@
 		<!-- FAB Start -->
 		<!-- Big FAB Button in the bottom of the page -->
 		<div class='fixed-action-button extra-margin' id="FABStatic" style="display:none">
-				<a class='btn-floating fab-btn-lg noselect' id='fabBtn' tabindex='0'>+</a>
+				<a class='btn-floating fab-btn-lg noselect' id='fabBtn' tabindex='0' onclick='incrementItemsToCreate();'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed id='fabBtnList'>
-					 <li><a class='btn-floating fab-btn-sm scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' tabindex='0' data-tooltip='Test' onclick='createFABItem("3","New Test","undefined");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' tabindex='0' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' tabindex='0' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Message' onclick='createFABItem("7","New Message","undefined");'><i alt='message mark icon' class='material-icons'>format_quote</i></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Test' onclick='createFABItem("3","New Test","undefined");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Message' onclick='createFABItem("7","New Message","undefined");'><i alt='message mark icon' class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
 		
