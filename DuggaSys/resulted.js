@@ -266,13 +266,13 @@ function renderSortOptions(col, sortKind, colname) { // Which columns and how th
 	if(col == "duggaName" || col == "submitted" || col == "timesSubmitted" || col == "timesAccessed"){
 		str += "<div style='white-space:nowrap;cursor:pointer'>"
         if(sortKind == 1){		
-            str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" +"</span>";
+            str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" +"<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 
         }else if (sortKind == 0){
-            str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "(DES)" + "</span>";
+            str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "(DES)" + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 			
         }else{
-            str += "<span onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname +"</span>";
+            str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "(ASC)" + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
         }
     }else{
 		str += colname;
@@ -359,21 +359,30 @@ function rowFilter(row) {
 
 // Basic ascending/descending order
  function compare(a, b) { 
-	if(isNaN(a) && isNaN(b)){
-		if (a.toLowerCase() < b.toLowerCase()){
+	var status = sortableTable.currentTable.getSortkind();
+	if(status==1){
+		var tempA = a;
+		var tempB = b;
+	}else{
+		var tempA = b;
+		var tempB = a;
+	}
+
+	if(isNaN(tempA) && isNaN(tempB)){
+		if (tempA.toLowerCase() < tempB.toLowerCase()){
 			return 1;
-		}else if (a.toLowerCase() > b.toLowerCase()){
+		}else if (tempA.toLowerCase() > tempB.toLowerCase()){
 			return -1;
 		}
-	}else if (a == null || b == null){
-		if (a == null){
+	}else if (tempA == null || tempB == null){
+		if (tempA == null){
 			return 1;
-		}else if (b == null){
+		}else if (tempB == null){
 			return -1;
 		}
 	} else {
-		var numA = parseInt(a);
-		var numB = parseInt(b);
+		var numA = parseInt(tempA);
+		var numB = parseInt(tempB);
 		if (numA < numB){
 			return 1;
 		}else if (numA > numB){
