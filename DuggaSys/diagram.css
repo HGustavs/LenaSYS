@@ -209,11 +209,11 @@
 .diagramIcons{
     position: relative;
     margin: auto;
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     cursor:pointer;
     border: solid 1px var(--color-primary);
-    margin-top: 0px;
+    margin-top: 3px;
     
    
 }
@@ -222,8 +222,8 @@
     border: solid 1px var(--color-primary-light);
 }
 .diagramIcons img{
-    width:35px;
-    height:35px;
+    width:34px;
+    height:34px;
 }
 .node {
     position: absolute;
@@ -340,7 +340,7 @@
 
 .toolTipText{
     top:-5px;
-    left: 132%;
+    left: 125%;
     visibility: hidden;
     width: 250px;
     background: rgba(0, 0, 0, 0.8);
@@ -494,8 +494,6 @@
     top:11.1%;
     left: 100%;
     padding:5px;
-    padding-top:0px;
-    border-radius: 5px;
     background-color:var(--color-primary);
     
 }
@@ -505,10 +503,8 @@
     top:15.9%;
     left: 100%;
     padding:5px;
-    padding-top:0px;
-    border-radius: 5px;
     background-color:var(--color-primary);
-    margin-left: 1px;
+    
 }
 .activeTogglePlacementTypeBox{
     display: flex;
@@ -528,25 +524,22 @@
     top: 0px;
     width: 6.2px;
     height: 6.2px;
+    z-index: 2;
 }
 .placementTypeBoxIcons{
     margin: auto;
-    width: 31px;
-    height: 31px;
+    width: 34px;
+    height: 34px;
     cursor:pointer;
-    border-radius: 30%;
     border: solid 1px var(--color-primary);
-    margin-top: 5px;
 }
 .placementTypeBoxIcons:hover, .active{
     background: var(--color-primary-hover);
     border: solid 1px var(--color-primary-light);
 }
 .placementTypeBoxIcons img{
-    width:35px;
-    height:35px;
-    margin-left: -2px;
-    margin-top: -2px;
+    width:34px;
+    height:34px;
 }
 .placementTypeToolTipText{
     top:0%;
