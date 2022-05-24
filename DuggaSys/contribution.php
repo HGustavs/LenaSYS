@@ -51,6 +51,8 @@ $vers=getOPG('coursevers');
 
 	<div class='group2 group1' id='barchart' style='margin-left: 12px; max-width:75%; white-space: nowrap;'></div>
 
+	<div class='group3' id='overview' style='margin-left: 12px; width:95%; white-space: nowrap;'></div>  <!--Placement of overview tag cloud-->
+
 	<div class='group2' id='lineDiagram+select' style='margin-left: 12px; white-space: nowrap;'></div>
 
 	<div class='group2' id='hourlyGraph' style='margin-left: 12px; white-space: nowrap;'></div>
@@ -60,7 +62,7 @@ $vers=getOPG('coursevers');
 	<div class='group3' id='allRankTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
 
 	<div class='group3' id='contribTsTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
-
+	
 	<div id="accountRequests-pane" class="hide-accountRequests-pane" style="display:none;" ></div>
 	<!-- content END -->
 

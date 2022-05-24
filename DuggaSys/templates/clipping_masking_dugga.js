@@ -150,7 +150,7 @@ function returnedDugga(data)
         feedback=data["feedback"];
         $("#showFeedbackButton").css("display","block");
     }
-    if(data["answer"] !== null || data["answer"] !== "UNK") {
+    if(data["answer"] !== null && data["answer"] !== "UNK") {
         hasSavedAnswer=true;
         savedAnswer=data['answer'];
     }

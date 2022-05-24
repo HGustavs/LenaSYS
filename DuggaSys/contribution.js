@@ -1178,13 +1178,13 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
@@ -1194,13 +1194,13 @@ function renderAllRankSortOptions(col, status, colname) {
 
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='allRankTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='allRankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
@@ -1209,13 +1209,13 @@ function renderAllRankSortOptions(col, status, colname) {
 function renderRankSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='rankTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0'onclick='rankTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
@@ -1224,13 +1224,13 @@ function renderRankSortOptions(col, status, colname) {
 function renderGitHubSortOptions(col, status, colname) {
   str = "";
   if (status == -1) {
-    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading' tabindex='0' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}</span>`;
   } else if (status == 0) {
-    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",1)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='ghContibTable.toggleSortStatus(\"${col}\",1)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
   } else {
-    str += `<span class='sortableHeading' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
+    str += `<span class='sortableHeading'tabindex='0' onclick='ghContibTable.toggleSortStatus(\"${col}\",0)'>
     ${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
   }
   return str;
@@ -1375,10 +1375,56 @@ function returnedSection(data) {
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
+  document.getElementById('overview').innerHTML = renderOverview(data);
   document.getElementById('content').innerHTML = str;
   
   //only create sidebar if the user is a superuser
   if(data['isSuperUser']) createSidebar();
+}
+
+
+/*  loop through all user and count all their blame lines
+      once counted will loop and place the % of each file changed into a seperate array
+  data[overview][0]=Bfile.id 
+  data[overview][1]=Bfile.filename 
+  data[overview][2]=Bfile.path
+   data[overview][3]=Blame.blameuser 
+   data[overview][4]=occurance //(count of how many times each file occurs in Blame grouped by Blame.Blameuser)
+      */
+function renderOverview(data){
+  var values = Array()
+  var picketuser = localStorage.getItem('GitHubUser');
+  
+    var total = 0;
+
+    //count total for each user
+    data['overview'].forEach(element =>{
+      if(picketuser == element[3]) total =  total + parseInt(element[4]);
+    });  
+    
+    //calculate % and place in array
+    data['overview'].forEach(element =>{
+      if(picketuser == element[3]) values.push(Array((parseInt(element[4]) / total), element[2], element[1], element[3]));
+    });
+  values.forEach(element =>{
+    // console.log(element);
+    // console.log(element.length);
+  });
+
+  var str = "<div class='container_overview' > ";
+
+  values.forEach(element =>{
+    console.log("element[2]:"+ element[2]);
+    str += "<span  class='box_overview ";
+    if((Math.floor(Math.random()*10) %4)==0) {
+      str+="vertical_text";
+    }
+    str+= "' style='font-size:"+element[0]*5000+"%; width:fit-content; height: fit-content;'>"+element[2]+"</span>";
+  });
+
+  str += "</div> ";
+
+  return str;
 }
 
 // Update the "Select Course" dropdown options
@@ -1626,7 +1672,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
             var issue = obj.issues[j];
             var issuestr = issue.issueno + " " + issue.title;
             str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' 
-            href='https://github.com/HGustavs/LenaSYS/issues/${issue.issueno.substr(1)}'>${issuestr}</a></span>`;
+            href='https://github.com/HGustavs/LenaSYS/issues/${issue.issueno}'>${issuestr}</a></span>`;
           }
           str += "</div>";
           str += "</div>";
@@ -1639,7 +1685,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
               var comment = obj.comments[j];
               var issuestr = comment.issueno + " " + comment.content;
               str += `<span><a onclick='keepContribContentOpen(event)' target='_blank' 
-              href='https://github.com/HGustavs/LenaSYS/issues/${comment.issueno.substr(1)}'>${issuestr}</a></span>`;
+              href='https://github.com/HGustavs/LenaSYS/issues/${comment.issueno}'>${issuestr}</a></span>`;
             }
           str += "</div>";
           str += "</div>";
@@ -2204,28 +2250,29 @@ function accountInformation(data){
     str+= "<div id='" +data[row][0] +"'>";
     str+= "<tr class='accountRequestTable'"+ row +">";
     str+= "<td class='accountRequestTable'>" + data[row][0] + "</td>";
+    var userName = data[row][0];    
     
     //status codes 101=pending 102=denied 0=accepted
     if(data[row][1]==101){  //pending account
       str+="<td class='accountRequestTable'>" + 'Pending'+ "</td>";
       str+="<td class='accountRequestTable'>";
-        str+= "<input type='button', id='accept"+data[row][0]+"', onclick='acceptAcc()', value='Accept'></input>" ;
-        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc()', value='Deny '></input>";
-        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc()', value='Delete '></input>";
+        str+= "<input type='button' ,id='accept"+data[row][0]+"', onclick='acceptAcc(\""+userName+"\")', value='Accept'></input><br>" ;
+        str+= "<input type='button' ,id='deny"+data[row][0]+"', onclick='denyAcc(\""+userName+"\")', value='Deny '></input><br>";
+        str+= "<input type='button' ,id='delete"+data[row][0]+"', onclick='deleteAcc(\""+userName+"\")', value='Delete '></input>";
       str+= "</td>";
     }
     else if(data[row][1]==0){ //accepted account
       str+= "<td class='accountRequestTable'>" + 'Accepted'+ "</td>";
       str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete '></input>";
-        str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc()' value='Revoke '></input>"; 
+      str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc(\""+userName+"\")' value='Delete '></input><br>";
+      str+= "<input type='button' id=deny'"+data[row][0]+"' onclick='denyAcc(\""+userName+"\")' value='Revoke '></input>";
       str+= "</td>";
     }
     else{ //if not accepted or pending its denied
       str+= "<td class='accountRequestTable'>" + 'Denied' + "</td>";
-      str+= "<td class='accountRequestTable'>"; 
-        str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc()' value='Delete'></input>";
-        str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc()' value='Accept'></input>"; 
+      str+= "<td class='accountRequestTable'>";
+      str+= "<input type='button' id='delete"+data[row][0]+"' onclick='deleteAcc(\""+userName+"\")' value='Delete'></input><br>";
+      str+= "<input type='button' id='accept"+data[row][0]+"' onclick='acceptAcc(\""+userName+"\")' value='Accept'></input>"; 
       str+= "</td>";
     }
     str+="</div>";
@@ -2235,18 +2282,36 @@ function accountInformation(data){
   return str; 
 }
 
-function denyAcc(){
-  console.log("denied this account");
+
+//These functions sends the AJAX call to contribution_loginbox_service and dugga.js
+//Choose three separate functions instead of one combined for readability
+function denyAcc(userName){
+
+  AJAXService("gitUserAdmin", 
+    {username: userName, gitUserChange: 1}, "CONT_LOGINBOX_SERVICE");
+
+  //Refreshes the side panel
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
+
 }
 
-function deleteAcc(){
-  console.log("deleted this account");
+function deleteAcc(userName){
+
+  AJAXService("gitUserAdmin", 
+    {username: userName, gitUserChange: 2}, "CONT_LOGINBOX_SERVICE");
+
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
 
 }
 
-function acceptAcc(){
-  console.log("accepted this account");
-}
+function acceptAcc(userName){
+
+  AJAXService("gitUserAdmin", 
+    {username: userName, gitUserChange: 3}, "CONT_LOGINBOX_SERVICE");
+
+  AJAXService("ACC_SIDE_PANEL", {},'CONT_ACCOUNT_STATUS');
+
+ }
 
 function placeSideBarInfo(data){
   var text = document.getElementById('accountRequests-pane');
@@ -2254,10 +2319,10 @@ function placeSideBarInfo(data){
   str = "";
   str+= '<div id="accountRequests-pane-button" class="accountRequests-pane-button" onclick="toggleAccountRequestPane();"><span id="accountReqmarker" class="accountRequests-pane-span">Account requests</span></div>';
   str+= "<table class='accountRequestTable'style='width: 85%'  border='1'><br />";
-	str+= "<tr class='accountRequestTable'>";
-  str+= "<th class='accountRequestTable'></th>";
-  str+= "<th class='accountRequestTable'>Name </th>";
-  str+= "<th class='accountRequestTable'>Status</th>";;
+	str+= "<tr class='accountRequestTable' style=' background-color: #ffffff';>";
+  str+= "<th class='accountRequestTable'>Name</th>";
+  str+= "<th class='accountRequestTable'>Status</th>";
+  str+= "<th class='accountRequestTable'>Change</th>";
   str+= "</tr>";
   str+=accountInformation(data);
 
@@ -2265,6 +2330,8 @@ function placeSideBarInfo(data){
   str+= "</div>";
   text.innerHTML = str;
 }
+
+
 
 
 function showError(){

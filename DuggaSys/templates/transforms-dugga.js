@@ -84,7 +84,7 @@ function returnedDugga(data)
 			retdata = jQuery.parseJSON(data['param']);
 			variant = retdata["variant"];
 
-			if (data["answer"] !== null || data["answer"] !== "UNK") {
+			if (data["answer"] !== null && data["answer"] !== "UNK") {
 					var previous = data['answer'].split(',');
 					previous.shift();
 					previous.pop();

@@ -46,7 +46,18 @@ var sectionData; // Variable that stores all the data that is sent from Section,
 var codeExamples = []; // Array that contains all code examples in the same order that was assigned in Section before pressing one of the examples.
 var currentPos; // Variable for the current position that determines where in the list of code examples you are.
 var selectionRange; // Variable that stores range of selected text.
+var x = window.matchMedia('(max-width: 380px)');
 
+//Display back icon when you click on a dugga in mobile mode (max-width: 380px)
+x.onchange = (e) => {
+    if (e.matches) {
+        displayBackIcons();
+    }
+}  
+
+function displayBackIcons() {
+    document.getElementById("back").style.display="revert"; 
+}
 
 /********************************************************************************
 

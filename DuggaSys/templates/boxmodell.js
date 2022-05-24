@@ -99,16 +99,19 @@ function returnedDugga(data)
 			document.getElementById("duggaInstructions").innerHTML = retdata["instructions"];
 			var tmpstr = retdata["query"];
 			tmpstr += "<BR><BR><div style='background-color:#FFF;'><code><pre style='font-family:hack;font-size:12px'>";
-			for (var l = 0;l<retdata["css"].length;l++){
-				if (retdata["css"][l].substr(0,1) === "#") {
-					if (l!==0){
-						tmpstr += "}<BR>" + retdata["css"][l] + "<BR>";
+			//if statement to guard against undefined value
+			if(retdata["css"] != null){
+				for (var l = 0;l<retdata["css"].length;l++){
+					if (retdata["css"][l].substr(0,1) === "#") {
+						if (l!==0){
+							tmpstr += "}<BR>" + retdata["css"][l] + "<BR>";
+						} else {
+							tmpstr += retdata["css"][l] + "<BR>";	
+						}
+						
 					} else {
-						tmpstr += retdata["css"][l] + "<BR>";	
+						tmpstr += "   " + retdata["css"][l] + ";<BR>";
 					}
-					
-				} else {
-					tmpstr += "   " + retdata["css"][l] + ";<BR>";
 				}
 			}
 			tmpstr += "}</pre></code></div>";
@@ -117,7 +120,7 @@ function returnedDugga(data)
 			//showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
 
-			if (data["answer"] == null || data["answer"] !== "UNK") {
+			if (data["answer"] !== null && data["answer"] !== "UNK") {
 				var tmpstr = data["answer"].substr(data["answer"].indexOf("["));
 				tmpstr = tmpstr.substr(0, tmpstr.lastIndexOf("]")+1);
 				tmpstr = tmpstr.replace(/&quot;/g, "\"");
@@ -127,9 +130,12 @@ function returnedDugga(data)
 					boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
 				}
 			} else {
-				for (var b=0; b<retdata["boxes"].length; b++) {
-					var box = retdata["boxes"][b];
-					boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+				//if statement to guard against undefined value
+				if(retdata["boxes"] != null){
+					for (var b=0; b<retdata["boxes"].length; b++) {
+						var box = retdata["boxes"][b];
+						boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+					}
 				}
 			}
 

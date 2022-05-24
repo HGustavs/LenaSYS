@@ -76,12 +76,12 @@ function returnedDugga(data)
 	}else{		
 		dta=jQuery.parseJSON(data['param']);
 		$(".submit-button").removeClass("btn-disable");
-		if (data['answer'] !== "UNK") {			
+		if (data["answer"] !== null && data["answer"] !== "UNK") {			
 			var previousAnswer = data['answer'].split(' ');
 			bitarray=previousAnswer[3].split(',');
 			for (var i=0;i<bitarray.length;i++) bitarray[i]=parseInt(bitarray[i]); 
 		}
-		document.getElementById('helptxt').innerHTML=dta[0].Text;
+		document.getElementById('helptxt').innerHTML=dta["text"];
 	}
 	// Teacher feedback
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
