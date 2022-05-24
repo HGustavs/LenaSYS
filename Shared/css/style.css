@@ -5213,7 +5213,7 @@ and (max-device-width: 667px) {
 
 @media only screen 
 and (min-device-width: 768px) 
-and (: 1024px) 
+and (max-device-width: 1024px) 
 and (-webkit-device-pixel-rati:1){
   /* write css for iPad Mini Landscape & Portrait */
 }
@@ -9110,7 +9110,6 @@ select{
   margin-right: 10px;
   border-radius: 5px;
 }
-<<<<<<< HEAD
 /* END */
 
 /*/ Diagram.html style /*/
@@ -9181,7 +9180,6 @@ select{
   border-left: 14px solid #8e8e8e;
 }
 /*/ END /*/
-=======
 
 /* Contribution Tag cloud css */
 .container_overview {
@@ -9253,4 +9251,3 @@ margin:2px;
 }
 
 /* END */
->>>>>>> G3-2022-#merge8

@@ -31,7 +31,6 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (39,1894,1,2,'SVG Dugga','svg-dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3001,1894,'Tillgängliga Duggor','',4,0,1,1,'52432',3001,2,0,0);
-<<<<<<< HEAD
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3002,1894,'3D Dugga','13',3,1,1,1,'52432',3001,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3003,1894,'BIT Dugga','14',3,2,1,1,'52432',3001,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3004,1894,'Boxmodell','15',3,3,1,1,'52432',3001,0,1,0);
@@ -58,35 +57,7 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3025,1894,'Transforms Dugga','36',3,24,1,1,'52432',3001,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3026,1894,'XMLAPI Report','37',3,25,1,1,'52432',3001,0,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3027,1894,'Seminar Dugga','38',3,25,1,1,'52432',3001,0,1,0);
-=======
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3002,1894,'3D Dugga','13',3,1,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3003,1894,'BIT Dugga','14',3,2,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3004,1894,'Boxmodell','15',3,3,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3005,1894,'Clipping Maskin Dugga','16',3,4,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3006,1894,'Color Dugga','17',3,5,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3007,1894,'Contribution','18',3,6,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3008,1894,'Curve Dugga','19',3,7,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3009,1894,'Daily Minutes','20',3,8,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3010,1894,'Diagram Dugga','21',3,9,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3011,1894,'Dugga 1','22',3,10,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3012,1894,'Dugga 2','23',3,11,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3013,1894,'Dugga 3','24',3,12,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3014,1894,'Dugga 4','25',3,13,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3015,1894,'Dugga 5','26',3,14,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3016,1894,'Dugga 6','27',3,15,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3017,1894,'Feedback Dugga','28',3,16,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3018,1894,'Generic Dugga File Receive','29',3,17,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3019,1894,'Group Assignment','30',3,18,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3020,1894,'HTML CSS Dugga','31',3,19,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3021,1894,'HTML CSS Dugga Light','32',3,20,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3022,1894,'Kryss','33',3,21,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3023,1894,'Placeholder Dugga','34',3,22,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3024,1894,'Shapes Dugga','35',3,23,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3025,1894,'Transforms Dugga','36',3,24,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3026,1894,'XMLAPI Report','37',3,25,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3027,1894,'Seminar Dugga','38',3,26,1,1,'52432',3001,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3028,1894,'SVG Dugga','39',3,27,1,1,'52432',3001,2,1,0);
->>>>>>> G3-2022-#merge8
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (3028,1894,'SVG Dugga','39',3,27,1,1,'52432',3001,0,1,0);
 
 /*Params can be found in duggas javascript file in templates*/
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,13,'{"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}','{Variant}',NOW(),2);
@@ -96,13 +67,8 @@ INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (27
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (28,17,'{\"color\":\"green\",\"colorname\":\"Grön\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (29,18,'{\"variant\":\"Contribution\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (30,19,'{\"linje\":\"10,30,19 20 40 20 50 30 50,81 65 50\"}','{Variant}',NOW(),2);
-<<<<<<< HEAD
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (31,20,'{\"variant\":\"Daily Minutes\"}','{Variant}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (32,21,'{\"type\":\"md\",\"filelink\":\"HTML_Ex1.txt\",\"gType\":\"md\",\"gFilelink\":\"HTML_Ex1.txt\",\"diagram_File\":\"example_ER.json\",\"diagram_type\":{\"ER\":true,\"UML\":true},\"extraparam\":\"\",\"notes\":\"\",\"submissions\":[{\"type\":\"pdf\",\"fieldname\":\"\",\"instruction\":\"\"}],\"errorActive\":true}','{Variant}',NOW(),2);
-=======
 INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (31,20,'{"type":"html","filelink":"daily-minutes-instructions.html","submissions":[{"type":"timesheet","fieldname":"timesheet","instruction":"Fyll i din aktivitet i projektet"}]}',NOW(),2);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (32,21,'{\”type\”:\”md\”,\”filelink\”:\”HTML_Ex1.txt\”,\”gType\”:\”md\”,\”gFilelink\”:\”HTML_Ex1.txt\”,\”diagram_File\”:\”diagram.json\”,\”diagram_type\”:{\”ER\”:true,\”UML\”:true},\”extraparam\”:\”\”,\”submissions\”:[{\”type\”:\”pdf\”,\”fieldname\”:\”\”,\”instruction\”:\”\”}],\”errorActive\”:true}','{Variant}',NOW(),2);
->>>>>>> G3-2022-#merge8
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (32,21,'{\"type\":\"md\",\"filelink\":\"HTML_Ex1.txt\",\"gType\":\"md\",\"gFilelink\":\"HTML_Ex1.txt\",\"diagram_File\":\"example_ER.json\",\"diagram_type\":{\"ER\":true,\"UML\":true},\"extraparam\":\"\",\"notes\":\"\",\"submissions\":[{\"type\":\"pdf\",\"fieldname\":\"\",\"instruction\":\"\"}],\"errorActive\":true}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (33,22,'{\"tal\":\"127\"}','{"danswer":\"01111111 7 F\"}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (34,23,'{\"color\":\"yellow\",\"colorname\":\"Gul\"}','{Variant}',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (35,24,'{\"linje\":\"10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30\"}','{Variant}',NOW(),2);
