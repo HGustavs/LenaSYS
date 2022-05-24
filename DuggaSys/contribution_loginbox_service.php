@@ -69,6 +69,45 @@ if (strcmp($opt, "checkForGitUser")==0)
 
 
 }
+
+
+//To edit the status of git accounts on contribution
+else if(strcmp($opt,"gitUserAdmin") == 0)
+{
+
+	global $pdo;
+
+	if($pdo == null) 
+	{
+		pdoConnect();
+	}
+	$gituser = getOP('username');
+	$gitUserChange = getOP('gitUserChange');
+
+	//Deny user
+	if($gitUserChange == 1){
+		$query = $pdo->prepare("UPDATE git_user SET status_account=102 WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
+	}
+
+	//Delete user
+	elseif($gitUserChange == 2){
+		$query = $pdo->prepare("DELETE FROM git_user WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
+	}
+
+	//Accept user
+	elseif($gitUserChange == 3){
+		$query = $pdo->prepare("UPDATE git_user SET status_account=0 WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
+	}
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error updating user\n".$error[2];
+	}
+}
+
 else if(strcmp($opt, "checkForLenasysUser")==0)
 {
 	global $pdo;
