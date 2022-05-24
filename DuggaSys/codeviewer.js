@@ -94,6 +94,7 @@ function fillBurger() {
 
 function returned(data) 
 {
+	allBlocks = [];
 	retData = data;
 	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
 	// User can choose template if no template has been chosen and the user has write access.
@@ -502,6 +503,8 @@ function initFileDropZones()
 {
 	for(i = 1; i <= retData["box"].length; i++) {
 		dropArea = document.getElementById("box" + i);
+		if (typeof(dropArea) == 'undefined' || dropArea == null)
+			continue;
 
 		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => 
 			{
@@ -859,6 +862,7 @@ function changeDirectory(kind) {
 		wordlist.disabled = false;
 	} else if ($(kind).val() == "IFRAME") {
 		dir = retData['directory'][2];
+		wordlist.value = null;
 		wordlist.disabled = 'disabled';
 	} else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
@@ -874,7 +878,7 @@ function changeDirectory(kind) {
 			str += "<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
 		} 
 		else if (dir[i].filename == "---===######===---"){
-			str += "<option disabled hidden value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>"
+			str += "<option selected hidden value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>"
 		}
 		else {
 			str += "<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
@@ -1360,7 +1364,7 @@ $(window).resize(function () {
 	var windowHeight = $(window).height();
 	textHeight = windowHeight - 50;
 	$("#table-scroll").css("height", textHeight);
-
+	closeBurgerMenu(); // close burgerMenu when window resize
 });
 
 document.addEventListener("drop", function (e) {
@@ -2449,7 +2453,15 @@ function changetemplate(templateno)
 	}
 	templateOptions.innerHTML = str;
 	for (var i = 0; i < boxes; i++) {
-		changeDirectory(document.querySelector('#boxcontent_' + i));
+		if (i < retData['box'].length) {
+			var select = templateOptions.querySelectorAll(".templateSelect");
+			select[0 + i * 3].value = retData['box'][i][1];
+			changeDirectory(document.querySelector('#boxcontent_' + i));
+			select[1 + i * 3].value = retData['box'][i][5];
+			select[2 + i * 3].value = retData['box'][i][3];
+		} else {
+			changeDirectory(document.querySelector('#boxcontent_' + i));
+		}
 	}
 }
 
@@ -2514,6 +2526,8 @@ function closeEditExample() {
 //----------------------------------------------------------------------------------
 
 function openTemplateWindow() {
+	if (retData != null)
+		changetemplate(String(retData['templateid']));
 	document.getElementById("chooseTemplateContainer").style.display = "flex";
 }
 
