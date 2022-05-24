@@ -919,6 +919,22 @@ input{
     overflow: hidden;
   }
 
+
+.course-dropdown {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    padding: 3px;
+    border: none;
+    width: 120px;
+    height: 28px;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    vertical-align: text-top;
+    color: white;
+  }
+
 #motdArea {
     background-color: var(--color-accent);
 }
