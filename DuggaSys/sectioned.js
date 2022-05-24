@@ -698,7 +698,7 @@ function deleteItem(item_lid = null) {
 function deleteAll(item)
 {
   for(var i = delArr.length-1; i >= 0; --i){
-    AJAXService("DELETED", {
+    AJAXService("DEL", {
       lid: delArr.pop()
     }, "SECTION");
   }
