@@ -1375,10 +1375,56 @@ function returnedSection(data) {
   document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
   document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(data);
   document.getElementById('commitDiagram').innerHTML = renderCommits(data);
+  document.getElementById('overview').innerHTML = renderOverview(data);
   document.getElementById('content').innerHTML = str;
   
   //only create sidebar if the user is a superuser
   if(data['isSuperUser']) createSidebar();
+}
+
+
+/*  loop through all user and count all their blame lines
+      once counted will loop and place the % of each file changed into a seperate array
+  data[overview][0]=Bfile.id 
+  data[overview][1]=Bfile.filename 
+  data[overview][2]=Bfile.path
+   data[overview][3]=Blame.blameuser 
+   data[overview][4]=occurance //(count of how many times each file occurs in Blame grouped by Blame.Blameuser)
+      */
+function renderOverview(data){
+  var values = Array()
+  var picketuser = localStorage.getItem('GitHubUser');
+  
+    var total = 0;
+
+    //count total for each user
+    data['overview'].forEach(element =>{
+      if(picketuser == element[3]) total =  total + parseInt(element[4]);
+    });  
+    
+    //calculate % and place in array
+    data['overview'].forEach(element =>{
+      if(picketuser == element[3]) values.push(Array((parseInt(element[4]) / total), element[2], element[1], element[3]));
+    });
+  values.forEach(element =>{
+    // console.log(element);
+    // console.log(element.length);
+  });
+
+  var str = "<div class='container_overview' > ";
+
+  values.forEach(element =>{
+    console.log("element[2]:"+ element[2]);
+    str += "<span  class='box_overview ";
+    if((Math.floor(Math.random()*10) %4)==0) {
+      str+="vertical_text";
+    }
+    str+= "' style='font-size:"+element[0]*5000+"%; width:fit-content; height: fit-content;'>"+element[2]+"</span>";
+  });
+
+  str += "</div> ";
+
+  return str;
 }
 
 // Update the "Select Course" dropdown options
@@ -2284,6 +2330,8 @@ function placeSideBarInfo(data){
   str+= "</div>";
   text.innerHTML = str;
 }
+
+
 
 
 function showError(){

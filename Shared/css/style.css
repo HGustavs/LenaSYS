@@ -8991,6 +8991,26 @@ select{
   margin-right: 10px;
   border-radius: 5px;
 }
+
+/* Contribution Tag cloud css */
+.container_overview {
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: space-between;
+}
+
+.box_overview {
+  padding: 5px;
+  color: black;
+  flex: 1 auto;
+
+}
+
+.vertical_text{
+  writing-mode: vertical-rl;
+}
 /* END */
 
 /*svg-dugga css */
