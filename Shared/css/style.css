@@ -859,10 +859,6 @@ p {
 }
 .section > #tabElement {color: white; }
 
-.code #NewTabLink{
-  filter: invert(100%);
-  -webkit-filter: invert(100%);
-} 
 #Sectionlist .header {
   color: var(--color-text-header);
   background-color: var(--color-primary);
