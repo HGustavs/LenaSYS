@@ -1057,4 +1057,28 @@ background-color:  var(--color-sectioned-table-hi);
 #close_open_border:hover:after {
 border-left: 14px solid var(--color-sectioned-table-hi);
 }
+
 /*/ END /*/
+
+#tabElement{
+    filter: invert(0.2);
+}
+
+.code #NewTabLink {
+    display: block;
+    margin: auto;
+    filter: invert(0.8);
+  }
+
+#Courselist a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+
+  .hidden {
+    margin-left: 16px;
+  text-decoration: line-through !important;
+   -webkit-text-decoration-color: var(--color-text-primary) !important;
+    text-decoration-color: var(--color-text-primary) !important;
+  }
