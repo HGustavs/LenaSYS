@@ -8241,12 +8241,12 @@ function drawElement(element, ghosted = false)
         //svg for inheritance symbol
         str += `<svg width='${boxw}' height='${boxh}'>`;
 
-        //Disjoint inheritance
+        //Overlapping UML-inheritance
         if (element.state == 'overlapping') {
             str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
             style='fill:black;stroke:black;stroke-width:${linew};'/>`;
         }
-        //Overlapping inheritance
+        //Disjoint UML-inheritance
         else {
             str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
             style='fill:white;stroke:black;stroke-width:${linew};'/>`;
@@ -8328,12 +8328,12 @@ function drawElement(element, ghosted = false)
         //svg for inheritance symbol
         str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg); margin-top:${-(boxw/2)};  stroke-width:${linew};'>`;
 
-        //Overlapping inheritance
+        // Overlapping IE-inheritance
         if (element.state == 'overlapping') {
                 str+= `<circle cx="${(boxw/2)}" cy="0;" r="${(boxw/2.08)}" fill="white"; stroke="black";'/> 
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
         }
-        // Disjoint inheritance
+        // Disjoint IE-inheritance
         else {
             str+= `<circle cx="${(boxw/2)}" cy="0;" r="${(boxw/2.08)}" fill="white"; stroke="black";'/>
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
@@ -10729,6 +10729,8 @@ function updateCSSForAllElements()
             var fillColor;
             var fontColor;
             var weakKeyUnderline;
+            var disjointLine1Color;
+            var disjointLine2Color;
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
             // Edge creation does not highlight selected elements
@@ -10782,12 +10784,18 @@ function updateCSSForAllElements()
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
+                    disjointLine1Color = elementDiv.children[0].children[2];
+                    disjointLine2Color = elementDiv.children[0].children[3];
                     // If more than one element is marked.
                     if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
                         fillColor.style.fill = `${"#927b9e"}`;
                         fontColor.style.fill = `${"#ffffff"}`;
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                        } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
+                        else if(element.kind == "IERelation" && element.state != "overlapping") {
+                                disjointLine1Color.style.stroke = `${"#ffffff"}`;
+                                disjointLine2Color.style.stroke = `${"#ffffff"}`;
                         }
                         // If UMLRelation is not marked.
                     } else if(element.kind == "UMLRelation"){
@@ -10795,6 +10803,16 @@ function updateCSSForAllElements()
                             fillColor.style.fill = `${"#000000"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
+                        }
+                    } else if(element.kind == "IERelation"){
+                        if(element.state == "overlapping"){
+                            fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
+                        }else{
+                            fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
                         }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
