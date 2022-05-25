@@ -9182,24 +9182,51 @@ select{
 /*/ END /*/
 
 /* Contribution Tag cloud css */
-.container_overview {
-  margin: 0 0 20px 0;
+.contribtags {
   display: flex;
   flex-wrap: wrap;
-  align-content: space-around;
-  justify-content: space-between;
+  justify-content: left;
+  max-width: 960px;
+  padding: 2rem 0 1rem 3rem;
+  list-style: none;
+  border-radius: 5px;
+  background-color:var(--color-sectioned-table-lo);
+}
+.contribtag {
+  display: flex;
+  align-items: center;
+  margin: 0.25rem 0.75rem;
+  
+}
+.contribtag__text {
+  padding: 5px 5px 0;
+  text-decoration: none;
+}
+#contribjs {
+  color:Purple;
+}
+#contribcss{
+  color:#FE6100;
+}
+#contribphp{
+  color:#4DB6AC;
+}
+#contribhtml{
+  color:#43A047;
+}
+#contribsql{
+  color:#648fff;
+}
+#contribtxt{
+  color:#c4e4fc;
+}
+#contribjson{
+  color:#F44336;
+}
+#contribms{
+  color:#FFB000;
 }
 
-.box_overview {
-  padding: 5px;
-  color: black;
-  flex: 1 auto;
-
-}
-
-.vertical_text{
-  writing-mode: vertical-rl;
-}
 /* END */
 
 /*svg-dugga css */
