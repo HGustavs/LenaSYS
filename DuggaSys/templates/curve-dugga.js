@@ -772,6 +772,7 @@ function drawPath()
 {
 	var sx = startx;
 	var sy = starty;
+	var studentStrokeWidth = document.querySelector("#student-stroke-width").value;
 
 	// draw target figure
 	for (var i = 0; i < goal.length; i++) {
@@ -793,9 +794,9 @@ function drawPath()
 		if (this.id == selectedObjId) {
 				opArr[selectedPoint * 2 - 1] = gridx;
 				opArr[selectedPoint * 2] = gridy;
-				drawOp(sx, sy, opArr, studentLineColor, true, true,8.0);	
+				drawOp(sx, sy, opArr, studentLineColor, true, true,studentStrokeWidth);	
 		} else {
-				drawOp(sx, sy, opArr, studentLineColor, true, false,8.0);	
+				drawOp(sx, sy, opArr, studentLineColor, true, false,studentStrokeWidth);	
 		}
 		
 		sx = currentx = parseInt(opArr[opArr.length - 2]);
