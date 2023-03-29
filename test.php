@@ -1,5 +1,5 @@
 <html>
-<title> PHP test
+<title> PHP test</title>
 
 	<body>
 
