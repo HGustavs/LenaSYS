@@ -27,3 +27,14 @@ An action in this verification get called to see which of the statements that ar
 An array gets echoed (printed), "success","status" and "debug" gets printed.
 
 Last and least, the logServiceEvent method runs to log the end of the queries events.  
+
+
+Input & output : 
+Data comes first from the external files,
+basic.php and sessions.php.
+
+An isset that recieves and validates the user
+identification information recieves input from the user and later on in if statements gives different outputs depending on the data the user gives to the system.
+
+
+
