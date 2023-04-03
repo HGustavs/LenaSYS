@@ -1,0 +1,27 @@
+ Execution Order
+ * ---------------------
+ * #1	Handle files! each file is checked One by one, if all is ok, a directory is created and filepath is added to the database. accepted conditions are, login for user is successful & has either write access or is superuser.
+ 
+ * #2 if variable $storefile == true, then add row of file into mysql (create directory for corse if it dosent exist, and upload directory path to DB )
+ 
+ * #3 if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process. 
+      if sent file isn't empty and upload is completed (e.g not a duplicate file that already exists) it checks if there already is a row in the db that is the same, if not, add row to db
+ 
+* #4 updates the page, redirects to "fileed.php" with the values for $cid, &coursevers and $vers.
+
+
+input
+
+courseid
+courserver
+kind
+link
+Selectedfile
+log_uuid
+
+dont forget output!!!!!
+
+
+
+
+
