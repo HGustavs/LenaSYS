@@ -1338,6 +1338,7 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
+    saveDiagramOnUnload();
 }
 //<-- UML functionality start
 /**
@@ -1484,7 +1485,6 @@ function data_returned(ret)
 // --------------------------------------- Window Events    --------------------------------
 document.addEventListener('keydown', function (e)
 {
-    console.log("keydown")
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
@@ -2498,7 +2498,6 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -11123,26 +11122,35 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileContentOnLoad()
 {
-        let temp = getVariantParam();
-        var fullParam = temp[0];
-        cid = temp[1];
-        cvers = temp[2];
-        diagramToLoad = temp[3];
-        diagramToLoadContent = temp[4];
+    let temp = getVariantParam();
+    var fullParam = temp[0];
+    cid = temp[1];
+    cvers = temp[2];
+    diagramToLoad = temp[3];
+    diagramToLoadContent = temp[4];
 
-        // Check whether there is a diagram saved in localstorage and load it.
-        // Otherwise, load from VariantParam  
-        if (localStorage.getItem("CurrentlyActiveDiagram")) {
-            var diagramFromLocalStorage = localStorage.getItem("CurrentlyActiveDiagram");
-            loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
-        } else if (diagramToLoadContent != "NO_FILE_FETCHED" && diagramToLoadContent != "") {
-            loadDiagramFromString(JSON.parse(diagramToLoadContent));
-            storeDiagramInLocalStorage();
-        } else {
-            // Failed to load content
-            console.error("No content to load")
-        }
+    // Check whether there is a diagram saved in localstorage and load it.
+    // Otherwise, load from VariantParam  
+    if (localStorage.getItem("CurrentlyActiveDiagram")) {
+        var diagramFromLocalStorage = localStorage.getItem("CurrentlyActiveDiagram");
+        loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
+    } else if (diagramToLoadContent != "NO_FILE_FETCHED" && diagramToLoadContent != "") {
+        loadDiagramFromString(JSON.parse(diagramToLoadContent));
+        storeDiagramInLocalStorage();
+    } else {
+        // Failed to load content
+        console.error("No content to load")
     }
+}
+
+// Save current diagram when user left page
+function saveDiagramBeforeUnload() {
+    window.addEventListener("beforeunload", (e) => {
+        e.preventDefault();
+        e.returnValue = "";
+        storeDiagramInLocalStorage();
+    })
+}
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
 {
@@ -11203,7 +11211,7 @@ function resetDiagramAlert(){
     if(refreshConfirm){
         resetDiagram();
     }
-    
+
 }
 /**
  * @description Cleares the diagram.
