@@ -6602,26 +6602,6 @@ function setElementColors(clickedCircleID)
         var color = colors[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
-            console.log(context[i]);
-            console.log("bg color is: " + context[i].stroke);
-            console.log("before stroke is: " + context[i].stroke);
-            if (clickedCircleID == "BGColorCircle9") {
-                //set the stroke to white.
-                context[i].stroke = "#ffffff";
-            }
-            console.log("after stroke is: " + context[i].stroke);
-            // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
-            /* if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
-                console.log("du har klickat på svart eller rosa färg"); */
-            /* var umlTexts = document.getElementsByClassName("uml-text");
-            if(clickedCircleID == "BGColorCircle9"){
-                for (const umlText of umlTexts) {
-                    umlText.style.fill = "#ffffff";
-                }
-            }
-            else{
-                //element.id.style.color = "#000000";
-            } */
         }
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
         StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -10757,6 +10737,7 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
+                            //if the background is black, the font becomes white
                             if (element.fill == "#000000") {
                                 fontColor.style.fill = `${"#ffffff"}`;
                             }
