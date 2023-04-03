@@ -1338,7 +1338,7 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
-    saveDiagramOnUnload();
+    saveDiagramBeforeUnload();
 }
 //<-- UML functionality start
 /**
@@ -11143,7 +11143,7 @@ function fetchDiagramFileContentOnLoad()
     }
 }
 
-// Save current diagram when user left page
+// Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
     window.addEventListener("beforeunload", (e) => {
         e.preventDefault();
