@@ -92,20 +92,23 @@ if(isset($_SESSION['uid'])){
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
 				<!-- Rebecka och Emma :) Tillfällig kommentar -->
-				<div class="inputwrapper" style="padding:5px;">
-					<span>Get course from GitHub?</span>
-					<input type="radio" value="yes" id="ncoursegit-yes" name="coursegit">Yes</input>
-					<input type="radio" value="no" id="ncoursegit-no" name="coursegit">No</input>
-				</div>
-				<div class="inputwrapper" style="padding:5px;">
-					<span>GitHub URL</span>
-					<input class="textinput validate" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
+				<div style="padding:5px;">
+					<div class="inputwrapper">
+						<span>Get course from GitHub?</span>
+						<div>
+							<input type="radio" value="yes" id="ncoursegit-yes" name="coursegit">Yes</input>
+							<input type="radio" value="no" id="ncoursegit-no" name="coursegit">No</input>
+						</div>
+					</div>
+					<div class="inputwrapper">
+						<span>GitHub URL:</span>
+						<input class="textinput validate" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
+					</div>
 				</div>
 				<!-- :) -->
     		<div style='padding:5px;'>
     			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
     		</div>
-			</div>
       </div>
 	</div>
 	<!-- New Course Section Dialog END -->
