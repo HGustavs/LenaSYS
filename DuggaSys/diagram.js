@@ -10757,7 +10757,7 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fontColor.style.fill = `${"#000000"}`;
                         }
                     }
                 }
