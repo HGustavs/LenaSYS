@@ -10757,7 +10757,7 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
                         }
                     }
                 }
@@ -10772,7 +10772,7 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
                         }
                     }
                 }
@@ -10787,8 +10787,8 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
-                             fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                             fontColor.style.fill = element.fill == "#ffffff" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#ffffff"}`;
                         }
                     }
                 }else{ // Update normal elements, and relations
