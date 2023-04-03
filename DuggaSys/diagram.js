@@ -6603,13 +6603,13 @@ function setElementColors(clickedCircleID)
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             console.log(context[i]);
-            console.log(context[i].fill);
-            console.log(context[i].stroke);
+            console.log("bg color is: " + context[i].stroke);
+            console.log("before stroke is: " + context[i].stroke);
             if (clickedCircleID == "BGColorCircle9") {
                 //set the stroke to white.
                 context[i].stroke = "#ffffff";
             }
-            console.log(context[i].stroke);
+            console.log("after stroke is: " + context[i].stroke);
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             /* if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg"); */
