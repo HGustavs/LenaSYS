@@ -1,0 +1,29 @@
+
+The file starts with setting the time zone to 
+Stockholm.
+After that, the Include_once method runs two files.
+Basic.php and sessions.php.
+
+pdoConnect() to the database and session_start()
+functions runs.
+
+An isset function that checks the variable 
+$_SESSION and it's parameter "uid" to verify that these aren't null. 
+If else, give uiserid the value 1.
+
+There after, global variables gets strings and booleans.
+
+An argument for a log is created.
+ 
+If statements gets runned, checking wether or not a user is logged in via the CheckLogin method.
+Also checks if the logged in user is a "superUser" or not, a superUser is a teacher.
+
+There after, password verification method runs.
+
+An action in this verification get called to see which of the statements that are being called.
+
+"Challenge" variable is for changing user settings, such as passwords.
+
+An array gets echoed (printed), "success","status" and "debug" gets printed.
+
+Last and least, the logServiceEvent method runs to log the end of the queries events.  
