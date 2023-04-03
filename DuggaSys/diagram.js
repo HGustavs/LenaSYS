@@ -6602,7 +6602,7 @@ function setElementColors(clickedCircleID)
         var color = colors[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
-            /*
+            
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg");
@@ -6610,7 +6610,7 @@ function setElementColors(clickedCircleID)
             }
             else{
                 //element.id.style.color = "#000000";
-            }*/
+            }
         }
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
         StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
