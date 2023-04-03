@@ -24,6 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
     }		
+    var objXMLHttpRequest = new XMLHttpRequest();
+    objXMLHttpRequest.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200){
+        document.getElementById('themeBlack').innerHTML = localStorage.getItem('themeBlack');
+      }
+    }
+    objXMLHttpRequest.open('GET', 'request_ajax_data.php');
+    objXMLHttpRequest.send();
   })
 })
 
