@@ -364,7 +364,7 @@
 
 .colorMenu{
     visibility: hidden;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(f, f, f, 0.8);
     border-radius: 5px;
     position: absolute;
     left: 0;
