@@ -401,7 +401,7 @@
 				echo "<td class='navName' id='navName'><label id='userName' title='Login to view your profile'></label></td>";
 				
 				// --- original --- echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><img alt='login icon' id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
-				echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><div class='loginbutton-nav' tabindex='0'></div></td>";
+				echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><div class='loginbutton-nav' tabindex='0'>Login</div></td>";
 			}
 
 			echo "</tr></table>";
