@@ -10746,7 +10746,7 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            if ((element.fill == "#000000") || (element.fill == "#dc267f")) {
+                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
                                 fontColor.style.fill = `${"#ffffff"}`;
                             }
                             else{
@@ -10767,7 +10767,7 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            if ((element.fill == "#000000") || (element.fill == "#dc267f")) {
+                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
                                 fontColor.style.fill = `${"#ffffff"}`;
                             }
                             else{
