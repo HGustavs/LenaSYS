@@ -6606,15 +6606,9 @@ function setElementColors(clickedCircleID)
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg");
-                //document.getElementsByClassName("text").style.fill = "#ffffff";
-                /* document.getElementsByClassName("text").forEach(element => {
-                    element.style.fill = "#ffffff";
-                }); */
-                /* for (let i = 0; i < document.getElementsByClassName("text").length; i++) {
-                    
-                } */
-                for (let i = 0; i < document.getElementsByClassName("uml-text"); i++) {
-                    document.getElementsByClassName("uml-text")(i).style.fill = "#ffffff";
+            var umlTexts = document.getElementsByClassName("uml-text");
+                for (let i = 0; i < umlTexts.length; i++) {
+                    umlTexts(i).style.fill = "#ffffff";
                 }
             }
             else{
