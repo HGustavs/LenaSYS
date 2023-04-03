@@ -6606,10 +6606,14 @@ function setElementColors(clickedCircleID)
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             /* if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg"); */
+            //TODO maybe try context instead of document
             var umlTexts = document.getElementsByClassName("uml-text");
             if(clickedCircleID == "BGColorCircle9"){
-                for (let i = 0; i < umlTexts.length; i++) {
-                    umlTexts(i).style.fill = "#ffffff";
+                /* for (let i = 0; i < umlTexts.length; i++) {
+                    Distribute(umlTexts.item(i)).style.fill = "#ffffff";
+                } */
+                for (const umlText of umlTexts) {
+                    umlText.style.fill = "#ffffff";
                 }
             }
             else{
