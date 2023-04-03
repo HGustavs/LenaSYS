@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var objXMLHttpRequest = new XMLHttpRequest();
     objXMLHttpRequest.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200){
-        document.getElementById('themeBlack') = localStorage.getItem('themeBlack');
+        document.getElementById('themeBlack').innerHTML = localStorage.getItem('themeBlack');
       }
     }
     objXMLHttpRequest.open('GET', 'request_ajax_data.php');
