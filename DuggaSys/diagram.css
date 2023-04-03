@@ -1,3 +1,9 @@
+#assignment_discrb {
+    visibility: visible;
+    padding: 5px;
+    padding-left: 25px;
+}
+
 #container {
     position:absolute;
     left:0;
