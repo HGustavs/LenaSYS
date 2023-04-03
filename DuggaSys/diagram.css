@@ -263,7 +263,7 @@
 }
 
 .saveButton:active {
-    background: #614875;
+    background: #1f65cd;
     transition: 0.1s;
     color: #FFF;
 }
