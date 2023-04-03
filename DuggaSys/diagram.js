@@ -1484,6 +1484,7 @@ function data_returned(ret)
 // --------------------------------------- Window Events    --------------------------------
 document.addEventListener('keydown', function (e)
 {
+    console.log("keydown")
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
@@ -2497,7 +2498,7 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    //storeDiagramInLocalStorage();// storing the diagram in localstorage
+    storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -11129,12 +11130,19 @@ function fetchDiagramFileContentOnLoad()
         diagramToLoad = temp[3];
         diagramToLoadContent = temp[4];
 
-        //check so that it is a file with content
-        if(diagramToLoadContent!="NO_FILE_FETCHED" && diagramToLoadContent != ""){
+        // Check whether there is a diagram saved in localstorage and load it.
+        // Otherwise, load from VariantParam  
+        if (localStorage.getItem("CurrentlyActiveDiagram")) {
+            var diagramFromLocalStorage = localStorage.getItem("CurrentlyActiveDiagram");
+            loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
+        } else if (diagramToLoadContent != "NO_FILE_FETCHED" && diagramToLoadContent != "") {
             loadDiagramFromString(JSON.parse(diagramToLoadContent));
             storeDiagramInLocalStorage();
+        } else {
+            // Failed to load content
+            console.error("No content to load")
         }
-}
+    }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
 {
@@ -11191,7 +11199,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
 
 //Alert function to give user a warning/choice before reseting diagram data.
 function resetDiagramAlert(){
-    let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
+    let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost, horunge");
     if(refreshConfirm){
         resetDiagram();
     }
