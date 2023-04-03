@@ -6601,7 +6601,7 @@ function setElementColors(clickedCircleID)
         var index = id.replace("BGColorCircle", "") * 1;
         var color = colors[index];
         for (var i = 0; i < context.length; i++) {
-            context[i].fill = color;
+            //context[i].fill = color;
             
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             /* if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
