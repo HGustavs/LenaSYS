@@ -6605,7 +6605,8 @@ function setElementColors(clickedCircleID)
             console.log(context[i]);
             console.log(context[i].fill);
             if (clickedCircleID == "BGColorCircle9") {
-                context[i].stroke = color(0);
+                //set the stroke to white.
+                context[i].stroke = colors[0];
             }
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             /* if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
