@@ -17,11 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // if it's light -> go dark
     if(themeStylesheet.href.includes('blackTheme')){
       themeStylesheet.href = "../Shared/css/style.css";
+
+	  // force immediate change by setting it twice
+	  themeStylesheet.href = "../Shared/css/style.css";
+
       localStorage.setItem('themeBlack',themeStylesheet.href)
     } 
     else if(themeStylesheet.href.includes('style')) {
       // if it's dark -> go light
       themeStylesheet.href = "../Shared/css/blackTheme.css";
+
+	  // force immediate change by setting it twice
+	  themeStylesheet.href = "../Shared/css/style.css";
+
       localStorage.setItem('themeBlack',themeStylesheet.href)
     }		
   })
