@@ -8,23 +8,29 @@ operative system to either black or white mode . /*/
 const themeStylesheet = document.getElementById('themeBlack');
 
 document.addEventListener('DOMContentLoaded', () => {
-	const storedTheme = localStorage.getItem('themeBlack');
-	if(storedTheme){
-		themeStylesheet.href = storedTheme;
-	}
-	const themeToggle = document.getElementById('theme-toggle');
-	themeToggle.addEventListener('click', () => {
+  const storedTheme = localStorage.getItem('themeBlack');
+  if (storedTheme) {
+    themeStylesheet.href = storedTheme;
+  }
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle.addEventListener('click', () => {
     // if it's light -> go dark
-    if(themeStylesheet.href.includes('blackTheme')){
-      themeStylesheet.href = "../Shared/css/style.css";
-      localStorage.setItem('themeBlack',themeStylesheet.href)
-    } 
-    else if(themeStylesheet.href.includes('style')) {
+    if (themeStylesheet.href.includes('blackTheme')) {
+      localStorage.setItem('themeBlack', "../Shared/css/style.css")
+    }
+    else if (themeStylesheet.href.includes('style')) {
       // if it's dark -> go light
-      themeStylesheet.href = "../Shared/css/blackTheme.css";
-      localStorage.setItem('themeBlack',themeStylesheet.href)
-    }		
+      localStorage.setItem('themeBlack', "../Shared/css/blackTheme.css")
+    }
+    window.dispatchEvent(new Event('themeToggle'))
   })
+})
+
+window.addEventListener('themeToggle', () => {
+  const storedTheme = localStorage.getItem('themeBlack');
+  if (storedTheme) {
+    themeStylesheet.href = storedTheme;
+  }
 })
 
 //It actively checks if the "theme" changes on the operating system and changes colors based on it. It override your preferences.
