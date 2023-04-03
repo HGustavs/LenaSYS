@@ -6607,6 +6607,15 @@ function setElementColors(clickedCircleID)
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg");
                 //document.getElementsByClassName("text").style.fill = "#ffffff";
+                /* document.getElementsByClassName("text").forEach(element => {
+                    element.style.fill = "#ffffff";
+                }); */
+                /* for (let i = 0; i < document.getElementsByClassName("text").length; i++) {
+                    
+                } */
+                for (let i = 0; i < document.getElementsByClassName("uml-text"); i++) {
+                    document.getElementsByClassName("uml-text")(i).style.fill = "#ffffff";
+                }
             }
             else{
                 //element.id.style.color = "#000000";
