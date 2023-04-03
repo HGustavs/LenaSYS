@@ -10746,7 +10746,14 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
+                            //check if the fill color is black or pink, if so the font color is set to white
+                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
+                                fontColor.style.fill = `${"#ffffff"}`;
+                            }
+                            else{
+
+                                fontColor.style.fill = `${"#000000"}`;
+                            }
                         }
                     }
                 }
@@ -10761,7 +10768,14 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
+                            //check if the fill color is black or pink, if so the font color is set to white
+                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
+                                fontColor.style.fill = `${"#ffffff"}`;
+                            }
+                            else{
+
+                                fontColor.style.fill = `${"#000000"}`;
+                            }
                         }
                     }
                 }
