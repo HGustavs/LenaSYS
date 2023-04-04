@@ -6633,7 +6633,9 @@ function setElementColors(clickedCircleID)
         var color = colors[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
-            elementIDs.push(context[i].id);
+            
+            elementIDs.push(context[i].id)
+
             /*
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
@@ -6644,8 +6646,11 @@ function setElementColors(clickedCircleID)
                 //element.id.style.color = "#000000";
             }*/
         }
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
-        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+        stateMachine.save(
+            StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
+            StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
+        );
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
         var index = id.replace("strokeColorCircle", "") * 1;
         var color = strokeColors[index];
@@ -6653,8 +6658,10 @@ function setElementColors(clickedCircleID)
             context[i].stroke = color;
             elementIDs[i] = context[i].id;
         }
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { stroke: color }),
-        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(
+            StateChangeFactory.ElementAttributesChanged(elementIDs, { stroke: color }),
+            StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
+        );
     } else {
         console.error(`${menu.id} is not a valid ID`);
     }
