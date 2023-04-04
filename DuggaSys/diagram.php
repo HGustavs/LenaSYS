@@ -479,7 +479,7 @@
             </div>
             <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg"/>
-                <span class="toolTipText" class="bottomTwoToolTips"><b>Undo</b><br>
+                <span class="toolTipText"><b>Undo</b><br>
                     <p>Undo last change</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
@@ -516,7 +516,7 @@
             <legend>Include</legend>
             <div id="Include" class="diagramIcons" onclick="toggleErTable()">
                 <img src="../Shared/icons/angelBrackets.svg"/>
-                <span class="toolTipText" class="bottomTwoToolTips"><b>To use less than</b><br>
+                <span class="toolTipText"><b>To use less than</b><br>
                     <p>To use less than type & #60; <br><strong>"EX: <& #60;Include>>"</STRONG> </p><br>
                 </span>
         </fieldset>      
