@@ -1887,7 +1887,7 @@ function ddown(event)
             var input = document.getElementById("elementProperty_name");
             input.focus();
             input.setSelectionRange(0,input.value.length); // Select the whole text.
-            document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+            document.getElementById('optmarker').innerHTML = "&#x203A;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }   
@@ -6338,14 +6338,14 @@ function toggleOptionsPane()
         }
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
-        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+        document.getElementById('optmarker').innerHTML = "&#9650;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
 }
 
 /**
  * @description Generates keybind tooltips for all keybinds that are available for the diagram.
- * @see keybinds All available keybinds currently configured.
+ * @see keybinds All available keybinds currently configured
  */
 function generateToolTips()
 {
