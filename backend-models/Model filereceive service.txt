@@ -1,4 +1,4 @@
----filereceive--- 
+---filereceive.php--- 
 
 Execution Order
  * ---------------------
@@ -9,7 +9,7 @@ Execution Order
  * #3 if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process. 
       if sent file isn't empty and upload is completed (e.g not a duplicate file that already exists) it checks if there already is a row in the db that is the same, if not, add row to db
  
-* #4 updates the page, redirects to "fileed.php" with the values for $cid, &coursevers and $vers.
+ * #4 updates the page, redirects to "fileed.php" with the values for $cid, &coursevers and $vers.
 
 
 input
@@ -22,6 +22,10 @@ link
 Selectedfile
 log_uuid
 
+SELECT: username FROM user
+SELECT: count(*) FROM fileLink
+
+
 output
 ------
 
@@ -31,3 +35,28 @@ UPDATE : DB table fileLink is updated
 redirect : values sent with redirect $cid and $vers (course id, version id)
 
 
+---filereceive_dugga.php--- 
+
+Execution Order
+---------------------
+#1  Handle files! One by one  -- if all is ok add file name (if file doesn't exists under a template create it)
+#2 if variable $storefile == true, then add row(existence) of file into mysql
+#3 if sent file isn't empty and upload is completed (e.g not a duplicate file that already exists) it checks if there already is a row in the db that is the same, if not, add row to db
+#4 updates the page, redirects to "fileed.php" with the values for $cid, &coursevers and $vers.
+
+
+input
+-----
+
+link
+inputtext
+cid
+courservers
+moment
+segment
+did
+field
+kind
+
+output
+------
