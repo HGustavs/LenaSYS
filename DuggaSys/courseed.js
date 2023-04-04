@@ -619,6 +619,17 @@ function showGitInput(show){
 	}
 }
 
+//Validation with REG EXP for Github URL
+function validateGitInput(){
+	var gitUrl = document.getElementById("ncoursegit-url");
+	var reg = new RegExp("/^(https?://)?(www.github).(com)([/\w .-])/?(.git)$/");
+		if((gitUrl.value.match(reg)!=null)){
+			gitUrl.removeAttribute("style");
+		} else {
+			gitUrl.style.backgroundColor = "#f57";
+		}
+}
+
 //Validates whole form but don't implement it.
 function quickValidateForm(formid, submitButton){
 	
