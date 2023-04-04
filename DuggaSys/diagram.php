@@ -209,7 +209,7 @@
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
-                    <span class="toolTipText"><b>Pointer</b><br>
+                    <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <p>Allows you to select and move different elements as well as navigate the workspace</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
