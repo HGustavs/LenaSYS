@@ -1886,7 +1886,7 @@ function ddown(event)
             var input = document.getElementById("elementProperty_name");
             input.focus();
             input.setSelectionRange(0,input.value.length); // Select the whole text.
-            document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+            document.getElementById('optmarker').innerHTML = "&#x203A;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }   
