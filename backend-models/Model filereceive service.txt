@@ -1,4 +1,6 @@
- Execution Order
+---filereceive--- 
+
+Execution Order
  * ---------------------
  * #1	Handle files! each file is checked One by one, if all is ok, a directory is created and filepath is added to the database. accepted conditions are, login for user is successful & has either write access or is superuser.
  
@@ -11,6 +13,7 @@
 
 
 input
+-----
 
 courseid
 courserver
@@ -19,9 +22,12 @@ link
 Selectedfile
 log_uuid
 
-dont forget output!!!!!
+output
+------
 
-
-
+mkdir  : creates directory in folder /courses/ or /courses/global
+INSERT : insert into DB table fileLink is made
+UPDATE : DB table fileLink is updated
+redirect : values sent with redirect $cid and $vers (course id, version id)
 
 
