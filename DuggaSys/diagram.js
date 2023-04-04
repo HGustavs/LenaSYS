@@ -6314,7 +6314,7 @@ function toggleOptionsPane()
 
 /**
  * @description Generates keybind tooltips for all keybinds that are available for the diagram.
- * @see keybinds All available keybinds currently configured.
+ * @see keybinds All available keybinds currently configured
  */
 function generateToolTips()
 {
