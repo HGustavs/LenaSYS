@@ -102,7 +102,7 @@ if(isset($_SESSION['uid'])){
 					</div>
 					<div style="display:none; justify-content: flex-end; margin-top: 10px;" class="inputwrapper" id="gitinput-parent">
 						<span style="padding-right: 10px;">GitHub URL:</span>
-						<input class="textinput validate" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
+						<input class="textinput" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
 					</div>
 				</div>
 				<!-- :) -->

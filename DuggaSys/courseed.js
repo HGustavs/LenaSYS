@@ -613,7 +613,7 @@ function elementIsValid(element) {
 function showGitInput(show){
 	var gitInput = document.getElementById("gitinput-parent");
 	if (show == true){
-		gitInput.style.display = "block";
+		gitInput.style.display = "flex";
 	}else{
 		gitInput.style.display = "none";
 	}
