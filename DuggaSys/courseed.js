@@ -628,6 +628,7 @@ function validateGitInput(){
 			gitUrl.style.borderColor = "rgb(51, 136, 51)";
 		} else {
 			gitUrl.style.backgroundColor = "#f57";
+			gitUrl.style.borderColor = "transparent";
 			console.log("Invalid url...");
 		}
 }
