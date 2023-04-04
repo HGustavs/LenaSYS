@@ -392,6 +392,8 @@ function markdownBlock(inString)
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
+    // [text to show](url)
+    inString = inString.replace(/\[{1}(.*?\S)(.*?\S)\]{1}\({1}(.*?\S)\){1}/g, '<a href="$1" target="_blank">$2</a>');
 
     // External mp4 src !!!
     // ==[src]==
