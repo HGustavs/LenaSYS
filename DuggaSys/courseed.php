@@ -91,7 +91,7 @@ if(isset($_SESSION['uid'])){
 				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
-				<!-- Rebecka och Emma :) Tillfällig kommentar -->
+				<!-- Input field to Github repository-->
 				<div style="padding:5px;">
 					<div class="inputwrapper">
 						<span>Get course from GitHub?</span>
@@ -105,7 +105,6 @@ if(isset($_SESSION['uid'])){
 						<input oninput="validateGitInput()" class="textinput" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
 					</div>
 				</div>
-				<!-- :) -->
     		<div style='padding:5px;'>
     			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
     		</div>
