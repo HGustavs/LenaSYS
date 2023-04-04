@@ -1,0 +1,39 @@
+This service allows anyone with R access (for example a teacher) to edit/create courses and users. Depending on the value of the variabel "opt" one of following functions (described as methods in class diagram) will be executed:
+
+opt = UPDATE:
+* Update user table
+* Update course table
+
+* Add new course (opt = ADDCLASS)
+* Change user password (opt = CHPWD) - logged in logUserEvents()
+* Add new user (opt = ADDUSR)
+
+
+There is also a big function for gathering all information about courses which is described as retriveAllCourses() in class diagram.
+
+Input:
+userid
+pdo
+pw
+cid
+opt
+uid
+className
+username
+addedtime
+val
+newuser
+newclass
+coursvers
+teacher
+vers
+requestedpasswordchange
+groups
+gid
+queryResult
+prop
+val
+log_uuid
+
+Output:
+JSON Array
