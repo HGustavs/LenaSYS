@@ -2642,7 +2642,8 @@ function removeLines(linesArray, stateMachineShouldSave = true)
         });
     }
 
-    if (stateMachineShouldSave && anyRemoved) { 
+    if (stateMachineShouldSave && anyRemoved) {
+        console.log("Removed lines!");
         stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
 
@@ -2703,17 +2704,46 @@ function constructElementOfType(type)
 }
 
 /**
+ * @description Returns all the lines (all sides) from given element.
+ * @param {Element} element
+ * @returns {array} result
+ */
+function getElementLines(element) {
+    return element.top.concat(element.right, element.bottom, element.left);
+}
+
+/**
+ * @description Checks if the given element have lines connected to it or not.
+ * @param {Element} element
+ * @returns {boolean} result
+ */
+function elementHasLines(element) {
+    return (getElementLines(element).length > 0);
+}
+
+/**
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
  */
 function changeState() 
 {
-    var element = context[0];
+    const element =  context[0],
+          oldType = element.type,
+          newType = document.getElementById("typeSelect").value;
+
+    /* If the element has a new type and got lines, then it can't change type. */
+    if (oldType != newType && elementHasLines(element)) {
+        displayMessage("error", `
+            Can't change type from \"${oldType}\" to \"${newType}\" as
+            these types should not be able to connect with each other.`
+        );
+        return;
+    }
+
     if (element.type == 'ER') {
+
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
-            var oldType = element.type;
-            var newType = document.getElementById("typeSelect").value;
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
@@ -2722,14 +2752,16 @@ function changeState()
                 element.kind = newKind;
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
             }
+
             //Update element type
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-        var property = document.getElementById("propertySelect").value;   
+        var property = document.getElementById("propertySelect").value;
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
     }
     else if(element.type=='UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
@@ -2739,8 +2771,6 @@ function changeState()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-        var oldType = element.type;
-        var newType = document.getElementById("typeSelect").value;
         //Check if type has been changed
         if (oldType != newType) {
             var newKind = element.kind;
@@ -2752,6 +2782,7 @@ function changeState()
         //Update element type
         element.type = newType;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
     }
     else if(element.type=='IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
@@ -2761,8 +2792,6 @@ function changeState()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-        var oldType = element.type;
-        var newType = document.getElementById("typeSelect").value;
         //Check if type has been changed
         if (oldType != newType) {
             var newKind = element.kind;
@@ -2774,7 +2803,9 @@ function changeState()
         //Update element type
         element.type = newType;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
     }
+
 }
 
 /**
@@ -6793,6 +6824,7 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
  */
 function clearLinesForElement(element)
 {
+
     element.left = [];
     element.right = [];
     element.top = [];
