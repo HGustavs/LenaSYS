@@ -11,7 +11,7 @@
     include_once "../Shared/sessions.php";
     include_once "../Shared/basic.php";
     // Connect to database and start session
-    pdoConnect();
+    $isDbConnected=pdoConnect();
     session_start();
     if (isset($_SESSION['uid'])) {
         $userid = $_SESSION['uid'];
@@ -45,6 +45,7 @@
     do {
         // Number of issues created by user during the interval
         $issues = array();
+        if($isDbConnected){
         $query = $log_db -> prepare('SELECT * FROM issue WHERE author=:gituser AND issuetime>:issuefrom AND issuetime<:issueto;');
         $query -> bindParam(':gituser', $gituser);
         $query -> bindParam(':issuefrom', date('Y-m-d', $currentweek));
@@ -91,6 +92,7 @@
             $file = array('path' => $row['path'], 'filename' => $row['filename'], 'lines' => $row['rowk']);
             array_push($files, $file);
         }
+    }
         $week = array(
             'weekno' => $weekno,
             'weekstart' => date('Y-m-d', $currentweek),

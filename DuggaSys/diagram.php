@@ -3,7 +3,7 @@
     include_once "../../coursesyspw.php";
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
-    pdoConnect();
+    $isDbConnected=pdoConnect();
 	#general vars regarding current dugga.
 	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
@@ -22,6 +22,7 @@
     $hash = getOPG('hash');
 	$finalArray = array();
 	
+	if($isDbConnected){
 	#create request to database and execute it
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
 	$response->execute();
@@ -93,6 +94,7 @@
 	}
 	#closes pdo connection to database. Causes error if not used as query results are stockpiled and prevents next query usage.
 	$response->closeCursor();
+}
 
 	#after itterating through query results, finally load the json file content into $fileContent variable.
 	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
