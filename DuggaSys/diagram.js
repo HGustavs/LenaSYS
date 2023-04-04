@@ -6151,9 +6151,9 @@ function generateContextProperties()
             str += `<div style="white">Color</div>`;
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-          }
-          str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
         }
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+      }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
       if (contextLine.length == 1 && context.length == 0) {
@@ -6612,6 +6612,7 @@ function setElementColors(clickedCircleID)
                 //element.id.style.color = "#000000";
             }*/
         }
+        console.log("'bout to save I think");
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
         StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
