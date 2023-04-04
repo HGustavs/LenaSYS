@@ -28,10 +28,11 @@ SELECT: count(*) FROM fileLink
 
 output
 ------
-
+logServiceEvent()	?  				// im not really sure about this one 
+logUserEvent()	?				// same thin here..
 mkdir  : creates directory in folder /courses/ or /courses/global
-INSERT : insert into DB table fileLink is made
-UPDATE : DB table fileLink is updated
+INSERT : fileLink
+UPDATE : fileLink SET filesize, uploaddate
 redirect : values sent with redirect $cid and $vers (course id, version id)
 
 
@@ -58,5 +59,19 @@ did
 field
 kind
 
+SELECT: password, timeSubmitted, timesAccessed, grade FROM userAnswer
+SELECT: username FROM user
+SELECT: COUNT(*) FROM submission
+SELECT: startdate FROM vers 
+
 output
 ------
+
+logServiceEvent()	?		// im not really sure about this one
+logUserEvent()	?		// same here					
+INSERT: userAnswer
+INSERT: timesheet
+INSERT: submission
+
+
+file_put_contents?? // JSON ?? vad ska jag göra med denna 
