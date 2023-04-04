@@ -1,19 +1,24 @@
----filereceive.php--- 
+﻿Issue: #12970 - Model filereceive service
+filereceive.php
+
 
 Execution Order
  * ---------------------
- * #1	Handle files! each file is checked One by one, if all is ok, a directory is created and filepath is added to the database. accepted conditions are, login for user is successful & has either write access or is superuser.
+ * #1        Handle files! each file is checked One by one, if all is ok, a directory is created and filepath is added to the database. accepted conditions are, login for user is successful & has either write access or is superuser.
  
- * #2 if variable $storefile == true, then add row of file into mysql (create directory for corse if it dosent exist, and upload directory path to DB )
+ * #2 if variable $storefile == true, then add row of file into mysql (create directory for course if it doesn't exist, and upload directory path to DB )
  
- * #3 if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process. 
+ * #3 If the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process. 
       if sent file isn't empty and upload is completed (e.g not a duplicate file that already exists) it checks if there already is a row in the db that is the same, if not, add row to db
  
  * #4 updates the page, redirects to "fileed.php" with the values for $cid, &coursevers and $vers.
 
 
+
+
 input
 -----
+
 
 courseid
 courserver
@@ -22,21 +27,45 @@ link
 Selectedfile
 log_uuid
 
+
 SELECT: username FROM user
 SELECT: count(*) FROM fileLink
 
 
+
+
 output
 ------
-logServiceEvent()	?  				// im not really sure about this one 
-logUserEvent()	?				// same thin here..
+logServiceEvent()
+logUserEvent()
 mkdir  : creates directory in folder /courses/ or /courses/global
 INSERT : fileLink
 UPDATE : fileLink SET filesize, uploaddate
 redirect : values sent with redirect $cid and $vers (course id, version id)
+error/errorInfo()
 
 
----filereceive_dugga.php--- 
+error
+username
+fileText
+fileLocation
+extension
+cid
+vers
+filetext
+description
+userid
+errortype
+errorvar
+temp
+extension
+filetype/filea(309)
+
+
+
+
+filereceive_dugga.php
+
 
 Execution Order
 ---------------------
@@ -46,8 +75,11 @@ Execution Order
 #4 updates the page, redirects to "fileed.php" with the values for $cid, &coursevers and $vers.
 
 
+
+
 input
 -----
+
 
 link
 inputtext
@@ -59,19 +91,68 @@ did
 field
 kind
 
+
 SELECT: password, timeSubmitted, timesAccessed, grade FROM userAnswer
 SELECT: username FROM user
 SELECT: COUNT(*) FROM submission
 SELECT: startdate FROM vers 
 
+
 output
 ------
 
-logServiceEvent()	?		// im not really sure about this one
-logUserEvent()	?		// same here					
+
+submissionpath
+error
+SELECT COUNT FROM submission
+logServiceEvent()
+logUserEvent()                                
 INSERT: userAnswer
 INSERT: timesheet
 INSERT: submission
-file_put_contents($movname, $formattedInput)			// not sure how this works, but from what i gatherd it makes changes in a file.
+file_put_contents($movname, $formattedInput)
 file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
 file_put_contents($movname, $link);
+formatTimeSheetInput
+
+
+—----------------------------------
+filereceive_preview.php
+
+
+Execution order:
+
+
+#1  Handle files! One by one  -- if all is ok add file name (if file doesn't exists under a template create it)
+#2 if variable $storefile == true, then add row(existence) of file into mysql
+#3 if sent file isn't empty and upload is completed (e.g not a duplicate file that already exists) it checks if there already is a row in the db that is the same, if not, add row to db
+#4 updates the page, redirects to "fileed.php" with the values for $cid, &coursevers and $vers.
+
+
+Input:
+
+
+cid
+vers
+kind
+fileName
+textField
+inputText
+error
+userid
+log_uuid
+filoinfo
+ha
+allowedExtensions
+extension
+currcwd
+
+
+output:
+
+
+pdoConnect()
+session_start()
+logServiceEvent()
+UPDATE: fileLink
+extension
