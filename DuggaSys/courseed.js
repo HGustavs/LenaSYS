@@ -624,9 +624,11 @@ function validateGitInput(){
 	var gitUrl = document.getElementById("ncoursegit-url");
 	var reg = new RegExp("/^(https?://)?(www.github).(com)([/\w .-])/?(.git)$/");
 		if((gitUrl.value.match(reg)!=null)){
+			console.log("Valid URL!");
 			gitUrl.removeAttribute("style");
 		} else {
 			gitUrl.style.backgroundColor = "#f57";
+			console.log("Invalid url...");
 		}
 }
 
