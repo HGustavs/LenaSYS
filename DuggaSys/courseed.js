@@ -624,7 +624,8 @@ function validateGitInput(){
 	var gitUrl = document.getElementById("ncoursegit-url");
 		if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
 			console.log("Valid URL!");
-			gitUrl.removeAttribute("style");
+			gitUrl.style.backgroundColor = "white";
+			gitUrl.style.borderColor = "rgb(51, 136, 51)";
 		} else {
 			gitUrl.style.backgroundColor = "#f57";
 			console.log("Invalid url...");
