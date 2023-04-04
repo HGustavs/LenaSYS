@@ -622,8 +622,7 @@ function showGitInput(show){
 //Validation with REG EXP for Github URL
 function validateGitInput(){
 	var gitUrl = document.getElementById("ncoursegit-url");
-	var reg = new RegExp("/^(https?://)?(github)\.(com)([/\w \.-]*)*\/?(\.git)$/");
-		if((gitUrl.value.match(reg)!=null)){
+		if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
 			console.log("Valid URL!");
 			gitUrl.removeAttribute("style");
 		} else {
