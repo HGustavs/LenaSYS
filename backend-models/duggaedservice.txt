@@ -1,0 +1,34 @@
+﻿For ”Services”, check user information for authorization, decide if submitted is group assignment or not. Handle errors.
+
+
+input:
+userid
+cid
+opt
+qid
+
+
+output:
+error
+debug
+
+
+For ”Retrieve Information”, use coursecode & coursename as title in browser tab. Fetch information, handle errors.
+
+
+input:
+userid
+cid
+value
+log_uuid
+
+
+output:
+coursename
+coursecode
+error
+debug
+files
+value
+duggapages
+array

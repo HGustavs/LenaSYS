@@ -1,0 +1,29 @@
+courseedService.php
+
+
+
+Recieves data from two external files : 
+basic.php
+sessions.php
+
+Connects to database,
+pdoConnect() and starts a session with,
+session_start().
+
+Recieves input from user when user logs in and a session starts.
+
+Username gets recieved depending on the userId from the session.
+
+Checklogin() method takes inputs from the started session and checks what kind of user it is that uses the system. 
+Depending on user, different outputs will be given. Such outputs are course names and codes for an example.
+
+Data for "Dugga" gets fetched from the database.
+Code examples get fetched from the database.
+
+
+The system also has these outputs : 
+
+Insert into vers
+insert into box
+insert into listentries
+ 
