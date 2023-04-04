@@ -339,7 +339,7 @@
 /*tooltip*/
 
 .toolTipText{
-    top:-5px;
+    top:-60px;
     left: 125%;
     visibility: hidden;
     width: 250px;
@@ -351,6 +351,9 @@
     pointer-events: none;
     position: absolute;
     z-index: 2;
+}
+#topToolTip{
+    top: -5px;
 }
 
 .diagramIcons:hover .toolTipText{
