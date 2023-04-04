@@ -611,7 +611,7 @@ function elementIsValid(element) {
 
 //Show or hide the Git URL input when creating a new course
 function showGitInput(show){
-	var gitInput = document.getElementById("ncoursegit-url");
+	var gitInput = document.getElementById("gitinput-parent");
 	if (show == true){
 		gitInput.style.display = "block";
 	}else{

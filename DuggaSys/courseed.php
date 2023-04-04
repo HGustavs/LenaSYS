@@ -100,7 +100,7 @@ if(isset($_SESSION['uid'])){
 							<input onclick="showGitInput(false)" style="float: none; width: auto;"type="radio" value="no" id="ncoursegit-no" name="coursegit">No</input>
 						</div>
 					</div>
-					<div style="display:none; justify-content: flex-end; margin-top: 10px;" class="inputwrapper">
+					<div style="display:none; justify-content: flex-end; margin-top: 10px;" class="inputwrapper" id="gitinput-parent">
 						<span style="padding-right: 10px;">GitHub URL:</span>
 						<input class="textinput validate" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
 					</div>
