@@ -24,42 +24,42 @@
 	
 	if($isDbConnected){
 	#create request to database and execute it
-	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
-	$response->execute();
-	$i=0;
+		$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
+		$response->execute();
+		$i=0;
 
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
 	#this should probably be re-worked as this foreach loops through all rows, but over-writes variables meaning it's only the latest variant version that's shown to the user.
 	#another alternvative could be to add each result in an array and loop through the array in diagram.js to properly filter out wrong variant results.
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
+		foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
 	{
-		$variantParams=$row['jparam'];
-		$variantParams = str_replace('&quot;','"',$variantParams);
-		$parameterArray = json_decode($variantParams,true);
+			$variantParams=$row['jparam'];
+			$variantParams = str_replace('&quot;','"',$variantParams);
+			$parameterArray = json_decode($variantParams,true);
 
 		//if parameter exists in current variant json param string, assign value. Otherwise, set it to "UNK". Error checking should check if string is "UNK" and "".
-		if(!empty($parameterArray))
+			if(!empty($parameterArray))
 		{
-			if(isset($parameterArray['diagram_File'])){
-				$splicedFileName=$parameterArray["diagram_File"];}
+				if(isset($parameterArray['diagram_File'])){
+					$splicedFileName=$parameterArray["diagram_File"];}
 			else{
-				$splicedFileName = "UNK";}
-			if(isset($parameterArray['filelink'])){
-				$fileName=$parameterArray["filelink"];}
+					$splicedFileName = "UNK";}
+				if(isset($parameterArray['filelink'])){
+					$fileName=$parameterArray["filelink"];}
 			else{
-				$fileName = "UNK";}
-			if(isset($parameterArray['type'])){
-				$fileType=$parameterArray["type"];}
+					$fileName = "UNK";}
+				if(isset($parameterArray['type'])){
+					$fileType=$parameterArray["type"];}
 			else{
-				$fileType = "UNK";}
+					$fileType = "UNK";}
 			if(isset($parameterArray['gFilelink'])){
-				$gFileName=$parameterArray["gFilelink"];}
+					$gFileName=$parameterArray["gFilelink"];}
 			else{
-				$gFileName = "UNK";}
-			if(isset($parameterArray['gType'])){
-				$gFileType=$parameterArray["gType"];}
+					$gFileName = "UNK";}
+				if(isset($parameterArray['gType'])){
+					$gFileType=$parameterArray["gType"];}
 			else{
-				$gFileType = "UNK";}
+					$gFileType = "UNK";}
 
 			//for fetching file content. If file exists in directory path, fetch. Otherwise, go to the next directory and check.
 			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != "")
@@ -70,31 +70,31 @@
 					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");}
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName")){
 					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");}
+				}
+
+				if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != "")
+				{
+					if(file_exists("../courses/global/"."$gFileName")){
+							$information = file_get_contents("../courses/global/"."$gFileName");}
+					else if(file_exists("../courses/".$cid."/"."$gFileName")){
+						$information = file_get_contents("../courses/".$cid."/"."$gFileName");}
+					else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
+						$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
 			}
 
-			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != "")
-			{
-				if(file_exists("../courses/global/"."$gFileName")){
-					$information = file_get_contents("../courses/global/"."$gFileName");}
-				else if(file_exists("../courses/".$cid."/"."$gFileName")){
-					$information = file_get_contents("../courses/".$cid."/"."$gFileName");}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
-					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
+				#Think this removes certain escape string characters.
+				$pattern = '/\s*/m';
+				$replace = '';
+				$instructions = preg_replace( $pattern, $replace,$instructions);
+				$information = preg_replace( $pattern, $replace,$information);
+
+				$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
+					$i++;
 			}
-
-			#Think this removes certain escape string characters.
-			$pattern = '/\s*/m';
-			$replace = '';
-			$instructions = preg_replace( $pattern, $replace,$instructions);
-			$information = preg_replace( $pattern, $replace,$information);
-
-			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
-			$i++;
 		}
-	}
 	#closes pdo connection to database. Causes error if not used as query results are stockpiled and prevents next query usage.
-	$response->closeCursor();
-}
+		$response->closeCursor();
+	}
 
 	#after itterating through query results, finally load the json file content into $fileContent variable.
 	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
