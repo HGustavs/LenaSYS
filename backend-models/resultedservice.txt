@@ -5,7 +5,7 @@ Gathers information related to students(I think) results to be displayed. Encode
 
 input
 -----
-vers
+coursevers
 opt
 cid
 
