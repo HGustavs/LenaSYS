@@ -1,0 +1,11 @@
+input
+-----
+vers
+opt
+cid
+
+
+output
+------
+
+json_encode($returnArray)
