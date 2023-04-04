@@ -647,7 +647,6 @@
         Code not used, commented out so that
         it can be used in the future.
         if(isset($_POST['id'])) {
-
         }*/
 
         if(isset($_POST['StringDiagram'])) {
