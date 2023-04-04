@@ -45,10 +45,10 @@ function pdoConnect()
 		if(!defined("MYSQL_VERSION")) {
 			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
 		}
-		
+		return true;
 	} catch (PDOException $e) {
 		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
-		
+		return false;
 	}
 }
 ?>
