@@ -6218,7 +6218,7 @@ function generateContextProperties()
             str += `/>`;
         }
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
-            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon'>`;
+            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
@@ -6234,7 +6234,7 @@ function generateContextProperties()
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
-            str += `</select><select id='lineEndIcon'>`;
+            str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
