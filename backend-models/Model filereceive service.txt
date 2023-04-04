@@ -72,6 +72,6 @@ logUserEvent()	?		// same here
 INSERT: userAnswer
 INSERT: timesheet
 INSERT: submission
-
-
-file_put_contents?? // JSON ?? vad ska jag göra med denna 
+file_put_contents($movname, $formattedInput)			// not sure how this works, but from what i gatherd it makes changes in a file.
+file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
+file_put_contents($movname, $link);
