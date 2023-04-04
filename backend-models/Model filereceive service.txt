@@ -90,6 +90,7 @@ segment
 did
 field
 kind
+hash
 
 
 SELECT: password, timeSubmitted, timesAccessed, grade FROM userAnswer
@@ -141,7 +142,8 @@ inputText
 error
 userid
 log_uuid
-filoinfo
+filo
+info
 ha
 allowedExtensions
 extension
