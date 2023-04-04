@@ -1338,6 +1338,7 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
+    saveDiagramBeforeUnload();
 }
 //<-- UML functionality start
 /**
@@ -2497,7 +2498,6 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    //storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -11136,18 +11136,34 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileContentOnLoad()
 {
-        let temp = getVariantParam();
-        var fullParam = temp[0];
-        cid = temp[1];
-        cvers = temp[2];
-        diagramToLoad = temp[3];
-        diagramToLoadContent = temp[4];
+    let temp = getVariantParam();
+    var fullParam = temp[0];
+    cid = temp[1];
+    cvers = temp[2];
+    diagramToLoad = temp[3];
+    diagramToLoadContent = temp[4];
 
-        //check so that it is a file with content
-        if(diagramToLoadContent!="NO_FILE_FETCHED" && diagramToLoadContent != ""){
-            loadDiagramFromString(JSON.parse(diagramToLoadContent));
-            storeDiagramInLocalStorage();
-        }
+    // Check whether there is a diagram saved in localstorage and load it.
+    // Otherwise, load from VariantParam  
+    if (localStorage.getItem("CurrentlyActiveDiagram")) {
+        var diagramFromLocalStorage = localStorage.getItem("CurrentlyActiveDiagram");
+        loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
+    } else if (diagramToLoadContent != "NO_FILE_FETCHED" && diagramToLoadContent != "") {
+        loadDiagramFromString(JSON.parse(diagramToLoadContent));
+        storeDiagramInLocalStorage();
+    } else {
+        // Failed to load content
+        console.error("No content to load")
+    }
+}
+
+// Save current diagram when user leaves the page
+function saveDiagramBeforeUnload() {
+    window.addEventListener("beforeunload", (e) => {
+        e.preventDefault();
+        e.returnValue = "";
+        storeDiagramInLocalStorage();
+    })
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
@@ -11209,7 +11225,7 @@ function resetDiagramAlert(){
     if(refreshConfirm){
         resetDiagram();
     }
-    
+
 }
 /**
  * @description Cleares the diagram.
