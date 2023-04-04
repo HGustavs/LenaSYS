@@ -96,11 +96,11 @@ if(isset($_SESSION['uid'])){
 					<div class="inputwrapper">
 						<span>Get course from GitHub?</span>
 						<div>
-							<input style="float: none; width: auto;" type="radio" value="yes" id="ncoursegit-yes" name="coursegit">Yes</input>
-							<input style="float: none; width: auto;"type="radio" value="no" id="ncoursegit-no" name="coursegit">No</input>
+							<input onclick="showGitInput(true)" style="float: none; width: auto;" type="radio" value="yes" id="ncoursegit-yes" name="coursegit">Yes</input>
+							<input onclick="showGitInput(false)" style="float: none; width: auto;"type="radio" value="no" id="ncoursegit-no" name="coursegit">No</input>
 						</div>
 					</div>
-					<div style="justify-content: flex-end; margin-top: 10px;" class="inputwrapper">
+					<div style="display:none; justify-content: flex-end; margin-top: 10px;" class="inputwrapper">
 						<span style="padding-right: 10px;">GitHub URL:</span>
 						<input class="textinput validate" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
 					</div>

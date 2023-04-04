@@ -609,7 +609,15 @@ function elementIsValid(element) {
 	return false;
 }
 
-
+//Show or hide the Git URL input when creating a new course
+function showGitInput(show){
+	var gitInput = document.getElementById("ncoursegit-url");
+	if (show == true){
+		gitInput.style.display = "block";
+	}else{
+		gitInput.style.display = "none";
+	}
+}
 
 //Validates whole form but don't implement it.
 function quickValidateForm(formid, submitButton){
