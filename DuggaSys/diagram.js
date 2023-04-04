@@ -6613,7 +6613,6 @@ function setElementColors(clickedCircleID)
                 //element.id.style.color = "#000000";
             }*/
         }
-        console.log("'bout to save I think ", elementIDs);
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
         StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
