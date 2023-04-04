@@ -6307,7 +6307,7 @@ function toggleOptionsPane()
         }
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
-        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+        document.getElementById('optmarker').innerHTML = "&#x203A;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
 }
