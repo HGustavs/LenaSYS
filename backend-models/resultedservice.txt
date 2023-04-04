@@ -1,3 +1,8 @@
+---resultedservice--- 
+
+Gathers information related to students(I think) results to be displayed. Encodes the resulted array into JSON as output.
+
+
 input
 -----
 vers
