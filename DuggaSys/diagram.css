@@ -339,7 +339,7 @@
 /*tooltip*/
 
 .toolTipText{
-    top:-60px;
+    top:-63px;
     left: 125%;
     visibility: hidden;
     width: 250px;
@@ -352,7 +352,7 @@
     position: absolute;
     z-index: 2;
 }
-#topToolTip{
+#highestToolTip{
     top: -5px;
 }
 
