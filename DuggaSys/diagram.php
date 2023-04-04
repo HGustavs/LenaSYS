@@ -643,9 +643,12 @@
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
+        /*
+        Code not used, commented out so that
+        it can be used in the future.
         if(isset($_POST['id'])) {
 
-        }
+        }*/
 
         if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
