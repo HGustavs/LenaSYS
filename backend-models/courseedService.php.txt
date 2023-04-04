@@ -21,3 +21,9 @@ Data for "Dugga" gets fetched from the database.
 Code examples get fetched from the database.
 
 
+The system also has these outputs : 
+
+Insert into vers
+insert into box
+insert into listentries
+ 
