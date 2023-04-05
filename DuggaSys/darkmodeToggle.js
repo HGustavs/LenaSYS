@@ -23,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // if it's dark -> go light
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
-    }
-	toggleBorderOfElements();		
+    }		
   })
 })
 
@@ -39,7 +38,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 		themeStylesheet.href = "../Shared/css/style.css";
 		localStorage.setItem('themeBlack',themeStylesheet.href)
 	}
-	toggleBorderOfElements();
 });
 /**
  * @description toggles the border of all elements to white/gray depending on current border color.
@@ -47,14 +45,19 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 function toggleBorderOfElements() {
 	console.log("called");
 	let allTexts = document.getElementsByClassName('text');
-	for (let i = 0; i < allTexts.length; i++) {
-		let text = allTexts[i];
-		//if the element has a stroke which has the color #383737: set it to white.
-		if (text.getAttribute('stroke') == '#383737') {
-			text.setAttribute('stroke', '#ffffff')
-		}
-		else if (text.getAttribute('stroke') == '#ffffff') {
-			text.setAttribute('stroke', '#383737')
+	if(localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css"){
+		for (let i = 0; i < allTexts.length; i++) {
+			let text = allTexts[i];
+			let strokeColor = text.getAttribute('stroke');
+			//if the element has a stroke which has the color #383737: set it to white.
+			//this is because we dont want to affect the strokes that are null or other colors.
+			if (strokeColor == '#383737') {
+				strokeColor = '#ffffff';
+			}
+			else if (strokeColor == '#ffffff') {
+				strokeColor = '#383737';
+			}
+			text.setAttribute('stroke', strokeColor);
 		}
 	}
 }
