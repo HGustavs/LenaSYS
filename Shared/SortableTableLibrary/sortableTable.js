@@ -342,11 +342,11 @@ function SortableTable(param)
 
             //If 1, sort by ascending order, otherwise descending order
             if(status==1){
-              return a.qstart > b.qstart ? 1 : -1
+              return a.qstart > b.qstart ? 1 : -1;
               } else {
-              return a.qstart < b.qstart ? 1 : -1
+              return a.qstart < b.qstart ? 1 : -1;
               }
-           })
+           });
         } else {  
           //Otherwise use normal sorting function
           tbl.tblbody.sort(sortableInternalSort);
