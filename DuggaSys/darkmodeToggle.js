@@ -46,7 +46,7 @@ function setElementsToDarkTheme() {
 		let elem = allElems[i];
 		let svgs = elem.children;
 		let paths = svgs.children;
-		console.log(paths);
+		console.log(paths[0]);
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
