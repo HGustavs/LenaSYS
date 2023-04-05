@@ -620,17 +620,17 @@ function showGitInput(show){
 }
 */
 //Validation with REG EXP for Github URL
-function validateGitInput(){
-	var gitUrl = document.getElementById("ncoursegit-url");
-		if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
-			console.log("Valid URL!");
-			gitUrl.style.backgroundColor = "white";
-			gitUrl.style.borderColor = "rgb(51, 136, 51)";
-		} else {
-			gitUrl.style.backgroundColor = "#f57";
-			gitUrl.style.borderColor = "transparent";
-			console.log("Invalid url...");
-		}
+function validateGitInput(id){
+	var gitUrl = document.getElementById(id);
+	if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
+		console.log("Valid URL!");
+		gitUrl.style.backgroundColor = "white";
+		gitUrl.style.borderColor = "rgb(51, 136, 51)";
+	} else {
+		gitUrl.style.backgroundColor = "#f57";
+		gitUrl.style.borderColor = "transparent";
+		console.log("Invalid url...");
+	}
 }
 
 //Validates whole form but don't implement it.
