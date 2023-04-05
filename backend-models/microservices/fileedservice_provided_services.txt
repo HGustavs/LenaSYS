@@ -1,0 +1,21 @@
+---fileedservice---
+
+--services provided--
+
+logServiceEvent:
+-----------------------------------------
+ 
+logs "log_uuid", the "eventType" used, "userID" and "info", which contain. "opt", "cid", "courserver", "fid", "filename", "kind". 
+
+
+Delite fileLink:
+-----------------------------------------
+
+Delete filelink from database. 
+conditions: file not in active use
+		
+
+Edit filesize
+-----------------------------------------
+
+Edit filesize of already existing file
