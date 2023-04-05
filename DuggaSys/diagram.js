@@ -7083,9 +7083,9 @@ function drawLine(line, targetGhost = false)
         var strokeDash="0";
     }
     var lineColor;
-    var bodyColor = document.body.style.backgroundColor;
+    var bodyColor = getComputedStyle(document.body).getPropertyValue('--color-background');
 
-    if(bodyColor == '#121212' && lineColor == '#000000') 
+    if(bodyColor == '#121212') 
     {
          lineColor = '#ffffff';
     }
