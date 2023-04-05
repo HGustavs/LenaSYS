@@ -610,7 +610,8 @@ function elementIsValid(element) {
 }
 
 //Validation with REG EXP for Github URL
-function validateGitInput(gitUrl){
+function validateGitInput(id){
+	var gitUrl = document.getElementById(id);
 	if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
 		console.log("Valid URL!");
 		gitUrl.style.border = "2px solid rgb(51, 136, 51)";
