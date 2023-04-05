@@ -7085,7 +7085,7 @@ function drawLine(line, targetGhost = false)
     var lineColor;
     var bodyColor = document.body.style.backgroundColor;
 
-    if(containerDiv.classList.contains("blackTheme.css")) 
+    if(bodyColor = "black") 
     {
         lineColor = '#ffffff';
     }
