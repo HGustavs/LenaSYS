@@ -10842,6 +10842,7 @@ function updateCSSForAllElements()
                     } else if(element.kind == "UMLRelation"){
                         if(element.state == "overlapping"){
                             fillColor.style.fill = `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
