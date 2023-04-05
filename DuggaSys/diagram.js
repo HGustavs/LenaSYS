@@ -7082,7 +7082,15 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    var lineColor = '#000000';
+    var lineColor;
+    var containerDiv = document.getElementById("container");
+    if(containerDiv.classList.contains("style.css")) 
+    {
+        lineColor = '#000000';
+    }
+    else if (containerDiv.classList.contains("blackTheme.css")) {
+        lineColor = '#ffffff';
+    }
     if(contextLine.includes(line)){
         lineColor = selectedColor;
     }
