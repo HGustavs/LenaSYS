@@ -9250,4 +9250,9 @@ margin:2px;
   font-size:18px;
 }
 
+.deleteBtn{
+  stroke:rgb(0, 0, 0);
+  stroke-width:2;
+}
+
 /* END */
