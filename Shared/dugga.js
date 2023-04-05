@@ -200,10 +200,10 @@ function resetFields(){
 	$("#showsecurityquestion #answer").val("");
 
   //Changes the background color back to white
-	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
-	$("#loginBox #password").css("background-color", "rgb(255, 255, 255)");
-	$("#newpassword #username").css("background-color", "rgb(255, 255, 255)");
-	$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
+	//$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
+	//$("#loginBox #password").css("background-color", "rgb(255, 255, 255)");
+	//$("#newpassword #username").css("background-color", "rgb(255, 255, 255)");
+	//$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
 
   //Hides error messages
   displayAlertText("#login #message", "");
@@ -1602,8 +1602,8 @@ function showLoginPopup()
 	$("#username").focus();
 
 	// Reset input box color
-	$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
-	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
+	//$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
+	//$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
 
 	// Reset warning, if applicable
   displayAlertText("#login #message", "");

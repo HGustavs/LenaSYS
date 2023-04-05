@@ -1082,3 +1082,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
    -webkit-text-decoration-color: var(--color-text-primary) !important;
     text-decoration-color: var(--color-text-primary) !important;
   }
+  
+  .textinput {
+    color:white;
+    }
