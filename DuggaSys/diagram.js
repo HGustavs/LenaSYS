@@ -7871,6 +7871,7 @@ function drawLine(line, targetGhost = false)
 
     }
 
+    updateCSSForAllElements();
     return str;
 }
 /**
