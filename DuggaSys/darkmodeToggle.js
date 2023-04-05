@@ -43,13 +43,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
  * @description toggles the border of all elements to white/gray depending on current border color.
  */
 function toggleBorderOfElements() {
-	// let allElems = document.getElementsByClassName('element');
-	//for (var i = 0; i < allElems.length; i++) {
-	//	let elem = allElems[i];
-	//	let svgs = elem.children;
-	//	let paths = svgs.children;
-	//	console.log(paths[0]);
-	//}
 	let allTexts = document.getElementsByClassName('text');
 	for (let i = 0; i < allTexts.length; i++) {
 		let text = allTexts[i];
@@ -60,8 +53,5 @@ function toggleBorderOfElements() {
 		else if (text.getAttribute('stroke') == '#ffffff') {
 			text.setAttribute('stroke', '#383737')
 		}
-	}
-	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
-		
 	}
 }
