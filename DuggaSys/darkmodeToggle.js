@@ -53,6 +53,7 @@ function toggleBorderOfElements() {
 			//this is because we dont want to affect the strokes that are null or other colors.
 			if (strokeColor == '#383737') {
 				strokeColor = '#ffffff';
+				text.setAttribute('stroke', strokeColor);
 			}	
 		}
 	}
@@ -63,8 +64,8 @@ function toggleBorderOfElements() {
 			let strokeColor = text.getAttribute('stroke');
 			if (strokeColor == '#ffffff') {
 				strokeColor = '#383737';
+				text.setAttribute('stroke', strokeColor);
 			}
 		}
 	}
-	text.setAttribute('stroke', strokeColor);
 }
