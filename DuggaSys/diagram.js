@@ -10894,19 +10894,21 @@ function updateCSSForAllElements()
     toggleBorderOfElements();
 }
 /**
- * @description toggles the border of all elements to white/gray depending on current border color.
+ * @description toggles the border of all elements to white or gray; depending on current theme.
  */
 function toggleBorderOfElements() {
-	console.log("called");
+    //get all elements with the class text. This inludes the text in the elements but also the non text svg that just has a stroke.
+    //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
 	let allTexts = document.getElementsByClassName('text');
+    //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
 	let cssUrl = localStorage.getItem('themeBlack');
-	//turns, for example, '.../Shared/css/style.css' into just 'style.css'
+	//this turns, for example, '.../Shared/css/style.css' into just 'style.css'
 	cssUrl = cssUrl.split("/").pop();
-	console.log(cssUrl);
 	if(cssUrl == 'blackTheme.css'){
-		console.log(cssUrl);
+        //iterate through all the elements that have the class 'text'.
 		for (let i = 0; i < allTexts.length; i++) {
 			let text = allTexts[i];
+            //assign their current stroke color to a variable.
 			let strokeColor = text.getAttribute('stroke');
 			//if the element has a stroke which has the color #383737: set it to white.
 			//this is because we dont want to affect the strokes that are null or other colors.
