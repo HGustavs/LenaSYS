@@ -54,7 +54,8 @@ function setElementsToDarkTheme() {
 		//there are a lot of elements with the class "text".
 		//we want to affect all of them except actual text.
 		if (text.tagName != 'TEXT') {
-			console.log(text);
+			//console.log(text);
+			console.log(text.tagName);
 		}
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
