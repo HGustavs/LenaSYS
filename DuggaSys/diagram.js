@@ -7089,7 +7089,7 @@ function drawLine(line, targetGhost = false)
     {
         lineColor = '#ffffff';
     }
-    else {
+    else if (bodyColor = "white"){
         alert(bodyColor);
         lineColor = '#000000';
     }
