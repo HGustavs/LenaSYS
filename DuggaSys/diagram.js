@@ -1338,6 +1338,7 @@ function getData()
     setCursorStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
+    saveDiagramBeforeUnload();
 }
 //<-- UML functionality start
 /**
@@ -1886,7 +1887,7 @@ function ddown(event)
             var input = document.getElementById("elementProperty_name");
             input.focus();
             input.setSelectionRange(0,input.value.length); // Select the whole text.
-            document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+            document.getElementById('optmarker').innerHTML = "&#x203A;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }   
@@ -2497,7 +2498,6 @@ function mmoving(event)
 
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
-    //storeDiagramInLocalStorage();// storing the diagram in localstorage
 }
 
 //#endregion ===================================================================================
@@ -2642,7 +2642,8 @@ function removeLines(linesArray, stateMachineShouldSave = true)
         });
     }
 
-    if (stateMachineShouldSave && anyRemoved) { 
+    if (stateMachineShouldSave && anyRemoved) {
+        console.log("Removed lines!");
         stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
 
@@ -2703,17 +2704,46 @@ function constructElementOfType(type)
 }
 
 /**
+ * @description Returns all the lines (all sides) from given element.
+ * @param {Element} element
+ * @returns {array} result
+ */
+function getElementLines(element) {
+    return element.top.concat(element.right, element.bottom, element.left);
+}
+
+/**
+ * @description Checks if the given element have lines connected to it or not.
+ * @param {Element} element
+ * @returns {boolean} result
+ */
+function elementHasLines(element) {
+    return (getElementLines(element).length > 0);
+}
+
+/**
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
  */
 function changeState() 
 {
-    var element = context[0];
+    const element =  context[0],
+          oldType = element.type,
+          newType = document.getElementById("typeSelect").value;
+
+    /* If the element has a new type and got lines, then it can't change type. */
+    if (oldType != newType && elementHasLines(element)) {
+        displayMessage("error", `
+            Can't change type from \"${oldType}\" to \"${newType}\" as
+            these types should not be able to connect with each other.`
+        );
+        return;
+    }
+
     if (element.type == 'ER') {
+
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
-            var oldType = element.type;
-            var newType = document.getElementById("typeSelect").value;
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
@@ -2722,14 +2752,16 @@ function changeState()
                 element.kind = newKind;
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
             }
+
             //Update element type
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-        var property = document.getElementById("propertySelect").value;   
+        var property = document.getElementById("propertySelect").value;
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
     }
     else if(element.type=='UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
@@ -2739,8 +2771,6 @@ function changeState()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-        var oldType = element.type;
-        var newType = document.getElementById("typeSelect").value;
         //Check if type has been changed
         if (oldType != newType) {
             var newKind = element.kind;
@@ -2752,6 +2782,7 @@ function changeState()
         //Update element type
         element.type = newType;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
     }
     else if(element.type=='IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
@@ -2761,8 +2792,6 @@ function changeState()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-        var oldType = element.type;
-        var newType = document.getElementById("typeSelect").value;
         //Check if type has been changed
         if (oldType != newType) {
             var newKind = element.kind;
@@ -2774,7 +2803,9 @@ function changeState()
         //Update element type
         element.type = newType;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
     }
+
 }
 
 /**
@@ -6151,9 +6182,9 @@ function generateContextProperties()
             str += `<div style="white">Color</div>`;
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-          }
-          str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
         }
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+      }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
       if (contextLine.length == 1 && context.length == 0) {
@@ -6218,7 +6249,7 @@ function generateContextProperties()
             str += `/>`;
         }
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
-            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon'>`;
+            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
@@ -6234,7 +6265,7 @@ function generateContextProperties()
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
-            str += `</select><select id='lineEndIcon'>`;
+            str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
@@ -6307,14 +6338,14 @@ function toggleOptionsPane()
         }
         document.getElementById("options-pane").className = "hide-options-pane";
     } else {
-        document.getElementById('optmarker').innerHTML = "&#x1f4a9;Options";
+        document.getElementById('optmarker').innerHTML = "&#9650;Options";
         document.getElementById("options-pane").className = "show-options-pane";
     }
 }
 
 /**
  * @description Generates keybind tooltips for all keybinds that are available for the diagram.
- * @see keybinds All available keybinds currently configured.
+ * @see keybinds All available keybinds currently configured
  */
 function generateToolTips()
 {
@@ -6602,6 +6633,9 @@ function setElementColors(clickedCircleID)
         var color = colors[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
+            
+            elementIDs.push(context[i].id)
+
             /*
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
@@ -6612,8 +6646,11 @@ function setElementColors(clickedCircleID)
                 //element.id.style.color = "#000000";
             }*/
         }
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
-        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+        stateMachine.save(
+            StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
+            StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
+        );
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
         var index = id.replace("strokeColorCircle", "") * 1;
         var color = strokeColors[index];
@@ -6621,8 +6658,10 @@ function setElementColors(clickedCircleID)
             context[i].stroke = color;
             elementIDs[i] = context[i].id;
         }
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(elementIDs, { stroke: color }),
-        StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(
+            StateChangeFactory.ElementAttributesChanged(elementIDs, { stroke: color }),
+            StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
+        );
     } else {
         console.error(`${menu.id} is not a valid ID`);
     }
@@ -6793,6 +6832,7 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
  */
 function clearLinesForElement(element)
 {
+
     element.left = [];
     element.right = [];
     element.top = [];
@@ -10746,7 +10786,14 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
+                            //check if the fill color is black or pink, if so the font color is set to white
+                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
+                                fontColor.style.fill = `${"#ffffff"}`;
+                            }
+                            else{
+
+                                fontColor.style.fill = `${"#000000"}`;
+                            }
                         }
                     }
                 }
@@ -10761,7 +10808,14 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
+                            //check if the fill color is black or pink, if so the font color is set to white
+                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
+                                fontColor.style.fill = `${"#ffffff"}`;
+                            }
+                            else{
+
+                                fontColor.style.fill = `${"#000000"}`;
+                            }
                         }
                     }
                 }
@@ -11122,18 +11176,34 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 
 function fetchDiagramFileContentOnLoad()
 {
-        let temp = getVariantParam();
-        var fullParam = temp[0];
-        cid = temp[1];
-        cvers = temp[2];
-        diagramToLoad = temp[3];
-        diagramToLoadContent = temp[4];
+    let temp = getVariantParam();
+    var fullParam = temp[0];
+    cid = temp[1];
+    cvers = temp[2];
+    diagramToLoad = temp[3];
+    diagramToLoadContent = temp[4];
 
-        //check so that it is a file with content
-        if(diagramToLoadContent!="NO_FILE_FETCHED" && diagramToLoadContent != ""){
-            loadDiagramFromString(JSON.parse(diagramToLoadContent));
-            storeDiagramInLocalStorage();
-        }
+    // Check whether there is a diagram saved in localstorage and load it.
+    // Otherwise, load from VariantParam  
+    if (localStorage.getItem("CurrentlyActiveDiagram")) {
+        var diagramFromLocalStorage = localStorage.getItem("CurrentlyActiveDiagram");
+        loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
+    } else if (diagramToLoadContent != "NO_FILE_FETCHED" && diagramToLoadContent != "") {
+        loadDiagramFromString(JSON.parse(diagramToLoadContent));
+        storeDiagramInLocalStorage();
+    } else {
+        // Failed to load content
+        console.error("No content to load")
+    }
+}
+
+// Save current diagram when user leaves the page
+function saveDiagramBeforeUnload() {
+    window.addEventListener("beforeunload", (e) => {
+        e.preventDefault();
+        e.returnValue = "";
+        storeDiagramInLocalStorage();
+    })
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
@@ -11195,7 +11265,7 @@ function resetDiagramAlert(){
     if(refreshConfirm){
         resetDiagram();
     }
-    
+
 }
 /**
  * @description Cleares the diagram.

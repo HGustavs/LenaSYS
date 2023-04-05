@@ -158,6 +158,11 @@
     <link type="text/css" href="./diagram.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <!-- To enable dark mode, these 2 files were added. -->
+	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+	<script src="darkmodeToggle.js"></script>
+
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
@@ -209,7 +214,7 @@
             <legend>Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg"/>
-                    <span class="toolTipText"><b>Pointer</b><br>
+                    <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <p>Allows you to select and move different elements as well as navigate the workspace</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
@@ -643,9 +648,11 @@
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
+        /*
+        Code not used, commented out so that
+        it can be used in the future.
         if(isset($_POST['id'])) {
-
-        }
+        }*/
 
         if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
