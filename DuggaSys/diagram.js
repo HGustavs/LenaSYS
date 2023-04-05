@@ -10893,6 +10893,41 @@ function updateCSSForAllElements()
     }
 }
 /**
+ * @description toggles the border of all elements to white/gray depending on current border color.
+ */
+function toggleBorderOfElements() {
+	console.log("called");
+	let allTexts = document.getElementsByClassName('text');
+	let cssUrl = localStorage.getItem('themeBlack');
+	//turns, for example, '.../Shared/css/style.css' into just 'style.css'
+	cssUrl = cssUrl.split("/").pop();
+	console.log(cssUrl);
+	if(cssUrl == 'blackTheme.css'){
+		console.log(cssUrl);
+		for (let i = 0; i < allTexts.length; i++) {
+			let text = allTexts[i];
+			let strokeColor = text.getAttribute('stroke');
+			//if the element has a stroke which has the color #383737: set it to white.
+			//this is because we dont want to affect the strokes that are null or other colors.
+			if (strokeColor == '#383737') {
+				strokeColor = '#ffffff';
+				text.setAttribute('stroke', strokeColor);
+			}	
+		}
+	}
+	//if the theme isnt darkmode, make the stroke gray.
+	else{
+		for (let i = 0; i < allTexts.length; i++) {
+			let text = allTexts[i];
+			let strokeColor = text.getAttribute('stroke');
+			if (strokeColor == '#ffffff') {
+				strokeColor = '#383737';
+				text.setAttribute('stroke', strokeColor);
+			}
+		}
+	}
+}
+/**
  * @description Redraw all elements and lines
  */
 function showdata()
