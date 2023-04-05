@@ -44,7 +44,9 @@ function setElementsToDarkTheme() {
 	let allElems = document.getElementsByClassName('element');
 	for (var i = 0; i < allElems.length; i++) {
 		let elem = allElems[i];
-		console.log(elem.children);
+		let svgs = elem.children;
+		let paths = svgs.children;
+		console.log(paths);
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
