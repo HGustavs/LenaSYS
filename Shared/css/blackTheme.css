@@ -963,6 +963,9 @@ input{
     background: linear-gradient(90deg, rgba(18,18,18,1) 21%, rgba(67,42,90,1) 55%);
   
   }
+  .lineColor {
+    stroke: white;
+  }
 
   /*/ END /*/
 
