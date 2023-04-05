@@ -53,12 +53,12 @@ function setElementsToDarkTheme() {
 		let text = allTexts[i];
 		//there are a lot of elements with the class "text".
 		//we want to affect all of them except actual text.
-		if (text.tagName != 'text') {
+		//if (text.tagName != 'text') {
 			//console.log(text);
 			if (text.hasAttribute('stroke')) {
 				console.log(text.getAttribute('stroke'));
 			}
-		}
+		//}
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
