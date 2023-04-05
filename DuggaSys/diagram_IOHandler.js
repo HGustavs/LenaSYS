@@ -60,7 +60,7 @@ let diagramChanges = {
 function saveToServer(dia)
 {
     $.ajax({
-        url: 'diagram.php',
+        url: 'diagramservice.php',
         type: 'POST',
         data: { StringDiagram: dia, Hash: hashFunction() }
     });
@@ -85,7 +85,7 @@ function redirect(doc)
         }
     });
 
-    location.href = "diagram.php?id=" + 0 + "&folder=" + a;
+    location.href = "diagramservice.php?id=" + 0 + "&folder=" + a;
 }
 
 //---------------------------------------------
