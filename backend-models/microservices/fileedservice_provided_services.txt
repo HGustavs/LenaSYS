@@ -2,20 +2,28 @@
 
 --services provided--
 
-logServiceEvent:
+logServiceEvent: row: 36
 -----------------------------------------
  
 logs "log_uuid", the "eventType" used, "userID" and "info", which contain. "opt", "cid", "courserver", "fid", "filename", "kind". 
 
 
-Delite fileLink:
+Delite fileLink: row: 50 - 128
 -----------------------------------------
 
 Delete filelink from database. 
 conditions: file not in active use
 		
 
-Edit filesize
+Edit filesize: row: 132 - 190
 -----------------------------------------
 
-Edit filesize of already existing file
+Edit filesize of already existing file.
+
+
+
+Retrives all information from DB table fileLink: row: 196 - 302
+---------------------------------------------------------
+
+
+
