@@ -55,7 +55,6 @@ function sortableInternalSort(a,b)
       //alert("Compare: "+b+" "+a);
       ret = compare(b[colname],a[colname]);
     }
-
     return ret;
 }
 
