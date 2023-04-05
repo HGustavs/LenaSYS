@@ -52,7 +52,7 @@ function setElementsToDarkTheme() {
 	for (let i = 0; i < allTexts.length; i++) {
 		let text = allTexts[i];
 		//if the element has a stroke which has the color #383737: set it to white.
-		if (text.getAttribute('stroke') == ' #383737') {
+		if (text.getAttribute('stroke') == '#383737') {
 			console.log(text.getAttribute('stroke'));
 		}
 	}
