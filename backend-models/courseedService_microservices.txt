@@ -1,0 +1,79 @@
+courseedService_microservices
+
+
+Functionality : 
+
+Row 40 :If isset($_SESSION)
+Checks what kind of user it is, meaning, student or teacher, if none, get guest. 
+You get username based on your, "uid".
+Name:userCheck
+
+Row 49 : Gets the username based on "uid" for logging.
+Name : getUsername
+
+Row 54 : If "uid" exists, set username. 
+Name : setUser
+
+Row 67 : checklogin(). Checks what kind of user it is based on "uid". Micro
+Name : checklogin
+
+Row 72 : If the user is a teacher, theres an option to delete or create data in course table in the database. 
+Name : delCreateCourse 
+
+Row 85 : If the previous binding of parameter in query returned false, an error message presents.
+errorInfo() functions gets called. Micro
+Name : error
+
+Row 96 : Gets the username based on uid, was previously just set.
+If none, error message.
+Name : getUsername/getuid
+
+Row 103 : Fetches and prints all courses bound to the user, printed as "rows".
+Name : coursePrint
+
+Row 114 : strcmp string comparisson, if 1, prepare to insert data into vers table. 
+Name : insertVers
+
+Row 125 : If date values are null, null values gets returned to db.
+Name : nullDate
+
+errorInfo() shows very often, could be its own micro.
+
+Row 136-150 : Updates/Activates course for user.
+Name : activCourse
+
+Row 171 : Same functionality as 136, but new attributes getting changed.
+Name : activCourse2??
+
+Row 184 : Insert data to table vers, binds paramaters to be "pushed" to db.
+Name : insertVers2???
+
+Row 210 : Duplicates duggor and there variants.
+Could be micro.
+Name : dupliDugg
+
+Row 254-345 : Could be Micro, duplicates codeexamples.
+Name : dupliCodeex
+
+Row 348 : Duplicates ?Listentries?.
+Name : dupliList
+
+Row 380 : Micro, updates "dugga"
+Name : updateDugga
+
+Row 394 : Micro, updates "codeexamples"
+Name : updateCodeex
+
+Row 405 : Micro, updates before/after in codeexample. (such as change of color).
+Name : updateChange
+
+Row 431 : Another, makeactive to activate version from db. Own micro.
+Name : makeActiveVers
+
+Row 533-570 : Deletes course material thats been marked deleted.
+Name : delCoursMat
+
+
+
+Summary : All rows that sends data to db, could be a micro service. 
+
