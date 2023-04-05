@@ -7086,10 +7086,10 @@ function drawLine(line, targetGhost = false)
     var containerDiv = document.getElementById("container");
     if(containerDiv.classList.contains("style.css")) 
     {
-        lineColor = '#000000';
+        lineColor = '#ffffff';
     }
     else if (containerDiv.classList.contains("blackTheme.css")) {
-        lineColor = '#ffffff';
+        lineColor = '#000000';
     }
     if(contextLine.includes(line)){
         lineColor = selectedColor;
