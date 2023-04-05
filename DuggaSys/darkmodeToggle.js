@@ -45,7 +45,9 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 function toggleBorderOfElements() {
 	console.log("called");
 	let allTexts = document.getElementsByClassName('text');
-	if(localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css"){
+	let test = localStorage.getItem('themeBlack');
+	if(test.href == "../Shared/css/blackTheme.css"){
+		console.log("works");
 		for (let i = 0; i < allTexts.length; i++) {
 			let text = allTexts[i];
 			let strokeColor = text.getAttribute('stroke');
