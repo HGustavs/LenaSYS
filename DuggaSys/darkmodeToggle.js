@@ -50,8 +50,8 @@ function setElementsToDarkTheme() {
 	//}
 	let allTexts = document.getElementsByClassName('text');
 	for (var i = 0; i < allTexts.length; i++) {
-		let elem = allElems[i];
-		console.log(elem);
+		let text = allTexts[i];
+		console.log(text);
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
