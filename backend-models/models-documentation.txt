@@ -1,0 +1,3 @@
+Each current monolithic service needs to be documented with a UML class diagram and a textual description with inputs/outputs and general behaviour.
+
+Models need to be delivered as .svg, descriptions as .txt.

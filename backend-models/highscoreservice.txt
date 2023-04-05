@@ -1,0 +1,20 @@
+Used by highscore system to communicate with the database
+
+Input:
+
+uid
+
+opt
+courseid
+coursename
+coursever
+did
+lid
+moment
+hash
+
+log_uuid
+
+
+Output:
+JSON Array

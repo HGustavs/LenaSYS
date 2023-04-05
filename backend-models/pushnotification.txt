@@ -1,0 +1,6 @@
+
+
+
+Input: Send a message to a registered client (message and receiver)
+Output: user_push_registration, print_r writes error information. Pushnotification that user should insert email, public key, private key. 
+Error message if information is invalid. 
