@@ -7084,11 +7084,11 @@ function drawLine(line, targetGhost = false)
     }
     var lineColor;
     var containerDiv = document.getElementById("container");
-    if(containerDiv.classList.contains("style.css")) 
+    if(containerDiv.classList.contains("blackTheme.css")) 
     {
         lineColor = '#ffffff';
     }
-    else if (containerDiv.classList.contains("blackTheme.css")) {
+    else {
         lineColor = '#000000';
     }
     if(contextLine.includes(line)){
