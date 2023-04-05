@@ -126,7 +126,11 @@ if(isset($_SESSION['uid'])){
 				</div>
 				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
-    			<div class='inputwrapper'>
+    			<div class="inputwrapper">
+					<span>GitHub URL:</span>
+					<input oninput="validateGitInput('editcoursegit-url')" class="textinput" type="text" id="editcoursegit-url" name="coursegit-url" placeholder="https://github.com/..."/>
+				</div>
+				<div class='inputwrapper'>
 					<span>Visibility:</span>
 					<select class='selectinput' id='visib'></select>
 				</div>
