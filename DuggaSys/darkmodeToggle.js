@@ -51,14 +51,10 @@ function setElementsToDarkTheme() {
 	let allTexts = document.getElementsByClassName('text');
 	for (let i = 0; i < allTexts.length; i++) {
 		let text = allTexts[i];
-		//there are a lot of elements with the class "text".
-		//we want to affect all of them except actual text.
-		//if (text.tagName != 'text') {
-			//console.log(text);
-			if (text.hasAttribute('stroke')) {
-				console.log(text.getAttribute('stroke'));
-			}
-		//}
+		//if the element has a stroke which has the color #383737: set it to white.
+		if (text.getAttribute('stroke') == ' #383737') {
+			console.log(text.getAttribute('stroke'));
+		}
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
