@@ -46,7 +46,7 @@ function toggleBorderOfElements() {
 	console.log("called");
 	let allTexts = document.getElementsByClassName('text');
 	let test = localStorage.getItem('themeBlack');
-	console.log(test.href.split("/").pop());
+	console.log(test.split("/").pop());
 	if(test.href == "../Shared/css/blackTheme.css"){
 		for (let i = 0; i < allTexts.length; i++) {
 			let text = allTexts[i];
