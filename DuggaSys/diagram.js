@@ -10897,7 +10897,7 @@ function updateCSSForAllElements()
  * @description toggles the border of all elements to white or gray; depending on current theme.
  */
 function toggleBorderOfElements() {
-    //get all elements with the class text. This inludes the text in the elements but also the non text svg that just has a stroke.
+    //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
 	let allTexts = document.getElementsByClassName('text');
     //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
