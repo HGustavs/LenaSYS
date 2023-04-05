@@ -45,8 +45,9 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 function toggleBorderOfElements() {
 	console.log("called");
 	let allTexts = document.getElementsByClassName('text');
-	let test = localStorage.getItem('themeBlack');
-	console.log(test.split("/").pop());
+	let cssUrl = localStorage.getItem('themeBlack');
+	//.../Shared/css/style.css -> style.css
+	cssUrl = cssUrl.split("/").pop();
 	if(test.href == "../Shared/css/blackTheme.css"){
 		for (let i = 0; i < allTexts.length; i++) {
 			let text = allTexts[i];
