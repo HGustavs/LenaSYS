@@ -53,7 +53,7 @@ function setElementsToDarkTheme() {
 		let text = allTexts[i];
 		//there are a lot of elements with the class "text".
 		//we want to affect all of them except actual text.
-		if (text.tagName != 'TEXT') {
+		if (text.tagName != 'text') {
 			//console.log(text);
 			console.log(text.tagName);
 		}
