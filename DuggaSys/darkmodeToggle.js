@@ -46,8 +46,8 @@ function toggleBorderOfElements() {
 	console.log("called");
 	let allTexts = document.getElementsByClassName('text');
 	let test = localStorage.getItem('themeBlack');
+	console.log(test.href.substring(test.href.lastIndexOf('/') + 1));
 	if(test.href == "../Shared/css/blackTheme.css"){
-		console.log("works");
 		for (let i = 0; i < allTexts.length; i++) {
 			let text = allTexts[i];
 			let strokeColor = text.getAttribute('stroke');
