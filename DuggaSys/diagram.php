@@ -377,7 +377,7 @@
                             </span>
                     </div>
                     </div>
-                </div><!--<-- UML functionality end -->
+                </div><!--<-- Statediagram functionality end -->
                 <div>
                     <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
