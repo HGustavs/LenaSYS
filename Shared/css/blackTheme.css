@@ -1083,8 +1083,3 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     text-decoration-color: var(--color-text-primary) !important;
   }
 
-.deleteBtn{
-    stroke:rgb(255, 255, 255);
-    stroke-width:2;
-}
-
