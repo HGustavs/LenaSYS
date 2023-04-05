@@ -6323,6 +6323,7 @@ function generateContextProperties()
       propSet.innerHTML = str;
 
       multipleColorsTest();
+      updateCSSForAllElements();
     }
 
 
