@@ -6669,6 +6669,7 @@ function setElementColors(clickedCircleID)
     generateContextProperties();
     showdata();
     toggleColorMenu(menu.parentElement.id); // toggle color menu off when a color is selected
+    updateCSSForAllElements();
 }
 
 /**
