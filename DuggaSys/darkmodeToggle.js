@@ -41,12 +41,17 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 });
 //checks if the theme is black, if so, makes it so that all the elements have a white border.
 function setElementsToDarkTheme() {
-	let allElems = document.getElementsByClassName('element');
-	for (var i = 0; i < allElems.length; i++) {
+	// let allElems = document.getElementsByClassName('element');
+	//for (var i = 0; i < allElems.length; i++) {
+	//	let elem = allElems[i];
+	//	let svgs = elem.children;
+	//	let paths = svgs.children;
+	//	console.log(paths[0]);
+	//}
+	let allTexts = document.getElementsByClassName('text');
+	for (var i = 0; i < allTexts.length; i++) {
 		let elem = allElems[i];
-		let svgs = elem.children;
-		let paths = svgs.children;
-		console.log(paths[0]);
+		console.log(elem);
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
