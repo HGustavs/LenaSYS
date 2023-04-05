@@ -370,13 +370,13 @@
                                 <p>Change to IE entity</p>
                             </span>
                         </div>
-                    </div>
-                    <div class="StateButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                        <div class="StateButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                             <img src="../Shared/icons/diagram_IE_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
                                 <p>Change to statediagram state</p>
                             </span>
-                        </div>
+                    </div>
+                    </div>
                 </div><!--<-- UML functionality end -->
                 <div>
                     <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
