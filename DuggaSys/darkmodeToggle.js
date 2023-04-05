@@ -39,7 +39,9 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 		localStorage.setItem('themeBlack',themeStylesheet.href)
 	}
 });
-//checks if the theme is black, if so, makes it so that all the elements have a white border.
+/**
+ * @description toggles the border of all elements to white/gray depending on current border color.
+ */
 function toggleBorderOfElements() {
 	// let allElems = document.getElementsByClassName('element');
 	//for (var i = 0; i < allElems.length; i++) {
