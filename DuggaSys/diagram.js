@@ -7082,13 +7082,15 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    var lineColor = '#000000';
+    var lineColor;
     var bodyColor = document.body.style.backgroundColor;
 
-    if(bodyColor = '#121212') 
+    if(bodyColor == '#121212' && lineColor == '#000000') 
     {
-        alert("This is the color" + bodyColor);
-        // lineColor = '#ffffff';
+         lineColor = '#ffffff';
+    }
+    else {
+        lineColor = '#000000';
     }
     if(contextLine.includes(line)){
         lineColor = selectedColor;
