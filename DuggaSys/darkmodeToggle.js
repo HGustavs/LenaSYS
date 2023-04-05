@@ -55,6 +55,9 @@ function toggleBorderOfElements() {
 		if (text.getAttribute('stroke') == '#383737') {
 			text.setAttribute('stroke', '#ffffff')
 		}
+		else if (text.getAttribute('stroke') == '#ffffff') {
+			text.setAttribute('stroke', '#383737')
+		}
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
