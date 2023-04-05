@@ -55,6 +55,7 @@ function sortableInternalSort(a,b)
       //alert("Compare: "+b+" "+a);
       ret = compare(b[colname],a[colname]);
     }
+
     return ret;
 }
 
@@ -323,7 +324,27 @@ function SortableTable(param)
 			
       // Sort the body of the table again
       if(columnfilter.indexOf(sortcolumn)!==-1){
+        var status = sortableTable.currentTable.getSortkind();
+
+        if(sortcolumn === "qstart"){
+          tbl.tblbody.sort((a,b)=> {
+            if(status==1){
+              var tempA = a;
+              var tempB = b;
+            }else{
+              var tempA = b;
+              var tempB = a;
+            }
+            let dateA = tempA.qstart ? new Date(tempA.qstart) : new Date(8640000000000000)
+            let dateB = tempB.qstart ? new Date(tempB.qstart) : new Date(8640000000000000)
+            
+            return  dateA.getTime() - dateB.getTime() 
+          })
+        } else {
           tbl.tblbody.sort(sortableInternalSort);
+
+        }
+         
       }
 			
       if (renderColumnFilter != null) {
