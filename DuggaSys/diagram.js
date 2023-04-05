@@ -7087,7 +7087,8 @@ function drawLine(line, targetGhost = false)
 
     if(bodyColor = '#121212') 
     {
-       // lineColor = '#ffffff';
+        alert("This is the color" + bodyColor);
+        // lineColor = '#ffffff';
     }
     if(contextLine.includes(line)){
         lineColor = selectedColor;
