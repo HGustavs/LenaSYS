@@ -10891,6 +10891,7 @@ function updateCSSForAllElements()
             updateElementDivCSS(ghostElement, ghostDiv)
         }
     }
+    toggleBorderOfElements();
 }
 /**
  * @description toggles the border of all elements to white/gray depending on current border color.
