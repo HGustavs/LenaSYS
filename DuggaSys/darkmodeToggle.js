@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // if it's dark -> go light
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
-    }		
+    }
+	toggleBorderOfElements();		
   })
 })
 
@@ -38,6 +39,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 		themeStylesheet.href = "../Shared/css/style.css";
 		localStorage.setItem('themeBlack',themeStylesheet.href)
 	}
+	toggleBorderOfElements();
 });
 /**
  * @description toggles the border of all elements to white/gray depending on current border color.
