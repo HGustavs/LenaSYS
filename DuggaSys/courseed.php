@@ -94,7 +94,7 @@ if(isset($_SESSION['uid'])){
 				<!-- Input field to Github repository-->
 				<div style="padding:5px;">
 					<div class="inputwrapper">
-					<div style="margin-top: 10px;" class="inputwrapper">
+					<div class="inputwrapper">
 						<span>GitHub URL:</span>
 						<input oninput="validateGitInput()" class="textinput" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="https://github.com/..."/>
 					</div>
