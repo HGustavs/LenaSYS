@@ -39,3 +39,13 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 		localStorage.setItem('themeBlack',themeStylesheet.href)
 	}
 });
+//checks if the theme is black, if so, makes it so that all the elements have a white border.
+function setElementsToDarkTheme() {
+	let allElems = document.getElementsByClassName('element');
+	for (let elem of allElems) {
+		console.console.log(elem);
+	}
+	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
+		
+	}
+}
