@@ -56,6 +56,7 @@ function toggleBorderOfElements() {
 			}	
 		}
 	}
+	//if the theme isnt darkmode, make the stroke gray.
 	else{
 		for (let i = 0; i < allTexts.length; i++) {
 			let text = allTexts[i];
