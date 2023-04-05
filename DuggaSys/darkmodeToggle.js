@@ -49,9 +49,10 @@ function setElementsToDarkTheme() {
 	//	console.log(paths[0]);
 	//}
 	let allTexts = document.getElementsByClassName('text');
-	for (var i = 0; i < allTexts.length; i++) {
+	for (let i = 0; i < allTexts.length; i++) {
 		let text = allTexts[i];
 		console.log(text);
+		console.log(text.innerHTML);
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
