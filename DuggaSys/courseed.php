@@ -93,16 +93,9 @@ if(isset($_SESSION['uid'])){
     		</div>
 				<!-- Input field to Github repository-->
 				<div style="padding:5px;">
-					<!-- <div class="inputwrapper">
-						<span>Get course from GitHub?</span>
-						<div>
-							<input onclick="showGitInput(true)" style="float: none; width: auto;" type="radio" value="yes" id="ncoursegit-yes" name="coursegit">Yes</input>
-							<input onclick="showGitInput(false)" style="float: none; width: auto;"type="radio" value="no" id="ncoursegit-no" name="coursegit">No</input>
-						</div>
-					</div> -->
-					<div style="display:none; justify-content: flex-end; margin-top: 10px;" class="inputwrapper" id="gitinput-parent">
+					<div class="inputwrapper">
 						<span style="padding-right: 10px;">GitHub URL:</span>
-						<input onkeyup="validateGitInput('ncoursegit-url')" class="textinput" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
+						<input onkeyup="validateGitInput('ncoursegit-url')" class="textinput" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="https://github.com/..."/>
 					</div>
 				</div>
     		<div style='padding:5px;'>
