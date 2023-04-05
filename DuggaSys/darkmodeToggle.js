@@ -53,7 +53,7 @@ function setElementsToDarkTheme() {
 		let text = allTexts[i];
 		//if the element has a stroke which has the color #383737: set it to white.
 		if (text.getAttribute('stroke') == '#383737') {
-			console.log(text.getAttribute('stroke'));
+			text.setAttribute('stroke', '#ffffff')
 		}
 	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
