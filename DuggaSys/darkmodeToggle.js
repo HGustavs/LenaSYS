@@ -43,8 +43,9 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 function setElementsToDarkTheme() {
 	let allElems = document.getElementsByClassName('element');
 	for (var i = 0; i < allElems.length; i++) {
-		console.log(allElems.item[i]);
-	 }
+		let elem = allElems[i];
+		console.log(elem);
+	}
 	if (localStorage.getItem('themeBlack') == "../Shared/css/blackTheme.css") {
 		
 	}
