@@ -45,6 +45,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
  * @description toggles the border of all elements to white/gray depending on current border color.
  */
 function toggleBorderOfElements() {
+	console.log("called");
 	let allTexts = document.getElementsByClassName('text');
 	for (let i = 0; i < allTexts.length; i++) {
 		let text = allTexts[i];
