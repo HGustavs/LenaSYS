@@ -7082,16 +7082,8 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    var lineColor;
-    var bodyColor = getComputedStyle(document.body).getPropertyValue('--color-background');
+    var lineColor = '#000000';
 
-    if(bodyColor == '#121212') 
-    {
-         lineColor = '#ffffff';
-    }
-    else {
-        lineColor = '#000000';
-    }
     if(contextLine.includes(line)){
         lineColor = selectedColor;
     }
@@ -7225,10 +7217,10 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2; 
         if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline id='${line.id}' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
@@ -7727,7 +7719,7 @@ function drawLine(line, targetGhost = false)
     }
     else {
         if (line.kind == "Normal"){
-            str += `<line id='${line.id}' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
+            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
         } else if (line.kind == "Double") {
             // We mirror the line vector
             dy = -(tx - fx);
