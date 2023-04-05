@@ -7083,12 +7083,14 @@ function drawLine(line, targetGhost = false)
         var strokeDash="0";
     }
     var lineColor;
-    var containerDiv = document.getElementById("container");
+    var bodyColor = document.body.style.backgroundColor;
+
     if(containerDiv.classList.contains("blackTheme.css")) 
     {
         lineColor = '#ffffff';
     }
     else {
+        alert(bodyColor);
         lineColor = '#000000';
     }
     if(contextLine.includes(line)){
