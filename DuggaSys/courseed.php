@@ -158,7 +158,7 @@ if(isset($_SESSION['uid'])){
     		<div style='padding:5px;'>
 
     			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
-    			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
+    			<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
 			<!--<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
