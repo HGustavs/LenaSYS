@@ -256,6 +256,12 @@
                                 <p>Change to IE entity</p>
                             </span>
                         </div>
+                        <div class="StateButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
+                                <p>Change to statediagram state</p>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -286,6 +292,12 @@
                             <img src="../Shared/icons/diagram_IE_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                 <p>Change to IE entity</p>
+                            </span>
+                        </div>
+                        <div class="StateButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
+                                <p>Change to statediagram state</p>
                             </span>
                         </div>
                     </div>
