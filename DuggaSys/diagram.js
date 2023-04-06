@@ -8051,7 +8051,7 @@ function drawRulerBars(X,Y)
 
         }
     }
-    svgY.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+    svgY.style.backgroundColor = "#000000";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
@@ -8115,7 +8115,7 @@ function drawRulerBars(X,Y)
         }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
-    svgX.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+    svgX.style.backgroundColor = "#000000";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 /**
