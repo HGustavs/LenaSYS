@@ -8366,7 +8366,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
       
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg); margin-top:${((boxw/2 - 10))}px;  stroke-width:${linew};'>`;
+        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg); margin-top:${((boxw/2 - 15))}px;  stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
         if (element.state == 'overlapping') {
