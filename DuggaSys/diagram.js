@@ -6279,6 +6279,9 @@ function generateContextProperties()
                 }else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 } */
+                //this covers Triangle and Arrow.
+                //TODO add for Black and white diamond.
+                //TODO i assume the weird icons are IE
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     console.log("icon is " + icon);
