@@ -6248,15 +6248,12 @@ function generateContextProperties()
             if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
             str += `/>`;
         }
-        //TODO this code can be refactored to avoid the reuse of if (contextLine[0].startIcon != undefined... in every if statement
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined) {
-                    
-                
                     //this covers Triangle and Arrow.
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
                     if (contextLine[0].startIcon.toUpperCase() == icon){
