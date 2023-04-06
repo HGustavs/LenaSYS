@@ -6322,18 +6322,23 @@ function generateContextProperties()
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
-                //this covers Triangle and Arrow.
-                //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                if (contextLine[0].endIcon != undefined && contextLine[0].endIcon.toUpperCase() == icon){
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                }
-                //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
-                //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
-                else if (contextLine[0].endIcon != undefined && (contextLine[0].endIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                }
-                else if (contextLine[0].endIcon != undefined && (contextLine[0].endIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                if (contextLine[0].endIcon != undefined) {
+                    //this covers Triangle and Arrow.
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].endIcon != undefined && contextLine[0].endIcon.toUpperCase() == icon){
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                    else if (contextLine[0].endIcon != undefined && (contextLine[0].endIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if (contextLine[0].endIcon != undefined && (contextLine[0].endIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    }
                 }
                 //else, its not matching and the option is just added to the dropdown normally.
                 else {
