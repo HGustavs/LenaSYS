@@ -21,6 +21,13 @@
     $content = file_get_contents("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/", false, $context);
     $contentArr = json_decode($content);
     var_dump($contentArr);
+    echo "<table>";
+    echo "<td>";
+    foreach($contentArr as $contentItem) {
+        echo "<tr>$contentItem</tr>";
+    }
+    echo "</td>";
+    echo "</table>";
     ?>
 </body>
 </html>
