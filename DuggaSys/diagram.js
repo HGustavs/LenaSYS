@@ -6272,10 +6272,10 @@ function generateContextProperties()
                     else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     }
-                }
-                //else, its not matching and the option is just added to the dropdown normally.
-                else {
-                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    //else, its not matching and the option is just added to the dropdown normally.
+                    else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    }
                 }
             });
             //iterate trough all icons associated with IE. add these icons to the drop down
