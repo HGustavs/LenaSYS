@@ -3967,11 +3967,11 @@ function toggleDarkmode()
 	if(storedTheme) stylesheet.href = storedTheme;
 	
     if(stylesheet.href.includes('blackTheme')){
-        // if it's light -> go dark
+        // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     } else if(stylesheet.href.includes('style')) {
-        // if it's dark -> go light
+        // if it's light -> go dark
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
