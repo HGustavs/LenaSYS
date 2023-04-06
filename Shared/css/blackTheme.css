@@ -64,14 +64,6 @@
 	background-color: var(--color-background);
 }
 
-/* Used to reset the background color of input fields */
-.bg-color-change {
-    background-color: var(--color-background);
-}
-.bg-color-change-invalid{
-    background-color: #f57;
-}
-
 #picktemplate{
 	position: absolute;
 	top: 0px;

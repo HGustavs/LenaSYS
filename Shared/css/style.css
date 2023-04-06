@@ -2216,14 +2216,6 @@ input.inactive-button {
 #editCourse #visib{
   margin-right: 0px;
 }
-/* Used to reset the background color of input fields */
-.bg-color-change {
-  background-color: var(--color-background);
-}
-.bg-color-change-invalid{
-  background-color: #f57;
-}
-
 
 #impwords,
 #impword {
@@ -2692,6 +2684,11 @@ label.login-label {
   border-radius: 0px;
   box-sizing: border-box;
   opacity: 0.8;
+}
+
+/* Used to reset the background color of input fields */
+.bg-color-change-invalid{
+  background-color: #f57;
 }
 
 input.option {
