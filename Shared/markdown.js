@@ -295,7 +295,7 @@ function handleLists(currentLine, prevLine, nextLine) {
 
 function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
-    var columns = currentLine.split('|').filter(function(v){return v !== '';});
+    //var columns = currentLine.split('|').filter(function(v){return v !== '';});
     // open table
     if(isTable(prevLine)) {
         markdown += "<table class='markdown-table'>";
