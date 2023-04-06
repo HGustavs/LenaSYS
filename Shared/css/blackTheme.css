@@ -1083,7 +1083,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     text-decoration-color: var(--color-text-primary) !important;
   }
 
-  .BlackthemeColor{
+  #BlackthemeColor{
    stroke: white;
    stroke-width: 2;
   }
