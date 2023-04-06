@@ -6266,10 +6266,10 @@ function generateContextProperties()
                     }
                     //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
                     //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
-                    else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                    else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     }
-                    else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                    else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
