@@ -1,0 +1,29 @@
+--- diagramservice.php --- 
+
+
+#####################
+# services provided #
+#####################
+
+All provided services gather informaton regarding github aktivitys stored on the DB. 
+
+
+Count number of issues created: row 46 - 57
+--------------------------------------------
+places the information in an array, issue 
+
+
+Count the number of events during a specified intervall: row 58 - 69
+--------------------------------------------------------------------
+places the information in an array, events
+
+
+Gathers the comments posted by a user during a specified intervall: row 70 - 81
+-------------------------------------------------------------------------------
+places the information in an array, comment
+
+
+Gathers the number of rows changed in each file: row 82 - 93
+------------------------------------------------------------
+places the information in an array, file
+
