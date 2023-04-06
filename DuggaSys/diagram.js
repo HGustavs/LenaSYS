@@ -7058,7 +7058,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     } else {
         displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
     }
-    updateCSSForAllElements();
 }
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
