@@ -1971,14 +1971,11 @@ function mouseMode_onMouseUp(event)
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                    showdata();
-                    updatepos(0,0);
                 }else{   
                     clearContext();
                     ghostElement = null;
                     ghostLine = null;
                     showdata();
-                    updatepos(0,0);
                 }
             }
             break;
