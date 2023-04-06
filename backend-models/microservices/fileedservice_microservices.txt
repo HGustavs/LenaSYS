@@ -12,7 +12,7 @@ From what I could gather this file is divided into two parts, editing the databa
 micro-services: 
 -----------------------
 
-Delite fileLink
+Delete fileLink
 Edit filesize
 Retrieves all information from DB table fileLink
 
@@ -50,7 +50,7 @@ Edit filesize of already existing file.
 ----------------------------------------------------------------
 
 Retrieves all information from DB table fileLink where kind = 2.
-Filers out files the user shouldn't have access to. 
+Filters out files the user shouldn't have access to. 
 An array (entry) is created to house the information, the array then gets pushed into another array(entries)
 
 
@@ -64,7 +64,7 @@ If the folders "/templates/" exists, then the contents of that folder is scanned
 
 If the folders "/courses/.".$cid."/" exist, then the contents of that folder is scanned, all non-directory files are pushed onto the array lfiles.   
 
-These variables are then placed into an array, together with the array mentiond in the previous section.  
+These variables are then placed into an array, together with the array mentioned in the previous section.  
 
 $array = array(
     'entries' => $entries,
@@ -78,7 +78,7 @@ $array = array(
     'supervisor' => $supervisor,
 ); 
 
-and is encoded to JSON than echoed out
+and is encoded to JSON then echoed out
 
 -----------------------------------------
 --- logServiceEvent again: row: 321
