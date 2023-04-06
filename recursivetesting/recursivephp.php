@@ -23,8 +23,8 @@
     var_dump($contentArr);
     echo "<table>";
     echo "<td>";
-    foreach($contentArr as $contentItem) {
-        echo "<tr>$contentItem</tr>";
+    foreach($contentArr as $contentItem => $contentItemtest) {
+        echo "<tr>$contentItemtest</tr>";
     }
     echo "</td>";
     echo "</table>";
