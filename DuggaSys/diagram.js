@@ -6296,14 +6296,25 @@ function generateContextProperties()
                 else if ((contextLine[0].startIcon != undefined) && (contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                 }
+                //else, its not matching and the option is just added to the dropdown normally.
                 else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
             });
-            Object.keys(IELineIcons).forEach(icon => {
+            /* Object.keys(IELineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
                     str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                 }else {
+                    str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                }
+            }); */
+            Object.keys(IELineIcons).forEach(icon => {
+                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
+                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    console.log("IE icon is " + icon);
+                    console.log("IE startIcon is " + contextLine[0].startIcon.toUpperCase());
+                }
+                else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
