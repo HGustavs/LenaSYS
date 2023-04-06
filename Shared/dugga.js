@@ -963,6 +963,8 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
+
+	console.log(`opt: ${opt}\napara: ${apara}\nkind: ${kind}`);
 	
   var para="";
 	for (var key in apara) {
