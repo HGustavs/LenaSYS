@@ -6263,7 +6263,10 @@ function generateContextProperties()
             str += `</option>`; */
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
                 //let startIconDropDown = document.getElementById("lineStartIcon");
-                console.log(document.getElementById("lineStartIcon").options.length);
+                if (document.getElementById("lineStartIcon")) {
+                    
+                    console.log(document.getElementById("lineStartIcon").options.length);
+                }
                 //console.log(startIconDropDown.length);
             }
             Object.keys(UMLLineIcons).forEach(icon => {
