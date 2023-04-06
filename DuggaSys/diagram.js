@@ -6251,6 +6251,7 @@ function generateContextProperties()
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
+            //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
             Object.keys(UMLLineIcons).forEach(icon => {
                 //TODO icon and contextLine[0].startIcon will never be the same:
                 //staricon can, for example, be Triangle, while icon is TRIANGLE
@@ -6281,6 +6282,7 @@ function generateContextProperties()
                 } */
                 //this covers Triangle and Arrow.
                 //TODO i assume the weird icons are IE
+                //If the lines in context happen to be matching something in the drop down, it is set as selected.
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     console.log("icon is " + icon);
@@ -6296,13 +6298,7 @@ function generateContextProperties()
                 }
                 else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                    /* console.log("icon is " + icon);
-                    console.log("startIcon is " + contextLine[0].startIcon.toUpperCase()); */
                 }
-                
-                /* for (let i = 0; i < contextLine.length; i++) {
-                    console.log("startIcon iteration is " + contextLine[i].startIcon);
-                } */
             });
             Object.keys(IELineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
