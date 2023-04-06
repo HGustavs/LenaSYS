@@ -6262,12 +6262,14 @@ function generateContextProperties()
             }
             str += `</option>`; */
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
-                //let startIconDropDown = document.getElementById("lineStartIcon");
+                //if the startIcon dropdown has been generated, set the value of it to match the start icon on the line. 
                 if (document.getElementById("lineStartIcon")) {
-                    
+                    let startIconDropDown = document.getElementById("lineStartIcon");
+                    for (let i = 0; i < startIconDropDown.options.length; i++) {
+                        startIconDropDown.options[i].value;
+                    }
                     console.log(document.getElementById("lineStartIcon").options.length);
                 }
-                //console.log(startIconDropDown.length);
             }
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
