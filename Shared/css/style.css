@@ -2217,7 +2217,6 @@ input.inactive-button {
   margin-right: 0px;
 }
 
-
 #impwords,
 #impword {
   max-width: 184px;
@@ -2685,6 +2684,11 @@ label.login-label {
   border-radius: 0px;
   box-sizing: border-box;
   opacity: 0.8;
+}
+
+/* Used to reset the background color of input fields */
+.bg-color-change-invalid{
+  background-color: #f57;
 }
 
 input.option {
