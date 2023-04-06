@@ -2945,7 +2945,7 @@ function changeLineProperties()
         }
         if(line.startIcon != startIcon.value){
             line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if(line.endIcon != endIcon.value){
             line.endIcon = endIcon.value
@@ -10893,6 +10893,44 @@ function updateCSSForAllElements()
             updateElementDivCSS(ghostElement, ghostDiv)
         }
     }
+    toggleBorderOfElements();
+}
+/**
+ * @description toggles the border of all elements to white or gray; depending on current theme.
+ */
+function toggleBorderOfElements() {
+    //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
+    //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
+	let allTexts = document.getElementsByClassName('text');
+    //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
+	let cssUrl = localStorage.getItem('themeBlack');
+	//this turns, for example, '.../Shared/css/style.css' into just 'style.css'
+	cssUrl = cssUrl.split("/").pop();
+	if(cssUrl == 'blackTheme.css'){
+        //iterate through all the elements that have the class 'text'.
+		for (let i = 0; i < allTexts.length; i++) {
+			let text = allTexts[i];
+            //assign their current stroke color to a variable.
+			let strokeColor = text.getAttribute('stroke');
+			//if the element has a stroke which has the color #383737: set it to white.
+			//this is because we dont want to affect the strokes that are null or other colors.
+			if (strokeColor == '#383737') {
+				strokeColor = '#ffffff';
+				text.setAttribute('stroke', strokeColor);
+			}	
+		}
+	}
+	//if the theme isnt darkmode, make the stroke gray.
+	else{
+		for (let i = 0; i < allTexts.length; i++) {
+			let text = allTexts[i];
+			let strokeColor = text.getAttribute('stroke');
+			if (strokeColor == '#ffffff') {
+				strokeColor = '#383737';
+				text.setAttribute('stroke', strokeColor);
+			}
+		}
+	}
 }
 /**
  * @description Redraw all elements and lines
