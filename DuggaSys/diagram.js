@@ -6261,7 +6261,9 @@ function generateContextProperties()
                 str += `value=''>None`;
             }
             str += `</option>`; */
-            console.log(contextLine[0].startIcon.length);
+            if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
+                console.log(contextLine[0].startIcon.length);
+            }
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
