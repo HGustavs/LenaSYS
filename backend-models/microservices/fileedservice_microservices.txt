@@ -1,0 +1,92 @@
+--- file: fileedservice.php ---
+
+#####################
+## micro-services: ##
+#####################
+
+
+
+From what I could gather this file is divided into two parts, editing the database in some way, and retrieving information for presentation. The obvious way is to make the different parts as separate micro-services. A further divide could be made so that the delete and edit functions become separate entities. Furthermore logging happens twice in the file, but I don't know how it works and haven't found a function for it in the system. I therefore have a hard time giving my view on whether or not it should become its own micro-service.
+
+
+micro-services: 
+-----------------------
+
+Delete fileLink
+Edit filesize
+Retrieves all information from DB table fileLink
+
+
+
+#######################
+## services provided ##
+#######################
+
+
+logServiceEvent: row: 36
+-----------------------------------------
+ 
+logs "log_uuid", the "eventType" used, "userID" and "info", which contain. "opt", "cid", "courserver", "fid", "filename", "kind". 
+
+
+-----------------------------------------
+--- Delite fileLink: row: 50 - 128
+-----------------------------------------
+
+Delete filelink from database. 
+conditions: file not in active use
+		
+
+-----------------------------------------
+--- Edit filesize: row: 132 - 190
+-----------------------------------------
+
+Edit filesize of already existing file.
+
+
+
+----------------------------------------------------------------
+--- Retrieves all information from DB table fileLink: row: 196 - 302
+----------------------------------------------------------------
+
+Retrieves all information from DB table fileLink where kind = 2.
+Filters out files the user shouldn't have access to. 
+An array (entry) is created to house the information, the array then gets pushed into another array(entries)
+
+
+
+----------------------------------------------
+--- Presenting the information row: 282 - 323
+----------------------------------------------
+
+If the folders "/templates/" exists, then the contents of that folder is scanned, all non-directory files are pushed onto the array gfiles.   
+
+
+If the folders "/courses/.".$cid."/" exist, then the contents of that folder is scanned, all non-directory files are pushed onto the array lfiles.   
+
+These variables are then placed into an array, together with the array mentioned in the previous section.  
+
+$array = array(
+    'entries' => $entries,
+    'debug' => $debug,
+    'gfiles' => $gfiles,
+    'lfiles' => $lfiles,
+    'access' => $access,
+    'studentteacher' => $studentTeacher,
+    'superuser' => $superuser,
+    'waccess' => $waccess,
+    'supervisor' => $supervisor,
+); 
+
+and is encoded to JSON then echoed out
+
+-----------------------------------------
+--- logServiceEvent again: row: 321
+-----------------------------------------
+ 
+logs "log_uuid", the "eventType" used, "userID" and "info", which contain. "opt", "cid", "courserver", "fid", "filename", "kind"
+
+
+
+
+
