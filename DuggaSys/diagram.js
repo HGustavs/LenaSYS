@@ -6265,8 +6265,14 @@ function generateContextProperties()
                 //if the startIcon dropdown has been generated, set the value of it to match the start icon on the line. 
                 if (document.getElementById("lineStartIcon")) {
                     let startIconDropDown = document.getElementById("lineStartIcon");
+                    let contextStartIcon = contextLine[0].startIcon;
+                    //iterate through the whole dropdown until the value matches the icon.
+                    //then set that option to be selected.
                     for (let i = 0; i < startIconDropDown.options.length; i++) {
                         console.log(startIconDropDown.options[i].value);
+                        if (contextStartIcon == startIconDropDown.options[i].value) {
+                            contextStartIcon.options[i].selected = true;
+                        }
                     }
                     console.log(document.getElementById("lineStartIcon").options.length);
                 }
