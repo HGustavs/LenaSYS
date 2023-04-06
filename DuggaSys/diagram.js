@@ -6318,9 +6318,9 @@ function generateContextProperties()
                     console.log("IE startIcon is " + contextLine[0].startIcon.toUpperCase());
                 }
                 //icon can be ZERO_MANY while start icon can be 0-M. This means we have to manually check these and others like them
-                else if (condition) {
+                /* else if (condition) {
                     
-                }
+                } */
                 else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                     console.log("IE else icon is " + icon);
