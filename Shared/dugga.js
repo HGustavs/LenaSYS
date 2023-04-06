@@ -964,7 +964,7 @@ function AJAXService(opt,apara,kind)
   }
 	apara.log_uuid = tex;
 
-	console.log(`opt: ${opt}\napara: ${apara}\nkind: ${kind}`);
+	console.log(`AJAXService parameters\nopt: ${opt}\napara: ${apara}\nkind: ${kind}`);
 	
   var para="";
 	for (var key in apara) {
