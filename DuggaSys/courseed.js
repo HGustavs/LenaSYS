@@ -601,6 +601,7 @@ function elementIsValid(element) {
 		element.removeAttribute("style");
 		element.value = "";
 		//messageElement.style.display = "none";
+		element.classList.remove("bg-color-change-invalid");
 		return false;
 	}
 
