@@ -6318,9 +6318,10 @@ function generateContextProperties()
                 else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
                     str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                 }
-                else if (condition) {
+                //
+                /* else if (condition) {
                     
-                }
+                } */
                 else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                     console.log("IE else icon is " + icon);
