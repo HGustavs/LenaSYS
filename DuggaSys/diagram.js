@@ -6252,7 +6252,7 @@ function generateContextProperties()
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             //str  += `<option value=''>None</option>`;
             //if the line has a start icon, the drop down will show it 
-            str  += `<option `;
+            /* str  += `<option `;
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
                 let contextStartIcon = contextLine[0].startIcon;
                 str += `value=`+contextStartIcon+`">`+contextStartIcon;
@@ -6260,7 +6260,7 @@ function generateContextProperties()
             } else {
                 str += `value=''>None`;
             }
-            str += `</option>`;
+            str += `</option>`; */
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
