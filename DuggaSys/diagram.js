@@ -6285,10 +6285,10 @@ function generateContextProperties()
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
                 console.log("icon is " + icon);
-                console.log("startIcon is " + contextLine[0].startIcon);
-                for (let i = 0; i < contextLine.length; i++) {
+                console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                /* for (let i = 0; i < contextLine.length; i++) {
                     console.log("startIcon iteration is " + contextLine[i].startIcon);
-                }
+                } */
             });
             Object.keys(IELineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
