@@ -36,11 +36,12 @@ function updateCourse()
 	var coursecode = $("#coursecode").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
+	//#13055 get the value from the textinput we will add
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-	
+	//#13055 add to the ajax command to update the server
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
 	localStorage.setItem('courseid', courseid);
 	localStorage.setItem('updateCourseName', true);
@@ -609,16 +610,28 @@ function elementIsValid(element) {
 	return false;
 }
 
+//Show or hide the Git URL input when creating a new course
+function showGitInput(show){
+	var gitInput = document.getElementById("gitinput-parent");
+	if (show == true){
+		gitInput.style.display = "flex";
+	}else{
+		gitInput.style.display = "none";
+	}
+}
+
 //Validation with REG EXP for Github URL
 function validateGitInput(id){
 	var gitUrl = document.getElementById(id);
-	if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
-		console.log("Valid URL!");
-		gitUrl.style.border = "2px solid rgb(51, 136, 51)";
-	} else {
-		gitUrl.style.border = "2px solid #f57";
-		console.log("Invalid url...");
-	}
+		if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
+			console.log("Valid URL!");
+			gitUrl.style.backgroundColor = "white";
+			gitUrl.style.borderColor = "rgb(51, 136, 51)";
+		} else {
+			gitUrl.style.backgroundColor = "#f57";
+			gitUrl.style.borderColor = "transparent";
+			console.log("Invalid url...");
+		}
 }
 
 //Validates whole form but don't implement it.
@@ -668,7 +681,7 @@ function validateForm(formid) {
 			alert("New course added!");
 		} else if(formid === "editCourse") {
 			updateCourse();
-			alert("Course updated!");
+			alert("Course updated!"); 
 		}
 
 		//Reset inputs
