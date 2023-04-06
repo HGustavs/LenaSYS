@@ -6262,7 +6262,9 @@ function generateContextProperties()
             }
             str += `</option>`; */
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
-                console.log(contextLine[0].startIcon.options.length);
+                let startIconDropDown = documnet.getElementById("lineStartIcon");
+                console.log(startIconDropDown.options.length);
+                console.log(startIconDropDown.length);
             }
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
