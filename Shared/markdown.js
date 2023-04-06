@@ -382,12 +382,13 @@ function markdownBlock(inString)
     inString = inString.replace(/\-{3,}/g, '<hr>');
 
     // External img src !!!
-    // %%%src,thumbnail width in px,full size width in px%%%
     // Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
-    inString = inString.replace(/\%{3}(.*?\S),(.*?\S),(.*?\S)\%{3}$/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" /><br>');
-    inString = inString.replace(/\%{3}(.*?\S)\%{3}$/g, '<img class="imgzoom" src="{$1}" /><br>');
-    inString = inString.replace(/\%{3}(.*?\S),(.*?\S),(.*?\S)\%{3}/g, '<img class="imgzoom" src="{$1}" onmouseover="originalImg(this, $2)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
-    inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '<img class="imgzoom" src="{$1}" />');
+    //OLD img tag: '<img class="imgzoom" src="$2" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" /><br>');
+    //This regex is the same as github when you upload image. The upload is now ![alt-text](IMGURL) and alt-text can be empty
+    inString = inString.replace(/\!\[(.*?)\]\((.*?\S)\)/g, '<img class="imgzoom" src="$2" /><br>');
+    //inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$2}" /><br>');
+    //inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$1}" onmouseover="originalImg(this, $2)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
+    //inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$1}" />');
 
     // Hyperlink !!!
     // !!!url,text to show!!!
@@ -591,7 +592,7 @@ function setCarotPosition(){
 }
 function externalImg(){
     this.setCarotPosition();
-    var finText = txtarea.value.substring(0,start) + '%%%' + 'img here, thumbnail in width px here,  full width here' + sel + '%%%' + txtarea.value.substring(end);
+    var finText = txtarea.value.substring(0,start) + '![Alt-text]' + '(IMG URL' + sel + ')' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd = end +11;
