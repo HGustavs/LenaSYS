@@ -6254,7 +6254,8 @@ function generateContextProperties()
             //if the line has a start icon, the drop down will show it 
             str  += `<option `;
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
-                str += `value="${contextLine[0].endLabel}">${contextLine[0].endLabel}`;
+                let contextStartIcon = contextLine[0].startIcon;
+                str += `value=`+contextStartIcon+`">'contextStartIcon`;
                 console.log(contextLine[0].startIcon);
             } else {
                 str += `value=''>None`;
