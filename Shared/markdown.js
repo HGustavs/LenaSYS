@@ -385,7 +385,7 @@ function markdownBlock(inString)
     // Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
     //OLD img tag: '<img class="imgzoom" src="$2" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" /><br>');
     //This regex is the same as github when you upload image. The upload is now ![alt-text](IMGURL) and alt-text can be empty
-    inString = inString.replace(/\!\[(.*?)\]\((.*?\S)\)/g, '<img class="imgzoom" src="$2" /><br>');
+    inString = inString.replace(/\!\[(.*?)\]\((.*?\S)\)/g, '<img class="imgzoom" alt="$1" src="$2" /><br>');
     //inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$2}" /><br>');
     //inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$1}" onmouseover="originalImg(this, $2)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
     //inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$1}" />');
