@@ -6313,11 +6313,6 @@ function generateContextProperties()
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
-                /* if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                }else {
-                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                } */
                 //this covers Triangle and Arrow.
                 //If the lines in context happen to be matching something in the drop down, it is set as selected.
                 if (contextLine[0].endIcon != undefined && contextLine[0].endIcon.toUpperCase() == icon){
@@ -6337,11 +6332,6 @@ function generateContextProperties()
                 }
             });
             Object.keys(IELineIcons).forEach(icon => {
-                /* if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }else {
-                    str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                } */
                 //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
                 //This means we have to manually check these and others like them
                 if (contextLine[0].endIcon != undefined && contextLine[0].endIcon.toUpperCase() == icon){
