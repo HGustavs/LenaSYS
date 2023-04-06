@@ -8,12 +8,14 @@ logServiceEvent: row: 36
 logs "log_uuid", the "eventType" used, "userID" and "info", which contain. "opt", "cid", "courserver", "fid", "filename", "kind". 
 
 
+
 Delite fileLink: row: 50 - 128
 -----------------------------------------
 
 Delete filelink from database. 
 conditions: file not in active use
 		
+
 
 Edit filesize: row: 132 - 190
 -----------------------------------------
@@ -22,8 +24,39 @@ Edit filesize of already existing file.
 
 
 
-Retrives all information from DB table fileLink: row: 196 - 302
----------------------------------------------------------
 
+Retrives all information from DB table fileLink: row: 196 - 302
+----------------------------------------------------------------
+
+Retrives all information from DB table fileLink where kind = 2.
+Filers out files the user should't have access to. 
+An array (entry) is created to house the information, the array then gets pushed into another array(entries).
+
+
+
+
+Presenting the information row: 282 - 323
+---------------------------------------------
+
+If the folders "/templates/" exists, then the contents of that folder is scanned, all non-directory files are pushed onto the array gfiles.   
+
+
+If the folders "/courses/.".$cid."/" exist, then the contents of that folder is scanned, all non-directory files are pushed onto the array lfiles.   
+
+These variables are then placed into an array, together with the array mentiond in the previous section.  
+
+$array = array(
+    'entries' => $entries,
+    'debug' => $debug,
+    'gfiles' => $gfiles,
+    'lfiles' => $lfiles,
+    'access' => $access,
+    'studentteacher' => $studentTeacher,
+    'superuser' => $superuser,
+    'waccess' => $waccess,
+    'supervisor' => $supervisor,
+); 
+
+and is encoded to JSON than echoed out
 
 
