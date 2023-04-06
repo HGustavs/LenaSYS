@@ -569,7 +569,7 @@ function elementIsValid(element) {
 	//Standard styling for a failed validation that will be changed if element passes validation
 	//element.style.backgroundColor = "#f57";
 	element.classList.add("bg-color-change-invalid");
-	element.classList.remove("bg-color-change");
+	// element.classList.remove("bg-color-change");
 	$(messageElement.firstChild.id).fadeIn();
 	//messageElement.style.display = "block";
 
@@ -588,7 +588,8 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
-		element.classList.add("bg-color-change");
+		//element.style.backgroundColor = "#fff";
+		// element.classList.add("bg-color-change");
 		element.classList.remove("bg-color-change-invalid");
 		element.style.borderColor = "#383";
 		$(messageElement.firstChild).fadeOut();
