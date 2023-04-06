@@ -382,7 +382,7 @@ function markdownBlock(inString)
     inString = inString.replace(/\-{3,}/g, '<hr>');
 
     // External img src !!!
-    // |||src,thumbnail width in px,full size width in px|||
+    // %%%src,thumbnail width in px,full size width in px%%%
     // Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
     inString = inString.replace(/\%{3}(.*?\S),(.*?\S),(.*?\S)\%{3}$/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" /><br>');
     inString = inString.replace(/\%{3}(.*?\S)\%{3}$/g, '<img class="imgzoom" src="{$1}" /><br>');
