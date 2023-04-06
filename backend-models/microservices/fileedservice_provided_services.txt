@@ -1,6 +1,12 @@
 ---fileedservice---
 
---services provided--
+
+
+
+#######################
+## services provided ##
+#######################
+
 
 logServiceEvent: row: 36
 -----------------------------------------
@@ -25,12 +31,12 @@ Edit filesize of already existing file.
 
 
 
-Retrives all information from DB table fileLink: row: 196 - 302
+Retrieves all information from DB table fileLink: row: 196 - 302
 ----------------------------------------------------------------
 
-Retrives all information from DB table fileLink where kind = 2.
-Filers out files the user should't have access to. 
-An array (entry) is created to house the information, the array then gets pushed into another array(entries).
+Retrieves all information from DB table fileLink where kind = 2.
+Filers out files the user shouldn't have access to. 
+An array (entry) is created to house the information, the array then gets pushed into another array(entries)
 
 
 
@@ -60,3 +66,26 @@ $array = array(
 and is encoded to JSON than echoed out
 
 
+logServiceEvent again: row: 321
+-----------------------------------------
+ 
+logs "log_uuid", the "eventType" used, "userID" and "info", which contain. "opt", "cid", "courserver", "fid", "filename", "kind"
+
+
+
+
+
+####################
+## micro-services ##
+####################
+
+
+
+From what I could gather this file is divided into two parts, editing the database in some way, and retrieving information for presentation. The obvious way is to make the different parts as separate micro-services. A further divide could be made so that the delete and edit functions become separate entities. Furthermore logging happens twice in the file, but I don't know how it works and haven't found a function for it in the system. I therefore have a hard time giving my view on whether or not it should become its own micro-service.
+
+possible micro-services 
+-----------------------
+
+Delite fileLink
+Edit filesize
+Retrieves all information from DB table fileLink
