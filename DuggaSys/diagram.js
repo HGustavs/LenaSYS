@@ -6281,34 +6281,39 @@ function generateContextProperties()
             //iterate trough all icons associated with IE. add these icons to the drop down
             //if the line in context has one of these lines in the starting position, just like for UML, it is automatically selected
             Object.keys(IELineIcons).forEach(icon => {
-                //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
-                //This means we have to manually check these and others like them
-                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }
-                //icon can be ZERO_MANY while start icon can be 0-M.
-                else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }
-                //this covers ZERO_ONE not being equal to 0-1
-                else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }
-                //this covers ONE not being equal to 1
-                else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }
-                //this covers FORCEDONE not being equal to 1!
-                else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }
-                //this covers ONE_MANY not being equal to 1-M
-                else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }
-                //this covers MANY not being equal to M
-                else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon.toUpperCase() == "M") && (icon == "MANY")) {
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                if (contextLine[0].startIcon != undefined) {
+                    //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
+                    //This means we have to manually check these and others like them
+                    if (contextLine[0].startIcon.toUpperCase() == icon){
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //icon can be ZERO_MANY while start icon can be 0-M.
+                    else if ((contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ZERO_ONE not being equal to 0-1
+                    else if ((contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE not being equal to 1
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers FORCEDONE not being equal to 1!
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE_MANY not being equal to 1-M
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers MANY not being equal to M
+                    else if ((contextLine[0].startIcon.toUpperCase() == "M") && (icon == "MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    }
                 }
                 else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
