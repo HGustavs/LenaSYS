@@ -19,7 +19,8 @@
     
     $context = stream_context_create($opts);
     $content = file_get_contents("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/", false, $context);
-    var_dump($content);
+    $contentArr = json_decode($content);
+    var_dump($contentArr);
     ?>
 </body>
 </html>
