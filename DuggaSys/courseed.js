@@ -78,11 +78,12 @@ function createNewCourse()
 {
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
+	var coursegiturl = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 
-    localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
+    localStorage.setItem('lastCC', true);//TODO make sure that this is supported in the database
+	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, coursegiturl : coursegiturl  }, "COURSE");
 }
 
 function copyVersion()
