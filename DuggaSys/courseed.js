@@ -586,7 +586,7 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
-		//element.style.backgroundColor = "#ffff";
+		element.style.backgroundColor = "transparent";
 		element.style.borderColor = "#383";
 		$(messageElement.firstChild).fadeOut();
 		//messageElement.style.display = "none";
