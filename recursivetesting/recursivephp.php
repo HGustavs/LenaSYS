@@ -20,6 +20,8 @@
 						]
 					];
 			$context = stream_context_create($opts);
+			print_r("<br><br>Im sending: <br>");
+			print_r($url);
 			$content = file_get_contents($url, false, $context);
 			$contentArr = json_decode($content, true);
 			echo "<table style='border: 1px solid black'>";
@@ -35,8 +37,6 @@
 					echo "<td>" . $value . "</td></tr>";
 
 				if($value["type"] == "dir") {
-					print_r("<br><br>Im sending: <br>");
-					print_r($url . "/" . $value["name"]);
 					// print_r($value);
 					bfs($url . "/" . $value["name"]);
 				} else {
