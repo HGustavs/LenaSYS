@@ -6266,7 +6266,7 @@ function generateContextProperties()
                 if (document.getElementById("lineStartIcon")) {
                     let startIconDropDown = document.getElementById("lineStartIcon");
                     for (let i = 0; i < startIconDropDown.options.length; i++) {
-                        startIconDropDown.options[i].value;
+                        console.log(startIconDropDown.options[i].value);
                     }
                     console.log(document.getElementById("lineStartIcon").options.length);
                 }
