@@ -6794,6 +6794,13 @@ only screen and (max-device-width: 568px) {
   line-height: 1.6;
   font-weight: bold;
 }
+
+/* Diagram line style */
+.diagram-umlicon-triangle {
+  fill: white;
+  stroke: black;
+}
+
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */
