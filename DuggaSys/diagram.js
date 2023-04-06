@@ -6262,7 +6262,7 @@ function generateContextProperties()
                 } */
                 //fixed Triangle=/=TRIANGLE with toUpperCase()
                 //check if there even is a starticon first
-                if (contextLine[0].startIcon != undefined){
+                /* if (contextLine[0].startIcon != undefined){
                     console.log("icon is " + icon);
                     console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
                     //check if its white or black diamond since these wont be caught otherwise
@@ -6276,6 +6276,11 @@ function generateContextProperties()
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     }
                     //str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                }else {
+                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                } */
+                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
+                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                 }else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
