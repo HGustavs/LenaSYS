@@ -6255,7 +6255,7 @@ function generateContextProperties()
             str  += `<option `;
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
                 let contextStartIcon = contextLine[0].startIcon;
-                str += `value=`+contextStartIcon+`">'contextStartIcon`;
+                str += `value=`+contextStartIcon+`">'`+contextStartIcon;
                 console.log(contextLine[0].startIcon);
             } else {
                 str += `value=''>None`;
