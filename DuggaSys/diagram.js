@@ -10696,8 +10696,8 @@ function drawSelectionBox(str)
         deleteBtnY = lowY - 5 - (deleteBtnSize/2);
 
         //Delete button visual representation
-        str += `class='BlackthemeColor' <line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2} style='stroke:rgb(0,0,0);stroke-width:2'/>`;
-        str += `class='BlackthemeColor' <line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2} style='stroke:rgb(0,0,0);stroke-width:2'/>`;
+        str += `<line class='BlackthemeColor' x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2} style='stroke-width:2'/>`;
+        str += `<line class='BlackthemeColor' x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2} style='stroke-width:2'/>`;
     }
     return str; 
 }
