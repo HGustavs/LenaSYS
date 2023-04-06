@@ -34,15 +34,14 @@ function updateCourse()
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
+	var coursegiturl = $("#editcoursegit-url").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
-	//#13055 get the value from the textinput we will add
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-	//#13055 add to the ajax command to update the server
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, coursegiturl : coursegiturl }, "COURSE");
 	localStorage.setItem('courseid', courseid);
 	localStorage.setItem('updateCourseName', true);
 }
@@ -82,7 +81,7 @@ function createNewCourse()
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 
-    localStorage.setItem('lastCC', true);//TODO make sure that this is supported in the database
+    localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, coursegiturl : coursegiturl  }, "COURSE");
 }
 
