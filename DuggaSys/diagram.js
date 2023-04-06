@@ -6262,7 +6262,7 @@ function generateContextProperties()
             }
             str += `</option>`; */
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
-                console.log(contextLine[0].startIcon.length);
+                console.log(contextLine[0].startIcon.options.length);
             }
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
