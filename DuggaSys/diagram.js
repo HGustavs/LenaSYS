@@ -6281,11 +6281,14 @@ function generateContextProperties()
                 } */
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    console.log("icon is " + icon);
+                    console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
                 }else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    console.log("icon is " + icon);
+                    console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
                 }
-                console.log("icon is " + icon);
-                console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                
                 /* for (let i = 0; i < contextLine.length; i++) {
                     console.log("startIcon iteration is " + contextLine[i].startIcon);
                 } */
