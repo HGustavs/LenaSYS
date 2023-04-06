@@ -9257,4 +9257,8 @@ margin:2px;
   font-size:18px;
 }
 
+.svgbacklayer-background {
+  background-color: var(--color-background);
+}
+
 /* END */

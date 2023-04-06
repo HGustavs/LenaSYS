@@ -1086,7 +1086,11 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     text-decoration-color: var(--color-text-primary) !important;
   }
 
-  /* Diagram line style */
+.svgbacklayer-background {
+    background-color: var(--color-background);
+}
+
+/* Diagram line style */
 .diagram-umlicon-triangle {
   fill: black;
   stroke: white;

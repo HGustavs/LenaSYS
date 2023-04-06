@@ -745,6 +745,7 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
+        TOGGLE_DARKMODE: {key: "d", ctrl: false},
         CENTER_CAMERA: {key:"home", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
@@ -1652,6 +1653,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
+        if(isKeybindValid(e, keybinds.TOGGLE_DARKMODE)) toggleDarkmode();
         if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
@@ -3953,6 +3955,37 @@ function toggleGrid()
         gridButton.style.backgroundColor ="#362049";
    }
 }
+
+/**
+ * @description Toggles the darkmode for svgbacklayer ON/OFF.
+ */
+function toggleDarkmode()
+{
+    const stylesheet = document.getElementById("themeBlack");
+    const storedTheme = localStorage.getItem('diagramTheme');
+
+	if(storedTheme) stylesheet.href = storedTheme;
+	
+    if(stylesheet.href.includes('blackTheme')){
+        // if it's dark -> go light
+        stylesheet.href = "../Shared/css/style.css";
+        localStorage.setItem('diagramTheme',stylesheet.href)
+    } else if(stylesheet.href.includes('style')) {
+        // if it's light -> go dark
+        stylesheet.href = "../Shared/css/blackTheme.css";
+        localStorage.setItem('diagramTheme',stylesheet.href)
+    }
+}
+
+/**
+ * @description When diagram page is loaded, check if preferred theme is stored in local storage.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    const stylesheet = document.getElementById("themeBlack");
+    if (!localStorage.getItem("diagramTheme")) return;
+
+    stylesheet.href = localStorage.getItem("diagramTheme");
+})
 
 /**
  * @description Toggles the replay-mode, shows replay-panel, hides unused elements
