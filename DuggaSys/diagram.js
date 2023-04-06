@@ -10787,8 +10787,7 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
@@ -10802,8 +10801,7 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
@@ -10817,8 +10815,7 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 2; index++){
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
@@ -10832,8 +10829,7 @@ function updateCSSForAllElements()
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
-                    // If more than one element is marked.
-                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                    if(markedOverOne()){
                         fillColor.style.fill = `${"#927b9e"}`;
                         fontColor.style.fill = `${"#ffffff"}`;
                         if(element.state == "weakKey") {
@@ -10888,6 +10884,11 @@ function updateCSSForAllElements()
     function fontContrast() {
         //check if the fill color is black or pink, if so the font color is set to white
         fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+    }
+
+    function markedOverOne() {
+        //If more than one element is marked.
+        return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
 }
 /**
