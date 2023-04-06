@@ -6316,6 +6316,10 @@ function generateContextProperties()
                 }
                 else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    console.log("IE else icon is " + icon);
+                }
+                if (contextLine[0].startIcon != undefined) {
+                    console.log("IE else startIcon is " + contextLine[0].startIcon);
                 }
             });
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
