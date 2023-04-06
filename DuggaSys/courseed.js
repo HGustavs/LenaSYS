@@ -41,7 +41,7 @@ function updateCourse()
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, coursegiturl : coursegiturl }, "COURSE");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : coursegiturl }, "COURSE");
 	localStorage.setItem('courseid', courseid);
 	localStorage.setItem('updateCourseName', true);
 }
@@ -82,7 +82,7 @@ function createNewCourse()
 	//$("#overlay").css("display", "none");
 
     localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, coursegiturl : coursegiturl  }, "COURSE");
+	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : coursegiturl  }, "COURSE");
 }
 
 function copyVersion()
