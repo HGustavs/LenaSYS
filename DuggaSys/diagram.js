@@ -6285,8 +6285,8 @@ function generateContextProperties()
                     console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
                 }else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                    console.log("icon is " + icon);
-                    console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                    /* console.log("icon is " + icon);
+                    console.log("startIcon is " + contextLine[0].startIcon.toUpperCase()); */
                 }
                 
                 /* for (let i = 0; i < contextLine.length; i++) {
