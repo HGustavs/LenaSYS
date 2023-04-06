@@ -8356,7 +8356,7 @@ function drawElement(element, ghosted = false)
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh/2}px;`;
-        str += `</div>`;
+       
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
