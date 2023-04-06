@@ -203,7 +203,10 @@ function isOrderdList(item) {
 // Check if its a table
 function isTable(item) {
     // return true if space followed by a pipe-character and have closing pipe-character
-    return /^\s*\|\s*(.*)\|/gm.test(item);
+    //return /^\s*\|\s*(.*)\|/gm.test(item);
+
+    const regex = /\|(?!\|)\s*([^|]*[^\s|])\s*(?=\|(?!\|)|$)/gm;
+    return regex.test(item);
 }
 // The creation and destruction of lists
 function handleLists(currentLine, prevLine, nextLine) {
