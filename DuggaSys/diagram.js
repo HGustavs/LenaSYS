@@ -6284,17 +6284,17 @@ function generateContextProperties()
                 //TODO i assume the weird icons are IE
                 //If the lines in context happen to be matching something in the drop down, it is set as selected.
                 if (contextLine[0].startIcon != undefined) {
-                    if (contextLine[0].startIcon.toUpperCase() == icon){
+                    if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                         console.log("icon is " + icon);
                         console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
                     }
                     //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
                     //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
-                    else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                    else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     }
-                    else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                    else if (contextLine[0].startIcon != undefined && (contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     }
                 }
