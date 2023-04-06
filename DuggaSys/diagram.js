@@ -6262,7 +6262,7 @@ function generateContextProperties()
             }
             str += `</option>`; */
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
-                let startIconDropDown = documnet.getElementById("lineStartIcon");
+                let startIconDropDown = document.getElementById("lineStartIcon");
                 console.log(startIconDropDown.options.length);
                 console.log(startIconDropDown.length);
             }
