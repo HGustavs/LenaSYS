@@ -6250,7 +6250,7 @@ function generateContextProperties()
         }
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
-            str  += `<option value=''>None</option>`;
+            //str  += `<option value=''>None</option>`;
             //if the line has a start icon, the drop down will show it 
             str  += `<option `;
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
