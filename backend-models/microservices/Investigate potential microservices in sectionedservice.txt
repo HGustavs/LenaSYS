@@ -84,7 +84,9 @@ Sorting a list of groups.
 
 sort($grplst);
 
+in case the if-statement fails we have an else:
 
+$debug="Failed to get group members!";
 
 
 row 179-191: Modifies studentTeacher by deleting from table  listentires. 
@@ -269,7 +271,7 @@ if(!$query->execute()) {$error=$query->errorInfo();$debug="Error reading visibil
 row 484-487: 
 
 
-sets $cvisibility to false, hen, it retrieves a row from a database query result using the fetch() method with the PDO::FETCH_ASSOC option.
+sets $cvisibility to false, then, it retrieves a row from a database query result using the fetch() method with the PDO::FETCH_ASSOC option.
 
 
 The query likely fetches data about a certain resource or course.
@@ -288,7 +290,8 @@ row 492-502:
 This code defines an empty array $duggor and $releases. Then it prepares a SQL statement to select quiz information (id, qname, qrelease, deadline, relativedeadline) from the quiz table where the course ID (cid) matches the $courseid variable and the course version (vers) matches the $coursevers variable. The quiz information is ordered by the quiz name (qname). If the query execution is successful, the quiz information is stored in $duggor.
 row 506-522: 
 Create "duggor" array to store information about quizes and create "releases" to perform checks.
-A foreach loop fetches and releases a few attributes. Then all the fetched queries are placed in arrays called duggor. 
+A foreach loop fetches and releases a few attributes. Then all the fetched queries are placed in arrays called duggor.
+Array_push() pushes one or more elements onto the END of corresponding array.
         foreach($query->fetchAll() as $row) {
                         $releases[$row['id']]=array(
                                         'release' => $row['qrelease'],
@@ -335,7 +338,7 @@ Then the code checks wether $row['quiz'] value is present in $releases array and
 if both conditions equal true, it creates a new DateTime object with the release value and checks whether it is greater than the $today_dt object. If the release date is in the future, it sets the $resulty variable to -1 and the $markedy variable to null.
 
 
-Lastly, the code constructs an array with the extracted data and pushes it onto the $resulties array. The resulting array will contain an entry for each row in the result set,
+Lastly, the code constructs an array with the extracted data and array_push pushes it the content at the end of $resulties array. The resulting array will contain an entry for each row in the result set,
 with some additional data based on the date/time calculations.
 
 
@@ -362,7 +365,7 @@ row 650-664:
 A query is prepared which selects data from two tables, a parameter is binded 
 $query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
 $query->bindParam(':cid', $courseid);
-The previousley stoerd values in the variables are “nullified” by doing the following 
+The previously stored values in the variables are “nullified” by doing the following 
 $coursename = "UNK";
                 $coursecode = "UNK";
 All the courses are displayed with their name and code, if it fails an error message is displayed. 
@@ -406,7 +409,7 @@ $codeexamples = array();
 row 713-839: 
 
 
-This code etrieves data from a database and prepares it to be used in a web page. Then it fetches files and code examples related to a specific course, as well as the available course versions and the number of unmarked user answers for the course. On the first if-statement it checks if a variable called "$ha" or "$studentTeacher" is set to true. If so, it retrieves a list of files from the database that are associated with the specified course ID and have a specific "kind" value. It then fetches another list of files associated with the course ID and that have a "kind" value greater than 1 or are marked as global, sorting them by kind and filename. Both lists are merged into a single array called "$links".
+This code retrieves data from a database and prepares it to be used in a web page. Then it fetches files and code examples related to a specific course, as well as the available course versions and the number of unmarked user answers for the course. On the first if-statement it checks if a variable called "$ha" or "$studentTeacher" is set to true. If so, it retrieves a list of files from the database that are associated with the specified course ID and have a specific "kind" value. It then fetches another list of files associated with the course ID and that have a "kind" value greater than 1 or are marked as global, sorting them by kind and filename. Both lists are merged into a single array called "$links".
 
 
 Next, it retrieves the available course versions from the database and stores them in an array called "$versions". If the "motd" column exists in the database table, it will be included in the array; otherwise, it will be excluded.
@@ -449,37 +452,3 @@ logs an event log_uuid, userid, info EventTypes::ServiceServerEnd, "sectionedser
 
 "sectionedservice.php" represents the file that is associated with the service call being logged.
 EventTypes::ServiceServerEnd: is a constant that represents the type of event being logged. Specifically, it indicates that a service call has ended on the server side.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-[a]We need to split up the services provided by this monolith into microservices, investigate what services this monolith provides and report back with a list of what services there are and a short description of all of them. This way we can get a better overview of all of the services, and what doublettes of services there might be in different monoliths (for example, many files have the "check login" function).
-
-
-Many of the functions have good comments, take these in consideration when describing the function.
-Some of the functions also do more than one thing, be mindful of this when describing the function.
-
-
-Put the resulting .txt file in the folder backend-models/microservices
