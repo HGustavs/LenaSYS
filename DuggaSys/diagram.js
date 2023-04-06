@@ -6250,8 +6250,8 @@ function generateContextProperties()
         }
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
-            //str  += `<option value=''>None</option>`;
-            //if the line has a start icon, the drop down will show it 
+            str  += `<option value=''>None</option>`;
+            
             /* str  += `<option `;
             if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
                 let contextStartIcon = contextLine[0].startIcon;
@@ -6261,22 +6261,7 @@ function generateContextProperties()
                 str += `value=''>None`;
             }
             str += `</option>`; */
-            if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
-                //if the startIcon dropdown has been generated, set the value of it to match the start icon on the line. 
-                if (document.getElementById("lineStartIcon")) {
-                    let startIconDropDown = document.getElementById("lineStartIcon");
-                    let contextStartIcon = contextLine[0].startIcon;
-                    //iterate through the whole dropdown until the value matches the icon.
-                    //then set that option to be selected.
-                    for (let i = 0; i < startIconDropDown.options.length; i++) {
-                        console.log(startIconDropDown.options[i].value);
-                        if (contextStartIcon == startIconDropDown.options[i].value) {
-                            contextStartIcon.options[i].selected = true;
-                        }
-                    }
-                    console.log(document.getElementById("lineStartIcon").options.length);
-                }
-            }
+            
             Object.keys(UMLLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
@@ -6310,6 +6295,23 @@ function generateContextProperties()
             str += `</select>`;
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        //if the line has a start icon, the drop down will show it 
+        if (contextLine[0].startIcon && contextLine[0].startIcon != "") {
+            //if the startIcon dropdown has been generated, set the value of it to match the start icon on the line. 
+            if (document.getElementById("lineStartIcon")) {
+                let startIconDropDown = document.getElementById("lineStartIcon");
+                let contextStartIcon = contextLine[0].startIcon;
+                //iterate through the whole dropdown until the value matches the icon.
+                //then set that option to be selected.
+                for (let i = 0; i < startIconDropDown.options.length; i++) {
+                    console.log(startIconDropDown.options[i].value);
+                    if (contextStartIcon == startIconDropDown.options[i].value) {
+                        contextStartIcon.options[i].selected = true;
+                    }
+                }
+                console.log(document.getElementById("lineStartIcon").options.length);
+            }
+        }
       }
 
       //If more than one element is selected
