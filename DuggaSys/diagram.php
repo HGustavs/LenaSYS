@@ -7,7 +7,7 @@
 	#general vars regarding current dugga.
 	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
-	$quizid=21;
+	$quizid=getOPG('did');
     #vars for handling fetching of diagram variant file name
 	$fileContent="UNK";
     $hash = getOPG('hash');
@@ -73,13 +73,45 @@
     <script src="diagram.js"></script>
     <script>
         // Fetch variant parameters from server
-        var variantArray;
-        $.ajax({
-            method: "GET",
-            url: `diagramservice.php?courseid=${<?php echo $cid; ?>}&did=${<?php echo $quizid; ?>}`,
-        }).done(function(response) {
-            variantArray = [response.slice(0, 3), ...response]
-        });
+        var DiagramResponse;
+        
+        function fetchDiagram() {
+            var response;
+
+            <?php 
+                if (isset($cid) && $cid != "UNK") {
+                    echo "const courseid = '$cid';";
+                } else if (isset($_GET["folder"])) {
+                    $folder = $_GET["folder"];
+                    echo "const courseid = '$folder';";
+                } else {
+                    echo "const courseid = '1894';";
+                }
+
+                if (isset($quizid) && $quizid != "UNK") {
+                    echo "const did = '$quizid';";
+                } else if (isset($_GET["id"])) {
+                    $id = $_GET["id"];
+                    echo "const did = '$id';";
+                } else {
+                    echo "const did = '21';";
+                }
+            ?>
+
+            $.ajax({
+                async: false,
+                method: "GET",
+                url: `diagramservice.php?courseid=${courseid}&did=${did}`,
+            }).done((res) => {
+                console.log(res)
+                response = res;
+            }).error((req, status, err) => {
+                console.error(err);
+            });
+            
+            return response;
+        }
+        
 
         /**
          * @description get the contents of a instruction file
@@ -87,14 +119,14 @@
          * */
         function getInstructions(fileName)
         {
-            var variantParams = getVariantParam();
-            if(variantParams.length > 0){
-                for (let index = 0; index < variantParams.length; index++) {
-                    if(variantParams[index][2]==fileName){
-                        window.parent.document.getElementById("assignment_discrb").innerHTML = variantParams[index][3];
+            const instructions = DiagramResponse.instructions
+            if(instructions.length > 0){
+                for (let index = 0; index < instructions.length; index++) {
+                    if(instructions[index][2]==fileName){
+                        window.parent.document.getElementById("assignment_discrb").innerHTML = instructions[index][3];
                     }
-                    if(variantParams[index][5]==fileName){
-                        window.parent.document.getElementById("diagram_instructions").innerHTML = variantParams[index][6];
+                    if(instructions[index][5]==fileName){
+                        window.parent.document.getElementById("diagram_instructions").innerHTML = instructions[index][6];
                     }
                 }
             }			
@@ -102,7 +134,7 @@
 
         function getVariantParam()
         {
-            return variantArray;
+            return DiagramResponse.variant;
         }
 
     </script>

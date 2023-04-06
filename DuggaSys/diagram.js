@@ -1327,6 +1327,7 @@ function onSetup()
 function getData()
 {
     container = document.getElementById("container");
+    DiagramResponse = fetchDiagram();
     onSetup();
     generateToolTips();
     toggleGrid();
