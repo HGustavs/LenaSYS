@@ -19,7 +19,7 @@
     
     $context = stream_context_create($opts);
     $content = file_get_contents("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/", false, $context);
-    $contentArr = json_decode($content);
+    $contentArr = json_decode($content, true);
     var_dump($contentArr);
     echo "<table>";
     echo "<td>";
