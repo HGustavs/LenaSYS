@@ -10571,11 +10571,6 @@ function drawSelectionBox(str)
     deleteBtnX = 0;
     deleteBtnY = 0;
     deleteBtnSize = 0;
-    deleteBtnColor = "rgb(0, 0, 0)";
-
-    if (themeStylesheet.href.includes('blackTheme')){
-        deleteBtnColor = "rgb(255, 255, 255)"
-    }
 
     if ((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) {
         var lowX;
@@ -10701,10 +10696,9 @@ function drawSelectionBox(str)
         deleteBtnY = lowY - 5 - (deleteBtnSize/2);
 
         //Delete button visual representation
-        str += `<class="deleteBtn" line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}'style='stroke:"${deleteBtnColor}";stroke-width:2'/>`;
-        str += `<class="deleteBtn" line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}'style='stroke:"${deleteBtnColor}";stroke-width:2'/>`;
+        str += `<class="deleteBtn" line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
+        str += `<class="deleteBtn" line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' style='stroke:rgb(0,0,0);stroke-width:2'/>`;
     }
-
     return str; 
 }
 
@@ -11126,7 +11120,6 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }else {
         temp = file;
     }
-
 
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
