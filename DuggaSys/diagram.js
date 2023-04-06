@@ -2944,7 +2944,7 @@ function changeLineProperties()
         }
         if(line.startIcon != startIcon.value){
             line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if(line.endIcon != endIcon.value){
             line.endIcon = endIcon.value
