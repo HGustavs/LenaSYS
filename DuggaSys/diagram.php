@@ -22,9 +22,10 @@
     $hash = getOPG('hash');
 	$finalArray = array();
 	
-	#create request to database and execute it
-	# $response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
-	# $response->execute();
+    /*
+	#create request to database and execute it 
+	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
+	$response->execute();
 	$i=0;
 
 	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
@@ -80,10 +81,10 @@
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
 					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
 			}
-
+            */
 			#Think this removes certain escape string characters.
-			$pattern = '/\s*/m';
-			$replace = '';
+			# $pattern = '/\s*/m'; 
+			/*$replace = '';
 			$instructions = preg_replace( $pattern, $replace,$instructions);
 			$information = preg_replace( $pattern, $replace,$information);
 
@@ -93,6 +94,7 @@
 	}
 	#closes pdo connection to database. Causes error if not used as query results are stockpiled and prevents next query usage.
 	$response->closeCursor();
+    */
 
 	#after itterating through query results, finally load the json file content into $fileContent variable.
 	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
