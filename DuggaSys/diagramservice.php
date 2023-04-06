@@ -112,13 +112,51 @@
     } catch (Exception $e) {
         // Somehting went wrong
     }
-    
-    if (isset($_GET["courseid"]) && isset($_GET["did"])) {
-        try {
-            #general vars regarding current dugga.
-            $cid=getOPG('courseid');
+
+    #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
+    #honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
+    if(isset($_SESSION['tempHash']) && $_SESSION['tempHash'] != "UNK")
+    {
+        $tempDir = strval(dirname(__DIR__,2)."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/");
+        $latest = time() - (365 * 24 * 60 * 60);
+        $current = "diagramSave1.json";	 
+
+        #loop through the directory, fetching all files within and comparing time stamps. If a file has changes made more recently, set that file name as current file.
+        #don't check files called "." or ".." as they are hiden directory re-direct files.
+        if(is_dir($tempDir)){
+            try{
+                foreach(new DirectoryIterator($tempDir) as $file){
+                    $ctime = $file->getCTime();    // Time file was created
+                    $fname = $file->GetFileName (); // File name
+
+                    if($fname != "." && $fname != ".."){
+                        if( $ctime > $latest ){
+                            $latest = $ctime;
+                            $current = $fname;
+                        }
+                    }
+                }
+                $latest = $current;
+                $splicedFileName = $current;
+
+                $myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
+                $fileContent = file_get_contents("{$tempDir}{$latest}");
+
+            }
+            catch(Exception $e){
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+    }
+
+    #general vars regarding current dugga.
+    //$cid=getOPG('courseid');
+
+
+    function getDiagram($cid, $quizid, $pdo) {
+        try {  
             $vers=getOPG('coursevers');
-            $quizid=getOPG('did');
+
             #vars for handling fetching of diagram variant file name
             $variantParams = "UNK";
             $fileContent="UNK";
@@ -132,9 +170,10 @@
             $information = "UNK";
             $hash = getOPG('hash');
             $finalArray = array();
+            $array = array();
 	
             #create request to database and execute it
-            $response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
+            $response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = '$quizid' AND quiz.cid = '$cid' AND disabled = 0;");
             $response->execute();
             $i=0;
 
@@ -236,56 +275,22 @@
                 $fileContent = "NO_FILE_FETCHED";
             }
 
-            array_push($finalArray, $cid);
-            array_push($finalArray, $vers);
-            array_push($finalArray, $splicedFileName);
-            array_push($finalArray, $fileContent);
+            $array["variant"] = [$variantParams, $cid, $vers, "'$splicedFileName'", "$fileContent"];
+            $array["instructions"] = $finalArray;
             
-            header('Content-Type: application/json');
-            echo json_encode($finalArray);
+            return json_encode($array);
         } catch (Exception $e) {
             http_response_code(400);
-            echo "Bad request: missing query parameters courseid and did";
+            return "Bad request: missing query parameters courseid and did. " . $e;
         }
     }
 
-    #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
-    #honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
-    if(isset($_SESSION['tempHash']) && $_SESSION['tempHash'] != "UNK")
-    {
-        $tempDir = strval(dirname(__DIR__,2)."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/");
-        $latest = time() - (365 * 24 * 60 * 60);
-        $current = "diagramSave1.json";	 
-
-        #loop through the directory, fetching all files within and comparing time stamps. If a file has changes made more recently, set that file name as current file.
-        #don't check files called "." or ".." as they are hiden directory re-direct files.
-        if(is_dir($tempDir)){
-            try{
-                foreach(new DirectoryIterator($tempDir) as $file){
-                    $ctime = $file->getCTime();    // Time file was created
-                    $fname = $file->GetFileName (); // File name
-
-                    if($fname != "." && $fname != ".."){
-                        if( $ctime > $latest ){
-                            $latest = $ctime;
-                            $current = $fname;
-                        }
-                    }
-                }
-                $latest = $current;
-                $splicedFileName = $current;
-
-                $myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-                $fileContent = file_get_contents("{$tempDir}{$latest}");
-
-            }
-            catch(Exception $e){
-                echo 'Message: ' .$e->getMessage();
-            }
-        }
+    // Get diagram from course/dugga
+    if (isset($_GET["courseid"]) && isset($_GET["did"])) {
+        header('Content-Type: application/json');
+        echo getDiagram($_GET["courseid"], $_GET["did"], $pdo);
     }
-
-
+    
     if(isset($_POST['StringDiagram'])) {
         $str = $_POST['StringDiagram'];
         $hash = $_POST['Hash'];
@@ -297,5 +302,6 @@
         $myfile = fopen("Save/$a/$hash.txt", "w");
         fwrite($myfile, $data);
     }
+
     //logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "diagramservice.php",$userid,$info);
 ?>
