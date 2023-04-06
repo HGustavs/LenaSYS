@@ -2216,6 +2216,13 @@ input.inactive-button {
 #editCourse #visib{
   margin-right: 0px;
 }
+/* Used to reset the background color of input fields */
+.bg-color-change {
+  background-color: var(--color-background);
+}
+.bg-color-change-invalid{
+  background-color: "#f57";
+}
 
 
 #impwords,
