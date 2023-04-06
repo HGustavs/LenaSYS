@@ -6285,6 +6285,8 @@ function generateContextProperties()
                 }else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
+                console.log("icon is " + icon);
+                console.log("startIcon is " + contextLine[0].startIcon);
             });
             Object.keys(IELineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
