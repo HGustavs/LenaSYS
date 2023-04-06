@@ -8355,12 +8355,11 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='position: absolute; left:0px; top:0px; width:${boxw}px;height:${boxh/2}px;`;
-      
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh/2}px;`;
+        str += `</div>`;
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
-         str += `z-index: 2;`;
         
         if (ghosted) {
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
@@ -8384,7 +8383,7 @@ function drawElement(element, ghosted = false)
         }
         //end of svg
         str += `</svg>`;
-        str += `</div>`;
+        
     }    
     //=============================================== <-- End of IE functionality
 
