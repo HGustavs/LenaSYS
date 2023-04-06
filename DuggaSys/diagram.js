@@ -10862,7 +10862,7 @@ function updateCSSForAllElements()
                         }
                     }
                 }
-            } else if (mouseMode == mouseModes.EDGE_CREATION) {
+            } else {
                 // Update UMLEntity
                 if(element.kind == "UMLEntity"){
                     for (let index = 0; index < 3; index++) {
