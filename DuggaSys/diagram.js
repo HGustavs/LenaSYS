@@ -6323,10 +6323,10 @@ function generateContextProperties()
                     /* else if (condition) {
                         
                     } */
-                    else {
-                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                        console.log("IE else icon is " + icon);
-                    }
+                }
+                else {
+                    str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    console.log("IE else icon is " + icon);
                 }
             });
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
