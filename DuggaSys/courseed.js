@@ -568,8 +568,8 @@ function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 	//Standard styling for a failed validation that will be changed if element passes validation
 	//element.style.backgroundColor = "#f57";
-	element.classList.add("bg-color-change-invalid");
-	element.classList.remove("bg-color-change");
+	//element.classList.add("bg-color-change-invalid");
+	//element.classList.remove("bg-color-change");
 	$(messageElement.firstChild.id).fadeIn();
 	//messageElement.style.display = "block";
 
@@ -600,6 +600,8 @@ function elementIsValid(element) {
 		element.removeAttribute("style");
 		element.value = "";
 		//messageElement.style.display = "none";
+		element.classList.add("bg-color-change-invalid");
+		element.classList.remove("bg-color-change");
 		return false;
 	}
 
