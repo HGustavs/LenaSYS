@@ -297,11 +297,11 @@ function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
     var columns = currentLine.split('|').filter(function(v){return v !== '';});
     // open table
-    if(!isTable(prevLine)) {
+    if(isTable(prevLine)) {
         markdown += "<table class='markdown-table'>";
     }
     // create thead
-    if(!isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+    if(isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
         markdown += "<thead>";
         markdown += "<tr>";
         for(var i = 0; i < columns.length; i++) {
@@ -348,7 +348,7 @@ function handleTable(currentLine, prevLine, nextLine) {
             markdown += "</tr>";
 
             // close thead and open tbody
-            if(!isTable(prevLine)) {
+            if(isTable(prevLine)) {
                 markdown += "</thead><tbody>";
             }
         }
