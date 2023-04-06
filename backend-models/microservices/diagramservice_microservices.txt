@@ -1,29 +1,53 @@
 --- diagramservice.php --- 
 
+The file gathers information regaring github activity, and present it.  
+ 
+
+##################
+# Micro-services #
+##################
+
+Gather the information 
+Presenting the information
+
+
 
 #####################
 # services provided #
 #####################
 
-All provided services gather informaton regarding github aktivitys stored on the DB. 
 
 
-Count number of issues created: row 46 - 57
+* Gather the information ***************************************************************************
+**************************
+
+Number of issues created: row 46 - 57
 --------------------------------------------
-places the information in an array, issue 
+Count number of issues created, places the information in an array, issue 
 
 
-Count the number of events during a specified intervall: row 58 - 69
+Number of events: row 58 - 69
 --------------------------------------------------------------------
-places the information in an array, events
+Count the number of events during a specified interval, places the information in an array, events
 
 
-Gathers the comments posted by a user during a specified intervall: row 70 - 81
+Gathers the comments: row 70 - 81
 -------------------------------------------------------------------------------
-places the information in an array, comment
+Gathers the comments posted by a user during a specified interval, places the information in an array, comment
 
 
-Gathers the number of rows changed in each file: row 82 - 93
+Number of rows changed: row 82 - 93
 ------------------------------------------------------------
-places the information in an array, file
+Gathers the number of rows changed in each file, places the information in an array, file
+
+
+
+
+
+* Presenting the information ************************************************************************
+******************************
+
+Presenting the information: row 94 - 109
+-----------------------------------------------------------------
+All information gathered is put into an array and encoded to JSON and echoed out.
 
