@@ -6263,6 +6263,8 @@ function generateContextProperties()
                 //fixed Triangle=/=TRIANGLE with toUpperCase()
                 //check if there even is a starticon first
                 if (contextLine[0].startIcon != undefined){
+                    console.log("icon is " + icon);
+                    console.log("startIcon is " + contextLine[0].startIcon);
                     //check if its white or black diamond since these wont be caught otherwise
                     if ((contextLine[0].startIcon == "White_Diamond") && icon == "WHITEDIAMOND") {
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
