@@ -6280,13 +6280,21 @@ function generateContextProperties()
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 } */
                 //this covers Triangle and Arrow.
-                //TODO add for Black and white diamond.
                 //TODO i assume the weird icons are IE
                 if (contextLine[0].startIcon != undefined && contextLine[0].startIcon.toUpperCase() == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                     console.log("icon is " + icon);
                     console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
-                }else {
+                }
+                //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                else if ((contextLine[0].startIcon != undefined) && (contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                }
+                else if ((contextLine[0].startIcon != undefined) && (contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                }
+                else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                     /* console.log("icon is " + icon);
                     console.log("startIcon is " + contextLine[0].startIcon.toUpperCase()); */
