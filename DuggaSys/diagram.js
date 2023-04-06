@@ -6255,8 +6255,25 @@ function generateContextProperties()
                 //TODO icon and contextLine[0].startIcon will never be the same:
                 //staricon can, for example, be Triangle, while icon is TRIANGLE
                 //whats worse is that starticon can be White_Diamond while icon is WHITEDIAMOND
-                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
+                /* if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
                     str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                }else {
+                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                } */
+                //fixed Triangle=/=TRIANGLE with toUpperCase
+                //check if there even is a starticon first
+                if (contextLine[0].startIcon != undefined){
+                    //check if its white or black diamond since these wont be caught otherwise
+                    if ((contextLine[0].startIcon == "White_Diamond") && icon == "WHITEDIAMOND") {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if ((contextLine[0].startIcon == "Black_Diamond") && icon == "BLACKDIAMOND") {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if (toUpperCase(contextLine[0].startIcon) == icon) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    //str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
                 }else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
