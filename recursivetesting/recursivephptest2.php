@@ -8,6 +8,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
+<style>
+    table, tr {
+        border: 1px;
+        border-color: black;
+        border-style: solid;
+    }
+    table > p, tr > p, td > p {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .key {
+        width: 150px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .value {
+        width: 800px;
+        font-style: italic;
+        font-size: 14px;
+    }
+</style>
+
 <body>
     <?php
     BFS();
@@ -35,19 +56,20 @@
             foreach ($dataArr as $key => $value) {
                 if (is_array($value) == true) {
                     foreach ($value as $key2 => $value2) {
-                        echo "<td>" . $key2 . "</td>";
-                        echo "<td>" . $value2 . "</td>";
+                            echo "<td class='key'>" . $key2 . "</td>";
+                            echo "<td class='value'>" . $value2 . "</td></tr>";
                     }
                 } else {
-                    echo "<td>" . $key . "</td></tr>";
-                    echo "<td>" . $value . "</td></tr>";
+                    if($value !== null) {
+                        echo "<td class='key'>" . $key . "</td>";
+                        echo "<td class='value'>" . $value . "</td></tr>";
+                    }
                 }
                 if ($key == "git_url") {
                     $savedURL = $value;
                 }
                 if ($value == "dir") {
-                    echo "<tr><td>" . $savedURL . "</td></tr>";
-                    // Denna körs endast på dir-objekt, kan potentiellt användas för att rekursivt kolla då $savedURL nu är git_url:en.
+                    //BFS($savedURL) causes API-Fetch limit
                 }
             }
             // if ($value["type"] == "dir") {
