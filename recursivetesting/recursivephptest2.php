@@ -10,8 +10,9 @@
 
 <body>
     <?php
-    checkURL("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/");
-    function checkURL($URL) {
+    BFS();
+    function checkURL($URL)
+    {
         $opts = [
             'http' => [
                 'method' => 'GET',
@@ -20,35 +21,44 @@
                 ]
             ]
         ];
-        $stream = stream_context_create($opts);
-        $streamGet = file_get_contents($URL, false, $stream);
+        $context = stream_context_create($opts);
+        $streamGet = file_get_contents($URL, true, $context);
         $data = json_decode($streamGet, true);
-        BFS($data);
+        return $data;
     }
 
-    function BFS($data) {
-        checkURL("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/");
+    function BFS()
+    {
+        $data = checkURL("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/");
         foreach ($data as $dataArr) {
             echo "<table style='border: 1px solid black'>";
             foreach ($dataArr as $key => $value) {
                 if (is_array($value) == true) {
                     foreach ($value as $key2 => $value2) {
-                        echo "<tr><td>" . $key2 . "</td>";
-                        echo "<td>" . $value2 . "</td></tr>";
+                        echo "<td>" . $key2 . "</td>";
+                        echo "<td>" . $value2 . "</td>";
                     }
                 } else {
                     echo "<td>" . $key . "</td></tr>";
                     echo "<td>" . $value . "</td></tr>";
                 }
-                if ($value["type"] == "dir") {
-                    $finalValue = json_decode($value);
-                    echo "<p>" . ($finalValue) . "</p>";
-                    // TODO: Implement recursive checking of urls within git_url when $value of the "type" attribute == "dir"
+                if ($key == "git_url") {
+                    $savedURL = $value;
+                }
+                if ($value == "dir") {
+                    echo "<tr><td>" . $savedURL . "</td></tr>";
+                    // Denna körs endast på dir-objekt, kan potentiellt användas för att rekursivt kolla då $savedURL nu är git_url:en.
                 }
             }
-            echo "</table>";
+            // if ($value["type"] == "dir") {
+            //     $finalValue = json_decode($value);
+            //     echo "<p>" . ($finalValue) . "</p>";
+            //     // TODO: Implement recursive checking of urls within git_url when $value of the "type" attribute == "dir"
+            // }
         }
+        echo "</table>";
     }
+
     ?>
 </body>
 
