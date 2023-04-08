@@ -31,7 +31,7 @@
 
 <body>
     <?php
-    BFS();
+    CheckURL("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/");
     function checkURL($URL)
     {
         $opts = [
@@ -45,12 +45,11 @@
         $context = stream_context_create($opts);
         $streamGet = file_get_contents($URL, true, $context);
         $data = json_decode($streamGet, true);
-        return $data;
+        BFS($data);
     }
 
-    function BFS()
+    function BFS($data)
     {
-        $data = checkURL("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/");
         foreach ($data as $dataArr) {
             echo "<table style='border: 1px solid black'>";
             foreach ($dataArr as $key => $value) {
@@ -69,7 +68,7 @@
                     $savedURL = $value;
                 }
                 if ($value == "dir") {
-                    //BFS($savedURL) causes API-Fetch limit
+                    checkURL($savedURL);
                 }
             }
             // if ($value["type"] == "dir") {
