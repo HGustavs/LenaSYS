@@ -9,11 +9,18 @@
 </head>
 
 <style>
-    table,
-    tr {
-        border: 1px;
-        border-color: black;
-        border-style: solid;
+    table {
+        width: 1500px;
+        margin: 0 auto;
+        border-collapse: collapse;
+        text-align: left;
+        border: 1px solid black;
+    }
+
+    th, td, tr {
+        width: 250px;
+        padding: 10px;
+        border: 1px solid black;
     }
 
     table>p,
@@ -21,30 +28,19 @@
     td>p {
         font-family: Arial, Helvetica, sans-serif;
     }
-
-    .key {
-        width: 150px;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .value {
-        width: 800px;
-        font-style: italic;
-        font-size: 14px;
-    }
 </style>
 
 <body>
     <?php
-    BFS('https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/');
+    BFS('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
     function BFS($url)
     {
         $opts = [
             'http' => [
                 'method' => 'GET',
                 'header' => [
-                    'User-Agent: PHP'
+                    'User-Agent: PHP',
+                    'Authorization: Bearer YOUR_GITHUB_API_KEY' // Replace YOUR_GITHUB_API_KEY with your actual GitHub API key
                 ]
             ]
         ];
@@ -60,7 +56,7 @@
                 echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                 // Checks if the fetched item is of type 'dir'
             } else if ($item['type'] == 'dir') {
-                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">' . $item['html_url'] . '</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
+                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                 BFS($item['url']);
             }
             echo "</table>";
