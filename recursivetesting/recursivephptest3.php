@@ -48,8 +48,13 @@
 
 <body>
     <?php
-    BFS('https://api.github.com/repos/a21olljo/Webbprogrammering-Examples/contents/');
-    function BFS($url)
+    
+    bfs('https://api.github.com/repos/a21olljo/Webbprogrammering-Examples/contents/', [], []);
+
+
+    
+        
+    function bfs($url, $fifoQueue, $visited)
     {
         $opts = [
             'http' => [
@@ -60,10 +65,10 @@
                 ]
             ]
         ];
+
         $context = stream_context_create($opts);
         $data = file_get_contents($url, true, $context);
         $json = json_decode($data, true);
-        $toSearch = array();
 
         // Loops through each item fetched in the JSON data
         foreach ($json as $item) {
@@ -79,19 +84,26 @@
             } else if ($item['type'] == 'dir') {
                 echo '<br><table class="' . $table_class . '"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                 echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
-                array_push($toSearch, $item);
+                array_push($fifoQueue, $item);
             }
             echo "</table>";
         }
 
+
+        foreach ($visited as $item) {
+            if (($key = array_search($item, $fifoQueue)) !== false) {
+                unset($fifoQueue[$key]);
+            }
+        }
+
         // After filtering out the dirs above the dirs are searched 
-        foreach ($toSearch as $item) {
+        foreach ($fifoQueue as $item) {
             echo '<br><table class="dir"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
             echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
-            BFS($item['url']);
+            array_push($visited, $item);
+            BFS($item['url'], $fifoQueue, $visited);
         }
     }
-
     ?>
 </body>
 
