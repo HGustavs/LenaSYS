@@ -44,7 +44,7 @@
 
 <body>
     <?php
-    BFS('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
+    BFS('https://api.github.com/repos/a21olljo/Webbprogrammering-Examples/contents/');
     function BFS($url)
     {
         $opts = [
@@ -59,6 +59,7 @@
         $context = stream_context_create($opts);
         $data = file_get_contents($url, true, $context);
         $json = json_decode($data, true);
+        $toSearch = array();
 
         // Loops through each item fetched in the JSON data
         foreach ($json as $item) {
@@ -74,9 +75,12 @@
             } else if ($item['type'] == 'dir') {
                 echo '<br><table class="' . $table_class . '"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                 echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
-                BFS($item['url']);
+                array_push($toSearch, $item['url']);
             }
             echo "</table>";
+        }
+        foreach ($toSearch as $item) {
+            BFS($item);
         }
     }
 
