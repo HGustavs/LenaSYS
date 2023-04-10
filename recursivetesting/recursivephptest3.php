@@ -31,15 +31,15 @@
     }
 
     .path1 {
-        background-color: #FFCCCC;
+        background-color: #FF6961;
     }
 
     .path2 {
-        background-color: #CCFFCC;
+        background-color: #FFB347;
     }
 
     .path3 {
-        background-color: #CCCCFF;
+        background-color: #FDFD96;
     }
 </style>
 
