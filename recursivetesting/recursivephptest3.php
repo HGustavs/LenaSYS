@@ -54,13 +54,13 @@
 
         // Loops through each item fetched in the JSON data
         foreach ($json as $item) {
-            echo '<table><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th></tr>';
+            echo '<table><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
             // Checks if the fetched item is of type 'file'
             if ($item['type'] == 'file') {
-                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">' . $item['html_url'] . '</a></td></tr>';
+                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                 // Checks if the fetched item is of type 'dir'
             } else if ($item['type'] == 'dir') {
-                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">' . $item['html_url'] . '</a></td></tr>';
+                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">' . $item['html_url'] . '</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                 BFS($item['url']);
             }
             echo "</table>";
