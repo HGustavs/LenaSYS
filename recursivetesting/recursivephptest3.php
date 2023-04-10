@@ -52,7 +52,7 @@
                 'method' => 'GET',
                 'header' => [
                     'User-Agent: PHP',
-                    'Authorization: Bearer YOUR_GITHUB_API_KEY' // Replace YOUR_GITHUB_API_KEY with your actual GitHub API key
+                    // 'Authorization: Bearer YOUR_GITHUB_API_KEY' // Replace YOUR_GITHUB_API_KEY with your actual GitHub API key
                 ]
             ]
         ];
