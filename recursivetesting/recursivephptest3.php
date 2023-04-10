@@ -40,6 +40,10 @@
     .path3 {
         background-color: #FDFD96;
     }
+
+    .dir {
+        background-color: #0372ef;
+    }
 </style>
 
 <body>
@@ -75,12 +79,16 @@
             } else if ($item['type'] == 'dir') {
                 echo '<br><table class="' . $table_class . '"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                 echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
-                array_push($toSearch, $item['url']);
+                array_push($toSearch, $item);
             }
             echo "</table>";
         }
+
+        // After filtering out the dirs above the dirs are searched 
         foreach ($toSearch as $item) {
-            BFS($item);
+            echo '<br><table class="dir"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
+            echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
+            BFS($item['url']);
         }
     }
 
