@@ -17,7 +17,9 @@
         border: 1px solid black;
     }
 
-    th, td, tr {
+    th,
+    td,
+    tr {
         width: 250px;
         padding: 10px;
         border: 1px solid black;
@@ -27,6 +29,18 @@
     tr>p,
     td>p {
         font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .path1 {
+        background-color: #FFCCCC;
+    }
+
+    .path2 {
+        background-color: #CCFFCC;
+    }
+
+    .path3 {
+        background-color: #CCCCFF;
     }
 </style>
 
@@ -50,8 +64,11 @@
 
         // Loops through each item fetched in the JSON data
         foreach ($json as $item) {
-            echo '<table><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-            // Checks if the fetched item is of type 'file'
+            // Count the number of slashes in the path
+            $path_count = substr_count($item['path'], '/');
+            // Determine the class of the table element based on the path count
+            $table_class = 'path' . ($path_count + 1);
+            echo '<table class="' . $table_class . '"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';            // Checks if the fetched item is of type 'file'
             if ($item['type'] == 'file') {
                 echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                 // Checks if the fetched item is of type 'dir'
