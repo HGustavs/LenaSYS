@@ -9,19 +9,25 @@
 </head>
 
 <style>
-    table, tr {
+    table,
+    tr {
         border: 1px;
         border-color: black;
         border-style: solid;
     }
-    table > p, tr > p, td > p {
+
+    table>p,
+    tr>p,
+    td>p {
         font-family: Arial, Helvetica, sans-serif;
     }
+
     .key {
         width: 150px;
         font-weight: bold;
         font-size: 16px;
     }
+
     .value {
         width: 800px;
         font-style: italic;
@@ -31,8 +37,8 @@
 
 <body>
     <?php
-    CheckURL("https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/");
-    function checkURL($URL)
+    BFS('https://api.github.com/repos/HGustavs/Webbprogrammering-Examples/contents/');
+    function BFS($url)
     {
         $opts = [
             'http' => [
@@ -43,23 +49,22 @@
             ]
         ];
         $context = stream_context_create($opts);
-        $streamGet = file_get_contents($URL, true, $context);
-        $data = json_decode($streamGet, true);
-        BFS($data);
-    }
+        $data = file_get_contents($url, true, $context);
+        $json = json_decode($data, true);
 
-    function BFS($data)
-    {
-        foreach ($data as $item) {
-            echo "<table style='border: 1px solid black'>";
-            if($item['type'] == 'file') {
-            
+        // Loops through each item fetched in the JSON data
+        foreach ($json as $item) {
+            echo '<table><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th></tr>';
+            // Checks if the fetched item is of type 'file'
+            if ($item['type'] == 'file') {
+                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">' . $item['html_url'] . '</a></td></tr>';
+                // Checks if the fetched item is of type 'dir'
+            } else if ($item['type'] == 'dir') {
+                echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">' . $item['html_url'] . '</a></td></tr>';
+                BFS($item['url']);
             }
-            else if($item['type'] == 'dir') {
-
-            }
+            echo "</table>";
         }
-        echo "</table>";
     }
 
     ?>
