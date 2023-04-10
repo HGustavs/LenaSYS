@@ -10,7 +10,6 @@
 
 <style>
     table {
-        width: 1500px;
         margin: 0 auto;
         border-collapse: collapse;
         text-align: left;
@@ -20,7 +19,7 @@
     th,
     td,
     tr {
-        width: 250px;
+        width: 350px;
         padding: 10px;
         border: 1px solid black;
     }
