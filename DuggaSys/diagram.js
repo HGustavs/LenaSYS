@@ -1145,7 +1145,7 @@ function onSetup()
     const NumberDEPARTMENT_ID = makeRandomID();
     const Number_of_employees_ID = makeRandomID();
 
-    const demoData = [
+   /* const demoData = [
  
         { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "EREntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID , isLocked: false, state: "normal", type: "ER", attributes: ['-attribute'], functions: ['+function'] },
         { name: "Bdale", x: 30, y: 30, width: 90, height: 45, kind: "ERAttr", fill: "#ffffff", stroke: "#000000", id: Bdale_ID, isLocked: false, state: "normal",  type: "ER" },
@@ -1222,7 +1222,7 @@ function onSetup()
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
-    ];
+    ]; */
 
     for(var i = 0; i < demoData.length; i++){
         addObjectToData(demoData[i], false);
@@ -1327,7 +1327,7 @@ function onSetup()
 function getData()
 { //find me
     container = document.getElementById("container");
-   // onSetup();
+    onSetup();
     generateToolTips();
     toggleGrid();
     updateGridPos();
