@@ -2805,15 +2805,29 @@ $(document).on('keydown', function(e) {
 	}
 });
 
-function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE 
+async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE 
 
 	var parameterString = [opt, apara, kind];
-	var TestJSON = JSON.stringify(parameterString);
-	var testData = new FormData();
-	testData.append("upfile", testData);
-	fetch("basic.php", { method: "POST", body: testData });
-	console.log(TestJSON);
+	TestJSON = JSON.stringify(parameterString);
 
+	try {
+		const response = await fetch("log.php", {
+			method: "POST",
+			header: {
+				"Content-Type": "application/Json",
+			},
+			body: TestJSON,
+		});
+
+	}
+	//var TestJSON = JSON.stringify(parameterString);
+	//var testData = new FormData();
+	//testData.append("upfile", testData);
+	//fetch("basic.php", { method: "POST", body: testData });
+	//console.log(TestJSON);
+
+	//var testString = "TESTing";
+	//fetch("log.php", { method: "POST", body: testString });
 }
 
 
