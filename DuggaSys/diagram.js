@@ -1325,20 +1325,20 @@ function onSetup()
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
 function getData()
-{
+{ //find me
     container = document.getElementById("container");
-    onSetup();
+   // onSetup();
     generateToolTips();
     toggleGrid();
     updateGridPos();
     updateA4Pos();
     updateGridSize();
-   // showdata();
+    showdata();
     drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
-   // find me  saveDiagramBeforeUnload();
+    saveDiagramBeforeUnload();
 }
 //<-- UML functionality start
 /**
