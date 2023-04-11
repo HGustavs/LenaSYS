@@ -8355,7 +8355,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxw/2) - 10)}px; width:${boxw}px;height:${boxh/2}px;`;
+        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
        
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -8367,7 +8367,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
       
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
+        str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
         if (element.state == 'overlapping') {
