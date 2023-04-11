@@ -2927,7 +2927,7 @@ function validateVersionName(versionName, dialogid) {
   } else {
     $(x).fadeIn();
     name.style.borderColor = "#E54";
-    //name.style.backgroundColor = "#f57";
+    name.style.backgroundColor = "#f57";
     //x.style.display = "block";
     name.style.borderWidth = "2px";
 
@@ -2960,7 +2960,7 @@ function validateCourseID(courseid, dialogid) {
   } else {
     $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    //code.style.backgroundColor = "#f57";
+    code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
     //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
     //x2.style.display = "block";
@@ -3069,8 +3069,8 @@ function validateDate(startDate, endDate, dialogID) {
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
-    //sdate.style.backgroundColor = "#f57";
-    //edate.style.backgroundColor = "#f57";
+    sdate.style.backgroundColor = "#f57";
+    edate.style.backgroundColor = "#f57";
     $(x3).fadeIn();
     x3.innerHTML = "Start date has to be before end date";
     //x3.style.display = "block";
