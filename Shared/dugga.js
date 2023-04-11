@@ -2807,19 +2807,19 @@ $(document).on('keydown', function(e) {
 
 async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE 
 
-	var parameterString = [opt, apara, kind];
-	TestJSON = JSON.stringify(parameterString);
+	//var parameterString = [opt, apara, kind];
+	//TestJSON = JSON.stringify(parameterString);
 
-	try {
-		const response = await fetch("log.php", {
-			method: "POST",
-			header: {
-				"Content-Type": "application/Json",
-			},
-			body: TestJSON,
-		});
+	//try {
+	//	const response = await fetch("log.php", {
+	//		method: "POST",
+	//		header: {
+	//			"Content-Type": "application/Json",
+	//		},
+	//		body: TestJSON,
+	//	});
 
-	}
+	//}
 	//var TestJSON = JSON.stringify(parameterString);
 	//var testData = new FormData();
 	//testData.append("upfile", testData);
