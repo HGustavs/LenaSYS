@@ -737,7 +737,8 @@ const keybinds = {
         PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
         PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
-        IE_INHERITANCE: {key: "9", ctrl: false},  //<-- IE inheritance functionality
+        IE_INHERITANCE: { key: "9", ctrl: false },  //<-- IE inheritance functionality
+        PLACE_SDENTITY: { key: "1", ctrl: true },   //<-- SD functionality
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -1833,6 +1834,14 @@ document.addEventListener('keyup', function (e)
         //Temp for IE entity
         if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
             setElementPlacementType(elementTypes.IEEntity)
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        //======================================================
+
+        //=================================================== //<-- SD functionality
+        //Temp for SD entity
+        if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
+            setElementPlacementType(elementTypes.SDEntity)
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
         //======================================================
