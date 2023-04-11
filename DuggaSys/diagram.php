@@ -22,7 +22,8 @@
     $hash = getOPG('hash');
 	$finalArray = array();
 	
-	#create request to database and execute it
+    
+	#create request to database and execute it 
 	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
 	$response->execute();
 	$i=0;
@@ -80,9 +81,9 @@
 				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
 					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
 			}
-
+            
 			#Think this removes certain escape string characters.
-			$pattern = '/\s*/m';
+			$pattern = '/\s*/m'; 
 			$replace = '';
 			$instructions = preg_replace( $pattern, $replace,$instructions);
 			$information = preg_replace( $pattern, $replace,$information);
@@ -93,6 +94,7 @@
 	}
 	#closes pdo connection to database. Causes error if not used as query results are stockpiled and prevents next query usage.
 	$response->closeCursor();
+    
 
 	#after itterating through query results, finally load the json file content into $fileContent variable.
 	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
@@ -189,8 +191,8 @@
 	function getVariantParam()
 	{
 		var variantArray = [<?php echo "'$variantParams'"?>];
-		variantArray.push(<?php echo "$cid"?>);
-		variantArray.push(<?php echo "$vers"?>);
+		variantArray.push(<?php echo "'$cid'"?>);
+		variantArray.push(<?php echo "'$vers'"?>);
 		variantArray.push(<?php echo "'$splicedFileName'"?>);
 		variantArray.push(<?php echo "'$fileContent'"?>);
 		return variantArray;
@@ -488,6 +490,22 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <!-- UML Initial state selection -->
+                <div id="elementPlacement8" class="diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_initial_state.svg"/>
+                    <span class="toolTipText"><b>UML initial state</b><br>
+                        <p>Creates an initial state for UML.</p><br>
+                        <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <!-- UML Final state selection -->
+                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_final_state.svg"/>
+                    <span class="toolTipText"><b>UML final state</b><br>
+                        <p>Creates a final state for UML.</p><br>
+                        <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
@@ -605,7 +623,7 @@
     
     <!-- Diagram grid -->
     <div id="svggrid" style="z-index:-11">
-        <svg id="svgbacklayer">
+        <svg id="svgbacklayer" class="svgbacklayer-background">
             <defs>
             <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
 
@@ -642,12 +660,13 @@
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
+                <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style='position: absolute; top: 33%;'>
+            <fieldset class='options-fieldset options-section' style='position: absolute; top: 35%; margin-top: 2%;'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
