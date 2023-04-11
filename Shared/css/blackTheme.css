@@ -1095,3 +1095,24 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   fill: black;
   stroke: white;
 }
+
+/* Diagram Messages */
+#diagram-message {
+    color: black;
+}
+
+#diagram-message > div {
+    box-shadow: 6px 6px 10px #00000077;
+}
+
+#diagram-message > div.success {
+    background-color: rgb(39, 152, 39);
+}
+
+#diagram-message > div.warning {
+    background-color: rgb(202, 149, 15);
+}
+
+#diagram-message > div.error {
+    background-color: rgb(252, 58, 44);
+}
