@@ -8601,7 +8601,6 @@ function checkEREntityErrors(element) {
     var primaryCount;
     var strongEntity;
     var weakrelation;
-    var lineQuantity;
 
     // Checks for entities with the same name
     for (var i = 0; i < data.length; i++) {
