@@ -1327,28 +1327,19 @@ function onSetup()
  */
 function getData()
 {
-    console.log("started");
     container = document.getElementById("container");
-    console.log("onSetup");
     onSetup();
-    console.log("generateToolTips");
     generateToolTips();
-    console.log("toggleGrid");
     toggleGrid();
-    console.log("updateGridPos");
     updateGridPos();
-    console.log("updateA4Pos");
     updateA4Pos();
-    console.log("updateGridSize");
     updateGridSize();
-    console.log("reached showData");
     showdata();
     drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
-    console.log("finsihed getData");
 }
 //<-- UML functionality start
 /**
