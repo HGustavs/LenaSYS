@@ -761,6 +761,8 @@ const keybinds = {
         TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
+        STATE_INITIAL: { key: "<" , ctrl: false },
+        STATE_FINAL: { key: "<" , ctrl: true },
 };
 
 /** 
@@ -785,6 +787,8 @@ const elementTypes = {
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
+    UMLInitialState: 8,
+    UMLFinalState: 9
 };
 
 /**
@@ -798,7 +802,9 @@ const elementTypesNames = {
     Ghost: "Ghost",
     UMLEntity: "UMLEntity",
     IEEntity: "IEEntity",
-    IERelation: "IERelation"
+    IERelation: "IERelation",
+    UMLInitialState: "UMLInitialState",
+    UMLFinalState: "UMLFinalState"
 }
 
 /**
@@ -843,6 +849,7 @@ const entityType = {
     UML: "UML",
     ER: "ER",
     IE: "IE",
+    UML_STATE: "UML_STATE"
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -850,7 +857,6 @@ const entityType = {
 const entityState = {
     NORMAL: "normal",
     WEAK: "weak",
-
 };
 
 /**
@@ -1093,6 +1099,9 @@ var defaults = {
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
 
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" } // UML Final state.
+
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1111,7 +1120,8 @@ var allAttrToEntityRelations = [];
 // Array for attributes connected with eachother
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
-function onSetup()
+//Function to draw the predrawn diagram for diagram.php
+/*function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
     const Bdale_ID = makeRandomID();
@@ -1223,7 +1233,7 @@ function onSetup()
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
-    ];
+    ]; 
 
     for(var i = 0; i < demoData.length; i++){
         addObjectToData(demoData[i], false);
@@ -1316,17 +1326,19 @@ function onSetup()
         addObjectToLines(demoLines[i], false);
     }
 
-    // Global statemachine init
-    stateMachine = new StateMachine(data, lines);
+   
+    
 
     fetchDiagramFileContentOnLoad();
-}
-
+}*/
+//was in onSetup function moved it out 
+ // Global statemachine init
+stateMachine = new StateMachine(data, lines);
 /**
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
 function getData()
-{
+{ 
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
     onSetup();
@@ -1650,6 +1662,16 @@ document.addEventListener('keyup', function (e)
         }
         //======================================================
 
+        if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
+            setElementPlacementType(elementTypes.UMLInitialState);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+
+        if (isKeybindValid(e, keybinds.STATE_FINAL)) {
+            setElementPlacementType(elementTypes.UMLFinalState);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+
         if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
@@ -1873,7 +1895,7 @@ function mdown(event)
  * @param {MouseEvent} event Triggered mouse event.
  */
 function ddown(event)
-{   
+{
     // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0) && mouseMode != mouseModes.EDGE_CREATION) {
         hasPressedDelete = checkDeleteBtn();
@@ -3473,7 +3495,8 @@ function entityIsOverlapping(id, x, y)
  * @see mouseModes For all available enum values.
  */
 function setMouseMode(mode)
-{   
+{
+    console.log(mode);
     if (enumContainsPropertyValue(mode, mouseModes)) {
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
@@ -7078,7 +7101,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     // Prevent a line to be drawn between UML- and ER-elements.
-    if (fromElement.type != toElement.type) {
+    if (fromElement.type != toElement.type && fromElement.type != "UML_STATE") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
     }
@@ -8114,7 +8137,7 @@ function drawRulerBars(X,Y)
     const lineRatio3 = 100;
     
     var barY, barX = "";
-    const color = "#000000";
+    const color = "#ffffff";
     var cordY = 0;
     var cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
@@ -8139,12 +8162,12 @@ function drawRulerBars(X,Y)
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
-            barY += "<text x='10' y='"+(pannedY+i+10)+"'style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<text x='10' y='"+(pannedY+i+10)+"'style='font-size: 10px' fill='white'>"+cordY+"</text>";
             cordY = cordY +10;
         }else if(zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
             //centi
             if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
-                barY += "<text x='20' y='"+(pannedY+i+10)+"'style='font-size: 8px'>"+(cordY-10+lineNumber/10)+"</text>";
+                barY += "<text x='20' y='"+(pannedY+i+10)+"'style='font-size: 8px' fill='white'>"+(cordY-10+lineNumber/10)+"</text>";
                 barY += "<line x1='20px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
             }else{
                 barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
@@ -8169,12 +8192,12 @@ function drawRulerBars(X,Y)
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
             barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
-            barY += "<text x='10' y='"+(pannedY-i+10)+"' style='font-size: 10px'>"+cordY+"</text>";
+            barY += "<text x='10' y='"+(pannedY-i+10)+"' style='font-size: 10px' fill='white'>"+cordY+"</text>";
             cordY = cordY -10;
         }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             if ((zoomfact > 0.5 || (lineNumber/10) % 5 == 0)  && (cordY+10-lineNumber/10) != 0){
-                barY += "<text x='20' y='"+(pannedY-i+10)+"' style='font-size: 8px'>"+(cordY+10-lineNumber/10)+"</text>";
+                barY += "<text x='20' y='"+(pannedY-i+10)+"' style='font-size: 8px' fill='white'>"+(cordY+10-lineNumber/10)+"</text>";
                 barY += "<line x1='20px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
             }else{
                 barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
@@ -8189,7 +8212,7 @@ function drawRulerBars(X,Y)
 
         }
     }
-    svgY.style.backgroundColor = "#e6e6e6";
+    svgY.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
@@ -8202,12 +8225,12 @@ function drawRulerBars(X,Y)
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
             barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px' fill='white'>"+cordX+"</text>";
             cordX = cordX +10;
         }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
-                barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='25' style='font-size: 8px'>"+(cordX-10+lineNumber/10)+"</text>";
+                barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='25' style='font-size: 8px' fill='white'>"+(cordX-10+lineNumber/10)+"</text>";
                 barX += "<line x1='" +(i+pannedX)+"' y1='20' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
             }else{
                 barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
@@ -8233,12 +8256,12 @@ function drawRulerBars(X,Y)
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
             barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
+            barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px' fill='white'>"+cordX+"</text>";
             cordX = cordX -10;
         }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             if ((zoomfact > 0.5 || (lineNumber/10) % 5 == 0) &&(cordX+10-lineNumber/10) != 0){
-                barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='25'style='font-size: 8px'>"+(cordX+10-lineNumber/10)+"</text>";
+                barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='25'style='font-size: 8px' fill='white'>"+(cordX+10-lineNumber/10)+"</text>";
                 barX += "<line x1='" +(pannedX-i)+"' y1='20' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
             }else{
                 barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
@@ -8253,7 +8276,7 @@ function drawRulerBars(X,Y)
         }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
-    svgX.style.backgroundColor = "#e6e6e6";
+    svgX.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 /**
@@ -8401,12 +8424,53 @@ function drawElement(element, ghosted = false)
         }
         //end of div for UML footer
         str += `</div>`;
+
+    }
+    else if (element.kind == 'UMLInitialState') {
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        str += `<div id="${element.id}" 
+                     class="element uml-state"
+                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
+                     onmousedown='ddown(event);' 
+                     onmouseenter='mouseEnter();' 
+                     onmouseleave='mouseLeave();'>
+                        <svg width="100%" height="100%" 
+                             viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg" 
+                             xml:space="preserve"
+                             style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                            <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
+                                <circle cx="16.5" cy="12.5" r="10.5"/>
+                            </g>
+                        </svg>
+                </div>`;
+        console.log(boxh);
+    }
+    else if (element.kind == 'UMLFinalState') {
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        str += `<div id="${element.id}" 
+                     class="element uml-state"
+                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     onmousedown='ddown(event);' 
+                     onmouseenter='mouseEnter();' 
+                     onmouseleave='mouseLeave();'>
+                        <svg width="100%" height="100%"
+                             viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg"
+                             xml:space="preserve"
+                             style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                            <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
+                            <g style="fill:${element.fill}" transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)">
+                                <circle cx="14.5" cy="14.5" r="7.5"/>
+                            </g>
+                        </svg>
+                </div>`;
     }
     //Check if element is UMLRelation
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:5px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -10848,9 +10912,9 @@ function drawSelectionBox(str)
  */
 function updateCSSForAllElements()
 {
-    
     function updateElementDivCSS(elementData, divObject, useDelta = false)
     {
+
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
             top = Math.round((((elementData.y - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
@@ -10897,7 +10961,6 @@ function updateCSSForAllElements()
     for (var i = 0; i < data.length; i++) {
         // Element data from the array
         var element = data[i];
-
         // Element DIV (dom-object)
         var elementDiv = document.getElementById(element.id);
 
@@ -10913,6 +10976,7 @@ function updateCSSForAllElements()
             var disjointLine2Color;
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
+
             // Edge creation does not highlight selected elements
             if(mouseMode != mouseModes.EDGE_CREATION){
                 // Update UMLEntity
@@ -10925,7 +10989,9 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
+
                             fontContrast();
+
                         }
                     }
                 }
@@ -10944,19 +11010,24 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update Elements with double borders.
-                else if(element.state == "weak" || element.state == "multiple"){
-                    for (let index = 0; index < 2; index++){
+                else if(element.state == "weak" || element.state == "multiple") {
+                    for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
+
                         if(markedOverOne()){
+
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
-                        } else{
+                        } else {
                             fillColor.style.fill = `${element.fill}`;
+
                             fontContrast();
+
                         }
                     }
-                }else{ // Update normal elements, and relations
+                }
+                else { // Update normal elements, and relations
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
@@ -11104,35 +11175,38 @@ function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
 	let allTexts = document.getElementsByClassName('text');
-    //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
-	let cssUrl = localStorage.getItem('themeBlack');
-	//this turns, for example, '.../Shared/css/style.css' into just 'style.css'
-	cssUrl = cssUrl.split("/").pop();
-	if(cssUrl == 'blackTheme.css'){
-        //iterate through all the elements that have the class 'text'.
-		for (let i = 0; i < allTexts.length; i++) {
-			let text = allTexts[i];
-            //assign their current stroke color to a variable.
-			let strokeColor = text.getAttribute('stroke');
-			//if the element has a stroke which has the color #383737: set it to white.
-			//this is because we dont want to affect the strokes that are null or other colors.
-			if (strokeColor == '#383737') {
-				strokeColor = '#ffffff';
-				text.setAttribute('stroke', strokeColor);
-			}	
-		}
-	}
-	//if the theme isnt darkmode, make the stroke gray.
-	else{
-		for (let i = 0; i < allTexts.length; i++) {
-			let text = allTexts[i];
-			let strokeColor = text.getAttribute('stroke');
-			if (strokeColor == '#ffffff') {
-				strokeColor = '#383737';
-				text.setAttribute('stroke', strokeColor);
-			}
-		}
-	}
+    if (localStorage.getItem('themeBlack') != null) {
+        //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
+	    let cssUrl = localStorage.getItem('themeBlack');
+        //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
+        cssUrl = cssUrl.split("/").pop();
+    
+        if(cssUrl == 'blackTheme.css'){
+            //iterate through all the elements that have the class 'text'.
+            for (let i = 0; i < allTexts.length; i++) {
+                let text = allTexts[i];
+                //assign their current stroke color to a variable.
+                let strokeColor = text.getAttribute('stroke');
+                //if the element has a stroke which has the color #383737: set it to white.
+                //this is because we dont want to affect the strokes that are null or other colors.
+                if (strokeColor == '#383737') {
+                    strokeColor = '#ffffff';
+                    text.setAttribute('stroke', strokeColor);
+                }	
+            }
+        }
+        //if the theme isnt darkmode, make the stroke gray.
+        else{
+            for (let i = 0; i < allTexts.length; i++) {
+                let text = allTexts[i];
+                let strokeColor = text.getAttribute('stroke');
+                if (strokeColor == '#ffffff') {
+                    strokeColor = '#383737';
+                    text.setAttribute('stroke', strokeColor);
+                }
+            }
+        }
+    }
 }
 /**
  * @description Redraw all elements and lines
