@@ -1550,6 +1550,15 @@ function returnedSection(data) {
           }
         }
 
+        // Refresh button
+        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;'>`;
+          str += `<img style='width:16px' alt='refresh icon' tabIndex='0' 
+                  id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+          str += " onclick='refreshCodeExample()'"
+          str += "</td>";
+        }
+
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
@@ -3444,6 +3453,14 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+}
+
+//------------------------------------------------------------------------------
+// This method is to be used to check if a code example should re-fetch the
+// contents of a code example based on eventual changes in external github-repo
+//------------------------------------------------------------------------------
+function refreshCodeExample(){
+  console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
 }
 
 //------------------------------------------------------------------------------
