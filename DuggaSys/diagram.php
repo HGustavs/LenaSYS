@@ -432,6 +432,22 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <!-- UML Initial state selection -->
+                <div id="elementPlacement8" class="diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_initial_state.svg"/>
+                    <span class="toolTipText"><b>UML initial state</b><br>
+                        <p>Creates an initial state for UML.</p><br>
+                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <!-- UML Final state selection -->
+                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_final_state.svg"/>
+                    <span class="toolTipText"><b>UML final state</b><br>
+                        <p>Creates a final state for UML.</p><br>
+                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <fieldset>
             <legend>Zoom</legend>
