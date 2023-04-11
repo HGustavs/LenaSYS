@@ -1062,6 +1062,7 @@ function AJAXService(opt,apara,kind)
 				data: "cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedFile
+					console.log("TEST TEST TEST "); // USED FOR TESTING AND IS TO BE REMOVED
 			})
 	}else if(kind=="ACCESS"){
 			$.ajax({
@@ -1184,7 +1185,6 @@ function AJAXService(opt,apara,kind)
 			data: "opt="+opt+para,
 			dataType: "json",
 			success: returnedQuiz
-			console.log("TEST TEST TEST "); // USED FOR TESTING AND IS TO BE REMOVED
 		});
 	} else if(kind=="DUGGAFEEDBACK") {
 		$.ajax({
