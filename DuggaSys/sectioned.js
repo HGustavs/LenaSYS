@@ -2937,7 +2937,11 @@ function validateVersionName(versionName, dialogid) {
     $(x).fadeOut();
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
+
+    //name.style.backgroundColor = "#fff";
+
     name.style.backgroundColor = backgroundColorTheme;
+
     //x.style.display = "none";
     if (versionName === 'versname') {
       window.bool3 = true;
@@ -2950,7 +2954,7 @@ function validateVersionName(versionName, dialogid) {
   } else {
     $(x).fadeIn();
     name.style.borderColor = "#E54";
-    name.style.backgroundColor = "#f57";
+    //name.style.backgroundColor = "#f57";
     //x.style.display = "block";
     name.style.borderWidth = "2px";
 
@@ -2977,13 +2981,15 @@ function validateCourseID(courseid, dialogid) {
     $(x2).fadeOut();
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
+    //code.style.backgroundColor = "#fff";
+
     code.style.backgroundColor = backgroundColorTheme;
     //x2.style.display = "none";
     window.bool = true;
   } else {
     $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    code.style.backgroundColor = "#f57";
+    //code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
     //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
     //x2.style.display = "block";
@@ -2995,7 +3001,7 @@ function validateCourseID(courseid, dialogid) {
   if(versionIsValid) {
     $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    code.style.backgroundColor = "#f57";
+    //code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
     x2.innerHTML = "Version ID already exists, try another";
     //x2.style.display = "block";
@@ -3034,13 +3040,15 @@ function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
 		window.bool9 = false;
 	}
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+    //emotd.style.backgroundColor = "#ffff";
+
     emotd.style.backgroundColor = backgroundColorTheme;
 		emotd.style.borderColor = "#383";
 		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
     return true;
 	}else{
-    emotd.style.backgroundColor = "#f57";
+    //emotd.style.backgroundColor = "#f57";
 		emotd.style.borderColor = "#E54";
 		emotd.style.borderWidth = "2px";
 		saveButton.disabled = true;
@@ -3063,8 +3071,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#E54";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
-    sdate.style.backgroundColor = "#f57";
-    edate.style.backgroundColor = "#f57";
+    //sdate.style.backgroundColor = "#f57";
+    //edate.style.backgroundColor = "#f57";
     $(x3).fadeIn();
     x3.innerHTML = "Both start date and end date must be filled in";
     //x3.style.display = "block";
@@ -3076,6 +3084,9 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#383";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
+    //sdate.style.backgroundColor = "#fff";
+    //edate.style.backgroundColor = "#fff";
+
     sdate.style.backgroundColor = backgroundColorTheme;
     edate.style.backgroundColor = backgroundColorTheme;
     $(x3).fadeOut();
@@ -3092,8 +3103,8 @@ function validateDate(startDate, endDate, dialogID) {
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
-    sdate.style.backgroundColor = "#f57";
-    edate.style.backgroundColor = "#f57";
+    //sdate.style.backgroundColor = "#f57";
+    //edate.style.backgroundColor = "#f57";
     $(x3).fadeIn();
     x3.innerHTML = "Start date has to be before end date";
     //x3.style.display = "block";
