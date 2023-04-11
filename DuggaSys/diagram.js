@@ -1340,7 +1340,6 @@ function getData()
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
-    showdata();
 }
 //<-- UML functionality start
 /**
