@@ -298,8 +298,6 @@ function handleTable(currentLine, prevLine, nextLine) {
     var columns = currentLine.split('|').filter(function(v){return v !== '';});
     // open table
 
-    console.log(isTable(prevLine));
-
     if(!isTable(prevLine)) {
         markdown += "<table class='markdown-table'>";
     }
