@@ -18,6 +18,7 @@ function beforeUnloadingPage()
 /**
  * @description Setup the dugga, this is the first thing that happens
  * */
+// This creates the predrawn diagram for diagram dugga
 /*function setup()
 {
     diagramWindow = document.getElementById("diagram-iframe");

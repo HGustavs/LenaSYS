@@ -1110,6 +1110,7 @@ var allAttrToEntityRelations = [];
 // Array for attributes connected with eachother
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
+//Function to draw the predrawn diagram for diagram.php
 /*function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
@@ -1315,11 +1316,13 @@ var attrViaAttrCounter = 0;
         addObjectToLines(demoLines[i], false);
     }
 
-    // Global statemachine init
+   
     
 
     fetchDiagramFileContentOnLoad();
 }*/
+//was in onSetup function moved it out 
+ // Global statemachine init
 stateMachine = new StateMachine(data, lines);
 /**
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
