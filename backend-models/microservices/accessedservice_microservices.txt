@@ -1,0 +1,107 @@
+
+file: accessedservice.php
+
+--------------------------
+Microservices
+--------------------------
+hasAccess
+updateUser
+updateUser_course
+addClass
+addNewUser
+registreradUser
+oldVersionSubmission
+updatePassword
+logUserEvent
+checkUserAccount
+saveEmail
+noExistClass
+
+---------------------------
+hasAccess
+row: 51 - 55
+---------------------------
+This will give access to a user and super user
+
+---------------------------
+updateUser
+row: 65 - 80
+---------------------------
+update a user
+
+---------------------------
+updateUser_course
+row: 83 - 113
+---------------------------
+Update user_course and add a teacher 
+
+----------------------------
+addClass
+row: 114 - 137
+----------------------------
+Create a new class
+Add class variables and insert the variables into the database
+
+----------------------------
+updatePassword
+row: 143 - 151
+----------------------------
+update a selected user password
+
+----------------------------
+logUserEvent
+row: 152 - 159
+----------------------------
+Log to reset password
+
+----------------------------
+checkUserAccount
+row: 178 - 182
+----------------------------
+Check the seleceted user has an account
+
+----------------------------
+saveEmail
+row: 192 - 196
+----------------------------
+Save the user email
+
+----------------------------
+noExistClass
+row: 208 - 216
+----------------------------
+Add a class if the class does not exist.
+Display error
+
+----------------------------
+addNewUser
+row: 220 - 246
+----------------------------
+Add a new user, add the variables into the database
+Display errors messages
+
+----------------------------
+registreradUser
+row: 260 - 277
+-----------------------------
+Add the user to user_course
+Display error
+
+-----------------------------
+oldVersionSubmission
+row: 394 - 412
+-----------------------------
+Selected course to find user submissions in old versions
+Using array 
+
+
+
+
+
+
+
+
+
+
+
+
