@@ -3,7 +3,9 @@
 
         diagramservice.php, reads github activity data for a user (Including number of
         issues created, comments posted, lines of code modified) for every week and
-        returns it in a JSON object
+        returns it in a JSON object). 
+        
+        Read and retrieve diagrams from course or hash. Save diagrams to server.
 
     ********************************************************************************/
     date_default_timezone_set("Europe/Stockholm");
@@ -233,6 +235,7 @@
                 }
             }
 
+            // Retrieve a diagram with hash if a hash is definded in query parameters
             if(isset($_SESSION['tempHash']) && $_SESSION['tempHash'] != "UNK")
             {
                 $tempDir = strval(dirname(__DIR__,2)."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/");
@@ -267,10 +270,12 @@
                 }
             }
 
+            // If no file is retrieved, update fileContent
             if($fileContent === "UNK" || $fileContent === "") {
                 $fileContent = "NO_FILE_FETCHED";
             }
 
+            // Build return object
             $array["variant"] = [$variantParams, $cid, $vers, "$splicedFileName", "$fileContent"];
             $array["instructions"] = $finalArray;
             
@@ -288,12 +293,15 @@
         exit();
     }
     
+    // Save a diagram if StringDiagram is set
     if(isset($_POST['StringDiagram'])) {
         $str = $_POST['StringDiagram'];
         $hash = $_POST['Hash'];
         save($str,$hash);
         exit();
     }
+
+    // Function for saving a diagram to Save folder
     function save($data, $hash) {
         $getID = fopen("Save/id.txt", "r");
         $a = intval(fread($getID,filesize("Save/id.txt")));
