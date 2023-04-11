@@ -25,7 +25,7 @@ var lid;
 var collectedLid = [];
 var updatedLidsection;
 var numberOfItems;
-
+var backgroundColorTheme;
 var isLoggedIn = false;
 
 function IsLoggedIn(bool){
@@ -55,11 +55,13 @@ function burgerToggleDarkmode(operation = 'click'){
     if(themeStylesheet.href.includes('blackTheme')){
       themeStylesheet.href = "../Shared/css/whiteTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
+      backgroundColorTheme = "#121212";
     } 
     else if(themeStylesheet.href.includes('whiteTheme')) {
       // if it's dark -> go light
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
+      backgroundColorTheme = "#fff";
     }
   
   //const themeToggle = document.getElementById('theme-toggle');
@@ -669,7 +671,7 @@ function defaultNewItem() {
 
   $('#saveBtn').removeAttr('disabled'); // Resets save button to its default form
   $('#submitBtn').removeAttr('disabled'); // Resets submit button to its default form
-  document.getElementById("sectionname").style.backgroundColor = "#fff"; // Resets color for name input
+  document.getElementById("sectionname").style.backgroundColor = backgroundColorTheme; // Resets color for name input
   $('#tooltipTxt').hide(); // Resets tooltip text to its default form
 }
 
@@ -2914,7 +2916,7 @@ function validateVersionName(versionName, dialogid) {
     $(x).fadeOut();
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
-    name.style.backgroundColor = "#fff";
+    name.style.backgroundColor = backgroundColorTheme;
     //x.style.display = "none";
     if (versionName === 'versname') {
       window.bool3 = true;
@@ -2954,7 +2956,7 @@ function validateCourseID(courseid, dialogid) {
     $(x2).fadeOut();
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
-    code.style.backgroundColor = "#fff";
+    code.style.backgroundColor = backgroundColorTheme;
     //x2.style.display = "none";
     window.bool = true;
   } else {
@@ -3011,7 +3013,7 @@ function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
 		window.bool9 = false;
 	}
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
-    emotd.style.backgroundColor = "#ffff";
+    emotd.style.backgroundColor = backgroundColorTheme;
 		emotd.style.borderColor = "#383";
 		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
@@ -3053,8 +3055,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#383";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
-    sdate.style.backgroundColor = "#fff";
-    edate.style.backgroundColor = "#fff";
+    sdate.style.backgroundColor = backgroundColorTheme;
+    edate.style.backgroundColor = backgroundColorTheme;
     $(x3).fadeOut();
     //x3.style.display = "none";
     if (startDate === 'startdate' && endDate === 'enddate') {
@@ -3127,7 +3129,7 @@ function validateDate2(ddate, dialogid) {
   if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
-    ddate.style.backgroundColor = "#fff";
+    ddate.style.backgroundColor = backgroundColorTheme;
     $(x).fadeOut();
     //x.style.display = "none";
     window.bool8 = true;
@@ -3137,7 +3139,7 @@ function validateDate2(ddate, dialogid) {
     // If absolute deadline is not being used
     $(x).fadeIn();
     ddate.style.borderWidth = "2px";
-    ddate.style.backgroundColor = "#fff";
+    ddate.style.backgroundColor = backgroundColorTheme;
     ddate.style.borderColor = "#aaa";
     // x.style.display = "block";
     window.bool8 = true;
@@ -3168,7 +3170,7 @@ function validateSectName(name){
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     emotd.style.borderColor = "#383";
     emotd.style.borderWidth = "2px";
-    emotd.style.backgroundColor = "#fff";
+    emotd.style.backgroundColor = backgroundColorTheme;
     $('#dialog10').fadeOut();
     window.bool10 = true;
     return true;
