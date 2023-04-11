@@ -8492,18 +8492,19 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh/2}px;`;
-      
+        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
+       
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
+        
         if (ghosted) {
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
       
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg); margin-top:${-(boxw/2)};  stroke-width:${linew};'>`;
+        str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
         if (element.state == 'overlapping') {
@@ -8512,13 +8513,14 @@ function drawElement(element, ghosted = false)
         }
         // Disjoint IE-inheritance
         else {
-            str+= `<circle cx="${(boxw/2)}" cy="0;" r="${(boxw/2.08)}" fill="white"; stroke="black";'/>
+            str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/>
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
                 <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" />
                 <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" />`
         }
         //end of svg
         str += `</svg>`;
+        
     }    
     //=============================================== <-- End of IE functionality
 
