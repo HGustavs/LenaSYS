@@ -437,7 +437,7 @@
                     <img src="../Shared/icons/diagram_UML_initial_state.svg"/>
                     <span class="toolTipText"><b>UML initial state</b><br>
                         <p>Creates an initial state for UML.</p><br>
-                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                        <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
                 <!-- UML Final state selection -->
@@ -445,7 +445,7 @@
                     <img src="../Shared/icons/diagram_UML_final_state.svg"/>
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p><br>
-                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                        <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
         </fieldset>

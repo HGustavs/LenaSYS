@@ -761,6 +761,8 @@ const keybinds = {
         TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
+        STATE_INITIAL: { key: "<" , ctrl: false },
+        STATE_FINAL: { key: "<" , ctrl: true },
 };
 
 /** 
@@ -1097,8 +1099,8 @@ var defaults = {
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#927b9e", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#927b9e", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" } // UML Final state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" } // UML Final state.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -1655,6 +1657,16 @@ document.addEventListener('keyup', function (e)
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
         //======================================================
+
+        if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
+            setElementPlacementType(elementTypes.UMLInitialState);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+
+        if (isKeybindValid(e, keybinds.STATE_FINAL)) {
+            setElementPlacementType(elementTypes.UMLFinalState);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
 
         if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
@@ -3479,7 +3491,8 @@ function entityIsOverlapping(id, x, y)
  * @see mouseModes For all available enum values.
  */
 function setMouseMode(mode)
-{   
+{
+    console.log(mode);
     if (enumContainsPropertyValue(mode, mouseModes)) {
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
@@ -8413,11 +8426,11 @@ function drawElement(element, ghosted = false)
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="width:${element.width}px;height:${element.height}px;${ghostAttr}" 
+                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
-                        <svg width="${element.width}" height="${element.height}" 
+                        <svg width="100%" height="100%" 
                              viewBox="0 0 24 24"
                              xmlns="http://www.w3.org/2000/svg" 
                              xml:space="preserve"
@@ -8427,16 +8440,17 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
+        console.log(boxh);
     }
     else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="width:${element.width}px;height:${element.height}px;${ghostAttr}" 
+                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
-                        <svg width="${element.width}" height="${element.height}" 
+                        <svg width="100%" height="100%"
                              viewBox="0 0 24 24"
                              xmlns="http://www.w3.org/2000/svg"
                              xml:space="preserve"
