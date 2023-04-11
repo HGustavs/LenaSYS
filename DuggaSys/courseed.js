@@ -602,11 +602,9 @@ function elementIsValid(element) {
 		element.classList.remove("bg-color-change-invalid");
 
 		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		// if(element.name === "coursegitURL") {
-		// 	return true;
-		// } else {
-			
-		// }
+		if(element.name === "coursegitURL") {
+			return true;
+		}
 		return false;
 	}
 
