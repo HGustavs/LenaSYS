@@ -963,6 +963,9 @@ input{
     background: linear-gradient(90deg, rgba(18,18,18,1) 21%, rgba(67,42,90,1) 55%);
   
   }
+  .lineColor {
+    stroke: white;
+  }
 
   /*/ END /*/
 
@@ -1082,3 +1085,13 @@ border-left: 14px solid var(--color-sectioned-table-hi);
    -webkit-text-decoration-color: var(--color-text-primary) !important;
     text-decoration-color: var(--color-text-primary) !important;
   }
+
+.svgbacklayer-background {
+    background-color: var(--color-background);
+}
+
+/* Diagram line style */
+.diagram-umlicon-triangle {
+  fill: black;
+  stroke: white;
+}
