@@ -1,0 +1,53 @@
+--- diagramservice.php --- 
+
+The file gathers information regaring github activity, and present it.  
+ 
+
+##################
+# Micro-services #
+##################
+
+Gather the information 
+Presenting the information
+
+
+
+#####################
+# services provided #
+#####################
+
+
+
+* Gather the information ***************************************************************************
+**************************
+
+Number of issues created: row 46 - 57
+--------------------------------------------
+Count number of issues created, places the information in an array, issue 
+
+
+Number of events: row 58 - 69
+--------------------------------------------------------------------
+Count the number of events during a specified interval, places the information in an array, events
+
+
+Gathers the comments: row 70 - 81
+-------------------------------------------------------------------------------
+Gathers the comments posted by a user during a specified interval, places the information in an array, comment
+
+
+Number of rows changed: row 82 - 93
+------------------------------------------------------------
+Gathers the number of rows changed in each file, places the information in an array, file
+
+
+
+
+
+* Presenting the information ************************************************************************
+******************************
+
+Presenting the information: row 94 - 109
+-----------------------------------------------------------------
+All information gathered is put into an array and encoded to JSON and echoed out.
+
