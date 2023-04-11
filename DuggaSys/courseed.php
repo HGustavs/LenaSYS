@@ -130,7 +130,7 @@ if(isset($_SESSION['uid'])){
 				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
     			<div class="inputwrapper">
 					<span>GitHub URL:</span>
-					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="coursegit-url" placeholder="https://github.com/..."/>
+					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="coursegitURL" placeholder="https://github.com/..."/>
 				</div>
 				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
 				<p id="dialog6" class="validationDialog">Enter a valid github url</p>
