@@ -485,8 +485,8 @@ body {
 }
 
 .formDialog .formDialogText {
-    background-color: var(--color-text-header);
-    color: var(--color-text-list);
+    background-color: var(--color-text-header) !important;
+    color: var(--color-text-list) !important;
 }
 
 #announcementBoxOverlay{
