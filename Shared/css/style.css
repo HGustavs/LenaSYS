@@ -9257,8 +9257,16 @@ margin:2px;
   font-size:18px;
 }
 
+
+.BlackthemeColor{
+  stroke: black;
+  stroke-width: 2;
+ }
+
+
 .svgbacklayer-background {
   background-color: var(--color-background);
 }
+
 
 /* END */

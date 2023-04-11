@@ -1086,6 +1086,12 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     text-decoration-color: var(--color-text-primary) !important;
   }
 
+
+  .BlackthemeColor{
+   stroke: #ff0000;
+   stroke-width: 2;
+  }
+
 .svgbacklayer-background {
     background-color: var(--color-background);
 }
@@ -1116,3 +1122,4 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 #diagram-message > div.error {
     background-color: rgb(252, 58, 44);
 }
+
