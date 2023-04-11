@@ -18,7 +18,7 @@ function beforeUnloadingPage()
 /**
  * @description Setup the dugga, this is the first thing that happens
  * */
-function setup()
+/*function setup()
 {
     diagramWindow = document.getElementById("diagram-iframe");
     inParams = parseGet();
@@ -29,7 +29,7 @@ function setup()
     if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != ""){
         document.getElementById("diagram-iframe").contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
     }
-}
+}*/
 
 /**
  * @description Get the iframe data to submit
