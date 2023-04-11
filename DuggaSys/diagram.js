@@ -737,7 +737,8 @@ const keybinds = {
         PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
         EDGE_CREATION: {key: "7", ctrl: false},
         PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
-        IE_INHERITANCE: {key: "9", ctrl: false},  //<-- IE inheritance functionality
+        IE_INHERITANCE: { key: "9", ctrl: false },  //<-- IE inheritance functionality
+        PLACE_SDENTITY: { key: "1", ctrl: true },   //<-- SD functionality
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -787,8 +788,12 @@ const elementTypes = {
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
+
+    SDState: 8,     //SD(State diagram) functionality
+
     UMLInitialState: 8,
     UMLFinalState: 9
+
 };
 
 /**
@@ -803,8 +808,12 @@ const elementTypesNames = {
     UMLEntity: "UMLEntity",
     IEEntity: "IEEntity",
     IERelation: "IERelation",
+
+    SDState: "SDState"
+
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState"
+
 }
 
 /**
@@ -843,13 +852,17 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of entity, ie ER, IE, UML and SD(state diagram) This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
     ER: "ER",
     IE: "IE",
+
+    SD: "SD",
+
     UML_STATE: "UML_STATE"
+
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -1036,7 +1049,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false,IE:false};
+var diagramType = {ER:false,UML:false,IE:false,SD:false};
 
 //Grid Settings
 var settings = {
@@ -1358,8 +1371,41 @@ function getData()
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes(){
+    //ER + UML + IE + SD
+    if (!!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
+        document.getElementById("elementPlacement0").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function () {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement6").onmousedown = function () {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(8);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function () {
+            holdPlacementButtonDown(5);
+        };
+        document.getElementById("elementPlacement7").onmousedown = function () {
+            holdPlacementButtonDown(7);
+        };
+    }
+
     //ER + UML + IE
-    if(!!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
+    else if (!!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !diagramType.SD) {
+        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
         document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
         document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
@@ -1383,9 +1429,88 @@ function showDiagramTypes(){
             holdPlacementButtonDown(7);
         };
     }
-    // ER + UML
-    else if(!!diagramType.ER && !!diagramType.UML && !diagramType.IE){
+
+    //ER + UML + SD
+    else if (!!diagramType.ER && !!diagramType.UML && !diagramType.IE && !!diagramType.SD) {
         Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
+        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
+        document.getElementById("elementPlacement0").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function () {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(8);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function () {
+            holdPlacementButtonDown(5);
+        };
+    }
+
+    //ER + IE + SD
+    else if (!!diagramType.ER && !diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
+        document.getElementById("elementPlacement0").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement6").onmousedown = function () {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(8);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement7").onmousedown = function () {
+            holdPlacementButtonDown(7);
+        };
+    }
+
+    //UML + IE + SD
+    else if (!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
+        document.getElementById("elementPlacement0").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement4").onmousedown = function () {
+            holdPlacementButtonDown(4);
+        };
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(8);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function () {
+            holdPlacementButtonDown(5);
+        };
+    }
+    // ER+SD, UML+SD, IE+SD
+    // ER + UML
+    else if (!!diagramType.ER && !!diagramType.UML && !diagramType.IE && !diagramType.SD) {
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
@@ -1404,8 +1529,11 @@ function showDiagramTypes(){
         };
     }
     // ER + IE
-    else if(!!diagramType.ER && !diagramType.UML && !!diagramType.IE){
+    else if (!!diagramType.ER && !diagramType.UML && !!diagramType.IE && !diagramType.SD){
         Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
         document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
@@ -1423,9 +1551,31 @@ function showDiagramTypes(){
             holdPlacementButtonDown(7);
         };
     }
+    // ER + SD
+    else if (!!diagramType.ER && !diagramType.UML && !diagramType.IE && !!diagramType.SD) {
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/CLass
+        document.getElementById("elementPlacement0").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+    }
     // UML + IE
-    else if(!diagramType.ER && !!diagramType.UML && !!diagramType.IE){
+    else if (!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !diagramType.SD){
         Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
         document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
@@ -1441,6 +1591,44 @@ function showDiagramTypes(){
         };
         document.getElementById("elementPlacement7").onmousedown = function() {
             holdPlacementButtonDown(7);
+        };
+    }
+    // UML + SD
+    else if (!diagramType.ER && !!diagramType.UML && !diagramType.IE && !!diagramType.SD) {
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/CLass
+        document.getElementById("elementPlacement4").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+    }
+    // IE + SD
+    else if (!diagramType.ER && !!diagramType.UML && !diagramType.IE && !!diagramType.SD) {
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/CLass
+        document.getElementById("elementPlacement6").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(6);
+        };
+        document.getElementById("elementPlacement7").onmousedown = function () {
+            holdPlacementButtonDown(1);
         };
     }
     //ER
@@ -1467,6 +1655,17 @@ function showDiagramTypes(){
     }
     //IE
     else if (!diagramType.ER && !diagramType.UML && !!diagramType.IE){
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+        document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
+        document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
+    }
+    //SD
+    else if (!diagramType.ER && !diagramType.UML && !diagramType.IE && !!diagramType.SD) {
         Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
@@ -1661,6 +1860,15 @@ document.addEventListener('keyup', function (e)
         }
         //======================================================
 
+
+        //=================================================== //<-- SD functionality
+        //Temp for SD entity
+        if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
+            setElementPlacementType(elementTypes.SDEntity)
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        //======================================================
+
         if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
             setElementPlacementType(elementTypes.UMLInitialState);
             setMouseMode(mouseMode.PLACING_ELEMENT);
@@ -1670,6 +1878,7 @@ document.addEventListener('keyup', function (e)
             setElementPlacementType(elementTypes.UMLFinalState);
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
+
 
         if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
