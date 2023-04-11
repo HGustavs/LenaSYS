@@ -1014,6 +1014,7 @@ function AJAXService(opt,apara,kind)
 				// Informs the user that his input contained nothing.
 				console.log("Your input contained nothing in " + key);
 		}
+		console.log(`for para value is: ${para}`); // USED FOR TESTING REMOVE WHEN FINISHED
 	}
 
 	if(kind=="COURSE"){
