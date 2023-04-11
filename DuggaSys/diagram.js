@@ -1110,7 +1110,7 @@ var allAttrToEntityRelations = [];
 // Array for attributes connected with eachother
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
-function onSetup()
+/*function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
     const Bdale_ID = makeRandomID();
@@ -1316,18 +1316,18 @@ function onSetup()
     }
 
     // Global statemachine init
-    stateMachine = new StateMachine(data, lines);
+    
 
-    //fetchDiagramFileContentOnLoad();
-}
-
+    fetchDiagramFileContentOnLoad();
+}*/
+stateMachine = new StateMachine(data, lines);
 /**
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
 function getData()
 { 
     container = document.getElementById("container");
-    onSetup();
+   // onSetup();
     generateToolTips();
     toggleGrid();
     updateGridPos();
