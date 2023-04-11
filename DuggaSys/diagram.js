@@ -11293,4 +11293,5 @@ function setPreviewValues(){
         getInstructions(window.parent.parameterArray[3]);
     }
 }
+    stateMachine.clear;
 //#endregion =====================================================================================
