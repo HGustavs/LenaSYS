@@ -290,7 +290,7 @@ function handleLists(currentLine, prevLine, nextLine) {
     return markdown;
 }
 
-/*function handleTable(currentLine, prevLine, nextLine) {
+function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
     var columns = currentLine.split('|').filter(function(v){return v !== '';});
     // open table
@@ -351,7 +351,7 @@ function handleLists(currentLine, prevLine, nextLine) {
         }
     }
     return markdown;
-}*/
+}
 
 //----------------------------------------------------------------------------------
 // markdownBlock:
