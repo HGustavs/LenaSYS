@@ -1333,7 +1333,7 @@ function getData()
     updateGridPos();
     updateA4Pos();
     updateGridSize();
-    showdata();
+   // showdata();
     drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
