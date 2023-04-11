@@ -1324,7 +1324,7 @@ function onSetup()
 /**
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
-function getData()
+/* find me function getData()
 {
     container = document.getElementById("container");
     onSetup();
@@ -1339,7 +1339,7 @@ function getData()
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
-}
+}*/
 //<-- UML functionality start
 /**
  * @description Used to determine the tools shown depending on diagram type.
@@ -11206,7 +11206,7 @@ function saveDiagramBeforeUnload() {
     })
 }
 
-/*find me  function loadDiagramFromString(temp, shouldDisplayMessage = true)
+function loadDiagramFromString(temp, shouldDisplayMessage = true)
 {
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
@@ -11266,7 +11266,7 @@ function resetDiagramAlert(){
         resetDiagram();
     }
 
-}*/
+}
 /**
  * @description Cleares the diagram.
  */
