@@ -301,7 +301,7 @@ function handleTable(currentLine, prevLine, nextLine) {
     console.log(isTable(prevLine));
 
     if(!isTable(prevLine)) {
-        markdown += "<table class='markdown-table'>";
+        markdown += "<br><table class='markdown-table'>";
     }
     // create thead
     if(!isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
