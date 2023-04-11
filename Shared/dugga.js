@@ -964,7 +964,7 @@ function AJAXService(opt,apara,kind)
   }
 	apara.log_uuid = tex;
 
-	console.log(`AJAXService parameters\nopt: ${opt}\napara: ${apara}\nkind: ${kind}\napara type: ${typeof(apara[0])}`);
+	console.log(`AJAXService parameters\nopt: ${opt}\napara: ${apara}\nkind: ${kind}\napara type: ${typeof(apara[0])}`);  // USED FOR TESTING REMOVE WHEN FINISHED
 	
   var para="";
 	for (var key in apara) {
@@ -1184,6 +1184,7 @@ function AJAXService(opt,apara,kind)
 			data: "opt="+opt+para,
 			dataType: "json",
 			success: returnedQuiz
+			console.log("TEST TEST TEST "); // USED FOR TESTING AND IS TO BE REMOVED
 		});
 	} else if(kind=="DUGGAFEEDBACK") {
 		$.ajax({
