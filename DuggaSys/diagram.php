@@ -189,8 +189,8 @@
 	function getVariantParam()
 	{
 		var variantArray = [<?php echo "'$variantParams'"?>];
-		variantArray.push(<?php echo "$cid"?>);
-		variantArray.push(<?php echo "$vers"?>);
+		variantArray.push(<?php echo "'$cid'"?>);
+		variantArray.push(<?php echo "'$vers'"?>);
 		variantArray.push(<?php echo "'$splicedFileName'"?>);
 		variantArray.push(<?php echo "'$fileContent'"?>);
 		return variantArray;
