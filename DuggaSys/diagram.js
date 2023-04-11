@@ -3701,7 +3701,6 @@ function entityIsOverlapping(id, x, y)
  */
 function setMouseMode(mode)
 {
-    console.log(mode);
     if (enumContainsPropertyValue(mode, mouseModes)) {
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
@@ -8522,7 +8521,6 @@ function drawElement(element, ghosted = false)
     var xAnchor = tooBig ? margin : hboxw;
     var vAlignment = tooBig ? "left" : "middle";
 
-    //console.log(123123123)
     if (errorActive) {
         // Checking for errors regarding ER Entities
         checkElementError(element);
