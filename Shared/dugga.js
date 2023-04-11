@@ -963,6 +963,8 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
+
+	console.log("TEST TEST TEST");  // USED FOR TESTING REMOVE WHEN FINISHED 
 	
   var para="";
 	for (var key in apara) {
