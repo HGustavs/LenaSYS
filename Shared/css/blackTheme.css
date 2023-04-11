@@ -1086,3 +1086,8 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   .textinput {
     color:white;
     }
+
+  #emakeactive {
+      background-color: #121212;
+      accent-color: #434343;
+  }
