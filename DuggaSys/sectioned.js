@@ -3011,7 +3011,7 @@ function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
 		window.bool9 = false;
 	}
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
-    emotd.style.backgroundColor = "#ffff";
+    //emotd.style.backgroundColor = "#ffff";
 		emotd.style.borderColor = "#383";
 		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
