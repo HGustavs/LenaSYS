@@ -11014,7 +11014,7 @@ function exportWithHistory()
     };
 
     // Download the file
-    //downloadFile("diagram", objToSave);
+    downloadFile("diagram", objToSave);
 }
 /**
  * @description Stores the current diagram as JSON in localstorage
@@ -11206,7 +11206,7 @@ function saveDiagramBeforeUnload() {
     })
 }
 
-function loadDiagramFromString(temp, shouldDisplayMessage = true)
+/*find me  function loadDiagramFromString(temp, shouldDisplayMessage = true)
 {
     if(temp.historyLog && temp.initialState){
         // Set the history and initalState to the values of the file
@@ -11266,7 +11266,7 @@ function resetDiagramAlert(){
         resetDiagram();
     }
 
-}
+}*/
 /**
  * @description Cleares the diagram.
  */
