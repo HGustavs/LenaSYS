@@ -8,6 +8,9 @@
 </head>
 
 <style>
+    html {
+        font-family:  "Lucida Console", "Monaco", monospace;
+    }
     table {
         margin: 0 auto;
         border-collapse: collapse;
@@ -18,38 +21,18 @@
     th,
     td,
     tr {
-        width: 350px;
+        width: 325px;
         padding: 10px;
         border: 1px solid black;
-    }
-
-    table>p,
-    tr>p,
-    td>p {
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .path1 {
-        background-color: #FF6961;
-    }
-
-    .path2 {
-        background-color: #FFB347;
-    }
-
-    .path3 {
-        background-color: #FDFD96;
-    }
-
-    .dir {
-        background-color: #0372ef;
+        font-size: 14px;
     }
 </style>
 
 <body>
     <?php
     
-    bfs('https://api.github.com/repos/a21olljo/Webbprogrammering-Examples/contents/');
+    // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
+    bfs('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
         
     function bfs($url)
     {
@@ -59,34 +42,39 @@
         array_push($fifoQueue, $url);
 
         while(!empty($fifoQueue)) {
+            // Randomizes colors for easier presentation
+            $R = rand(155, 255);
+            $G = rand(155, 255);
+            $B = rand(155, 255);
             $currentUrl = array_shift($fifoQueue);
+            echo "<h3 style='display: flex; place-content: center;'>" . $currentUrl . "</h3>";
+            // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
             $opts = [
                 'http' => [
                     'method' => 'GET',
                     'header' => [
                         'User-Agent: PHP',
-                        'Authorization: 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' // Replace YOUR_GITHUB_API_KEY with your actual GitHub API key
+                        // If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
+                        // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
+                        // 'Authorization: Bearer YOUR_GITHUB_API_KEY'
                     ]
                 ]
             ];
-
+            // Starts a stream with the required headers
             $context = stream_context_create($opts);
+            // Fetches the data with the stream included
             $data = file_get_contents($currentUrl, true, $context);
+            // Decodes the fetched data into JSON
             $json = json_decode($data, true);
-
             // Loops through each item fetched in the JSON data
             foreach ($json as $item) {
-                // Count the number of slashes in the path
-                $path_count = substr_count($item['path'], '/');
-                // Determine the class of the table element based on the path count
-                $table_class = 'path' . ($path_count + 1);
                 // Checks if the fetched item is of type 'file'
                 if ($item['type'] == 'file') {
-                    echo '<table class="' . $table_class . '"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
+                    echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                     echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                     // Checks if the fetched item is of type 'dir'
                 } else if ($item['type'] == 'dir') {
-                    echo '<br><table class="' . $table_class . '"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
+                    echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                     echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                     if (!in_array($item['url'], $visited)){        
                         array_push($visited, $item['url']);
@@ -96,8 +84,6 @@
                 echo "</table>";
             }
         }
-        print_r("<br><br>Done<br>");
-
     }
     ?>
 </body>
