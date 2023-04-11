@@ -10814,20 +10814,12 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            //check if the fill color is black or pink, if so the font color is set to white
-                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
-                                fontColor.style.fill = `${"#ffffff"}`;
-                            }
-                            else{
-
-                                fontColor.style.fill = `${"#000000"}`;
-                            }
+                            fontContrast();
                         }
                     }
                 }
@@ -10836,20 +10828,12 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            //check if the fill color is black or pink, if so the font color is set to white
-                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
-                                fontColor.style.fill = `${"#ffffff"}`;
-                            }
-                            else{
-
-                                fontColor.style.fill = `${"#000000"}`;
-                            }
+                            fontContrast();
                         }
                     }
                 }
@@ -10858,14 +10842,12 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 2; index++){
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
-                             fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+                            fontContrast();
                         }
                     }
                 }else{ // Update normal elements, and relations
@@ -10874,8 +10856,7 @@ function updateCSSForAllElements()
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
-                    // If more than one element is marked.
-                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                    if(markedOverOne()){
                         fillColor.style.fill = `${"#927b9e"}`;
                         fontColor.style.fill = `${"#ffffff"}`;
                         if(element.state == "weakKey") {
@@ -10889,6 +10870,7 @@ function updateCSSForAllElements()
                     } else if(element.kind == "UMLRelation"){
                         if(element.state == "overlapping"){
                             fillColor.style.fill = `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
@@ -10904,7 +10886,79 @@ function updateCSSForAllElements()
                         }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
-                        fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+                        fontContrast();
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#000000"}`;
+                            if (element.fill == "#000000") {
+                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Update UMLEntity
+                if(element.kind == "UMLEntity"){
+                    for (let index = 0; index < 3; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                    }
+                }
+                // Update IEEntity
+                else if(element.kind == "IEEntity"){
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                    }
+                }
+                // Update Elements with double borders.
+                else if(element.state == "weak" || element.state == "multiple"){
+                    for (let index = 0; index < 2; index++){
+                        fillColor = elementDiv.children[0].children[index];
+                        fontColor = elementDiv.children[0];
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                    }
+                }else{ // Update normal elements, and relations
+                    fillColor = elementDiv.children[0].children[0];
+                    fontColor = elementDiv.children[0];
+                    weakKeyUnderline = elementDiv.children[0].children[2];
+                    disjointLine1Color = elementDiv.children[0].children[2];
+                    disjointLine2Color = elementDiv.children[0].children[3];
+                    if(markedOverOne()){
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                        } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
+                        else if(element.kind == "IERelation" && element.state != "overlapping") {
+                                disjointLine1Color.style.stroke = `${"#ffffff"}`;
+                                disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                        }
+                        // If UMLRelation is not marked.
+                    } else if(element.kind == "UMLRelation"){
+                        if(element.state == "overlapping"){
+                            fillColor.style.fill = `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                        }else{
+                            fillColor.style.fill = `${"#ffffff"}`;
+                        }
+                    } else if(element.kind == "IERelation"){
+                        if(element.state == "overlapping"){
+                            fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
+                        }else{
+                            fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
+                        }
+                    } else{
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
                             if (element.fill == "#000000") {
@@ -10924,6 +10978,16 @@ function updateCSSForAllElements()
         if (ghostDiv){
             updateElementDivCSS(ghostElement, ghostDiv)
         }
+    }
+
+    function fontContrast() {
+        //check if the fill color is black or pink, if so the font color is set to white
+        fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+    }
+
+    function markedOverOne() {
+        //If more than one element is marked.
+        return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
     toggleBorderOfElements();
 }
