@@ -1607,13 +1607,20 @@ function returnedSection(data) {
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
 
-          // test
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
-          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
-          str += "</td>";
+
         }
+
+                // Trashcan 2 test
+                if (data['writeaccess'] || data['studentteacher']) {
+                  str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+                  "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+                  str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
+                  src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+                  str += "</td>";
+        
+        
+                }
+        
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
