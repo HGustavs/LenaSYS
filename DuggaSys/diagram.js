@@ -8313,7 +8313,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}'style='margin-top:20px;>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
 
         //Overlapping UML-inheritance
         if (element.state == 'overlapping') {
