@@ -11014,7 +11014,7 @@ function exportWithHistory()
     };
 
     // Download the file
-    downloadFile("diagram", objToSave);
+    //downloadFile("diagram", objToSave);
 }
 /**
  * @description Stores the current diagram as JSON in localstorage
@@ -11293,5 +11293,4 @@ function setPreviewValues(){
         getInstructions(window.parent.parameterArray[3]);
     }
 }
-    stateMachine.clear;
 //#endregion =====================================================================================
