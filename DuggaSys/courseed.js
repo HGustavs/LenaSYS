@@ -561,15 +561,14 @@ function setActiveCodes() {
 
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
-	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/
+	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
+	coursegitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/
 };
 
 //Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 	//Standard styling for a failed validation that will be changed if element passes validation
-	//element.style.backgroundColor = "#f57";
-	//element.setAttribute("class", "bg-color-change-invalid");
 	element.classList.add("bg-color-change-invalid");
 	$(messageElement.firstChild.id).fadeIn();
 	//messageElement.style.display = "block";
@@ -589,8 +588,6 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
-		//element.style.backgroundColor = "#fff";
-		// element.classList.add("bg-color-change");
 		element.classList.remove("bg-color-change-invalid");
 		element.style.borderColor = "#383";
 		$(messageElement.firstChild).fadeOut();
@@ -603,6 +600,12 @@ function elementIsValid(element) {
 		element.value = "";
 		//messageElement.style.display = "none";
 		element.classList.remove("bg-color-change-invalid");
+
+		// The inputs for the git URLs are valid even when they're empty, since they're optional
+		if(element.classList.includes(git-input)) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -613,16 +616,6 @@ function elementIsValid(element) {
 	$(messageElement.firstChild).hide().fadeIn();
 	//Validation falied if getting here without returning
 	return false;
-}
-
-//Show or hide the Git URL input when creating a new course
-function showGitInput(show){
-	var gitInput = document.getElementById("gitinput-parent");
-	if (show == true){
-		gitInput.style.display = "flex";
-	}else{
-		gitInput.style.display = "none";
-	}
 }
 
 //Validation with REG EXP for Github URL
