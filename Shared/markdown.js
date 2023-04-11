@@ -203,10 +203,7 @@ function isOrderdList(item) {
 // Check if its a table
 function isTable(item) {
     // return true if space followed by a pipe-character and have closing pipe-character
-    //return /^\s*\|\s*(.*)\|/gm.test(item);
-
-    const regex = /\|(?!\|)\s*([^|]*[^\s|])\s*(?=\|(?!\|)|$)/gm;
-    return regex.test(item);
+    return /^\s*\|\s*(.*)\|/gm.test(item);
 }
 // The creation and destruction of lists
 function handleLists(currentLine, prevLine, nextLine) {
@@ -293,15 +290,15 @@ function handleLists(currentLine, prevLine, nextLine) {
     return markdown;
 }
 
-function handleTable(currentLine, prevLine, nextLine) {
+/*function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
-    //var columns = currentLine.split('|').filter(function(v){return v !== '';});
+    var columns = currentLine.split('|').filter(function(v){return v !== '';});
     // open table
-    if(isTable(prevLine)) {
+    if(!isTable(prevLine)) {
         markdown += "<table class='markdown-table'>";
     }
     // create thead
-    if(isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+    if(!isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
         markdown += "<thead>";
         markdown += "<tr>";
         for(var i = 0; i < columns.length; i++) {
@@ -348,13 +345,14 @@ function handleTable(currentLine, prevLine, nextLine) {
             markdown += "</tr>";
 
             // close thead and open tbody
-            if(isTable(prevLine)) {
+            if(!isTable(prevLine)) {
                 markdown += "</thead><tbody>";
             }
         }
     }
     return markdown;
-}
+}*/
+
 //----------------------------------------------------------------------------------
 // markdownBlock:
 //
@@ -395,8 +393,6 @@ function markdownBlock(inString)
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
-    // [text to show](url)
-    inString = inString.replace(/\[{1}(.*?\S)\]{1}\({1}(.*?\S)\){1}/g, '<a href="$2" target="_blank">$1</a>');
 
     // External mp4 src !!!
     // ==[src]==
