@@ -602,10 +602,11 @@ function elementIsValid(element) {
 		element.classList.remove("bg-color-change-invalid");
 
 		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		if(element.name === "coursegitURL") {
-			return true;
-		}
-
+		// if(element.name === "coursegitURL") {
+		// 	return true;
+		// } else {
+			
+		// }
 		return false;
 	}
 
@@ -618,19 +619,19 @@ function elementIsValid(element) {
 	return false;
 }
 
-//Validation with REG EXP for Github URL
-function validateGitInput(id){
-	var gitUrl = document.getElementById(id);
-		if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
-			console.log("Valid URL!");
-			gitUrl.style.backgroundColor = "white";
-			gitUrl.style.borderColor = "rgb(51, 136, 51)";
-		} else {
-			gitUrl.style.backgroundColor = "#f57";
-			gitUrl.style.borderColor = "transparent";
-			console.log("Invalid url...");
-		}
-}
+// //Validation with REG EXP for Github URL
+// function validateGitInput(id){
+// 	var gitUrl = document.getElementById(id);
+// 		if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
+// 			console.log("Valid URL!");
+// 			gitUrl.style.backgroundColor = "white";
+// 			gitUrl.style.borderColor = "rgb(51, 136, 51)";
+// 		} else {
+// 			gitUrl.style.backgroundColor = "#f57";
+// 			gitUrl.style.borderColor = "transparent";
+// 			console.log("Invalid url...");
+// 		}
+// }
 
 //Validates whole form but don't implement it.
 function quickValidateForm(formid, submitButton){
