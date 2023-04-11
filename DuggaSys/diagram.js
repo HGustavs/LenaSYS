@@ -8318,12 +8318,12 @@ function drawElement(element, ghosted = false)
         //Overlapping UML-inheritance
         if (element.state == 'overlapping') {
             str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
-            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
+            style='fill:black;stroke:black;stroke-width:${linew};margin-top:10px;'/>`;
         }
         //Disjoint UML-inheritance
         else {
             str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
-            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
+            style='fill:white;stroke:black;stroke-width:${linew};margin-top:10px;'/>`;
         }
         //end of svg
         str += `</svg>`;
