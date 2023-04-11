@@ -1,0 +1,16 @@
+﻿file: resultedservice.php
+
+
+13 - if $SESSION is set, assign value to $userid, else assign “student” to $userid.
+* This can most likely be split a part from file, considering it is most likely used in other files as well.
+
+
+27 - basically a check login, needs to be superuser or have access. If query is unsuccessful, run errorInfo(). Also get and display data in table rows according to comment at row 28.
+* A lot of files most likely uses a check for the login, separated between students and teachers. These may have to be considered 2 or more separated services, depending on the function of the specified file. 
+
+
+39 - Get filter option from set SELECT statement, fetch remaining rows based on search.
+45 - for filter options get names from listentries.
+59 - create and return array from the filter search applied.
+79 - output said array based on search.
+* The remainder above feels specific to the function of this file, as long as the previous checks works as intended.
