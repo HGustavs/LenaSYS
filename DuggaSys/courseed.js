@@ -603,6 +603,7 @@ function elementIsValid(element) {
 
 		// The inputs for the git URLs are valid even when they're empty, since they're optional
 		if(element.name === "coursegitURL") {
+			console.log(element.name);
 			return true;
 		}
 		return false;
