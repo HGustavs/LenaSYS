@@ -623,17 +623,17 @@ function validateGitInput(id){
 	var gitUrl = document.getElementById(id);
 	if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
 		console.log("Valid URL!");
-		element.classList.remove("bg-color-change-invalid");
+		gitUrl.classList.remove("bg-color-change-invalid");
 		// gitUrl.style.backgroundColor = "white";
 		// gitUrl.style.borderColor = "rgb(51, 136, 51)";
 	} else if(gitUrl.value.trim() === "") {
 		console.log("Empty URL");
-		element.classList.remove("bg-color-change-invalid");
+		gitUrl.classList.remove("bg-color-change-invalid");
 	} else {
 		// gitUrl.style.backgroundColor = "#f57";
 		// gitUrl.style.borderColor = "transparent";
 		console.log("Invalid url...");
-		element.classList.add("bg-color-change-invalid");
+		gitUrl.classList.add("bg-color-change-invalid");
 	}
 }
 
