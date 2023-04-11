@@ -6284,33 +6284,136 @@ function generateContextProperties()
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
+            //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
             Object.keys(UMLLineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].startIcon != undefined) {
+                    //this covers Triangle and Arrow.
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].startIcon.toUpperCase() == icon){
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        console.log("icon is " + icon);
+                        console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                    }
+                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                    else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    //else, its not matching and the option is just added to the dropdown normally.
+                    else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    }
+                }
+                else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
             });
+            //iterate trough all icons associated with IE. add these icons to the drop down
+            //if the line in context has one of these lines in the starting position, just like for UML, it is automatically selected
             Object.keys(IELineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].startIcon != undefined) {
+                    //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
+                    //This means we have to manually check these and others like them
+                    if (contextLine[0].startIcon.toUpperCase() == icon){
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //icon can be ZERO_MANY while start icon can be 0-M.
+                    else if ((contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ZERO_ONE not being equal to 0-1
+                    else if ((contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE not being equal to 1
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers FORCEDONE not being equal to 1!
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE_MANY not being equal to 1-M
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers MANY not being equal to M
+                    else if ((contextLine[0].startIcon.toUpperCase() == "M") && (icon == "MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    }
+                }
+                else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
-                if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].endIcon != undefined) {
+                    //this covers Triangle and Arrow.
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].endIcon.toUpperCase() == icon){
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                    else if ((contextLine[0].endIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if ((contextLine[0].endIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    }
+                }
+                //else, its not matching and the option is just added to the dropdown normally.
+                else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
             });
             Object.keys(IELineIcons).forEach(icon => {
-                if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].endIcon != undefined) {
+                    //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
+                    //This means we have to manually check these and others like them
+                    if (contextLine[0].endIcon.toUpperCase() == icon){
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //icon can be ZERO_MANY while start icon can be 0-M.
+                    else if ((contextLine[0].endIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ZERO_ONE not being equal to 0-1
+                    else if ((contextLine[0].endIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE not being equal to 1
+                    else if ((contextLine[0].endIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers FORCEDONE not being equal to 1!
+                    else if ((contextLine[0].endIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE_MANY not being equal to 1-M
+                    else if ((contextLine[0].endIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers MANY not being equal to M
+                    else if ((contextLine[0].endIcon.toUpperCase() == "M") && (icon == "MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    }
+                }
+                else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
