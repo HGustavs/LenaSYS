@@ -244,6 +244,10 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
+                    <!--
+
+                    !!! NOTE: Commented out due to merge conflict between "SDState" and "UMLInitialState". !!!
+
                     <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
@@ -254,6 +258,8 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>
+
+                    -->
                     <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                         <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
