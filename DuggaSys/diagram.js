@@ -1120,7 +1120,8 @@ var allAttrToEntityRelations = [];
 // Array for attributes connected with eachother
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
-function onSetup()
+//Function to draw the predrawn diagram for diagram.php
+/*function onSetup()
 {
     const EMPLOYEE_ID = makeRandomID();
     const Bdale_ID = makeRandomID();
@@ -1232,7 +1233,7 @@ function onSetup()
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: NumberDEPARTMENT_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: Number_of_employees_ID, kind: "Normal" },
         { id: makeRandomID(), fromID: DEPARTMENT_ID, toID: WORKS_FOR_ID, kind: "Double", cardinality: "ONE" },
-    ];
+    ]; 
 
     for(var i = 0; i < demoData.length; i++){
         addObjectToData(demoData[i], false);
@@ -1325,19 +1326,21 @@ function onSetup()
         addObjectToLines(demoLines[i], false);
     }
 
-    // Global statemachine init
-    stateMachine = new StateMachine(data, lines);
+   
+    
 
     fetchDiagramFileContentOnLoad();
-}
-
+}*/
+//was in onSetup function moved it out 
+ // Global statemachine init
+stateMachine = new StateMachine(data, lines);
 /**
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
 function getData()
-{
+{ 
     container = document.getElementById("container");
-    onSetup();
+   // onSetup();
     generateToolTips();
     toggleGrid();
     updateGridPos();
