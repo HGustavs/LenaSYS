@@ -343,7 +343,7 @@
                 <div>
                     <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
-                        <span class="toolTipText"><b>Statediagram state</b><br>
+                        <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add state diagram state to the diagram</p><br>
                             <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
@@ -377,7 +377,7 @@
                             </span>
                     </div>
                     </div>
-                </div><!--<-- Statediagram functionality end -->
+                </div><!--<-- State diagram functionality end -->
                 <div>
                     <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
