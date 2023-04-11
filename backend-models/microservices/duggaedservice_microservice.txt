@@ -1,0 +1,232 @@
+checkDuggaAccess();
+Row 53-55: $writeaccess starts as false but if the user has logged in and has access $access is set to true. (the user can also be a superuser)
+$writeaccess = false;
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
+  $writeaccess = true;
+
+
+saveDugga();
+Row 57-95: If the user wants to save dugga this code runs:
+  if(strcmp($opt,"SAVDUGGA")===0){
+		$query=null;
+
+
+checkGroupAssignment();
+Row 60-62: Check if its a group assignment
+if (strcmp($template, "group-assignment")==0){
+			$groupAssignment = true;
+		}
+
+
+correctDuggaTable();
+Row 63-71: Check if there is a dugga with the id, If not it will create a table and if there is one it will update the table with the correct values
+if(is_null($qid)||strcmp($qid,"UNK")===0){
+        $query = $pdo->prepare("INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (:cid,:autograde,:gradesys,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart,:jsondeadline,:group)");
+        $query->bindParam(':cid', $cid);
+        $query->bindParam(':uid', $userid);
+        $query->bindParam(':coursevers', $coursevers);
+    }else{
+        $query = $pdo->prepare("UPDATE quiz SET qname=:qname,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline,`group`=:group WHERE id=:qid;");
+        $query->bindParam(':qid', $qid);
+    }
+
+
+checkGroupAssignmentNr();
+Row 77-81: Check if its a group assignment, adds a 1 if its a group and 0 if its not.
+if($groupAssignment) {
+			$query->bindValue(':group', 1, PDO::PARAM_INT);
+		} else {
+			$query->bindValue(':group', 0, PDO::PARAM_INT);
+		}
+
+
+checkDeadlineUNK();
+checkQstartUNK();
+checkReleaseUNK();
+Row 83-85: Looks for $deadline, $qstart and $release. If any of them are in "UNK" they are set to NULL.
+if (strrpos("UNK",$deadline)!==false) $deadline = null;
+    if (strrpos("UNK",$qstart)!==false) $qstart = null;
+    if (strrpos("UNK",$release)!==false) $release = null;
+
+
+executeError();
+Row 91-94: If the query cant execute then error displays
+if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug.="Error updating dugga ".$error[2];
+		}
+
+
+optDeleteDugga();
+Row 95-108: Runs if you want to delete a dugga. try and catch if you cant delete the dugga
+else if(strcmp($opt,"DELDU")===0){
+		$query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
+		$query->bindParam(':qid', $qid);
+		try{
+			if(!$query->execute()) {
+				if($query->errorInfo()[0] == 23000) {
+					$debug = "The item could not be deleted because of a foreign key constraint.";
+				} else {
+					$debug = "The item could not be deleted.";
+				}
+			}
+		}catch(Exception $e){
+			$debug = "The item could not be deleted.";
+		}
+
+
+optAddVariant();
+Row 110-123: Adds a variant och creates a table with values as shown
+else if(strcmp($opt,"ADDVARI")===0){
+		$querystring="INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)";
+		$stmt = $pdo->prepare($querystring);
+		$stmt->bindParam(':qid', $qid);
+		$stmt->bindParam(':uid', $userid);
+		$stmt->bindParam(':disabled', $disabled);
+		$stmt->bindParam(':param', $param);
+		$stmt->bindParam(':variantanswer', $answer);
+
+		if(!$stmt->execute()) {
+			$error=$stmt->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+	}
+
+
+optAddVariant();
+Row 123-134: Saves a variant. it updates the table 'variant' with values as shown
+else if(strcmp($opt,"SAVVARI")===0){
+		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid");
+		$query->bindParam(':vid', $vid);
+		$query->bindParam(':disabled', $disabled);
+		$query->bindParam(':param', $param);
+		$query->bindParam(':variantanswer', $answer);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating user".$error[2];
+		}
+	}
+
+
+optDeleteVariant();
+Row 134-151: Deletes a variant. Deletes from userAnswer or variant.
+else if(strcmp($opt,"DELVARI")===0){
+		$query = $pdo->prepare("DELETE FROM userAnswer WHERE variant=:vid;");
+		$query->bindParam(':vid', $vid);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating user".$error[2];
+		}
+
+		$query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
+		$query->bindParam(':vid', $vid);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating user".$error[2];
+		}
+	}
+
+
+bindArr();
+Rows 156-159: Binds arrays to variable
+$mass=array();
+$entries=array();
+$files=array();
+$duggaPages = array();
+
+
+prepQuery();
+Row 163-164: Prepares table and binds :cid to variable $cid
+$query = $pdo->prepare("SELECT coursename,coursecode,cid FROM course WHERE cid=:cid LIMIT 1");
+$query->bindParam(':cid', $cid);
+
+
+executeQuery();
+Row 169-177: When the query above executes it fetches coursename and coursecode. If this fails a error is displayed
+if($query->execute()) {
+	foreach($query->fetchAll() as $row) {
+		$coursename=$row['coursename'];
+		$coursecode=$row['coursecode'];
+	}
+} else {
+	$error=$query->errorInfo();
+	$debug="Error reading entries".$error[2];
+}
+
+
+fetchQueryArr();
+Row 190-236: Loop that returns an array indexed by column name as returned in result set as $row. Pushes then the element to the end of the array
+foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row)
+{
+
+$entry = array(
+			'variants' => $mass,
+			'did' => $row['id'],
+			'qname' => html_entity_decode($row['qname']),
+			'autograde' => $row['autograde'],
+			'gradesystem' => $row['gradesystem'],
+			'quizFile' => $row['quizFile'],
+			'qstart' => $row['qstart'],
+			'deadline' => $row['deadline'],
+      'qrelease' => $row['qrelease'],
+			'modified' => $row['modified'],
+			'arrow' => $row['id'],
+			'cogwheel' => $row['id'],
+			'jsondeadline' => html_entity_decode($row['jsondeadline']),
+			'trashcan' => $row['id']
+			);
+
+		array_push($entries, $entry);
+
+}
+
+
+bindQueryz();
+Row 192-193: Prepares selected values from variant and binds :qid to $row. If it fails error will be displayed
+$queryz = $pdo->prepare("SELECT vid,quizID,param,variantanswer,modified,disabled FROM variant WHERE quizID=:qid ORDER BY vid;");
+		$queryz->bindParam(':qid',  $row['id']);
+
+		if(!$queryz->execute()){
+			$error=$queryz->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+
+
+fetchQueryzArr();
+Row 201-216: Loop that returns an array indexed by column name as returned in result set as $rowz. Pushes then the element to the end of the array
+foreach($queryz->fetchAll(PDO::FETCH_ASSOC) as $rowz){
+
+			$entryz = array(
+				"vid" => $rowz["vid"],
+				"param" => html_entity_decode($rowz["param"]),
+				"notes" => html_entity_decode($rowz["param"]),
+				"variantanswer" => html_entity_decode($rowz["variantanswer"]),
+				"modified" => $rowz["modified"],
+				"disabled" => $rowz["disabled"],
+				"arrowVariant" => $rowz["vid"],
+				"cogwheelVariant" => $rowz["vid"],
+				"trashcanVariant" => $rowz["vid"]
+				);
+
+			array_push($mass, $entryz);
+		}
+
+
+readFilesToString();
+Row 237-245: Loop for each $giles(spelling error in code? should problably be files not giles) as $value. Pushes the array elements to the end and then reads the file into a string
+$dir    = './templates'; 
+	$giles = scandir($dir);
+	$files=array();
+	foreach ($giles as $value){
+		if(endsWith($value,".html")){
+			array_push($files,substr ( $value , 0, strlen($value)-5 ));
+			$duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents("templates/".$value);
+		}
+	}
+
+JsonArr();
+Row 259: outputs Json array
+echo json_encode($array);
