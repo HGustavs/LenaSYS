@@ -2927,7 +2927,7 @@ function validateVersionName(versionName, dialogid) {
   } else {
     $(x).fadeIn();
     name.style.borderColor = "#E54";
-    name.style.backgroundColor = "#f57";
+    //name.style.backgroundColor = "#f57";
     //x.style.display = "block";
     name.style.borderWidth = "2px";
 
