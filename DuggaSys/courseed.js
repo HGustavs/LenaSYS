@@ -567,7 +567,6 @@ const regex = {
 
 //Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
-	console.log(element.name);
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 	//Standard styling for a failed validation that will be changed if element passes validation
 	element.classList.add("bg-color-change-invalid");
