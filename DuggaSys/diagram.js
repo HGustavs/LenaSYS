@@ -1327,6 +1327,7 @@ function onSetup()
  */
 function getData()
 {
+    console.log("started");
     container = document.getElementById("container");
     onSetup();
     generateToolTips();
