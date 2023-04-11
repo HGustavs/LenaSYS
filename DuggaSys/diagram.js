@@ -1353,7 +1353,8 @@ stateMachine = new StateMachine(data, lines);
 function getData()
 { 
     container = document.getElementById("container");
-   // onSetup();
+    DiagramResponse = fetchDiagram();
+    onSetup();
     generateToolTips();
     toggleGrid();
     updateGridPos();
