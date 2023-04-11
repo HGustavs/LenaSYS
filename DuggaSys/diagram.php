@@ -32,6 +32,7 @@
     <script src="../Shared/markdown.js"></script>
     <script src="diagram.js"></script>
     <script>
+<<<<<<< HEAD
         // Fetch variant parameters from server
         var DiagramResponse;
         
@@ -96,6 +97,7 @@
         {
             return DiagramResponse.variant;
         }
+
 
     </script>
 </head>
@@ -451,7 +453,7 @@
     
     <!-- Diagram grid -->
     <div id="svggrid" style="z-index:-11">
-        <svg id="svgbacklayer">
+        <svg id="svgbacklayer" class="svgbacklayer-background">
             <defs>
             <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
 
@@ -488,12 +490,13 @@
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
+                <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style='position: absolute; top: 33%;'>
+            <fieldset class='options-fieldset options-section' style='position: absolute; top: 35%; margin-top: 2%;'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>

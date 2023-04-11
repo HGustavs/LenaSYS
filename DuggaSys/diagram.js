@@ -745,6 +745,7 @@ const keybinds = {
         TOGGLE_GRID: {key: "g", ctrl: false},
         TOGGLE_RULER: {key: "t", ctrl: false},
         TOGGLE_SNAPGRID: {key: "s", ctrl: false},
+        TOGGLE_DARKMODE: {key: "d", ctrl: false},
         CENTER_CAMERA: {key:"home", ctrl: false},
         OPTIONS: {key: "o", ctrl: false},
         ENTER: {key: "enter", ctrl: false},
@@ -1653,6 +1654,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
         if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
         if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
+        if(isKeybindValid(e, keybinds.TOGGLE_DARKMODE)) toggleDarkmode();
         if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
@@ -2730,10 +2732,10 @@ function changeState()
 {
     const element =  context[0],
           oldType = element.type,
-          newType = document.getElementById("typeSelect").value;
+          newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
 
     /* If the element has a new type and got lines, then it can't change type. */
-    if (oldType != newType && elementHasLines(element)) {
+    if (newType !== undefined && oldType != newType && elementHasLines(element)) {
         displayMessage("error", `
             Can't change type from \"${oldType}\" to \"${newType}\" as
             these types should not be able to connect with each other.`
@@ -3954,6 +3956,37 @@ function toggleGrid()
         gridButton.style.backgroundColor ="#362049";
    }
 }
+
+/**
+ * @description Toggles the darkmode for svgbacklayer ON/OFF.
+ */
+function toggleDarkmode()
+{
+    const stylesheet = document.getElementById("themeBlack");
+    const storedTheme = localStorage.getItem('diagramTheme');
+
+	if(storedTheme) stylesheet.href = storedTheme;
+	
+    if(stylesheet.href.includes('blackTheme')){
+        // if it's dark -> go light
+        stylesheet.href = "../Shared/css/style.css";
+        localStorage.setItem('diagramTheme',stylesheet.href)
+    } else if(stylesheet.href.includes('style')) {
+        // if it's light -> go dark
+        stylesheet.href = "../Shared/css/blackTheme.css";
+        localStorage.setItem('diagramTheme',stylesheet.href)
+    }
+}
+
+/**
+ * @description When diagram page is loaded, check if preferred theme is stored in local storage.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    const stylesheet = document.getElementById("themeBlack");
+    if (!localStorage.getItem("diagramTheme")) return;
+
+    stylesheet.href = localStorage.getItem("diagramTheme");
+})
 
 /**
  * @description Toggles the replay-mode, shows replay-panel, hides unused elements
@@ -6252,33 +6285,136 @@ function generateContextProperties()
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
+            //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
             Object.keys(UMLLineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].startIcon != undefined) {
+                    //this covers Triangle and Arrow.
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].startIcon.toUpperCase() == icon){
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        console.log("icon is " + icon);
+                        console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                    }
+                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                    else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    //else, its not matching and the option is just added to the dropdown normally.
+                    else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    }
+                }
+                else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
             });
+            //iterate trough all icons associated with IE. add these icons to the drop down
+            //if the line in context has one of these lines in the starting position, just like for UML, it is automatically selected
             Object.keys(IELineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined && contextLine[0].startIcon == icon){
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].startIcon != undefined) {
+                    //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
+                    //This means we have to manually check these and others like them
+                    if (contextLine[0].startIcon.toUpperCase() == icon){
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //icon can be ZERO_MANY while start icon can be 0-M.
+                    else if ((contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ZERO_ONE not being equal to 0-1
+                    else if ((contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE not being equal to 1
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers FORCEDONE not being equal to 1!
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE_MANY not being equal to 1-M
+                    else if ((contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers MANY not being equal to M
+                    else if ((contextLine[0].startIcon.toUpperCase() == "M") && (icon == "MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    }
+                }
+                else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             Object.keys(UMLLineIcons).forEach(icon => {
-                if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
-                    str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].endIcon != undefined) {
+                    //this covers Triangle and Arrow.
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].endIcon.toUpperCase() == icon){
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                    else if ((contextLine[0].endIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if ((contextLine[0].endIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    }
+                }
+                //else, its not matching and the option is just added to the dropdown normally.
+                else {
                     str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                 }
             });
             Object.keys(IELineIcons).forEach(icon => {
-                if (contextLine[0].endIcon != undefined && contextLine[0].endIcon == icon){
-                    str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                }else {
+                if (contextLine[0].endIcon != undefined) {
+                    //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
+                    //This means we have to manually check these and others like them
+                    if (contextLine[0].endIcon.toUpperCase() == icon){
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //icon can be ZERO_MANY while start icon can be 0-M.
+                    else if ((contextLine[0].endIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ZERO_ONE not being equal to 0-1
+                    else if ((contextLine[0].endIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE not being equal to 1
+                    else if ((contextLine[0].endIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers FORCEDONE not being equal to 1!
+                    else if ((contextLine[0].endIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers ONE_MANY not being equal to 1-M
+                    else if ((contextLine[0].endIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    //this covers MANY not being equal to M
+                    else if ((contextLine[0].endIcon.toUpperCase() == "M") && (icon == "MANY")) {
+                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                    }
+                    else {
+                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    }
+                }
+                else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
@@ -7366,16 +7502,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeStart=20;
                 break;
@@ -7556,16 +7692,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=20;
                 break;
@@ -8357,18 +8493,19 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh/2}px;`;
-      
+        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
+       
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
+        
         if (ghosted) {
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
       
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}' style='transform:rotate(180deg); margin-top:${-(boxw/2)};  stroke-width:${linew};'>`;
+        str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
         if (element.state == 'overlapping') {
@@ -8377,13 +8514,14 @@ function drawElement(element, ghosted = false)
         }
         // Disjoint IE-inheritance
         else {
-            str+= `<circle cx="${(boxw/2)}" cy="0;" r="${(boxw/2.08)}" fill="white"; stroke="black";'/>
+            str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/>
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
                 <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" />
                 <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" />`
         }
         //end of svg
         str += `</svg>`;
+        
     }    
     //=============================================== <-- End of IE functionality
 
@@ -10782,20 +10920,12 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            //check if the fill color is black or pink, if so the font color is set to white
-                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
-                                fontColor.style.fill = `${"#ffffff"}`;
-                            }
-                            else{
-
-                                fontColor.style.fill = `${"#000000"}`;
-                            }
+                            fontContrast();
                         }
                     }
                 }
@@ -10804,20 +10934,12 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            //check if the fill color is black or pink, if so the font color is set to white
-                            if ((element.fill == "#000000") || (element.fill == "#DC267F")) {
-                                fontColor.style.fill = `${"#ffffff"}`;
-                            }
-                            else{
-
-                                fontColor.style.fill = `${"#000000"}`;
-                            }
+                            fontContrast();
                         }
                     }
                 }
@@ -10826,14 +10948,12 @@ function updateCSSForAllElements()
                     for (let index = 0; index < 2; index++){
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
-                        // If more than one element is marked.
-                        if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                        if(markedOverOne()){
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else{
                             fillColor.style.fill = `${element.fill}`;
-                            fontColor.style.fill = `${"#000000"}`;
-                             fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+                            fontContrast();
                         }
                     }
                 }else{ // Update normal elements, and relations
@@ -10842,8 +10962,7 @@ function updateCSSForAllElements()
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
-                    // If more than one element is marked.
-                    if(inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0){
+                    if(markedOverOne()){
                         fillColor.style.fill = `${"#927b9e"}`;
                         fontColor.style.fill = `${"#ffffff"}`;
                         if(element.state == "weakKey") {
@@ -10857,6 +10976,7 @@ function updateCSSForAllElements()
                     } else if(element.kind == "UMLRelation"){
                         if(element.state == "overlapping"){
                             fillColor.style.fill = `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
@@ -10872,7 +10992,79 @@ function updateCSSForAllElements()
                         }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
-                        fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+                        fontContrast();
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#000000"}`;
+                            if (element.fill == "#000000") {
+                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Update UMLEntity
+                if(element.kind == "UMLEntity"){
+                    for (let index = 0; index < 3; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                    }
+                }
+                // Update IEEntity
+                else if(element.kind == "IEEntity"){
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                    }
+                }
+                // Update Elements with double borders.
+                else if(element.state == "weak" || element.state == "multiple"){
+                    for (let index = 0; index < 2; index++){
+                        fillColor = elementDiv.children[0].children[index];
+                        fontColor = elementDiv.children[0];
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                    }
+                }else{ // Update normal elements, and relations
+                    fillColor = elementDiv.children[0].children[0];
+                    fontColor = elementDiv.children[0];
+                    weakKeyUnderline = elementDiv.children[0].children[2];
+                    disjointLine1Color = elementDiv.children[0].children[2];
+                    disjointLine2Color = elementDiv.children[0].children[3];
+                    if(markedOverOne()){
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                        if(element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                        } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
+                        else if(element.kind == "IERelation" && element.state != "overlapping") {
+                                disjointLine1Color.style.stroke = `${"#ffffff"}`;
+                                disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                        }
+                        // If UMLRelation is not marked.
+                    } else if(element.kind == "UMLRelation"){
+                        if(element.state == "overlapping"){
+                            fillColor.style.fill = `${"#000000"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                        }else{
+                            fillColor.style.fill = `${"#ffffff"}`;
+                        }
+                    } else if(element.kind == "IERelation"){
+                        if(element.state == "overlapping"){
+                            fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
+                        }else{
+                            fillColor.style.fill = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = `${"#000000"}`;
+                            disjointLine2Color.style.stroke = `${"#000000"}`;
+                        }
+                    } else{
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
                             if (element.fill == "#000000") {
@@ -10892,6 +11084,16 @@ function updateCSSForAllElements()
         if (ghostDiv){
             updateElementDivCSS(ghostElement, ghostDiv)
         }
+    }
+
+    function fontContrast() {
+        //check if the fill color is black or pink, if so the font color is set to white
+        fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+    }
+
+    function markedOverOne() {
+        //If more than one element is marked.
+        return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
     toggleBorderOfElements();
 }
