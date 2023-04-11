@@ -1032,7 +1032,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false,IE:false};
+var diagramType = {ER:false,UML:false,IE:false,SD:false};
 
 //Grid Settings
 var settings = {

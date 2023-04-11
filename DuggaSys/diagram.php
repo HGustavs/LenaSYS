@@ -341,17 +341,17 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <div id="elementPlacement6" class="StateButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement8" class="StateButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>Statediagram state</b><br>
                             <p>Add state diagram state to the diagram</p><br>
                             <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
-                        <div id="togglePlacementTypeButton6" class="placementTypeIcon togglePlacementTypeButton">
+                        <div id="togglePlacementTypeButton8" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>
-                    <div id="togglePlacementTypeBox6" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                    <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                         <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>ER entity</b><br>
