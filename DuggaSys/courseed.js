@@ -618,28 +618,8 @@ function elementIsValid(element) {
 	return false;
 }
 
-// //Validation with REG EXP for Github URL
-// function validateGitInput(id){
-// 	var gitUrl = document.getElementById(id);
-// 	if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
-// 		console.log("Valid URL!");
-// 		gitUrl.classList.remove("bg-color-change-invalid");
-// 		// gitUrl.style.backgroundColor = "white";
-// 		// gitUrl.style.borderColor = "rgb(51, 136, 51)";
-// 	} else if(gitUrl.value.trim() === "") {
-// 		console.log("Empty URL");
-// 		gitUrl.classList.remove("bg-color-change-invalid");
-// 	} else {
-// 		// gitUrl.style.backgroundColor = "#f57";
-// 		// gitUrl.style.borderColor = "transparent";
-// 		console.log("Invalid url...");
-// 		gitUrl.classList.add("bg-color-change-invalid");
-// 	}
-// }
-
 //Validates whole form but don't implement it.
 function quickValidateForm(formid, submitButton){
-	//let gitUrl = document.getElementById('ncoursegit-url');
 	const formContainer = document.getElementById(formid);
 	const inputs = formContainer.querySelectorAll("input.validate");
 	const saveButton = document.getElementById(submitButton);
@@ -652,7 +632,6 @@ function quickValidateForm(formid, submitButton){
 		}
 	});
 
-	// && !gitUrl.classList.contains("bg-color-change-invalid")
 	//If all inputs were valid create course or update course depending on id of form
 	if(numberOfValidInputs === inputs.length) {
 		saveButton.disabled = false;
@@ -660,10 +639,8 @@ function quickValidateForm(formid, submitButton){
 	} else{
 		saveButton.disabled = true;
 	}
-	
 	return false;
 }
-
 
 //Validates whole form
 function validateForm(formid) {
