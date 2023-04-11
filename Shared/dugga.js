@@ -964,6 +964,7 @@ function AJAXService(opt,apara,kind)
   }
 	apara.log_uuid = tex;
 
+	logForTesting(opt, apara, kind);
 	
   var para="";
 	for (var key in apara) {
@@ -2803,3 +2804,19 @@ $(document).on('keydown', function(e) {
 		}
 	}
 });
+
+function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE 
+
+	var parameterString = [opt, apara, kind];
+	var TestJSON = JSON.stringify(parameterString);
+	var testData = new FormData();
+	testData.append("upfile", testData);
+	fetch("basic.php", { method: "POST", body: testData });
+	console.log(TestJSON);
+
+}
+
+
+
+
+
