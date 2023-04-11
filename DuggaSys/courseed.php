@@ -97,6 +97,8 @@ if(isset($_SESSION['uid'])){
 						<span style="padding-right: 10px;">GitHub URL:</span>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class="textinput validate" type="text" id="ncoursegit-url" name="coursegitURL" placeholder="https://github.com/..."/>
 					</div>
+					<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
+					<p id="dialog5" class="validationDialog">Enter a valid github url</p>
 				</div>
     		<div style='padding:5px;'>
     			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
