@@ -384,9 +384,9 @@ function markdownBlock(inString)
     // External img src !!!
     // Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
     inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}$/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" /><br>');
-    inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$2}" /><br>');
-    inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$1}" onmouseover="originalImg(this, $2)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
-    inString = inString.replace(/\!\[(.*?\S)\]\((.*?\S)\)/g, '<img class="imgzoom" src="{$1}" />');
+    inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}$/g, '<img class="imgzoom" src="{$2}" /><br>');
+    inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}$/g, '<img class="imgzoom" src="{$1}" onmouseover="originalImg(this, $2)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
+    inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}$/g, '<img class="imgzoom" src="{$1}" />');
 
     // EXTERNAL img src AS GITHUB !!!
     //This regex is the same as github when you upload image. The upload is now ![alt-text](IMGURL) and alt-text can be empty
