@@ -2960,7 +2960,7 @@ function validateCourseID(courseid, dialogid) {
   } else {
     $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    code.style.backgroundColor = "#f57";
+    //code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
     //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
     //x2.style.display = "block";
