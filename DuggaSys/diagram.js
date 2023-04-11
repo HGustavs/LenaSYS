@@ -1334,12 +1334,14 @@ function getData()
     updateGridPos();
     updateA4Pos();
     updateGridSize();
+    console.log("reached showData");
     showdata();
     drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
+    console.log("finsihed getData");
 }
 //<-- UML functionality start
 /**
