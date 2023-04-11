@@ -1331,10 +1331,10 @@ function getData()
     onSetup();
     generateToolTips();
     toggleGrid();
-    showdata();
     updateGridPos();
     updateA4Pos();
     updateGridSize();
+    showdata();
     drawRulerBars(scrollx,scrolly);
     setCursorStyles(mouseMode);
     generateKeybindList();
