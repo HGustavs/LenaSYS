@@ -8305,7 +8305,7 @@ function drawElement(element, ghosted = false)
                              xml:space="preserve"
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                             <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                            <g transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)">
+                            <g style="fill:${element.fill}" transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)">
                                 <circle cx="14.5" cy="14.5" r="7.5"/>
                             </g>
                         </svg>
@@ -10879,12 +10879,6 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#000000"}`;
                             fontColor.style.fill = element.fill == "#000000" || element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
                         }
-                    }
-                }
-                // Updates CSS UML-States.
-                else if (element.kind == "UMLInitialState" || "UMLFinalState") {
-                    for (let child of elementDiv.children) {
-                        child.style.fill = element.fill;
                     }
                 }
                 else { // Update normal elements, and relations
