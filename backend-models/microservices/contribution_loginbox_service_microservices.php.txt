@@ -1,0 +1,320 @@
+Row 30-33: Methods needing you to be logged in. Doesnt have any code if checkLogin() or git_checklogin() is being ran but it isnt commented out?
+if(checklogin() || git_checklogin())
+{
+    // nothing yet
+}
+
+
+Row 37: If $opt and "checkForGitUser" is equal to eachother 
+if (strcmp($opt, "checkForGitUser")==0)
+{
+
+}
+
+Row 40-46: Logs a distinct user from blame, event, issue, commitgit and order by user
+$query = $log_db->prepare('select distinct(usr) from 
+		(	select blameuser as usr from blame
+		union select author as usr from event
+		union select author as usr from issue
+		union select author as usr from commitgit
+		union select blameuser as usr from coderow
+		order by usr);');
+
+
+Row 48-52: If its not a query that wants to execute then display error
+if(!$query->execute()) 
+	{
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
+	}
+
+
+Row 54: fetches everything from $rows
+$rows = $query->fetchAll();
+
+Row 55: For each $rows as $row pushes $allusers and $row['usr¨'] to the back of the array.
+foreach($rows as $row)
+	{
+		//(strlen($row['usr'])<9) // the reason for this is a username check, only users with names less than 9 characters are allowed, commented out for now, i want all users of all lengths
+		array_push($allusers, $row['usr']); 
+	}
+
+
+Row 62: if the user existed it should be not empty, aka this checks if we retrieved the user from the DB
+$userExisted = in_array($gituser, $allusers);
+
+
+Row 64-68: Returns a string contatining the JSON representation of the array supplied
+echo json_encode(array(
+        "returnMethod" => getOP('return'),
+        "debug" => $debug,
+        "returnData" => json_encode($userExisted)
+    ));
+
+
+Row 75: If statement to check if $opt and "gitUserAdmin" is equal
+else if(strcmp($opt,"gitUserAdmin") == 0)
+{
+}
+
+
+Row 80-83: If $pdo is null connect to the database
+if($pdo == null) 
+	{
+		pdoConnect();
+	}
+
+
+Row 88-91: Denies git account on contribution if $gitUserChange == 1
+if($gitUserChange == 1){
+		$query = $pdo->prepare("UPDATE git_user SET status_account=102 WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
+	}
+
+
+Row 94-97: Deletes user from contribution if $gitUserChange == 2
+elseif($gitUserChange == 2){
+		$query = $pdo->prepare("DELETE FROM git_user WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
+	}
+
+
+Row 100-103: Accepts user on contribution if $gitUserChange == 3
+elseif($gitUserChange == 3){
+		$query = $pdo->prepare("UPDATE git_user SET status_account=0 WHERE username=:gituser;");
+		$query->bindParam(':gituser', $gituser);
+	}
+
+
+Row 111: Checks if $opt and "checkForLenasysUser" is equal
+else if(strcmp($opt, "checkForLenasysUser")==0)
+{
+}
+
+
+Row 124: check the teacher table
+$query = $pdo->prepare("SELECT username,uid FROM user WHERE username=:GU LIMIT 1;");
+
+
+Row 125: $gituser gets the data from :GU
+$query->bindParam(':GU', $gituser);
+
+
+Row 133: Fetches all data from $userrows
+$userrows = $query->fetchAll();
+
+
+Row 135-136: Checks the git_user table and $gituser gets data from :GU
+$query = $pdo->prepare("SELECT username,git_uid FROM git_user WHERE username=:GU LIMIT 1;"); // check the git_user table
+	$query->bindParam(':GU', $gituser);
+
+
+Row 147:  if we managed to retrieve something with the query we found the user in the lenasys DB
+$userExisted = (!empty($userrows[0]['uid']) || !empty($git_userrows[0]['git_uid']));
+
+
+Row 151: Returns super if youre a teacher and student if you are a student. Has connections to row 147
+if($userExisted) // start of teacher/superuser check
+	{
+		if (isSuperUser($userrows[0]['uid'])) 
+		{
+			$status = "super";
+		}
+		else if(!empty($git_userrows[0]['git_uid']))
+		{
+			$status = "student"; // you exist in the git_user table
+		}
+	}
+
+
+Row 164: Returns a string contatining the JSON representation of the array supplied
+echo json_encode(array(
+        "returnMethod" => getOP('return'),
+        "debug" => $debug,
+        "returnData" => json_encode(array(
+            "success" => $userExisted,
+            "status" => $status,
+            "debug" => $debug
+        ))
+    ));
+
+
+Row 264-265: Checks if password is acceptable
+$rnd=standardPasswordHash($gitpass);
+			if(preg_match('/[a-z|A-Z|0-9]+$/',$gitpass ) && strlen($gitpass) >= 8 && strlen($gitpass) <=64){
+
+
+Row 267: Inserts new record to git_user table
+$querystring='INSERT INTO git_user (username, password, status_account, addedtime) VALUES(:username, :password, :status_account, now());';
+
+Row 268: Prepares a statement for execution and returns a statement object
+$stmt = $pdo->prepare($querystring);
+
+Row 269-271: binds data to correct variable
+$stmt->bindParam(':username', $gituser);
+				$stmt->bindParam(':password', $rnd);
+				$stmt->bindParam(':status_account', $git_pending);
+
+
+Row 273: Error handling is the user doesnt exist or if username is a duplicate
+try {
+					if(!$stmt->execute()) {
+						$error=$stmt->errorInfo();
+						$debug.="Error updating entries\n".$error[2];
+						$debug.="   ".$gituser."Does not Exist \n";
+						$debug.=" ".$uid;
+					}
+					$uid=$pdo->lastInsertId();
+					$addStatus = true;
+
+				} catch (PDOException $e) {
+					if ($e->errorInfo[1] == 1062) {
+						$debug="Duplicate Username";
+					} else {
+						$debug="Error updating entries\n".$error[2];
+					}
+				}
+
+
+Row 344: to check if you are either a git_user or not a user at all
+if($gituser != "UNK" && $status != "super") // we are either a git_user or not a user at all
+{ 
+}
+
+
+Row 347-348: Retrieve a user with the same name
+$query = $pdo->prepare("SELECT git_uid,username,password,status_account FROM git_user WHERE username=:username LIMIT 1");
+		$query->bindParam(':username',$gituser);
+
+
+Row 356-379: Checks if there are any retrieved entries and outputs json array
+if($query->rowCount() > 0) // we actually retrieved entries
+		{
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			
+			if(password_verify($gitpass, $row['password'])) // entered gitpass matched hashed password
+			{
+                $status_account_int = (int)$row['status_account'];
+                if($status_account_int == $git_pending)
+                {
+                    echo json_encode(array(
+                        "returnMethod" => getOP('return'),
+                        "debug" => $debug,
+                        "returnData" => json_encode(array(
+                            "success" => false,
+                            "status" => "pending",
+                            "debug" => $debug
+                        )
+                    )));
+                }
+
+
+Row 380-391: If the account is revoked outputs corresponding array
+else if($status_account_int == $git_revoked)
+                {
+                    echo json_encode(array(
+                        "returnMethod" => getOP('return'),
+                        "debug" => $debug,
+                        "returnData" => json_encode(array(
+                            "success" => false,
+                            "status" => "revoked",
+                            "debug" => $debug
+                        )
+                    )));
+                }
+
+
+Row 392-409: If the account is accepted starts a session and outputs corresponding json array
+else if($status_account_int == $git_accepted)
+                {
+                    $_SESSION['git_uid'] = $row['git_uid'];
+                    $_SESSION["git_loginname"]=$row['username'];
+                    $_SESSION["git_passwd"]=$row['password'];
+
+                    echo json_encode(array(
+                        "returnMethod" => getOP('return'),
+                        "debug" => $debug,
+                        "returnData" => json_encode(array(
+                            "success" => true,
+                            "status" => "accepted",
+                            "debug" => $debug
+                        )
+                    )));
+
+                }
+
+
+Row 410-424: If wrong password is entered
+else
+{
+
+      echo json_encode(array(
+      "returnMethod" => getOP('return'),
+       "debug" => $debug,
+       "returnData" => json_encode(array(
+       "success" => false,
+     "status" => "wrong pass",
+    "debug" => $debug
+                    )
+                )));
+
+			}
+
+
+Row 427-456: If the account is a superuser. If and else checks if the password is correct or wrong
+else if($status == "super") // user exists on the lenasys database login with this instead of the git database
+	{
+		if(login($gituser, $gitpass, false))
+		{
+            echo json_encode(array(
+                "returnMethod" => getOP('return'),
+                "debug" => $debug,
+                "returnData" => json_encode(array(
+                    "success" => true,
+                    "status" => "super",
+                    "debug" => $debug
+                )
+            )));
+
+		}
+		else
+		{
+            echo json_encode(array(
+                "returnMethod" => getOP('return'),
+                "debug" => $debug,
+                "returnData" => json_encode(array(
+                    "success" => false,
+                    "status" => "wrong pass",
+                    "debug" => $debug
+                )
+            )));
+
+
+		}
+	}
+
+
+Row 457-478: If the user logout from the git and ends session and cookies and returns json array
+else // logout the git
+	{
+		$_SESSION = array(); // logout so we yeet the session
+		if (ini_get("session.use_cookies")) // logout so we yeet the cookies
+		{
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 42000,$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+		}
+		session_unset();
+		session_destroy();
+		clearstatcache(); 
+
+        echo json_encode(array(
+            "returnMethod" => getOP('return'),
+            "debug" => $debug,
+            "returnData" => json_encode(array(
+                "success" => true,
+                "status" => "logged out",
+                "debug" => $debug
+            )
+        )));
+	}
+
