@@ -788,9 +788,7 @@ const elementTypes = {
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
-
-    SDState: 8,     //SD(State diagram) functionality
-
+    // SDState: 8 DUPLICATE WITH UML-INITIAL-STATE,     //SD(State diagram) functionality
     UMLInitialState: 8,
     UMLFinalState: 9
 
@@ -808,9 +806,7 @@ const elementTypesNames = {
     UMLEntity: "UMLEntity",
     IEEntity: "IEEntity",
     IERelation: "IERelation",
-
-    SDState: "SDState"
-
+    // SDState: "SDState" DUPLICATE WITH UML-INITIAL-STATE,
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState"
 
@@ -1354,7 +1350,7 @@ function getData()
 { 
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
-    onSetup();
+    // onSetup();
     generateToolTips();
     toggleGrid();
     updateGridPos();
@@ -8654,7 +8650,6 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
-        console.log(boxh);
     }
     else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
@@ -11830,15 +11825,20 @@ function resetDiagram(){
     fetchDiagramFileContentOnLoad();
 }
 /**
+ *
  *  @description Function to set the values of the current variant in the preivew
+ *  @throws error If "window.parent.parameterArray" is not set or null.
  */
 function setPreviewValues(){
-    if(window.parent.parameterArray.length>0){
+    try {
+        if (!window.parent.parameterArray) throw new Error("\"window.parent.parameterArray\" is not set or empty!");
         diagramType=window.parent.parameterArray[0];
         showDiagramTypes();
         hideErrorCheck(window.parent.parameterArray[1]);
         getInstructions(window.parent.parameterArray[2]);
         getInstructions(window.parent.parameterArray[3]);
+    } catch (e) {
+        console.error(e);
     }
 }
 //#endregion =====================================================================================

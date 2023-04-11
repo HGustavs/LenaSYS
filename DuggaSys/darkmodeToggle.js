@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		themeStylesheet.href = storedTheme;
 	}
 	const themeToggle = document.getElementById('theme-toggle');
+
+	if (!themeToggle) return false;
+
 	themeToggle.addEventListener('click', () => {
     // if it's light -> go dark
     if(themeStylesheet.href.includes('blackTheme')){
