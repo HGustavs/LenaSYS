@@ -725,6 +725,7 @@ function deleteFile(fileid, filename, filekind) {
 
     if (confirm("Do you really want to delete the file/link: " + filename)) {
         AJAXService("DELFILE", tempData, "FILE");
+        console.log("TEST TEST TEST");  // USED FOR TESTING REMOVE WHEN FINISHED 
     }
 }
 
