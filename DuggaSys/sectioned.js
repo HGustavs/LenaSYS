@@ -1609,10 +1609,11 @@ function returnedSection(data) {
 
 
         }
+        // github icon
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
+          str += `<img style='max-width: 60%;' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
 
