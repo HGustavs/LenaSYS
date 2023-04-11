@@ -2805,8 +2805,9 @@ $(document).on('keydown', function(e) {
 	}
 });
 
-async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE 
+async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
+	console.log("TEST TES TEST");
 	//var parameterString = [opt, apara, kind];
 	//TestJSON = JSON.stringify(parameterString);
 
