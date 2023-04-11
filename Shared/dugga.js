@@ -965,10 +965,10 @@ function AJAXService(opt,apara,kind)
 	apara.log_uuid = tex;
 
 	console.log(`AJAXService parameters\nopt: ${opt}\napara: ${apara}\nkind: ${kind}\napara type: ${typeof(apara[0])}`);  // USED FOR TESTING REMOVE WHEN FINISHED
-	apara.forEach(value => console.log(value));
 	
   var para="";
 	for (var key in apara) {
+		console.log(`for ${key} value is: ${apara[key]}`); // USED FOR TESTING REMOVE WHEN FINISHED
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
 			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
