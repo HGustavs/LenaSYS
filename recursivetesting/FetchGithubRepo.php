@@ -78,7 +78,7 @@
                         // Checks if the fetched item is of type 'file'
                         if ($item['type'] == 'file') {
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = 'cms.webug.se' . '/' . 'Webbprogrammering-Examples' . '/' . $item['path'];
+                            $path = 'cms.webug.se/root/G3/students/a21olljo/LenaSYS/recursivetesting/' . '/' . 'Webbprogrammering-Examples' . '/' . $item['path'];
                             print_r($path);
                             if (!file_exists((dirname($path)))) {
                                 mkdir(dirname($path), 0777, true);
