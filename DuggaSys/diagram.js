@@ -1,4 +1,4 @@
-// =============================================================================================
+    // =============================================================================================
 //#region ================================ CLASSES             ==================================
 /** 
  * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. */
@@ -4104,6 +4104,25 @@ function boxSelect_Draw(str)
 }
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
+/**
+ * @description creates a dropdown in the options menu that should hold diagram types and when one option is chosen a diagram should be imported.
+ */
+function createDiagramTypeDropDown()
+{
+    const diagramOptions=["class diagram", "IEE diagram", "er diagram"];
+    const dropdownMenu=document.createElement("select");
+    dropdownMenu.setAttribute("id", "diagramTypeDropDown");
+    //adding the diagram options to the dropdown.
+    for(let i=0; i<diagramOptions.length; i++)
+        {
+        const option=document.createElement("option");
+        option.value=diagramOptions[i];
+        option.text=diagramOptions[i];
+        dropdownMenu.appendChild(option);
+        }
+    return dropdownMenu;
+}
+
 /**
  * @description Change the state in replay-mode with the slider
  * @param {Number} sliderValue The value of the slider
