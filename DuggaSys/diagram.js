@@ -4203,7 +4203,6 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
-    toggleBorderOfElements();
 }
 
 /**
@@ -11391,6 +11390,7 @@ function updateCSSForAllElements()
         //If more than one element is marked.
         return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
+    toggleBorderOfElements();
 }
 /**
  * @description toggles the border of all elements to white or gray; depending on current theme.
