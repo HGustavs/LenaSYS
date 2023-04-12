@@ -484,6 +484,11 @@ body {
     color:rgba(255,255,255,0.6);
 }
 
+.formDialog .formDialogText {
+    background-color: var(--color-text-header) !important;
+    color: var(--color-text-list) !important;
+}
+
 #announcementBoxOverlay{
     display: none;
     background-color: var(--color-background);
