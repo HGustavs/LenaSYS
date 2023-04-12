@@ -1,0 +1,70 @@
+﻿Study potential microservice documents and document all unique occurrences
+
+Work in progress
+
+=================
+Accessed service
+=================
+
+hasAccess
+updateUser
+updateUser_course
+addClass
+addNewUser
+registreradUser
+oldVersionSubmission
+updatePassword
+logUserEvent
+checkUserAccount
+saveEmail
+noExistClass
+Codeviewer service
+
+
+
+=================
+Contribution loginbox service
+=================
+
+=================
+Diagram service
+=================
+
+
+Gather the information
+Presenting the information
+Duggaed service
+
+
+
+=================
+Fileed service
+=================
+
+
+Delete fileLink
+Edit filesize
+Retrieves all information from DB table fileLink
+
+=================
+Highscore service
+=================
+
+Retrieve information
+checklogin
+Sectioned service
+Profile service
+
+
+log session - log start and end of service use.
+check login - check if user is a student or teacher.
+update challenge question
+update password
+
+=================
+Resulted service
+=================
+
+=================
+showDugga service
+=================
