@@ -17,3 +17,10 @@ async function breadthFirstTraversal(requestedRepo) {
 }
 
 console.log("The current tree is: ", fileTree);
+
+async function githubSingelFileFetch(requestedRepo) {   
+  let url = requestedRepo;
+  let response = await fetch(url);
+  let data = await response.json();
+  return data[0];
+}
