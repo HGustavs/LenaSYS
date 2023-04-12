@@ -11448,7 +11448,6 @@ function showdata()
     // Iterate over programs
     for (var i = 0; i < data.length; i++) {
         str += drawElement(data[i]);
-        console.log(data[i]);
     }
 
     if (ghostElement) {
