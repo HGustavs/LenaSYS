@@ -3,7 +3,7 @@
         echo $_GET;
     }
 
-    echo "<td>".$GLOBALS"</td>";
+    echo "<p>";
 ?>
 
 echo "<form action='dugga.js' method='GET'>";

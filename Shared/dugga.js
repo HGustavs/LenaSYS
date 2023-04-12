@@ -2805,10 +2805,13 @@ $(document).on('keydown', function(e) {
 	}
 });
 
-async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
+async function logForTesting(/*opt, apara, kind*/) {  // IN THE TESTIUNG PHASE
 
-	const logString = [opt, apara, kind];
-
+	//const logString = [opt, apara, kind];
+	var input={
+		window:document.getElementById("logtest").value,
+		
+};
 	try {
 		//const response = await fetch("../Shared/dugga.js", {
 		fetch("../Shared/dugga.js", {
@@ -2817,7 +2820,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: logJSON = JSON.stringify(logString)
+			body: logJSON = JSON.stringify(input)
 		});
 
 		//const result = await response.json();
@@ -2833,3 +2836,9 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 	//});
 
 }
+
+<html>
+	<p id="logtest">
+		hejhej.
+	</p>
+</html>
