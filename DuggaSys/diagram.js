@@ -2177,11 +2177,10 @@ function mouseMode_onMouseUp(event)
 
             
             if (ghostElement && event.button == 0) {
-                if (!entityIsOverlapping(ghostElement.id, event.clientX, event.clientY)) {
-                    addObjectToData(ghostElement);
-                    makeGhost();
-                    showdata();
-                }
+                console.log(entityIsOverlapping(ghostElement.id, event.clientX, event.clientY));
+                addObjectToData(ghostElement);
+                makeGhost();
+                showdata();
             }
             break;
         }
