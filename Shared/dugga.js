@@ -2814,7 +2814,7 @@ async function logForTesting(/*opt, apara, kind*/) {  // IN THE TESTIUNG PHASE
 };
 	try {
 		//const response = await fetch("../Shared/dugga.js", {
-		fetch("../Shared/dugga.js", {
+		fetch("../Shared/log.php", {
 			method: "POST", // or 'PUT'
 			action: "/shared/log.php",
 			headers: {
