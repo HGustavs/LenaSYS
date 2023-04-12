@@ -33,15 +33,23 @@
     <?php
 
     // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
-    bfs('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
+    $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
+    $urlParts = explode('/', $url);
+    $url0 = $urlParts[0];
+    $url1 = $urlParts[1];
+    $url2 = $urlParts[2];
+    $url3 = $urlParts[3];
+    $url4 = $urlParts[4];
+    $url5 = $urlParts[5];
+    print_r($url0, $url1, $url2, $url3, $url4, $url5);
 
     function bfs($url)
     {
         $visited = array();
         $fifoQueue = array();
-        if(!file_exists((dirname('Webbprogrammering-Examples')))) {
+/*         if(!file_exists((dirname('Webbprogrammering-Examples')))) {
             mkdir('Webbprogrammering-Examples', 0777, true);
-        }
+        } */
         array_push($fifoQueue, $url);
 
         while (!empty($fifoQueue)) {
@@ -77,13 +85,13 @@
                     if ($json) {
                         // Checks if the fetched item is of type 'file'
                         if ($item['type'] == 'file') {
-                            $fileContents = file_get_contents($item['download_url']);
-                            $path = dirname(__FILE__) . '/' . 'Webbprogrammering-Examples/' . '/' . $item['path'];
-                            print_r($path);
-                            if (!file_exists((dirname($path)))) {
-                                mkdir(dirname($path), 0777, true);
-                            }
-                            file_put_contents($path, $fileContents);
+                            // $fileContents = file_get_contents($item['download_url']);
+                            // $path = dirname(__FILE__) . '/' . 'Webbprogrammering-Examples/' . '/' . $item['path'];
+                            // print_r($path);
+                            // if (!file_exists((dirname($path)))) {
+                            //     mkdir(dirname($path), 0777, true);
+                            // }
+                            // file_put_contents($path, $fileContents);
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                             echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                             // Checks if the fetched item is of type 'dir'
