@@ -1,0 +1,105 @@
+courseedService_microservices
+
+Summary : All rows that sends data to db, could be a micro service, to add on this, sending null to database is used on multiple occasions. 
+Same might be applicable for duplication as array.
+Obtaining information used for logging is also used a lot in file.
+
+Functionality : 
+
+Row 40 :If isset($_SESSION)
+Checks what kind of user it is, meaning, student or teacher, if none, get guest/unknown. 
+You get username based on your, "uid".
+Name:userCheck
+
+Row 49 : Gets the username based on "uid" for logging.
+Name : getUsername
+
+Row 54 : If "uid" exists, set username. 
+Name : setUser
+
+Row 58 : Start logging
+
+Row 67 : checklogin(). Checks what kind of user it is based on "uid". Micro
+Name : checklogin
+
+Row 76 : Delete course, handle errors.
+Name : delCourse
+
+Row 78 : Creates new course, handle errors.
+Name : newCourse
+
+Row 85 : If the previous binding of parameter in query returned false, an error message presents.
+errorInfo() functions gets called. Micro
+Name : error
+
+Row 90: Logging for new course.
+
+Row 96 : Gets the username based on uid, was previously just set.
+If none, error message.
+Name : getUsername/getuid
+
+Row 103 : Fetches and prints all courses bound to the user, printed as "rows".
+Name : coursePrint
+
+Row 114 : create new course version.
+Name : newVers
+
+Row 125 : If date values are null, null values gets returned to db.
+Name : nullDate
+
+----------------------------------------
+errorInfo() shows very often, could be its own micro.
+----------------------------------------
+
+Row 136 : Activates course for user.
+Name : activCourse
+
+Row 150 : Update course version.
+Name : updVers
+
+Row 171 : Same functionality as 136, but new attributes getting changed.
+Name : activCourse2
+
+Row 179 : Copy course version.
+Name : copyCourseVers
+
+Row 184 : Insert data to table vers, binds paramaters to be "pushed" to db.
+Name : insertVers2
+
+Row 210 : Duplicates duggor and their variants.
+Name : dupliDugg
+
+Row 254-345 : Could be Micro, duplicates codeexamples.
+Name : dupliCodeEx
+
+Row 348 : Duplicates Listentries.
+Name : dupliList
+
+----------------------------------------
+the duplication function can be broken apart into a microservice, as its included in row 210, 254, 300, 323, 347
+----------------------------------------
+
+Row 380 : Micro, updates "dugga"
+Name : updateDugga
+
+Row 394 : Micro, updates "codeexamples"
+Name : updateCodeex
+
+Row 405 : Micro, updates before/after in codeexample. (such as change of color).
+Name : updateChange
+
+----------------------------------------
+update correct moments based on input/choice can be added as a microservice, used in 369, 381, 394 and 406.
+----------------------------------------
+
+Row 431 : Another, makeactive to activate version from db. Own micro.
+Name : makeActiveVers
+
+Row 468 : log visibility based on input/choice.
+
+Row 482 : log editing of course.
+
+Row 533-570 : Deletes course material thats been marked deleted.
+Name : delCoursMat
+
+Row 670 : End logging.
