@@ -963,7 +963,7 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
-	logForTesting(ops, apara, kind);
+	logForTesting(opt, apara, kind);
 
 	
   var para="";
