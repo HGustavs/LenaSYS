@@ -7304,7 +7304,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         return;
     }
 
-    // Prevent a line to be drawn between UML- and ER-elements.
+    // Prevent a line to be drawn between elements of different types.
     if (fromElement.type != toElement.type) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
