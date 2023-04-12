@@ -56,6 +56,7 @@ CREATE TABLE course(
 	capacity				INT(5),
 	hp						DECIMAL(4,1) NOT NULL DEFAULT 7.5,
 	courseHttpPage			VARCHAR(2000),
+	courseGitURL				VARCHAR(1024),
 	PRIMARY KEY (cid),
 	FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

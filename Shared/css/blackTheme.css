@@ -484,6 +484,11 @@ body {
     color:rgba(255,255,255,0.6);
 }
 
+.formDialog .formDialogText {
+    background-color: var(--color-text-header) !important;
+    color: var(--color-text-list) !important;
+}
+
 #announcementBoxOverlay{
     display: none;
     background-color: var(--color-background);
@@ -1081,4 +1086,13 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   text-decoration: line-through !important;
    -webkit-text-decoration-color: var(--color-text-primary) !important;
     text-decoration-color: var(--color-text-primary) !important;
+  }
+  
+  .textinput {
+    color:white;
+    }
+
+  #emakeactive {
+      background-color: #121212;
+      accent-color: #434343;
   }
