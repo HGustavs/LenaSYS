@@ -41,7 +41,7 @@
     $url3 = $urlParts[3];
     $url4 = $urlParts[4];
     $url5 = $urlParts[5];
-    print_r($url0, $url1, $url2, $url3, $url4, $url5);
+    print_r($url0);
 
     function bfs($url)
     {
