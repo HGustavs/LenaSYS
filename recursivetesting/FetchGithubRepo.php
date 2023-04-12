@@ -38,9 +38,7 @@
     $username = $urlParts[3];
     $repository = $urlParts[4];
     $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    print_r($translatedURL);
-    echo '<br>';
-    print_r('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
+    bfs($translatedURL);
     function bfs($url)
     {
         $visited = array();
