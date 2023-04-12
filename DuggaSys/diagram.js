@@ -4123,6 +4123,7 @@ function createDiagramTypeDropDown()
     return dropdownMenu;
 }
 
+
 /**
  * @description Change the state in replay-mode with the slider
  * @param {Number} sliderValue The value of the slider

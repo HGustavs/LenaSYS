@@ -569,6 +569,14 @@
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">show example diagrams </button> <br><br>
+                <div class="dropdownContent">
+                    <select id="diagramTypeDropdown" onchange="checkDropdownOption">
+                    <option>IEE diagrams</option>
+                    <option>class diagrams</option>
+                    <option>er diagrams </option>
+    </select>
+                </div>
+
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>

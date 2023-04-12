@@ -119,6 +119,10 @@
     box-shadow: 6px 6px 10px #888;
 }
 
+#diagramTypeDropdown{
+    display: none;
+}
+
 .hide {
     display: none;
 }	
