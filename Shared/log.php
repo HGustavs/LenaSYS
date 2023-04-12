@@ -1,8 +1,12 @@
 <?php
 
-	fetch("../Shared/dugga.js")
-		.then(res => res.json())
-		.then(json => console.log(json));
+	$logText = $_POST['logJSON'];
+	
+	debug(logText);
+	
+	function debug($debug) {
+		echo $debug;			
+	}
 	
 	//echo move_uploaded_file(
 	//$_FILES["upfile"]["tmp_name"], 
