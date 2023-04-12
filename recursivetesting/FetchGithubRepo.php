@@ -35,18 +35,11 @@
     // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
     $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
     $urlParts = explode('/', $url);
-    $url0 = $urlParts[0];
-    $url1 = $urlParts[1];
-    $url2 = $urlParts[2];
-    $url3 = $urlParts[3];
-    $url4 = $urlParts[4];
-    $url5 = $urlParts[5];
-    print_r($url0);
-    print_r($url1);
-    print_r($url2);
+    $url2 = $urlParts[3];
+    $url3 = $urlParts[4];
+    echo '<br>';
     print_r($url3);
     print_r($url4);
-    print_r($url5);
 
     function bfs($url)
     {
