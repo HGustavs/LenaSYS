@@ -2,10 +2,9 @@
 
 	$logText = $_POST['logJSON'];
 	
-	debug(logText);
 	
-	function debug($debug) {
-		echo $debug;			
+	if($_POST['logJSON'])
+		echo var_dump($_POST);			
 	}
 	
 	//echo move_uploaded_file(
