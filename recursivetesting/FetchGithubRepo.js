@@ -22,5 +22,8 @@ async function githubSingelFileFetch(requestedRepo) {
   let url = requestedRepo;
   let response = await fetch(url);
   let data = await response.json();
-  return data[0];
+  if(data.length > 0) {
+    var file = data[0];
+    //ladda ner filen och ersätt den gammla med den nya
+  }
 }

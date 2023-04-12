@@ -3484,6 +3484,9 @@ function validateForm(formid) {
 //------------------------------------------------------------------------------
 function refreshCodeExample(){
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
+  //Hämta webbadressen till filen som ska uppdateras och lägg in det värdet i "githubLink"
+  var githubLink;
+  githubSingelFileFetch(githubLink);
 }
 
 //------------------------------------------------------------------------------
