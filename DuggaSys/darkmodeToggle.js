@@ -1,11 +1,17 @@
 //----------------------------------------
 // Dark mode toggle button listener.  
 //----------------------------------------
+const themeStylesheet = document.getElementById('themeBlack');
+
+//default theme, if its null it becomes light theme 
+if (!localStorage.getItem('themeBlack')) {
+	themeStylesheet.href = "../Shared/css/style.css";
+	localStorage.setItem('themeBlack',themeStylesheet.href)
+}
 
 /*/ The code below is waitng for the page to load, and check when the user changes his/her 
 operative system to either black or white mode . /*/
 
-const themeStylesheet = document.getElementById('themeBlack');
 
 document.addEventListener('DOMContentLoaded', () => {
 	const storedTheme = localStorage.getItem('themeBlack');
@@ -13,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		themeStylesheet.href = storedTheme;
 	}
 	const themeToggle = document.getElementById('theme-toggle');
+
+	if (!themeToggle) return false;
+
 	themeToggle.addEventListener('click', () => {
     // if it's light -> go dark
     if(themeStylesheet.href.includes('blackTheme')){

@@ -6802,6 +6802,13 @@ only screen and (max-device-width: 568px) {
   line-height: 1.6;
   font-weight: bold;
 }
+
+/* Diagram line style */
+.diagram-umlicon-triangle {
+  fill: white;
+  stroke: black;
+}
+
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */
@@ -9257,5 +9264,17 @@ margin:2px;
   font-family:Arial Narrow; 
   font-size:18px;
 }
+
+
+.BlackthemeColor{
+  stroke: black;
+  stroke-width: 2;
+ }
+
+
+.svgbacklayer-background {
+  background-color: var(--color-background);
+}
+
 
 /* END */

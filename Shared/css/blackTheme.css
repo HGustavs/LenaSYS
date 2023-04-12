@@ -968,6 +968,9 @@ input{
     background: linear-gradient(90deg, rgba(18,18,18,1) 21%, rgba(67,42,90,1) 55%);
   
   }
+  .lineColor {
+    stroke: white;
+  }
 
   /*/ END /*/
 
@@ -1063,9 +1066,7 @@ background-color:  var(--color-sectioned-table-hi);
 border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
-/*/ END /*/
-
-#tabElement{
+#tabElement {
     filter: invert(0.2);
 }
 
@@ -1087,12 +1088,49 @@ border-left: 14px solid var(--color-sectioned-table-hi);
    -webkit-text-decoration-color: var(--color-text-primary) !important;
     text-decoration-color: var(--color-text-primary) !important;
   }
-  
-  .textinput {
-    color:white;
-    }
 
-  #emakeactive {
-      background-color: #121212;
-      accent-color: #434343;
+  .BlackthemeColor {
+   stroke: #ff0000;
+   stroke-width: 2;
   }
+
+.svgbacklayer-background {
+    background-color: var(--color-background);
+}
+
+/* Diagram line style */
+.diagram-umlicon-triangle {
+  fill: black;
+  stroke: white;
+}
+
+/* Diagram Messages */
+#diagram-message {
+    color: black;
+}
+
+#diagram-message > div {
+    box-shadow: 6px 6px 10px #00000077;
+}
+
+#diagram-message > div.success {
+    background-color: rgb(39, 152, 39);
+}
+
+#diagram-message > div.warning {
+    background-color: rgb(202, 149, 15);
+}
+
+#diagram-message > div.error {
+    background-color: rgb(252, 58, 44);
+}
+  
+ .textinput {
+    color:white;
+}
+
+ #emakeactive {
+    background-color: #121212;
+    accent-color: #434343;
+}
+/*/ END /*/

@@ -3,147 +3,10 @@
     include_once "../../coursesyspw.php";
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
-    pdoConnect();
 	#general vars regarding current dugga.
 	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
-	$quizid=21;
-    #vars for handling fetching of diagram variant file name
-	$variantParams = "UNK";
-	$fileContent="UNK";
-	$splicedFileName = "UNK";
-
-	#vars for handling fetching of diagram instruction file name and type
-	$json = "UNK";
-	$fileName = "UNK";
-	$gFileName = "UNK";
-	$instructions = "UNK";
-	$information = "UNK";
-    $hash = getOPG('hash');
-	$finalArray = array();
-	
-	#create request to database and execute it
-	$response = $pdo->prepare("SELECT param as jparam FROM variant LEFT JOIN quiz ON quiz.id = variant.quizID WHERE quizID = $quizid AND quiz.cid = $cid AND disabled = 0;");
-	$response->execute();
-	$i=0;
-
-	#loop through responses, fetch param column in variant table, splice string to extract file name, then close request.
-	#this should probably be re-worked as this foreach loops through all rows, but over-writes variables meaning it's only the latest variant version that's shown to the user.
-	#another alternvative could be to add each result in an array and loop through the array in diagram.js to properly filter out wrong variant results.
-	foreach($response->fetchAll(PDO::FETCH_ASSOC) as $row)
-	{
-		$variantParams=$row['jparam'];
-		$variantParams = str_replace('&quot;','"',$variantParams);
-		$parameterArray = json_decode($variantParams,true);
-
-		//if parameter exists in current variant json param string, assign value. Otherwise, set it to "UNK". Error checking should check if string is "UNK" and "".
-		if(!empty($parameterArray))
-		{
-			if(isset($parameterArray['diagram_File'])){
-				$splicedFileName=$parameterArray["diagram_File"];}
-			else{
-				$splicedFileName = "UNK";}
-			if(isset($parameterArray['filelink'])){
-				$fileName=$parameterArray["filelink"];}
-			else{
-				$fileName = "UNK";}
-			if(isset($parameterArray['type'])){
-				$fileType=$parameterArray["type"];}
-			else{
-				$fileType = "UNK";}
-			if(isset($parameterArray['gFilelink'])){
-				$gFileName=$parameterArray["gFilelink"];}
-			else{
-				$gFileName = "UNK";}
-			if(isset($parameterArray['gType'])){
-				$gFileType=$parameterArray["gType"];}
-			else{
-				$gFileType = "UNK";}
-
-			//for fetching file content. If file exists in directory path, fetch. Otherwise, go to the next directory and check.
-			if(isset($fileName) && $fileName != "." && $fileName != ".." && $fileName != "UNK" && $fileName != "")
-			{
-				if(file_exists("../courses/global/"."$fileName")){
-					$instructions = file_get_contents("../courses/global/"."$fileName");}
-				else if(file_exists("../courses/".$cid."/"."$fileName")){
-					$instructions = file_get_contents("../courses/".$cid."/"."$fileName");}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$fileName")){
-					$instructions = file_get_contents("../courses/".$cid."/"."$vers"."/"."$fileName");}
-			}
-
-			if(isset($gFileName) && $gFileName != "." && $gFileName != ".." && $gFileName != "UNK" && $gFileName != "")
-			{
-				if(file_exists("../courses/global/"."$gFileName")){
-					$information = file_get_contents("../courses/global/"."$gFileName");}
-				else if(file_exists("../courses/".$cid."/"."$gFileName")){
-					$information = file_get_contents("../courses/".$cid."/"."$gFileName");}
-				else if(file_exists("../courses/".$cid."/"."$vers"."/"."$gFileName")){
-					$information = file_get_contents("../courses/".$cid."/"."$vers"."/"."$gFileName");}
-			}
-
-			#Think this removes certain escape string characters.
-			$pattern = '/\s*/m';
-			$replace = '';
-			$instructions = preg_replace( $pattern, $replace,$instructions);
-			$information = preg_replace( $pattern, $replace,$information);
-
-			$finalArray[$i]=([$splicedFileName,$fileType,$fileName,$instructions, $gFileType, $gFileName, $information]);
-			$i++;
-		}
-	}
-	#closes pdo connection to database. Causes error if not used as query results are stockpiled and prevents next query usage.
-	$response->closeCursor();
-
-	#after itterating through query results, finally load the json file content into $fileContent variable.
-	if($splicedFileName != "UNK" && isset($splicedFileName) && $splicedFileName != "." && $splicedFileName != ".." && $splicedFileName != "")
-	{
-		if(file_exists("../courses/global/"."$splicedFileName")){
-			$fileContent = file_get_contents("../courses/global/"."$splicedFileName");}
-		else if(file_exists("../courses/".$cid."/"."$splicedFileName")){
-			$fileContent = file_get_contents("../courses/".$cid."/"."$splicedFileName");}
-		else if(file_exists("../courses/".$cid."/"."$vers"."/"."$splicedFileName")){
-			$fileContent = file_get_contents("../courses/".$cid."/"."$vers"."/"."$splicedFileName");}
-	}
-
-    #if the used is redirected from the validateHash.php page, a hash will be set and the latest "diagramSave.json" file should be loaded. 
-	#honestly no idea why this works as $t1pDir and $tempDir are supposed to be the same.
-	if(isset($_SESSION['tempHash']) && $_SESSION['tempHash'] != "UNK")
-	{
-		$tempDir = strval(dirname(__DIR__,2)."/submissions/{$cid}/{$vers}/{$quizid}/{$_SESSION['hash']}/");
-		$latest = time() - (365 * 24 * 60 * 60);
-		$current = "diagramSave1.json";	 
-
-		#loop through the directory, fetching all files within and comparing time stamps. If a file has changes made more recently, set that file name as current file.
-		#don't check files called "." or ".." as they are hiden directory re-direct files.
-		if(is_dir($tempDir)){
-			try{
-				foreach(new DirectoryIterator($tempDir) as $file){
-					$ctime = $file->getCTime();    // Time file was created
-					$fname = $file->GetFileName (); // File name
-
-					if($fname != "." && $fname != ".."){
-						if( $ctime > $latest ){
-							$latest = $ctime;
-							$current = $fname;
-						}
-					}
-				}
-				$latest = $current;
-                $splicedFileName = $current;
-
-				$myFiles = array_diff(scandir($tempDir, SCANDIR_SORT_DESCENDING), array('.', '..'));
-				$fileContent = file_get_contents("{$tempDir}{$latest}");
-
-			}
-			catch(Exception $e){
-				echo 'Message: ' .$e->getMessage();
-			}
-		}
-	}
-
-	if($fileContent === "UNK" || $fileContent === "")
-		$fileContent = "NO_FILE_FETCHED";
-
+	$quizid=getOPG('did');
 ?>
 
 <!DOCTYPE html>
@@ -169,32 +32,72 @@
     <script src="../Shared/markdown.js"></script>
     <script src="diagram.js"></script>
     <script>
-	/**
-	 * @description get the contents of a instruction file
-	 * @param fileName the name of the file t.ex. test.html
-	 * */
-	function getInstructions(fileName)
-	{
-		if(<?php echo json_encode($finalArray);?>.length > 0){
-			for (let index = 0; index < <?php echo json_encode($finalArray);?>.length; index++) {
-				if(<?php echo json_encode($finalArray);?>[index][2]==fileName){
-					window.parent.document.getElementById("assignment_discrb").innerHTML =<?php echo json_encode($finalArray);?>[index][3];
-				}
-				if(<?php echo json_encode($finalArray);?>[index][5]==fileName){
-					window.parent.document.getElementById("diagram_instructions").innerHTML =<?php echo json_encode($finalArray);?>[index][6];
-				}
-			}
-		}			
-	}
-	function getVariantParam()
-	{
-		var variantArray = [<?php echo "'$variantParams'"?>];
-		variantArray.push(<?php echo "$cid"?>);
-		variantArray.push(<?php echo "$vers"?>);
-		variantArray.push(<?php echo "'$splicedFileName'"?>);
-		variantArray.push(<?php echo "'$fileContent'"?>);
-		return variantArray;
-	} 
+        // Fetch variant parameters from server
+        var DiagramResponse;
+        
+        function fetchDiagram() {
+            var response;
+
+            <?php 
+                if (isset($cid) && $cid != "UNK") {
+                    echo "const courseid = '$cid';";
+                } else if (isset($_GET["folder"])) {
+                    $folder = $_GET["folder"];
+                    echo "const courseid = '$folder';";
+                } else {
+                    echo "const courseid = '1894';";
+                }
+
+                if (isset($quizid) && $quizid != "UNK") {
+                    echo "const did = '$quizid';";
+                } else if (isset($_GET["id"])) {
+                    $id = $_GET["id"];
+                    echo "const did = '$id';";
+                } else {
+                    echo "const did = '21';";
+                }
+            ?>
+
+            $.ajax({
+                async: false,
+                method: "GET",
+                url: `diagramservice.php?courseid=${courseid}&did=${did}`,
+            }).done((res) => {
+                console.log(res)
+                response = res;
+            }).error((req, status, err) => {
+                console.error(err);
+            });
+            
+            return response;
+        }
+        
+
+        /**
+         * @description get the contents of a instruction file
+         * @param fileName the name of the file t.ex. test.html
+         * */
+        function getInstructions(fileName)
+        {
+            const instructions = DiagramResponse.instructions
+            if(instructions.length > 0){
+                for (let index = 0; index < instructions.length; index++) {
+                    if(instructions[index][2]==fileName){
+                        window.parent.document.getElementById("assignment_discrb").innerHTML = instructions[index][3];
+                    }
+                    if(instructions[index][5]==fileName){
+                        window.parent.document.getElementById("diagram_instructions").innerHTML = instructions[index][6];
+                    }
+                }
+            }			
+        }
+
+        function getVariantParam()
+        {
+            return DiagramResponse.variant;
+        }
+
+
     </script>
 </head>
 <body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
@@ -256,6 +159,12 @@
                                 <p>Change to IE entity</p>
                             </span>
                         </div>
+                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>State diagram state</b><br>
+                                <p>Change to state diagram state</p>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -286,6 +195,12 @@
                             <img src="../Shared/icons/diagram_IE_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                 <p>Change to IE entity</p>
+                            </span>
+                        </div>
+                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>State diagram state</b><br>
+                                <p>Change to state diagram state</p>
                             </span>
                         </div>
                     </div>
@@ -320,8 +235,58 @@
                                 <p>Change to IE entity</p>
                             </span>
                         </div>
+                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>State diagram state</b><br>
+                                <p>Change to state diagram state</p>
+                            </span>
+                        </div>
                     </div>
                 </div><!--<-- UML functionality end -->
+                <div>
+                    <!--
+
+                    !!! NOTE: Commented out due to merge conflict between "SDState" and "UMLInitialState". !!!
+
+                    <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                        <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                        <span class="toolTipText"><b>State diagram state</b><br>
+                            <p>Add state diagram state to the diagram</p><br>
+                            <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton8" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
+                        </div>
+                    </div>
+
+                    -->
+                    <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                        <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
+                            <img src="../Shared/icons/diagram_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>ER entity</b><br>
+                                <p>Change to ER entity</p>
+                            </span>
+                        </div>
+                        <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
+                            <img src="../Shared/icons/diagram_UML_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                <p>Change to UML class</p>
+                            </span>
+                        </div>
+                        <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                            <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>IE entity</b><br>
+                                <p>Change to IE entity</p>
+                            </span>
+                        </div>
+                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            <img src="../Shared/icons/diagram_IE_entity.svg"/>
+                            <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
+                                <p>Change to state diagram state</p>
+                            </span>
+                    </div>
+                    </div>
+                </div><!--<-- State diagram functionality end -->
                 <div>
                     <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
@@ -430,6 +395,22 @@
                     <span class="toolTipText"><b>Line</b><br>
                         <p>Make a line between elements</p><br>
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <!-- UML Initial state selection -->
+                <div id="elementPlacement8" class="diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_initial_state.svg"/>
+                    <span class="toolTipText"><b>UML initial state</b><br>
+                        <p>Creates an initial state for UML.</p><br>
+                        <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <!-- UML Final state selection -->
+                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_final_state.svg"/>
+                    <span class="toolTipText"><b>UML final state</b><br>
+                        <p>Creates a final state for UML.</p><br>
+                        <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
         </fieldset>
@@ -549,7 +530,7 @@
     
     <!-- Diagram grid -->
     <div id="svggrid" style="z-index:-11">
-        <svg id="svgbacklayer">
+        <svg id="svgbacklayer" class="svgbacklayer-background">
             <defs>
             <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
 
@@ -586,12 +567,13 @@
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
+                <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style='position: absolute; top: 33%;'>
+            <fieldset class='options-fieldset options-section' style='position: absolute; top: 35%; margin-top: 2%;'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
@@ -653,18 +635,6 @@
         it can be used in the future.
         if(isset($_POST['id'])) {
         }*/
-
-        if(isset($_POST['StringDiagram'])) {
-            $str = $_POST['StringDiagram'];
-            $hash = $_POST['Hash'];
-            save($str,$hash);
-        }
-        function save($data, $hash) {
-            $getID = fopen("Save/id.txt", "r");
-            $a = intval(fread($getID,filesize("Save/id.txt")));
-            $myfile = fopen("Save/$a/$hash.txt", "w");
-            fwrite($myfile, $data);
-        }
     ?>
 </body>
 </html>
