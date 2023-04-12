@@ -1304,9 +1304,6 @@ function AJAXService(opt,apara,kind)
 		},
 		body: logginDataJSON
 	})
-		.then(response => response.text())
-
-	console.log(response.text())
 
 	localStorage.setItem("loggingData", logginDataJSON);
 
