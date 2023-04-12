@@ -1368,6 +1368,7 @@ function getData()
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes() {
+    /*
     var firstShown = false; // used to not hide the first button in either category
 
     // ER buttons
@@ -1449,8 +1450,8 @@ function showDiagramTypes() {
             button.classList.add("hiddenPlacementType");
         });
     }
-
-    /*
+    */
+    
     //ER + UML + IE + SD
     if (!!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
@@ -1754,7 +1755,7 @@ function showDiagramTypes() {
         });
         document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
         document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
-    } */
+    } 
 }
 //<-- UML functionality end
 /**
