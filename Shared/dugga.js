@@ -2815,7 +2815,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(logString),
+			body: JSON.stringify(logString[]),
 		});
 
 		const result = await response.json();
