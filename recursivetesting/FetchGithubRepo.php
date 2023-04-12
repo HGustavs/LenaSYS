@@ -39,7 +39,9 @@
     {
         $visited = array();
         $fifoQueue = array();
-
+        if(!file_exists((dirname('Webbprogrammering-Examples')))) {
+            mkdir('Webbprogrammering-Examples', 0777, true);
+        }
         array_push($fifoQueue, $url);
 
         while (!empty($fifoQueue)) {
@@ -76,7 +78,7 @@
                         // Checks if the fetched item is of type 'file'
                         if ($item['type'] == 'file') {
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = dirname(__FILE__) . '/' . $item['path'];
+                            $path = 'Webbprogrammering-Examples' . dirname(__FILE__) . '/' . $item['path'];
                             if (!file_exists((dirname($path)))) {
                                 mkdir(dirname($path), 0777, true);
                             }
