@@ -2927,6 +2927,7 @@ function constructElementOfType(type)
         for (const property in defaultElement) {
             newElement[property] = defaultElement[property];
         }
+        console.log("here");
         return newElement;
     }
 
