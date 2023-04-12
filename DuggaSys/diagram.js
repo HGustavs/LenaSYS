@@ -1367,7 +1367,90 @@ function getData()
 /**
  * @description Used to determine the tools shown depending on diagram type.
  */
-function showDiagramTypes(){
+function showDiagramTypes() {
+    var firstShown = false; // used to not hide the first button in either category
+
+    // ER buttons
+    if (diagramType.ER) { // if this type should be here, add functions to it
+        document.getElementById("elementPlacement0").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement1").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+
+        if (firstShown) { // if the first type is already shown hide this one since it will then be a submenu
+            document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+            document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else { // if this type shouldn't be here, hide it entirely
+        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
+
+    // UML buttons
+    if (diagramType.UML) {
+        document.getElementById("elementPlacement4").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement5").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+            document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else {
+        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
+
+    // IE buttons
+    if (diagramType.IE) {
+        document.getElementById("elementPlacement6").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement7").onmousedown = function () {
+            holdPlacementButtonDown(1);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");
+            document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else {
+        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
+
+    // SD buttons
+    if (diagramType.UML) {
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else {
+        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
+
+    /*
     //ER + UML + IE + SD
     if (!!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
         document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
@@ -1671,7 +1754,7 @@ function showDiagramTypes(){
         });
         document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
         document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
-    }
+    } */
 }
 //<-- UML functionality end
 /**
