@@ -2826,7 +2826,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
 	$ajax({
 		dataType: "json",
-		url: "../Shared/log.php",
+		url: "../Shared/log.php"
 	});
 
 }
