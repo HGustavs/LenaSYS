@@ -2808,7 +2808,7 @@ $(document).on('keydown', function(e) {
 
 async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
-	const testString = ["TEST", "TEST2", "TEST3"];
+	const testString = "TEST";
 	try {
 		const response = await fetch("../Shared/dugga.js", {
 			method: "POST", // or 'PUT'
