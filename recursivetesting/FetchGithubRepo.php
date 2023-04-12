@@ -35,12 +35,9 @@
     // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
     $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
     $urlParts = explode('/', $url);
-    $url3 = $urlParts[3];
-    $url4 = $urlParts[4];
-    echo '<br>';
-    print_r($url3);
-    print_r($url4);
-    $translatedURL = 'https://api.github.com/repos/'.$url3.'/'.$url4.'/contents/';
+    $username = $urlParts[3];
+    $repository = $urlParts[4];
+    $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
     print_r($translatedURL);
     echo '<br>';
     print_r('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
