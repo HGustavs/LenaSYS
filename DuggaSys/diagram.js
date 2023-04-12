@@ -2179,7 +2179,8 @@ function mouseMode_onMouseUp(event)
             if (ghostElement && event.button == 0) {
                 addObjectToData(ghostElement);
                 for (const key in ghostElement) {
-                    console.log(key+key.value);
+                    console.log(key);
+                    console.log(ghostElement.values(key));
                 }
                 makeGhost();
                 showdata();
