@@ -2178,7 +2178,6 @@ function mouseMode_onMouseUp(event)
             
             if (ghostElement && event.button == 0) {
                 addObjectToData(ghostElement);
-                setPos(ghostElement, ghostElement.x, ghostElement.y)
                 makeGhost();
                 showdata();
             }
