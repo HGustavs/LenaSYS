@@ -40,7 +40,10 @@
     echo '<br>';
     print_r($url3);
     print_r($url4);
-
+    $translatedURL = 'https://api.github.com/repos/'.$url3.'/'.$url4.'/contents/';
+    print_r($translatedURL);
+    echo '<br>';
+    print_r('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
     function bfs($url)
     {
         $visited = array();
