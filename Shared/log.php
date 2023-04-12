@@ -1,11 +1,4 @@
 <?php
-	
-	async function logJSONData() {
-	  const response = await fetch("../Shared/dugga.js");
-	  const jsonData = await response.json();
-	  console.log(jsonData);
-	}
-
 
 	fetch("../Shared/dugga.js")
 		.then(res => res.json())
