@@ -2808,14 +2808,14 @@ $(document).on('keydown', function(e) {
 
 async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
-	const testString = "TEST";
+	const logString = [opt, apara, kind];
 	try {
 		const response = await fetch("../Shared/dugga.js", {
 			method: "POST", // or 'PUT'
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(testString),
+			body: JSON.stringify(logString),
 		});
 
 		const result = await response.json();
@@ -2823,27 +2823,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 	} catch (error) {
 		console.error("Error:", error);
 	}
-	//var parameterString = [opt, apara, kind];
-	//TestJSON = JSON.stringify(parameterString);
 
-	//try {
-	//	const response = await fetch("log.php", {
-	//		method: "POST",
-	//		header: {
-	//			"Content-Type": "application/Json",
-	//		},
-	//		body: TestJSON,
-	//	});
-
-	//}
-	//var TestJSON = JSON.stringify(parameterString);
-	//var testData = new FormData();
-	//testData.append("upfile", testData);
-	//fetch("basic.php", { method: "POST", body: testData });
-	//console.log(TestJSON);
-
-	//var testString = "TESTing";
-	//fetch("log.php", { method: "POST", body: testString });
 }
 
 
