@@ -6,14 +6,15 @@ if(file_exists('logs/log.json')){
     $fileArray = json_decode($fileContent);
     $fileArray[] = $loggingDataJSON;
     $fp = fopen('logs/log.json', 'w');
-    fwrite($fp, $loggingDataJSON);
+    fwrite($fp, $fileArray);
     fclose($fp);
     echo json_encode('Updated data in log file');
 }
 else{
-    if(file_put_contents('logs/log.json', $loggingDataJSON)){
-        echo json_encode('Added latest log to log file');
-    }
+     $fp = fopen('logs/log.json', 'w');
+     fwrite($fp, $loggingDataJSON);
+     fclose($fp);
+     echo json_encode('Added latest log to log file');
 }
 
 // Write latest log
