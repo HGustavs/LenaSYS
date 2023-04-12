@@ -11399,9 +11399,9 @@ function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
 	let allTexts = document.getElementsByClassName('text');
-    if (localStorage.getItem('themeBlack') != null) {
-        //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
-	    let cssUrl = localStorage.getItem('themeBlack');
+    if (localStorage.getItem('diagramTheme') != null) {
+        //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
+      let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
     
