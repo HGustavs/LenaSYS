@@ -2,11 +2,14 @@
 
 	$logText = $_POST['logJSON'];
 	
-	
-	if($_POST['logJSON'])
-		echo var_dump($_POST);			
-	}
-	
+	$testVariabel = '<script>'.logText.'</script>';
+	echo $testVariabel;
+
+	if ($_POST) {
+		echo var_dump($_POST);
+    }
+
+
 	//echo move_uploaded_file(
 	//$_FILES["upfile"]["tmp_name"], 
 	//"demo.txt"
