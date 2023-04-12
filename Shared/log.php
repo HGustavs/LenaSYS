@@ -1,0 +1,1 @@
+echo "<form action='dugga.js' method='GET'>";
