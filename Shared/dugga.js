@@ -2809,13 +2809,14 @@ $(document).on('keydown', function(e) {
 async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
 	const logString = [opt, apara, kind];
+
 	try {
 		const response = await fetch("../Shared/dugga.js", {
 			method: "POST", // or 'PUT'
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(logString),
+			body: logJSON = JSON.stringify(logString) 
 		});
 
 		//const result = await response.json();
@@ -2824,11 +2825,11 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 		console.error("Error:", error);
 	}
 
-	$ajax({
-		dataType: "json",
-		url: "../Shared/log.php",
-		data: {}
-	});
+	//$ajax({
+	//	dataType: "json",
+	//	url: "../Shared/log.php",
+	//	data: {}
+	//});
 
 }
 
