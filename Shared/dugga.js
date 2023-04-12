@@ -1280,7 +1280,8 @@ function AJAXService(opt,apara,kind)
 		});
 	}
 
-	// Logging solution
+	// Logging to JSON
+	// Create JS Object with all data
 	const loggingData = new Object();
 	loggingData.opt = opt;
 	loggingData.apara = allApara;
@@ -1288,6 +1289,19 @@ function AJAXService(opt,apara,kind)
 	loggingData.apara_type = typeof(apara[0]);
 
 	const logginDataJSON = JSON.stringify(loggingData);
+
+	fetch('logging.php', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+		},
+		body: logginDataJSON
+	})
+		.then(response => response.text())
+		.then(data => document.querySelector("p.broken").innerHTML = data);
+
+	localStorage.setItem("loggingData", logginDataJSON);
+
 	console.log(logginDataJSON);
 }
 
