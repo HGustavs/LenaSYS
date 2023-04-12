@@ -1281,12 +1281,19 @@ function AJAXService(opt,apara,kind)
 	}
 
 	// Logging to JSON
+	var date = new Date();
+	var nowDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+	var nowTime = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+	var dateTime = nowDate+' '+nowTime;
+
+
 	// Create JS Object with all data
 	const loggingData = new Object();
 	loggingData.opt = opt;
 	loggingData.apara = allApara;
 	loggingData.kind = kind;
 	loggingData.apara_type = typeof(apara[0]);
+	loggingData.dateTime = dateTime
 
 	const logginDataJSON = JSON.stringify(loggingData);
 
