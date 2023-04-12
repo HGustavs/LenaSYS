@@ -1555,7 +1555,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0' 
                   id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
-          str += " onclick='refreshCodeExample()'"
+          str += " onclick='refreshCodeExample("+item['exempelid']+")'"
           str += "</td>";
         }
 
@@ -3482,11 +3482,16 @@ function validateForm(formid) {
 // This method is to be used to check if a code example should re-fetch the
 // contents of a code example based on eventual changes in external github-repo
 //------------------------------------------------------------------------------
-function refreshCodeExample(){
+function refreshCodeExample(exampelid){
+  console.log("ExempelID: " + exempelid);
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
-  //Hämta webbadressen till filen som ska uppdateras och lägg in det värdet i "githubLink"
+  //AJAX anropen till databasen behöver lösas
+  //SELECT runlink FROM codeexample WHERE exampleid=exampleid;
+  //cid = SELECT cid FROM codeexample WHERE exampleid=exampleid;
+  //githubLink = SELECT courseGitURL FROM course WHERE cid=cid;
   var githubLink;
-  githubSingelFileFetch(githubLink);
+  var runlink;
+  githubSingelFileFetch(githubLink, runlink);
 }
 
 //------------------------------------------------------------------------------

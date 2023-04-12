@@ -18,12 +18,13 @@ async function breadthFirstTraversal(requestedRepo) {
 
 console.log("The current tree is: ", fileTree);
 
-async function githubSingelFileFetch(requestedRepo) {   
+async function githubSingelFileFetch(requestedRepo, file) {   
   let url = requestedRepo;
   let response = await fetch(url);
   let data = await response.json();
-  if(data.length > 0) {
-    var file = data[0];
-    //ladda ner filen och ersätt den gammla med den nya
+  for (let i = 0; i < data.length; i++) {
+    if(data[i].name == file) {//Checka så att data[i].name ger filnamn med filändelse precis som file har
+      //ladda ner filen och ersätt den gammla med den nya
+    }
   }
 }
