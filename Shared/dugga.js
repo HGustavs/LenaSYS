@@ -2818,8 +2818,8 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 			body: JSON.stringify(logString),
 		});
 
-		const result = await response.json();
-		console.log("Success:", result);
+		//const result = await response.json();
+		//console.log("Success:", result);
 	} catch (error) {
 		console.error("Error:", error);
 	}
