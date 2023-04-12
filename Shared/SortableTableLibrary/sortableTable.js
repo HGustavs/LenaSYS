@@ -323,7 +323,34 @@ function SortableTable(param)
 			
       // Sort the body of the table again
       if(columnfilter.indexOf(sortcolumn)!==-1){
+        var status = sortableTable.currentTable.getSortkind(); //Get direction of sorting arrow (ascending/descending)
+
+        if(sortcolumn === "qstart"){
+          tbl.tblbody.sort((a, b)=> {
+
+            if (a.qstart === b.qstart) {
+              return 0;
+            }
+        
+            if (a.qstart === null) {
+              return 1;
+            }
+
+            if (b.qstart === null) {
+              return -1;
+            }
+
+            //If 1, sort by ascending order, otherwise descending order
+            if(status==1){
+              return a.qstart > b.qstart ? 1 : -1;
+              } else {
+              return a.qstart < b.qstart ? 1 : -1;
+              }
+           });
+        } else {  
+          //Otherwise use normal sorting function
           tbl.tblbody.sort(sortableInternalSort);
+        }
       }
 			
       if (renderColumnFilter != null) {

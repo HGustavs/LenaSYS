@@ -1,0 +1,22 @@
+﻿file: highscoreservice.php
+
+7 - The file starts with setting the time zone to Stockholm.
+
+10-11 - After that, the Include_once method runs two files. Basic.php and sessions.php.
+
+14-15 - pdoConnect() to the database and session_start() functions runs.
+
+17-21 - An isset function that checks the variable 
+$_SESSION and it's parameter "uid" to verify that these aren't null. 
+If else, give uiserid the value 1.
+
+24-36 - There after, global variables is set.
+
+37 - The logServiceEvent function is run.
+
+101-107 - An array is created and echoed.
+
+Microservices:
+48-67 - Retrieve information (the functionality has no function name). - Data is fecthed from the table "userAnswer" and is put into an array.
+
+71-99 - checklogin - runs a checklogin function which is located in another place. If a user is logged in, then add a number into the array "$user[]". If there is no users logged in, then fetch data from the table "userAnswer" and store it in the variable "$query". If $query is empty, display error message. Foreach row in $query, update $user with username and score.

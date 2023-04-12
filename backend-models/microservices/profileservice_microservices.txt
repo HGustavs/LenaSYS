@@ -1,0 +1,35 @@
+﻿file: profileservice.php
+
+
+Microservices:
+log session - log start and end of service use.
+check login - check if user is a student or teacher.
+update challenge question
+update password
+
+
+---------------
+Arguably the checklogin can be used as a microservice, a type of checklogin that specifically blocks superusers/teachers from access.
+It is hard to say that this is used in other files, but if it is, it can most likely be split apart from this file.
+
+
+42-------------
+log prepare and start
+
+
+46-------------
+Check login, block access if it is a super user.
+If user is a super user or teacher, mark status as teacher.
+Handle errors.
+
+
+76-------------
+depending on action user can update challenge question or password.
+
+
+113------------
+return array in json of values success, status, debug.
+
+
+120------------
+log end of service.

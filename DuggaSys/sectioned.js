@@ -25,7 +25,7 @@ var lid;
 var collectedLid = [];
 var updatedLidsection;
 var numberOfItems;
-
+var backgroundColorTheme;
 var isLoggedIn = false;
 
 function IsLoggedIn(bool){
@@ -55,11 +55,13 @@ function burgerToggleDarkmode(operation = 'click'){
     if(themeStylesheet.href.includes('blackTheme')){
       themeStylesheet.href = "../Shared/css/whiteTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
+      backgroundColorTheme = "#121212";
     } 
     else if(themeStylesheet.href.includes('whiteTheme')) {
       // if it's dark -> go light
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
+      backgroundColorTheme = "#fff";
     }
   
   //const themeToggle = document.getElementById('theme-toggle');
@@ -669,7 +671,7 @@ function defaultNewItem() {
 
   $('#saveBtn').removeAttr('disabled'); // Resets save button to its default form
   $('#submitBtn').removeAttr('disabled'); // Resets submit button to its default form
-  document.getElementById("sectionname").style.backgroundColor = "#fff"; // Resets color for name input
+  document.getElementById("sectionname").style.backgroundColor = backgroundColorTheme; // Resets color for name input
   $('#tooltipTxt').hide(); // Resets tooltip text to its default form
 }
 
@@ -1548,6 +1550,15 @@ function returnedSection(data) {
           }
         }
 
+        // Refresh button
+        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;'>`;
+          str += `<img style='width:16px' alt='refresh icon' tabIndex='0' 
+                  id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+          str += " onclick='refreshCodeExample()'"
+          str += "</td>";
+        }
+
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
@@ -1606,7 +1617,19 @@ function returnedSection(data) {
           str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
+
+
         }
+        // github icon
+        if (data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class='' 
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          str += "</td>";
+        }
+
+        
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
@@ -2914,7 +2937,11 @@ function validateVersionName(versionName, dialogid) {
     $(x).fadeOut();
     name.style.borderColor = "#383";
     name.style.borderWidth = "2px";
-    name.style.backgroundColor = "#fff";
+
+    //name.style.backgroundColor = "#fff";
+
+    name.style.backgroundColor = backgroundColorTheme;
+
     //x.style.display = "none";
     if (versionName === 'versname') {
       window.bool3 = true;
@@ -2927,7 +2954,7 @@ function validateVersionName(versionName, dialogid) {
   } else {
     $(x).fadeIn();
     name.style.borderColor = "#E54";
-    name.style.backgroundColor = "#f57";
+    //name.style.backgroundColor = "#f57";
     //x.style.display = "block";
     name.style.borderWidth = "2px";
 
@@ -2954,13 +2981,15 @@ function validateCourseID(courseid, dialogid) {
     $(x2).fadeOut();
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
-    code.style.backgroundColor = "#fff";
+    //code.style.backgroundColor = "#fff";
+
+    code.style.backgroundColor = backgroundColorTheme;
     //x2.style.display = "none";
     window.bool = true;
   } else {
     $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    code.style.backgroundColor = "#f57";
+    //code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
     //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
     //x2.style.display = "block";
@@ -2972,7 +3001,7 @@ function validateCourseID(courseid, dialogid) {
   if(versionIsValid) {
     $(x2).fadeIn();
     code.style.borderColor = "#E54";
-    code.style.backgroundColor = "#f57";
+    //code.style.backgroundColor = "#f57";
     code.style.borderWidth = "2px";
     x2.innerHTML = "Version ID already exists, try another";
     //x2.style.display = "block";
@@ -3011,13 +3040,15 @@ function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
 		window.bool9 = false;
 	}
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
-    emotd.style.backgroundColor = "#ffff";
+    //emotd.style.backgroundColor = "#ffff";
+
+    emotd.style.backgroundColor = backgroundColorTheme;
 		emotd.style.borderColor = "#383";
 		emotd.style.borderWidth = "2px";
 		saveButton.disabled = false;
     return true;
 	}else{
-    emotd.style.backgroundColor = "#f57";
+    //emotd.style.backgroundColor = "#f57";
 		emotd.style.borderColor = "#E54";
 		emotd.style.borderWidth = "2px";
 		saveButton.disabled = true;
@@ -3040,8 +3071,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#E54";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
-    sdate.style.backgroundColor = "#f57";
-    edate.style.backgroundColor = "#f57";
+    //sdate.style.backgroundColor = "#f57";
+    //edate.style.backgroundColor = "#f57";
     $(x3).fadeIn();
     x3.innerHTML = "Both start date and end date must be filled in";
     //x3.style.display = "block";
@@ -3053,8 +3084,11 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#383";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
-    sdate.style.backgroundColor = "#fff";
-    edate.style.backgroundColor = "#fff";
+    //sdate.style.backgroundColor = "#fff";
+    //edate.style.backgroundColor = "#fff";
+
+    sdate.style.backgroundColor = backgroundColorTheme;
+    edate.style.backgroundColor = backgroundColorTheme;
     $(x3).fadeOut();
     //x3.style.display = "none";
     if (startDate === 'startdate' && endDate === 'enddate') {
@@ -3069,8 +3103,8 @@ function validateDate(startDate, endDate, dialogID) {
   if (date2 < date1) {
     sdate.style.borderColor = "#E54";
     edate.style.borderColor = "#E54";
-    sdate.style.backgroundColor = "#f57";
-    edate.style.backgroundColor = "#f57";
+    //sdate.style.backgroundColor = "#f57";
+    //edate.style.backgroundColor = "#f57";
     $(x3).fadeIn();
     x3.innerHTML = "Start date has to be before end date";
     //x3.style.display = "block";
@@ -3127,7 +3161,7 @@ function validateDate2(ddate, dialogid) {
   if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
     ddate.style.borderColor = "#383";
     ddate.style.borderWidth = "2px";
-    ddate.style.backgroundColor = "#fff";
+    ddate.style.backgroundColor = backgroundColorTheme;
     $(x).fadeOut();
     //x.style.display = "none";
     window.bool8 = true;
@@ -3137,7 +3171,7 @@ function validateDate2(ddate, dialogid) {
     // If absolute deadline is not being used
     $(x).fadeIn();
     ddate.style.borderWidth = "2px";
-    ddate.style.backgroundColor = "#fff";
+    ddate.style.backgroundColor = backgroundColorTheme;
     ddate.style.borderColor = "#aaa";
     // x.style.display = "block";
     window.bool8 = true;
@@ -3168,7 +3202,7 @@ function validateSectName(name){
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     emotd.style.borderColor = "#383";
     emotd.style.borderWidth = "2px";
-    emotd.style.backgroundColor = "#fff";
+    emotd.style.backgroundColor = backgroundColorTheme;
     $('#dialog10').fadeOut();
     window.bool10 = true;
     return true;
@@ -3442,6 +3476,14 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+}
+
+//------------------------------------------------------------------------------
+// This method is to be used to check if a code example should re-fetch the
+// contents of a code example based on eventual changes in external github-repo
+//------------------------------------------------------------------------------
+function refreshCodeExample(){
+  console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
 }
 
 //------------------------------------------------------------------------------

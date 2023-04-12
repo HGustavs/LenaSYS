@@ -94,16 +94,11 @@ if(isset($_SESSION['uid'])){
 				<!-- Input field to Github repository-->
 				<div style="padding:5px;">
 					<div class="inputwrapper">
-						<span>Get course from GitHub?</span>
-						<div>
-							<input onclick="showGitInput(true)" style="float: none; width: auto;" type="radio" value="yes" id="ncoursegit-yes" name="coursegit">Yes</input>
-							<input onclick="showGitInput(false)" style="float: none; width: auto;"type="radio" value="no" id="ncoursegit-no" name="coursegit">No</input>
-						</div>
-					</div>
-					<div style="display:none; justify-content: flex-end; margin-top: 10px;" class="inputwrapper" id="gitinput-parent">
 						<span style="padding-right: 10px;">GitHub URL:</span>
-						<input oninput="validateGitInput()" class="textinput" type="text" id="ncoursegit-url" name="coursegit-url" placeholder="github.com/repo/..."/>
+						<input oninput="quickValidateForm('newCourse','createCourse')" class="textinput validate" type="text" id="ncoursegit-url" name="coursegitURL" placeholder="https://github.com/..."/>
 					</div>
+					<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
+					<p id="dialog5" class="validationDialog">Enter a valid github url</p>
 				</div>
     		<div style='padding:5px;'>
     			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
@@ -133,7 +128,13 @@ if(isset($_SESSION['uid'])){
 				</div>
 				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
-    			<div class='inputwrapper'>
+    			<div class="inputwrapper">
+					<span>GitHub URL:</span>
+					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="coursegitURL" placeholder="https://github.com/..."/>
+				</div>
+				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
+				<p id="dialog6" class="validationDialog">Enter a valid github url</p>
+				<div class='inputwrapper'>
 					<span>Visibility:</span>
 					<select class='selectinput' id='visib'></select>
 				</div>
@@ -158,7 +159,7 @@ if(isset($_SESSION['uid'])){
     		<div style='padding:5px;'>
 
     			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
-    			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
+    			<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
 			<!--<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->

@@ -484,6 +484,11 @@ body {
     color:rgba(255,255,255,0.6);
 }
 
+.formDialog .formDialogText {
+    background-color: var(--color-text-header) !important;
+    color: var(--color-text-list) !important;
+}
+
 #announcementBoxOverlay{
     display: none;
     background-color: var(--color-background);
@@ -1061,9 +1066,7 @@ background-color:  var(--color-sectioned-table-hi);
 border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
-/*/ END /*/
-
-#tabElement{
+#tabElement {
     filter: invert(0.2);
 }
 
@@ -1086,8 +1089,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     text-decoration-color: var(--color-text-primary) !important;
   }
 
-
-  .BlackthemeColor{
+  .BlackthemeColor {
    stroke: #ff0000;
    stroke-width: 2;
   }
@@ -1122,4 +1124,13 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 #diagram-message > div.error {
     background-color: rgb(252, 58, 44);
 }
+  
+ .textinput {
+    color:white;
+}
 
+ #emakeactive {
+    background-color: #121212;
+    accent-color: #434343;
+}
+/*/ END /*/

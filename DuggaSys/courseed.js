@@ -34,14 +34,14 @@ function updateCourse()
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
+	var coursegiturl = $("#editcoursegit-url").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-	
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : coursegiturl }, "COURSE");
 	localStorage.setItem('courseid', courseid);
 	localStorage.setItem('updateCourseName', true);
 }
@@ -77,11 +77,12 @@ function createNewCourse()
 {
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
+	var coursegiturl = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 
     localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
+	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : coursegiturl  }, "COURSE");
 }
 
 function copyVersion()
@@ -560,14 +561,15 @@ function setActiveCodes() {
 
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
-	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/
+	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
+	coursegitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/
 };
 
 //Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 	//Standard styling for a failed validation that will be changed if element passes validation
-	element.style.backgroundColor = "#f57";
+	element.classList.add("bg-color-change-invalid");
 	$(messageElement.firstChild.id).fadeIn();
 	//messageElement.style.display = "block";
 
@@ -586,7 +588,7 @@ function elementIsValid(element) {
 		}
 
 		//Setting the style of the element represent being valid and not show
-		element.style.backgroundColor = "#ffff";
+		element.classList.remove("bg-color-change-invalid");
 		element.style.borderColor = "#383";
 		$(messageElement.firstChild).fadeOut();
 		//messageElement.style.display = "none";
@@ -597,6 +599,12 @@ function elementIsValid(element) {
 		element.removeAttribute("style");
 		element.value = "";
 		//messageElement.style.display = "none";
+		element.classList.remove("bg-color-change-invalid");
+
+		// The inputs for the git URLs are valid even when they're empty, since they're optional
+		if(element.name === "coursegitURL") {
+			return true;
+		}
 		return false;
 	}
 
@@ -609,33 +617,8 @@ function elementIsValid(element) {
 	return false;
 }
 
-//Show or hide the Git URL input when creating a new course
-function showGitInput(show){
-	var gitInput = document.getElementById("gitinput-parent");
-	if (show == true){
-		gitInput.style.display = "flex";
-	}else{
-		gitInput.style.display = "none";
-	}
-}
-
-//Validation with REG EXP for Github URL
-function validateGitInput(){
-	var gitUrl = document.getElementById("ncoursegit-url");
-		if((gitUrl.value.match(/^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/)!=null)){
-			console.log("Valid URL!");
-			gitUrl.style.backgroundColor = "white";
-			gitUrl.style.borderColor = "rgb(51, 136, 51)";
-		} else {
-			gitUrl.style.backgroundColor = "#f57";
-			gitUrl.style.borderColor = "transparent";
-			console.log("Invalid url...");
-		}
-}
-
 //Validates whole form but don't implement it.
 function quickValidateForm(formid, submitButton){
-	
 	const formContainer = document.getElementById(formid);
 	const inputs = formContainer.querySelectorAll("input.validate");
 	const saveButton = document.getElementById(submitButton);
@@ -655,10 +638,8 @@ function quickValidateForm(formid, submitButton){
 	} else{
 		saveButton.disabled = true;
 	}
-	
 	return false;
 }
-
 
 //Validates whole form
 function validateForm(formid) {
@@ -680,7 +661,7 @@ function validateForm(formid) {
 			alert("New course added!");
 		} else if(formid === "editCourse") {
 			updateCourse();
-			alert("Course updated!");
+			alert("Course updated!"); 
 		}
 
 		//Reset inputs

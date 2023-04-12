@@ -1,0 +1,53 @@
+﻿contribution_loginbox_service
+
+
+Retrieves data from external files:
+
+
+basic.php
+sessions.php
+
+
+Connects to database,
+pdoConnect() and starts a session with,
+session_start().
+
+
+Input:
+
+
+log_db
+opt
+allusers
+checklogin()
+git_checklogin()
+gituser
+pdo
+gitUserChange
+addStatus
+userrows
+gituserrows
+gitpass
+temp_null_str
+rnd
+querystring
+e
+
+
+Output:
+
+
+json_encode($userExisted, $addStatus)
+execute()
+error[]
+debug
+status
+rnd
+stmt
+uid
+errorInfo[]
+status_account_int
+lastInsertId()
+rowCount()
+password_verify()
+errorInfo()
