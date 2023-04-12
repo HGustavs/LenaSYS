@@ -56,14 +56,14 @@ function burgerToggleDarkmode(operation = 'click'){
       themeStylesheet.href = "../Shared/css/whiteTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
       backgroundColorTheme = "#121212";
-    } 
+    }
     else if(themeStylesheet.href.includes('whiteTheme')) {
       // if it's dark -> go light
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
       backgroundColorTheme = "#fff";
     }
-  
+
   //const themeToggle = document.getElementById('theme-toggle');
   //themeToggle.addEventListener('click', () => {});
 }
@@ -229,7 +229,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   } else {
      document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
-  
+
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
@@ -294,19 +294,19 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
       }
     }
   }
-  
+
   $("#moment").html(str);
   $("#editSectionDialogTitle").text(entryname);
 
   // Set Name
   $("#sectionname").val(entryname);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'  
+  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
   id='sectionname' value='${entryname}' style='width:448px;'/>`);
 
 
   // Set Comment
   $("#comments").val(comments);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput' 
+  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
   id='comments' value='${comments}' style='width:448px;'/>`);
 
   // Set Lid
@@ -351,7 +351,7 @@ function checkDeadlineCheckbox(e, check) {
     $("#deadlinehours").prop("disabled", true);
   }
 }
-// Takes a relative deadline format and returns a readable string ex: "Course Week 5, 15:00" 
+// Takes a relative deadline format and returns a readable string ex: "Course Week 5, 15:00"
 function formatRelativeDeadlineToString(rDeadline) {
   rDeadlineArr = rDeadline.split(":");
   str = "Course ";
@@ -368,7 +368,7 @@ function formatRelativeDeadlineToString(rDeadline) {
 function calculateRelativeDeadline(rDeadline) {
   // rDeadline = [amount, type, hour, minute]
 
-  rDeadline = rDeadline === null ? "1:1:0:0" : rDeadline; 
+  rDeadline = rDeadline === null ? "1:1:0:0" : rDeadline;
 
   if (typeof rDeadline === "undefined") {
     rDeadline =  getRelativeDeadlineInputValues();
@@ -407,7 +407,7 @@ function convertDateToDeadline(date) {
 }
 
 // Returns the values of the currently chosen relative deadline input elements
-function getRelativeDeadlineInputValues() { 
+function getRelativeDeadlineInputValues() {
   return $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlinehours").val() + ":" + $("#relativedeadlineminutes").val();
 }
 
@@ -531,10 +531,10 @@ function confirmBox(operation, item = null) {
     $("#sectionShowConfirmBox").css("display", "none");
   }
   document.addEventListener("keypress", event => {
-		if (event.key === 'Enter') {	
+		if (event.key === 'Enter') {
 			if(event.target.classList.contains("traschcanDelItemTab")){
-        setTimeout(function(){ 
-          $("#delete-item-button"). focus (); 
+        setTimeout(function(){
+          $("#delete-item-button"). focus ();
         }, 400);
 			}
 			if(event.target.id == "delete-item-button"){
@@ -567,24 +567,24 @@ function markedItems(item = null){
           }else{
             subItems.push(tempItem);
             //console.log("added: "+tempItem);
-          } 
+          }
         }else if(tempItem==active_lid) sectionStart=true;
       });
 
     }
 
-    
+
     console.log("Active lid: "+active_lid);
     if (hideItemList.length != 0){
-      for( var i = 0; i < hideItemList.length; i++){ 
-        if ( hideItemList[i] === active_lid) { 
+      for( var i = 0; i < hideItemList.length; i++){
+        if ( hideItemList[i] === active_lid) {
           hideItemList.splice(i, 1);
           i--;
           var removed = true;
           console.log("Removed from list");
-        }   
+        }
         for(var j = 0; j < subItems.length; j++){
-          if ( hideItemList[i] === subItems[j]) { 
+          if ( hideItemList[i] === subItems[j]) {
             $("#"+hideItemList[i]+"-checkbox").prop("checked", false);
             hideItemList.splice(i, 1);
             //console.log(subItems[j]+" Removed from list");
@@ -613,18 +613,18 @@ function markedItems(item = null){
       document.querySelector('#hideElement').disabled = false;
       document.querySelector('#hideElement').style.opacity = 1;
       showVisibilityIcons();
-    } 
+    }
     if (hideItemList.length == 0) {
       // Disable ghost button when no checkboxes is checked
       document.querySelector('#hideElement').disabled = true;
       document.querySelector('#hideElement').style.opacity = 0.7;
       hideVisibilityIcons();
 
-    } 
+    }
     console.log(hideItemList);
 }
 
- // Shows ghost and eye button 
+ // Shows ghost and eye button
 function showVisibilityIcons(){
  document.querySelector('#hideElement').disabled = false;
  document.querySelector('#hideElement').style.opacity = 1;
@@ -642,7 +642,7 @@ function hideVisibilityIcons(){
 //Changes visibility of hidden items
 function showMarkedItems(){
   hideVisibilityIcons();
-    for (i=0; i < hideItemList.length; i++) {  
+    for (i=0; i < hideItemList.length; i++) {
     var lid = hideItemList[i];
         AJAXService("PUBLIC", {
           lid: lid
@@ -652,7 +652,7 @@ function showMarkedItems(){
       hideItemList= [];
 }
 
-// Clear array of checked items - used in fabbuttons and in save to clear array. 
+// Clear array of checked items - used in fabbuttons and in save to clear array.
 // Without this, the array will be populated but checkboxes will not be reset.
 function clearHideItemList(){
   hideItemList = [];
@@ -808,7 +808,7 @@ function deleteAll(item)
 function cancelDelete() {
   clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
-  for(i = 0; i < deletedElements.length; i++) { 
+  for(i = 0; i < deletedElements.length; i++) {
     deletedElements[i].classList.remove("deleted");
   }
   location.reload();
@@ -829,7 +829,7 @@ function hideMarkedItems() {
   hideVisibilityIcons();
   document.querySelector('#hideElement').disabled = true;     //can be removed
   document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
-  for (i=0; i < hideItemList.length; i++) {  
+  for (i=0; i < hideItemList.length; i++) {
     var lid = hideItemList[i];
       AJAXService("HIDDEN", {
         lid: lid
@@ -849,7 +849,7 @@ function hideMarkedItems() {
       tabs: tabs
     }, "SECTION");
   }
-    
+
 //----------------------------------------------------------------------------------
 // toggleTab: Toggles tab on all elements of the webpage
 //----------------------------------------------------------------------------------
@@ -859,7 +859,7 @@ function hideMarkedItems() {
     if(tabEnabled){
       tabEnabled = false;
       tabSwitch = -1;
-    } 
+    }
     else {
       tabEnabled= true;
       tabSwitch = 0;
@@ -894,7 +894,7 @@ function hideMarkedItems() {
         elem[j].setAttribute('tabindex', 0);
       }
     }
-    
+
   }
 //----------------------------------------------------------------------------------
 // updateItem: Updates Item from Section List
@@ -989,7 +989,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
-    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
     querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
@@ -1017,14 +1017,14 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
   querystring["coursename"] + "&coursevers=" +document.getElementById("eversid").value );
 }
 
 // QueryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
-  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + 
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
   querystring["coursename"] + "&coursevers=" + value);
 }
 
@@ -1072,7 +1072,7 @@ function returnedGroups(data) {
       str += `<thead><tr><th rowspan=2 style='text-align:left;'>Group ${cgrp[1]}</th></tr></thead>`;
       str += "<tbody>";
     }
-    str += `<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap' 
+    str += `<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap'
     href='mailto:${member[3]}'>${member[1]} ${member[2]}</a></td></tr>`;
     if (grpemail != "") grpemail += ",";
     grpemail += member[3];
@@ -1080,7 +1080,7 @@ function returnedGroups(data) {
   if (grp != "") {
     str += "</tbody>";
     str += "</table>";
-    str += `<div style='text-align:right;border-top:2px solid #434343'><a 
+    str += `<div style='text-align:right;border-top:2px solid #434343'><a
     href='mailto:${grpemail}'>Email group</a></div>`
     grpemail = "";
   }
@@ -1175,7 +1175,7 @@ function returnedSection(data) {
       document.getElementById("HIDEStatic").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
-      
+
       // Disable div used for table spacing in the navheader
       document.getElementById("menuHook").style.display =  "none"
     } else {
@@ -1200,7 +1200,7 @@ function returnedSection(data) {
 
     //Swimlane and 'Load Dugga' button.
 
-   
+
 
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
@@ -1227,12 +1227,12 @@ function returnedSection(data) {
         else{
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
         }
-        
+
         menuState.idCounter++;
         // All are visible according to database
 
         // Content table
-        str += `<table id='lid${item['lid']}' value='${item['lid']}' 
+        str += `<table id='lid${item['lid']}' value='${item['lid']}'
         style='width:100%;table-layout:fixed;'><tr value='${makeTextArray(item['kind'], valarr)}' style='height:32px;' `;
 
         if (kk % 2 == 0) {
@@ -1241,7 +1241,7 @@ function returnedSection(data) {
           str += " class='lo' ";
         }
         str += " >";
-  
+
 
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
@@ -1251,7 +1251,7 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
         if (itemKind === 3 || itemKind === 4) {
-          
+
           // If there exists atleast one test or moment swimlanes shall be hidden
           hasDuggs = true;
 
@@ -1293,7 +1293,7 @@ function returnedSection(data) {
 
             }
           }
-          
+
           if (retdata['writeaccess']) {
           if (itemKind === 3) {
             if(isLoggedIn){
@@ -1314,7 +1314,7 @@ function returnedSection(data) {
         if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
           str += "<td onmouseup='hideDeleted()' style'text-align: left;' class='LightBox" + hideState + "'>";
           str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-          
+
         }
         str += "</td>";
       }
@@ -1330,7 +1330,7 @@ function returnedSection(data) {
             str += addColorsToTabSections(itemKind, hideState, "L");
             str += addColorsToTabSections(itemKind, hideState, "E");
           } else if (itemGradesys == 5) {
-            str += addColorsToTabSections(itemKind, hideState, "L");            
+            str += addColorsToTabSections(itemKind, hideState, "L");
             str += addColorsToTabSections(itemKind, hideState, "L");
             str += addColorsToTabSections(itemKind, hideState, "E");
           } else if (itemGradesys == 6) {
@@ -1373,7 +1373,7 @@ function returnedSection(data) {
           }
 
           if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png' 
+            str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png'
             onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
           }
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
@@ -1413,14 +1413,14 @@ function returnedSection(data) {
             }
           }
 
-          str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'><img src='../Shared/icons/group-iconDrk.svg' 
+          str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'><img src='../Shared/icons/group-iconDrk.svg'
           style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>`;
           str += `<td class='section-message item' onclick='getGroups(\"${grp}\");
           ' placeholder='${momentexists}' id='I${item['lid']}' `;
 
         } else if (itemKind === 7) { // Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
-            str += `<td style='width:32px;'><img title='Important message' 
+            str += `<td style='width:32px;'><img title='Important message'
             src='../Shared/icons/warningTriangle.svg'></td>`;
           }
           str += `<td class='section-message item' placeholder='${momentexists}' id='I${item['lid']}' `;
@@ -1456,7 +1456,7 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-                    str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php", 
+                    str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
                     hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
         } else if (itemKind == 3) {
           // Test / Dugga
@@ -1472,7 +1472,7 @@ function returnedSection(data) {
             deadline: item['deadline'],
             'cid': querystring['courseid']
           };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php", hideState, 
+          str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php", hideState,
           "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
         } else if (itemKind == 5) {
           // Link
@@ -1509,7 +1509,7 @@ function returnedSection(data) {
         }
 
         str += "</td>";
-        
+
         // If none of the deadlines are null or undefined we need to add it to the page
         if ((itemKind === 3) && ((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
           // Both of them will need this html
@@ -1543,8 +1543,8 @@ function returnedSection(data) {
           // Create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
-              str += `<td style='width:25px;'><img style='width:25px; padding-top:3px' 
-              title='This dugga is not guaranteed to be marked due to submission after deadline.' 
+              str += `<td style='width:25px;'><img style='width:25px; padding-top:3px'
+              title='This dugga is not guaranteed to be marked due to submission after deadline.'
               src='../Shared/icons/warningTriangle.svg'/></td>`;
             }
           }
@@ -1553,7 +1553,7 @@ function returnedSection(data) {
         // Refresh button
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;'>`;
-          str += `<img style='width:16px' alt='refresh icon' tabIndex='0' 
+          str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
           str += " onclick='refreshCodeExample("+item['exempelid']+")'"
           str += "</td>";
@@ -1562,32 +1562,32 @@ function returnedSection(data) {
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
-          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' 
+          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback'
           onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
           str += "</td>";
         }
         // Tab example button
         if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement' 
+          str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
         if (itemKind != 4 && itemKind != 1 && itemKind != 0){ // dont create buttons for moments only for specific assignments
           //Generate new tab link
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class='' 
+            str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class=''
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
             str += "</td>";
 
           // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
-            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
             str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' 
+            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class=''
             src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
             str += `</div>`;
             str += "</td>";
@@ -1609,12 +1609,12 @@ function returnedSection(data) {
 
           str += "</td>";
         }
-        
+
         // Trashcan
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class='' 
+          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
 
@@ -1622,23 +1622,23 @@ function returnedSection(data) {
         }
         // github icon
         if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class='' 
+          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
 
-        
+
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:25px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
             str += "<input type='checkbox' id='"+ item['lid'] + "-checkbox" + "' title='"+item['entryname'] + " - checkbox"+"' class='checkboxIconTab' onclick='markedItems(this)'>";
-            str += "</td>";      
+            str += "</td>";
         }
-        
+
         str += "</tr>";
         str += "</table></div>";
       } // End of for-loop
@@ -1716,7 +1716,7 @@ function returnedSection(data) {
 
 
   }
-  
+
   // Reset checkboxes
   // Prevents a bug if they are checked when for example an item is deleted and the table refreshes
   clearHideItemList();
@@ -1741,14 +1741,14 @@ function returnedSection(data) {
     if (navigator.vendor != ("Apple Computer, Inc.")) {
       drawSwimlanes(); // Create the swimlane used in the statistics section.
       }
-    
+
 
     // Change the scroll position to where the user was last time.
     $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
     // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
     replaceDefualtLink();
-    
+
 
 
     addClasses();
@@ -1783,7 +1783,7 @@ function showCanvasLinkBox(operation,btnobj){
     textArea.select();
     document.execCommand('copy');
     textArea.remove();
-    
+
 
     $("#canvasLinkBox").css("display", "flex");
     $('#close-item-button').focus();
@@ -1938,7 +1938,7 @@ function drawSwimlanes() {
   var current = new Date();
 
   var momentno = 0;
- 
+
   for (var i = 0; i < retdata['entries'].length; i++) {
     var deadline = new Date(retdata['entries'][i].deadline);
     var start = new Date(retdata['entries'][i].qstart);
@@ -2005,7 +2005,7 @@ function drawSwimlanes() {
     } else {
       str += "fill='#ffffff' />";
     }
-    str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}' 
+    str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
     font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
   }
 
@@ -2017,7 +2017,7 @@ function drawSwimlanes() {
   var weeky = 15;
   for (var k = 0; k < momentEntries.length;k++) {
     const obj=momentEntries[k];
-    for (var i = 0; i < deadlineEntries.length; i++) {      
+    for (var i = 0; i < deadlineEntries.length; i++) {
       const entry = deadlineEntries[i];
       if (obj.moment == entry.moment) {
         weeky += weekheight;
@@ -2045,24 +2045,24 @@ function drawSwimlanes() {
         } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
           textcol = `url("#fadeTextRed")`;
         }
-        
+
         str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
         str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
     }
   }
 
-  // Setting a temporary date on 'current' in case dates not updated in course 
+  // Setting a temporary date on 'current' in case dates not updated in course
   // To adjust the red line showing the day in swimlanes
   var newCurrent;
   var daySinceStart;
 
   if(enddate.getFullYear() < current.getFullYear()) { // Guesstimate deadline for current year if course not updated
     var yearDifference = current.getFullYear() - enddate.getFullYear();
-    var tempYear = new Date(current); 
-    
-    tempYear.setFullYear(current.getFullYear() - yearDifference); 
-    newCurrent = new Date(tempYear); 
+    var tempYear = new Date(current);
+
+    tempYear.setFullYear(current.getFullYear() - yearDifference);
+    newCurrent = new Date(tempYear);
     daySinceStart = Math.ceil(( newCurrent - startdate) / (24 * 60 * 60 * 1000));
   }
   else {                                           // When dates are updated and no guesstimation needed
@@ -2091,7 +2091,7 @@ function drawSwimlanes() {
       }
     }
    // index * height = topPos
-  var topPos =  min_index * weekheight;  
+  var topPos =  min_index * weekheight;
   document.getElementById('statisticsSwimlanes').scrollTop = topPos;
 
 }
@@ -2168,7 +2168,7 @@ function mouseDown(e) {
 //----------------------------------------------------------------------------------
 
 function mouseUp(e) {
-  /* If the target of the click isn't the container nor a descendant of the container, 
+  /* If the target of the click isn't the container nor a descendant of the container,
      or if we have clicked inside box and dragged it outside and released it */
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
   $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
@@ -2292,9 +2292,9 @@ $(window).load(function () {
     $(".statisticsContentBottom").show();
     if (hasDuggs) {
       $("#swimlaneSVG").show();
-      $("#statisticsSwimlanes").show(); 
+      $("#statisticsSwimlanes").show();
     }
-  }); 
+  });
   $("#sectionList_arrowStatisticsClosed").click(function () {
     $("#sectionList_arrowStatisticsOpen").show();
     $("#sectionList_arrowStatisticsClosed").hide();
@@ -2337,7 +2337,7 @@ function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
 
-// Retrieve the announcment author 
+// Retrieve the announcment author
 function retrieveAnnouncementAuthor(){
   var uname = $("#userName").html();
   var xmlhttp = new XMLHttpRequest();
@@ -2372,10 +2372,10 @@ function retrieveCourseProfile(userid){
         success: function(data){
           var item = JSON.parse(data);
           $("#versid").find('*').not(':first').remove();
-          $.each(item.versids, function(index,item) {        
+          $.each(item.versids, function(index,item) {
               $("#versid").append("<option value="+item.versid+">"+item.versid+"</option>");
           });
-          
+
         },
         error:function(){
           console.log("*******Error*******");
@@ -2400,7 +2400,7 @@ function retrieveCourseProfile(userid){
 function getStudents(cid, userid){
    var versid = '';
    versid = $("#versid").val();
-   if (($("#versid").val()) != '') { 
+   if (($("#versid").val()) != '') {
     $("#recipient").prop("disabled", false);
     $.ajax({
       url: "../Shared/retrieveuser_course.php",
@@ -2411,14 +2411,14 @@ function getStudents(cid, userid){
         $("#recipient").find('*').not(':first').remove();
         $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>"+
         "</optgroup>");
-        $.each(item.finished_students, function(index,item) {        
-          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname} 
+        $.each(item.finished_students, function(index,item) {
+          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname}
           ${item.lastname}</option>`);
         });
         $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>"+
         "</optgroup>");
         $.each(item.non_finished_students, function(index,item) {
-          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname} 
+          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
           ${item.lastname}</option>`);
         });
         $(".selectLabels label input").attr("disabled", false);
@@ -2441,25 +2441,25 @@ function validateCreateAnnouncementForm(){
     var cid = $("#cid").val();
     var versid = $("#versid").val();
     var recipients = $("#recipient").val();
-    if (announcementTitle == null || announcementTitle == '') {  
+    if (announcementTitle == null || announcementTitle == '') {
         $("#announcementTitle").addClass('errorCreateAnnouncement');
         e.preventDefault();
-    }else if (announcementMsg == null || announcementMsg == '') {  
+    }else if (announcementMsg == null || announcementMsg == '') {
         $("#announcementMsg").addClass('errorCreateAnnouncement');
         e.preventDefault();
-    }else if (cid == null || cid == '') {  
+    }else if (cid == null || cid == '') {
         $("#cid").addClass('errorCreateAnnouncement');
         e.preventDefault();
-    }else if (versid == null || versid == '') {  
+    }else if (versid == null || versid == '') {
         $("#versid").addClass('errorCreateAnnouncement');
         e.preventDefault();
-    }else if (recipients == null || recipients == '') {  
+    }else if (recipients == null || recipients == '') {
         $("#recipient").addClass('errorCreateAnnouncement');
         e.preventDefault();
     }
     $(".errorCreateAnnouncement").css({
       'border':'1px solid red'
-    });   
+    });
   });
 }
 function validateUpdateAnnouncementForm(){
@@ -2467,16 +2467,16 @@ function validateUpdateAnnouncementForm(){
     var announcementTitle = ($("#announcementTitle").val()).trim();
     var announcementMsg = ($("#announcementMsg").val()).trim();
 
-    if (announcementTitle == null || announcementTitle == '') {  
+    if (announcementTitle == null || announcementTitle == '') {
       $("#announcementTitle").addClass('errorCreateAnnouncement');
       e.preventDefault();
-    }else if (announcementMsg == null || announcementMsg == '') {  
+    }else if (announcementMsg == null || announcementMsg == '') {
       $("#announcementMsg").addClass('errorCreateAnnouncement');
       e.preventDefault();
     }
     $(".errorCreateAnnouncement").css({
       'border':'1px solid red'
-    });  
+    });
   });
 }
 // Retrive announcements
@@ -2497,7 +2497,7 @@ function retrieveAnnouncementsCards(){
       xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           var parsed_data = JSON.parse(this.response);
-          document.getElementById("announcementCards").innerHTML = 
+          document.getElementById("announcementCards").innerHTML =
           parsed_data.retrievedAnnouncementCard;
           var unread_announcements = parsed_data.nRows;
           if(unread_announcements > 0){
@@ -2525,7 +2525,7 @@ function retrieveAnnouncementsCards(){
 // Update anouncement form
 function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
   var xmlhttp = new XMLHttpRequest();
-  
+
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         tempFuction(this, updateannouncementid, cid, versid);
@@ -2638,7 +2638,7 @@ function displayAnnouncementBoxOverlay(){
   var closeUpdateForm = sessionStorage.getItem("closeUpdateForm");
   if(closeUpdateForm == 'true'){
     $("#announcementBoxOverlay").show();
-  
+
   }
 }
 function scrollToTheAnnnouncementForm(){
@@ -2678,8 +2678,8 @@ function readLessOrMore(paragraph){
         for (i = 0; i < announcementCard.length; i++) {
           announcementCard[i].style.width = "100%";
         }
-      } 
-     
+      }
+
     });
 }
 
@@ -2757,14 +2757,14 @@ function selectRecipients(){
 function multiSelect(){
   $("#recipient").mousedown(function(e){
     e.preventDefault();
-    
+
     var select = this;
     var scroll = select.scrollTop;
-    
+
     e.target.selected = !e.target.selected;
-    
+
     setTimeout(function(){select.scrollTop = scroll;}, 0);
-    
+
     $(select).focus();
   }).mousemove(function(e){e.preventDefault()});
 }
@@ -2795,7 +2795,7 @@ function toggleFeedbacks(){
              $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>"+
              "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
           }
-          $(".oldFeedbacks").hide();                  
+          $(".oldFeedbacks").hide();
           feedbackComment = 'feedbackComment';
           readLessOrMore(feedbackComment);
           unseen_feedbacks = data.unreadFeedbackNotification;
@@ -2854,7 +2854,7 @@ function viewOldFeedbacks(){
     $('html,body').animate({
       scrollTop: $(this).offset().top
     }, 1500);
-  }); 
+  });
 }
 function hideIconButton(){
   $("#iconButton").hide();
@@ -3145,7 +3145,7 @@ function showCourseDate(ddate, dialogid){
 function validateDate2(ddate, dialogid) {
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
-  
+
   var ddate = document.getElementById(ddate);
   var deadlinehours = document.getElementById("deadlinehours");
   var deadlineminutes = document.getElementById("deadlineminutes");
@@ -3281,14 +3281,14 @@ function quickValidateForm(formid, submitButton){
     endialog.innerHTML = "";
     valid = true;
     var deadlinepart = document.getElementById('inputwrapper-deadline');
-    var deadlinedisplayattribute = deadlinepart.style.display; 
+    var deadlinedisplayattribute = deadlinepart.style.display;
     valid = valid && validateSectName('sectionname');
 
     // Validates Deadline
     if (deadlinedisplayattribute != 'none'){
       valid = valid && showCourseDate('setDeadlineValue','dialog8');
     }
-   
+
 
     //If fields empty
     if (sName == null || sName == "") {
@@ -3298,7 +3298,7 @@ function quickValidateForm(formid, submitButton){
     }
 
     //Name is a duplicate
-    if(sName == item){ 
+    if(sName == item){
       window.bool11 = true;
 
     }
@@ -3372,7 +3372,7 @@ function quickValidateForm(formid, submitButton){
       saveButton.disabled = true;
     }
   }
- 
+
 }
 
 
@@ -3393,13 +3393,13 @@ function validateForm(formid) {
     }
 
     //Name is a duplicate
-    if(sName == item){ 
+    if(sName == item){
       window.bool11 = true;
     }
     else if(getCourseElements().indexOf(sName) >= 0){
-      window.bool11 = false;      
+      window.bool11 = false;
       alert('Name already exists, choose another one');
-    }else{ 
+    }else{
       window.bool11 = true;
     }
 
@@ -3519,7 +3519,7 @@ function returnedUserFeedback(data){
     for(var i = 0; i<data.userfeedback.length; i++){
       if(parseInt(data.userfeedback[i].score) > highestscore){
         highestscore=data.userfeedback[i].score;
-        
+
       }
       if(parseInt(data.userfeedback[i].score) < lowestscore){
         lowestscore=data.userfeedback[i].score;
@@ -3530,7 +3530,7 @@ function returnedUserFeedback(data){
     $("#total-feedback").html(data.userfeedback.length);
     $("#feedbacktablecontainer").html(createUserFeedbackTable(data));
   }
-  
+
 }
 //------------------------------------------------------------------------------
 // Creates a table with the Feedback data.
@@ -3558,7 +3558,7 @@ function createUserFeedbackTable(data){
     if(data.userfeedback[i].username === null){
       str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
     }else{
-      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' 
+      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student'
       onclick='contactStudent(\"${data.userfeedback[i].entryname}\",\"${data.userfeedback[i].username}\")'></td>`;
     }
     str += "</tr>";
@@ -3572,12 +3572,12 @@ function createUserFeedbackTable(data){
 // Opens an email to the student
 //------------------------------------------------------------------------------
 function contactStudent(entryname,username){
-  
-  window.location = "mailto:" + username + 
+
+  window.location = "mailto:" + username +
   "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
 }
 //------------------------------------------------------------------------------
-// Displays the feedback question input on enable-button toggle. 
+// Displays the feedback question input on enable-button toggle.
 //------------------------------------------------------------------------------
 function showFeedbackquestion(){
   if($("#fdbck").prop('checked')){
@@ -3586,4 +3586,3 @@ function showFeedbackquestion(){
     $("#inputwrapper-FeedbackQuestion").css("display","none");
   }
 }
-
