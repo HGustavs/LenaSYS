@@ -4,19 +4,21 @@ $loggingDataJSON = file_get_contents("php://input"); // JSON string from dugga.j
 $logFileName = "log.json";
 $latestLogFileName = "latestlog.json";
 
-if(file_exists($logFileName)){
-    $fileContent = file_get_contents($logFileName);
-    $fileContentArray = json_decode($fileContent);
-    array_push($fileContentArray, $loggingDataJSON);
-    $newJSONData = json_encode($fileContentArray);
-}
-else{
-    $newJSONData = $loggingDataJSON;
+function getEarlierLogs(){
+    if(file_exists($logFileName)){
+        $fileContent = file_get_contents($logFileName);
+        $fileContentArray = json_decode($fileContent);
+        array_push($fileContentArray, $loggingDataJSON);
+        return json_encode($fileContentArray);
+    }
+    else{
+        $newJSONData = $loggingDataJSON;
+    }
 }
 
 // Write to all log file
 $fp = fopen($logFileName, 'w');
-fwrite($fp, $newJSONData);
+fwrite($fp, getEarlierLogs());
 fclose($fp);
 
 // Write latest log
