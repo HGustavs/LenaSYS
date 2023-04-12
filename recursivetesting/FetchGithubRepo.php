@@ -75,6 +75,12 @@
                     if ($json) {
                         // Checks if the fetched item is of type 'file'
                         if ($item['type'] == 'file') {
+                            $fileContents = file_get_contents($item['download_url']);
+                            $path = dirname(__FILE__) . '/' . $item['path'];
+                            if (!file_exists((dirname($path)))) {
+                                mkdir(dirname($path), 0777, true);
+                            }
+                            file_put_contents($path, $fileContents);
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                             echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                             // Checks if the fetched item is of type 'dir'
