@@ -963,9 +963,12 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
-	
+
+  var allApara = {}; // To contain all apara
+
   var para="";
 	for (var key in apara) {
+		allApara[key] = apara[key]; // Add apara to array
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
 			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
@@ -1276,6 +1279,16 @@ function AJAXService(opt,apara,kind)
 			// }
 		});
 	}
+
+	// Logging solution
+	const loggingData = new Object();
+	loggingData.opt = opt;
+	loggingData.apara = allApara;
+	loggingData.kind = kind;
+	loggingData.apara_type = typeof(apara[0]);
+
+	const logginDataJSON = JSON.stringify(loggingData);
+	console.log(logginDataJSON);
 }
 
 function newSubmission(){
