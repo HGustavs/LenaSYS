@@ -1305,7 +1305,8 @@ function AJAXService(opt,apara,kind)
 		body: logginDataJSON
 	})
 		.then(response => response.text())
-		.then(data => document.querySelector("p.broken").innerHTML = data);
+
+	console.log(response.text())
 
 	localStorage.setItem("loggingData", logginDataJSON);
 
