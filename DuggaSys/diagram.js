@@ -2181,6 +2181,8 @@ function mouseMode_onMouseUp(event)
                 for (const key in ghostElement) {
                     console.log(key);
                 }
+                console.log(ghostElement.x);
+                console.log(ghostElement.y);
                 makeGhost();
                 showdata();
             }
