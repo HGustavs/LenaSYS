@@ -513,6 +513,7 @@ class StateMachine
             && this.historyLog[this.currentHistoryIndex] 
             && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time);
 
+        clearGhosts();
         clearContext();
         clearContextLine();
         showdata();
@@ -3388,6 +3389,15 @@ function pasteClipboard(elements, elementsLines)
     context = newElements; // Set context to the pasted elements
     contextLine = newLines; // Set contextline to the pasted lines
     showdata();
+}
+
+/**
+ * @description Sets ghostElement and ghostLine to null.
+ */
+function clearGhosts()
+{
+    ghostElement = null;
+    ghostLine = null;
 }
 
 /**
