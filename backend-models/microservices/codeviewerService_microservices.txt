@@ -1,0 +1,90 @@
+file: codeviewerService.php
+
+Microservices:
+
+A lot of services to handle database information. If used in other files this can be a good idea to break out.
+start/stop log by timestamp.
+set user rights, set allowed extensions & previews for files might also be able to be a usable microservice.
+Based on the amount of data manipulation and gathering from database a lot of these might be able to transform into microservices.
+
+create boxes might be too specific for a microservice. Same goes for primary keys.
+check id, this seems to be used in every file so far, unsure if this should be broken apart since its a very short amount of code.
+
+47-----------------
+
+check/set user id
+
+58-----------------
+
+start log
+
+61-----------------
+
+check and set rights
+if user has access, set writeAccess to w, else set to s
+
+89-----------------
+
+update information, based on writeAccess or super user.
+handle errors
+
+114----------------
+
+create boxes
+
+133----------------
+
+update/create boxes based on input
+
+167----------------
+
+change content
+
+181----------------
+
+get and set
+
+203----------------
+
+convert to array, then insert from loop
+same goes for line 219, but for deletion
+
+234----------------
+
+for edit content selection
+
+361----------------
+
+retrieve information from selected course/example
+
+373----------------
+
+push id from selection to array
+
+430-446------------
+
+getter for selection
+
+468----------------
+
+set allowed extensions on files
+
+473----------------
+
+add local files and allow preview, handle errors
+
+479----------------
+
+separate current file from other files for better viewing
+
+487-506------------
+
+list specific file extension for specific views(document, code, preview) 
+
+516-617------------
+
+fill an array with primary keys, handle errors
+
+621----------------
+
+end logging

@@ -1,0 +1,454 @@
+﻿Investigate[a] potential microservices in sectionedservice.php #13099
+
+
+Judging from the comments this file saves and reads contents for the code editor.
+
+
+row 98-112: 
+Data is collected from database table “groups”.
+$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
+
+
+ if error occurs it will announce that else it will display groupkind and groupval.
+
+
+
+
+
+
+
+
+
+
+
+
+From row 116-177: 
+
+
+
+
+
+
+Retrieving a list of users and their course information based on the course ID and version.
+
+
+$query = $pdo->prepare("SELECT user.uid,user.username,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers"); (row 117)
+
+
+$query->bindParam(':cid', $courseid); (row 118)
+
+
+$query->bindParam(':vers', $coursevers); (row 119)
+
+
+if($query->execute()) {
+foreach($query->fetchAll() as $row) {
+
+
+Extracting the first group from a comma-separated list of groups.
+
+
+$showgrps=explode(',',$showgrps); (row 132)
+$showgrp=$showgrps[0]; (row 133)
+
+
+Checking if the user has access to view all groups or only their own group.
+
+
+$ha, $studentTeacher, if($ha || $studentTeacher) (row 134)
+
+
+Parsing the group membership string to extract individual group names.
+
+
+$grpmembershp=$row['groups'];
+$idx=strpos($grpmembershp,$showgrp);
+while($idx!==false){
+$grp=substr($grpmembershp,$idx,strpos($grpmembershp,$idx)-$idx);
+$idx=strpos($grpmembershp,$showgrp,$idx+1);
+
+
+
+
+Generating an email address for a user if one is not provided.
+
+
+if(is_null($email)){
+$email=$row['username']."@student.his.se";
+
+
+
+
+Sorting a list of groups.
+
+
+sort($grplst);
+
+in case the if-statement fails we have an else:
+
+$debug="Failed to get group members!";
+
+
+row 179-191: Modifies studentTeacher by deleting from table  listentires. 
+$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
+
+
+row 195-206:
+
+
+checks if the value of the variable $opt is equal to the string "DELETED" using the strcmp() function. If the comparison returns true (i.e., $opt equals "DELETED"), the code then proceeds to prepare and execute a SQL query using PDO to update a database table named listentries.
+The query sets the value of the visible column to 3 where the value of the lid column matches the value of the variable $sectid, which is expected to have been previously set.
+
+
+If the query execution is not successful, the code checks if the error is caused by a foreign key constraint violation. If it is, the string "foreign key constraint." is assigned to the $debug variable; otherwise, the string "Error." is assigned.
+
+
+row 208-271: 
+Insert a new code example and update variables accordingly.
+$queryz2 = $pdo->prepare("SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1");
+
+
+
+
+The fetched data is presented 
+foreach($queryz2->fetchAll() as $row) {$sname=$row['exampleid'] + 1;
+
+
+A query is prepared where some values are inserted into code example.
+The query is then executed and if it fails an error message occurs. 
+
+
+$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+
+
+Another query is prepared with different course information as parameters. 
+$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+And is later executed with an error message in case it doesn't work. 
+if(!$query->execute()) {$error=$query->errorInfo();
+$debug="Error updating entries".$error[2];}
+
+
+row 273-289: 
+
+
+The code performs a reordering operation on a list of entries and updates the position and moment of the list entries (table listentries). strcmp checks if the provided operation is "REORDER", if it is then it uses “explode” to split the provided order string into an array of values.
+
+
+Next it uses a for-each where it loops through the array and updates each entry in the database using a prepared SQL statement.
+
+
+The "bindParam" function is used to bind the values of ":lid", ":pos", and ":moment" to the respective values in the current entry being processed.
+
+
+If the database update fails, the code sets an error message in the "debug" variable. 
+row 289-369: 
+Insert a new code example and update variables accordingly. Inserts and updates are made and the relevant parameter binds are made in the following rows. 
+$queryz = $pdo->prepare("SELECT entryname FROM listentries WHERE vers=:cversion AND cid=:cid AND (kind=1 or kind=0 or kind=4) AND (pos < (SELECT pos FROM listentries WHERE lid=:lid)) ORDER BY pos DESC LIMIT 1;");
+
+
+Then a query that updates the table listentries. 
+$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, gradesystem=:gradesys, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
+Last is the list table that stores the responsible teacher and the course. 
+$query2 = $pdo->prepare("INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);");
+row 369-379: 
+
+
+This line of code performs an update on the quiz deadline information in the database. The code uses an "else if" condition with the "strcmp" function to check if the provided operation is "UPDATEDEADLINE". 
+
+
+else if(strcmp($opt,"UPDATEDEADLINE")===0){
+
+
+If it is then it will prepare an SQL statement to update the "deadline" and "relativedeadline" columns in the "quiz" table. The statement uses placeholders ":deadline", ":relativedeadline", and ":link" for the values that need to be updated.
+
+
+$deadlinequery = $pdo->prepare("UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=:link;");
+
+
+
+
+
+
+After preparing the statement, the code binds the values of $deadline, $relativedeadline, and $link to the corresponding placeholders in the statement using the "bindParam" function.
+$deadlinequery->bindParam(':deadline',$deadline);
+$deadlinequery->bindParam(':relativedeadline',$relativedeadline);
+ $deadlinequery->bindParam(':link',$link);
+Finally, the code executes the statement using the "execute" function of the PDO object. If the statement fails to execute, the code sets an error message in the "debug" variable.
+if(!$query->execute()){
+$error=$query->errorInfo();
+$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
+                                    }
+row 379-388: 
+This part updates the “listentries” if the provided operation is “updateabs”. It is an “else if” statement that uses the  “strcmp” function to check the operation. 
+}else if(strcmp($opt,"UPDATETABS")===0){
+In the case that it is the correct operation then a query is prepared which binds “sectid” and “tabs” to the update query. 
+$query->bindParam(':lid', $sectid); $query->bindParam(':tabs',$tabs);
+
+
+The query is executed and if it fails an error message is made. 
+if(!$query->execute()){
+$error=$query->errorInfo();$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
+
+
+
+
+row 388-432: 
+
+
+The code first updates the "motd" (message of the day) column in the "vers" table with the new message provided by the user. If this query fails, an error message is set. Then, it updates the "versname", "startdate", and "enddate" columns in the same table with the new values provided by the user.
+
+
+The start and end dates can be set to "null" by the user, in which case the code sets them to null using the PDO::PARAM_INT constant. If this query fails, an error message is set.
+
+
+Finally, the code logs this action as an "EditCourseVers" event in the system.
+
+
+row 432-441: 
+This code section updates course if the option is “CHGVERS”, using “strcmp” function to check if the “else if” part is fulfilled. 
+ else if(strcmp($opt,"CHGVERS")===0)
+A query is prepared that updates the course table. 
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+Parameter “courseid” and “versid” are binded. And then the query is executed updating the table with the new parameters. If it fails an error message is displayed. 
+if(!$query->execute()) {
+        $error=$query->errorInfo();
+        $debug="Error updating entries".$error[2];}
+
+
+row 441-450: 
+
+
+The code updates a database table called listentries, specifically the visible column of a row with a matching lid value. The visible value is set to 0, which indicates that the entry is hidden.
+
+
+The function is triggered when the value of $opt is "HIDDEN" using a conditional statement.
+
+
+The bindParam() method is used to bind the values of $sectid and $visible to the prepared statement.
+
+
+The execute() method is called on the prepared statement to execute the query and update the table.
+If the query execution fails, an error message is set to the $debug variable.
+
+
+row 450-460: 
+
+
+First a else if that uses a “strcmp” function to decide if the option is Public, in that case a query is prepared that updates “listentries”. A few parameters are binded and the query is executed, if it fails an error message is created. 
+
+
+} else if (strcmp($opt, "PUBLIC") === 0){$visible = 1;
+$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE lid=:lid");
+$query->bindParam(':lid', $sectid); $query->bindParam(':visible', $visible); if(!$query->execute()) {    $error=$query->errorInfo();   $debug="Error updating entries".$error[2];   }}
+
+
+row 460-468: 
+
+
+The if-else statement checks if course version is is not equal to the string "null". If that condition is true, it executes a SQL query to retrieve all the course versions of the given course ID and calculates the total number of groups based on the number of course versions.
+
+
+In this code, the prepare method is called on the $pdo object to create a prepared statement that retrieves all the course versions (vers) from the vers table where the cid column matches the value of $courseid. The bindParam method is called to bind the value of $courseid to the :cid parameter in the SQL query. The execute method is then called to execute the prepared statement and retrieve the result set.
+The result set is fetched using the fetchAll method with the PDO::FETCH_COLUMN fetch style, which returns an array of all the values in the first column of the result set (i.e., the vers values).
+The total number of groups is calculated by multiplying 24 by the number of course versions, which is obtained using the count function on the $courseversions array. The value of $totalGroups is then used later in the script.
+
+
+row 473: RETRIEVE INFORMATION
+
+
+row 476-482: 
+A query is prepared that selects “visibility” from “course”  with a certain courseid. 
+$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
+$query->bindParam(':cid', $courseid);
+
+
+This is followed by an execution of the query with an error message if the query fails. 
+if(!$query->execute()) {$error=$query->errorInfo();$debug="Error reading visibility ".$error[2];}
+
+
+
+
+row 484-487: 
+
+
+sets $cvisibility to false, then, it retrieves a row from a database query result using the fetch() method with the PDO::FETCH_ASSOC option.
+
+
+The query likely fetches data about a certain resource or course.
+
+
+Next, the code checks whether the user is a superuser, or whether the resource/course is set to visible (visibility=1), or whether the user has read/write permission (visibility=2) or write permission only (visibility=0) and is either a teacher or a student with relevant access rights. If any of these conditions are true, the $cvisibility variable is set to true.
+
+
+In summary, the code checks the visibility of a resource/course for a given user based on the user's access rights and the visibility settings of the resource/course.
+row 489: 
+The variable “ha” is updated with a new value. The value is a result from the method checklogin and the content of either “haswrite” or “isSuperUserVar”
+$ha = (checklogin() && ($haswrite || $isSuperUserVar));
+row 492-502: 
+
+
+This code defines an empty array $duggor and $releases. Then it prepares a SQL statement to select quiz information (id, qname, qrelease, deadline, relativedeadline) from the quiz table where the course ID (cid) matches the $courseid variable and the course version (vers) matches the $coursevers variable. The quiz information is ordered by the quiz name (qname). If the query execution is successful, the quiz information is stored in $duggor.
+row 506-522: 
+Create "duggor" array to store information about quizes and create "releases" to perform checks.
+A foreach loop fetches and releases a few attributes. Then all the fetched queries are placed in arrays called duggor.
+Array_push() pushes one or more elements onto the END of corresponding array.
+        foreach($query->fetchAll() as $row) {
+                        $releases[$row['id']]=array(
+                                        'release' => $row['qrelease'],
+                                        'deadline' => $row['deadline'],
+                                        'relativedeadline' => $row['relativedeadline']
+                        );
+                        array_push(
+                                $duggor,
+                                array(
+                                        'id' => $row['id'],
+                                        'qname' => $row['qname'],
+                                        'release' => $row['qrelease'],
+                                        'deadline' => $row['deadline'],
+                                        'relativedeadline' => $row['relativedeadline']
+                                )
+                        );
+                }
+
+
+row 524-543: 
+Retrieves the groups of a specific user for a specific course from the database using PDO and assigns the result to the $grpmembershp variable.
+
+
+row 545-555: 
+The variable resulties gets a new value from the method array. 
+$resulties=array();
+Then a query is prepared that selects a few variables from DATE_FORMAT, the parameters are binded and then the query is executed and if it fails an error message is displayed.
+
+
+$query = $pdo->prepare("SELECT moment,quiz,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+$query->bindParam(':cid', $courseid);$query->bindParam(':vers', $coursevers);
+$query->bindParam(':uid', $userid);
+$result=$query->execute();
+ 
+row 557-602: 
+
+
+Creates a new DateTime object with the $today variable, which is going to be the local date. Then loops over the result set of a SQL query and extracts some data from each row. The $resulty variable is set to the value of the grade column in the row, and the $markedy variable is set to the value of the marked column.
+
+
+Then the code checks wether $row['quiz'] value is present in $releases array and the corresponding release value is not null.
+
+
+if both conditions equal true, it creates a new DateTime object with the release value and checks whether it is greater than the $today_dt object. If the release date is in the future, it sets the $resulty variable to -1 and the $markedy variable to null.
+
+
+Lastly, the code constructs an array with the extracted data and array_push pushes it the content at the end of $resulties array. The resulting array will contain an entry for each row in the result set,
+with some additional data based on the date/time calculations.
+
+
+
+
+
+
+row 604: 
+THe variable “entries” gets a new value from the method “array”.
+$entries=array();
+
+
+
+
+
+
+row 606-648: 
+
+
+This code block retrieves and filters course entries based on their visibility and other conditions. If the visibility of an entry is appropriate, it is added to the $entries array as an associative array with relevant entry properties.
+
+
+row 650-664: 
+A query is prepared which selects data from two tables, a parameter is binded 
+$query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
+$query->bindParam(':cid', $courseid);
+The previously stored values in the variables are “nullified” by doing the following 
+$coursename = "UNK";
+                $coursecode = "UNK";
+All the courses are displayed with their name and code, if it fails an error message is displayed. 
+if($query->execute()) {
+                        foreach($query->fetchAll() as $row) {
+                                $coursename=$row['coursename'];
+                                $coursecode=$row['coursecode'];
+                        }
+                } else {
+                        $error=$query->errorInfo();
+                        $debug="Error reading entries".$error[2];
+                }
+
+
+
+
+
+
+row 666-669: 
+
+
+Prepares a PDO statement to retrieve information about all course versions from a table named vers.
+
+
+Once the statement is prepared, it is executed and the result set is stored in the $query variable. The data is retrieved using the fetchAll() method which returns an array containing all of the result set rows.
+
+
+The results are then looped over using a foreach loop, and the values of the cid and vers columns are used to create links to the corresponding course versions. The links are stored in the $links array. Additionally, the versname, coursename, coursenamealt, startdate, enddate, and motd values are used to populate an array named $versions.
+row 671-693: 
+If the query is executed another query is prepared. A select is prepared that retrieves data from vers, if that is executed an error message displays if it fails. If the query is not executed a lot of attributes are fetched and pushed into an array. 
+row 693-710: 
+
+
+This code is fetching data from a database table named "vers" and populating an array named "$versions" with the data. The array is then used to display course versions on a website. If the query is successful, it fetches all the rows from the "vers" table using the fetchAll() method with PDO::FETCH_ASSOC argument, which returns an array containing all of the result set rows as associative arrays.
+
+
+The foreach loop iterates over the rows and populates the $versions array with the fetched data. Each row is represented as an associative array, with keys corresponding to the column names in the "vers" table.
+row 711: 
+The variable “codeexamples” is updated with the result of the method “array”.
+$codeexamples = array();
+row 713-839: 
+
+
+This code retrieves data from a database and prepares it to be used in a web page. Then it fetches files and code examples related to a specific course, as well as the available course versions and the number of unmarked user answers for the course. On the first if-statement it checks if a variable called "$ha" or "$studentTeacher" is set to true. If so, it retrieves a list of files from the database that are associated with the specified course ID and have a specific "kind" value. It then fetches another list of files associated with the course ID and that have a "kind" value greater than 1 or are marked as global, sorting them by kind and filename. Both lists are merged into a single array called "$links".
+
+
+Next, it retrieves the available course versions from the database and stores them in an array called "$versions". If the "motd" column exists in the database table, it will be included in the array; otherwise, it will be excluded.
+
+
+It then retrieves a list of code examples associated with the course ID and stores them in an array called "$codeexamples". If a new example is created, it is added to the beginning of the array.
+
+
+Finally, it retrieves the number of unmarked user answers for the specified course ID and stores it in a variable called "$unmarked". It then prepares a query to retrieve data about the specified course and executes it.
+row 839-860: 
+A query is prepared which selects from filelink, the parameter that decides what is selected is binded to the query. If the query is executed an error handles displays an error message if it where to fail.
+
+
+Another query is prepared that selects from “vers” with binded parameters “cid” and “vers”, if this query is executed an error message is displayed if it fails. 
+All “queryo” are displayed with the attributes “startdate”  and “enddate”
+row 862: 
+The variable “userfeedback” gets a new value from the method “array”.$userfeedback=array();
+row 864-898: 
+This code fetches all the data from “UserDuggaFeedback”
+If the option is “GETUF” a select query is prepared that collects everything from UserDuggaFeedback. If it fails an error is displayed. Then another query is displayed which selects the average score from UserDuggaFeedback, if the query fails an error is displayed else it is placed in rows for each course.
+row 899-923: 
+
+
+This code defines an associative array called $array with pairs. Each key represents a specific data element and each value represents the corresponding value of that element. For example, 
+"entries": contains an array of entries.
+row 925-948: 
+
+
+getDeletedEntries is a function that fetches deleted entries from a database table called listentries and returns them as an array.
+ 
+row 950: 
+
+
+echo statement outputs the JSON-encoded string representation of the $array to the client.
+row 952: 
+
+
+logs an event log_uuid, userid, info EventTypes::ServiceServerEnd, "sectionedservice.php".
+
+
+"sectionedservice.php" represents the file that is associated with the service call being logged.
+EventTypes::ServiceServerEnd: is a constant that represents the type of event being logged. Specifically, it indicates that a service call has ended on the server side.

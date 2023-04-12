@@ -1,0 +1,53 @@
+showDuggaservice_microservices
+
+
+Row 17 : A new form of login session, does not follow earlier style of issets that we seen in all other php files for login.
+´´ 
+if(isset($_SESSION['uid'])){
+	$userid=$_SESSION['uid'];
+	$loginname=$_SESSION['loginname'];
+	$lastname=$_SESSION['lastname'];
+	$firstname=$_SESSION['firstname'];
+}else{
+	$userid="student";		
+} 
+´´
+
+Row 88 : if a couple of variables are not UNK, show dugga, otherwise, an error message.
+Small functionality, but effective.
+
+
+Row 100 : Fetches "Active users" from groupdugga, prepares and fetches hash and token, my guess is for the receit you get when saving a dugga.
+Small if, but effective. Own micro
+Name : giveReceit.
+
+
+Row 131 : Isset functionality on many variables, isset checks if var. are set and not NULL and then returns true if that's the case.
+
+
+Row 156-233 : Checks if zip files has been submitted, how many files there is, a getNameIndex runs, guess for the file name, if the size of the files are 0, force data type to be an object. Depending on file type, it reads differently for the teacher file/url.
+Array with variables and present them as rows.
+Bigger "funktion", make own micro.
+Name : fileReader?
+
+Row 259 : Checks if user is student, then fetches data about how many times the student submitted dugga and its grade. Gives Hash.
+Name : duggaAttempt
+
+Row 276 : If you have a grade, you cant redo the dugga.
+
+
+Row 280-310 : New submission from student, numb. of attempts +1.
+Error message for save hash, inserts the submission data to db.
+Name : newSubmission
+
+Row 318-451 : If teacher, gets the new dugga information that the student left in the submission. Fetches the newest version of the submissions if there's more than one.
+Several if and else statements for different situations that could occur.
+Quite big "function", i would say make this micro.
+
+Name : teacherGrading / allmightyView
+
+
+
+ 
+
+

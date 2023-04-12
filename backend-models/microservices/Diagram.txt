@@ -1,0 +1,27 @@
+1-28 initiates variables and start program. diagramConnect.php
+
+33-95 Loops through responses, 95 closes pdo to prevent crash, could call the ifs from other files and so even less code is needed to be fetched in DiagramMain. Could be called diagramFetch.php
+
+40-61, 85-91 Assigns values if parameter exist, set the value as unk if it dosn't exist, and has function that removes escape string characters. diagramCheckParameter.php
+
+64-72 Fetch file contents, if file does not exist in the directory it will go to next function. diagramFetchFile.php
+
+74-82 Fetch file contents but from otherplace, not sure if they these should be same or split in to two diffrent microservices. if split should be named diagramFetchgFile.php
+
+98-106 Loads json file content after itterating query result, these goes into $fileContent variable. diagramLoadJsonFile.php
+
+110-142 should load data from dagramSave.json, don't think this is a code that should be tampered with and split up, the maker of the code dosnt even understand why it works. consist of try and catch, and function to loop through directory to fetch all files within timestamp diagramLoadSavedFile.php
+
+row 176 - 188 Fetches instructions diagramGetInstructions.js
+row 189 - 197 Fetches arrays diagramGetVariantParam.js
+Are these js ever called? Diagram.js exist, why are these here to begin with
+
+149 - 647 (minus 176 - 197) is raw html stuff. Diagram.html
+
+650 - 667 specifys keys. diagramKeys.php
+
+
+	
+	
+	
+	
