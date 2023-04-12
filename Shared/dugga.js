@@ -2802,3 +2802,31 @@ $(document).on('keydown', function(e) {
 		}
 	}
 });
+
+async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
+
+	const logString = [opt, apara, kind];
+
+	try {
+		//const response = await fetch("../Shared/dugga.js", {
+		fetch("../Shared/dugga.js", {
+			method: "POST", // or 'PUT'
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: logJSON = JSON.stringify(logString)
+		});
+
+		//const result = await response.json();
+		//console.log("Success:", result);
+	} catch (error) {
+		console.error("Error:", error);
+	}
+
+	//$ajax({
+	//	dataType: "json",
+	//	url: "../Shared/log.php",
+	//	data: {}
+	//});
+
+}
