@@ -267,7 +267,7 @@
     transition: 0.1s;
     color: #FFF;
 }
-
+/* Diagram Toolbar */
 #diagram-toolbar {
     position: absolute;
     width: 50px;
@@ -275,6 +275,11 @@
     border-right: solid black 1px;
     background-color: var(--color-primary);
     z-index: 1000;
+    overflow: auto;
+    overflow-x: hidden;
+    direction: rtl;
+    scrollbar-width: thin; 
+    scrollbar-color: auto;
 }
 #diagram-toolbar>fieldset {
     padding: 2px;
@@ -283,6 +288,19 @@
 #diagram-toolbar>fieldset>legend {
     color: var(--color-text-header);
     font-size: 0.6em;
+}
+/* Diagram Toolbar Scrollbar */
+#diagram-toolbar::-webkit-scrollbar {
+    width: 9px;
+}
+#diagram-toolbar::-webkit-scrollbar-track {
+    background: #4a3859;
+}
+#diagram-toolbar::-webkit-scrollbar-thumb {
+    background: #908599;
+}
+#diagram-toolbar::-webkit-scrollbar-thumb:hover {
+    background: #7d7287;
 }
 /* Diagram Messages */
 #diagram-message {
