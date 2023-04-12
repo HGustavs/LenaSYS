@@ -1290,7 +1290,9 @@ function AJAXService(opt,apara,kind)
 
 	const logginDataJSON = JSON.stringify(loggingData);
 
-	fetch('logging.php', {
+	let loggingPath = path.join(__dirname, '../Shared/logging.php');
+
+	fetch(loggingPath, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
