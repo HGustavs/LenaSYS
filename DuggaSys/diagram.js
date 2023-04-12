@@ -11400,8 +11400,8 @@ function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
    let allTexts = document.getElementsByClassName('text');
-    //Repeats the process with element ie - element.
-    let allIEElement = document.getElementsByClassName('element ie - element');
+    //Repeats the process with element ie-element.
+    let allIEElement = document.getElementsByClassName('element ie-element');
     if (localStorage.getItem('diagramTheme') != null) {
         //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
       let cssUrl = localStorage.getItem('diagramTheme');
@@ -11421,7 +11421,7 @@ function toggleBorderOfElements() {
                     text.setAttribute('stroke', strokeColor);
                 }
             }
-            //iterate through all the elements that have the class 'element ie - element'.
+            //iterate through all the elements that have the class 'element ie-element'.
             for (let i = 0; i < allIEElement.length; i++) {
                 let IEElement = allIEElement[i];
                 //assign their current stroke color to a variable.
