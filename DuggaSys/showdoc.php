@@ -1,134 +1,130 @@
 <?php
-		ini_set("auto_detect_line_endings", true);
-		include_once "../Shared/basic.php";
-		include_once "../Shared/sessions.php";
+	ini_set("auto_detect_line_endings", true);
+	include_once "../Shared/basic.php";
+	include_once "../Shared/sessions.php";
 		
-		ob_start();
-		date_default_timezone_set("Europe/Stockholm");
+	ob_start();
+	date_default_timezone_set("Europe/Stockholm");
 		
-		// Include basic application services!
-		session_start();
-		$readfile = false;
-		// Connect to database and start session
-		pdoConnect();
-		$cid=getOPG('courseid');
-		$fid=getOPG('fid');
-		$fname=getOPG('fname');
-		$coursevers=getOPG('coursevers');
-		$preview = getOPG('read');
-		$submission = getOPG('sub');
+	// Include basic application services!
+	session_start();
+	$readfile = false;
+	// Connect to database and start session
+	pdoConnect();
+	$cid=getOPG('courseid');
+	$fid=getOPG('fid');
+	$fname=getOPG('fname');
+	$coursevers=getOPG('coursevers');
+	$preview = getOPG('read');
+	$submission = getOPG('sub');
 
-		$hdrs=getOPG('headers');
+	$hdrs=getOPG('headers');
 
-		$file_extension="UNK";
-		$tableAlignmentConf = [];
-		$openedSublists = [];
+	$file_extension="UNK";
+	$tableAlignmentConf = [];
+	$openedSublists = [];
 
-		function parseMarkdown($inString)
-		{	
-				$inString=preg_replace("/\</", "&lt;",$inString);
-				$inString=preg_replace("/\>/", "&gt;",$inString);
+	/*function parseMarkdown($inString)
+	{	
+		$inString=preg_replace("/\</", "&lt;",$inString);
+		$inString=preg_replace("/\>/", "&gt;",$inString);
 
-				//converts html code for plus sign into plus
-				$inString=preg_replace("/\&#43;/", "+",$inString);
+		//converts html code for plus sign into plus
+		$inString=preg_replace("/\&#43;/", "+",$inString);
 				
-				$inString=preg_replace("/^\`{3}(\r\n|\n|\r)/m", "```@@@",$inString);
-				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
-				$inString=preg_replace("/^\=\|\=(\r\n|\n|\r)/m", "=|=&&&",$inString);
+		$inString=preg_replace("/^\`{3}(\r\n|\n|\r)/m", "```@@@",$inString);
+		$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
+		$inString=preg_replace("/^\=\|\=(\r\n|\n|\r)/m", "=|=&&&",$inString);
+		
+		$str="";
+		$codearray=preg_split("/\`{3}|~{3}|\=\|\=/", $inString);
 				
-				$str="";
-
-				$codearray=preg_split("/\`{3}|~{3}|\=\|\=/", $inString);
-				
+		$specialBlockStart=true;
+		foreach ($codearray as $workstr) {
+			if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
+				$specialBlockStart=false;
+				$workstr="<pre><code>".substr($workstr,3)."</code></pre>";
+			} else if (substr($workstr,0,3)==="&&&" && $specialBlockStart===true){
+				$specialBlockStart=false;
+				$workstr="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
+			} else if ($workstr !== "") {
+				$workstr=parseLineByLine(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
 				$specialBlockStart=true;
-				foreach ($codearray as $workstr) {
-						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
-								$specialBlockStart=false;
-								$workstr="<pre><code>".substr($workstr,3)."</code></pre>";
-						} else if (substr($workstr,0,3)==="&&&" && $specialBlockStart===true){
-								$specialBlockStart=false;
-								$workstr="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
-						} else if ($workstr !== "") {
-								$workstr=parseLineByLine(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
-								$specialBlockStart=true;
-						}
-						$str.=$workstr;
-						
-				}
-
-				return "<div id='markdown'>".$str."</div>";
-		}
-
-		function parseLineByLine($inString) {
-			$str = $inString;	
-			$markdown = "";
-
-			$currentLineFeed = strpos($str, PHP_EOL);
-			$currentLine = "";
-			$prevLine = "";
-			$remainingLines = "";
-			$nextLine = "";
-
-			while($currentLineFeed !== false) { // EOF
-				$prevLine = $currentLine;
-				$currentLine = substr($str, 0, $currentLineFeed);
-				$remainingLines = substr($str, $currentLineFeed + 1, strlen($str));
-
-				$nextLine = substr($remainingLines, 0, strpos($remainingLines, PHP_EOL));
-
-
-				$markdown = identifier($prevLine, $currentLine, $markdown, $nextLine);
-
-				// line done parsing. change start position to next line
-		        $str = $remainingLines;
-		        $currentLineFeed = strpos($str, PHP_EOL);
-
 			}
-
-			return $markdown;
+			$str.=$workstr;
 		}
 
-		// identify what to parse and parse it
-		function identifier($prevLine, $currentLine, $markdown, $nextLine) {
-        // handle ordered lists
-        if(isOrderdList($currentLine) || isUnorderdList($currentLine)) {
-            $markdown .= handleLists($currentLine, $prevLine, $nextLine);
-        }else if(isTable($currentLine)){
-            // handle tables
-            $markdown .= handleTable($currentLine, $prevLine, $nextLine);
-        }else{
-            // If its ordinary text then show it directly
-            $newestLine=markdownBlock($currentLine);
-            if(!preg_match('/\<\/h/', $newestLine)){
-                $newestLine.= "<br>";
-            }
-            $markdown.=$newestLine;
-        }
+		return "<div id='markdown'>".$str."</div>";
+	}*/
 
-        // close table
-        if(!isTable($currentLine) && !isTable($nextLine)){
-            $markdown .= "</tbody></table>";
-        }
-        return $markdown;
+	/*function parseLineByLine($inString) {
+		$str = $inString;	
+		$markdown = "";
+
+		$currentLineFeed = strpos($str, PHP_EOL);
+		$currentLine = "";
+		$prevLine = "";
+		$remainingLines = "";
+		$nextLine = "";
+
+		while($currentLineFeed !== false) { // EOF
+			$prevLine = $currentLine;
+			$currentLine = substr($str, 0, $currentLineFeed);
+			$remainingLines = substr($str, $currentLineFeed + 1, strlen($str));
+
+			$nextLine = substr($remainingLines, 0, strpos($remainingLines, PHP_EOL));
+
+
+			$markdown = identifier($prevLine, $currentLine, $markdown, $nextLine);
+
+			// line done parsing. change start position to next line
+			$str = $remainingLines;
+			$currentLineFeed = strpos($str, PHP_EOL);
 		}
+		return $markdown;
+	}*/
+
+	// identify what to parse and parse it
+	function identifier($prevLine, $currentLine, $markdown, $nextLine) {
+		// handle ordered lists
+		if(isOrderdList($currentLine) || isUnorderdList($currentLine)) {
+			$markdown .= handleLists($currentLine, $prevLine, $nextLine);
+		}else if(isTable($currentLine)){
+			// handle tables
+			$markdown .= handleTable($currentLine, $prevLine, $nextLine);
+		}else{
+			// If its ordinary text then show it directly
+			$newestLine=markdownBlock($currentLine);
+			if(!preg_match('/\<\/h/', $newestLine)){
+				$newestLine.= "<br>";
+			}
+			$markdown.=$newestLine;
+		}
+
+		// close table
+		if(!isTable($currentLine) && !isTable($nextLine)){
+			$markdown .= "</tbody></table>";
+		}
+		return $markdown;
+	}
 
     // Check if its an ordered list
-		function isOrderdList($item) {
-  			// return 1 if ordered list
-        return preg_match('/^\s*\d\.\s.*$/', $item);
-		}
+	function isOrderdList($item) {
+		// return 1 if ordered list
+		return preg_match('/^\s*\d\.\s.*$/', $item);
+	}
 
-		// Check if its an unordered list
-		function isUnorderdList($item) {
-  			// return 1 if unordered list
-        return preg_match('/^\s*[\-\*\+]\s.*$/', $item);
-		}
+	// Check if its an unordered list
+	function isUnorderdList($item) {
+		// return 1 if unordered list
+		return preg_match('/^\s*[\-\*\+]\s.*$/', $item);
+	}
 
-		// Check if its a table
-		function isTable($item) {
-  		// return 1 if space followed by a pipe-character and have closing pipe-character
-        return preg_match('/^\s*\|\s*(.*)\|/', $item);
-		}
+	// Check if its a table
+	function isTable($item) {
+		// return 1 if space followed by a pipe-character and have closing pipe-character
+		return preg_match('/^\s*\|\s*(.*)\|/', $item);
+	}
 
     // The creation and destruction of lists
     function handleLists($currentLine, $prevLine, $nextLine) {
