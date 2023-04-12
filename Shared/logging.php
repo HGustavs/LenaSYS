@@ -1,13 +1,14 @@
 <?php
 $loggingDataJSON = file_get_contents("php://input"); // JSON string from dugga.js
 
-if(file_exists('log.json')){
+if(file_exists('logs/log.json')){
     $fileContent = file_get_contents('log.json');
     $fileArray = json_decode($fileContent);
     $fileArray[] = $loggingDataJSON;
-    if(file_put_contents('log.json', $fileArray)){
-        echo json_encode('Updated data in log file');
-    }
+    $fp = fopen('log.json', 'w');
+    fwrite($fp, $loggingDataJSON);
+    fclose($fp);
+    echo json_encode('Updated data in log file');
 }
 else{
     if(file_put_contents('log.json', $loggingDataJSON)){
@@ -16,7 +17,7 @@ else{
 }
 
 // Write latest log
-$fp = fopen('logging.json', 'w');
+$fp = fopen('logs/latestlog.json', 'w');
 fwrite($fp, $loggingDataJSON);
 fclose($fp);
 
