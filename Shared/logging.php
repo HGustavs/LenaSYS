@@ -2,7 +2,7 @@
 $loggingDataJSON = file_get_contents("php://input"); // JSON string from dugga.js
 
 if(file_exists('logs/log.json')){
-    $fileContent = file_get_contents('log.json');
+    $fileContent = file_get_contents('logs/log.json');
     $fileArray = json_decode($fileContent);
     $fileArray[] = $loggingDataJSON;
     $fp = fopen('logs/log.json', 'w');
