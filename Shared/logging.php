@@ -3,7 +3,8 @@ $loggingDataJSON = file_get_contents("php://input"); // JSON string from dugga.j
 
 if(file_exists('log.json')){
     $fileContent = file_get_contents('log.json');
-    $fileContent[] = $loggingDataJSON;
+    $fileArray = json_decode($fileContent);
+    $fileArray[] = $loggingDataJSON;
     if(file_put_contents('log.json', $fileArray)){
         echo json_encode('Updated data in log file');
     }
