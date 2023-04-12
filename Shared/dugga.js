@@ -2810,7 +2810,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
 	var  testString = "TEST";
 	try {
-		const response = await fetch(testString, {
+		const response = await fetch(./Shared/dugga.js, {
 			method: "POST", // or 'PUT'
 			headers: {
 				"Content-Type": "application/json",
