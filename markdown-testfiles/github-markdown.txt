@@ -1,0 +1,121 @@
+The following syntax is github markdown:
+
+
+# H1
+## H2
+### H3
+#### H4
+##### H5
+###### H6
+
+Alt-H1
+===
+
+Alt-H2
+---
+
+*** (should also make a horizontal line)
+
+**bold**
+__bold__
+
+*italic*
+_italic_
+
+~~strikethrough~~
+
+**bold and nested _italic_**
+
+***all bold and italic***
+
+<sub> subscript</sub>
+	
+<sup> superscript</sup>
+
+> quote
+
+`quote code on single row`
+
+```
+distinct block
+on 
+multiple
+rows
+```
+
+The background color is `#ffffff` for light mode and `#000000` for dark mode. (should contain a circle of the color)
+
+click [link](github.com)
+click [link](github.com "hoverable link")
+This site was built using [GitHub Pages](https://pages.github.com/).
+
+relative link (supports /  ./   ../ )
+[Contribution guidelines for this project](docs/CONTRIBUTING.md)
+
+![image](../Shared/icons/draganddrop.png "text upon hover")
+
+This code should display a different picture based on if user is in dark/light mode
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://user-	images.githubusercontent.com/25423296/163456776-7f95b81a-f1ed-45f7-	b7ab-8fa810d529fa.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://user-	images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-	ac17-42d089e3c3f8.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." 	src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-	ac17-42d089e3c3f8.png">
+</picture>
+
+- list
+* list
++ list
+
+1. ordered list
+2. ordered list
+3. ordered list
+..* unordered sub-list
+⋅⋅1 ordered sub-list
+⋅⋅⋅ properly intented paragraphs
+
+1. nested list
+   - second item
+     - third item
+
+(should change the number based on the spaces)
+1.   First list item
+     - First nested list item
+
+(should change as above)
+1.   First list item
+     - First nested list item
+       - Second nested list item
+
+(should also work with links to issues
+- [x] first task
+- [ ] second task
+- [ ] third task
+
+emojis?
+:+1:
+
+Here is a simple footnote[^1].
+
+A footnote can also have multiple lines[^2].
+
+[^1]: My reference.
+[^2]: To add line breaks within a footnote, prefix new lines with 2 spaces.
+  This is a second line.
+
+<!-- should not appear as this is a hidden comment -->
+
+should escape the formatting
+Let's rename \*our-new-project\* to \*our-old-project\*.
+
+| Tables        | Heading       | Heading|
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned |   test|
+| col 2 is      | centered      |   test|
+| col        1  |       test    |   test|
+
+
+<h1> test of html bold </h1>
+
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE
+" target="_blank"><img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
