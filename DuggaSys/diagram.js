@@ -11455,6 +11455,7 @@ function showdata()
     }
     container.innerHTML = str;
     updatepos(null, null);
+    setPos(data, data.x, data.y);
 
 }
 
