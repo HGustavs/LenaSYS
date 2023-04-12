@@ -2824,6 +2824,12 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 		console.error("Error:", error);
 	}
 
+	$ajax({
+		dataType: "json",
+		url: "../Shared/log.php",
+		data: {logJSONData()}
+	});
+
 }
 
 
