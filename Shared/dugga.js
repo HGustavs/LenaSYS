@@ -2805,9 +2805,23 @@ $(document).on('keydown', function(e) {
 	}
 });
 
+
 async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
-	console.log("TEST TES TEST");
+	try {
+		const response = await fetch("https://example.com/profile", {
+			method: "POST", // or 'PUT'
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+
+		const result = await response.json();
+		console.log("Success:", result);
+	} catch (error) {
+		console.error("Error:", error);
+	}
 	//var parameterString = [opt, apara, kind];
 	//TestJSON = JSON.stringify(parameterString);
 
