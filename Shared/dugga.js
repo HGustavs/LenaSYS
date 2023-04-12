@@ -2808,13 +2808,14 @@ $(document).on('keydown', function(e) {
 
 async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
+	var  testString = "TEST";
 	try {
-		const response = await fetch("https://example.com/profile", {
+		const response = await fetch(testString, {
 			method: "POST", // or 'PUT'
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify(testString),
 		});
 
 		const result = await response.json();
