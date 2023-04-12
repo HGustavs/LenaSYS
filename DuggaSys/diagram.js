@@ -2183,6 +2183,7 @@ function mouseMode_onMouseUp(event)
                 }
                 console.log(ghostElement.x);
                 console.log(ghostElement.y);
+                console.log(entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y));
                 makeGhost();
                 showdata();
             }
