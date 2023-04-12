@@ -11454,7 +11454,7 @@ function showdata()
         str += drawElement(ghostElement, true);
     }
 
-    entityIsOverlapping(data.id, data.y, data.y)
+    if(entityIsOverlapping(data.id, data.x, data.y)) return;
 
     container.innerHTML = str;
     updatepos(null, null);
