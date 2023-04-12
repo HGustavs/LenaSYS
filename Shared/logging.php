@@ -1,8 +1,8 @@
 <?php
 $loggingDataJSON = file_get_contents("php://input"); // JSON string from dugga.js
 
-$logFileName = "log.json"
-$latestLogFileName = "latestlog.json"
+$logFileName = "log.json";
+$latestLogFileName = "latestlog.json";
 
 if(file_exists(logFileName)){
     $fileContent = file_get_contents(logFileName);
