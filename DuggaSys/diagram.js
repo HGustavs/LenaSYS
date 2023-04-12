@@ -2927,9 +2927,6 @@ function constructElementOfType(type)
         for (const property in defaultElement) {
             newElement[property] = defaultElement[property];
         }
-        if (entityIsOverlapping(newElement.id, newElement.x, newElement.y)) {
-            console.log("test");
-        }
         return newElement;
     }
 
