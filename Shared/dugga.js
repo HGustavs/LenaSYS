@@ -1307,7 +1307,7 @@ function AJAXService(opt,apara,kind)
 
 	localStorage.setItem("loggingData", logginDataJSON);
 
-	console.log(logginDataJSON);
+	// console.log(logginDataJSON);
 }
 
 function newSubmission(){
