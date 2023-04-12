@@ -11399,7 +11399,9 @@ function updateCSSForAllElements()
 function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
-	let allTexts = document.getElementsByClassName('text');
+   let allTexts = document.getElementsByClassName('text');
+    //Repeats the process with element ie - element.
+    let allIEElement = document.getElementsByClassName('element ie - element');
     if (localStorage.getItem('diagramTheme') != null) {
         //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
       let cssUrl = localStorage.getItem('diagramTheme');
@@ -11417,6 +11419,18 @@ function toggleBorderOfElements() {
                 if (strokeColor == '#383737') {
                     strokeColor = '#ffffff';
                     text.setAttribute('stroke', strokeColor);
+                }
+            }
+            //iterate through all the elements that have the class 'element ie - element'.
+            for (let i = 0; i < allIEElement.length; i++) {
+                let IEElement = allIEElement[i];
+                //assign their current stroke color to a variable.
+                let strokeColor = IEElement.getAttribute('stroke');
+                //if the element has a stroke which has the color #383737: set it to white.
+                //this is because we dont want to affect the strokes that are null or other colors.
+                if (strokeColor == '#383737') {
+                    strokeColor = '#ffffff';
+                    IEElement.setAttribute('stroke', strokeColor);
                 }	
             }
         }
@@ -11425,6 +11439,14 @@ function toggleBorderOfElements() {
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
+                if (strokeColor == '#ffffff') {
+                    strokeColor = '#383737';
+                    text.setAttribute('stroke', strokeColor);
+                }
+            }
+             for (let i = 0; i < allIEElement.length; i++) {
+                let IEElement = allIEElement[i];
+                let strokeColor = IEElement.getAttribute('stroke');
                 if (strokeColor == '#ffffff') {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
