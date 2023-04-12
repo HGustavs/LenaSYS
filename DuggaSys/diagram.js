@@ -2177,7 +2177,7 @@ function mouseMode_onMouseUp(event)
 
             
             if (ghostElement && event.button == 0) {
-                console.log(ghostElement.id);
+                console.log(entityIsOverlapping(ghostElement.id, startX - event.clientX, startY - event.clientY));
                 addObjectToData(ghostElement);
                 makeGhost();
                 showdata();
