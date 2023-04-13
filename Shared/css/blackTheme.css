@@ -1100,7 +1100,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 /* Diagram line style */
 .diagram-umlicon-triangle {
-  fill: black;
+  fill: white;
   stroke: white;
 }
 
