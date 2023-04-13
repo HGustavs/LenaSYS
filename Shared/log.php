@@ -8,7 +8,7 @@
 </style>
     </head>
     <body>
-        <table border='1'>
+        
         <?php
 
             $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
@@ -22,7 +22,7 @@
             $dateTime = $arr['dateTime'];           
 
         
-            echo "<table>";
+            echo "<table style='width:100%'>";
                 echo "<tr>"
                     echo "<th>".$opt."</th>"
                 echo "</tr>";
@@ -30,21 +30,21 @@
 
 
 
-            echo "<table>";
-                echo "<td>".$opt;."</td>";
-                    echo"<tr>";
-                        foreach($apara as $value){
-                            echo "<td>".$value."</td>";
-                        }
-                    echo "</tr>";
+            // echo "<table>";
+            //     echo "<td>".$opt;."</td>";
+            //         echo"<tr>";
+            //             foreach($apara as $value){
+            //                 echo "<td>".$value."</td>";
+            //             }
+            //         echo "</tr>";
                     
-                    echo "<tr>";
-                    echo "<td>".$kind."</td>";
-                    echo "<td>".$apara_type."</td>";
-                    echo "<td>".$dateTime."</td>";
-                echo "</tr>";
-            echo "</table>";    
-            print_r($arr);
+            //         echo "<tr>";
+            //         echo "<td>".$kind."</td>";
+            //         echo "<td>".$apara_type."</td>";
+            //         echo "<td>".$dateTime."</td>";
+            //     echo "</tr>";
+            // echo "</table>";    
+            // print_r($arr);
 
 
 
