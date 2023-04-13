@@ -24,6 +24,7 @@
             $logContet['apara_type'][$arr['apara_type']];
             $logContet['dateTime'][$arr['dateTime']];
 
+            print_r($logContet);
 
             foreach($logContet as $row){
                 foreach($logContet as $colum){
