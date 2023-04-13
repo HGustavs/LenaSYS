@@ -35,6 +35,7 @@ $enddate=getOP('enddate');
 $makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
+$coursegiturl=getOP('coursegiturl'); // for github url
 $LastCourseCreated=array();
 
 if(isset($_SESSION['uid'])){
@@ -76,11 +77,12 @@ if(checklogin()){
 		if(strcmp($opt,"DEL")===0){
 
 		}else if(strcmp($opt,"NEW")===0){
-			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
+			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :coursegiturl)");
 
 			$query->bindParam(':usrid', $userid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':coursename', $coursename);
+			$query->bindParam(':coursegiturl', $coursegiturl); // for github url
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
