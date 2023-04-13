@@ -24,7 +24,7 @@
 	$tableAlignmentConf = [];
 	$openedSublists = [];
 
-/*	function parseMarkdown($inString)
+	function parseMarkdown($inString)
 	{	
 		$inString=preg_replace("/\</", "&lt;",$inString);
 		$inString=preg_replace("/\>/", "&gt;",$inString);
@@ -125,9 +125,9 @@
 		// return 1 if space followed by a pipe-character and have closing pipe-character
 		return preg_match('/^\s*\|\s*(.*)\|/', $item);
 	}
-*/
+
     // The creation and destruction of lists
-/*	function handleLists($currentLine, $prevLine, $nextLine) {
+	function handleLists($currentLine, $prevLine, $nextLine) {
 		    global $openedSublists;
         $markdown = "";
         $value = "";    
@@ -199,9 +199,9 @@
         }
         return $markdown;
     }
-*/	
+	
     // Function for Tables
-/*    function handleTable($currentLine, $prevLine, $nextLine) {
+    function handleTable($currentLine, $prevLine, $nextLine) {
 		global $tableAlignmentConf;
         $markdown = "";
 		$columns = array_values(array_map("trim", array_filter(explode('|', $currentLine), function($k) {
@@ -258,8 +258,8 @@
         }
         return $markdown;
     }
-*/	
-/*	function markdownBlock($instring)
+	
+	function markdownBlock($instring)
 	{
 		//Regular expressions for italics
 		$instring = preg_replace("/\*{4}(.*?)\*{4}/", "<strong><em>$1</em></strong>",$instring);	
@@ -270,17 +270,17 @@
 		$instring = preg_replace("/\_{4}(.*?)\_{4}/", "<strong><em>$1</em></strong>",$instring);	
 		$instring = preg_replace("/\_{3}(.*?)\_{3}/", "<strong>$1</strong>",$instring);	
 		$instring = preg_replace("/\_{2}(.*?)\_{2}/", "<strong>$1</strong>",$instring);	
-*/
+
 		// Headings -- 6 levels
-	//	$instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);	
-		//$instring = preg_replace("/^\#{5}\s(.*)=*/m", "<h5>$1</h5>",$instring);
-	//	$instring = preg_replace("/^\#{4}\s(.*)=*/m", "<h4>$1</h4>",$instring);	
-	//	$instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);	
-	//	$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
-	//	$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
+		$instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);	
+		$instring = preg_replace("/^\#{5}\s(.*)=*/m", "<h5>$1</h5>",$instring);
+		$instring = preg_replace("/^\#{4}\s(.*)=*/m", "<h4>$1</h4>",$instring);	
+		$instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);	
+		$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
+		$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
 
 		//Regular expression for line
-/*		$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
+		$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
 
 		// Fix for swedish characters
 		$instring= str_replace ("å","&aring;",$instring);				
@@ -333,7 +333,7 @@
 
 		return $instring;		
 	}
-*/
+
 	if($submission != "UNK" && $_SESSION["superuser"]==1){
 		$query = $pdo->prepare("SELECT * FROM submission WHERE subid=:subid");
 		$query->bindParam(':subid', $submission);
@@ -494,7 +494,7 @@
 			echo "<script src='../Shared/js/jquery-1.11.0.min.js'></script>";
 			echo "<script src='../Shared/js/jquery-ui-1.10.4.min.js'></script>";
 			echo "<script src='../Shared/dugga.js'></script>";
-			echo "<script src='../Shared/markdown.js'></script>";				
+			//echo "<script src='../Shared/markdown.js'></script>";				
 			echo "</head>";
 			echo "<body>";
 		}
