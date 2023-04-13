@@ -23,8 +23,10 @@
 
         
             echo "<table style='width:100%'>";
-                echo "<tr>"
-                    echo "<th>".$opt."</th>"
+                echo "<tr>";
+                    echo "<th>";
+                        echo $opt;
+                    echo "</th>";
                 echo "</tr>";
             echo "</table>";
 
@@ -49,13 +51,6 @@
 
 
 
-
-
-
-
-
-
-
             // if(isset ($_POST)){
             //     $test = file_get_contents("php://input");
             //     $testArray = json_decode($test, true); 
@@ -74,6 +69,6 @@
             // // echo "<p>";
         ?>    
     </body>
-    
+
 </html>
 <!-- echo "<form action='dugga.js' method='POST'>"; -->
