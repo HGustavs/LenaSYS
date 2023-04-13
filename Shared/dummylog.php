@@ -22,10 +22,11 @@ $dateTime = $arr['dateTime'];
 
     echo "<tr>"; 
         echo "<td>";
-
+            echo $apara;
         echo "</td>";
     echo "</tr>";
 
+    
 
 
 ?>
