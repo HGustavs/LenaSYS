@@ -32,6 +32,10 @@
                 echo "</tr>";
                 echo "<tr>";
                     echo "<td>".$opt."</td>";
+                    echo "<td>".$apara."</td>";
+                    echo "<td>".$kind."</td>";
+                    echo "<td>".$apara_type."</td>";
+                    echo "<td>".$dateTime."</td>";
                 echo "</tr>";
             echo "</table>";
 
