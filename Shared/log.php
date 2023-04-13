@@ -34,7 +34,7 @@
                 echo "<td>".$dateTime."<td>";
             echo "</tr>";
             
-             print_r($arr);
+             //print_r($arr);
 
 
 
