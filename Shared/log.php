@@ -22,18 +22,19 @@
             $dateTime = $arr['dateTime'];           
 
            
-            // echo "<td>".$opt;."</td>"
-            //     echo"<tr>";
-            //     foreach($apara as $value){
-            //         echo "<td>".$value."</td>";
-            //     }
-            //     echo "</tr>";
-            //     echo "<tr>"
-            //     echo "<td>".$kind."</td>";
-            //     echo "<td>".$apara_type."<td>";
-            //     echo "<td>".$dateTime."<td>";
-            // echo "</tr>";
-            
+            echo "<table>";
+                echo "<td>".$opt;."</td>";
+                    echo"<tr>";
+                    foreach($apara as $value){
+                        echo "<td>".$value."</td>";
+                    }
+                    echo "</tr>";
+                    echo "<tr>";
+                    echo "<td>".$kind."</td>";
+                    echo "<td>".$apara_type."<td>";
+                    echo "<td>".$dateTime."<td>";
+                echo "</tr>";
+            echo "</table>";    
             print_r($arr);
 
 
