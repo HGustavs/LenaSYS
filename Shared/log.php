@@ -35,6 +35,29 @@
                     echo "</tr>";
                 }
             echo "</table>";
+            
+            
+            echo "<table style='width:100%'>";
+            foreach($logContet as $row){
+                echo "<tr>";
+                    echo "<th> Options </th>";
+                    echo "<th> Parameters </th>";
+                    echo "<th> Kind of Page </th>";
+                    echo "<th> Parameter type </th>";
+                    echo "<th> Date </th>";
+                echo "</tr>";
+                echo "<tr>";
+                    echo "<td>".$logContet['opt'][]."</td>";
+                    /*echo "<td>".foreach($apara as $value){
+                        echo $value;
+                    }."</td>";*/
+                    echo "<td>".."</td>";
+                    echo "<td>".$kind."</td>";
+                    echo "<td>".$apara_type."</td>";
+                    echo "<td>".$dateTime."</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
 
             // $opt = $arr['opt'];
             // $apara[] = $arr['apara'];
