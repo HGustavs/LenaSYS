@@ -16,7 +16,7 @@
             $arr = json_decode($jsontext, true);
             
 
-            echo $arr['apara'];
+            echo $arr;
 
             $logContet['opt'][$arr['opt']];
             foreach($arr['apara'] as $row){
