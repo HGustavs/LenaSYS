@@ -3486,7 +3486,7 @@ function refreshCodeExample(exampelid){
   //console.log("ExempelID: " + exempelid);
 
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
-  $('.example item').click(function(){
+  $('.example').click(function(){
     var id = $(this).attr('id');
     console.log(id);
   })
