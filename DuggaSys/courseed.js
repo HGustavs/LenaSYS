@@ -81,6 +81,8 @@ function createNewCourse()
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 
+	console.log("Url: " + coursegiturl); // Testing if value is null.
+
     localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : coursegiturl  }, "COURSE");
 }
