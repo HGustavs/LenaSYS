@@ -1,18 +1,9 @@
 <?php
-    // if ($_GET) {
-    //     echo $_GET;
-    // }
+    if ($_POST["logJSON"]) {
+        echo $_POST[logJSON];
+    }
 
-    // echo "<p>";
+    echo "<p>";
 ?>
-<!-- 
-echo "<form action='dugga.js' method='GET'>"; -->
 
-
-<?php
-
-    $text = $_POST['logJSON'];
-    // $output = wordwrap($text, 60, "<br>");
-    echo $output;
-
-?>
+echo "<form action='dugga.js' method='POST'>";
