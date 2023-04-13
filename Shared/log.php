@@ -1,9 +1,8 @@
 
 
 <?php
-$_POST['input'] = "hej";
-    if(isset ($_POST['input'])){
-        $test = $_POST['input'];
+    if(isset ($_POST)){
+        $test = $_POST;
         echo $test;
     }
     
