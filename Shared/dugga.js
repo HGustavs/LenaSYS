@@ -2817,31 +2817,17 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 			method: "POST", // or 'PUT'
 			//action: "/shared/log.php",
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "string", //"application/json"
 			},
-			body: JSON.stringify(logString)
+			body: JSON.stringify(input)
 		}).then(function (response) {
-			if (response.ok) return (response.json());
+			if (response.ok) return (response.text());
 
 		}).then(function (data) {
 			console.log(data);
 		}).catch(function (error) { console.log("request faild", error) });
 
 
-
-			//.then(function (response) {                      // first then()
-			//	if (response.ok) return (response.text());
-			//	throw new Error(response.statusText);
-			//}).then(function (text) {
-			//	ResultBooking(new window.DOMParser().parseFromString(text, "text/xml"));
-			//}).catch(function (error) {                        // catch
-			//	alert('getBookings Request failed\n' + error);
-			//});
-
-
-
-		//const result = await response.json();
-		//console.log("Success:", result);
 	} catch (error) {
 		console.error("Error:", error);
 	}
