@@ -2810,7 +2810,7 @@ async function logForTesting(/*opt, apara, kind*/) {  // IN THE TESTIUNG PHASE
 	//const logString = [opt, apara, kind];
 	//var input={
 	//	window:document.getElementById("logtest").value,
-		
+	console.log("shlabadabadab");
 	//};
 	try {
 		//const response = await fetch("../Shared/dugga.js", {
