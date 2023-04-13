@@ -4,7 +4,7 @@
     if(isset ($_POST)){
         $test = file_get_contents("php://input");
         $testArray = json_decode($test, true); 
-        echo $testArray["opt"];
+        echo $testArray["opt"].+"TEST";
     }
     
 
