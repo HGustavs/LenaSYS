@@ -30,8 +30,8 @@
             foreach ($apara[1] as $arr)
                         {
                 echo "<tr>";
-                echo "<td>".$arr[0]."</td>"; 
-                echo "<td>".$arr[1]."</td>";
+                echo "<td>".$array[0]."</td>"; 
+                echo "<td>".$array[1]."</td>";
             }
 
             print_r($logContet);
