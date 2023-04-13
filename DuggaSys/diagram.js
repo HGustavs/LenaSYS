@@ -1369,6 +1369,8 @@ function createMockupUML(){
     } */
 
     //fetchDiagramFileContentOnLoad();
+    let mockupJSON = {"data":[{"kind":"UMLEntity","id":"5D9ECB","x":1483,"y":591,"time":1681372591091,"name":"Chef","stroke":["#383737"],"attributes":["-name: string"],"functions":["+cooksFood()","+preparesOrder()","+givesOrderToWaiter()"]},{"kind":"UMLEntity","id":"068FC9","x":950,"y":667,"time":1681372592283,"name":"Waiter","stroke":["#383737"],"attributes":["-name"],"functions":["+createsOrder()"]},{"kind":"UMLEntity","id":"A680D0","x":1194,"y":12,"time":1681377133043,"name":"Staff","stroke":["#383737"],"attributes":["-pnr: int","-experience: int"],"functions":[]},{"kind":"UMLRelation","stroke":["#383737"],"x":1230,"y":324,"id":"26673E"}],"lines":[{"id":"2BBB5A","fromID":"068FC9","toID":"5D9ECB","time":1681378942204,"type":"UML"},{"id":"9CEAE6","fromID":"068FC9","toID":"26673E","type":"UML"},{"id":"3D217C","fromID":"5D9ECB","toID":"26673E","type":"UML"},{"id":"B89643","fromID":"26673E","toID":"A680D0","type":"UML"}]};
+    loadDiagram(mockupJSON);
 }
 //was in onSetup function moved it out 
  // Global statemachine init
