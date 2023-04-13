@@ -24,9 +24,7 @@
         
             echo "<table style='width:100%'>";
                 echo "<tr>";
-                    echo "<th>";
-                        echo $opt;
-                    echo "</th>";
+                    echo "<th>" $opt "</th>";
                 echo "</tr>";
             echo "</table>";
 
