@@ -56,7 +56,7 @@
                     // Arrays of arrays can be traversed using a nested foreach
                     foreach ($arr as $key => $value) {
                         foreach ($value as $valuekey => $valuevalue) {
-                        echo "<tb>".$valuekey.": ".$valuevalue."</td>";
+                        echo "<tb>".$valuekey.": ".$valuevalue."</td></br>";
                         }
                     }
                     echo "<br>";
