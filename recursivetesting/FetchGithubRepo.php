@@ -43,6 +43,10 @@
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
     $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
     bfs($translatedURL);
+
+    function insertIntoTable($item) {
+    }
+
     function bfs($url)
     {
         $visited = array();
@@ -93,6 +97,7 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
+                        insertIntoTable($item);
                         echo "</table>";
                     } else {
                         echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";    
