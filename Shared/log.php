@@ -15,11 +15,27 @@
             $jsontext = file_get_contents($url);
             $arr = json_decode($jsontext, true);
 
-            $opt = $arr['opt'];
-            $apara[] = $arr['apara'];
-            $kind = $arr['kind'];
-            $apara_type = $arr['apara_type'];
-            $dateTime = $arr['dateTime'];           
+            $logContet['opt'][$arr['opt']];
+            foreach($arr['apara'] as $row){
+                $logContet['apara'][$row];
+            }
+            $logContet['kind'][$arr['kind']];
+            $logContet['apara_type'][$arr['apara_type']];
+            $logContet['dateTime'][$arr['dateTime']];
+
+
+            foreach($logContet as $row){
+                foreach($logContet as $colum){
+                    echo $colum;
+                }
+            }
+        
+
+            // $opt = $arr['opt'];
+            // $apara[] = $arr['apara'];
+            // $kind = $arr['kind'];
+            // $apara_type = $arr['apara_type'];
+            // $dateTime = $arr['dateTime'];           
 
         
             echo "<table style='width:100%'>";
