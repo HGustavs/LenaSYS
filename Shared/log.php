@@ -25,6 +25,10 @@
             echo "<table style='width:100%'>";
                 echo "<tr>";
                     echo "<th>".$opt."</th>";
+                    echo "<th>".$apara."</th>";
+                    echo "<th>".$kind."</th>";
+                    echo "<th>".$apara_type."</th>";
+                    echo "<th>".$dateTime."</th>";
                 echo "</tr>";
             echo "</table>";
 
