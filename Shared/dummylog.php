@@ -25,7 +25,7 @@ $dateTime = $arr['dateTime'];
             echo $apara;
             foreach($apara as array)
             echo "<tr>";
-            echo "<td>".$apara[]."</td>";
+            echo $apara[];
             echo "</tr>";
         echo "</td>";
     echo "</tr>";
