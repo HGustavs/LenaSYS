@@ -27,9 +27,11 @@
             print_r($logContet);
 
             foreach($logContet as $row){
-                foreach($logContet as $colum){
-                    echo $colum;
-                }
+                echo "<tr>";
+                    foreach($logContet as $colum){
+                        echo "<td>".$logContet[$row][$column]."</td>";
+                    }
+                echo "</tr>"
             }
         
 
