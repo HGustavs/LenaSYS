@@ -2806,7 +2806,7 @@ $(document).on('keydown', function(e) {
 });
 
 async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
-	const input = "TEST";
+	//const input = "TEST";
 	const logString = [opt, apara, kind];
 	//var input={
 	//	window:document.getElementById("logtest").value,
@@ -2819,7 +2819,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 			"headers": {
 				"Content-Type": "application/json"
 			},
-			"body": JSON.stringify(input)
+			"body": JSON.stringify(logString)
 		});
 
 		//const result = await response.json();
