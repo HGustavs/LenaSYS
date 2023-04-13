@@ -48,10 +48,10 @@
         $visited = array();
         $fifoQueue = array();
         array_push($fifoQueue, $url);
-        $database = // Insert database name
-        $username = // Insert database username
-        $password = // Insert database password
-        $pdo = new PDO($database, $username, $password);
+        // $database = // Insert database name
+        // $username = // Insert database username
+        // $password = // Insert database password
+        // $pdo = new PDO($database, $username, $password);
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
@@ -104,6 +104,7 @@
                         $query->bindParam(':repoDownloadURL', $item['download_url']);
                         $query->bindParam(':repoSHA', $item['sha']);
                         $query->bindParam(':repoPath', $item['path']);
+                        // $query->execute();
                         echo "</table>";
                     } else {
                         echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";
