@@ -568,9 +568,9 @@
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
-                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">show example diagrams </button> <br><br>
+                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">show example diagrams </button><br><br>
                 <div class="dropdownContent">
-                    <select id="diagramTypeDropdown" onchange="checkDropdownOption">
+                    <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                     <option>IEE diagrams</option>
                     <option>class diagrams</option>
                     <option>er diagrams </option>

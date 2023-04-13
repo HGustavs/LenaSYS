@@ -4104,6 +4104,17 @@ function boxSelect_Draw(str)
 }
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
+/**
+ * @description hides or shows the diagram type dropdown 
+ */
+function toggleDiagramDropdown()
+{
+    const dropdown=document.getElementById("diagramTypeDropdown");
+    if(window.getComputedStyle(dropdown).display==="none")
+    dropdown.style.display="block";
+    else
+    dropdown.style.display="none";
+}
 
 /**
  * @description Change the state in replay-mode with the slider
