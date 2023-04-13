@@ -3488,8 +3488,9 @@ function refreshCodeExample(exampelid){
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
   $('.example item').click(function(){
     var id = $(this).attr('id');
+    console.log(id);
   })
-  console.log(id);
+
   //AJAX anropen till databasen behöver lösas
   //SELECT runlink FROM codeexample WHERE exampleid=exampleid;
   //cid = SELECT cid FROM codeexample WHERE exampleid=exampleid;
