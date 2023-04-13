@@ -11534,6 +11534,11 @@ function centerCamera()
  * @param {String} filename The name of the file that get generated
  * @param {*} dataObj The text content of the file
  */
+function getDiagramFile()
+{
+    
+}
+
 function downloadFile(filename, dataObj)
 {
     // Create a "a"-element

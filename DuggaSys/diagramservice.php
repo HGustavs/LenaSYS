@@ -15,11 +15,12 @@
     // Connect to database and start session
     pdoConnect();
     session_start();
-function sendFileToJs()
+if(isset($_POST["function"])&&isset($_POST["path"]))
 {
-        $json=file_get_contents("exampleDiagrams/ErTestDiagram.json");
-        return $json;
+    if($_POST["function"]=="getDiagramFile")
+    echo file_get_contents($_POST["path"]);
 }
+
     if (isset($_SESSION['uid'])) {
         $userid = $_SESSION['uid'];
         $loginname = $_SESSION['loginname'];
