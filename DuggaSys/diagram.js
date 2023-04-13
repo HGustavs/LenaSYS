@@ -501,19 +501,13 @@ class StateMachine
     stepBack () 
     {
         // If there is no history => return
-        if (this.currentHistoryIndex == -1) return;
-
-        do {
-            // Lower the historyIndex by one
+        if (this.currentHistoryIndex == -1) {return;}
+        else {
             this.currentHistoryIndex--;
             console.log(this.currentHistoryIndex);
+        }
 
-        }while(this.currentHistoryIndex === 0 ||
-            this.currentHistoryIndex > 0
-            && this.historyLog[this.currentHistoryIndex] 
-            && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time);
-
-        clearGhosts();
+        clearGhosts()
         clearContext();
         clearContextLine();
         showdata();
@@ -1797,7 +1791,7 @@ document.addEventListener('keyup', function (e)
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
+        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
         if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
@@ -2176,9 +2170,22 @@ function mouseMode_onMouseUp(event)
         case mouseModes.PLACING_ELEMENT:
             if(event.target.id == "container") {
 
-            
             if (ghostElement && event.button == 0) {
                 addObjectToData(ghostElement);
+                
+                // Check if the element to create would overlap others, returns if true
+                if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
+                    displayMessage(messageTypes.ERROR, "Error: You can't create elements that overlap eachother.");
+                    console.error("Failed to create an element as it overlaps other element(s)")
+
+                    // Remove added element from data as it should remain
+                    data.splice(data.length-1, 1)
+                    
+                    makeGhost();
+                    showdata();
+                    return 
+                }
+                                
                 makeGhost();
                 showdata();
             }
@@ -2654,31 +2661,32 @@ function mmoving(event)
 
         case pointerStates.CLICKED_ELEMENT:
             if(mouseMode != mouseModes.EDGE_CREATION){
-            var prevTargetPos = {
-                x: data[findIndex(data, targetElement.id)].x,
-                y: data[findIndex(data, targetElement.id)].y
+                console.log("Moving object")
+                var prevTargetPos = {
+                    x: data[findIndex(data, targetElement.id)].x,
+                    y: data[findIndex(data, targetElement.id)].y
+                }
+                var targetPos = {
+                    x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
+                    y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
+                };
+                targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
+                targetDelta = {
+                    x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
+                    y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
+                }
+
+                // Moving object
+                movingObject = true;
+                // Moving object
+                deltaX = startX - event.clientX;
+                deltaY = startY - event.clientY;
+
+                // We update position of connected objects
+                updatepos(deltaX, deltaY);
+
+                calculateDeltaExceeded();
             }
-            var targetPos = {
-                x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
-                y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
-            };
-            targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
-            targetDelta = {
-                x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
-                y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
-            }
-
-            // Moving object
-            movingObject = true;
-            // Moving object
-            deltaX = startX - event.clientX;
-            deltaY = startY - event.clientY;
-
-            // We update position of connected objects
-            updatepos(deltaX, deltaY);
-
-            calculateDeltaExceeded();
-        }
             break;
 
         case pointerStates.CLICKED_NODE:
@@ -3564,7 +3572,7 @@ function rectsIntersect (left, right)
      objects.forEach(obj => {
 
          if (obj.isLocked) return;
-         if(entityIsOverlapping(obj.id, deltaX, deltaY)) return;
+         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) return displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");;
 
          if (settings.grid.snapToGrid) {
 
@@ -3673,10 +3681,13 @@ function entityIsOverlapping(id, x, y)
             }
         }
 
-        targetX = element.x - (x / zoomfact);
-        targetY = element.y - (y / zoomfact);
+        targetX = x //(x / zoomfact);
+        targetY =  y//(y / zoomfact);
+
+        console.log(targetX, targetY)
 
         for(var i = 0; i < data.length; i++){
+            if(data[i].id === id) continue
             if(context.includes(data[i])) continue;
             
             //COMPARED ELEMENT
@@ -3692,8 +3703,6 @@ function entityIsOverlapping(id, x, y)
 
             if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y){
-                
-                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 isOverlapping = true;
                 break;
             }
@@ -7314,8 +7323,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         return;
     }
 
-    // Prevent a line to be drawn between UML- and ER-elements.
-    if (fromElement.type != toElement.type && fromElement.type != "UML_STATE") {
+    // Prevent a line to be drawn between elements of different types.
+    if (fromElement.type != toElement.type) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
     }
@@ -11463,7 +11472,6 @@ function showdata()
     if (ghostElement) {
         str += drawElement(ghostElement, true);
     }
-
     container.innerHTML = str;
     updatepos(null, null);
 
