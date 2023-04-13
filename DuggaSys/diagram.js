@@ -501,14 +501,14 @@ class StateMachine
     stepBack () 
     {
         // If there is no history => return
-        if (this.currentHistoryIndex == 0) {return;}
+        if (this.currentHistoryIndex == -1) {return;}
         else {
         do {
             // Lower the historyIndex by one
             this.currentHistoryIndex--;
             console.log(this.currentHistoryIndex);
 
-        }while(this.currentHistoryIndex === 0 ||
+        }while(this.currentHistoryIndex != 0 ||
            ( this.currentHistoryIndex > 0
             && this.historyLog[this.currentHistoryIndex] 
             && this.historyLog[this.currentHistoryIndex - 1].time == this.historyLog[this.currentHistoryIndex].time));
