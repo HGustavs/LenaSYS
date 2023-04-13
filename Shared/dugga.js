@@ -2821,10 +2821,24 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 			},
 			body: JSON.stringify(logString)
 		}).then(function (response) {
-			return response.json();
+			if (response.ok) return (response.json());
+
 		}).then(function (data) {
 			console.log(data);
-		})
+		});
+
+
+
+			//.then(function (response) {                      // first then()
+			//	if (response.ok) return (response.text());
+			//	throw new Error(response.statusText);
+			//}).then(function (text) {
+			//	ResultBooking(new window.DOMParser().parseFromString(text, "text/xml"));
+			//}).catch(function (error) {                        // catch
+			//	alert('getBookings Request failed\n' + error);
+			//});
+
+
 
 		//const result = await response.json();
 		//console.log("Success:", result);
