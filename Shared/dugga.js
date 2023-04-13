@@ -2806,12 +2806,12 @@ $(document).on('keydown', function(e) {
 });
 
 async function logForTesting(/*opt, apara, kind*/) {  // IN THE TESTIUNG PHASE
-
+	const input = "TEST";
 	//const logString = [opt, apara, kind];
-	var input={
-		window:document.getElementById("logtest").value,
+	//var input={
+	//	window:document.getElementById("logtest").value,
 		
-};
+	//};
 	try {
 		//const response = await fetch("../Shared/dugga.js", {
 		fetch("../Shared/log.php", {
