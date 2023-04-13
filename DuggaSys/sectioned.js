@@ -1554,7 +1554,7 @@ function returnedSection(data) {
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
-                  id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+                  id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
           str += " onclick='refreshCodeExample("+item['exempelid']+")'"
           str += "</td>";
         }
@@ -3486,9 +3486,16 @@ function refreshCodeExample(exampelid){
   //console.log("ExempelID: " + exempelid);
 
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
-  $('.example').click(function(){
-    var id = $(this).attr('id');
-    console.log(id);
+  //$('.example').click(function(){
+  //  var id = $(this).attr('id');
+  //  console.log(id);
+  //})
+
+  $(document).ready(function(){
+    $(".refreshButton").click(function(){
+      var id = $(this).attr('id');
+      console.log(id);
+    })
   })
 
   //AJAX anropen till databasen behöver lösas
