@@ -2825,7 +2825,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 
 		}).then(function (data) {
 			console.log(data);
-		});
+		}).catch(function (error) { console.log("request faild", error) });
 
 
 
