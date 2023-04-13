@@ -783,3 +783,16 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
+
+/* Add table for github repos */ 
+
+CREATE TABLE gitRepos( 
+	repoID int UNSIGNED NOT NULL AUTO_INCREMENT,
+	repoName varchar(50), 
+    repoURL varchar(500), 
+    repoFileType varchar(50), 
+    repoDownloadURL varchar(1000), 
+    repoSHA varchar(5000), 
+    repoPath varchar(1000), 
+    PRIMARY KEY (repoID)
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
