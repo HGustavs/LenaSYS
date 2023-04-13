@@ -724,7 +724,7 @@ body {
     background-color: var(--color-sectioned-table-lo);
 }
 .graphLabels{
-   fill: var(--color-fill);
+   color: var(--color-fill);
 }
 .lineDiagramDark text{
     fill: var(--color-fill);
