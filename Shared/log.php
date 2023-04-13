@@ -22,13 +22,15 @@
             $dateTime = $arr['dateTime'];           
 
             echo "<ul>";
-                echo $opt;
+                echo "<div>".$opt;."</div>"
+                echo"<div>";
                 foreach($apara as $value){
-                    echo $value;
+                    echo "<span>".$value."</span>";
                 }
-                echo $kind;
-                echo $apara_type;
-                echo $dateTime;
+                echo "</div>";
+                echo "<div>".$kind."</div>";
+                echo "<div>".$apara_type."<div>";
+                echo "<div>".$dateTime."<div>";
             echo "</ul>"; 
 
 
