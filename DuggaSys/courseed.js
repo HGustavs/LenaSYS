@@ -34,14 +34,14 @@ function updateCourse()
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
-	var coursegiturl = $("#editcoursegit-url").val();
+	var courseGitURL = $("#editcoursegit-url").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
 	$("#overlay").css("display", "none");
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : coursegiturl }, "COURSE");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 	localStorage.setItem('courseid', courseid);
 	localStorage.setItem('updateCourseName', true);
 }
@@ -77,14 +77,14 @@ function createNewCourse()
 {
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
-	var coursegiturl = $("#ncoursegit-url").val();
+	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 
-	console.log("All variables: " + coursename + "," + coursecode + "," + coursegiturl);
+	console.log("All variables: " + coursename + "," + coursecode + "," + courseGitURL);
 
   localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : coursegiturl }, "COURSE");
+	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
 
 function copyVersion()
@@ -564,7 +564,7 @@ function setActiveCodes() {
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
-	coursegitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/
+	courseGitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/
 };
 
 //Validates single element against regular expression returning true if valid and false if invalid
@@ -604,7 +604,7 @@ function elementIsValid(element) {
 		element.classList.remove("bg-color-change-invalid");
 
 		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		if(element.name === "coursegitURL") {
+		if(element.name === "courseGitURL") {
 			return true;
 		}
 		return false;

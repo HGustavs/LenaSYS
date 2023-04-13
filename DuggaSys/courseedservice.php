@@ -35,7 +35,7 @@ $enddate=getOP('enddate');
 $makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
-$coursegiturl=getOP('coursegiturl'); // for github url
+$courseGitURL=getOP('courseGitURL'); // for github url
 $LastCourseCreated=array();
 
 if(isset($_SESSION['uid'])){
@@ -77,15 +77,15 @@ if(checklogin()){
 		if(strcmp($opt,"DEL")===0){
 
 		}else if(strcmp($opt,"NEW")===0){
-			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :coursegiturl)");
+			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
 
 			$query->bindParam(':usrid', $userid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':coursename', $coursename);
-			$query->bindParam(':coursegiturl', $coursegiturl); // for github url
+			$query->bindParam(':courseGitURL', $courseGitURL); // for github url
 
-			echo "<pre>". $coursegiturl."</pre>";
-			error_log($coursegiturl);
+			echo "<pre>". $courseGitURL."</pre>";
+			error_log($courseGitURL);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -457,13 +457,13 @@ if(checklogin()){
 			$debug = "Error duplicate course name\n" . $error[2];
 		}
 			}else if(strcmp($opt,"UPDATE")===0){
-			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:coursegiturl WHERE cid=:cid;");
+			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
 
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':visibility', $visibility);
 			$query->bindParam(':coursecode', $coursecode);
-			$query->bindParam(':coursegiturl', $coursegiturl);
+			$query->bindParam(':courseGitURL', $courseGitURL);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
