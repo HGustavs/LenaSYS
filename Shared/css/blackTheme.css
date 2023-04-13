@@ -724,10 +724,10 @@ body {
     background-color: var(--color-sectioned-table-lo);
 }
 .graphLabels{
-   color: var(--color-fill);
+   fill: var(--color-fill);
 }
 .lineDiagramDark text{
-    fill: var(--color-fill);
+    color: var(--color-fill);
 }
 .lineDiagramDark{
     border: 2px solid var(--color-primary);
