@@ -501,7 +501,7 @@ class StateMachine
     stepBack () 
     {
         // If there is no history => return
-        if (this.currentHistoryIndex == -1) return;
+        if (this.currentHistoryIndex == 0) return;
 
         do {
             // Lower the historyIndex by one
