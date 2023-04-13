@@ -1133,4 +1133,8 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     background-color: #121212;
     accent-color: #434343;
 }
+
+#ERTable {
+    color:white;
+}
 /*/ END /*/
