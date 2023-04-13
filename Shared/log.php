@@ -51,7 +51,7 @@
                     echo "<th> Kind of Page </th>";
                     echo "<th> Parameter type </th>";
                     echo "<th> Date </th>";
-                echo "</tr>";
+              
                 echo "<tr>";
                     // Arrays of arrays can be traversed using a nested foreach
                     foreach ($arr as $key => $value) {
@@ -61,6 +61,7 @@
                         }
                     }
                     echo "<br>";
+                    echo "</tr>";
 
                     // Arrays of arrays can be printed with print_r
                     // print_r($array);
