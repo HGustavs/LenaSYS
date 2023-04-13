@@ -34,7 +34,7 @@
             echo "</ul>"; 
 
 
-            // print_r($arr);
+             print_r($arr);
 
 
 
