@@ -22,11 +22,11 @@
             $dateTime = $arr['dateTime'];           
 
         
-            echo "<table>";
+            // echo "<table>";
                 echo "<tr>"
                     echo "<th>".$opt."</th>"
                 echo "</tr>";
-            echo "</table>";
+            // echo "</table>";
 
 
 
