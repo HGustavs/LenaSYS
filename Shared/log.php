@@ -49,7 +49,7 @@
                     echo "<th> Date </th>";
                 echo "</tr>";
                 echo "<tr>";
-                    echo "<td>".$logContet['opt'][]."</td>";
+                    echo "<td>".$logContet['opt']['0']."</td>";
                     /*echo "<td>".foreach($apara as $value){
                         echo $value;
                     }."</td>";*/
