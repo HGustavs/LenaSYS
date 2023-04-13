@@ -70,7 +70,7 @@ function getOP($name, $default="UNK", $type="string")
         } else if (strcmp($type, "JSON") === 0) {
             $ret = json_decode(($_POST[$name]));
             if (json_last_error() !== JSON_ERROR_NONE) {
-                $ret = "UNK";
+                $ret = "UNKmmm";
             }
         } else {
             $ret = ($_POST[$name]);
