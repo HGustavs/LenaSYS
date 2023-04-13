@@ -2837,8 +2837,8 @@ async function logForTesting(/*opt, apara, kind*/) {  // IN THE TESTIUNG PHASE
 
 }
 
-<html>
-	<p id="logtest">
-		hejhej.
-	</p>
-</html>
+//<html>
+//	<p id="logtest">
+//		hejhej.
+//	</p>
+//</html>
