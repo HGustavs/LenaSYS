@@ -23,6 +23,9 @@
 
         
             echo "<table>";
+                echo "<tr>"
+                    echo "<th>".$opt."</th>"
+                echo "</tr>";
             echo "</table>";
 
 
