@@ -22,12 +22,14 @@ $dateTime = $arr['dateTime'];
 
     echo "<tr>"; 
         echo "<td>";
+    
             echo $apara;
             echo $opt;
             echo $kind;
             echo $dateTime;
             echo $apara_type;
-            
+            foreach($arr as $arr)
+            print_r($arr)
         echo "</td>";
     echo "</tr>";
 
