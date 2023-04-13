@@ -28,8 +28,11 @@ $dateTime = $arr['dateTime'];
             echo $kind;
             echo $dateTime;
             echo $apara_type;
-            foreach($arr as $arr)
-            print_r($arr)
+            
+            foreach($apara as $value){
+                echo "$value <br>";
+            }
+            
         echo "</td>";
     echo "</tr>";
 
