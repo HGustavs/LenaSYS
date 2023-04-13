@@ -97,8 +97,7 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
-                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath)
-                          VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
                         $query->bindParam(':repoName', $item['name']);
                         $query->bindParam(':repoURL', $item['repoURL']);
                         $query->bindParam(':repoFileType', $item['type']);
