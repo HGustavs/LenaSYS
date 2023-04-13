@@ -84,7 +84,7 @@ function createNewCourse()
 	console.log("All variables: " + coursename + "," + coursecode + "," + coursegiturl);
 
   localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : coursegiturl  }, "COURSE");
+	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, coursegiturl : courseGitURL  }, "COURSE");
 }
 
 function copyVersion()
