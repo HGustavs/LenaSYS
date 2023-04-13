@@ -9,7 +9,6 @@
 			// Get url from db/courseGitURL instead of hardcoding
 			var url = 'https://github.com/HGustavs/LenaSYS.git';
 			var urledit = url.replace('.git', ''); //remove ending
-			console.log(fetch(urledit));
 
 			
 		</script>
