@@ -35,7 +35,7 @@ $enddate=getOP('enddate');
 $makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
-$coursegiturl=getOP('coursegitURL'); // for github url
+$coursegiturl=getOP('coursegiturl'); // for github url
 $LastCourseCreated=array();
 
 if(isset($_SESSION['uid'])){
@@ -84,7 +84,8 @@ if(checklogin()){
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursegiturl', $coursegiturl); // for github url
 
-			echo '<script>console.log("test");</script>';
+			echo "<pre>". $coursegiturl."</pre>";
+			error_log($coursegiturl);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
