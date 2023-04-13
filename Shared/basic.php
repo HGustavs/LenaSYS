@@ -55,7 +55,7 @@ function makeLogEntry($userid,$entrytype,$pdo,$etext)
 // Read the $name from $_POST and if $name exists returns the value of $name typecast to $type
 // If $name does not exist in $_POST return $default
 //------------------------------------------------------------------------------------------------
-function getOP($name, $default="UNK1", $type="string")
+function getOP($name, $default="UNK", $type="string")
 {
     /*
     if(isset($_POST[$name]))	return urldecode($_POST[$name]);
@@ -70,7 +70,7 @@ function getOP($name, $default="UNK1", $type="string")
         } else if (strcmp($type, "JSON") === 0) {
             $ret = json_decode(($_POST[$name]));
             if (json_last_error() !== JSON_ERROR_NONE) {
-                $ret = "UNK2";
+                $ret = "UNK";
             }
         } else {
             $ret = ($_POST[$name]);
