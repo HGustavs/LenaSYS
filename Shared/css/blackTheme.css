@@ -727,7 +727,7 @@ body {
    fill: var(--color-fill);
 }
 .lineDiagramDark text{
-    color: var(--color-fill);
+    fill: var(--color-fill);
 }
 .lineDiagramDark{
     border: 2px solid var(--color-primary);
