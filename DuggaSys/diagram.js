@@ -2175,9 +2175,18 @@ function mouseMode_onMouseUp(event)
         case mouseModes.PLACING_ELEMENT:
             if(event.target.id == "container") {
 
-            
             if (ghostElement && event.button == 0) {
                 addObjectToData(ghostElement);
+                
+                // Check if the element to create would overlap others, returns if true
+                if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
+                    console.error("Can not create an element that overlaps other elements")
+                    data.splice(data.length-1, 1)
+                    makeGhost();
+                    showdata();
+                    return 
+                }
+                                
                 makeGhost();
                 showdata();
             }
@@ -2653,31 +2662,32 @@ function mmoving(event)
 
         case pointerStates.CLICKED_ELEMENT:
             if(mouseMode != mouseModes.EDGE_CREATION){
-            var prevTargetPos = {
-                x: data[findIndex(data, targetElement.id)].x,
-                y: data[findIndex(data, targetElement.id)].y
+                console.log("Moving object")
+                var prevTargetPos = {
+                    x: data[findIndex(data, targetElement.id)].x,
+                    y: data[findIndex(data, targetElement.id)].y
+                }
+                var targetPos = {
+                    x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
+                    y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
+                };
+                targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
+                targetDelta = {
+                    x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
+                    y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
+                }
+
+                // Moving object
+                movingObject = true;
+                // Moving object
+                deltaX = startX - event.clientX;
+                deltaY = startY - event.clientY;
+
+                // We update position of connected objects
+                updatepos(deltaX, deltaY);
+
+                calculateDeltaExceeded();
             }
-            var targetPos = {
-                x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
-                y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
-            };
-            targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
-            targetDelta = {
-                x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
-                y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
-            }
-
-            // Moving object
-            movingObject = true;
-            // Moving object
-            deltaX = startX - event.clientX;
-            deltaY = startY - event.clientY;
-
-            // We update position of connected objects
-            updatepos(deltaX, deltaY);
-
-            calculateDeltaExceeded();
-        }
             break;
 
         case pointerStates.CLICKED_NODE:
@@ -3554,7 +3564,7 @@ function rectsIntersect (left, right)
      objects.forEach(obj => {
 
          if (obj.isLocked) return;
-         if(entityIsOverlapping(obj.id, deltaX, deltaY)) return;
+         if(entityIsOverlapping(obj.id, obj.x - deltaX, obj.y - deltaY)) return;
 
          if (settings.grid.snapToGrid) {
 
@@ -3663,10 +3673,13 @@ function entityIsOverlapping(id, x, y)
             }
         }
 
-        targetX = element.x - (x / zoomfact);
-        targetY = element.y - (y / zoomfact);
+        targetX = x //(x / zoomfact);
+        targetY =  y//(y / zoomfact);
+
+        console.log(targetX, targetY)
 
         for(var i = 0; i < data.length; i++){
+            if(data[i].id === id) continue
             if(context.includes(data[i])) continue;
             
             //COMPARED ELEMENT
@@ -3682,7 +3695,6 @@ function entityIsOverlapping(id, x, y)
 
             if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y){
-                
                 displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 isOverlapping = true;
                 break;
