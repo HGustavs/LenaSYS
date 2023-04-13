@@ -28,12 +28,15 @@
 
             print_r($logContet);
 
-            foreach($logContet as $row){
-                foreach($logContet as $colum){
-                    echo $colum;
+            echo "<table style='width:100%'>";
+                foreach($logContet as $row){
+                    echo "<tr>";
+                        foreach($logContet as $colum){
+                            echo "<td>".$logContet[$row][$column]."</td>";
+                        }
+                    echo "</tr>";
                 }
-            }
-        
+            echo "</table>";
 
             // $opt = $arr['opt'];
             // $apara[] = $arr['apara'];
