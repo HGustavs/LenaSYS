@@ -8,7 +8,7 @@
 </style>
     </head>
     <body>
-        <table border='1'>
+        
         <?php
 
             $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
@@ -22,11 +22,11 @@
             $dateTime = $arr['dateTime'];           
 
         
-            // echo "<table>";
+            echo "<table style='width:100%'>";
                 echo "<tr>"
                     echo "<th>".$opt."</th>"
                 echo "</tr>";
-            // echo "</table>";
+            echo "</table>";
 
 
 
