@@ -36,15 +36,15 @@
 
             print_r($logContet);
 
-            echo "<table style='width:100%'>";
-                foreach($logContet as $row){
-                    echo "<tr>";
-                        foreach($logContet as $colum){
-                            echo "<td>".$logContet[$row][$column]."</td>";
-                        }
-                    echo "</tr>";
-                }
-            echo "</table>";
+            // echo "<table style='width:100%'>";
+            //     foreach($logContet as $row){
+            //         echo "<tr>";
+            //             foreach($logContet as $colum){
+            //                 echo "<td>".$logContet[$row][$column]."</td>";
+            //             }
+            //         echo "</tr>";
+            //     }
+            // echo "</table>";
             
             
             echo "<table style='width:100%'>";
