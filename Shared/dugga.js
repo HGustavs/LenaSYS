@@ -1062,6 +1062,7 @@ function AJAXService(opt,apara,kind)
 				success: returnedFile
 			})
 	}else if(kind=="ACCESS"){
+			console.log("YOU HAVE FOUND ACCESSED!!");
 			$.ajax({
 				url: "accessedservice.php",
 				type: "POST",
