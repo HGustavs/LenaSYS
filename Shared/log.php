@@ -31,7 +31,7 @@
                     foreach($logContet as $colum){
                         echo "<td>".$logContet[$row][$column]."</td>";
                     }
-                echo "</tr>"
+                echo "</tr>";
             }
         
 
