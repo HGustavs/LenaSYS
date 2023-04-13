@@ -45,6 +45,12 @@
     bfs($translatedURL);
 
     function insertIntoTable($item) {
+    $repoName = $item['name'];
+    $repoURL = $item['html_url'];
+    $repoFileType = $item['type'];
+    $repoDownloadURL = $item['download_url'];
+    $repoSHA = $item['sha'];
+    $repoPath = $item['path'];
     }
 
     function bfs($url)
