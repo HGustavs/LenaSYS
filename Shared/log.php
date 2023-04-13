@@ -40,7 +40,6 @@
             
             
             echo "<table style='width:100%'>";
-            foreach($logContet as $row){
                 echo "<tr>";
                     echo "<th> Options </th>";
                     echo "<th> Parameters </th>";
@@ -49,16 +48,23 @@
                     echo "<th> Date </th>";
                 echo "</tr>";
                 echo "<tr>";
-                    echo "<td>".."</td>";
-                    /*echo "<td>".foreach($apara as $value){
-                        echo $value;
-                    }."</td>";*/
-                    echo "<td>".."</td>";
-                    echo "<td>".$kind."</td>";
-                    echo "<td>".$apara_type."</td>";
-                    echo "<td>".$dateTime."</td>";
+                    // Arrays of arrays can be traversed using a nested foreach
+                    foreach ($arr as $key => $value) {
+                        foreach ($value as $valuekey => $valuevalue) {
+                        echo $valuekey." ".$valuevalue."<br>";
+                        }
+                    }
+                    echo "<br>";
+
+                    // Arrays of arrays can be printed with print_r
+                    print_r($array);
+
+                    // foreach($arr as $row){
+                    //     foreach($row as $value){
+                    //         echo 
+                    //     }
+                    // }
                 echo "</tr>";
-            }
             echo "</table>";
 
             // $opt = $arr['opt'];
