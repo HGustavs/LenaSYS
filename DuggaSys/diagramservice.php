@@ -15,6 +15,10 @@
     // Connect to database and start session
     pdoConnect();
     session_start();
+function sendFileToJs()
+{
+        
+}
     if (isset($_SESSION['uid'])) {
         $userid = $_SESSION['uid'];
         $loginname = $_SESSION['loginname'];
