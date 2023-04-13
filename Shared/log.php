@@ -1,6 +1,7 @@
 
 
 <?php
+$_POST['input'] = "hej";
     if(isset ($_POST['input'])){
         $test = $_POST['input'];
         echo $test;
