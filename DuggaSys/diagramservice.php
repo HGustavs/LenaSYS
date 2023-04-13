@@ -17,7 +17,8 @@
     session_start();
 function sendFileToJs()
 {
-        
+        $json=file_get_contents("exampleDiagrams/ErTestDiagram.json");
+        return $json;
 }
     if (isset($_SESSION['uid'])) {
         $userid = $_SESSION['uid'];
