@@ -35,7 +35,7 @@ $enddate=getOP('enddate');
 $makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
-$coursegiturl=getOP('coursegiturl'); // for github url
+$coursegiturl=getOP('coursegitURL'); // for github url
 $LastCourseCreated=array();
 
 if(isset($_SESSION['uid'])){
