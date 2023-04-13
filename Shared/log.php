@@ -11,7 +11,7 @@
         <table border='1'>
         <?php
 
-            $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/log.json";
+            $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
             $jsontext = file_get_contents($url);
             $arr = json_decode($jsontext, true);
 
