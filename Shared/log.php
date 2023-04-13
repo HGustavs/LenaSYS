@@ -31,7 +31,7 @@
             // //     echo "<td>".$array[1]."</td>";
             // // }
 
-            print_r($logContet);
+            // print_r($logContet);
 
             // echo "<table style='width:100%'>";
             //     foreach($logContet as $row){
@@ -62,7 +62,7 @@
                     echo "<br>";
 
                     // Arrays of arrays can be printed with print_r
-                    print_r($array);
+                    // print_r($array);
 
                     // foreach($arr as $row){
                     //     foreach($row as $value){
