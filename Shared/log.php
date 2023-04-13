@@ -9,4 +9,4 @@
     // echo "<p>";
 ?>
 
-echo "<form action='dugga.js' method='POST'>";
+<!-- echo "<form action='dugga.js' method='POST'>"; -->
