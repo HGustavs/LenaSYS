@@ -80,10 +80,8 @@ function createNewCourse()
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-
-	console.log("All variables: " + coursename + "," + coursecode + "," + courseGitURL);
-
-  localStorage.setItem('lastCC', true);
+	
+  	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
 

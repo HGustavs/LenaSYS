@@ -84,9 +84,6 @@ if(checklogin()){
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':courseGitURL', $courseGitURL); // for github url
 
-			echo "<pre>". $courseGitURL."</pre>";
-			error_log($courseGitURL);
-
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries\n".$error[2];
