@@ -130,7 +130,11 @@
                     </span>
                 </div>
                 <div>
-                    <div id="elementPlacement0" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'><!--<-- UML functionality -->
+                    <div id="elementPlacement0"
+                         class="ERButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(0); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp()'
+                         onmousedown="holdPlacementButtonDown(0)"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Add an ER entity to the diagram</p><br>
@@ -168,7 +172,11 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement4" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement4"
+                         class="UMLButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(4); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(4)">
                         <img src="../Shared/icons/diagram_UML_entity.svg"/>
                         <span class="toolTipText"><b>UML class</b><br>
                             <p>Add an UML class to the diagram</p><br>
@@ -206,7 +214,11 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <div id="elementPlacement6" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(6); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement6"
+                         class="IEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(6); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(6)">
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>IE entity</b><br>
                             <p>Add an IE entity to the diagram</p><br>
@@ -288,7 +300,11 @@
                     </div>
                 </div><!--<-- State diagram functionality end -->
                 <div>
-                    <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
+                    <div id="elementPlacement1"
+                         class="ERButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(1); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(1)"> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
                         <span class="toolTipText"><b>ER relation</b><br>
                             <p>Add a ER relation to the diagram</p><br>
@@ -320,7 +336,11 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement5" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement5"
+                         class="UMLButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(5); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(5)">
                         <img src="../Shared/icons/diagram_inheritance.svg"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p><br>
@@ -352,7 +372,11 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement7" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(7); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement7"
+                         class="IEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(7); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(7)">
                         <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
                             <p>Add an IE inheritance to the diagram</p><br>
