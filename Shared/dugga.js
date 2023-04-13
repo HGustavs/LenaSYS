@@ -2814,13 +2814,17 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 	try {
 		//const response = await fetch("../Shared/dugga.js", {
 		fetch("../Shared/log.php", {
-			"method": "POST", // or 'PUT'
+			method: "POST", // or 'PUT'
 			//action: "/shared/log.php",
-			"headers": {
+			headers: {
 				"Content-Type": "application/json"
 			},
-			"body": JSON.stringify(logString)
-		});
+			body: JSON.stringify(logString)
+		});	.then(function (response) {
+			return respons.json();
+		})	.then(function (data) {
+			console.log(data);
+		})
 
 		//const result = await response.json();
 		//console.log("Success:", result);
