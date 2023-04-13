@@ -2,8 +2,9 @@
 
 <?php
     if(isset ($_POST)){
-        $test = $_POST;
-        echo $test;
+        $test = file_get_contents("php://input");
+        $testArray = json_decode($test, true); 
+        echo $testArray;
     }
     
 

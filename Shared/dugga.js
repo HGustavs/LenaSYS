@@ -2805,22 +2805,21 @@ $(document).on('keydown', function(e) {
 	}
 });
 
-async function logForTesting(/*opt, apara, kind*/) {  // IN THE TESTIUNG PHASE
+async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 	const input = "TEST";
-	//const logString = [opt, apara, kind];
+	const logString = [opt, apara, kind];
 	//var input={
 	//	window:document.getElementById("logtest").value,
-	console.log("shlabadabadab");
 	//};
 	try {
 		//const response = await fetch("../Shared/dugga.js", {
 		fetch("../Shared/log.php", {
-			method: "POST", // or 'PUT'
+			"method": "POST", // or 'PUT'
 			//action: "/shared/log.php",
-			headers: {
-				"Content-Type": "string", //"application/json",
+			"headers": {
+				"Content-Type": "application/json"
 			},
-			body: input //logJSON = JSON.stringify(input)
+			"body": JSON.stringify(input)
 		});
 
 		//const result = await response.json();
