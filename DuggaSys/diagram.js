@@ -1340,6 +1340,13 @@ var attrViaAttrCounter = 0;
 
     fetchDiagramFileContentOnLoad();
 }*/
+/**
+ * @description Creates a mock up UML diagram
+ */
+// TODO im not sure if its in the right region, feel free to move it elsewhere.
+function createMockupUML(){
+
+}
 //was in onSetup function moved it out 
  // Global statemachine init
 stateMachine = new StateMachine(data, lines);
