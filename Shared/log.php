@@ -11,7 +11,7 @@
         <table border='1'>
         <?php
 
-            $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/logging.json";
+            $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/log.json";
             $jsontext = file_get_contents($url);
             $arr = json_decode($jsontext, true);
 
@@ -22,8 +22,9 @@
             $dateTime = $arr['dateTime'];           
 
             echo "<ul>";
-                echo "<div>".$opt;."</div>"
-                echo"<div>";
+                echo "<div>" $opt "</div>";
+                echo "<div>" $apara "</div>"
+                echo "<div>";
                 foreach($apara as $value){
                     echo "<span>".$value."</span>";
                 }
