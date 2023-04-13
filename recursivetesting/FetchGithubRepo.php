@@ -41,26 +41,17 @@
     // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
     $repository = $urlParts[4];
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
-    $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+    $translatedURL = 'https://api.github.com/repos/' . $username . '/' . $repository . '/contents/';
     bfs($translatedURL);
-    $pdo = new PDO($database, $username, $password);
-    function insertIntoTable($item) {
-
-    $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath)
-                          VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
-    $query->bindParam(':repoName', $item['name']);
-    $query->bindParam(':repoURL', $item['repoURL']);
-    $query->bindParam(':repoFileType', $item['type']);
-    $query->bindParam(':repoDownloadURL', $item['download_url']);
-    $query->bindParam(':repoSHA', $item['sha']);
-    $query->bindParam(':repoPath', $item['path']);
-    }
-
     function bfs($url)
     {
         $visited = array();
         $fifoQueue = array();
         array_push($fifoQueue, $url);
+        $database = // Insert database name
+        $username = // Insert database username
+        $password = // Insert database password
+        $pdo = new PDO($database, $username, $password);
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
@@ -106,14 +97,21 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
-                        insertIntoTable($item);
+                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath)
+                          VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                        $query->bindParam(':repoName', $item['name']);
+                        $query->bindParam(':repoURL', $item['repoURL']);
+                        $query->bindParam(':repoFileType', $item['type']);
+                        $query->bindParam(':repoDownloadURL', $item['download_url']);
+                        $query->bindParam(':repoSHA', $item['sha']);
+                        $query->bindParam(':repoPath', $item['path']);
                         echo "</table>";
                     } else {
-                        echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";    
+                        echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";
                     }
                 }
             } else {
-                echo "<h2 style='display: flex; place-content: center;'>Invalid Link</h2>";     
+                echo "<h2 style='display: flex; place-content: center;'>Invalid Link</h2>";
             }
         }
     }
