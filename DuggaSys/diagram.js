@@ -1357,7 +1357,12 @@ function createMockupUML(){
         {id:makeRandomID(),fromID:"5D9ECB",toID:"26673E",time:1681378942204,type:"UML"},
         {id:makeRandomID(),fromID:"26673E",toID:"A680D0",time:1681378942204,type:"UML"},
     ]; 
-
+    for(var i = 0; i < UMLdemoData.length; i++){
+        addObjectToData(UMLdemoData[i], false);
+    }
+    for(var i = 0; i < UMLdemoLines.length; i++){
+        addObjectToLines(UMLdemoLines[i], false);
+    }
 }
 //was in onSetup function moved it out 
  // Global statemachine init
