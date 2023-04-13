@@ -23,7 +23,7 @@ $dateTime = $arr['dateTime'];
     echo "<tr>"; 
         echo "<td>";
             echo $apara;
-            foreach($apara as array)
+            foreach($apara as $arr)
             echo "<tr>";
             echo $apara[];
             echo "</tr>";
