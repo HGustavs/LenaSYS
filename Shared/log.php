@@ -21,20 +21,19 @@
             $apara_type = $arr['apara_type'];
             $dateTime = $arr['dateTime'];           
 
-            echo "<ul>";
-                echo "<div>" $opt "</div>";
-                echo "<div>" $apara "</div>"
-                echo "<div>";
+           
+            echo "<td>".$opt;."</td>"
+                echo"<tr>";
                 foreach($apara as $value){
-                    echo "<span>".$value."</span>";
+                    echo "<td>".$value."</td>";
                 }
-                echo "</div>";
-                echo "<div>".$kind."</div>";
-                echo "<div>".$apara_type."<div>";
-                echo "<div>".$dateTime."<div>";
-            echo "</ul>"; 
-
-
+                echo "</tr>";
+                echo "<tr>"
+                echo "<td>".$kind."</td>";
+                echo "<td>".$apara_type."<td>";
+                echo "<td>".$dateTime."<td>";
+            echo "</tr>";
+            
              print_r($arr);
 
 
