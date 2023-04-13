@@ -2821,7 +2821,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 			},
 			body: JSON.stringify(logString)
 		}).then(function (response) {
-			return response.text;
+			return response.json();
 		}).then(function (data) {
 			console.log(data);
 		})
