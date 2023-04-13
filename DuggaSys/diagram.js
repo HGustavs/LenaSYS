@@ -1796,7 +1796,7 @@ document.addEventListener('keyup', function (e)
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
+        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
         if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
