@@ -963,9 +963,12 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
-	
+
+  var allApara = {}; // To contain all apara
+
   var para="";
 	for (var key in apara) {
+		allApara[key] = apara[key]; // Add apara to array
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
 			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
@@ -1276,6 +1279,36 @@ function AJAXService(opt,apara,kind)
 			// }
 		});
 	}
+
+	// Logging to JSON
+	var date = new Date();
+	var nowDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+	var nowTime = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+	var dateTime = nowDate+' '+nowTime;
+
+
+	// Create JS Object with all data
+	const loggingData = new Object();
+	loggingData.opt = opt;
+	loggingData.apara = allApara;
+	loggingData.kind = kind;
+	loggingData.apara_type = typeof(apara[0]);
+	loggingData.dateTime = dateTime
+
+	const logginDataJSON = JSON.stringify(loggingData);
+
+	// Sends log data as JSON to logging.php
+	fetch('../Shared/logging.php', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+		},
+		body: logginDataJSON
+	})
+
+	localStorage.setItem("loggingData", logginDataJSON);
+
+	// console.log(logginDataJSON);
 }
 
 function newSubmission(){
