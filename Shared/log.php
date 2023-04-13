@@ -4,7 +4,11 @@
     if(isset ($_POST)){
         $test = file_get_contents("php://input");
         $testArray = json_decode($test, true); 
-        echo $testArray["kind"];
+        foreach($testArray as $value ){
+            echo $value;
+        }
+        // echo $testArray["kind"];
+        // echo json_encode[$test];
     }
     
 
