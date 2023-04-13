@@ -11534,10 +11534,16 @@ function centerCamera()
  * @param {String} filename The name of the file that get generated
  * @param {*} dataObj The text content of the file
  */
-function getDiagramFile()
-{
-    
-}
+async function getDiagramFile(path)
+    {
+        const data=new FormData();
+         data.append("function", "getDiagramFile");
+         data.append("path", path);
+         const response=await fetch("diagramservice.php", {method: "post", body: data});
+         if (!response.ok)
+         console.error("error when trying to get diagram file"+response.status);
+         return await response.text();
+    }
 
 function downloadFile(filename, dataObj)
 {
