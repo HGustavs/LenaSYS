@@ -1297,6 +1297,7 @@ function AJAXService(opt,apara,kind)
 
 	const logginDataJSON = JSON.stringify(loggingData);
 
+	// Sends log data as JSON to logging.php
 	fetch('../Shared/logging.php', {
 		method: 'POST',
 		headers: {
