@@ -156,11 +156,19 @@ if(!file_exists ('../../log')) {
 //---------------------------------------------------------------------------------------------------------------
 // IF MAKING CHANGES TO SQLite tables, increment this value!
 //---------------------------------------------------------------------------------------------------------------
-$dbVersion = 6;
+$dbVersion = 6; 
+$metadataDbVersion = 1;
 //---------------------------------------------------------------------------------------------------------------
 
 try {
 	$log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
+} catch (PDOException $e) {
+	echo "Failed to connect to the database";
+	throw $e;
+}
+
+try {
+	$metadata_db = new PDO('sqlite:../../log/metadata'.$dbVersion.'.db');
 } catch (PDOException $e) {
 	echo "Failed to connect to the database";
 	throw $e;
@@ -227,6 +235,27 @@ $sql = '
 	);
 ';
 $log_db->exec($sql);
+
+try {
+	$metadata_db = new PDO('sqlite:../../log/metadata'.$metadataDbVersion.'.db');
+} catch (PDOException $e) {
+	echo "Failed to connect to the database";
+	throw $e;
+} 
+
+$sql2 = '
+	CREATE TABLE gitRepos( 
+		repoID int UNSIGNED NOT NULL AUTO_INCREMENT,
+		repoName varchar(50), 
+    repoURL varchar(500), 
+    repoFileType varchar(50), 
+    repoDownloadURL varchar(1000), 
+    repoSHA varchar(5000), 
+    repoPath varchar(1000), 
+    PRIMARY KEY (repoID)
+		);
+'; 
+$metadata_db->exec($sql2);
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
