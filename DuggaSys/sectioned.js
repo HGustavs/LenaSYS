@@ -1621,7 +1621,8 @@ function returnedSection(data) {
 
         }
         // github icon
-        if (itemKind === 0 || itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 4 && data['writeaccess'] || data['studentteacher'])  {
+          //0 == Header || 1 == Section 
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class='' 
