@@ -1345,7 +1345,7 @@ var attrViaAttrCounter = 0;
  */
 // TODO im not sure if its in the right region, feel free to move it elsewhere.
 function createMockupUML(){
-    const Chef_ID = makeRandomID();
+    /* const Chef_ID = makeRandomID();
     const Waiter_ID = makeRandomID();
     const Staff_ID = makeRandomID();
     const UMLRelationID = makeRandomID();
@@ -1354,19 +1354,21 @@ function createMockupUML(){
         {kind:"UMLEntity",id:Waiter_ID,x:950,y:667,time:1681372592283,name:"Waiter",stroke:["#383737"],attributes:["-name"],functions:["+createsOrder()"]},
         {kind:"UMLEntity",id:Staff_ID,x:1194,"y":12,time:1681377133043,name:"Staff",stroke:["#383737"],attributes:["-pnr: int","-experience: int"],functions:[]},
         {kind:"UMLRelation",stroke:["#383737"],x:1230,y:324,id:"26673E"},
-    ];
+    ]; */
     /* const UMLdemoLines = [
         {id:makeRandomID(),fromID:Waiter_ID,toID:Chef_ID,time:1681378942204,type:"UML"},
         {id:makeRandomID(),fromID:Waiter_ID,toID:UMLRelationID,time:1681378942204,type:"UML"},
         {id:makeRandomID(),fromID:Chef_ID,toID:UMLRelationID,time:1681378942204,type:"UML"},
         {id:makeRandomID(),fromID:UMLRelationID,toID:Staff_ID,time:1681378942204,type:"UML"},
     ]; */ 
-    for(var i = 0; i < UMLdemoData.length; i++){
+    /* for(var i = 0; i < UMLdemoData.length; i++){
         addObjectToData(UMLdemoData[i], false);
-    }
+    } */
     /* for(var i = 0; i < UMLdemoLines.length; i++){
         addObjectToLines(UMLdemoLines[i], false);
     } */
+
+    //fetchDiagramFileContentOnLoad();
 }
 //was in onSetup function moved it out 
  // Global statemachine init
