@@ -3564,7 +3564,7 @@ function rectsIntersect (left, right)
      objects.forEach(obj => {
 
          if (obj.isLocked) return;
-         if(entityIsOverlapping(obj.id, obj.x - deltaX, obj.y - deltaY)) return;
+         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) return;
 
          if (settings.grid.snapToGrid) {
 
