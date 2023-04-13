@@ -14,6 +14,7 @@
             $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
             $jsontext = file_get_contents($url);
             $arr = json_decode($jsontext, true);
+            
 
             $logContet['opt'][$arr['opt']];
             foreach($arr['apara'] as $row){
@@ -48,9 +49,10 @@
                 echo "</tr>";
                 echo "<tr>";
                     echo "<td>".$opt."</td>";
-                    echo "<td>".foreach($apara as $value){
+                    /*echo "<td>".foreach($apara as $value){
                         echo $value;
-                    }."</td>";
+                    }."</td>";*/
+                    echo "<td>".$apara."</td>";
                     echo "<td>".$kind."</td>";
                     echo "<td>".$apara_type."</td>";
                     echo "<td>".$dateTime."</td>";
