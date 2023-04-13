@@ -48,10 +48,8 @@
         $visited = array();
         $fifoQueue = array();
         array_push($fifoQueue, $url);
-        // $database = // Insert database name
-        // $username = // Insert database username
-        // $password = // Insert database password
-        // $pdo = new PDO($database, $username, $password);
+        // $database = // Länk till databas
+        // $pdo = new PDO($database);
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
@@ -97,13 +95,13 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
-                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
-                        $query->bindParam(':repoName', $item['name']);
-                        $query->bindParam(':repoURL', $item['repoURL']);
-                        $query->bindParam(':repoFileType', $item['type']);
-                        $query->bindParam(':repoDownloadURL', $item['download_url']);
-                        $query->bindParam(':repoSHA', $item['sha']);
-                        $query->bindParam(':repoPath', $item['path']);
+                        // $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                        // $query->bindParam(':repoName', $item['name']);
+                        // $query->bindParam(':repoURL', $item['repoURL']);
+                        // $query->bindParam(':repoFileType', $item['type']);
+                        // $query->bindParam(':repoDownloadURL', $item['download_url']);
+                        // $query->bindParam(':repoSHA', $item['sha']);
+                        // $query->bindParam(':repoPath', $item['path']);
                         // $query->execute();
                         echo "</table>";
                     } else {
