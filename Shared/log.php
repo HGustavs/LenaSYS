@@ -18,13 +18,13 @@
 
             echo $arr;
 
-            $logContet['opt'][$arr['opt']];
-            foreach($arr['apara'] as $row){
-                $logContet['apara'][$row];
-            }
-            $logContet['kind'][$arr['kind']];
-            $logContet['apara_type'][$arr['apara_type']];
-            $logContet['dateTime'][$arr['dateTime']];
+            // // // $logContet['opt'][$arr['opt']];
+            // // // foreach($arr['apara'] as $row){
+            // // //     $logContet['apara'][$row];
+            // // // }
+            // // // $logContet['kind'][$arr['kind']];
+            // // // $logContet['apara_type'][$arr['apara_type']];
+            // // // $logContet['dateTime'][$arr['dateTime']];
 
 
             foreach ($apara[1] as $arr)
