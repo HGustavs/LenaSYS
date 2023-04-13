@@ -3489,7 +3489,7 @@ function refreshCodeExample(exampelid){
 
   $(document).ready(function(){
     $(".refreshButton").click(function(){
-      var id = $(firstChild).attr('id');
+      var id = $(this).attr('id');
       console.log(id);
     })
   })
