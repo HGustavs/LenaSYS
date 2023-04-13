@@ -57,7 +57,7 @@
                     foreach ($arr as $key => $value) {
                         echo $value."</br>";
                         foreach ($value as $valuekey => $valuevalue) {
-                        echo "<tb>".$valuekey.": ".$valuevalue."</td></br>";
+                        echo "<td>".$valuekey.": ".$valuevalue."</td></br>";
                         }
                     }
                     echo "<br>";
