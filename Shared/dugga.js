@@ -2820,7 +2820,7 @@ async function logForTesting(opt, apara, kind) {  // IN THE TESTIUNG PHASE
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(logString)
-		});	.then(function (response) {
+		})	.then(function (response) {
 			return respons.json();
 		})	.then(function (data) {
 			console.log(data);
