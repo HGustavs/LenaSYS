@@ -1,6 +1,6 @@
 <?php
-    if ($_POST["logJSON"]) {
-        echo $_POST['logJSON'];
+    if ($_POST['input']) {
+        echo $_POST['input'];
     }
 
     echo "<p>";

@@ -2820,7 +2820,7 @@ async function logForTesting(/*opt, apara, kind*/) {  // IN THE TESTIUNG PHASE
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: logJSON = JSON.stringify(input)
+			body: input //logJSON = JSON.stringify(input)
 		});
 
 		//const result = await response.json();
