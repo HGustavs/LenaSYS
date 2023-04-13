@@ -454,12 +454,13 @@ if(checklogin()){
 			$debug = "Error duplicate course name\n" . $error[2];
 		}
 			}else if(strcmp($opt,"UPDATE")===0){
-			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
+			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:coursegiturl WHERE cid=:cid;");
 
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':visibility', $visibility);
 			$query->bindParam(':coursecode', $coursecode);
+			$query->bindParam(':coursegiturl', $coursegiturl);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
