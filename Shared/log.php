@@ -1,6 +1,11 @@
+
+
 <?php
-    $test = $_POST['input'];
-    echo $test;
+    if(isset ($_POST['input'])){
+        $test = $_POST['input'];
+        echo $test;
+    }
+    
 
     // if ($_POST['input']) {
     //     echo $_POST['input'];
