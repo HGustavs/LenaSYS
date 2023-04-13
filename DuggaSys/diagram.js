@@ -2180,8 +2180,12 @@ function mouseMode_onMouseUp(event)
                 
                 // Check if the element to create would overlap others, returns if true
                 if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
-                    console.error("Can not create an element that overlaps other elements")
+                    displayMessage(messageTypes.ERROR, "Error: You can't create elements that overlap eachother.");
+                    console.error("Failed to create an element as it overlaps other element(s)")
+
+                    // Remove added element from data as it should remain
                     data.splice(data.length-1, 1)
+                    
                     makeGhost();
                     showdata();
                     return 
@@ -3564,7 +3568,7 @@ function rectsIntersect (left, right)
      objects.forEach(obj => {
 
          if (obj.isLocked) return;
-         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) return;
+         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) return displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");;
 
          if (settings.grid.snapToGrid) {
 
@@ -3695,7 +3699,6 @@ function entityIsOverlapping(id, x, y)
 
             if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y){
-                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 isOverlapping = true;
                 break;
             }
