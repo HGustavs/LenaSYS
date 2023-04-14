@@ -6,16 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 
-</head>
-<body>
-	<?php 
-	  // print_r();
-		// Get the contents of the HTML page
-		echo $html = file_get_contents("https://github.com/HGustavs/LenaSYS"); // Fails to load latest commit unless clearing cache on reload
-	?>
-
 	<script>
-		var page = '<?php echo $html; ?>';
+		var page = '<?php $html; ?>';
 
 		const regexp = /^<a-href=\"(.*?)\/commit\//;
 		var link = page.querySelectorAll('.f6 a');
@@ -26,6 +18,15 @@
 		}
 
 	</script>
+</head>
+<body>
+	<?php 
+	  // print_r();
+		// Get the contents of the HTML page
+		echo $html = file_get_contents("https://github.com/HGustavs/LenaSYS"); // Fails to load latest commit unless clearing cache on reload
+	?>
+
+	
 
 </body>
 </html>
