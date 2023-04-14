@@ -29,28 +29,28 @@
             $arr = json_decode($jsontext, true);
             
             
-            echo "<table style='width:100%'>";
-                echo "<tr>";
-                    echo "<th> Options </th>";
-                    echo "<th> Parameters </th>";
-                    echo "<th> Kind of Page </th>";
-                    echo "<th> Parameter type </th>";
-                    echo "<th> Date </th>";
+            // echo "<table style='width:100%'>";
+            //     echo "<tr>";
+            //         echo "<th> Options </th>";
+            //         echo "<th> Parameters </th>";
+            //         echo "<th> Kind of Page </th>";
+            //         echo "<th> Parameter type </th>";
+            //         echo "<th> Date </th>";
               
-                echo "<tr>";
-                    // Arrays of arrays can be traversed using a nested foreach
-                    foreach ($arr as $key => $value) {
-                        echo $value."</br>";
-                        foreach ($value as $valuekey => $valuevalue) {
-                        echo "<td>".$valuekey.": ".$valuevalue."</td></br>";
-                        }
-                    }
-                    echo "<br>";
-                    echo "</tr>";
+            //     echo "<tr>";
+            //         // Arrays of arrays can be traversed using a nested foreach
+            //         foreach ($arr as $key => $value) {
+            //             echo $value."</br>";
+            //             foreach ($value as $valuekey => $valuevalue) {
+            //             echo "<td>".$valuekey.": ".$valuevalue."</td></br>";
+            //             }
+            //         }
+            //         echo "<br>";
+            //         echo "</tr>";
 
             
-                echo "</tr>";
-            echo "</table>";
+            //     echo "</tr>";
+            // echo "</table>";
 
         ?>    
     </body>
