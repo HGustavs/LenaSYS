@@ -231,8 +231,6 @@ $sql = '
 ';
 $log_db->exec($sql);
 
-$log_db->debugDumpParams(); // Dump log data
-
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
 //------------------------------------------------------------------------------------------------
@@ -298,6 +296,7 @@ if (!strstr(strtolower($refer), 'service')) {
 
 	if($username != "00") {
 		$query->execute();
+		$query->debugDumpParams(); // Dump log data
 	}
 }
 
