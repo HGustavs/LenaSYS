@@ -972,6 +972,13 @@ input{
     stroke: white;
   }
 
+  .cardinalityLabel{
+      fill: black;
+  }
+  .cardinalityLabelText{
+      fill: white;
+  }
+
   /*/ END /*/
 
 /* Style for "course-dropdown" START */
