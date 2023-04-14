@@ -15,6 +15,10 @@
 	            echo "Failed to connect to the database";
 	            throw $e;
             }
+            $log_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+            $log_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);           // en del av error hanteringen.
+
+    
             
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
