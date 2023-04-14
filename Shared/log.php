@@ -20,25 +20,25 @@
 
     
             
-            // echo "<table style='width:100%'>";
-            //     foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
-
-            //         echo "<th>".$column['uuid']."</th>";
-            //         echo "<script> console.log(".$column['Field']."); </script>";
-            //         printf("EFTER".$column['Field']); 
-
-            //     }  
-            // echo "</table>";
-            
             echo "<table style='width:100%'>";
-                foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
-                    echo "BALALA";
-                    echo "<th>".$row['uuid']."</th>";
-                    echo "<script> console.log(".$row['uuid']."); </script>";
-                    printf("EFTER".$row['Field']); 
+                foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
+
+                    echo "<th>".$column['Field']."</th>";
+                    echo "<script> console.log(".$column['Field']."); </script>";
+                    printf("EFTER".$column['Field']); 
 
                 }  
             echo "</table>";
+            
+            // echo "<table style='width:100%'>";
+            //     foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
+            //         echo "BALALA";
+            //         echo "<th>".$row['uuid']."</th>";
+            //         echo "<script> console.log(".$row['uuid']."); </script>";
+            //         printf("EFTER".$row['Field']); 
+
+            //     }  
+            // echo "</table>";
             
 
 
