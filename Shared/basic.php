@@ -235,24 +235,15 @@ try {
 	echo "Failed to connect to the database";
 	throw $e;
 } 
-
-	// CREATE TABLE UNSIGNED NOT NULL AUTO_INCREMENT gitRepos ( 
-	// 	repoID INTEGER PRIMARY KEY,
-	// 	repoName VARCHAR(50), 
-  //   repoURL VARCHAR(255), 
-  //   repoFileType VARCHAR(50), 
-  //   repoDownloadURL VARCHAR(255), 
-  //   repoSHA VARCHAR(255), 
-  //   repoPath VARCHAR(255), 
-	// );
 $sql2 = '
-	CREATE TABLE IF NOT EXISTS userHistory (
-		refer TEXT,
-		userid INTEGER(10),
-		username VARCHAR(50),
-		IP TEXT,
-		URLParams VARCHAR(255),
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	CREATE TABLE UNSIGNED NOT NULL AUTO_INCREMENT gitRepos ( 
+		repoID INTEGER PRIMARY KEY,
+		repoName VARCHAR(50), 
+    repoURL VARCHAR(255), 
+    repoFileType VARCHAR(50), 
+    repoDownloadURL VARCHAR(255), 
+    repoSHA VARCHAR(255), 
+    repoPath VARCHAR(255), 
 	);
 '; 
 $metadata_db->exec($sql2);
