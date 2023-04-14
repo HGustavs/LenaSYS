@@ -8,6 +8,10 @@
 </head>
 
     <body>
+    <form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">  
+    Table List :  
+            <select dbtable Name='NEW'>  
+            <option value="">--- Select ---</option> 
 
         <table border='1'>
 
@@ -31,11 +35,31 @@
             // $log_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);           // en del av error hanteringen.
 
     
-            echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th></tr>";
-            
+            //echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th></tr>";
+              
+                //mysql_connect ("localhost","root","");  
+                mysql_select_db ("company");  
+                $select="company";  
+                if (isset ($select)&&$select!=""){  
+                $select=$_POST ['NEW'];  
+            }  
+            ?>  
+            <? 
+            $list=mysql_query("select * from employee order by emp_id asc");  
+            while($row_list=mysql_fetch_assoc($list)){  
+                ?>  
+                    <option value="<? echo $row_list['emp_id']; ?>"<? if($row_list['emp_id']==$select){ echo "selected"; } ?>>  
+                                         <?echo $row_list['emp_name'];?>  
+                    </option>  
+                <?  
+                }  
+                ?>  
+            </select>  
+            <input type="submit" name="Submit" value="Select" />  
+        </form>
 
             
-            
+           <?php 
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
                     echo "<th>".$column['Field']."</th>";
