@@ -24,13 +24,15 @@
 		$dom->preserveWhiteSpace = FALSE;
 		$dom->loadHTML($html);
 
-		$xpath = new DOMXPath($dom);
+		$divs = $dom->getElementsByClassName('Box');
+        foreach ($divs as $div) {
+           if($div->nodeName == 'a'){
+						$link = $div->getAttribute('href');
+						echo print_r($link->nodeValue);
+					 }
+        }
 
-		$resource = $xpath->query("//div/a[@class='link--secondary']")->item(0);
-
-		echo $resource->textContent;
-
-		echo print_r($resource);
+		//echo print_r();
 	?>
 </body>
 </html>
