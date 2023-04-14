@@ -11,7 +11,7 @@
 	<?php 
 	  // print_r();
 		// Get the contents of the HTML page
-		$html = file_get_contents("https://github.com/HGustavs/LenaSYS"); // Fails to load latest commit unless clearing cache on reload
+		echo $html = file_get_contents("https://github.com/HGustavs/LenaSYS"); // Fails to load latest commit unless clearing cache on reload
 	?>
 
 	<script>
