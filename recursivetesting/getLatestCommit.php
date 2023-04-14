@@ -24,15 +24,15 @@
 		$dom->preserveWhiteSpace = FALSE;
 		$dom->loadHTML($html);
 
-		$divs = $dom->getElementsByTagName('div');
-        foreach ($divs as $div) {
-					echo "hej";
-					if($div->attribute('class')=='Box'){
-						echo "Attribute '$div'";
+		// $divs = $dom->getElementsByTagName('div');
+    //     foreach ($divs as $div) {
+		// 			echo "hej";
+		// 			if($div->attribute('class')=='Box'){
+		// 				echo "Attribute '$div'";
 
-					}
+					// }
 					
-        }
+        // }
 
 				// getElementByClassName('Box');
 				// 	if($div->nodeName == 'a'){
@@ -41,7 +41,7 @@
 				// 		echo print_r($link->nodeValue);
 				// 	 }
 
-		//echo print_r();
+		echo print_r($dom);
 	?>
 </body>
 </html>
