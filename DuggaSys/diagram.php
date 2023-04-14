@@ -561,19 +561,19 @@
             <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden' style="position: absolute;">
             </fieldset>
 
-            <fieldset class='options-fieldset options-section' style='position: absolute;'>
+            <fieldset class='options-fieldset options-section' style='auto;'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
-                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">show example diagrams </button><br><br>
+                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
-                    <option>IEE diagrams</option>
-                    <option>class diagrams</option>
-                    <option>er diagrams </option>
+                    <option>IE diagrams</option>
+                    <option>UML diagrams</option>
+                    <option>ER diagrams </option>
     </select>
                 </div>
 
@@ -582,12 +582,12 @@
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style='position: absolute; top: 35%; margin-top: 2%;'>
+            <fieldset class='options-fieldset options-section' style='auto;'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style="position: absolute; top: 48%; margin-top: 2%;">
+            <fieldset class='options-fieldset options-section' style="auto;">
                 <legend>Import</legend>
                 <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
