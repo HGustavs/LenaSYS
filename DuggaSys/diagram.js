@@ -4203,7 +4203,7 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
-    updateCSSForAllElements()
+    toggleBorderOfElements();
 }
 
 /**
