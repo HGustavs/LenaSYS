@@ -33,11 +33,29 @@
     
             echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th></tr>";
             
+
+            
+            echo "<select name='Db Tables'>";
+            foreach ($arr as $dbtables) {
+                 echo '<option value="'.$dbtables[1].'" >'.$dbtables[0].'</option>';
+                } 
+                echo "<input type='submit' value='Get Tables'>"; 
+                echo "</select>"; 
+                echo "</form>";
+                   // Get tillverkare or default    
+                 if(isset($_POST['dbtables']))
+                 {
+                    $indbtables=$_POST['dbtables']; 
+                }
+                    else{
+                        $indbtables="Tokigt";
+                    }
+            
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
                     echo "<th>".$column['Field']."</th>";
                     echo "<script> console.log(".$column['Field']."); </script>"; 
-                    //debug($column);
+                    debug($column);
                 }  
             echo "</table>";
             
