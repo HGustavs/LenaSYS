@@ -230,7 +230,7 @@ $sql = '
 $log_db->exec($sql);
 
 try {
-	$metadata_db = new PDO('sqlite:../log/metadata'.$metadataDbVersion.'.db');
+	$metadata_db = new PDO('sqlite:../../log/metadata'.$metadataDbVersion.'.db');
 } catch (PDOException $e) {
 	echo "Failed to connect to the database";
 	throw $e;
