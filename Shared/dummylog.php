@@ -47,7 +47,7 @@ $log_db->exec($sql);
 
 
 
-$query = $pdo->prepare( "SELECT id, uuid,eventType,service,userid,timestamp,userAgent,operatingSystem FROM serviceLogEntries WHERE id = :id;");
+$query = $log_db->prepare( "SELECT id, uuid,eventType,service,userid,timestamp,userAgent,operatingSystem FROM serviceLogEntries WHERE id = :id;");
 $query->bindParam(':id', $id);
 $query->execute();
 
