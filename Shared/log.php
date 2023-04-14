@@ -21,6 +21,7 @@
 
                     echo "<th>".$column['uuid']."</th>";
                     echo "<script> console.log(".$column['Field']."); </script>";
+                    printf($column['Field']); 
 
                 }  
             echo "</table>";
