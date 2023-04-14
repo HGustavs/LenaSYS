@@ -26,7 +26,7 @@
 
 		$xpath = new DOMXPath($dom);
 
-		$resource = $xpath->query("//div/a[@class='link--secondary']");
+		$resource = $xpath->query("//div/a[@class='link--secondary']")->item(0);
 
 		echo $resource->textContent;
 
