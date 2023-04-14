@@ -15,10 +15,12 @@
 	            echo "Failed to connect to the database";
 	            throw $e;
             }
-
+            
             echo "<table style='width:100%'>";
                 foreach($log_db->prepare('SELECT * FROM serviceLogEntries;') as $column) {
                     echo "<th>".$column['field']."</th>";
+                    echo "<script> console.log(".$column['field']."); </script>";
+
                 }  
             echo "</table>";
             
