@@ -7,15 +7,14 @@
 	<title>Document</title>
 
 	<script>
-		var page = '<?php $html; ?>';
 
-		const regexp = /^<a-href=\"(.*?)\/commit\//;
-		var link = page.querySelectorAll('.f6 a');
-		for(let i = 0; i<link.length; i++) {
-			if(i.match(regexp)) {
-				console.log(link[i]);
-			}
-		}
+		// const regexp = /^<a-href=\"(.*?)\/commit\//;
+		// var link = .querySelectorAll('.f6 a');
+		// for(let i = 0; i<link.length; i++) {
+		// 	if(i.match(regexp)) {
+		// 		console.log(link[i]);
+		// 	}
+		// }
 
 	</script>
 </head>
