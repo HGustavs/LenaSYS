@@ -308,10 +308,11 @@ p {
   text-decoration: none;
 }
 
-cardinalityLabel{
+.cardinalityLabel {
     fill: white;
 }
-cardinalityLabelText{
+
+.cardinalityLabelText {
     fill: black;
 }
 
