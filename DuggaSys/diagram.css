@@ -167,6 +167,7 @@
 }
 #ruler-y {
     left: 20px;
+    background-color: #000;
     width: 30px;
     height: 1px !important;
     position: absolute;
@@ -175,18 +176,21 @@
 
 #ruler-x {
     top: 20px;
+    background-color: #000;
     height: 30px;
     width: 1px;
     position: absolute;
     z-index: 500;
 }
 #ruler-x-svg {
+    background-color: #fff;
     position:absolute;
     width:100%;
     height:40px;
     z-index:2;
 }
 #ruler-y-svg {
+    background-color: #fff;
     position:absolute;
     width:40px;
     height:100%;
@@ -197,6 +201,7 @@
     position: absolute;
     height: 40px;
     width: 40px;
+    background-color: #fff;
     z-index: 700;
     top: 0px;
 }
