@@ -1099,10 +1099,14 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
 /* Diagram line style*/ 
-.diagram-umlicon-darkmode {
-  /*fill: white;*/
+.diagram-umlicon-triangle {
+  fill: white;
   stroke: white;
 }
+.diagram-umlicon-darkmode {
+    stroke: white;
+  }
+
 
 /* Diagram Messages */
 #diagram-message {
