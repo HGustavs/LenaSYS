@@ -9,7 +9,7 @@
 
     <body>
 
-        
+        <table border='1'>
 
         <?php
         
@@ -33,13 +33,13 @@
     
             echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th><th colspan='4'></th></tr>";
             
-            echo "<table style='width:100%'>";
+            //echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
                     echo "<th>".$column['Field']."</th>";
                     echo "<script> console.log(".$column['Field']."); </script>"; 
                     debug($column);
                 }  
-            echo "</table>";
+            //echo "</table>";
             
             
             // echo "<table style='width:100%'>";
@@ -84,7 +84,7 @@
            
 
         ?>    
-       
+        </table>
     </body>
 
 </html>
