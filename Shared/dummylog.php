@@ -41,66 +41,7 @@ try {
 	throw $e;
 }
 
-$sql = '
-	CREATE TABLE IF NOT EXISTS logEntries (
-		id INTEGER PRIMARY KEY,
-		eventType INTEGER,
-		description TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-		userAgent TEXT
-	);
-	CREATE TABLE IF NOT EXISTS userLogEntries (
-		id INTEGER PRIMARY KEY,
-		uid INTEGER(10),
-		username VARCHAR(15),
-		eventType INTEGER,
-		description VARCHAR(50),
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-		userAgent TEXT,
-		remoteAddress VARCHAR(15)
-	);
-	CREATE TABLE IF NOT EXISTS serviceLogEntries (
-		id INTEGER PRIMARY KEY,
-		uuid CHAR(15),
-		eventType INTEGER,
-		service VARCHAR(15),
-		userid VARCHAR(8),
-		timestamp INTEGER,
-		userAgent TEXT,
-		operatingSystem VARCHAR(100),
-		info TEXT,
-		referer TEXT,
-		IP TEXT,
-		browser VARCHAR(100)
-	);
-	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
-		id INTEGER PRIMARY KEY,
-		type INTEGER,
-		courseid INTEGER,
-		uid INTEGER(10),
-		username VARCHAR(15),
-		exampleid INTEGER,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS duggaLoadLogEntries(
-		id INTEGER PRIMARY KEY,
-		type INTEGER,
-		cid INTEGER,
-		uid INTEGER(10),
-		username VARCHAR(15),
-		vers INTEGER,
-		quizid INTEGER,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS userHistory (
-		refer TEXT,
-		userid INTEGER(10),
-		username VARCHAR(50),
-		IP TEXT,
-		URLParams VARCHAR(255),
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-';
+
 $log_db->exec($sql);    
 
 
