@@ -17,26 +17,28 @@
 <body>
 	<?php 
 	  // print_r();
-
 		// Get the contents of the HTML page
 		$html = file_get_contents('https://github.com/HGustavs/LenaSYS'); // Fails to load latest commit unless clearing cache on reload
-		
-		// Parse the HTML with DOM document 
+	?>
+		<!-- // Parse the HTML with DOM document 
 		// $dom = new DomDocument;
  		// $dom->preserveWhiteSpace = FALSE;
-		// $dom->loadHTML($html);
+		// $dom->loadHTML($html); -->
+
+	<script>
+		var page = '<?php echo $html; ?>';
+
+		const regexp = /^<a-href=\"(.*?)\/commit\//;
+		var link = page.querySelectorAll('.f6 a');
+		for(let i = 0; i<link.length; i++) {
+			if(i.match(regexp)) {
+				console.log(link[i]);
+			}
+		}
+	</script>
 
 
-		echo "<script>";
-		echo "const regexp = /^<a-href=\"(.*?)\/commit\//;";
-		echo "var link = document.querySelectorAll('.f6 a');";
-		echo "for(let i = 0; i<link.length; i++){";
-		echo "if(i.match(regexp)){";
-		echo "console.log(link[i]);";
-		echo "}}</script>";
-
-
-		//  $divs = $html->getElementsByTagName('div');
+		<!-- //  $divs = $html->getElementsByTagName('div');
     //     foreach ($divs as $div) {
 		// 			echo "hej";
 		//  			if($div->attribute('class')=='Box'){
@@ -53,7 +55,7 @@
 				// 		echo print_r($link->nodeValue);
 				// 	 }
 
-		// echo print_r($dom);
-	?>
+		// echo print_r($dom); -->
+
 </body>
 </html>
