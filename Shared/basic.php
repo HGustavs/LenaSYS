@@ -167,13 +167,6 @@ try {
 	throw $e;
 }
 
-try {
-	$metadata_db = new PDO('sqlite:../../log/metadata'.$dbVersion.'.db');
-} catch (PDOException $e) {
-	echo "Failed to connect to the database";
-	throw $e;
-}
-
 $sql = '
 	CREATE TABLE IF NOT EXISTS logEntries (
 		id INTEGER PRIMARY KEY,
@@ -244,7 +237,7 @@ try {
 } 
 
 $sql2 = '
-	CREATE TABLE gitRepos( 
+	CREATE TABLE IF NOT EXISTS gitRepos( 
 		repoID int UNSIGNED NOT NULL AUTO_INCREMENT,
 		repoName varchar(50), 
     repoURL varchar(500), 
