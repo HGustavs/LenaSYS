@@ -35,7 +35,7 @@ $dbVersion = 6;
 //---------------------------------------------------------------------------------------------------------------
 
 try {
-	$log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
+	$log_db = new PDO('sqlite:../../log/loglena6.db');
 } catch (PDOException $e) {
 	echo "Failed to connect to the database";
 	throw $e;
