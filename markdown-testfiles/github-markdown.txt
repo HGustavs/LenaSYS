@@ -71,7 +71,7 @@ This code should display a different picture based on if user is in dark/light m
 3. ordered list
   * unordered sub-list
   1 ordered sub-list
-⋅⋅⋅ properly intented paragraphs
+   properly indented paragraphs
 
 1. nested list
    - second item
