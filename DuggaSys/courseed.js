@@ -75,14 +75,25 @@ function newCourse()
 
 function createNewCourse()
 {
+	console.log("THIS IS NOT HOW IT SHOULD WORK IN COURSEED");
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	var coursegiturl = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-
+	getGithubRepo(coursegiturl);
     localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : coursegiturl  }, "COURSE");
+}
+function getGithubRepo(githubURL) {
+	console.log("THIS IS NOT HOW IT SHOULD WORK IN GitHubRepo" + githubURL);
+	$.ajax({
+		url: "../recursivetesting/FetchGithubRepo.php",
+		type: "POST",
+		data: {"githubURL=":githubURL, 'action':'getNewCourseGithub'},
+		dataType: "json",
+		success: function(response) {console.log(response)}
+	});
 }
 
 function copyVersion()

@@ -30,7 +30,32 @@
 </style>
 
 <body>
+    <script>console.log("TEST")</script>
+
     <?php
+    $githubURL=getOP('githubURL');
+    if(isset($_POST['action'])) {
+        if($_POST['action'] == 'getNewCourseGithub') {getNewCourseGithub($githubURL);}
+        echo '<script>console.log("INSIDE IF")</script>';
+
+    };
+
+    function getNewCourseGithub($githubURL) {
+        $translatedURL = getGithubURL($githubURL);
+        bfs($translatedURL);
+    }
+
+
+    function getGithubURL($url){
+        $urlParts = explode('/', $url);
+        // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+        $username = $urlParts[3];
+        // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+        $repository = $urlParts[4];
+        // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+        $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+        return $translatedURL;
+    }
 
     // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
     $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
