@@ -1147,11 +1147,11 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
 .ruler-line {
-    color: #fff;
+    stroke: #fff;
 }
 
 .ruler-text {
-    color: #fff;
+    fill: #fff;
 }
 
 .svgbacklayer-background {

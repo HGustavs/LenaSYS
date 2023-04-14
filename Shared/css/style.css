@@ -9329,11 +9329,11 @@ margin:2px;
 }
 
 .ruler-line {
-  color: #000;
+  stroke: #000;
 }
 
 .ruler-text {
-  color: #000;
+  fill: #000;
 }
 
 
