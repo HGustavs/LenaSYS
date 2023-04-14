@@ -48,8 +48,7 @@
         $visited = array();
         $fifoQueue = array();
         array_push($fifoQueue, $url);
-        $database = 'sqlite:../../githubMetadata/metadata2.db';
-        $pdo = new PDO($database);
+        $pdo = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
