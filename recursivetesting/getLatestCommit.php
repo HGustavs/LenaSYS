@@ -24,13 +24,21 @@
 		$dom->preserveWhiteSpace = FALSE;
 		$dom->loadHTML($html);
 
-		$divs = $dom->getElementsByClassName('Box');
+		$divs = $dom->getElementsByTagName('div');
         foreach ($divs as $div) {
-           if($div->nodeName == 'a'){
-						$link = $div->getAttribute('href');
-						echo print_r($link->nodeValue);
-					 }
+					if($div->attribute('class')=='Box'){
+						echo "Attribute '$div'";
+
+					}
+					
         }
+
+				// getElementByClassName('Box');
+				// 	if($div->nodeName == 'a'){
+
+				// 		$link = $div->getAttribute('href');
+				// 		echo print_r($link->nodeValue);
+				// 	 }
 
 		//echo print_r();
 	?>
