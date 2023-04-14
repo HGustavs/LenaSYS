@@ -11655,7 +11655,7 @@ function loadMockupDiagram(type){
                 return response.json();
             })
             //after response.json() has succeded, load the diagram from this json
-            .then((json) => loadDiagram(json))
+            .then((json) => loadDiagram(json, false))
             //catch any error
             .catch((err) => console.error(`Fetch problem: ${err.message}`));
     }
