@@ -11465,7 +11465,7 @@ function showdata()
  */
 function centerCamera()
 {
-    // Test that there exist elements to center the camera around.
+    // Stops execution if there are no elements to center the camera around.
     if (data.length == 0) {
         return;
     }
