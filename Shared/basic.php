@@ -237,13 +237,14 @@ try {
 } 
 
 $sql2 = '
-	CREATE TABLE IF NOT EXISTS userHistory (
-		refer TEXT,
-		userid INTEGER(10),
-		username VARCHAR(50),
-		IP TEXT,
-		URLParams VARCHAR(255),
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	CREATE TABLE gitRepos ( 
+		repoID int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		repoName varchar(50), 
+    repoURL varchar(500), 
+    repoFileType varchar(50), 
+    repoDownloadURL varchar(1000), 
+    repoSHA varchar(5000), 
+    repoPath varchar(1000), 
 	);
 '; 
 $metadata_db->exec($sql2);
