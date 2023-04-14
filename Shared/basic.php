@@ -154,6 +154,15 @@ if(!file_exists ('../../log')) {
 	}
 }
 //---------------------------------------------------------------------------------------------------------------
+// connect metadata database - Open metadata database
+//---------------------------------------------------------------------------------------------------------------
+if(!file_exists ('../../githubMetadata')) {
+	if(!mkdir('../../githubMetadata')){
+		echo "Error creating folder: githubMetadata";
+		die;
+	}
+}
+//---------------------------------------------------------------------------------------------------------------
 // IF MAKING CHANGES TO SQLite tables, increment this value!
 //---------------------------------------------------------------------------------------------------------------
 $dbVersion = 6; 
@@ -230,7 +239,7 @@ $sql = '
 $log_db->exec($sql);
 
 try {
-	$metadata_db = new PDO('sqlite:../../log/metadata'.$metadataDbVersion.'.db');
+	$metadata_db = new PDO('sqlite:../../githubMetadata/metadata'.$metadataDbVersion.'.db');
 } catch (PDOException $e) {
 	echo "Failed to connect to the database";
 	throw $e;
