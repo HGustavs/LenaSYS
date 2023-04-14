@@ -1338,16 +1338,30 @@ var attrViaAttrCounter = 0;
  * @param type 0 for UML, 1 for IE, 2 for ER.
  */
 function loadMockupDiagram(type){
-    let jsonLocation;
-    jsonLocation.href = "/JSON/UMLDiagramMockup.json";
-    //"/JSON/IEDiagramMockup.json"
+    let jsonLocation; 
     switch (type) {
         case 0:
-            loadDiagram(jsonLocation.href);
+            jsonLocation = "JSON/UMLDiagramMockup.json";
             break;
-    
+        case 1:
+            jsonLocation = "JSON/IEDiagramMockup.json";
+            break;
         default:
+            console.error("Faulty param");
             break;
+    }
+    //make sure its not null first
+    if (jsonLocation != null) {
+        //via fetch API, request the json file 
+        fetch(jsonLocation)
+            .then((response) => {
+                //throw an error if the request is not ok
+                if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+                }
+                //if its al ok, call loadDiagram on this json file 
+                loadDiagram(response);
+            })
     }
 }
 //was in onSetup function moved it out 
