@@ -24,15 +24,16 @@
 		// $dom->preserveWhiteSpace = FALSE;
 		// $dom->loadHTML($html);
 
-		 $divs = $html->getElementsByTagName('div');
-        foreach ($divs as $div) {
-					echo "hej";
-		 			if($div->attribute('class')=='Box'){
-		 				echo "Attribute '$div'";
 
-					 }
+		//  $divs = $html->getElementsByTagName('div');
+    //     foreach ($divs as $div) {
+		// 			echo "hej";
+		//  			if($div->attribute('class')=='Box'){
+		//  				echo "Attribute '$div'";
+
+		// 			 }
 					
-       }
+    //    }
 
 				// getElementByClassName('Box');
 				// 	if($div->nodeName == 'a'){
