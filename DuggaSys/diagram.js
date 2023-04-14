@@ -7455,7 +7455,7 @@ function drawLine(line, targetGhost = false)
         var strokeDash="0";
     }
     var lineColor = '#000000';
-    if(stylesheet.href.includes('blacktheme')){
+    if (stylesheet.href.includes('blackTheme')) {
         lineColor = '#FFFFFF';
     }
 
