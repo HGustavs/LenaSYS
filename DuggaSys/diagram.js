@@ -4187,29 +4187,27 @@ function toggleGrid()
 /**
  * @description Toggles the darkmode for svgbacklayer ON/OFF.
  */
-function toggleDarkmode()
+function toggleDarkmode(isDarkMode)
 {
     const stylesheet = document.getElementById("themeBlack");
     const storedTheme = localStorage.getItem('diagramTheme');
 
 	if(storedTheme) stylesheet.href = storedTheme;
 
-    var _isDarkMode;
-
     if(stylesheet.href.includes('blackTheme')){
         // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
-        _isDarkMode = false;
+        isDarkMode = false;
     } else if(stylesheet.href.includes('style')) {
         // if it's light -> go dark
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
-        _isDarkMode = true;
+        isDarkMode = true;
     }
 
-    drawRulerBars(_isDarkMode);
-
+    const color = isDarkMode ? '#000000' : '#FFFFFF'; // set the color based on the isDarkMode variable
+    drawRulerBars(color);
 }
 
 /**
@@ -8333,7 +8331,7 @@ function removeNodes()
 /**
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
  */
-function drawRulerBars(X,Y,_isDarkMode)
+function drawRulerBars(X,Y,color)
 { 
     //Get elements
     if(!settings.ruler.isRulerActive) return;
@@ -8348,7 +8346,6 @@ function drawRulerBars(X,Y,_isDarkMode)
     const lineRatio3 = 100;
     
     var barY, barX = "";
-    const color = '#fff';
     var cordY = 0;
     var cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
@@ -8356,12 +8353,6 @@ function drawRulerBars(X,Y,_isDarkMode)
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
     settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
-
-    if(_isDarkMode == false) {
-        color = '#fff';
-    } else {
-        color = '#000';
-    }
 
     if(zoomfact < 0.5){
         var verticalText = "writing-mode= 'vertical-lr'";
