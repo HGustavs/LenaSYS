@@ -29,7 +29,7 @@
 
 		echo "<script>";
 		echo "const regexp = /^<a-href=\"(.*?)\/commit\//;";
-		echo "var link = ".$html.".querySelectorAll('.f6 a');";
+		echo "var link = document.querySelectorAll('.f6 a');";
 		echo "for(let i = 0; i<link.length; i++){";
 		echo "if(i.match(regexp)){";
 		echo "console.log(link[i]);";
