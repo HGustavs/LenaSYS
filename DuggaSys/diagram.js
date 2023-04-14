@@ -8341,7 +8341,7 @@ function drawRulerBars(X,Y)
     const lineRatio3 = 100;
     
     var barY, barX = "";
-    const color = "#ffffff";
+    let color = darkModeToggle() ? "#000000" : "#ffffff";
     var cordY = 0;
     var cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
