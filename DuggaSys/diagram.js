@@ -11627,11 +11627,11 @@ function exportWithoutHistory()
 }
 /**
  * @description Load one of the stored JSON files
- * @param type 0 for UML, 1 for IE, 2 for ER.
+ * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
-function loadMockupDiagram(type){
-    let jsonLocation; 
-    switch (type) {
+function loadMockupDiagram(path){
+    let jsonLocation = path; 
+    /* switch (type) {
         case 0:
             jsonLocation = "JSON/UMLDiagramMockup.json";
             break;
@@ -11641,7 +11641,7 @@ function loadMockupDiagram(type){
         default:
             console.error("Faulty param for loadMockupDiagram: " + type);
             break;
-    }
+    } */
     //make sure its not null first
     if (jsonLocation != null) {
         //via fetch API, request the json file 
