@@ -8357,7 +8357,7 @@ function drawRulerBars(X,Y,isDarkMode)
 
     if(isDarkMode == true){
         color = '#fff';
-    } else {
+    } else if (isDarkMode == false) {
         color = '#000';
     }
 
