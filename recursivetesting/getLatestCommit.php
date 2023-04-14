@@ -20,19 +20,19 @@
 		$html = file_get_contents("https://github.com/HGustavs/LenaSYS"); // Fails to load latest commit unless clearing cache on reload
 		
 		// Parse the HTML with DOM document 
-		$dom = new DomDocument;
-		$dom->preserveWhiteSpace = FALSE;
-		$dom->loadHTML($html);
+		// $dom = new DomDocument;
+		// $dom->preserveWhiteSpace = FALSE;
+		// $dom->loadHTML($html);
 
-		// $divs = $dom->getElementsByTagName('div');
-    //     foreach ($divs as $div) {
-		// 			echo "hej";
-		// 			if($div->attribute('class')=='Box'){
-		// 				echo "Attribute '$div'";
+		 $divs = $html->getElementsByTagName('div');
+        foreach ($divs as $div) {
+					echo "hej";
+		 			if($div->attribute('class')=='Box'){
+		 				echo "Attribute '$div'";
 
-					// }
+					 }
 					
-        // }
+       }
 
 				// getElementByClassName('Box');
 				// 	if($div->nodeName == 'a'){
@@ -41,7 +41,7 @@
 				// 		echo print_r($link->nodeValue);
 				// 	 }
 
-		echo print_r($dom);
+		// echo print_r($dom);
 	?>
 </body>
 </html>
