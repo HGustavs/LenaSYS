@@ -11394,7 +11394,7 @@ function updateCSSForAllElements()
     toggleBorderOfElements();
 }
 /**
- * @description toggles the border of all elements to white or gray; depending on current theme.
+ * @description toggles the border of all elements to white or gray; depending on current theme and fill.
  */
 function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
@@ -11411,21 +11411,22 @@ function toggleBorderOfElements() {
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 //assign their current stroke color to a variable.
-                let strokeColor = text.getAttribute('stroke');
-                //if the element has a stroke which has the color #383737: set it to white.
-                //this is because we dont want to affect the strokes that are null or other colors.
-                if (strokeColor == '#383737') {
+              let strokeColor = text.getAttribute('stroke');
+                let fillColor = text.getAttribute('fill');
+                //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
+                //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
+                if (strokeColor == '#383737' && fillColor != '#ffffff') {
                     strokeColor = '#ffffff';
                     text.setAttribute('stroke', strokeColor);
                 }
             }
         }
-        //if the theme isnt darkmode, make the stroke gray.
+        //if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
         else{
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
-                if (strokeColor == '#ffffff') {
+                if (strokeColor == '#ffffff' && fillColor != '#383737') {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
                 }
