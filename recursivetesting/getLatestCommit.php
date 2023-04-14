@@ -16,10 +16,21 @@
 <body>
 	<?php 
 
-		// Fails to load latest commit unless clearing cache on reload
-		$page = file_get_contents("https://github.com/HGustavs/LenaSYS"); 
+		// Get the contents of the HTML page
+		$html = file_get_contents("https://github.com/HGustavs/LenaSYS"); // Fails to load latest commit unless clearing cache on reload
+		
+		// Parse the HTML with DOM document 
+		$dom = new DomDocument;
+		$dom->preserveWhiteSpace = FALSE;
+		$dom->loadHTML($html);
 
-		echo print_r($page);
+		$xpath = new DOMXPath($dom);
+
+		$resource = $xpath->query("//div/a[@class='link--secondary']");
+
+		echo $resource->textContent;
+
+		echo print_r($resource);
 	?>
 </body>
 </html>
