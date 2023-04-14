@@ -32,7 +32,7 @@
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
                     echo "<th>".$column['Field']."</th>";
                     echo "<script> console.log(".$column['Field']."); </script>"; 
-                    debug($column);
+                    //debug($column);
                 }  
             echo "</table>";
             
