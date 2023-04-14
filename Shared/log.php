@@ -20,12 +20,22 @@
 
     
             
-            echo "<table style='width:100%'>";
-                foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
+            // echo "<table style='width:100%'>";
+            //     foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
 
-                    echo "<th>".$column['uuid']."</th>";
-                    echo "<script> console.log(".$column['Field']."); </script>";
-                    printf("EFTER".$column['Field']); 
+            //         echo "<th>".$column['uuid']."</th>";
+            //         echo "<script> console.log(".$column['Field']."); </script>";
+            //         printf("EFTER".$column['Field']); 
+
+            //     }  
+            // echo "</table>";
+            
+            echo "<table style='width:100%'>";
+                foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
+
+                    echo "<th>".$row['uuid']."</th>";
+                    echo "<script> console.log(".$row['uuid']."); </script>";
+                    printf("EFTER".$row['Field']); 
 
                 }  
             echo "</table>";
