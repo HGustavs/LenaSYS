@@ -4205,13 +4205,11 @@ function toggleDarkmode()
     if(stylesheet.href.includes('blackTheme')){
         // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
-        lineColor = '#000000';
         localStorage.setItem('diagramTheme',stylesheet.href)
     } else if(stylesheet.href.includes('style')) {
         // if it's light -> go dark
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
-        lineColor = '#FFFFFF';
     }
 }
 
@@ -7456,7 +7454,7 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    var lineColor;
+    lineColor = '#000000';
         
     
 
