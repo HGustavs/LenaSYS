@@ -48,7 +48,6 @@
             // echo "</table>";
             
 
-
             $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
             $jsontext = file_get_contents($url);
             $arr = json_decode($jsontext, true);
@@ -76,6 +75,8 @@
             
             //     echo "</tr>";
             // echo "</table>";
+
+            echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th><th colspan='4'>Cities</th></tr>";
 
         ?>    
     </body>
