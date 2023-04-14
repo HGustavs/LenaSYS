@@ -10,6 +10,7 @@
 		//var url = 'https://github.com/HGustavs/LenaSYS';
 		//var urledit = url.replace('.git', ''); //remove ending
 
+
 			
 	</script>
 </head>
@@ -28,7 +29,7 @@
 
 		echo " 
 			<script>
-				const regexp = /<a-href=\"(.*?)\/commit\/;
+				const regexp = /^<a-href=\"(.*?)\/commit\//;
 				var link = ".$html.".querySelectorAll('a');
 				for(let i = 0; i<link.lenght; i++){
 					if(i.match(regexp)){
