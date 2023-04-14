@@ -84,7 +84,7 @@
 }
 
 #docucontent h1 {
-	color: var(--color-text-dark);
+	color: var(--color-text-light);
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
