@@ -30,7 +30,8 @@
             
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
-                    echo "<th>".$column['Field']."</th>";
+                    echo "<th>".$column['uuid']."</th>";
+                    echo "<th>".$column['service']."</th>";
                     echo "<script> console.log(".$column['Field']."); </script>"; 
                     //debug($column);
                 }  
