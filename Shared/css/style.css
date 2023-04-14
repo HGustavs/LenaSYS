@@ -308,6 +308,13 @@ p {
   text-decoration: none;
 }
 
+cardinalityLabel{
+    fill: white;
+}
+cardinalityLabelText{
+    fill: black;
+}
+
 #Courselist {
   margin: 0px auto;
   background-color: var(--color-background);
