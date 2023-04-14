@@ -9,7 +9,7 @@
 
     <body>
 
-        <table border='1'>
+        
 
         <?php
         
@@ -31,7 +31,7 @@
             // $log_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);           // en del av error hanteringen.
 
     
-            echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th><th colspan='4'>Cities</th></tr>";
+            echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th><th colspan='4'></th></tr>";
             
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
@@ -84,7 +84,7 @@
            
 
         ?>    
-        </table>
+       
     </body>
 
 </html>
