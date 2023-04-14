@@ -243,9 +243,9 @@ $sql2 = '
 		repoName VARCHAR(50), 
     repoURL VARCHAR(500), 
     repoFileType VARCHAR(50), 
-    repoDownloadURL VARCHAR(1000), 
-    repoSHA VARCHAR(5000), 
-    repoPath VARCHAR(1000), 
+    repoDownloadURL VARCHAR(255), 
+    repoSHA VARCHAR(255), 
+    repoPath VARCHAR(255), 
 	);
 	CREATE TABLE IF NOT EXISTS userHistory (
 		refer TEXT,
