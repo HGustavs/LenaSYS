@@ -236,9 +236,10 @@ try {
 	throw $e;
 } 
 
+// UNSIGNED NOT NULL AUTO_INCREMENT 
 $sql2 = '
 	CREATE TABLE gitRepos ( 
-		repoID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		repoID INTEGER PRIMARY KEY,
 		repoName VARCHAR(50), 
     repoURL VARCHAR(500), 
     repoFileType VARCHAR(50), 
