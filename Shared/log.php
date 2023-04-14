@@ -19,7 +19,7 @@
             echo "<table style='width:100%'>";
                 foreach($log_db->prepare('SELECT * FROM serviceLogEntries;') as $column) {
                     echo "<th>".$column['Field']."</th>";
-                    echo "<script> console.log(".$column['field']."); </script>";
+                    echo "<script> console.log(".$column['Field']."); </script>";
 
                 }  
             echo "</table>";
