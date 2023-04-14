@@ -34,7 +34,7 @@
             echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th></tr>";
             
 
-            
+            echo "<form method='post' action='dummylog.php'>";
             echo "<select name='Db Tables'>";
             /*foreach ($arr as $dbtables) {
                  echo '<option value="'.$dbtables[1].'" >'.$dbtables[0].'</option>';
