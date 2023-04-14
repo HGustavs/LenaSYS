@@ -15,13 +15,6 @@
     // Connect to database and start session
     pdoConnect();
     session_start();
-if(isset($_POST["function"])&&isset($_POST["path"]))
-{
-    echo $_POST["path"];
-    if($_POST["function"]=="getDiagramFile")
-    echo file_get_contents($_POST["path"]);
-}
-
     if (isset($_SESSION['uid'])) {
         $userid = $_SESSION['uid'];
         $loginname = $_SESSION['loginname'];
