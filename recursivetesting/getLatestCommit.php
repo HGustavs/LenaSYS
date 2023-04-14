@@ -15,14 +15,26 @@
 </head>
 <body>
 	<?php 
+	  // print_r();
 
 		// Get the contents of the HTML page
-		$html = file_get_contents("https://github.com/HGustavs/LenaSYS"); // Fails to load latest commit unless clearing cache on reload
+		$html = file_get_contents('https://github.com/HGustavs/LenaSYS'); // Fails to load latest commit unless clearing cache on reload
 		
 		// Parse the HTML with DOM document 
 		// $dom = new DomDocument;
-		// $dom->preserveWhiteSpace = FALSE;
+ 		// $dom->preserveWhiteSpace = FALSE;
 		// $dom->loadHTML($html);
+
+
+		echo "
+			<script>
+				var link = ".$html.".querySelectorAll('.Box a');
+				for(let i = 0; i < link.lenght; i++){
+					console.log(link[i]);
+				}
+			</script>
+		
+		";
 
 
 		//  $divs = $html->getElementsByTagName('div');
