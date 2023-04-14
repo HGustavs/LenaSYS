@@ -1,6 +1,6 @@
 <?php
 
-echo "Test from basic.php top";
+echo "Test from basic.php top\n";
 
 error_reporting(E_ALL);
 
@@ -230,6 +230,8 @@ $sql = '
 	);
 ';
 $log_db->exec($sql);
+
+$log_db->debugDumpParams(); // Dump log data
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
