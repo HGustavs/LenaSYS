@@ -237,18 +237,23 @@ try {
 } 
 
 $sql2 = '
-	CREATE TABLE IF NOT EXISTS gitRepos( 
+	CREATE TABLE IF NOT EXISTS gitRepos ( 
 		repoID int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		repoName varchar(50), 
-    repoURL varchar(500), 
-    repoFileType varchar(50), 
-    repoDownloadURL varchar(1000), 
-    repoSHA varchar(5000), 
-    repoPath varchar(1000), 
+		repoName VARCHAR(50), 
+    repoURL VARCHAR(500), 
+    repoFileType VARCHAR(50), 
+    repoDownloadURL VARCHAR(1000), 
+    repoSHA VARCHAR(5000), 
+    repoPath VARCHAR(1000), 
 		);
 '; 
 $metadata_db->exec($sql2);
 
+	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
+	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
+	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
+	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
+	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
 	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
 	$query->execute();
 
