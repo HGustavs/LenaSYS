@@ -4205,7 +4205,7 @@ function toggleDarkmode()
     if(stylesheet.href.includes('blackTheme')){
         // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
-        lineColor = '#000000'
+        lineColor = '#000000';
         localStorage.setItem('diagramTheme',stylesheet.href)
     } else if(stylesheet.href.includes('style')) {
         // if it's light -> go dark
@@ -7456,7 +7456,7 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    //var lineColor = '#000000';
+    var lineColor;
         
     
 
