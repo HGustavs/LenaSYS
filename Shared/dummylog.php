@@ -36,9 +36,9 @@
 
             
             echo "<select name='Db Tables'>";
-            foreach ($arr as $dbtables) {
+            /*foreach ($arr as $dbtables) {
                  echo '<option value="'.$dbtables[1].'" >'.$dbtables[0].'</option>';
-                } 
+                } */
                 echo "<input type='submit' value='Get Tables'>"; 
                 echo "</select>"; 
                 echo "</form>";
