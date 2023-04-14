@@ -1359,10 +1359,13 @@ function loadMockupDiagram(type){
                 if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
                 }
-                //if its al ok, call loadDiagram on this json file 
-                //loadDiagram(response);
-                console.log(response);
+                //fetch the response as json
+                return response.json();
             })
+            //after response.json() has succeded, load the diagram from this json
+            .then((json) => loadDiagram(json))
+            //catch any error
+            .catch((err) => console.error(`Fetch problem: ${err.message}`));
     }
 }
 //was in onSetup function moved it out 
