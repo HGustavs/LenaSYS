@@ -246,6 +246,14 @@ $sql2 = '
     repoSHA VARCHAR(5000), 
     repoPath VARCHAR(1000), 
 	);
+	CREATE TABLE IF NOT EXISTS userHistory (
+		refer TEXT,
+		userid INTEGER(10),
+		username VARCHAR(50),
+		IP TEXT,
+		URLParams VARCHAR(255),
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
 '; 
 $metadata_db->exec($sql2);
 
