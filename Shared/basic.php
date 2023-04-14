@@ -249,7 +249,7 @@ $sql2 = '
 '; 
 $metadata_db->exec($sql2);
 
-	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES (123, 123, 123,123,123,123)');
+	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
 	$query->execute();
 
 
