@@ -236,17 +236,16 @@ try {
 	throw $e;
 } 
 
-// UNSIGNED NOT NULL AUTO_INCREMENT 
+	// CREATE TABLE UNSIGNED NOT NULL AUTO_INCREMENT gitRepos ( 
+	// 	repoID INTEGER PRIMARY KEY,
+	// 	repoName VARCHAR(50), 
+  //   repoURL VARCHAR(255), 
+  //   repoFileType VARCHAR(50), 
+  //   repoDownloadURL VARCHAR(255), 
+  //   repoSHA VARCHAR(255), 
+  //   repoPath VARCHAR(255), 
+	// );
 $sql2 = '
-	CREATE TABLE gitRepos ( 
-		repoID INTEGER PRIMARY KEY,
-		repoName VARCHAR(50), 
-    repoURL VARCHAR(255), 
-    repoFileType VARCHAR(50), 
-    repoDownloadURL VARCHAR(255), 
-    repoSHA VARCHAR(255), 
-    repoPath VARCHAR(255), 
-	);
 	CREATE TABLE IF NOT EXISTS userHistory (
 		refer TEXT,
 		userid INTEGER(10),
