@@ -19,7 +19,7 @@
 		// Fails to load latest commit unless clearing cache on reload
 		$page = file_get_contents("https://github.com/HGustavs/LenaSYS"); 
 
-		echo print_r($page.getElementById("spoof-warning"));
+		echo print_r($page);
 	?>
 </body>
 </html>
