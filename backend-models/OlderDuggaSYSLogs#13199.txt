@@ -1,0 +1,36 @@
+DuggaSys folder commits thats been checked:
+
+ace.js -No Testing, one commit? The rest of commits must be else where (21972 rows code)
+backToTop.js -No Testing
+clickcounter.js -No Testing
+
+codeviewer.js -No testing
+codeviewer.php -No testing
+codeviewerService.php -No testing
+
+contribution.js -Log test{
+https://github.com/HGustavs/LenaSYS/commit/3d0aad74f67e96952ff3b7d5c002c9643c72032f
+https://github.com/HGustavs/LenaSYS/commit/763e2e94613e63d1dddfbfe2276a76596b9f010f
+}
+contribution.php -No testing
+contribution_loginbox.js -No testing
+contribution_loginbox.php -No testing
+contribution_loginbox_service.php -No testing
+contributionservice.php -Controll test{
+https://github.com/HGustavs/LenaSYS/commit/1bdb89a1fe368ff5519ecae7b8c420dc18b442b2
+}
+
+courseed.js -Log testing{
+https://github.com/HGustavs/LenaSYS/commit/28cde0fd8afe3303bb4a6178ecfcdbbfe1871be1
+}
+courseed.php -No Testing
+courseedservice.php -No Testing
+cronjob.php -Not touched since 2017
+
+diagramservice.php  -logServiceEvent{
+https://github.com/HGustavs/LenaSYS/commit/4445431c0561cb7acc761651aa906a00836936ab
+https://github.com/HGustavs/LenaSYS/commit/9a8939e8e97f581a1d31f0a3ab85a890c4873945
+}
+
+
+
