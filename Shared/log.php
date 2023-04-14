@@ -20,7 +20,7 @@
                 foreach($log_db->prepare('SELECT * FROM serviceLogEntries;') as $column) {
                     echo "<th>".$column['field']."</th>";
                 }  
-
+            echo "</table>";
             
 
 
