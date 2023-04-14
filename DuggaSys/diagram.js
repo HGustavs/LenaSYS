@@ -8341,7 +8341,8 @@ function drawRulerBars(X,Y)
     const lineRatio3 = 100;
     
     var barY, barX = "";
-    let color = darkModeToggle() ? "#000000" : "#ffffff";
+    var color = darkModeToggle() ? "#000000" : "#ffffff";
+    var backgroundColor = darkModeToggle() ? "#000000" : "#ffffff";
     var cordY = 0;
     var cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
@@ -8416,7 +8417,7 @@ function drawRulerBars(X,Y)
 
         }
     }
-    svgY.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+    svgY.style.backgroundColor = backgroundColor;
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
@@ -8480,7 +8481,7 @@ function drawRulerBars(X,Y)
         }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
-    svgX.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+    svgX.style.backgroundColor = backgroundColor;
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 /**
