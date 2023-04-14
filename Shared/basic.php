@@ -241,7 +241,7 @@ $sql2 = '
 	CREATE TABLE gitRepos ( 
 		repoID INTEGER PRIMARY KEY,
 		repoName VARCHAR(50), 
-    repoURL VARCHAR(500), 
+    repoURL VARCHAR(255), 
     repoFileType VARCHAR(50), 
     repoDownloadURL VARCHAR(255), 
     repoSHA VARCHAR(255), 
