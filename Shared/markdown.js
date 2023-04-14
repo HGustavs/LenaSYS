@@ -431,17 +431,17 @@ function markdownBlock(inString)
 
     //Markdown smileys
     //Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
-    inString = inString.replace(/\s:D(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/happy.svg'/>");
-    inString = inString.replace(/\s:\)(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/smiling.svg'/>");
-    inString = inString.replace(/\s;\)(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/wink.gif'/>");
-    inString = inString.replace(/\s:\((?!\S)/g, " <img class='smileyjs' src='../Shared/icons/sad.svg'/>");
-    inString = inString.replace(/\s:'\((?!\S)/g, " <img class='smileyjs' src='../Shared/icons/crying.svg'/>");
-    inString = inString.replace(/\s:P(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/tongue.svg'/>");
-    inString = inString.replace(/\s:\/(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/confused.svg'/>");
-    inString = inString.replace(/\s:(O|0)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/gasp.svg'/>");
-    inString = inString.replace(/\s&lt;3(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/heart.svg'/>");
-    inString = inString.replace(/\s\(Y\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsup.svg'/>");
-    inString = inString.replace(/\s\(N\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsdown.svg'/>");
+    inString = inString.replace(/:D(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/happy.svg'/>");
+    inString = inString.replace(/:\)(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/smiling.svg'/>");
+    inString = inString.replace(/;\)(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/wink.gif'/>");
+    inString = inString.replace(/:\((?!\S)/g, " <img class='smileyjs' src='../Shared/icons/sad.svg'/>");
+    inString = inString.replace(/:'\((?!\S)/g, " <img class='smileyjs' src='../Shared/icons/crying.svg'/>");
+    inString = inString.replace(/:P(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/tongue.svg'/>");
+    inString = inString.replace(/:\/(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/confused.svg'/>");
+    inString = inString.replace(/:(O|0)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/gasp.svg'/>");
+    inString = inString.replace(/&lt;3(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/heart.svg'/>");
+    inString = inString.replace(/\(Y\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsup.svg'/>");
+    inString = inString.replace(/\(N\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsdown.svg'/>");
 
     return inString;
 }
