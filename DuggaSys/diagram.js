@@ -11465,6 +11465,11 @@ function showdata()
  */
 function centerCamera()
 {
+    // Test that there exist elements to center the camera around.
+    if (data.length == 0) {
+        return;
+    }
+
     //desiredZoomfact = zoomfact;
     zoomfact = 1;
 
