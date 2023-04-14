@@ -30,7 +30,7 @@
 		echo "<script>";
 		echo "const regexp = /^<a-href=\"(.*?)\/commit\//;";
 		echo "var link = ".$html.".querySelectorAll('a');";
-		echo "for(let i = 0; i<link.lenght; i++){";
+		echo "for(let i = 0; i<link.length; i++){";
 		echo "if(i.match(regexp)){";
 		echo "console.log(link[i]);";
 		echo "}}</script>";
