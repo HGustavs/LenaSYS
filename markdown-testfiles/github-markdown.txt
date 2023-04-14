@@ -66,12 +66,15 @@ This code should display a different picture based on if user is in dark/light m
 * list
 + list
 
-1. ordered list
-2. ordered list
-3. ordered list
-  * unordered sub-list
-  1 ordered sub-list
-   properly indented paragraphs
+1. First ordered list item
+2. Another item
+   * Unordered sub-list 
+1. Actual numbers don't matter, just that it's a number
+   1. Ordered sub-list
+4. And another item
+
+   Properly indented paragraphs within list item (needs blank line above and leading spaces)
+
 
 1. nested list
    - second item
