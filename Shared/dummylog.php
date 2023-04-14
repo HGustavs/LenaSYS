@@ -47,7 +47,7 @@ $log_db->exec($sql);
 
 
 
-/*$query = $pdo->prepare( "SELECT id, uuid,eventType,service,userid,timestamp,userAgent,operatingSystem FROM serviceLogEntries WHERE id = :id;");
+$query = $pdo->prepare( "SELECT id, uuid,eventType,service,userid,timestamp,userAgent,operatingSystem FROM serviceLogEntries WHERE id = :id;");
 $query->bindParam(':id', $id);
 $query->execute();
 
@@ -65,6 +65,6 @@ $query->execute();
   $row = $result -> fetch_assoc();
   printf("%s (%s)\n", $row["id"], $row["uuid"])
   
-  $result -> free_result();*/
+  $result -> free_result();
 
 ?>
