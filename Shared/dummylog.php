@@ -6,7 +6,11 @@
     }
     </style>    
 </head>
+
     <body>
+
+        <table border='1'>
+
         <?php
         
             function debug($o){
@@ -79,6 +83,7 @@
             echo "<tr><th>DuggaLoadLogEntries</th><th>exampleLoadLogEntries</th><th>logEntries</th><th>serviceLogEntries</th><th>userHistory</th><th>userLogEntries</th><th colspan='4'>Cities</th></tr>";
 
         ?>    
+        </table>
     </body>
 
 </html>
