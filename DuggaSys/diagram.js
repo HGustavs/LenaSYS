@@ -1334,6 +1334,7 @@ var attrViaAttrCounter = 0;
 
     fetchDiagramFileContentOnLoad();
 }*/
+
 //was in onSetup function moved it out 
  // Global statemachine init
 stateMachine = new StateMachine(data, lines);
@@ -11676,6 +11677,30 @@ function exportWithoutHistory()
 
     // Download the file
     downloadFile("diagram", objToSave);
+}
+/**
+ * @description Load one of the stored JSON files
+ * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
+ */
+function loadMockupDiagram(path){
+    let jsonLocation = path; 
+    //make sure its not null first
+    if (jsonLocation != null) {
+        //via fetch API, request the json file 
+        fetch(jsonLocation)
+            .then((response) => {
+                //throw an error if the request is not ok
+                if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+                }
+                //fetch the response as json
+                return response.json();
+            })
+            //after response.json() has succeded, load the diagram from this json
+            .then((json) => loadDiagram(json, false))
+            //catch any error
+            .catch((err) => console.error(`Fetch problem: ${err.message}`));
+    }
 }
 /**
  * @description Gets the content of the file in parameter.
