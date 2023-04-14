@@ -7,7 +7,7 @@
     <title>Document</title>
 		<script>
 			// Get url from db/courseGitURL instead of hardcoding
-			var url = 'https://github.com/HGustavs/LenaSYS.git';
+			var url = 'https://github.com/HGustavs/LenaSYS';
 			var urledit = url.replace('.git', ''); //remove ending
 
 			
@@ -15,7 +15,9 @@
 </head>
 <body>
     <?php 
-        
+        echo $page = file_get_contents("https://github.com/HGustavs/LenaSYS");
+
+        echo print_r($page);
     ?>
 </body>
 </html>
