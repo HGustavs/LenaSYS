@@ -26,14 +26,16 @@
 		// $dom->loadHTML($html);
 
 
-		echo "
+		echo " 
 			<script>
-				var link = ".$html.".querySelectorAll('.Box a');
-				for(let i = 0; i < link.lenght; i++){
-					console.log(link[i]);
+				const regexp = /<a-href=\"(.*?)\/commit\/;
+				var link = ".$html.".querySelectorAll('a');
+				for(let i = 0; i<link.lenght; i++){
+					if(i.match(regexp)){
+						console.log(link[i]);
+					}
 				}
-			</script>
-		
+			</script> 
 		";
 
 
