@@ -236,8 +236,6 @@ try {
 	throw $e;
 } 
 
-echo "<script>console.log('Debug php array: " . $metadata_db . "');</script>";
-
 $sql2 = '
 	CREATE TABLE IF NOT EXISTS userHistory (
 		refer TEXT,
@@ -249,11 +247,6 @@ $sql2 = '
 	);
 '; 
 $metadata_db->exec($sql2);
-
-echo "<script>console.log('Debug php array: " . $metadata_db->exec($sql2) . "');</script>";
-
-echo "<script>console.log('Debug php array: " . $sql2 . "');</script>";
-echo "<script>console.log('Debug php array: " . $metadata_db . "');</script>";
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
