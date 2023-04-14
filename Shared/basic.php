@@ -235,7 +235,7 @@ try {
 	echo "Failed to connect to the database";
 	throw $e;
 } 
-// UNSIGNED NOT NULL AUTO_INCREMENT
+
 $sql2 = '
 	CREATE TABLE gitRepos ( 
 		repoID INTEGER PRIMARY KEY AUTOINCREMENT,
