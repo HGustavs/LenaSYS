@@ -1347,7 +1347,7 @@ function loadMockupDiagram(type){
             jsonLocation = "JSON/IEDiagramMockup.json";
             break;
         default:
-            console.error("Faulty param");
+            console.error("Faulty param for loadMockupDiagram: " + type);
             break;
     }
     //make sure its not null first
