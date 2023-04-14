@@ -1,5 +1,6 @@
 <?php
 
+echo "Test from basic.php top";
 
 error_reporting(E_ALL);
 
@@ -166,15 +167,7 @@ try {
 	throw $e;
 }
 
-function debug_to_console($data) {
-    $output = $data;
-    if (is_array($output))
-        $output = implode(',', $output);
-
-    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
-}
-
-debug_to_console("Test from basic.php");
+echo "Test from basic.php";
 
 $sql = '
 	CREATE TABLE IF NOT EXISTS logEntries (
