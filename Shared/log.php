@@ -8,6 +8,21 @@
 </head>
     <body>
         <?php
+              
+            try {
+	            $log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
+            } catch (PDOException $e) {
+	            echo "Failed to connect to the database";
+	            throw $e;
+            }
+
+            echo "<table style='width:100%'>";
+                foreach($log_db->prepare('SELECT * FROM serviceLogEntries;') as $column) {
+                    echo "<th>".$column['field']."</th>";
+                }  
+
+            
+
 
             $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
             $jsontext = file_get_contents($url);
