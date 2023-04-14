@@ -4206,8 +4206,8 @@ function toggleDarkmode(isDarkMode)
         isDarkMode = true;
     }
 
-    const color = isDarkMode ? '#000000' : '#FFFFFF'; // set the color based on the isDarkMode variable
-    drawRulerBars(color);
+    drawRulerBars(isDarkMode);
+
 }
 
 /**
@@ -8331,7 +8331,7 @@ function removeNodes()
 /**
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
  */
-function drawRulerBars(X,Y,color)
+function drawRulerBars(X,Y,isDarkMode)
 { 
     //Get elements
     if(!settings.ruler.isRulerActive) return;
@@ -8346,6 +8346,7 @@ function drawRulerBars(X,Y,color)
     const lineRatio3 = 100;
     
     var barY, barX = "";
+    var color;
     var cordY = 0;
     var cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
@@ -8353,6 +8354,12 @@ function drawRulerBars(X,Y,color)
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
     settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+
+    if(isDarkMode){
+        color = '#fff';
+    } else {
+        color = '#000';
+    }
 
     if(zoomfact < 0.5){
         var verticalText = "writing-mode= 'vertical-lr'";
