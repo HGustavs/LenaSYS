@@ -1,0 +1,120 @@
+﻿In this document all functional requirements for the current services will be documented
+
+
+The requirements will be determined with help from documentation about the system (Model/txt docs), the source code and from the LenaSYS server.
+
+
+—---------------------------------------------------------
+accessedservice.php
+ 
+Non-functional
+This requirement is the base for the php service
+If the user has access the system will give the variable $hasaccess = true and if the user does not have access $hasaccess = false
+The system shall check if the user has access or if the user is a superuser.
+The system determines this by the inputs: userid, courseid and w or if the userid is connected to a superuser account.
+—---------------------------------------------------------
+
+
+UPDATE
+
+
+Functional:
+A user shall be able to update the user table or user_course table.
+
+
+Description/input/output:
+The system will determine that the user wants to update with strcmp. If it's == 0 it means the user wants to use this “function”. 
+All variables in the code have no restrictions (ex case sensitive).
+
+
+Testing possibilities: try mixing capital letters, add numbers or special characters and look at the actual output.
+
+
+
+
+—---------------------------------------------------------
+
+
+ADDCLASS
+
+
+Functional:
+A user shall be able to add a class to LenaSYS.
+
+
+Description/input/output:
+All variables that are needed gets put into an array that is decoded into normal text that is then inserted into the database. This seems to be to avoid special conversions from special characters such as &, “” or spaces.
+This is done with json_decode(htmlspecialchars_decode()).
+
+
+
+
+Testing possibilities: Perhaps try adding special characters as input and look at what will be inserted in the database.
+
+
+
+
+—---------------------------------------------------------
+
+
+CHPWD
+
+
+Functional:
+A user shall be able to change their password.
+
+
+Description/input/output:
+Determines the user by their user id(uid)
+Updates password determined by standandPasswordHash($pw)
+loguserevent() to log when resetting the password
+
+
+Testing possibilities: Are all characters allowed and what is the “standardPasswordHash?
+
+
+
+
+—---------------------------------------------------------
+
+
+ADDUSR
+
+
+Functional:
+A user shall be able to add a user, based on ssn or username. 
+
+
+Description/input/output:
+The input is decoded. This seems to be to avoid special conversions from special characters such as &, “” or spaces. This is done with json_decode(htmlspecialchars_decode()).
+
+
+It is unclear how the input is checked whether it's a username or an ssn.
+Looking at row 220, it seems the “username or password” has been abandoned and only allows for username input when adding a user.
+If no error occurs the system will fetch the array as $row.
+If the $user is not found when doing this the system will output to the debug that the $user[0] was not found.
+
+
+If the system notices that there already exists a user but the user is not in the course, it will add $ssn = $user[0].
+If there is no other data in the array the system will add $className, $saveemail and $regstatus to the array.
+The $username variable data is created by “exploding” the users email at the @. Ex h34yesir@student.his.se will be exploded to h34yesir. 
+if the system cant find a $className it will assign the class from the class table.
+if there is no class in the class table the user can insert into class.
+
+
+At row 220 there is a check for if the PNR is assigned or not, if it is the user information will be added to the database, with a password encryption.
+If the uid is set then the student will get additional values assigned to the database.
+
+
+check if user has an account - 180
+
+
+
+
+Testing possibilities: Try adding a user with an ssn and try adding a user with username and see how it interacts/inputs into the database. Try adding a new user and try adding the same user again.
+
+
+—---------------------------------------------------------
+Description/input/output:
+Retrieve information presents the data and handles errors. This doesn’t include any user interaction except for actually presenting the data.
+417 - create an array, using variables entries, debug, teachers, classes, courses, groups, queryResult, examiners, submissions, access. Then echos this using json_encode.
