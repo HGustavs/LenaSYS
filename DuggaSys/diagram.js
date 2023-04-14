@@ -11631,17 +11631,6 @@ function exportWithoutHistory()
  */
 function loadMockupDiagram(path){
     let jsonLocation = path; 
-    /* switch (type) {
-        case 0:
-            jsonLocation = "JSON/UMLDiagramMockup.json";
-            break;
-        case 1:
-            jsonLocation = "JSON/IEDiagramMockup.json";
-            break;
-        default:
-            console.error("Faulty param for loadMockupDiagram: " + type);
-            break;
-    } */
     //make sure its not null first
     if (jsonLocation != null) {
         //via fetch API, request the json file 
