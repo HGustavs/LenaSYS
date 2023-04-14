@@ -243,7 +243,7 @@ $sql2 = '
     repoFileType VARCHAR(50), 
     repoDownloadURL VARCHAR(255), 
     repoSHA VARCHAR(255), 
-    repoPath VARCHAR(255), 
+    repoPath VARCHAR(255) 
 	);
 '; 
 $metadata_db->exec($sql2);
