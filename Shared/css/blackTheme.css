@@ -1099,7 +1099,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
 /* Diagram line style */
-.diagram-umlicon-triangle {
+.diagram-umlicon-darkmode {
   fill: white;
   stroke: white;
 }
