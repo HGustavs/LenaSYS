@@ -8020,8 +8020,8 @@ function drawLine(line, targetGhost = false)
                 else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
                 posX -= iconSizeStart;
             }
-            str += `<rect class="text" id=${line.id + "startLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
-            str += `<text class="text" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
+            str += `<rect class="text cardinalityLabel" id=${line.id + "startLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
         }
         if (line.endLabel && line.endLabel != '') {
             const offsetOnLine = 20 * zoomfact;
