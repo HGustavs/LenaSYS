@@ -26,6 +26,7 @@
 
 		$divs = $dom->getElementsByTagName('div');
         foreach ($divs as $div) {
+					echo "hej";
 					if($div->attribute('class')=='Box'){
 						echo "Attribute '$div'";
 
