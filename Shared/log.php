@@ -32,7 +32,7 @@
             
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
-
+                    echo "BALALA";
                     echo "<th>".$row['uuid']."</th>";
                     echo "<script> console.log(".$row['uuid']."); </script>";
                     printf("EFTER".$row['Field']); 
