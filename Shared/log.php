@@ -8,6 +8,14 @@
 </head>
     <body>
         <?php
+        
+            function debug($o){
+                echo '<pre>';
+                print_r($o);
+                echo '</pre>';
+            }
+
+            
               
             try {
 	            $log_db = new PDO('sqlite:../../log/loglena6.db');
@@ -22,13 +30,12 @@
             
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
-
                     echo "<th>".$column['Field']."</th>";
-                    echo "<script> console.log(".$column['Field']."); </script>";
-                    printf("EFTER".$column['Field']); 
-
+                    echo "<script> console.log(".$column['Field']."); </script>"; 
+                    debug($column);
                 }  
             echo "</table>";
+            
             
             // echo "<table style='width:100%'>";
             //     foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
