@@ -1338,10 +1338,12 @@ var attrViaAttrCounter = 0;
  * @param type 0 for UML, 1 for IE, 2 for ER.
  */
 function loadMockupDiagram(type){
+    let jsonLocation;
+    jsonLocation.href = "/JSON/UMLDiagramMockup.json";
     //"/JSON/IEDiagramMockup.json"
     switch (type) {
         case 0:
-            loadDiagram("/JSON/UMLDiagramMockup.json");
+            loadDiagram(jsonLocation.href);
             break;
     
         default:
