@@ -972,6 +972,13 @@ input{
     stroke: white;
   }
 
+  .cardinalityLabel{
+      fill: black;
+  }
+  .cardinalityLabelText{
+      fill: white;
+  }
+
   /*/ END /*/
 
 /* Style for "course-dropdown" START */
@@ -1158,11 +1165,17 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     background-color: var(--color-background);
 }
 
+
 /* Diagram line style */
+.diagram-umlicon-black-triangle,
 .diagram-umlicon-triangle {
-  fill: black;
+  fill: white;
   stroke: white;
 }
+.diagram-umlicon-darkmode {
+    stroke: white;
+  }
+
 
 /* Diagram Messages */
 #diagram-message {
@@ -1192,5 +1205,9 @@ border-left: 14px solid var(--color-sectioned-table-hi);
  #emakeactive {
     background-color: #121212;
     accent-color: #434343;
+}
+
+#ERTable {
+    color:white;
 }
 /*/ END /*/

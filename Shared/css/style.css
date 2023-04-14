@@ -308,6 +308,14 @@ p {
   text-decoration: none;
 }
 
+.cardinalityLabel {
+    fill: white;
+}
+
+.cardinalityLabelText {
+    fill: black;
+}
+
 #Courselist {
   margin: 0px auto;
   background-color: var(--color-background);
@@ -6806,6 +6814,12 @@ only screen and (max-device-width: 568px) {
 /* Diagram line style */
 .diagram-umlicon-triangle {
   fill: white;
+  stroke: black;
+}
+
+/* Diagram black line style */
+.diagram-umlicon-black-triangle {
+  fill: black;
   stroke: black;
 }
 
