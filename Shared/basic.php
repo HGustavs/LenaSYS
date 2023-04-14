@@ -296,7 +296,6 @@ if (!strstr(strtolower($refer), 'service')) {
 
 	if($username != "00") {
 		$query->execute();
-		$query->debugDumpParams(); // Dump log data
 	}
 }
 
