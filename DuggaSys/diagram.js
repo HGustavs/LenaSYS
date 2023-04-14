@@ -8020,7 +8020,7 @@ function drawLine(line, targetGhost = false)
                 else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
                 posX -= iconSizeStart;
             }
-            str += `<rect class="text cardinalityLabel" id=${line.id + "startLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<rect class="text cardinalityLabel" id=${line.id + "startLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
             str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
         }
         if (line.endLabel && line.endLabel != '') {
@@ -8077,7 +8077,7 @@ function drawLine(line, targetGhost = false)
                 else if (telem.left.indexOf(line.id) == telem.left.length - 1) posY += offset;
                 posX += iconSizeEnd;
             }
-            str += `<rect class="text cardinalityLabel" id=${line.id + "endLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<rect class="text cardinalityLabel" id=${line.id + "endLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
             str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
         }
     }
@@ -8167,7 +8167,7 @@ function drawLine(line, targetGhost = false)
                 }
             }
             // Add the line to the str 12.84 10.11
-            str += `<rect class="text cardinalityLabel" id=${line.id + "Cardinality"} class='lineColor' x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}" style="fill:rgb(255,255,255);"/>`;
+            str += `<rect class="text cardinalityLabel" id=${line.id + "Cardinality"} class='lineColor' x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
             str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
         }
     }
