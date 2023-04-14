@@ -27,17 +27,13 @@
 		// $dom->loadHTML($html);
 
 
-		echo " 
-			<script>
-				const regexp = /^<a-href=\"(.*?)\/commit\//;
-				var link = ".$html.".querySelectorAll('a');
-				for(let i = 0; i<link.lenght; i++){
-					if(i.match(regexp)){
-						console.log(link[i]);
-					}
-				}
-			</script> 
-		";
+		echo "<script>";
+		echo "const regexp = /^<a-href=\"(.*?)\/commit\//;";
+		echo "var link = ".$html.".querySelectorAll('a');";
+		echo "for(let i = 0; i<link.lenght; i++){";
+		echo "if(i.match(regexp)){";
+		echo "console.log(link[i]);";
+		echo "}}</script>";
 
 
 		//  $divs = $html->getElementsByTagName('div');
