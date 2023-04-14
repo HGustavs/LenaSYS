@@ -239,15 +239,14 @@ try {
 echo "<script>console.log('Debug php array: " . $metadata_db . "');</script>";
 
 $sql2 = '
-	CREATE TABLE gitRepos ( 
-		repoID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		repoName VARCHAR(50), 
-    repoURL VARCHAR(500), 
-    repoFileType VARCHAR(50), 
-    repoDownloadURL VARCHAR(1000), 
-    repoSHA VARCHAR(5000), 
-    repoPath VARCHAR(1000), 
-		);
+	CREATE TABLE IF NOT EXISTS userHistory (
+		refer TEXT,
+		userid INTEGER(10),
+		username VARCHAR(50),
+		IP TEXT,
+		URLParams VARCHAR(255),
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
 '; 
 
 echo "<script>console.log('Debug php array: " . $sql2 . "');</script>";
