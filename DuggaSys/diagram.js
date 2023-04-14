@@ -11426,6 +11426,7 @@ function toggleBorderOfElements() {
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
+                let fillColor = text.getAttribute('fill');
                 if (strokeColor == '#ffffff' && fillColor != '#383737') {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
