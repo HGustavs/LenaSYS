@@ -8355,7 +8355,7 @@ function drawRulerBars(X,Y,isDarkMode)
     settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
 
-    if(isDarkMode){
+    if(isDarkMode == true){
         color = '#fff';
     } else {
         color = '#000';
