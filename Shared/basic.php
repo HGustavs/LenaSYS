@@ -238,13 +238,13 @@ try {
 
 $sql2 = '
 	CREATE TABLE gitRepos ( 
-		repoID int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		repoName varchar(50), 
-    repoURL varchar(500), 
-    repoFileType varchar(50), 
-    repoDownloadURL varchar(1000), 
-    repoSHA varchar(5000), 
-    repoPath varchar(1000), 
+		repoID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		repoName VARCHAR(50), 
+    repoURL VARCHAR(500), 
+    repoFileType VARCHAR(50), 
+    repoDownloadURL VARCHAR(1000), 
+    repoSHA VARCHAR(5000), 
+    repoPath VARCHAR(1000), 
 	);
 '; 
 $metadata_db->exec($sql2);
