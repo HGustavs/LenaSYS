@@ -1146,6 +1146,14 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     top: 0px;
 }
 
+.ruler-line {
+    color: #fff;
+}
+
+.ruler-text {
+    color: #fff;
+}
+
 .svgbacklayer-background {
     background-color: var(--color-background);
 }
