@@ -238,14 +238,13 @@ try {
 
 $sql2 = '
 	CREATE TABLE IF NOT EXISTS gitRepos( 
-		repoID int UNSIGNED NOT NULL AUTO_INCREMENT,
+		repoID int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		repoName varchar(50), 
     repoURL varchar(500), 
     repoFileType varchar(50), 
     repoDownloadURL varchar(1000), 
     repoSHA varchar(5000), 
     repoPath varchar(1000), 
-    PRIMARY KEY (repoID)
 		);
 '; 
 $metadata_db->exec($sql2);
