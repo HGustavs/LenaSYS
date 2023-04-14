@@ -236,9 +236,9 @@ try {
 	throw $e;
 } 
 
-$sql = '
-	CREATE TABLE IF NOT EXISTS gitRepos ( 
-		repoID int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+$sql2 = '
+	CREATE TABLE gitRepos ( 
+		repoID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		repoName VARCHAR(50), 
     repoURL VARCHAR(500), 
     repoFileType VARCHAR(50), 
@@ -247,7 +247,7 @@ $sql = '
     repoPath VARCHAR(1000), 
 		);
 '; 
-$metadata_db->exec($sql);
+$metadata_db->exec($sql2);
 
 	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
 	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
