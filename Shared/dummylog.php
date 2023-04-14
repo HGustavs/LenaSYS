@@ -43,13 +43,13 @@
                 echo "</select>"; 
                 echo "</form>";
                    // Get tillverkare or default    
-                 if(isset($_POST['dbtables']))
+                 /*if(isset($_POST['dbtables']))
                  {
                     $indbtables=$_POST['dbtables']; 
                 }
                     else{
                         $indbtables="Tokigt";
-                    }
+                    }*/
             
             echo "<table style='width:100%'>";
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
