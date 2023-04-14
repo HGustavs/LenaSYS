@@ -17,7 +17,8 @@
             }
             
             echo "<table style='width:100%'>";
-                foreach($log_db->prepare('SELECT * FROM serviceLogEntries;') as $column) {
+                foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
+
                     echo "<th>".$column['Field']."</th>";
                     echo "<script> console.log(".$column['Field']."); </script>";
 
