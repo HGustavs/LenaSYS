@@ -1333,6 +1333,21 @@ var attrViaAttrCounter = 0;
 
     fetchDiagramFileContentOnLoad();
 }*/
+/**
+ * @description Load one of the stored JSON files
+ * @param type 0 for UML, 1 for IE, 2 for ER.
+ */
+function loadMockupDiagram(type){
+    //"/JSON/IEDiagramMockup.json"
+    switch (type) {
+        case 0:
+            loadDiagram("/JSON/UMLDiagramMockup.json");
+            break;
+    
+        default:
+            break;
+    }
+}
 //was in onSetup function moved it out 
  // Global statemachine init
 stateMachine = new StateMachine(data, lines);
