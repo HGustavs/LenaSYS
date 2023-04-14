@@ -17,6 +17,7 @@
     session_start();
 if(isset($_POST["function"])&&isset($_POST["path"]))
 {
+    echo $_POST["path"];
     if($_POST["function"]=="getDiagramFile")
     echo file_get_contents($_POST["path"]);
 }

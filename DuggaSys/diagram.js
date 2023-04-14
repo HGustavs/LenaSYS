@@ -11544,6 +11544,7 @@ async function getDiagramFile(path)
          console.error("error when trying to get diagram file"+response.status);
          return await response.text();
     }
+console.log(getDiagramFile("/exampleDiagrams/ErTestDiagram.json"));
 
 function downloadFile(filename, dataObj)
 {
