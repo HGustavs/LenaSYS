@@ -1333,41 +1333,7 @@ var attrViaAttrCounter = 0;
 
     fetchDiagramFileContentOnLoad();
 }*/
-/**
- * @description Load one of the stored JSON files
- * @param type 0 for UML, 1 for IE, 2 for ER.
- */
-function loadMockupDiagram(type){
-    let jsonLocation; 
-    switch (type) {
-        case 0:
-            jsonLocation = "JSON/UMLDiagramMockup.json";
-            break;
-        case 1:
-            jsonLocation = "JSON/IEDiagramMockup.json";
-            break;
-        default:
-            console.error("Faulty param for loadMockupDiagram: " + type);
-            break;
-    }
-    //make sure its not null first
-    if (jsonLocation != null) {
-        //via fetch API, request the json file 
-        fetch(jsonLocation)
-            .then((response) => {
-                //throw an error if the request is not ok
-                if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
-                }
-                //fetch the response as json
-                return response.json();
-            })
-            //after response.json() has succeded, load the diagram from this json
-            .then((json) => loadDiagram(json))
-            //catch any error
-            .catch((err) => console.error(`Fetch problem: ${err.message}`));
-    }
-}
+
 //was in onSetup function moved it out 
  // Global statemachine init
 stateMachine = new StateMachine(data, lines);
@@ -11658,6 +11624,41 @@ function exportWithoutHistory()
 
     // Download the file
     downloadFile("diagram", objToSave);
+}
+/**
+ * @description Load one of the stored JSON files
+ * @param type 0 for UML, 1 for IE, 2 for ER.
+ */
+function loadMockupDiagram(type){
+    let jsonLocation; 
+    switch (type) {
+        case 0:
+            jsonLocation = "JSON/UMLDiagramMockup.json";
+            break;
+        case 1:
+            jsonLocation = "JSON/IEDiagramMockup.json";
+            break;
+        default:
+            console.error("Faulty param for loadMockupDiagram: " + type);
+            break;
+    }
+    //make sure its not null first
+    if (jsonLocation != null) {
+        //via fetch API, request the json file 
+        fetch(jsonLocation)
+            .then((response) => {
+                //throw an error if the request is not ok
+                if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+                }
+                //fetch the response as json
+                return response.json();
+            })
+            //after response.json() has succeded, load the diagram from this json
+            .then((json) => loadDiagram(json))
+            //catch any error
+            .catch((err) => console.error(`Fetch problem: ${err.message}`));
+    }
 }
 /**
  * @description Gets the content of the file in parameter.
