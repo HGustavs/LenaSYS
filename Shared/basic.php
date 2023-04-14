@@ -236,6 +236,8 @@ try {
 	throw $e;
 } 
 
+echo "<script>console.log('Debug php array: " . $metadata_db . "');</script>";
+
 $sql2 = '
 	CREATE TABLE gitRepos ( 
 		repoID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -247,6 +249,9 @@ $sql2 = '
     repoPath VARCHAR(1000), 
 		);
 '; 
+
+echo "<script>console.log('Debug php array: " . $sql2 . "');</script>";
+
 $metadata_db->exec($sql2);
 
 	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
@@ -257,7 +262,8 @@ $metadata_db->exec($sql2);
 	$query = $metadata_db->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES ("123", "123", "123","123","123","123")');
 	$query->execute();
 
-
+echo "<script>console.log('Debug php array: " . $sql2 . "');</script>";
+echo "<script>console.log('Debug php array: " . $metadata_db . "');</script>";
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
