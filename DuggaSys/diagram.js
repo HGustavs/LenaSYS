@@ -1360,7 +1360,8 @@ function loadMockupDiagram(type){
                 throw new Error(`HTTP error: ${response.status}`);
                 }
                 //if its al ok, call loadDiagram on this json file 
-                loadDiagram(response);
+                //loadDiagram(response);
+                console.log(response);
             })
     }
 }
