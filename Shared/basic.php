@@ -250,6 +250,11 @@ $sql2 = '
 '; 
 $metadata_db->exec($sql2);
 
+function logUserEvent($uid, $username, $eventType, $description) {
+	$query = $GLOBALS['metadata_db']->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, repoPath) VALUES (123, 123, 123,123,123,123)');
+	$query->execute();
+}
+
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
 //------------------------------------------------------------------------------------------------
