@@ -11684,7 +11684,7 @@ function loadMockupDiagram(path){
     
     let fileType = document.getElementById("diagramTypeDropdown");
     let value = fileType.value;
-    console.log(value);
+    console.log(value, path);
     let jsonLocation = path; 
     //make sure its not null first
     if (jsonLocation != null) {

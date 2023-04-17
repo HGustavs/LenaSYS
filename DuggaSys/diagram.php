@@ -572,8 +572,8 @@
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                         <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
-                        <option id="UML-Diagram" value="JSON/UMLDiagramMockup.json">UML diagrams</option>
-                        <option id="ER-Diagram" value="JSON/ERDiagramMockup.json">ER diagrams </option>
+                        <option value="JSON/UMLDiagramMockup.json">UML diagrams</option>
+                        <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
                     </select>
                     <button onclick="loadMockupDiagram();">Load</button>
                 </div>
