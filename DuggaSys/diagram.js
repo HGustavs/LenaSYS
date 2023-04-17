@@ -1123,6 +1123,13 @@ var allAttrToEntityRelations = [];
 // Array for attributes connected with eachother
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
+
+function debugDrawSDState() {
+    const EMPLOYEE_ID = makeRandomID();
+    const demoState = { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "SDState", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['-attribute']};
+    addObjectToData(demoState, false);
+}
+
 //Function to draw the predrawn diagram for diagram.php
 /*function onSetup()
 {
@@ -1345,6 +1352,7 @@ function getData()
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
     // onSetup();
+    debugDrawSDState(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
     updateGridPos();
