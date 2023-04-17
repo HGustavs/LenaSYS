@@ -30,7 +30,7 @@
                 echo 'Choose Table:';     
                 
                 // hämtar namnen på de nuvarande Spannen 
-                echo '<select onchange="submit();" name="SpannNamn" >'; 
+                echo '<select onchange="submit();" name="name" >'; 
                                                                    
                 
 
@@ -42,10 +42,10 @@
                 }  
                 
 
-                if(isset($_POST['SpannNamn'])){
-                    if($_POST['SpannNamn']==$row['name']) echo " selected ";
+                if(isset($_POST['name'])){
+                    if($_POST['name']==$row['name']) echo " selected ";
                 }
-                //echo '>';
+                echo '>';
                     
                 echo $row['name'];
                 echo '</option>';
