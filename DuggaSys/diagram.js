@@ -782,7 +782,7 @@ const elementTypes = {
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
     UMLInitialState: 8,
-    UMLFinalState: 9
+    UMLFinalState: 9,
     SDState: 10
 };
 
