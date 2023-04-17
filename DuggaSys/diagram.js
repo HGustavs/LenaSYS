@@ -673,7 +673,8 @@ class StateMachine
         this.scrubHistory(tsIndexArr[cri]);
 
         var self = this;
-        this.replayTimer = setInterval(function() {
+        this.replayTimer = setInterval(function replayInterval() {
+            var startDelay = settings.replay.delay;
 
             cri++;
             var startStateIndex = tsIndexArr[cri];
@@ -692,7 +693,11 @@ class StateMachine
 
             for (var i = startStateIndex; i <= stopStateIndex; i++){
                 self.restoreState(self.historyLog[i]);
- 
+
+                if (settings.replay.delay != startDelay){
+                    clearInterval(self.replayTimer);
+                    self.replayTimer = setInterval(replayInterval, settings.replay.delay * 1000)
+                }
             }
 
             // Update diagram
