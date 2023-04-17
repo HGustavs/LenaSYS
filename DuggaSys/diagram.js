@@ -11685,11 +11685,11 @@ function loadMockupDiagram(path){
     let fileType = document.getElementById("diagramTypeDropdown").value;
     path = fileType;
     console.log(path, fileType);
-    let jsonLocation = path; 
+    //let jsonLocation = path; 
     //make sure its not null first
-    if (jsonLocation != null) {
+    if (path != null) {
         //via fetch API, request the json file 
-        fetch(jsonLocation)
+        fetch(path)
             .then((response) => {
                 //throw an error if the request is not ok
                 if (!response.ok) {
