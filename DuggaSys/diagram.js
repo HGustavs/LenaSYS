@@ -8736,7 +8736,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //div to encapuslate SD header
-        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
+        str += `<div style=''>`;
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
