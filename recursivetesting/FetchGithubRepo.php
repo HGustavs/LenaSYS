@@ -39,8 +39,8 @@
     {
         $visited = array();
         $fifoQueue = array();
-        if(!file_exists('../../Webbprogrammering-Examples')) {
-	        if(!mkdir('../../Webbprogrammering-Examples')){
+        if(!file_exists('../../LenaSYS/recursivetesting')) {
+	        if(!mkdir('../../LenaSYS/recursivetesting')){
 		        echo "Error creating folder: log";
 		        die;
 	        }
@@ -81,7 +81,7 @@
                         // Checks if the fetched item is of type 'file'
                         if ($item['type'] == 'file') {
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = '../../Webbprogrammering-Examples/' . $item['path'];
+                            $path = '../../LenaSYS/recursivetesting/' . $item['path'];
                             echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                             if (!file_exists((dirname($path)))) {
                                 mkdir(dirname($path), 0777, true);
