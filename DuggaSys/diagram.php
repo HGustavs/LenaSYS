@@ -571,9 +571,9 @@
                 <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
-                        <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
-                        <option value="JSON/UMLDiagramMockup.json">UML diagrams</option>
-                        <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
+                        <option id="IE" value="JSON/IEDiagramMockup.json">IE diagrams</option>
+                        <option id="UML" value="JSON/UMLDiagramMockup.json">UML diagrams</option>
+                        <option id="ER" value="JSON/ERDiagramMockup.json">ER diagrams </option>
                     </select>
                     <button onclick="loadMockupDiagram();">Load</button>
                 </div>
