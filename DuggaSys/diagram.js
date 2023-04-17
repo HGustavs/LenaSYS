@@ -4387,7 +4387,6 @@ function setReplayRunning(state)
         stateSlider.disabled = true;
     }else{
         button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg"><span class="toolTipText" style="top: -80px;"><b>Play</b><br><p>Play history of changes made to the diagram</p><br></span></div>';
-        delaySlider.disabled = false;
         stateSlider.disabled = false;
     }
 }
