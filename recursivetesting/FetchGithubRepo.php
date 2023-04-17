@@ -94,14 +94,14 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
-                        // $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
-                        // $query->bindParam(':repoName', $item['name']);
-                        // $query->bindParam(':repoURL', $item['repoURL']);
-                        // $query->bindParam(':repoFileType', $item['type']);
-                        // $query->bindParam(':repoDownloadURL', $item['download_url']);
-                        // $query->bindParam(':repoSHA', $item['sha']);
-                        // $query->bindParam(':repoPath', $item['path']);
-                        // $query->execute();
+                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                        $query->bindParam(':repoName', $item['name']);
+                        $query->bindParam(':repoURL', $item['repoURL']);
+                        $query->bindParam(':repoFileType', $item['type']);
+                        $query->bindParam(':repoDownloadURL', $item['download_url']);
+                        $query->bindParam(':repoSHA', $item['sha']);
+                        $query->bindParam(':repoPath', $item['path']);
+                        $query->execute();
                         echo "</table>";
                     } else {
                         echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";
