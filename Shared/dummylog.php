@@ -49,6 +49,7 @@
                     
                 echo $row['name'];
                 echo '</option>';
+                echo '</select>';
                
    
                 
