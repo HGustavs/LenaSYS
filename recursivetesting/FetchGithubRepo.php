@@ -33,8 +33,16 @@
     <?php
 
     // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
-    bfs('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
-
+    $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
+    // Dismantles the $url into an array of each component, separated by a slash
+    $urlParts = explode('/', $url);
+    // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    $username = $urlParts[3];
+    // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    $repository = $urlParts[4];
+    // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+    $translatedURL = 'https://api.github.com/repos/' . $username . '/' . $repository . '/contents/';
+    bfs($translatedURL);
     function bfs($url)
     {
         $visited = array();
@@ -47,6 +55,7 @@
 	        }
         }
         array_push($fifoQueue, $url);
+        $pdo = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
@@ -102,9 +111,17 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
+                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                        $query->bindParam(':repoName', $item['name']);
+                        $query->bindParam(':repoURL', $item['repoURL']);
+                        $query->bindParam(':repoFileType', $item['type']);
+                        $query->bindParam(':repoDownloadURL', $item['download_url']);
+                        $query->bindParam(':repoSHA', $item['sha']);
+                        $query->bindParam(':repoPath', $item['path']);
+                        $query->execute();
                         echo "</table>";
                     } else {
-                        echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";    
+                        echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";
                     }
                 }
             } else {
