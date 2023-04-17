@@ -7729,7 +7729,7 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy + 1 * zoomfact},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -7740,7 +7740,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=25;
+                var iconSizeStart=20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'TB') {
@@ -7930,7 +7930,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=25;
+                var iconSizeEnd=20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'BT') {
