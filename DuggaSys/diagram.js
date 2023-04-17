@@ -8832,120 +8832,7 @@ function drawElement(element, ghosted = false)
         
     }    
     //=============================================== <-- End of IE functionality
-
-    //=============================================== <-- Start ER functionality
-    //ER element
-    else if (element.kind == "EREntity"){
-        // Create div & svg element
-        str += `
-                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
-        if(context.includes(element)){
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `
-                pointer-events: none;
-                opacity: ${ghostLine ? 0 : 0.0};
-            `;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}' >`;
-        // Create svg 
-        if (element.kind == "EREntity") {
-            var weak = "";
-
-            if(element.state == "weak") {
-                weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-                stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
-                `;         
-            }
-            
-            str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-                    ${weak}
-                    <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
-                    `;
-        }
-        else if (element.kind == "ERAttr") {
-            var dash = "";
-            var multi = "";
-
-            if (element.state == "computed") {
-                dash = "stroke-dasharray='4 4'";
-            }
-        
-            if (element.state == "multiple") {
-                multi = `
-                        <path d="M${linew * multioffs},${hboxh} 
-                        Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
-                        Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
-                        Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
-                        Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
-            }    
-
-            str += `<path d="M${linew},${hboxh} 
-                            Q${linew},${linew} ${hboxw},${linew} 
-                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
-                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
-                        
-                        ${multi}
-                        <text x='${xAnchor}' y='${hboxh}' `;
-            
-            if(element.state == "candidate" || element.state == 'primary') {
-                str += `class='underline'`;
-            }             
-            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-            `;
-                
-            if(element.state == "weakKey") {
-                // Calculates how far to the left X starts
-                var diff = xAnchor - textWidth / 2;
-                diff = diff < 0 ? 0 - diff + 10 : 0;
-                str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
-            }
-            
-        }
-        else if (element.kind == "ERRelation") {
-
-            var numOfLetters = element.name.length;
-            if (tooBig) {
-                var tempName = "";
-                var maxTextWidth = boxw - margin;
-
-                if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
-
-                for (var i = 0; i < element.name.length; i++){
-                    tempName += element.name[i];
-                    if (canvasContext.measureText(tempName).width > maxTextWidth){
-                        numOfLetters = tempName.length - 1;
-                        break;
-                    }
-                }
-            }
-
-            var weak = "";
-            if (element.state == "weak") {
-                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
-                    `;
-                xAnchor += linew * multioffs;
-            }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
-                    ${weak}`;
-            str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
-
-        }
-
-        //=============================================== <-- IE functionality
+    //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == "IEEntity") { 
         elemAttri = element.attributes.length;
@@ -9059,6 +8946,116 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
     }
     //=============================================== <-- End SD functionality
+
+    else {
+        // Create div & svg element
+        str += `
+                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `
+                pointer-events: none;
+                opacity: ${ghostLine ? 0 : 0.0};
+            `;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}' >`;
+        // Create svg 
+        if (element.kind == "EREntity") {
+            var weak = "";
+
+            if (element.state == "weak") {
+                weak = `<rect x='${linew * multioffs}' y='${linew * multioffs}' width='${boxw - (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
+                stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
+                `;
+            }
+
+            str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+                    ${weak}
+                    <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+                    `;
+        }
+        else if (element.kind == "ERAttr") {
+            var dash = "";
+            var multi = "";
+
+            if (element.state == "computed") {
+                dash = "stroke-dasharray='4 4'";
+            }
+
+            if (element.state == "multiple") {
+                multi = `
+                        <path d="M${linew * multioffs},${hboxh} 
+                        Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
+                        Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
+                        Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
+                        Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
+                        stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
+            }
+
+            str += `<path d="M${linew},${hboxh} 
+                            Q${linew},${linew} ${hboxw},${linew} 
+                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
+                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
+                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
+                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
+                        
+                        ${multi}
+                        <text x='${xAnchor}' y='${hboxh}' `;
+
+            if (element.state == "candidate" || element.state == 'primary') {
+                str += `class='underline'`;
+            }
+            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+            `;
+
+            if (element.state == "weakKey") {
+                // Calculates how far to the left X starts
+                var diff = xAnchor - textWidth / 2;
+                diff = diff < 0 ? 0 - diff + 10 : 0;
+                str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5 * zoomfact}" stroke-width="${linew}"/>`;
+            }
+
+        }
+        else if (element.kind == "ERRelation") {
+
+            var numOfLetters = element.name.length;
+            if (tooBig) {
+                var tempName = "";
+                var maxTextWidth = boxw - margin;
+
+                if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
+
+                for (var i = 0; i < element.name.length; i++) {
+                    tempName += element.name[i];
+                    if (canvasContext.measureText(tempName).width > maxTextWidth) {
+                        numOfLetters = tempName.length - 1;
+                        break;
+                    }
+                }
+            }
+
+            var weak = "";
+            if (element.state == "weak") {
+                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
+                    `;
+                xAnchor += linew * multioffs;
+            }
+            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
+                    ${weak}`;
+            str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+
+        }
 
     if (element.isLocked) {
         str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
