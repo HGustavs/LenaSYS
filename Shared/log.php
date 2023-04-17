@@ -16,6 +16,7 @@
             }
 
             
+            
               
             try {
 	            $log_db = new PDO('sqlite:../../log/loglena6.db');
@@ -24,6 +25,17 @@
 	            throw $e;
             }
             
+            echo "<table style='width:100%'>";
+            foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
+                echo '<tr>';
+                    foreach($row["info"] as $value){
+                        echo "hello";
+                    }
+                echo '</tr>';
+            }  
+            echo "</table>";
+
+
 
             // gathers information from database table userLogEntries
             echo "<table style='width:100%'>";
@@ -91,7 +103,7 @@
                 }  
             echo "</table>";
             
-            
+            $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
             // currently not used, to be removed later on. 
             /*    
             $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
