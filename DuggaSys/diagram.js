@@ -11695,11 +11695,14 @@ function exportWithoutHistory()
  * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
 function loadMockupDiagram(path){
-    let jsonLocation = path; 
+    
+    let fileType = document.getElementById("diagramTypeDropdown").value;
+    path = fileType;
+    console.log(path);
     //make sure its not null first
-    if (jsonLocation != null) {
+    if (path != null) {
         //via fetch API, request the json file 
-        fetch(jsonLocation)
+        fetch(path)
             .then((response) => {
                 //throw an error if the request is not ok
                 if (!response.ok) {
@@ -11709,7 +11712,7 @@ function loadMockupDiagram(path){
                 return response.json();
             })
             //after response.json() has succeded, load the diagram from this json
-            .then((json) => loadDiagram(json, false))
+            .then((json) => loadDiagram(json, false)) 
             //catch any error
             .catch((err) => console.error(`Fetch problem: ${err.message}`));
     }
