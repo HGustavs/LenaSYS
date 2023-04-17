@@ -42,7 +42,7 @@
                             echo $row['name'];
                         echo '</option>';
                     }
-                echo '</selected>';   
+                echo '</select>';   
                     
 
         
