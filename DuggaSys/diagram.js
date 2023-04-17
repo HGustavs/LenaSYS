@@ -7919,16 +7919,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty - 20 * zoomfact},${tx - 20 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 5 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 20 * zoomfact},${tx - 5 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 20 * zoomfact},${tx - 20 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 5 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty + 20 * zoomfact},${tx - 5 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 30 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 30 * zoomfact} ${ty + 10 * zoomfact},${tx - 30 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 15 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 15 * zoomfact} ${ty + 10 * zoomfact},${tx - 15 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 30 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 30 * zoomfact} ${ty + 10 * zoomfact},${tx + 30 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 15 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 15 * zoomfact} ${ty + 10 * zoomfact},${tx + 15 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=20;
                 break;
