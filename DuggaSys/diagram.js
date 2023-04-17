@@ -11682,9 +11682,10 @@ function exportWithoutHistory()
  */
 function loadMockupDiagram(path){
     
-    let fileType = document.getElementById("diagramTypeDropdown");
+    let fileType = document.getElementById("diagramTypeDropdown").value;
     let value = fileType.value;
-    console.log(value, path);
+    path = value;
+    console.log(value, path, fileType);
     let jsonLocation = path; 
     //make sure its not null first
     if (jsonLocation != null) {
