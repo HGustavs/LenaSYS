@@ -11681,6 +11681,8 @@ function exportWithoutHistory()
  * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
 function loadMockupDiagram(path){
+    
+    path = docuemnt.getElementById("diagramTypeDropdown").value;
     let jsonLocation = path; 
     //make sure its not null first
     if (jsonLocation != null) {
