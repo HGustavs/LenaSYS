@@ -4369,6 +4369,8 @@ function setReplayDelay(value)
     }
     settings.replay.delay = replayDelayMap[value];
     document.getElementById("replay-time-label").innerHTML = `Delay (${settings.replay.delay}s)`;
+    clearInterval(stateMachine.replayTimer);
+    stateMachine.replay();
 }
 /**
  * @description Changes the play/pause button and locks/unlocks the sliders in replay-mode
