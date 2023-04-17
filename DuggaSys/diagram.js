@@ -11683,9 +11683,8 @@ function exportWithoutHistory()
 function loadMockupDiagram(path){
     
     let fileType = document.getElementById("diagramTypeDropdown").value;
-    let typeLoaded = document.getElementById("diagramTypeDropdown").id;
     path = fileType;
-    console.log(path, typeLoaded);
+    console.log(path);
     //make sure its not null first
     if (path != null) {
         //via fetch API, request the json file 
@@ -11702,7 +11701,6 @@ function loadMockupDiagram(path){
             .then((json) => loadDiagram(json, false)) 
             //catch any error
             .catch((err) => console.error(`Fetch problem: ${err.message}`));
-            if(successMessage) displayMessage(messageTypes.SUCCESS,`Loaded Diagram ${typeLoaded}`);
     }
 }
 /**
