@@ -569,14 +569,14 @@
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
-                <div class="dropdownContent" id ="diagramLoadDropDown">
+                <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
-                        <option>Null</option>
+                        <option >Null</option>
                         <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
                         <option  value="JSON/UMLDiagramMockup.json">UML diagrams</option>
                         <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
                     </select>
-                    <button onclick="loadMockupDiagram();" style="display:none;">Load</button>
+                    <button onclick="loadMockupDiagram();">Load</button>
                 </div>
 
                 <div id="a4Options" style="display:flex;">
