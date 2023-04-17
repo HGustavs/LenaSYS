@@ -47,6 +47,13 @@
     {
         $visited = array();
         $fifoQueue = array();
+        // If the directory doesn't exist, make it
+        if(!file_exists('../../LenaSYS/courses/Webbprogrammering-Examples')) {
+	        if(!mkdir('../../LenaSYS/courses/Webbprogrammering-Examples')){
+		        echo "Error creating folder: Webbprogrammering";
+		        die;
+	        }
+        }
         array_push($fifoQueue, $url);
         $pdo = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
@@ -83,6 +90,16 @@
                     if ($json) {
                         // Checks if the fetched item is of type 'file'
                         if ($item['type'] == 'file') {
+                            // Retrieves the contents of each individual file based on the fetched "download_url"
+                            $fileContents = file_get_contents($item['download_url']);
+                            $path = '../../LenaSYS/courses/Webbprogrammering-Examples/' . $item['path'];
+                            echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
+                            // Creates the directory for each individual file based on the fetched "path"
+                            if (!file_exists((dirname($path)))) {
+                                mkdir(dirname($path), 0777, true);
+                            } 
+                            // Writes the file to the respective folder. 
+                            file_put_contents($path, $fileContents);
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                             echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                             // Checks if the fetched item is of type 'dir'
@@ -108,7 +125,7 @@
                     }
                 }
             } else {
-                echo "<h2 style='display: flex; place-content: center;'>Invalid Link</h2>";
+                echo "<h2 style='display: flex; place-content: center;'>Invalid Link or API-Fetch limited</h2>";     
             }
         }
     }
