@@ -1167,7 +1167,6 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 
 /* Diagram line style */
-.diagram-umlicon-black-triangle,
 .diagram-umlicon-triangle {
   fill: white;
   stroke: white;
