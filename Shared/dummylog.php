@@ -194,7 +194,35 @@
             }
            
             
-           
+            if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
+                // collects information from database table duggaLoadLogEntries
+                echo "<table style='width:100%'>";
+
+                    echo '<tr>';
+                        echo '<th> id </th>';
+                        echo '<th> type </th>';
+                        echo '<th> cid </th>';
+                        echo '<th> uid </th>';
+                        echo '<th> username </th>';
+                        echo '<th> vers </th>';
+                        echo '<th> quizid </th>';
+                        echo '<th> timestamp </th>';
+                    echo '<tr>';
+                    
+                    foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
+                        echo '<tr>';
+                            echo '<td>'.$row["id"].'</td>';
+                            echo '<td>'.$row["type"].'</td>';
+                            echo '<td>'.$row["cid"].'</td>';
+                            echo '<td>'.$row["uid"].'</td>';
+                            echo '<td>'.$row["username"].'</td>';
+                            echo '<td>'.$row["vers"].'</td>';
+                            echo '<td>'.$row["quizid"].'</td>';
+                            echo '<td>'.$row["timestamp"].'</td>';
+                            echo '</tr>';
+                    }  
+                echo "</table>";
+            }
            
            // currently not used, to be removed later on. 
             /*    
