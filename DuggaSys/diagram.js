@@ -8736,12 +8736,12 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //div to encapuslate SD header
-        str += `<div style=''>`;
+        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        <text style='${element.stroke}' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`; //style shouldn't be needed, the div randomly gets fill: rgb(0, 0, 0), no clue why'
         //end of svg for SD header
         str += `</svg>`;
         //end of div for SD header
