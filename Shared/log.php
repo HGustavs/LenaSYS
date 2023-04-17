@@ -29,7 +29,7 @@
         <?php    
                 echo 'choose table';
 
-                echo '<select onchange="submit();" name="SpannNamn" >';
+                echo '<select onchange="submit();" name="name" >';
 
                     foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
                     
