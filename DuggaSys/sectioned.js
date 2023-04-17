@@ -1556,7 +1556,7 @@ function returnedSection(data) {
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
           str += " onclick='refreshCodeExample("+item['exampleid']+")'"
-          alert(item['exampleid']);
+          //alert(item['exampleid']);
           str += "</td>";
         }
 
