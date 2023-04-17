@@ -11683,7 +11683,7 @@ function exportWithoutHistory()
 function loadMockupDiagram(path){
     
     path = docuemnt.getElementById("diagramTypeDropdown").value;
-    console(path);
+    console.log(path);
     let jsonLocation = path; 
     //make sure its not null first
     if (jsonLocation != null) {
