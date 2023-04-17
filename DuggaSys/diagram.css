@@ -575,3 +575,6 @@
 .options-fieldset-hidden {
     display: none;
 }
+#ERTable {
+    user-select: text;
+}
