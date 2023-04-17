@@ -209,7 +209,7 @@
                         echo '<th> timestamp </th>';
                     echo '<tr>';
                     
-                    foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
+                    foreach($log_db->query('SELECT * FROM duggaLoadLogEntries;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
                             echo '<td>'.$row["type"].'</td>';
