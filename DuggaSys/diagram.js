@@ -4119,7 +4119,7 @@ function boxSelect_Draw(str)
  */
 function toggleDiagramDropdown()
 {
-    const dropdown=document.getElementById("diagramTypeDropdown");
+    const dropdown=document.getElementById("diagramLoadDropDown");
     if(window.getComputedStyle(dropdown).display==="none")
     dropdown.style.display="block";
     else

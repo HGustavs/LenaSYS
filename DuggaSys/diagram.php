@@ -569,7 +569,7 @@
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
-                <div class="dropdownContent">
+                <div class="dropdownContent" id ="diagramLoadDropDown">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                         <option>Null</option>
                         <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
