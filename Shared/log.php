@@ -15,14 +15,32 @@
                 echo '</pre>';
             }
 
+
+
             try {
 	            $log_db = new PDO('sqlite:../../log/loglena6.db');
             } catch (PDOException $e) {
 	            echo "Failed to connect to the database";
 	            throw $e;
             }
+        ?>
+            <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
+
+        <?php    
+                echo 'choose table';
+                foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
+                echo '<option value="'.$row['namn'].'"';
+
+                if(isset($_POST['namn'])){
+                    if($_POST['namn']==$row['namn']) echo " selected ";
+                }
+                echo '>';
+                    echo $row['namn'];
+                echo '</option>';
+            }
+                    
+
         
-            
 
             // gathers information from database table userHistory
             echo "<table style='width:100%'>";
