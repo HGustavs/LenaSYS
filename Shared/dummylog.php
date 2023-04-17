@@ -27,7 +27,7 @@
             <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
 
         <?php    
-                echo 'Medlemmar per spann:';     
+                echo 'Choose Table:';     
                 
                 // hämtar namnen på de nuvarande Spannen 
                 echo '<select onchange="submit();" name="SpannNamn" >'; 
@@ -49,6 +49,8 @@
                     
                 echo $row['name'];
                 echo '</option>';
+                echo '<button type="submit">Select</button>'
+   
                 
         
 
