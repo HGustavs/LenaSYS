@@ -693,11 +693,6 @@ class StateMachine
 
             for (var i = startStateIndex; i <= stopStateIndex; i++){
                 self.restoreState(self.historyLog[i]);
-
-                if (settings.replay.delay != startDelay){
-                    clearInterval(self.replayTimer);
-                    this.replay();
-                }
             }
 
             // Update diagram
@@ -711,6 +706,9 @@ class StateMachine
             if (tsIndexArr.length -1 == cri){
                 clearInterval(self.replayTimer);
                 setReplayRunning(false);
+            } else if (settings.replay.delay != startDelay) {
+                clearInterval(self.replayTimer);
+                this.replay();
             }
         }, settings.replay.delay * 1000)
 
