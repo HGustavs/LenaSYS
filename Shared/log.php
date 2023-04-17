@@ -36,7 +36,7 @@
                     echo '<th> timestamp </th>';
                 echo '<tr>';
                 
-                foreach($log_db->query('SELECT * FROM userLogEntries;') as $row) {
+                foreach($log_db->query('SELECT * FROM userHistory;') as $row) {
                     echo '<tr>';
                         echo '<td>'.$row["refer"].'</td>';
                         echo '<td>'.$row["userid"].'</td>';
