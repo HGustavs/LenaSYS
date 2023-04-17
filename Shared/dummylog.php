@@ -1,3 +1,15 @@
+<?php
+/********************************************************************************
+
+   Documentation 
+   
+*********************************************************************************
+
+ Presents the data housed in the loglena database tables, in a readable fashion.
+
+-------------==============######## Documentation End ###########==============-------------
+*/?>
+
 <html>
 <head>
     <style>
@@ -8,15 +20,6 @@
 </head>
     <body>
         <?php
-        
-            function debug($o){
-                echo '<pre>';
-                print_r($o);
-                echo '</pre>';
-            }
-
-
-
             try {
 	            $log_db = new PDO('sqlite:../../log/loglena6.db');
             } catch (PDOException $e) {
@@ -24,8 +27,11 @@
 	            throw $e;
             }
         ?>
-            <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
-
+        
+        <!----------------------------------------------------------------------------------->  
+        <!------Creates a dropdown with all tables in the loglena database------------------->
+        <!----------------------------------------------------------------------------------->
+        <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
                 echo 'choose table';
 
@@ -223,16 +229,6 @@
                     }  
                 echo "</table>";
             }
-           
-           // currently not used, to be removed later on. 
-            /*    
-            $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
-            $jsontext = file_get_contents($url);
-            $arr = json_decode($jsontext, true);
-            */
-            
-          
         ?>    
     </body>
-
 </html>
