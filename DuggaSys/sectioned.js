@@ -3483,17 +3483,8 @@ function validateForm(formid) {
 // contents of a code example based on eventual changes in external github-repo
 //------------------------------------------------------------------------------
 function refreshCodeExample(exampelid){
-  //console.log("ExempelID: " + exempelid);
-
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
-
-  $(document).ready(function(){
-    $(".refreshButton").click(function(){
-      var id = $(this).attr('id');
-      console.log(id);
-    })
-  })
-
+  AJAXService("REFGIT", {exampleid}, "COURSE");
   //AJAX anropen till databasen behöver lösas
   //SELECT runlink FROM codeexample WHERE exampleid=exampleid;
   //cid = SELECT cid FROM codeexample WHERE exampleid=exampleid;
