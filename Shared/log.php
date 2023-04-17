@@ -42,7 +42,7 @@
                         echo '<td>'.$row["userid"].'</td>';
                         echo '<td>'.$row["username"].'</td>';
                         echo '<td>'.$row["IP"].'</td>';
-                        echo '<td>'.$row["URLParam"].'</td>';
+                        echo '<td>'.$row["URLParams"].'</td>';
                         echo '<td>'.$row["timestamp"].'</td>';
                         echo '</tr>';
                 }  
