@@ -39,8 +39,11 @@
     {
         $visited = array();
         $fifoQueue = array();
-        if(!file_exists((dirname('Webbprogrammering-Examples')))) {
-            mkdir('Webbprogrammering-Examples', 0777, true);
+        if(!file_exists('../../Webbprogrammering-Examples')) {
+	        if(!mkdir('../../Webbprogrammering-Examples')){
+		        echo "Error creating folder: log";
+		        die;
+	        }
         }
         array_push($fifoQueue, $url);
 
