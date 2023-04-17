@@ -72,42 +72,40 @@
                 echo "</table>";
             }
 
-            
-            // gathers information from database table userLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
-
-         
-            echo "<table style='width:100%'>";
-                
-            echo '<tr>';
-                echo '<th> id </th>';
-                echo '<th> uid </th>';
-                echo '<th> username </th>';
-                echo '<th> eventType </th>';
-                echo '<th> description </th>';
-                echo '<th> timestamp </th>';
-                echo '<th> userAgent </th>';
-                echo '<th> remoteAddress </th>';
-            echo '<tr>';
-            
-            foreach($log_db->query('SELECT * FROM userLogEntries;') as $row) {
+                // gathers information from database table userLogEntries
+                echo "<table style='width:100%'>";
+                    
                 echo '<tr>';
-                    echo '<td>'.$row["id"].'</td>';
-                    echo '<td>'.$row["uid"].'</td>';
-                    echo '<td>'.$row["username"].'</td>';
-                    echo '<td>'.$row["eventType"].'</td>';
-                    echo '<td>'.$row["description"].'</td>';
-                    echo '<td>'.$row["timestamp"].'</td>';
-                    echo '<td>'.$row["userAgent"].'</td>';
-                    echo '<td>'.$row["remoteAddress"].'</td>';
-                    echo '</tr>';
-            }  
-        echo "</table>";
-        }
-
+                    echo '<th> id </th>';
+                    echo '<th> uid </th>';
+                    echo '<th> username </th>';
+                    echo '<th> eventType </th>';
+                    echo '<th> description </th>';
+                    echo '<th> timestamp </th>';
+                    echo '<th> userAgent </th>';
+                    echo '<th> remoteAddress </th>';
+                echo '<tr>';
+                
+                foreach($log_db->query('SELECT * FROM userLogEntries;') as $row) {
+                    echo '<tr>';
+                        echo '<td>'.$row["id"].'</td>';
+                        echo '<td>'.$row["uid"].'</td>';
+                        echo '<td>'.$row["username"].'</td>';
+                        echo '<td>'.$row["eventType"].'</td>';
+                        echo '<td>'.$row["description"].'</td>';
+                        echo '<td>'.$row["timestamp"].'</td>';
+                        echo '<td>'.$row["userAgent"].'</td>';
+                        echo '<td>'.$row["remoteAddress"].'</td>';
+                        echo '</tr>';
+                }  
+                echo "</table>";
+            }            
+            
 
 
             // collects information from database table serviceLogEntries
+            if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
             echo "<table style='width:100%'>";
                 
                 echo '<tr>';
@@ -142,7 +140,7 @@
                     echo '</tr>';
                 }  
             echo "</table>";
-            
+            }
            
             
            
