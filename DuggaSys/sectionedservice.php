@@ -63,6 +63,8 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
+$exampleid=getOP('exampleid');
+
 $visbile = 0;
 $avgfeedbackscore = 0;
 
@@ -463,10 +465,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$stmt->execute();
 					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 					$totalGroups = 24 * count($courseversions);
-				} else if(strcmp($opt,"GRP")===0) {
-					$exampleid;//TODO
-					$cid;//TODO
-
+				} else if(strcmp($opt,"REFGIT")===0) {
 					$query = $pdo->prepare("SELECT runlink FROM codeexample WHERE exampleid=:exampleid;");
 					$query->bindParam(":exampleid", $exampleid);
 					$query->execute();
