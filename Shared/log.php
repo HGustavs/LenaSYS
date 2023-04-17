@@ -15,9 +15,6 @@
                 echo '</pre>';
             }
 
-            
-            
-              
             try {
 	            $log_db = new PDO('sqlite:../../log/loglena6.db');
             } catch (PDOException $e) {
@@ -25,17 +22,6 @@
 	            throw $e;
             }
             
-            echo "<table style='width:100%'>";
-            foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
-                echo '<tr>';
-                    foreach($row["info"] as $value){
-                        echo "hello";
-                    }
-                echo '</tr>';
-            }  
-            echo "</table>";
-
-
 
             // gathers information from database table userLogEntries
             echo "<table style='width:100%'>";
@@ -95,7 +81,7 @@
                         echo '<td>'.$row["timestamp"].'</td>';
                         echo '<td>'.$row["userAgent"].'</td>';
                         echo '<td>'.$row["operatingSystem"].'</td>';
-                        echo '<td>'.$row["info"].'</td>';
+                        echo '<td>'.$row["info"].'</td>'; //  $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
                         echo '<td>'.$row["referer"].'</td>';
                         echo '<td>'.$row["IP"].'</td>';
                         echo '<td>'.$row["browser"].'</td>';
@@ -103,8 +89,11 @@
                 }  
             echo "</table>";
             
-            $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
-            // currently not used, to be removed later on. 
+           
+            
+           
+           
+           // currently not used, to be removed later on. 
             /*    
             $url = "https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/Shared/latestlog.json";
             $jsontext = file_get_contents($url);
