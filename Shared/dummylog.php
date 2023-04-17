@@ -42,11 +42,11 @@
                 }  
                 
 
-                if(isset($_POST['SpannNamn'])){
-                    if($_POST['SpannNamn']==$row['name']) echo " selected ";
+                if(isset($_POST['name'])){
+                    if($_POST['name']==$row['name']) echo " selected ";
                 }
-                echo '>';
-                    echo $row['name'];
+                echo '>';    
+                echo $row['name'];
                 echo '</option>';
                 
         
