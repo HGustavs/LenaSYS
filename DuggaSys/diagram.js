@@ -7922,13 +7922,13 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty + 1 * zoomfact},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 1 * zoomfact},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty - 0.5 * zoomfact},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty + 1 * zoomfact},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx + 1 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty + 1 * zoomfact},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx - 0.5 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=20;
                 break;
