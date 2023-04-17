@@ -466,20 +466,15 @@ if($gradesys=="UNK") $gradesys=0;
 					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 					$totalGroups = 24 * count($courseversions);
 				} else if(strcmp($opt,"REFGIT")===0) {
-					$query = $pdo->prepare("SELECT runlink FROM codeexample WHERE exampleid=:exampleid;");
-					$query->bindParam(":exampleid", $exampleid);
-					$query->execute();
-					$rl = $query->fetchAll(PDO::FETCH_COLUMN);
-
-					$query = $pdo->prepare("SELECT cid FROM codeexample WHERE exampleid=:exampleid;");
-					$query->bindParam(":exampleid", $exampleid);
-					$query->execute();
-					$cid = $query->fetchAll(PDO::FETCH_COLUMN);
-
-					$query = $pdo->prepare("SELECT courseGitURL FROM course WHERE cid=:cid;");
-					$query->bindParam(":cid", $cid);
-					$query->execute();
-					$githubLink = $query->fetchAll(PDO::FETCH_COLUMN);				
+					class githubDB extends SQLite3 {
+						function __construct() {
+							$this->open("../../githubMetadata/metadata2.db");
+						}
+					}
+					$gdb = new githubDB();
+					$id=1;
+					$githubURL = $gdb->exec("SELECT repoURL FROM gitRepos WHERE repoID=$id");
+					$gdb->close();
 				}
 			}
 		}
