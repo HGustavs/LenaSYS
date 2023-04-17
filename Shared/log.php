@@ -21,7 +21,32 @@
 	            echo "Failed to connect to the database";
 	            throw $e;
             }
+        
             
+
+            // gathers information from database table userHistory
+            echo "<table style='width:100%'>";
+                
+                echo '<tr>';
+                    echo '<th> refer </th>';
+                    echo '<th> userid </th>';
+                    echo '<th> username </th>';
+                    echo '<th> IP </th>';
+                    echo '<th> URLParams </th>';
+                    echo '<th> timestamp </th>';
+                echo '<tr>';
+                
+                foreach($log_db->query('SELECT * FROM userLogEntries;') as $row) {
+                    echo '<tr>';
+                        echo '<td>'.$row["refer"].'</td>';
+                        echo '<td>'.$row["userid"].'</td>';
+                        echo '<td>'.$row["username"].'</td>';
+                        echo '<td>'.$row["IP"].'</td>';
+                        echo '<td>'.$row["URLParam"].'</td>';
+                        echo '<td>'.$row["timestamp"].'</td>';
+                        echo '</tr>';
+                }  
+            echo "</table>";
 
             // gathers information from database table userLogEntries
             echo "<table style='width:100%'>";
