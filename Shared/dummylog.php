@@ -69,7 +69,33 @@
                     echo "</table>";
                 }
                     
-
+                if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
+                    // gathers information from database table exampleLoadLogEntries
+                    echo "<table style='width:100%'>";
+                        
+                    echo '<tr>';
+                        echo '<th> id </th>';
+                        echo '<th> type </th>';
+                        echo '<th> courseid </th>';
+                        echo '<th> uid </th>';
+                        echo '<th> username </th>';
+                        echo '<th> exampleid </th>';
+                        echo '<th> timestamp </th>';
+                    echo '<tr>';
+                    
+                    foreach($log_db->query('SELECT * FROM userHistory;') as $row) {
+                        echo '<tr>';
+                            echo '<td>'.$row["id"].'</td>';
+                            echo '<td>'.$row["type"].'</td>';
+                            echo '<td>'.$row["courseid"].'</td>';
+                            echo '<td>'.$row["uid"].'</td>';
+                            echo '<td>'.$row["username"].'</td>';
+                            echo '<td>'.$row["exampleid"].'</td>';
+                            echo '<td>'.$row["timestamp"].'</td>';
+                            echo '</tr>';
+                    }  
+                    echo "</table>";
+                }
         
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
                 // gathers information from database table userHistory
@@ -125,12 +151,12 @@
                         echo '</tr>';
                 }  
                 echo "</table>";
+
             }            
             
 
 
             // collects information from database table serviceLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
             echo "<table style='width:100%'>";
                 
                 echo '<tr>';
@@ -165,7 +191,7 @@
                     echo '</tr>';
                 }  
             echo "</table>";
-            }
+            
            
             
            
