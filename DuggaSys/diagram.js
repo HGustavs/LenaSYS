@@ -11104,7 +11104,7 @@ function drawSelectionBox(str)
         selectionBoxHighY = highY + 5;
 
         // Selection container of selected elements
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:white;" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
