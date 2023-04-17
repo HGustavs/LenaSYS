@@ -51,6 +51,10 @@
                 echo '</select>';   
 
 
+//---------------------------------------------------------------------------------------------------
+// Present data  <-- Presents the information from each db table 
+//---------------------------------------------------------------------------------------------------
+
                 if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                     // gathers information from database table userHistory
                     echo "<table style='width:100%'>";
