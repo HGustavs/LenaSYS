@@ -32,13 +32,20 @@
                 // hämtar namnen på de nuvarande Spannen 
                 echo '<select onchange="submit();" name="SpannNamn" >'; 
                                                                    
-                echo '<option value="'.$row['Namn'].'"';
+                echo '<option value="'.$row['name'].'"';
+
+                foreach($log_db->query('SELECT name FROM sqlite_master;') as $row) {
+                    echo '<tr>';
+                        echo '<td>'.$row["name"].'</td>';
+                        echo '</tr>';
+                }  
+                
 
                 if(isset($_POST['SpannNamn'])){
-                    if($_POST['SpannNamn']==$row['Namn']) echo " selected ";
+                    if($_POST['SpannNamn']==$row['name']) echo " selected ";
                 }
                 echo '>';
-                    echo $row['Namn'];
+                    echo $row['name'];
                 echo '</option>';
                 
         
