@@ -8724,7 +8724,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == "SDState") {
         elemAttri = element.attributes.length;
         //div to encapuslate SD element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
@@ -8736,7 +8736,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //div to encapuslate SD header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`;
+        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
@@ -8748,7 +8748,7 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
 
         //div to encapuslate SD content
-        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
