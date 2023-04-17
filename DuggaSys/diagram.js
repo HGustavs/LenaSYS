@@ -1128,6 +1128,7 @@ function debugDrawSDState() {
     const EMPLOYEE_ID = makeRandomID();
     const demoState = { name: "EMPLOYEE", x: 100, y: 200, width: 200, height: 50, kind: "SDState", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['-attribute']};
     addObjectToData(demoState, false);
+    console.log(demoState.name);
 }
 
 //Function to draw the predrawn diagram for diagram.php
