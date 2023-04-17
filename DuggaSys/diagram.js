@@ -2170,7 +2170,7 @@ function mouseMode_onMouseUp(event)
             if(event.target.id == "container") {
 
             if (ghostElement && event.button == 0) {
-                addObjectToData(ghostElement);
+                addObjectToData(ghostElement, false);
                 
                 // Check if the element to create would overlap others, returns if true
                 if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
@@ -2184,7 +2184,9 @@ function mouseMode_onMouseUp(event)
                     showdata();
                     return 
                 }
-                                
+
+                //If not overlapping
+                stateMachine.save(StateChangeFactory.ElementCreated(ghostElement), StateChange.ChangeTypes.ELEMENT_CREATED); 
                 makeGhost();
                 showdata();
             }
