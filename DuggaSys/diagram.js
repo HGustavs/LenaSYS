@@ -8887,9 +8887,6 @@ function drawElement(element, ghosted = false)
         //end of div for IE content
         str += `</div>`;
     }
-
-        str += "</svg>";
-    }
     //=============================================== <-- End ER functionality
     //=============================================== <-- SD functionality
     //Check if the element is an SD state
