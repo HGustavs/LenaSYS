@@ -29,13 +29,13 @@
         <?php    
                 echo 'choose table';
                 foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
-                echo '<option value="'.$row['namn'].'"';
+                echo '<option value="'.$row['name'].'"';
 
-                if(isset($_POST['namn'])){
-                    if($_POST['namn']==$row['namn']) echo " selected ";
+                if(isset($_POST['name'])){
+                    if($_POST['name']==$row['name']) echo " selected ";
                 }
                 echo '>';
-                    echo $row['namn'];
+                    echo $row['name'];
                 echo '</option>';
             }
                     
