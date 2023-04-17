@@ -32,9 +32,7 @@
                 foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
                 
                     echo '<option value="'.$row['name'].'"';
-                        if(isset($_POST['name'])){
-                            if($_POST['name']==$row['name']) echo " selected ";
-                        }
+                        
                     echo '>';
                     
                     echo $row['name'];
