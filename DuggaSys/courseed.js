@@ -562,7 +562,7 @@ function setActiveCodes() {
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
-	courseGitURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*)\/([\w-]*)\/*?$/
+	courseGitURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/
 };
 
 //Validates single element against regular expression returning true if valid and false if invalid
