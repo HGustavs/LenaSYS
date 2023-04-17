@@ -29,11 +29,27 @@
     
             
             echo "<table style='width:100%'>";
-                foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $column) {
+                foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
+                    echo '<tr>';
+                        echo '<td>'.$row["id"].'</td>';
+                        echo '<td>'.$row["uuid"].'</td>';
+                        echo '<td>'.$row["eventType"].'</td>';
+                        echo '<td>'.$row["service"].'</td>';
+                        echo '<td>'.$row["userid"].'</td>';
+                        echo '<td>'.$row["timestamp"].'</td>';
+                        echo '<td>'.$row["userAgent"].'</td>';
+                        echo '<td>'.$row["operatingSystem"].'</td>';
+                        echo '<td>'.$row["info"].'</td>';
+                        echo '<td>'.$row["referer"].'</td>';
+                        echo '<td>'.$row["IP"].'</td>';
+                        echo '<td>'.$row["browser"].'</td>';
+                    echo '</tr>';
+
+                    
                     // echo "<th>".$column['uuid']."</th>";
                     // echo "<th>".$column['service']."</th>";
                     // echo "<script> console.log(".$column['Field']."); </script>"; 
-                    debug($column);
+                    // debug($column);
                 }  
             echo "</table>";
             
