@@ -246,7 +246,7 @@ try {
 } 
 
 $sql2 = '
-	CREATE TABLE gitRepos ( 
+	CREATE TABLE IF NOT EXISTS gitRepos ( 
 		repoID INTEGER PRIMARY KEY AUTOINCREMENT,
 		repoName VARCHAR(50), 
     repoURL VARCHAR(255), 
