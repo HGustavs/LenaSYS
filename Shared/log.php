@@ -30,7 +30,7 @@
                 
             echo '<tr>';
                 echo '<th> id </th>';
-                echo '<th> uuid </th>';
+                echo '<th> uid </th>';
                 echo '<th> username </th>';
                 echo '<th> eventType </th>';
                 echo '<th> description </th>';
@@ -42,7 +42,7 @@
             foreach($log_db->query('SELECT * FROM userLogEntries;') as $row) {
                 echo '<tr>';
                     echo '<td>'.$row["id"].'</td>';
-                    echo '<td>'.$row["uuid"].'</td>';
+                    echo '<td>'.$row["uid"].'</td>';
                     echo '<td>'.$row["username"].'</td>';
                     echo '<td>'.$row["eventType"].'</td>';
                     echo '<td>'.$row["description"].'</td>';
