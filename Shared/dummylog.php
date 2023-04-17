@@ -27,29 +27,22 @@
             <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
 
         <?php    
-                echo 'Choose Table:';     
-                
-                // hämtar namnen på de nuvarande Spannen 
-                echo '<select onchange="submit();" name="name" >'; 
-                                                                   
-                
+                     echo 'choose table';
 
-                foreach($log_db->query('SELECT name FROM sqlite_master;') as $row) {
-                        echo '<option value="'.$row['name'].'"';
-                        echo '<tr>';
-                        echo '<td>'.$row["name"].'</td>';
-                        echo '</tr>';
-                }  
-                
-
-                if(isset($_POST['name'])){
-                    if($_POST['name']==$row['name']) echo " selected ";
-                }
-                echo '>';
-                    
-                echo $row['name'];
-                echo '</option>';
-                echo '</select>';
+                     echo '<select onchange="submit();" name="name" >';
+     
+                         foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
+     
+                             echo '<option value="'.$row['name'].'"';
+                                 if(isset($_POST['name'])){
+                                     if($_POST['name']==$row['name']) echo " selected ";
+                                 }
+                             echo '>';
+     
+                                 echo $row['name'];
+                             echo '</option>';
+                         }
+                     echo '</select>'
                
    
                 
