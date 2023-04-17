@@ -83,7 +83,7 @@
                         echo '<th> timestamp </th>';
                     echo '<tr>';
                     
-                    foreach($log_db->query('SELECT * FROM userHistory;') as $row) {
+                    foreach($log_db->query('SELECT * FROM exampleLoadLogEntries;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
                             echo '<td>'.$row["type"].'</td>';
