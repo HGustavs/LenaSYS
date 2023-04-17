@@ -46,10 +46,10 @@
                     
 
         
-
-            // gathers information from database table userHistory
-            echo "<table style='width:100%'>";
-                
+            if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
+                // gathers information from database table userHistory
+                echo "<table style='width:100%'>";
+                    
                 echo '<tr>';
                     echo '<th> refer </th>';
                     echo '<th> userid </th>';
@@ -69,8 +69,10 @@
                         echo '<td>'.$row["timestamp"].'</td>';
                         echo '</tr>';
                 }  
-            echo "</table>";
+                echo "</table>";
+            }
 
+            
             // gathers information from database table userLogEntries
             echo "<table style='width:100%'>";
                 
