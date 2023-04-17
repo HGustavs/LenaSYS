@@ -49,7 +49,7 @@
                     
                 echo $row['name'];
                 echo '</option>';
-                echo '<button type="submit">Select</button>'
+               
    
                 
         
