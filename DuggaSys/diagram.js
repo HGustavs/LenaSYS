@@ -781,10 +781,9 @@ const elementTypes = {
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
-    // SDState: 8 DUPLICATE WITH UML-INITIAL-STATE,     //SD(State diagram) functionality
     UMLInitialState: 8,
     UMLFinalState: 9
-
+    SDState: 10
 };
 
 /**
@@ -799,7 +798,7 @@ const elementTypesNames = {
     UMLEntity: "UMLEntity",
     IEEntity: "IEEntity",
     IERelation: "IERelation",
-    // SDState: "SDState" DUPLICATE WITH UML-INITIAL-STATE,
+    SDState: "SDState",
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState"
 
