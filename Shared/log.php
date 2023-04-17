@@ -29,6 +29,20 @@
     
             
             echo "<table style='width:100%'>";
+
+                echo '<th>'"id"'</th>';
+                echo '<th>'"uuid"'</th>';
+                echo '<th>'"eventType"'</th>';
+                echo '<th>'"service"'</th>';
+                echo '<th>'"userid"'</th>';
+                echo '<th>'"timestamp"'</th>';
+                echo '<th>'"userAgent"'</th>';
+                echo '<th>'"operatingSystem"'</th>';
+                echo '<th>'"info"'</th>';
+                echo '<th>'"referer"'</th>';
+                echo '<th>'"IP"'</th>';
+                echo '<th>'"browser"'</th>';
+                
                 foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
                     echo '<tr>';
                         echo '<td>'.$row["id"].'</td>';
