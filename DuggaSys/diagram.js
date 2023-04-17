@@ -696,7 +696,7 @@ class StateMachine
 
                 if (settings.replay.delay != startDelay){
                     clearInterval(self.replayTimer);
-                    self.replayTimer = setInterval(replayInterval, settings.replay.delay * 1000)
+                    this.replay();
                 }
             }
 
