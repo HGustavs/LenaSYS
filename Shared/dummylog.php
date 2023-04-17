@@ -43,6 +43,31 @@
                         echo '</option>';
                     }
                 echo '</select>';   
+
+
+                if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
+                    // gathers information from database table userHistory
+                    echo "<table style='width:100%'>";
+                        
+                    echo '<tr>';
+                        echo '<th> id </th>';
+                        echo '<th> eventype </th>';
+                        echo '<th> description </th>';
+                        echo '<th> userAgent </th>';
+                        echo '<th> timestamp </th>';
+                    echo '<tr>';
+                    
+                    foreach($log_db->query('SELECT * FROM logEntries;') as $row) {
+                        echo '<tr>';
+                            echo '<td>'.$row["id"].'</td>';
+                            echo '<td>'.$row["eventype"].'</td>';
+                            echo '<td>'.$row["description"].'</td>';
+                            echo '<td>'.$row["userAgent"].'</td>';
+                            echo '<td>'.$row["timestamp"].'</td>';
+                            echo '</tr>';
+                    }  
+                    echo "</table>";
+                }
                     
 
         
