@@ -34,7 +34,7 @@
  | --- | --- |
  | Shall | User shall be able to create new course version |
  | While | While the user is super |
- | When | When user clicks change button * |
+ | When | When user clicks create button |
  | Where | Where courses are displayed |
  | If Then | If a new course version was created then log this |
  
@@ -42,21 +42,21 @@
  | --- | --- |
  | Shall | User shall be able to update course version |
  | While | While the user is super |
- | When | When user clicks update button * |
+ | When | When user clicks save button |
  | Where | Where courses are displayed |
  
  | FN No: | F4 |
  | --- | --- |
  | Shall | User shall be able to change a course version |
  | While | While the user is super |
- | When | When user clicks change button * |
+ | When | When user clicks save button |
  | Where | Where courses are displayed |
  
  | FN No: | F5 |
  | --- | --- |
  | Shall | User shall be able to copy a course version |
  | While | While the user is super |
- | When | When user clicks copy button * |
+ | When | When user clicks copy button |
  | Where | Where courses are displayed |
  | If Then | If a course was copyed then log this |
  
@@ -64,22 +64,22 @@
  | --- | --- |
  | Shall | User shall be able to update name and or visibility of course |
  | While | While the user is super |
- | When | When user clicks update button * |
+ | When | When user clicks save button |
  | Where | Where courses are displayed |
  
  | FN No: | F7 |
  | --- | --- |
  | Shall | User shall be able to set the message of the day |
  | While | While the user is super |
- | When | When user clicks update button * |
- | Where | Where courses are displayed |
+ | When | When user clicks save button |
+ | Where | Where server settings are edited |
  
  | FN No: | F8 |
  | --- | --- |
  | Shall | User shall be able to set courseed to read only |
  | While | While the user is super |
- | When | When user clicks update button * |
- | Where | Where courses are displayed |
+ | When | When user clicks save button |
+ | Where | Where server settings are edited |
  
  | FN No: | F9 |
  | --- | --- |
