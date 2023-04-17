@@ -175,7 +175,7 @@ if($gradesys=="UNK") $gradesys=0;
 		            $debug="Failed to get group members!";
 		        }
 		    }
-
+			
 			if($ha || $studentTeacher) {
 				// The code for modification using sessions
 				if(strcmp($opt,"DEL")===0) {
@@ -456,15 +456,31 @@ if($gradesys=="UNK") $gradesys=0;
                         $error=$query->errorInfo();
                         $debug="Error updating entries".$error[2]; 
                     }
-				}
-					else if (strcmp($coursevers, "null")!==0) {
+				} else if (strcmp($coursevers, "null")!==0) {
 					// Get every coursevers of courses so we seed groups to every courseversion
 					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
 					$stmt->bindParam(":cid", $courseid);
 					$stmt->execute();
 					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 					$totalGroups = 24 * count($courseversions);
+				} else if(strcmp($opt,"GRP")===0) {
+					$exampleid;//TODO
+					$cid;//TODO
 
+					$query = $pdo->prepare("SELECT runlink FROM codeexample WHERE exampleid=:exampleid;");
+					$query->bindParam(":exampleid", $exampleid);
+					$query->execute();
+					$rl = $query->fetchAll(PDO::FETCH_COLUMN);
+
+					$query = $pdo->prepare("SELECT cid FROM codeexample WHERE exampleid=:exampleid;");
+					$query->bindParam(":exampleid", $exampleid);
+					$query->execute();
+					$cid = $query->fetchAll(PDO::FETCH_COLUMN);
+
+					$query = $pdo->prepare("SELECT courseGitURL FROM course WHERE cid=:cid;");
+					$query->bindParam(":cid", $cid);
+					$query->execute();
+					$githubLink = $query->fetchAll(PDO::FETCH_COLUMN);				
 				}
 			}
 		}
