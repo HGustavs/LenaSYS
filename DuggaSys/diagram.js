@@ -7610,10 +7610,20 @@ function drawLine(line, targetGhost = false)
         y2Offset = 0;
     }
 
-    if (felem.type != 'ER' || telem.type != 'ER') {
+    /* if (felem.type != 'ER' || telem.type != 'ER') {
         line.type = 'UML';
     } else {
         line.type = 'ER';
+    } */
+    //gives the lines the correct type based on the from and to element.
+    if ((felem.type == 'UML_STATE') || (telem.type == 'UML_STATE')) {
+        line.type = 'UML_STATE';
+    }
+    else if ((felem.type == 'ER') || (telem.type == 'ER')) {
+        line.type = 'ER';
+    }
+    else {
+        line.type = 'UML';
     }
 
     // If element is UML or IE (use straight line segments instead)
