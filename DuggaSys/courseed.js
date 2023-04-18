@@ -39,7 +39,7 @@ function updateCourse()
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
-
+	fetchGitHubRepo(courseGitURL);
 	$("#overlay").css("display", "none");
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 	localStorage.setItem('courseid', courseid);
@@ -80,9 +80,27 @@ function createNewCourse()
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-	
+	fetchGitHubRepo(courseGitURL);
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+}
+
+//Send valid GitHub-URL to PHP-script which fetches the contents of the repo
+function fetchGitHubRepo(gitHubURL) 
+{
+	//Remove .git, if it exists
+	regexURL = gitHubURL.replace(/.git$/, "");
+
+	if(regexURL){
+		$.ajax({
+			async: false,
+			url: "../recursivetesting/FetchGithubRepo.php",
+			type: "POST",
+			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
+			dataType: "json",
+			success: function(response) { console.log(response) }
+		});
+	} 
 }
 
 function copyVersion()
@@ -562,7 +580,7 @@ function setActiveCodes() {
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
-	courseGitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/
+	courseGitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?$/
 };
 
 //Validates single element against regular expression returning true if valid and false if invalid
