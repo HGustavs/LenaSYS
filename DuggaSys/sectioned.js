@@ -3482,10 +3482,10 @@ function validateForm(formid) {
 // This method is to be used to check if a code example should re-fetch the
 // contents of a code example based on eventual changes in external github-repo
 //------------------------------------------------------------------------------
-function refreshCodeExample(exampelid) {
+async function refreshCodeExample(exampelid) {
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary)");
   AJAXService("REFGIT", {exampelid : exampelid});
-  wait(5000);
+  await new Promise(r => setTimeout(r, 2000));
   echo($_SESSION['test']);
   //AJAX anropen till databasen behöver lösas
   //SELECT runlink FROM codeexample WHERE exampleid=exampleid;
