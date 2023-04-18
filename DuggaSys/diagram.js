@@ -6487,12 +6487,18 @@ function generateContextProperties()
                     }
                 str += '</select>'; 
             }
-            else if(element.kind = 'SDState') {
+            else if(element.type = 'SD') {
+                if (element.kind ='SDState')
+
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
-                            str += `<div style='display:none;'>Name</div>`;
-                            str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'attributes':
+                            str += `<div style='color:white'>Attributes</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
                             break;
@@ -6500,6 +6506,7 @@ function generateContextProperties()
                 }
             }
         }
+
 
         /// Creates button for selecting element background color if not a UML relation since they should not be able change color
         if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
