@@ -30,25 +30,25 @@
 </style>
 
 <body>
-
     <?php
 
     //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-    if(isset($_POST['action'])) {
-        if($_POST['action'] == 'getNewCourseGithub') 
+    if(isset($_POST['action'])) 
+    {
+        if($_POST['action'] == 'getNewCourseGitHub') 
         {
-            getNewCourseGithub($_POST['githubURL']);
+            getNewCourseGitHub($_POST['githubURL']);
         }
     };
-    //Calls getGhithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
-    function getNewCourseGithub($githubURL)
+
+    //Calls getGithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
+    function getNewCourseGitHub($githubURL)
     {
-        $translatedURL = getGithubURL($githubURL);
+        $translatedURL = getGitHubURL($githubURL);
         bfs($translatedURL);
     }
 
-
-    function getGithubURL($url)
+    function getGitHubURL($url)
     {
         $urlParts = explode('/', $url);
         // In normal GitHub Repo URL:s, the username is the third object separated by a slash

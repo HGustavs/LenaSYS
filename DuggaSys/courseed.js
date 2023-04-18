@@ -39,7 +39,7 @@ function updateCourse()
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
-	getGithubRepo(courseGitURL);
+	fetchGitHubRepo(courseGitURL);
 	$("#overlay").css("display", "none");
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 	localStorage.setItem('courseid', courseid);
@@ -75,31 +75,33 @@ function newCourse()
 
 function createNewCourse()
 {
-	console.log("Creating a new course ");
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-	getGithubRepo(courseGitURL);
+	fetchGitHubRepo(courseGitURL);
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
 
-function getGithubRepo(githubURL) 
+//Send valid GitHub-URL to PHP-script which fetches the contents of the repo
+function fetchGitHubRepo(gitHubURL) 
 {
-	//console.log("getGithubRepo function with the url: " + githubURL);
-	//Remove .git
-	regexURL = githubURL.replace(/.git$/, "");
-	console.log(regexURL);
-	$.ajax({
-		async: false,
-		url: "../recursivetesting/FetchGithubRepo.php",
-		type: "POST",
-		data: {'githubURL':regexURL, 'action':'getNewCourseGithub'},
-		dataType: "json",
-		success: function(response) {console.log(response)}
-	});
+	//Remove .git, if it exists
+	regexURL = gitHubURL.replace(/.git$/, "");
+
+	if(regexURL){
+		console.log(regexURL)
+		$.ajax({
+			async: false,
+			url: "../recursivetesting/FetchGithubRepo.php",
+			type: "POST",
+			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
+			dataType: "json",
+			success: function(response) { console.log(response) }
+		});
+	} 
 }
 
 function copyVersion()
