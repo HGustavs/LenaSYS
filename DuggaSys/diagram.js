@@ -3692,7 +3692,6 @@ function entityIsOverlapping(id, x, y)
 
         for(var i = 0; i < data.length; i++){
             if(data[i].id === id) continue
-            if(context.includes(data[i])) continue;
             
             //COMPARED ELEMENT
             const compX2 = data[i].x + data[i].width;
