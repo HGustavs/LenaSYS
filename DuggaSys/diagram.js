@@ -6700,15 +6700,15 @@ function generateContextProperties()
                 if (contextLine[0].startIcon != undefined) {
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
                     if (contextLine[0].startIcon == icon){
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        str += `<option value='${UMLSTATELineIcons[icon]}' selected>${UMLSTATELineIcons[icon]}</option>`;
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
                     else {
-                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                        str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
                     }
                 }
                 else {
-                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
                 }
             });
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
@@ -6717,15 +6717,15 @@ function generateContextProperties()
                 if (contextLine[0].endIcon != undefined) {
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
                     if (contextLine[0].endIcon == icon){
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        str += `<option value='${UMLSTATELineIcons[icon]}' selected>${UMLSTATELineIcons[icon]}</option>`;
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
                     else {
-                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                        str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
                     }
                 }
                 else {
-                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
                 }
             });
             str += `</select>`;
