@@ -283,13 +283,13 @@
                                 <p>Change to UML class</p>
                             </span>
                         </div>
-                        <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                        <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_IE_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                 <p>Change to IE entity</p>
                             </span>
                         </div>
-                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                        <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                             <img src="../Shared/icons/diagram_IE_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
                                 <p>Change to state diagram state</p>
