@@ -929,7 +929,7 @@ const lineCardinalitys = {
 /**
  * @description Available options of icons to display at the end of lines connecting two UML_STATE elements.
  */
- const UMLSTATELineIcons = {//TODO: Replace with actual icons for the dropdown
+ const SDSTATELineIcons = {//TODO: Replace with actual icons for the dropdown
     ARROW: "ARROW"
 };
 //#endregion ===================================================================================
@@ -6696,36 +6696,36 @@ function generateContextProperties()
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             //iterate through all the icons assicoated with UML_STATE, and add them to the drop down as options
-            Object.keys(UMLSTATELineIcons).forEach(icon => {
+            Object.keys(SDSTATELineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined) {
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
                     if (contextLine[0].startIcon == icon){
-                        str += `<option value='${UMLSTATELineIcons[icon]}' selected>${UMLSTATELineIcons[icon]}</option>`;
+                        str += `<option value='${SDSTATELineIcons[icon]}' selected>${SDSTATELineIcons[icon]}</option>`;
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
                     else {
-                        str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
+                        str += `<option value='${SDSTATELineIcons[icon]}'>${SDSTATELineIcons[icon]}</option>`;
                     }
                 }
                 else {
-                    str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
+                    str += `<option value='${SDSTATELineIcons[icon]}'>${SDSTATELineIcons[icon]}</option>`;
                 }
             });
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
-            Object.keys(UMLSTATELineIcons).forEach(icon => {
+            Object.keys(SDSTATELineIcons).forEach(icon => {
                 if (contextLine[0].endIcon != undefined) {
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
                     if (contextLine[0].endIcon == icon){
-                        str += `<option value='${UMLSTATELineIcons[icon]}' selected>${UMLSTATELineIcons[icon]}</option>`;
+                        str += `<option value='${SDSTATELineIcons[icon]}' selected>${SDSTATELineIcons[icon]}</option>`;
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
                     else {
-                        str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
+                        str += `<option value='${SDSTATELineIcons[icon]}'>${SDSTATELineIcons[icon]}</option>`;
                     }
                 }
                 else {
-                    str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
+                    str += `<option value='${SDSTATELineIcons[icon]}'>${SDSTATELineIcons[icon]}</option>`;
                 }
             });
             str += `</select>`;
@@ -7882,7 +7882,7 @@ function drawLine(line, targetGhost = false)
                 }
                 var iconSizeStart=40;
                 break;
-            case UMLSTATELineIcons.ARROW:
+            case SDSTATELineIcons.ARROW:
                 if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
@@ -8102,7 +8102,7 @@ function drawLine(line, targetGhost = false)
                 }
                 var iconSizeEnd=40;
                 break;
-            case UMLSTATELineIcons.ARROW:
+            case SDSTATELineIcons.ARROW:
                 if (line.ctype == 'BT') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
