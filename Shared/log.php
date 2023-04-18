@@ -191,7 +191,9 @@
                             echo '<td>'.$row["eventType"].'</td>';
                             echo '<td>'.$row["service"].'</td>';
                             echo '<td>'.$row["userid"].'</td>';
-                            echo '<td>'.$row["timestamp"].'</td>';
+                            $timestamp=$row["timestamp"];
+                            gmdate("Y-m-d\TH:i:s\Z", $timestamp);
+                            echo '<td>'.$timestamp.'</td>';
                             echo '<td>'.$row["userAgent"].'</td>';
                             echo '<td>'.$row["operatingSystem"].'</td>';
                             echo '<td>'.$row["info"].'</td>'; //  $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
