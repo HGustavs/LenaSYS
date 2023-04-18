@@ -521,7 +521,7 @@ function confirmBox(operation, item = null) {
       $("#tabConfirmBox").css("display", "none");
   }
   
-  else if (operation == "gitHubBox") {
+  else if (operation == "openGitHubBox") {
     tabMarkedItems(active_lid);
     $("#tabConfirmBox").css("display", "none");
 
@@ -1633,7 +1633,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this);'>`;
           str += "</td>";
         }
         // github icon for code (itemKind 2 is code)
