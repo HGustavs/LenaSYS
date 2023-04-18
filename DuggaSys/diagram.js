@@ -11437,6 +11437,10 @@ function toggleBorderOfElements() {
         }
     }
 }
+/**
+ * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
+ * @return a boolean value depending on if it is darktheme or not.
+ */
 function isDarkTheme(){
     if (localStorage.getItem('diagramTheme') != null) {
         //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
