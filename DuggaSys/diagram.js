@@ -8773,6 +8773,21 @@ function drawElement(element, ghosted = false)
     else if (element.kind == "IEEntity") { 
         elemAttri = element.attributes.length;
         //elemFunc = element.functions.length;
+
+        // Removes the previouse value in IEHeight for the element
+        for (var i = 0; i < IEHeight.length; i++) {
+            if (element.id == IEHeight[i].id) {
+                IEHeight.splice(i, 1);
+            }
+        }
+
+        // Calculate and store the UMLEntity's real height
+        var IEEntityHeight = {
+            id: element.id,
+            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
+        }
+        IEHeight.push(IEEntityHeight);
+
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
