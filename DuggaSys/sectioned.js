@@ -3485,7 +3485,6 @@ function validateForm(formid) {
 async function refreshCodeExample(exampelid) {
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary)");
   AJAXService("REFGIT", {exampelid : exampelid});
-  console.log(document.cookie.match("test"));
 }
 
 //------------------------------------------------------------------------------

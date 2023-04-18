@@ -486,7 +486,6 @@ if($gradesys=="UNK") $gradesys=0;
 						$url = $url.$row['repoURL'];
 					}
 					$gdb->close();
-					$debug = "ERROR WTF";
 					//13179 här anropas uppdateringsfunktionen
 				}
 			}
