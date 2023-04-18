@@ -6487,8 +6487,8 @@ function generateContextProperties()
                     }
                 str += '</select>'; 
             }
-            else if(element.type = 'SD') {
-                if (element.kind ='SDState'){
+            
+                else if (element.kind ='SDState'){
                     str +=`<div style='color:white'>TESTER</div>`;
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6504,7 +6504,7 @@ function generateContextProperties()
                             break;
                     }
                 }
-            }
+            
         }
     }
 
