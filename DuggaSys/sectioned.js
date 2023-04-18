@@ -519,7 +519,15 @@ function confirmBox(operation, item = null) {
   }else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
+  }
+  
+  else if (operation == "gitHubBox") {
+    tabMarkedItems(active_lid);
+    $("#tabConfirmBox").css("display", "none");
+
+
   } else if (operation == "closeConfirmBox") {
+    $("#gitHubBox").css("display", "none");
     $("#sectionConfirmBox").css("display", "none");
     $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
