@@ -564,7 +564,24 @@
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-	
+
+	<!-- test , code from trashcan test123 -->
+	<div id='test123' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div class='loginBoxheader'>
+					<h3>Confirm deletion</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			</div>
+			<div style='text-align: center;'>
+					<h4>Are you sure you want to delete this item?</h4>
+					<p>(You can always undo!)</p>
+			</div>
+			<div style='display:flex; align-items:center; justify-content: center;'>
+				<input style='margin-right: 5%;' class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			</div>
+		</div>
+	</div>
 
 
 </body>
