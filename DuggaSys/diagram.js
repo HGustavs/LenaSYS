@@ -11432,6 +11432,18 @@ function toggleBorderOfElements() {
         }
     }
 }
+function isDarkTheme(){
+    if (localStorage.getItem('themeBlack') != null) {
+        //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
+	    let cssUrl = localStorage.getItem('themeBlack');
+        //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
+        cssUrl = cssUrl.split("/").pop();
+        if(cssUrl == 'blackTheme.css'){
+            return true;
+        }
+        else return false;
+    }
+}
 /**
  * @description Redraw all elements and lines
  */
