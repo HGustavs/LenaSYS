@@ -471,7 +471,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$this->open("../../githubMetadata/metadata2.db");
 						}
 					}
-					/*$query = $pdo->prepare("SELECT runlink FROM courseexample WHERE exampleid=:exampleid;");
+					$query = $pdo->prepare("SELECT runlink FROM courseexample WHERE exampleid=:exampleid;");
 					$query->bindParam(":exampleid", $exampleid);
 					$query->execute();
 					$runlink = "";
@@ -485,7 +485,7 @@ if($gradesys=="UNK") $gradesys=0;
 					while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
 						$url = $url.$row['repoURL'];
 					}
-					$gdb->close();*/
+					$gdb->close();
 				}
 			}
 		}
