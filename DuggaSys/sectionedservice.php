@@ -63,7 +63,7 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
-$exampleid=getOP('exampleid');
+$exampelid=getOP('exampelid');
 
 $visbile = 0;
 $avgfeedbackscore = 0;
