@@ -197,6 +197,17 @@
 							echo "</td>";
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
+							// Refresh button for Github repo
+							echo "<td class='refresh' style='display: inline-block;'>";
+							echo "<div class='refresh menuButton'>";
+            	echo "<a id='refreshBTN' title='Refresh Github repo' value='Refresh'>";
+             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt' src='../Shared/icons/refresh.svg'>";
+							echo "</a>";
+							echo "</div>";
+							echo "</td>";
+
+
+
 							//Dropdown Menu For Teachers
 							echo "<div id='hamburgerBox'>";
 							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_iconShadow.svg'><p class='burgerHover'>Announcements</p></div>";
