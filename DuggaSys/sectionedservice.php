@@ -471,7 +471,6 @@ if($gradesys=="UNK") $gradesys=0;
 							$this->open("../../githubMetadata/metadata2.db");
 						}
 					}
-					echo"console.log('test');";
 					$query = $pdo->prepare("SELECT runlink FROM courseexample WHERE exampleid=:exampleid;");
 					$query->bindParam(":exampleid", $exampleid);
 					$query->execute();
@@ -480,7 +479,8 @@ if($gradesys=="UNK") $gradesys=0;
 					$id=1;
 					$githubURL = $gdb->exec("SELECT repoURL FROM gitRepos WHERE repoID=$id");
 					$gdb->close();
-					//console.log($runlink);
+					$output = "<script>console.log('test');</script>";
+					echo $output;
 				}
 			}
 		}
