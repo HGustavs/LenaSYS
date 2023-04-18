@@ -193,7 +193,7 @@
                                 <p>Change to ER entity</p>
                             </span>
                         </div>
-                        <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
+                        <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_UML_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>UML class</b><br>
                                 <p>Change to UML class</p>
@@ -256,7 +256,11 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement8" 
+                        class="SDButton diagramIcons toolbarMode" 
+                        onclick='setElementPlacementType(8); setMouseMode(2);'
+                        onmouseup='holdPlacementButtonUp();'
+                        onmousedown='holdPlacementButtonDown(8);'>
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add state diagram state to the diagram</p><br>
