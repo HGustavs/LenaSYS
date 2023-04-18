@@ -474,12 +474,19 @@ if($gradesys=="UNK") $gradesys=0;
 					$query = $pdo->prepare("SELECT runlink FROM courseexample WHERE exampleid=:exampleid;");
 					$query->bindParam(":exampleid", $exampleid);
 					$query->execute();
-					$runlink = $query->fetchAll(PDO::FETCH_COLUMN);
+					$runlink = "";
+					foreach($query->fetchAll() as $row) {
+						$runlink = $runlink.$row['runlink'];
+					}
 					$gdb = new githubDB();
 					$id=1;
-					$githubURL = $gdb->exec("SELECT repoURL FROM gitRepos WHERE repoID=$id");
+					$que = $gdb->query("SELECT repoURL FROM gitRepos WHERE repoID=".$id.";");
+					$url = "";
+					while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
+						$url = $url.$row['repoURL'];
+					}
 					$gdb->close();
-					$output = "<script>console.log('test');</script>";
+					$output = '<script>console.log("test");</script>';
 					echo $output;
 				}
 			}
