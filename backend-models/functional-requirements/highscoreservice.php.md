@@ -4,7 +4,7 @@
 
 | FN No. | Test Proposal: |
 | --- | --- |
-| FR1 |  |
+| FR1 | Try to answer a dugga, to see if the teacher is able to view the score |
 
 | FN No: | FR1 |
 | --- | --- |
