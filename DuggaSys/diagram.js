@@ -673,7 +673,8 @@ class StateMachine
         this.scrubHistory(tsIndexArr[cri]);
 
         var self = this;
-        this.replayTimer = setInterval(function() {
+        var startDelay = settings.replay.delay;
+        this.replayTimer = setInterval(function replayInterval() {
 
             cri++;
             var startStateIndex = tsIndexArr[cri];
@@ -692,7 +693,11 @@ class StateMachine
 
             for (var i = startStateIndex; i <= stopStateIndex; i++){
                 self.restoreState(self.historyLog[i]);
- 
+
+                if (settings.replay.delay != startDelay){
+                    clearInterval(self.replayTimer);
+                    this.replay();
+                }
             }
 
             // Update diagram
@@ -4373,6 +4378,8 @@ function setReplayDelay(value)
     }
     settings.replay.delay = replayDelayMap[value];
     document.getElementById("replay-time-label").innerHTML = `Delay (${settings.replay.delay}s)`;
+    clearInterval(stateMachine.replayTimer);
+    stateMachine.replay();
 }
 /**
  * @description Changes the play/pause button and locks/unlocks the sliders in replay-mode
@@ -4386,11 +4393,9 @@ function setReplayRunning(state)
 
     if (state){
         button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg"><span class="toolTipText" style="top: -80px;"><b>Pause</b><br><p>Pause history of changes made to the diagram</p><br></span></div>';
-        delaySlider.disabled = true;
         stateSlider.disabled = true;
     }else{
         button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg"><span class="toolTipText" style="top: -80px;"><b>Play</b><br><p>Play history of changes made to the diagram</p><br></span></div>';
-        delaySlider.disabled = false;
         stateSlider.disabled = false;
     }
 }
