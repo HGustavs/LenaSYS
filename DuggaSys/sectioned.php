@@ -566,7 +566,7 @@
 
 
 	<!-- test , code from trashcan test123 -->
-	<div id='test123' class='loginBoxContainer' style='display:none;'>
+	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Confirm deletion321 self destruct</h3>
