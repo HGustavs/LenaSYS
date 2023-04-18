@@ -572,12 +572,10 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div style='text-align: center;'>
-					<h4>Are you sure you want to delete this item?</h4>
-					<p>(You can always undo!)</p>
-			</div>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 			<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='hash' placeholder='GitHubDownloadUrl' value=''/></div>
+			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
+			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 		</div>
 	</div>
 
