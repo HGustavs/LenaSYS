@@ -972,6 +972,13 @@ input{
     stroke: white;
   }
 
+  .cardinalityLabel{
+      fill: black;
+  }
+  .cardinalityLabelText{
+      fill: white;
+  }
+
   /*/ END /*/
 
 /* Style for "course-dropdown" START */
@@ -1094,16 +1101,80 @@ border-left: 14px solid var(--color-sectioned-table-hi);
    stroke-width: 2;
   }
 
+  #rulerOverlay {
+    display: none;
+    position:absolute;
+    left:50px;
+    top:0;
+    width:100%;
+    height:100%;
+    pointer-events: none;
+    display:block;
+    z-index: 20;
+}
+#ruler-y {
+    left: 20px;
+    background-color: #fff;
+    width: 30px;
+    height: 1px !important;
+    position: absolute;
+    z-index: 500;
+}
+
+#ruler-x {
+    top: 20px;
+    background-color: #fff;
+    height: 30px;
+    width: 1px;
+    position: absolute;
+    z-index: 500;
+}
+#ruler-x-svg {
+    background-color: rgba(0, 0, 0, 0.8);
+    position:absolute;
+    width:100%;
+    height:40px;
+    z-index:2;
+}
+#ruler-y-svg {
+    background-color: rgba(0, 0, 0, 0.8);
+    position:absolute;
+    width:40px;
+    height:100%;
+    z-index:2;
+}
+
+#rulerCorner {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 700;
+    top: 0px;
+}
+
+.ruler-line {
+    stroke: #fff;
+}
+
+.ruler-text {
+    fill: #fff;
+}
+
 .svgbacklayer-background {
     background-color: var(--color-background);
 }
 
+
 /* Diagram line style */
-.diagram-umlicon-black-triangle,
 .diagram-umlicon-triangle {
-  fill: black;
+  fill: white;
   stroke: white;
 }
+.diagram-umlicon-darkmode {
+    stroke: white;
+  }
+
 
 /* Diagram Messages */
 #diagram-message {
@@ -1133,5 +1204,9 @@ border-left: 14px solid var(--color-sectioned-table-hi);
  #emakeactive {
     background-color: #121212;
     accent-color: #434343;
+}
+
+#ERTable {
+    color:white;
 }
 /*/ END /*/
