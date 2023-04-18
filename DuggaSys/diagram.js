@@ -6487,7 +6487,7 @@ function generateContextProperties()
                     }
                 str += '</select>'; 
             }
-            
+        }
                 else if (element.kind ='SDState'){
                     
                 for (const property in element) {
@@ -6507,7 +6507,7 @@ function generateContextProperties()
                 }
             
         }
-    }
+    
 
 
         /// Creates button for selecting element background color if not a UML relation since they should not be able change color
