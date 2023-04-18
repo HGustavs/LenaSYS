@@ -5516,13 +5516,13 @@ only screen and (max-device-width: 568px) {
  
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger{
+  #editCourseBurger, #announcementBurger, #refreshBurger{
     display: block;
   }
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement, #messagedialog{
+  #editCourse, #announcement, #messagedialog, #refreshBTN{
     display: none;
   }
 }
@@ -8439,7 +8439,7 @@ textarea#filecont {
 @media only screen and (min-width: 861px) {
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
   #testsBTNBurger, #editFilesBurger, #courseIMGBurger,
-  #editCourseBurger, #announcementBurger{
+  #editCourseBurger, #announcementBurger, #refreshBurger{
     display: none;
   }
 
