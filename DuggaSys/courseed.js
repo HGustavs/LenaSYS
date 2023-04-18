@@ -92,7 +92,6 @@ function fetchGitHubRepo(gitHubURL)
 	regexURL = gitHubURL.replace(/.git$/, "");
 
 	if(regexURL){
-		console.log(regexURL)
 		$.ajax({
 			async: false,
 			url: "../recursivetesting/FetchGithubRepo.php",
