@@ -486,6 +486,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$url = $url.$row['repoURL'];
 					}
 					$gdb->close();
+					$_SESSION['test'] = 1;
 				}
 			}
 		}
