@@ -565,7 +565,7 @@
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
 
-	<!-- test , code from trashcan test123 -->
+	<!-- github moments box  -->
 	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
