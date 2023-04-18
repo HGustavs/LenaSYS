@@ -5522,7 +5522,7 @@ only screen and (max-device-width: 568px) {
 
   #versionCog, #versionPlus, #editStudent,
   #testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement, #messagedialog, #refreshBTN{
+  #editCourse, #announcement, #messagedialog{
     display: none;
   }
 }
