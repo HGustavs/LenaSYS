@@ -783,9 +783,9 @@ const elementTypes = {
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
-    // SDState: 8 DUPLICATE WITH UML-INITIAL-STATE,     //SD(State diagram) functionality
-    UMLInitialState: 8,
-    UMLFinalState: 9
+     SDState: 8,////SD(State diagram) functionality
+    UMLInitialState: 9,
+    UMLFinalState: 10
 
 };
 
@@ -801,7 +801,7 @@ const elementTypesNames = {
     UMLEntity: "UMLEntity",
     IEEntity: "IEEntity",
     IERelation: "IERelation",
-    // SDState: "SDState" DUPLICATE WITH UML-INITIAL-STATE,
+     SDState: "SDState",
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState"
 
@@ -849,11 +849,7 @@ const entityType = {
     UML: "UML",
     ER: "ER",
     IE: "IE",
-
     SD: "SD",
-
-    UML_STATE: "UML_STATE"
-
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -1104,8 +1100,8 @@ var defaults = {
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" } // UML Final state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" } // UML Final state.
 
 }
 var defaultLine = { kind: "Normal" };
