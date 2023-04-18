@@ -194,7 +194,6 @@
                             echo '<td>'.$row["service"].'</td>';
                             echo '<td>'.$row["userid"].'</td>';
                             $timestamp=$row["timestamp"];
-                            echo $timestamp;
                             $timestamp = date('Y-m-d h:i:s', $timestamp/1000);
                             echo '<td>'.$timestamp.'</td>';
                             echo '<td>'.$row["userAgent"].'</td>';
