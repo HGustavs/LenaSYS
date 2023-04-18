@@ -197,6 +197,15 @@
 							echo "</td>";
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
+							// Refresh button for Github repo in nav
+							echo "<td class='refresh' style='display: inline-block;'>";
+							echo "<div class='refresh menuButton'>";
+            	echo "<a id='refreshBTN' title='Refresh Github repo' value='Refresh' href='#'>";
+             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' src='../Shared/icons/refresh.svg'>";
+							echo "</a>";
+							echo "</div>";
+							echo "</td>";
+
 							//Dropdown Menu For Teachers
 							echo "<div id='hamburgerBox'>";
 							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_iconShadow.svg'><p class='burgerHover'>Announcements</p></div>";
@@ -234,6 +243,13 @@
 							echo "<img alt='give access icon'  class='burgerButt' src='../Shared/icons/lock_symbol.svg'>";
 							echo "</a>";
 							echo "<a class='burgerButtText' href='accessed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Change student access</a></div>";
+
+							// Refresh button for Github repo in hamburger menu
+							echo "<div id='refreshBurger'>";
+            	echo "<a id='refreshBTN' title='Refresh Github Repo' value='Refresh' href='#'>";
+							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' src='../Shared/icons/refresh.svg'>";
+							echo "</a>";
+							echo "<a class='burgerButtText' href='#' >Refresh github repo</a></div>";
 					
 							//Adding home button to the teacher burger menu
 							echo "<div id='homeBurgerTeacher'>";
