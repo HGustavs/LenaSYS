@@ -3485,16 +3485,6 @@ function validateForm(formid) {
 async function refreshCodeExample(exampelid) {
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary)");
   AJAXService("REFGIT", {exampelid : exampelid});
-  await new Promise(r => setTimeout(r, 10000));
-  alert($test);
-  //AJAX anropen till databasen behöver lösas
-  //SELECT runlink FROM codeexample WHERE exampleid=exampleid;
-  //cid = SELECT cid FROM codeexample WHERE exampleid=exampleid;
-  //githubLink = SELECT courseGitURL FROM course WHERE cid=cid;
-  
-  //var githubLink;
-  //var runlink;
-  //githubSingelFileFetch(githubLink, runlink);
 }
 
 //------------------------------------------------------------------------------
