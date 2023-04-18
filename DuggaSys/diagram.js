@@ -852,7 +852,7 @@ const entityType = {
 
     SD: "SD",
 
-    UML_STATE: "UML_STATE"
+    //UML_STATE: "UML_STATE"
 
 };
 /**
@@ -927,7 +927,7 @@ const lineCardinalitys = {
     WEAK: "Weak"
 };
 /**
- * @description Available options of icons to display at the end of lines connecting two UML_STATE elements.
+ * @description Available options of icons to display at the end of lines connecting two SD elements.
  */
  const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
     ARROW: "ARROW"
@@ -3178,7 +3178,7 @@ function changeLineProperties()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML line
-    if ((line.type == 'UML') || (line.type == 'UML_STATE')) {
+    if ((line.type == 'UML') || (line.type == 'SD')) {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -6540,7 +6540,7 @@ function generateContextProperties()
                 }
             }
         }
-        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'UML_STATE')) {
+        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
             if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
@@ -6691,11 +6691,11 @@ function generateContextProperties()
             });
             str += `</select>`;
         }
-        //generate the dropdown for UML_STATE line icons.
-        if (contextLine[0].type == 'UML_STATE') {
+        //generate the dropdown for SD line icons.
+        if (contextLine[0].type == 'SD') {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
-            //iterate through all the icons assicoated with UML_STATE, and add them to the drop down as options
+            //iterate through all the icons assicoated with SD, and add them to the drop down as options
             Object.keys(SDLineIcons).forEach(icon => {
                 if (contextLine[0].startIcon != undefined) {
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
@@ -7662,7 +7662,7 @@ function drawLine(line, targetGhost = false)
     } */
     //gives the lines the correct type based on the from and to element.
     if ((felem.type == 'UML_STATE') || (telem.type == 'UML_STATE')) {
-        line.type = 'UML_STATE';
+        line.type = 'SD';
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
