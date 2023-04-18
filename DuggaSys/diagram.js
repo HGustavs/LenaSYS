@@ -1081,7 +1081,7 @@ var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
-
+var IEHeight = []; // List with IE Entities' real heigt
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
