@@ -256,10 +256,6 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <!--
-
-                    !!! NOTE: Commented out due to merge conflict between "SDState" and "UMLInitialState". !!!
-
                     <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
@@ -270,8 +266,6 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>
-
-                    -->
                     <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                         <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
@@ -422,7 +416,7 @@
                     </span>
                 </div>
                 <!-- UML Initial state selection -->
-                <div id="elementPlacement8" class="diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_initial_state.svg"/>
                     <span class="toolTipText"><b>UML initial state</b><br>
                         <p>Creates an initial state for UML.</p><br>
@@ -430,7 +424,7 @@
                     </span>
                 </div>
                 <!-- UML Final state selection -->
-                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_final_state.svg"/>
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p><br>
