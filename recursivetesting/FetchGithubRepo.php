@@ -30,23 +30,26 @@
 </style>
 
 <body>
-    <script>console.log("TEST")</script>
 
     <?php
-    $githubURL=getOP('githubURL');
+
+    //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
     if(isset($_POST['action'])) {
-        if($_POST['action'] == 'getNewCourseGithub') {getNewCourseGithub($githubURL);}
-        echo '<script>console.log("INSIDE IF")</script>';
-
+        if($_POST['action'] == 'getNewCourseGithub') 
+        {
+            getNewCourseGithub($_POST['githubURL']);
+        }
     };
-
-    function getNewCourseGithub($githubURL) {
+    //Calls getGhithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
+    function getNewCourseGithub($githubURL)
+    {
         $translatedURL = getGithubURL($githubURL);
         bfs($translatedURL);
     }
 
 
-    function getGithubURL($url){
+    function getGithubURL($url)
+    {
         $urlParts = explode('/', $url);
         // In normal GitHub Repo URL:s, the username is the third object separated by a slash
         $username = $urlParts[3];
@@ -57,17 +60,19 @@
         return $translatedURL;
     }
 
+    //------ DUMMY DATA FOR TESTING------ 
     // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
-    $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
+    //$url = 'https://github.com/e21krida/Webbprogrammering-Examples';
     // Dismantles the $url into an array of each component, separated by a slash
-    $urlParts = explode('/', $url);
+    //$urlParts = explode('/', $url);
     // In normal GitHub Repo URL:s, the username is the third object separated by a slash
-    $username = $urlParts[3];
+    //$username = $urlParts[3];
     // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
-    $repository = $urlParts[4];
+    //$repository = $urlParts[4];
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
-    $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    bfs($translatedURL);
+    //$translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+    //bfs($translatedURL);
+    //----------------------------------
     function bfs($url)
     {
         $visited = array();

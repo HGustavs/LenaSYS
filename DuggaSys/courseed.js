@@ -39,7 +39,7 @@ function updateCourse()
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
-
+	getGithubRepo(courseGitURL);
 	$("#overlay").css("display", "none");
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 	localStorage.setItem('courseid', courseid);
@@ -75,22 +75,26 @@ function newCourse()
 
 function createNewCourse()
 {
-	console.log("THIS IS NOT HOW IT SHOULD WORK IN COURSEED");
+	console.log("Creating a new course ");
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-	getGithubRepo(courseGiturl);
+	getGithubRepo(courseGitURL);
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
-function getGithubRepo(githubURL) {
-	console.log("THIS IS NOT HOW IT SHOULD WORK IN GitHubRepo" + githubURL);
+function getGithubRepo(githubURL) 
+{
+	//console.log("getGithubRepo function with the url: " + githubURL);
+	//Remove .git
+	console.log(githubURL);
 	$.ajax({
+		async: false,
 		url: "../recursivetesting/FetchGithubRepo.php",
 		type: "POST",
-		data: {"githubURL=":githubURL, 'action':'getNewCourseGithub'},
+		data: {'githubURL':githubURL, 'action':'getNewCourseGithub'},
 		dataType: "json",
 		success: function(response) {console.log(response)}
 	});
@@ -574,7 +578,7 @@ function setActiveCodes() {
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
-	courseGitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/
+	courseGitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?$/
 };
 
 //Validates single element against regular expression returning true if valid and false if invalid
