@@ -194,7 +194,16 @@
                             echo '<td>'.$row["timestamp"].'</td>';
                             echo '<td>'.$row["userAgent"].'</td>';
                             echo '<td>'.$row["operatingSystem"].'</td>';
-                            echo '<td>'.$row["info"].'</td>'; //  $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
+
+                            if (intval(substr($row["info"],0,-2))>300) {
+        
+                                echo "<td style='color:#F00;'>".$info[2]."</td>";
+                            } 
+                            else {
+                                echo "<td style='color:#000;'>".$info[2]."</td>";
+                            } 
+
+                            //echo '<td>'.$row["info"].'</td>'; //  $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
                             echo '<td>'.$row["referer"].'</td>';
                             echo '<td>'.$row["IP"].'</td>';
                             echo '<td>'.$row["browser"].'</td>';
