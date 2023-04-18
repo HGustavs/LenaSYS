@@ -6691,6 +6691,7 @@ function generateContextProperties()
             });
             str += `</select>`;
         }
+        //generate the dropdown for UML_STATE line icons.
         if (contextLine[0].type == 'UML_STATE') {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
@@ -6724,6 +6725,9 @@ function generateContextProperties()
             });
             str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
+            Object.keys(UMLSTATELineIcons).forEach(icon => {
+                str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
+            });
             str += `</select>`;
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
