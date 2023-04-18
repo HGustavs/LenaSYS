@@ -252,7 +252,7 @@ $sql2 = '
     repoURL VARCHAR(255), 
     repoFileType VARCHAR(50), 
     repoDownloadURL VARCHAR(255), 
-    repoSHA VARCHAR(255), 
+    repoSHA VARCHAR(255) UNIQUE, 
     repoPath VARCHAR(255) 
 	);
 '; 
