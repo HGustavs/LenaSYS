@@ -6487,6 +6487,18 @@ function generateContextProperties()
                     }
                 str += '</select>'; 
             }
+            else if(element.kind = 'SD') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='display:none;'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         /// Creates button for selecting element background color if not a UML relation since they should not be able change color
