@@ -569,7 +569,7 @@
 	<div id='test123' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
-					<h3>Confirm deletion</h3>
+					<h3>Confirm deletion321 self destruct</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div style='text-align: center;'>
