@@ -6488,8 +6488,8 @@ function generateContextProperties()
                 str += '</select>'; 
             }
             else if(element.type = 'SD') {
-                if (element.kind ='SDState')
-
+                if (element.kind ='SDState'){
+                    str +=`<div style='color:white'>TESTER</div>`;
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -6506,6 +6506,7 @@ function generateContextProperties()
                 }
             }
         }
+    }
 
 
         /// Creates button for selecting element background color if not a UML relation since they should not be able change color
