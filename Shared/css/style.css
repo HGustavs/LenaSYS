@@ -3728,6 +3728,10 @@ span.arrow {
   margin-right: 3px;
 }
 
+.resultTable-password {
+  cursor: pointer;
+}
+
 #accessTable td {
   padding: 0px;
   border-left: 2px solid #dbd0d8;
@@ -9275,6 +9279,7 @@ margin:2px;
 .svgbacklayer-background {
   background-color: var(--color-background);
 }
+
 
 
 /* END */
