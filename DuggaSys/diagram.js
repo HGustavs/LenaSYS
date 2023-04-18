@@ -1081,6 +1081,8 @@ var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
+var IEHeight = []; // List with IE Entities' real height
+
 
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
@@ -3684,6 +3686,12 @@ function entityIsOverlapping(id, x, y)
                 elementHeight = UMLHeight[i].height;
             }
         }
+        // ...
+        for (var i = 0; i < IEHeight.length; i++) {
+            if (element.id == IEHeight[i].id) {
+                elementHeight = IEHeight[i].height;
+            }
+        }
 
         targetX = x //(x / zoomfact);
         targetY =  y//(y / zoomfact);
@@ -3701,6 +3709,12 @@ function entityIsOverlapping(id, x, y)
             for (var j = 0; j < UMLHeight.length; j++) {
                 if (data[i].id == UMLHeight[j].id) {
                     compY2 = data[i].y + UMLHeight[j].height;
+                }
+            }
+            // Change height if element is an UML Entity
+            for (var j = 0; j < IEHeight.length; j++) {
+                if (data[i].id == IEHeight[j].id) {
+                    compY2 = data[i].y + IEHeight[j].height;
                 }
             }
 
@@ -8773,6 +8787,20 @@ function drawElement(element, ghosted = false)
     else if (element.kind == "IEEntity") { 
         elemAttri = element.attributes.length;
         //elemFunc = element.functions.length;
+
+        // Removes the previouse value in IEHeight for the element
+        for (var i = 0; i < IEHeight.length; i++) {
+            if (element.id == IEHeight[i].id) {
+                IEHeight.splice(i, 1);
+            }
+        }
+
+        // Calculate and store the UMLEntity's real height
+        var IEEntityHeight = {
+            id: element.id,
+            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
+        }
+        IEHeight.push(IEEntityHeight);
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
