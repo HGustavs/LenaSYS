@@ -5957,6 +5957,11 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement6").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton6").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox6").classList.remove("activeTogglePlacementTypeBox");// IE entity end
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD state start
+        document.getElementById("elementPlacement8").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement8").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton8").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");// SD state end
     }
     else if(type==1){
         document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");// ER relation start
