@@ -7446,7 +7446,7 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    if (isDarkTheme) {
+    if (isDarkTheme()) {
         var lineColor = '#FFFFFF';
     } else {
         var lineColor = '#000000';
