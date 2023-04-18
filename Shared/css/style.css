@@ -3682,10 +3682,6 @@ span.arrow {
   font-size: 13px;
 }
 
-.resultTableText:nth-child(3) {
-  cursor: pointer;
-}
-
 .WriteOutTimesGraded {
   font-weight: bold;
   font-size: 15px;
@@ -3730,6 +3726,10 @@ span.arrow {
 .resultTable_counter span {
   margin-left: 3px;
   margin-right: 3px;
+}
+
+.resultTable-password {
+  cursor: pointer;
 }
 
 #accessTable td {
