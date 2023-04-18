@@ -3485,6 +3485,7 @@ function validateForm(formid) {
 function refreshCodeExample(exampelid){
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary")
   AJAXService("REFGIT", {exampleid : exampleid}, "COURSE");
+  alert("Runlink: ".$_SESSION['runlink']);
   //AJAX anropen till databasen behöver lösas
   //SELECT runlink FROM codeexample WHERE exampleid=exampleid;
   //cid = SELECT cid FROM codeexample WHERE exampleid=exampleid;

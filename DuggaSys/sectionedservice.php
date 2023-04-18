@@ -475,7 +475,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(":exampleid", $exampleid);
 					$query->execute();
 					$runlink = $query->fetchAll(PDO::FETCH_COLUMN);
-					echo("alert($runlink)");
+					$_SESSION['runlink'] = $runlink;
 					$gdb = new githubDB();
 					$id=1;
 					$githubURL = $gdb->exec("SELECT repoURL FROM gitRepos WHERE repoID=$id");
