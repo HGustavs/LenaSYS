@@ -3684,6 +3684,12 @@ function entityIsOverlapping(id, x, y)
                 elementHeight = UMLHeight[i].height;
             }
         }
+        // Change height if element is an IE Entity
+        for (var i = 0; i < IEHeight.length; i++) {
+            if (element.id == IEHeight[i].id) {
+                elementHeight = IEHeight[i].height;
+            }
+        }
 
         targetX = x //(x / zoomfact);
         targetY =  y//(y / zoomfact);
@@ -3701,6 +3707,12 @@ function entityIsOverlapping(id, x, y)
             for (var j = 0; j < UMLHeight.length; j++) {
                 if (data[i].id == UMLHeight[j].id) {
                     compY2 = data[i].y + UMLHeight[j].height;
+                }
+            }
+            // Change height if element is an IE Entity
+            for (var j = 0; j < IEHeight.length; j++) {
+                if (data[i].id == IEHeight[j].id) {
+                    compY2 = data[i].y + IEHeight[j].height;
                 }
             }
 
