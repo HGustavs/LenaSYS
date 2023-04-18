@@ -992,7 +992,6 @@ const avgcharwidth = 6; // <-- This variable is never used anywhere in this file
 const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
-const lineColor = "#000000";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -7449,7 +7448,7 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    //var lineColor = '#000000';
+    var lineColor = '#000000';
 
     if(contextLine.includes(line)){
         lineColor = selectedColor;
