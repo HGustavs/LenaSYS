@@ -45,6 +45,7 @@
     bfs($translatedURL);
     function bfs($url)
     {
+        global $repository;
         $visited = array();
         $fifoQueue = array();
         // If the directory doesn't exist, make it
