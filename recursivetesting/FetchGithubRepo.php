@@ -48,9 +48,10 @@
         $visited = array();
         $fifoQueue = array();
         // If the directory doesn't exist, make it
-        if(!file_exists('../../LenaSYS/courses/Webbprogrammering-Examples')) {
-	        if(!mkdir('../../LenaSYS/courses/Webbprogrammering-Examples')){
-		        echo "Error creating folder: Webbprogrammering";
+        //../../LenaSYS/courses/Webbprogrammering-Examples
+        if(!file_exists('../../LenaSYS/courses/' . $repository)) {
+	        if(!mkdir('../../LenaSYS/courses/' . $repository)){
+		        echo "Error creating folder: ../../LenaSYS/courses/ " . $repository;
 		        die;
 	        }
         }
@@ -92,7 +93,7 @@
                         if ($item['type'] == 'file') {
                             // Retrieves the contents of each individual file based on the fetched "download_url"
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = '../../LenaSYS/courses/Webbprogrammering-Examples/' . $item['path'];
+                            $path = '../../LenaSYS/courses/' . $repository . '/' . $item['path'];
                             echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                             // Creates the directory for each individual file based on the fetched "path"
                             if (!file_exists((dirname($path)))) {
