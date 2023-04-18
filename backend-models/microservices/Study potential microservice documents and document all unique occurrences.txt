@@ -1,0 +1,150 @@
+﻿Study potential microservice documents and document all unique occurrences
+
+
+=======LIST OF FILES=======
+
+=================
+Accessed service
+=================
+
+hasAccess
+updateUser
+updateUser_course
+addClass
+addNewUser
+registreradUser
+oldVersionSubmission
+updatePassword
+logUserEvent
+checkUserAccount
+saveEmail
+noExistClass
+Codeviewer service
+
+=================
+codeviewer service
+=================
+
+check/set user id
+start log
+check/set rights
+update information (based on writeAccess or super user)
+handle errors
+create boxes
+update/create boxes based on input
+change content
+get/set
+convert to array, then insert from loop
+retrieve information from selected course/example
+push id from selection to array
+getter for selection
+set allowed extensions on files
+add local files and allow preview
+row 479: separate current file from other files for better viewing
+list specific file extension for specific views(document, code, preview) 
+fill an array with primary keys
+end log
+
+
+=================
+Contribution loginbox service
+=================
+
+checklogin
+checkForGitUser
+Log user
+If its not a query that wants to execute then display error
+checkUsernameLength
+gitUserAdmin
+userExisted
+json_encode
+gitUserAdmin
+DenyGitAccount
+DeleteUser
+CheckEqual
+FetchData
+ReturnUserState
+CheckPassword
+CheckIfUserExist
+CheckIfGitUser
+CheckRetrievedEntries
+OutputAccountStatus
+WrongPassword
+
+
+=================
+Diagram service
+=================
+
+
+Gather the information
+Presenting the information
+Duggaed service
+
+
+
+=================
+Fileed service
+=================
+
+
+Delete fileLink
+Edit filesize
+Retrieves all information from DB table fileLink
+
+=================
+Highscore service
+=================
+
+Retrieve information
+checklogin
+Sectioned service
+Profile service
+
+
+log session - log start and end of service use.
+check login - check if user is a student or teacher.
+update challenge question
+update password
+
+
+=================
+profile service
+=================
+
+log session
+check login
+update challenge question
+update password
+
+=================
+Resulted service
+=================
+
+$SESSION
+$userid
+check login
+Get filter option
+listentries
+create and return array
+output array
+
+
+
+=================
+showDugga service
+=================
+
+
+new form of login session (row17)
+if a couple of variables are not UNK, show dugga, otherwise, an error message
+giveReceit
+Isset (if var is set)
+fileReader
+duggaAttempt
+
+If you have a grade, you cant redo the dugga
+
+newSubmission
+teacherGrading / allmightyView
+
