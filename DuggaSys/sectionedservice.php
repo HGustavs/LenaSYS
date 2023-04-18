@@ -486,7 +486,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$url = $url.$row['repoURL'];
 					}
 					$gdb->close();
-					$test = 1;
+					return $runlink;
 				}
 			}
 		}
