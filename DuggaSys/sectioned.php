@@ -564,7 +564,20 @@
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-	
+
+	<!-- github moments box  -->
+	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div class='loginBoxheader'>
+					<h3>Github Moment</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			</div>
+			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
+			<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='hash' placeholder='GitHubDownloadUrl' value=''/></div>
+			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
+			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
+		</div>
+	</div>
 
 
 </body>
