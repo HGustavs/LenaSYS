@@ -33,6 +33,8 @@
         <!----------------------------------------------------------------------------------->
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
+                date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
+
                 echo 'choose table';
 
                 echo '<select onchange="submit();" name="name" >';
@@ -191,7 +193,9 @@
                             echo '<td>'.$row["eventType"].'</td>';
                             echo '<td>'.$row["service"].'</td>';
                             echo '<td>'.$row["userid"].'</td>';
-                            echo '<td>'.$row["timestamp"].'</td>';
+                            $timestamp=$row["timestamp"];
+                            $timestamp = date('Y-m-d h:i:s', $timestamp/1000); //Divide by 1000 cause unix is in miliseconds
+                            echo '<td>'.$timestamp.'</td>';
                             echo '<td>'.$row["userAgent"].'</td>';
                             echo '<td>'.$row["operatingSystem"].'</td>';
                             echo '<td>'.$row["info"].'</td>'; //  $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
