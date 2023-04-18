@@ -4270,6 +4270,8 @@ function toggleDarkmode()
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
 
+    showdata();
+
     toggleBorderOfElements();
 
 }
@@ -7579,8 +7581,16 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    lineColor = '#000000';
+
+    if (isDarkTheme()) {
+        var lineColor = '#FFFFFF';
+    } else {
+        var lineColor = '#000000';
+    }
+
+    //ineColor = '#000000';
         
+
     
 
     if(contextLine.includes(line)){
@@ -11706,6 +11716,22 @@ function toggleBorderOfElements() {
                 }
             }
         }
+    }
+}
+/**
+ * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
+ * @return a boolean value depending on if it is darktheme or not.
+ */
+function isDarkTheme(){
+    if (localStorage.getItem('diagramTheme') != null) {
+        //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
+	    let cssUrl = localStorage.getItem('diagramTheme');
+        //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
+        cssUrl = cssUrl.split("/").pop();
+        if(cssUrl == 'blackTheme.css'){
+            return true;
+        }
+        else return false;
     }
 }
 /**
