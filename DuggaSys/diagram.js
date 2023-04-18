@@ -7446,7 +7446,12 @@ function drawLine(line, targetGhost = false)
     else{
         var strokeDash="0";
     }
-    var lineColor = '#000000';
+    if (isDarkTheme) {
+        var lineColor = '#FFFFFF';
+    } else {
+        var lineColor = '#000000';
+    }
+    
 
     if(contextLine.includes(line)){
         lineColor = selectedColor;
