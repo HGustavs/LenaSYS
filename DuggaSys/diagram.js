@@ -930,6 +930,12 @@ const lineCardinalitys = {
     MANY: "M",
     WEAK: "Weak"
 };
+/**
+ * @description Available options of icons to display at the end of lines connecting two SD elements.
+ */
+ const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
+    ARROW: "ARROW"
+};
 //#endregion ===================================================================================
 //#region ================================ GLOBAL VARIABLES     ================================
 // Data and html building variables
@@ -3186,7 +3192,7 @@ function changeLineProperties()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML line
-    if (line.type == 'UML') {
+    if ((line.type == 'UML') || (line.type == 'SD')) {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -6548,7 +6554,7 @@ function generateContextProperties()
                 }
             }
         }
-        if (contextLine[0].type == 'UML') {
+        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
             if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
@@ -6695,6 +6701,45 @@ function generateContextProperties()
                 }
                 else {
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                }
+            });
+            str += `</select>`;
+        }
+        //generate the dropdown for SD line icons.
+        if (contextLine[0].type == 'SD') {
+            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
+            str  += `<option value=''>None</option>`;
+            //iterate through all the icons assicoated with SD, and add them to the drop down as options
+            Object.keys(SDLineIcons).forEach(icon => {
+                if (contextLine[0].startIcon != undefined) {
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].startIcon == icon){
+                        str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
+                    }
+                    //else, its not matching and the option is just added to the dropdown normally.
+                    else {
+                        str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                    }
+                }
+                else {
+                    str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                }
+            });
+            str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
+            str  += `<option value=''>None</option>`;
+            Object.keys(SDLineIcons).forEach(icon => {
+                if (contextLine[0].endIcon != undefined) {
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].endIcon == icon){
+                        str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
+                    }
+                    //else, its not matching and the option is just added to the dropdown normally.
+                    else {
+                        str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                    }
+                }
+                else {
+                    str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
                 }
             });
             str += `</select>`;
@@ -7624,10 +7669,20 @@ function drawLine(line, targetGhost = false)
         y2Offset = 0;
     }
 
-    if (felem.type != 'ER' || telem.type != 'ER') {
+    /* if (felem.type != 'ER' || telem.type != 'ER') {
         line.type = 'UML';
     } else {
         line.type = 'ER';
+    } */
+    //gives the lines the correct type based on the from and to element.
+    if ((felem.type == 'UML_STATE') || (telem.type == 'UML_STATE')) {
+        line.type = 'SD';
+    }
+    else if ((felem.type == 'ER') || (telem.type == 'ER')) {
+        line.type = 'ER';
+    }
+    else {
+        line.type = 'UML';
     }
 
     // If element is UML or IE (use straight line segments instead)
@@ -7841,6 +7896,21 @@ function drawLine(line, targetGhost = false)
                 }
                 var iconSizeStart=40;
                 break;
+            case SDLineIcons.ARROW:
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=40;
+                break;
             default:
                 var iconSizeStart=0;
                 break;
@@ -8045,6 +8115,21 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=40;
+                break;
+            case SDLineIcons.ARROW:
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=20;
                 break;
             default:
                 var iconSizeEnd=0;
