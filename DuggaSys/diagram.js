@@ -926,6 +926,12 @@ const lineCardinalitys = {
     MANY: "M",
     WEAK: "Weak"
 };
+/**
+ * @description Available options of icons to display at the end of lines connecting two UML_STATE elements.
+ */
+ const UMLSTATELineIcons = {//TODO: Replace with actual icons for the dropdown
+    ARROW: "ARROW"
+};
 //#endregion ===================================================================================
 //#region ================================ GLOBAL VARIABLES     ================================
 // Data and html building variables
@@ -6683,6 +6689,41 @@ function generateContextProperties()
                     str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                 }
             });
+            str += `</select>`;
+        }
+        if (contextLine[0].type == 'UML_STATE') {
+            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
+            str  += `<option value=''>None</option>`;
+            //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
+            Object.keys(UMLSTATELineIcons).forEach(icon => {
+                /* if (contextLine[0].startIcon != undefined) {
+                    //this covers Triangle and Arrow.
+                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                    if (contextLine[0].startIcon.toUpperCase() == icon){
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        console.log("icon is " + icon);
+                        console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                    }
+                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                    else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                    }
+                    //else, its not matching and the option is just added to the dropdown normally.
+                    else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                    }
+                }
+                else {
+                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                } */
+                str += `<option value='${UMLSTATELineIcons[icon]}'>${UMLSTATELineIcons[icon]}</option>`;
+            });
+            str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
+            str  += `<option value=''>None</option>`;
             str += `</select>`;
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
