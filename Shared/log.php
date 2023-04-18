@@ -33,7 +33,7 @@
         <!----------------------------------------------------------------------------------->
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
-                date_default_timezone_set('CEST');
+                date_default_timezone_set('GMT+2');
 
                 echo 'choose table';
 
