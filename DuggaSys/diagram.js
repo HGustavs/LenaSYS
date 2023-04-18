@@ -1359,6 +1359,11 @@ function getData()
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
+
+    // Setup and show only the first element of each PlacementType, hide the others in dropdown
+    // SHOULD BE CHANGED LATER
+    togglePlacementType(0,0)
+    togglePlacementType(1,1)
 }
 //<-- UML functionality start
 /**
@@ -5955,6 +5960,8 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
     }
+    
+    // Unhide the currently selected placement type
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
 
