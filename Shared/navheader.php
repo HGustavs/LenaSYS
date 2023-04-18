@@ -247,7 +247,7 @@
 							// Refresh button for Github repo in hamburger menu
 							echo "<div id='refreshBurger'>";
             	echo "<a id='refreshBTN' title='Refresh Github Repo' value='Refresh' href='#'>";
-							echo "<img alt='refresh icon'  class='burgerButt whiteIcon' src='../Shared/icons/refresh.svg'>";
+							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' src='../Shared/icons/refresh.svg'>";
 							echo "</a>";
 							echo "<a class='burgerButtText' href='#' >Refresh github repo</a></div>";
 					
