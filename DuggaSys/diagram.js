@@ -852,7 +852,7 @@ const entityType = {
 
     SD: "SD",
 
-    //UML_STATE: "UML_STATE"
+    UML_STATE: "UML_STATE"
 
 };
 /**
