@@ -94,7 +94,7 @@
                             // Retrieves the contents of each individual file based on the fetched "download_url"
                             $fileContents = file_get_contents($item['download_url']);
                             $path = '../../LenaSYS/courses/' . $repository . '/' . $item['path'];
-                            echo "<script>console.log('Debug Objects: " . $repository . "' );</script>";
+                            echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                             // Creates the directory for each individual file based on the fetched "path"
                             if (!file_exists((dirname($path)))) {
                                 mkdir(dirname($path), 0777, true);
