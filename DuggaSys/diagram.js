@@ -8739,8 +8739,8 @@ function drawElement(element, ghosted = false)
         str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)} rx='20'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='#b8b8b8' />
         <text style='fill: ${element.stroke};' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`; //style shouldn't be needed, the div randomly gets fill: rgb(0, 0, 0), no clue why'
         //end of svg for SD header
         str += `</svg>`;
@@ -8753,8 +8753,8 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)} rx='20'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='#b8b8b8' />`;
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
             }
@@ -8764,7 +8764,7 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
