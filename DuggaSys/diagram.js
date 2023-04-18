@@ -1,4 +1,4 @@
-// =============================================================================================
+    // =============================================================================================
 //#region ================================ CLASSES             ==================================
 /** 
  * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. */
@@ -506,6 +506,8 @@ class StateMachine
             this.currentHistoryIndex--;
             console.log(this.currentHistoryIndex);
         }
+
+        clearGhosts()
         clearContext();
         clearContextLine();
         showdata();
@@ -781,9 +783,11 @@ const elementTypes = {
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
-    UMLInitialState: 8,
-    UMLFinalState: 9,
-    SDState: 10
+
+    SDState: 8,////SD(State diagram) functionality
+    UMLInitialState: 9,
+    UMLFinalState: 10
+
 };
 
 /**
@@ -798,7 +802,9 @@ const elementTypesNames = {
     UMLEntity: "UMLEntity",
     IEEntity: "IEEntity",
     IERelation: "IERelation",
+
     SDState: "SDState",
+
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState"
 
@@ -846,11 +852,7 @@ const entityType = {
     UML: "UML",
     ER: "ER",
     IE: "IE",
-
     SD: "SD",
-
-    UML_STATE: "UML_STATE"
-
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -1102,8 +1104,8 @@ var defaults = {
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
     SDState: { name: "State", king: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "UML_STATE" } // UML Final state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" } // UML Final state.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -1342,6 +1344,7 @@ function debugDrawSDState() {
 
     fetchDiagramFileContentOnLoad();
 }*/
+
 //was in onSetup function moved it out 
  // Global statemachine init
 stateMachine = new StateMachine(data, lines);
@@ -2179,7 +2182,7 @@ function mouseMode_onMouseUp(event)
             if(event.target.id == "container") {
 
             if (ghostElement && event.button == 0) {
-                addObjectToData(ghostElement);
+                addObjectToData(ghostElement, false);
                 
                 // Check if the element to create would overlap others, returns if true
                 if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
@@ -2193,7 +2196,9 @@ function mouseMode_onMouseUp(event)
                     showdata();
                     return 
                 }
-                                
+
+                //If not overlapping
+                stateMachine.save(StateChangeFactory.ElementCreated(ghostElement), StateChange.ChangeTypes.ELEMENT_CREATED); 
                 makeGhost();
                 showdata();
             }
@@ -3408,6 +3413,15 @@ function pasteClipboard(elements, elementsLines)
 }
 
 /**
+ * @description Sets ghostElement and ghostLine to null.
+ */
+function clearGhosts()
+{
+    ghostElement = null;
+    ghostLine = null;
+}
+
+/**
  * @description Empties the context array of all selected elements.
  */
 function clearContext()
@@ -4123,6 +4137,18 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
+ * @description hides or shows the diagram type dropdown 
+ */
+function toggleDiagramDropdown()
+{
+    const dropdown=document.getElementById("diagramTypeDropdown");
+    if(window.getComputedStyle(dropdown).display==="none")
+    dropdown.style.display="block";
+    else
+    dropdown.style.display="none";
+}
+
+/**
  * @description Change the state in replay-mode with the slider
  * @param {Number} sliderValue The value of the slider
  */
@@ -4211,7 +4237,7 @@ function toggleDarkmode()
     const storedTheme = localStorage.getItem('diagramTheme');
 
 	if(storedTheme) stylesheet.href = storedTheme;
-	
+
     if(stylesheet.href.includes('blackTheme')){
         // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
@@ -4221,6 +4247,9 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
+
+    toggleBorderOfElements();
+
 }
 
 /**
@@ -7764,16 +7793,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeStart=20;
                 break;
@@ -7939,16 +7968,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.ARROW:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10} ${ty - 20},${tx} ${ty},${tx + 10} ${ty - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10} ${ty + 20},${tx} ${ty},${tx + 10} ${ty + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20} ${ty - 10},${tx} ${ty},${tx - 20} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20} ${ty - 10},${tx} ${ty},${tx + 20} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=20;
                 break;
@@ -7969,16 +7998,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=20;
                 break;
@@ -8279,10 +8308,13 @@ function drawLine(line, targetGhost = false)
         }
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
         str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
-        //Add label
-        str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX-(2 * zoomfact)+lineLabel.labelMovedX+lineLabel.displacementX}" y="${centerY-(2 * zoomfact)+lineLabel.labelMovedY+lineLabel.displacementY}">${line.label}</text>`;
-        
-
+        //Add label with styling based on selection.
+        if (contextLine.includes(line)) {
+            str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+        }
+        else {
+            str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+        }
     }
 
     return str;
@@ -8391,7 +8423,6 @@ function drawRulerBars(X,Y)
     const lineRatio3 = 100;
     
     var barY, barX = "";
-    const color = "#ffffff";
     var cordY = 0;
     var cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
@@ -8399,7 +8430,6 @@ function drawRulerBars(X,Y)
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
     settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
-
 
     if(zoomfact < 0.5){
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -8415,23 +8445,23 @@ function drawRulerBars(X,Y)
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
-            barY += "<line x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
-            barY += "<text x='10' y='"+(pannedY+i+10)+"'style='font-size: 10px' fill='white'>"+cordY+"</text>";
+            barY += "<line class='ruler-line' x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
+            barY += "<text class='ruler-text' x='10' y='"+(pannedY+i+10)+"'style='font-size: 10px''>"+cordY+"</text>";
             cordY = cordY +10;
         }else if(zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
             //centi
             if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
-                barY += "<text x='20' y='"+(pannedY+i+10)+"'style='font-size: 8px' fill='white'>"+(cordY-10+lineNumber/10)+"</text>";
-                barY += "<line x1='20px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+                barY += "<text class='ruler-text' x='20' y='"+(pannedY+i+10)+"'style='font-size: 8px''>"+(cordY-10+lineNumber/10)+"</text>";
+                barY += "<line class='ruler-line' x1='20px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
             }else{
-                barY += "<line x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+                barY += "<line class='ruler-line' x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
             }
         }else if (zoomfact > 0.75){
             //milli
             if ((lineNumber) % 5 == 0 ){
-                barY += "<line x1='32px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+                barY += "<line class='ruler-line' x1='32px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
             }else{
-                barY += "<line x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' stroke='"+color+"' />";
+                barY += "<line class='ruler-line' x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' />";
             }
         } 
     }
@@ -8445,28 +8475,27 @@ function drawRulerBars(X,Y)
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
-            barY += "<line x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
-            barY += "<text x='10' y='"+(pannedY-i+10)+"' style='font-size: 10px' fill='white'>"+cordY+"</text>";
+            barY += "<line class='ruler-line' x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' />";
+            barY += "<text class='ruler-text' x='10' y='"+(pannedY-i+10)+"' style='font-size: 10px''>"+cordY+"</text>";
             cordY = cordY -10;
         }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             if ((zoomfact > 0.5 || (lineNumber/10) % 5 == 0)  && (cordY+10-lineNumber/10) != 0){
-                barY += "<text x='20' y='"+(pannedY-i+10)+"' style='font-size: 8px' fill='white'>"+(cordY+10-lineNumber/10)+"</text>";
-                barY += "<line x1='20px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+                barY += "<text class='ruler-text' x='20' y='"+(pannedY-i+10)+"' style='font-size: 8px''>"+(cordY+10-lineNumber/10)+"</text>";
+                barY += "<line class='ruler-line' x1='20px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' />";
             }else{
-                barY += "<line x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+                barY += "<line class='ruler-line' x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' />";
             }
         }else if (zoomfact > 0.75){
             //milli
             if ((lineNumber) % 5 == 0 ){
-                barY += "<line x1='32px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+                barY += "<line class='ruler-line' x1='32px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"'/>";
             }else{
-                barY += "<line x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' stroke='"+color+"' />";
+                barY += "<line class='ruler-line' x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"'/>";
             }
 
         }
     }
-    svgY.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
     svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
     
@@ -8478,23 +8507,23 @@ function drawRulerBars(X,Y)
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
-            barX += "<line x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px' fill='white'>"+cordX+"</text>";
+            barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px'/>";
+            barX += "<text class='ruler-text' x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX +10;
         }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
-                barX += "<text x='"+(i+5+pannedX)+"'"+verticalText+"' y='25' style='font-size: 8px' fill='white'>"+(cordX-10+lineNumber/10)+"</text>";
-                barX += "<line x1='" +(i+pannedX)+"' y1='20' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<text class='ruler-text' x='"+(i+5+pannedX)+"'"+verticalText+"' y='25' style='font-size: 8px'>"+(cordX-10+lineNumber/10)+"</text>";
+                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='20' x2='" +(i+pannedX)+"' y2='40px'/>";
             }else{
-                barX += "<line x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px'/>";
             }
         }else if (zoomfact > 0.75){
             //milli
             if ((lineNumber) % 5 == 0 ){
-                barX += "<line x1='" +(i+pannedX)+"' y1='32' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='32' x2='" +(i+pannedX)+"' y2='40px'/>";
             }else{
-                barX += "<line x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px'/>";
             }
 
         }
@@ -8509,28 +8538,27 @@ function drawRulerBars(X,Y)
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
-            barX += "<line x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px' stroke='" + color + "' />";
-            barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px' fill='white'>"+cordX+"</text>";
+            barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px'/>";
+            barX += "<text class='ruler-text' x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
             cordX = cordX -10;
         }else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
             //centi
             if ((zoomfact > 0.5 || (lineNumber/10) % 5 == 0) &&(cordX+10-lineNumber/10) != 0){
-                barX += "<text x='"+(pannedX-i+5)+"'"+verticalText+"' y='25'style='font-size: 8px' fill='white'>"+(cordX+10-lineNumber/10)+"</text>";
-                barX += "<line x1='" +(pannedX-i)+"' y1='20' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<text class='ruler-text' x='"+(pannedX-i+5)+"'"+verticalText+"' y='25'style='font-size: 8px'>"+(cordX+10-lineNumber/10)+"</text>";
+                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='20' x2='" +(pannedX-i)+"' y2='40px'/>";
             }else{
-                barX += "<line x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px'/>";
             }
         }else if (zoomfact > 0.75){
             //milli
             if ((lineNumber) % 5 == 0 ){
-                barX += "<line x1='" +(pannedX-i)+"' y1='32' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='32' x2='" +(pannedX-i)+"' y2='40px'/>";
             }else{
-                barX += "<line x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px' stroke='" + color + "' />";
+                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px'/>";
             }
         }
     }
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
-    svgX.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 /**
@@ -8617,9 +8645,9 @@ function drawElement(element, ghosted = false)
         str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
         //svg for UML header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //end of svg for UML header
         str += `</svg>`;
         //end of div for UML header
@@ -8631,10 +8659,10 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemAttri/2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8642,9 +8670,9 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
             str += `</svg>`;
         }
@@ -8657,10 +8685,10 @@ function drawElement(element, ghosted = false)
             str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh/2 + (boxh * elemFunc/2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemFunc/2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemFunc/2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemFunc/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemFunc; i++) {
-                str += `<text x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8670,9 +8698,9 @@ function drawElement(element, ghosted = false)
             str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh / 2 + (boxh / 2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
             str += `</svg>`;
         }
@@ -8826,9 +8854,9 @@ function drawElement(element, ghosted = false)
         str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
         //svg for IE header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //end of svg for IE header
         str += `</svg>`;
         //end of div for IE header
@@ -8840,10 +8868,10 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemAttri/2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text class='text' x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8851,9 +8879,9 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
             str += `</svg>`;
         }
@@ -11498,15 +11526,15 @@ function updateCSSForAllElements()
     toggleBorderOfElements();
 }
 /**
- * @description toggles the border of all elements to white or gray; depending on current theme.
+ * @description toggles the border of all elements to white or gray; depending on current theme and fill.
  */
 function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
-	let allTexts = document.getElementsByClassName('text');
-    if (localStorage.getItem('themeBlack') != null) {
-        //in localStorage, themeBlack holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
-	    let cssUrl = localStorage.getItem('themeBlack');
+   let allTexts = document.getElementsByClassName('text');
+    if (localStorage.getItem('diagramTheme') != null) {
+        //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
+      let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
     
@@ -11515,21 +11543,23 @@ function toggleBorderOfElements() {
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 //assign their current stroke color to a variable.
-                let strokeColor = text.getAttribute('stroke');
-                //if the element has a stroke which has the color #383737: set it to white.
-                //this is because we dont want to affect the strokes that are null or other colors.
-                if (strokeColor == '#383737') {
+              let strokeColor = text.getAttribute('stroke');
+                let fillColor = text.getAttribute('fill');
+                //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
+                //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
+                if (strokeColor == '#383737' && fillColor != '#ffffff') {
                     strokeColor = '#ffffff';
                     text.setAttribute('stroke', strokeColor);
-                }	
+                }
             }
         }
-        //if the theme isnt darkmode, make the stroke gray.
+        //if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
         else{
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
-                if (strokeColor == '#ffffff') {
+                let fillColor = text.getAttribute('fill');
+                if (strokeColor == '#ffffff' && fillColor != '#383737') {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
                 }
@@ -11569,6 +11599,11 @@ function showdata()
  */
 function centerCamera()
 {
+    // Stops execution if there are no elements to center the camera around.
+    if (data.length == 0) {
+        return;
+    }
+
     //desiredZoomfact = zoomfact;
     zoomfact = 1;
 
@@ -11720,6 +11755,33 @@ function exportWithoutHistory()
 
     // Download the file
     downloadFile("diagram", objToSave);
+}
+/**
+ * @description Load one of the stored JSON files
+ * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
+ */
+function loadMockupDiagram(path){
+    
+    let fileType = document.getElementById("diagramTypeDropdown").value;
+    path = fileType;
+    console.log(path);
+    //make sure its not null first
+    if (path != null) {
+        //via fetch API, request the json file 
+        fetch(path)
+            .then((response) => {
+                //throw an error if the request is not ok
+                if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+                }
+                //fetch the response as json
+                return response.json();
+            })
+            //after response.json() has succeded, load the diagram from this json
+            .then((json) => loadDiagram(json, false)) 
+            //catch any error
+            .catch((err) => console.error(`Fetch problem: ${err.message}`));
+    }
 }
 /**
  * @description Gets the content of the file in parameter.

@@ -244,10 +244,6 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <!--
-
-                    !!! NOTE: Commented out due to merge conflict between "SDState" and "UMLInitialState". !!!
-
                     <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
@@ -258,8 +254,6 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>
-
-                    -->
                     <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                         <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
@@ -398,7 +392,7 @@
                     </span>
                 </div>
                 <!-- UML Initial state selection -->
-                <div id="elementPlacement8" class="diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_initial_state.svg"/>
                     <span class="toolTipText"><b>UML initial state</b><br>
                         <p>Creates an initial state for UML.</p><br>
@@ -406,7 +400,7 @@
                     </span>
                 </div>
                 <!-- UML Final state selection -->
-                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_final_state.svg"/>
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p><br>
@@ -498,14 +492,14 @@
                 </span>
             </div>
         </fieldset>   
-        <fieldset>
+        <!-- <fieldset>
             <legend>Include</legend>
             <div id="Include" class="diagramIcons" onclick="toggleErTable()">
                 <img src="../Shared/icons/angelBrackets.svg"/>
                 <span class="toolTipText"><b>To use less than</b><br>
                     <p>To use less than type & #60; <br><strong>"EX: <& #60;Include>>"</STRONG> </p><br>
                 </span>
-        </fieldset>      
+        </fieldset> -->      
     </div>
 
     <!-- Message prompt -->
@@ -561,24 +555,35 @@
             <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden' style="position: absolute;">
             </fieldset>
 
-            <fieldset class='options-fieldset options-section' style='position: absolute;'>
+            <fieldset class='options-fieldset options-section' style='auto;'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
+                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
+                <div class="dropdownContent">
+                    <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
+                        <option >Null</option>
+                        <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
+                        <option  value="JSON/UMLDiagramMockup.json">UML diagrams</option>
+                        <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
+                    </select>
+                    <button onclick="loadMockupDiagram();">Load</button>
+                </div>
+
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style='position: absolute; top: 35%; margin-top: 2%;'>
+            <fieldset class='options-fieldset options-section' style='auto;'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style="position: absolute; top: 48%; margin-top: 2%;">
+            <fieldset class='options-fieldset options-section' style="auto;">
                 <legend>Import</legend>
                 <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
