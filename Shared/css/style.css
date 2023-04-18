@@ -2133,7 +2133,7 @@ div .navButt:hover {
 .passwordBlock{
   width: 50%;
   padding: 4px 0px;
-  background-color: var(--color-text-list);
+  background-color: var(--color-text-header);
   border-radius: 3px;
   cursor: pointer;
 }
