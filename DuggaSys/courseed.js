@@ -85,21 +85,22 @@ function createNewCourse()
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
+
 function getGithubRepo(githubURL) 
 {
 	//console.log("getGithubRepo function with the url: " + githubURL);
 	//Remove .git
-	console.log(githubURL);
+	regexURL = githubURL.replace(/.git$/, "");
+	console.log(regexURL);
 	$.ajax({
 		async: false,
 		url: "../recursivetesting/FetchGithubRepo.php",
 		type: "POST",
-		data: {'githubURL':githubURL, 'action':'getNewCourseGithub'},
+		data: {'githubURL':regexURL, 'action':'getNewCourseGithub'},
 		dataType: "json",
 		success: function(response) {console.log(response)}
 	});
 }
-
 
 function copyVersion()
 {
