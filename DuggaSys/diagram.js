@@ -783,7 +783,7 @@ const elementTypes = {
     UMLRelation: 5, //<-- UML functionality
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
-     State: 8, ////SD(State diagram) functionality
+     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10
 
