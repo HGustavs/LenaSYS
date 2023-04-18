@@ -195,7 +195,12 @@
                             echo '<td>'.$row["userAgent"].'</td>';
                             echo '<td>'.$row["operatingSystem"].'</td>';
                             //echo '<td>'.$row["info"].'</td>'; //  $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
-                            $newStr = explode(" ", $info, 5);
+                            $newStr = explode(" ", $info, 4);
+                            echo '<td>'.$newStr[0].'</td>';
+                            echo '<td>'.$newStr[1].'</td>';
+                            echo '<td>'.$newStr[2].'</td>';
+                            echo '<td>'.$newStr[3].'</td>';
+                            echo '<td>'.$newStr[4].'</td>';
                             echo '<td>'.$row["referer"].'</td>';
                             echo '<td>'.$row["IP"].'</td>';
                             echo '<td>'.$row["browser"].'</td>';
