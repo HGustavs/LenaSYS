@@ -54,7 +54,7 @@
         --color-table: #212121;
     }
 
-    #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
+    #dorf, #NewTabLink, .whiteIcon, .whiteIcon:hover, .iconColorInDarkMode {
         cursor: pointer;
         filter: invert(80%);
         -webkit-filter: invert(80%);
