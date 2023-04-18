@@ -522,9 +522,9 @@ function confirmBox(operation, item = null) {
   }
   
   else if (operation == "openGitHubBox") {
-    tabMarkedItems(active_lid);
-    $("#tabConfirmBox").css("display", "none");
-
+    // tabMarkedItems(active_lid);
+    // $("#tabConfirmBox").css("display", "none");
+    console.log("testworkornah?");
 
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
