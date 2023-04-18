@@ -33,6 +33,8 @@
         <!----------------------------------------------------------------------------------->
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
+                date_default_timezone_set('CEST');
+
                 echo 'choose table';
 
                 echo '<select onchange="submit();" name="name" >';
@@ -192,7 +194,7 @@
                             echo '<td>'.$row["service"].'</td>';
                             echo '<td>'.$row["userid"].'</td>';
                             $timestamp=$row["timestamp"];
-                            $timestamp = date("Y-m-d\TH:i:s\Z", $timestamp);
+                            $timestamp = date("Y-m-d\H:i:s\Z", $timestamp);
                             echo '<td>'.$timestamp.'</td>';
                             echo '<td>'.$row["userAgent"].'</td>';
                             echo '<td>'.$row["operatingSystem"].'</td>';
