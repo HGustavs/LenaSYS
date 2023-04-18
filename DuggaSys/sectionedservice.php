@@ -466,7 +466,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 					$totalGroups = 24 * count($courseversions);
 				} else if(strcmp($opt,"REFGIT")===0) {
-					class githubDB extends SQLite3 {
+					/*class githubDB extends SQLite3 {
 						function __construct() {
 							$this->open("../../githubMetadata/metadata2.db");
 						}
@@ -485,7 +485,7 @@ if($gradesys=="UNK") $gradesys=0;
 					while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
 						$url = $url.$row['repoURL'];
 					}
-					$gdb->close();
+					$gdb->close();*/
 					//$output = '<script>console.log("test");</script>';
 					//echo $output;
 				}
