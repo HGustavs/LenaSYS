@@ -3682,6 +3682,10 @@ span.arrow {
   font-size: 13px;
 }
 
+.resultTableText:nth-child(3) {
+  cursor: pointer;
+}
+
 .WriteOutTimesGraded {
   font-weight: bold;
   font-size: 15px;
@@ -9275,6 +9279,7 @@ margin:2px;
 .svgbacklayer-background {
   background-color: var(--color-background);
 }
+
 
 
 /* END */
