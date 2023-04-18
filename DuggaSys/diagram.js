@@ -6553,6 +6553,12 @@ function generateContextProperties()
             if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
             str += `/>`;
         }
+        if (contextLine[0].type == 'UML_STATE') {
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+            str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+            if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+            str += `/>`;
+        }
         if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
