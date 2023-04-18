@@ -6489,10 +6489,11 @@ function generateContextProperties()
             }
             
                 else if (element.kind ='SDState'){
-                    str +=`<div style='color:white'>TESTER</div>`;
+                    
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
+                            str +=`<div style='color:white'>TESTER</div>`;
                             str += `<div style='color:white'>Name</div>`;
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
