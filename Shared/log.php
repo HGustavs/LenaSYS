@@ -165,7 +165,7 @@
                     echo"
                     <tr>
                         <td>".$rows[0]."</td>
-                        <td>".$rows[]."</td>
+                        <td>".$rows[1]."</td>
                     </tr>
                     ";
                 }
