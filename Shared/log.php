@@ -141,13 +141,13 @@
                     $order = $_GET['order'];
                 }
                 else{
-                    $order = 'id';
+                    $order = '';
                 }
                 if(isset($_GET['sort'])){
                     $sort = $_GET['sort'];
                 }
                 else{
-                    $sort = 'ASC';
+                    $sort = '';
                 }
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
