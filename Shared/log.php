@@ -235,34 +235,29 @@
                     $sort = 'ASC';
                 }
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
-                if($resultSet->num_rows > 0){
 
-                    $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
 
+                echo"
+                <table border='1'>
+                    <tr>
+                        <th><a href='?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='?order=uid&&sort=$sort'>uid</a></th>
+                ";
+                while($rows = $resultSet->fetch_assoc()){
+                    $id = $rows['id'];
+                    $uid = $rows['uid'];
                     echo"
-                    <table border='1'>
-                        <tr>
-                            <th><a href='?order=id&&sort=$sort'>id</a></th>
-                            <th><a href='?order=uid&&sort=$sort'>uid</a></th>
-                    ";
-                    while($rows = $resultSet->fetch_assoc()){
-                        $id = $rows['id'];
-                        $uid = $rows['uid'];
-                        echo"
-                        <tr>
-                            <td>$id</td>
-                            <td>$uid</td>
-                        </tr>
-                        ";
-                    }
-                    echo"
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>$id</td>
+                        <td>$uid</td>
+                    </tr>
                     ";
                 }
-                else{
-                    echo "No records returned.";
-                }
+                echo"
+                    </tr>
+                </table>
+                ";
                 
                 /*echo "<table style='width:100%'>";
                     
