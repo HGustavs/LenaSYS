@@ -3598,34 +3598,44 @@ function rectsIntersect (left, right)
  function setPos(objects, x, y)
  {
      var idList = [];
+     var overlapping = false;
+     
      objects.forEach(obj => {
+        if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)){
+            overlapping = true;
+        }
+     }
+
+     if (overlapping) {
+       return displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+     } else {
+       objects.forEach(obj => {
 
          if (obj.isLocked) return;
-         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) return displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");;
 
          if (settings.grid.snapToGrid) {
 
-             if (!ctrlPressed) {
-                 //Different snap points for entity and others
-                 if (obj.kind == "EREntity") {
-                     // Calculate nearest snap point
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize*2)) / settings.grid.gridSize) * settings.grid.gridSize;
-                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                 } else{
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
-                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
-                 }
-                 // Set the new snap point to center of element
-                 obj.x -= obj.width / 2
-                 obj.y -= obj.height / 2;
-
+           if (!ctrlPressed) {
+             //Different snap points for entity and others
+             if (obj.kind == "EREntity") {
+               // Calculate nearest snap point
+               obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize * 2)) / settings.grid.gridSize) * settings.grid.gridSize;
+               obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
              } else {
-                 obj.x += (targetDelta.x / zoomfact);
-                 obj.y += ((targetDelta.y / zoomfact)+25);
+               obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
+               obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
              }
-         }else {
-             obj.x -= (x / zoomfact);
-             obj.y -= (y / zoomfact);
+             // Set the new snap point to center of element
+             obj.x -= obj.width / 2
+             obj.y -= obj.height / 2;
+
+           } else {
+             obj.x += (targetDelta.x / zoomfact);
+             obj.y += ((targetDelta.y / zoomfact) + 25);
+           }
+         } else {
+           obj.x -= (x / zoomfact);
+           obj.y -= (y / zoomfact);
          }
          // Add the object-id to the idList
          idList.push(obj.id);
@@ -3633,9 +3643,10 @@ function rectsIntersect (left, right)
          // Make the coordinates without decimals
          obj.x = Math.round(obj.x);
          obj.y = Math.round(obj.y);
-     });
-     updatepos(0, 0);
-     if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
+       });
+       updatepos(0, 0);
+       if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
+     }
  }
 
 function isKeybindValid(e, keybind)
