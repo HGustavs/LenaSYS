@@ -31,7 +31,7 @@ send
 * Get newly creaded Assignment ID, repet the SQL-query
 *****
 SQL-query: SELECT MAX(id) FROM quiz;     // this value will identify the last assignment that was created (it has the highest ID number)
-SQL-query: SELECT count(id) FROM quiz;
+SQL-query: SELECT count(id) FROM quiz;   // save answare to a variable 
 
 *****
 * compare results
@@ -67,6 +67,7 @@ SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,de
 *****
 * This will get the information that you need.
 *****
+
 // these two querys are te be used in tandum, it retrives a singel rows compleat information of the last added assignment 
 SQL-query: SELECT @cid:= MAX(id) FROM quiz;
 SQL-query: SELECT * FROM quiz WHERE id = @cid; 
@@ -78,8 +79,8 @@ SQL-query: SELECT * FROM quiz WHERE id = @cid;
 
 send
 {
-    $opt = SAVDUGGA
-    $qid = the value “id” that was saved  
+    $opt = "SAVDUGGA";
+    $qid = // the value “id” that was saved;  
 }
 
 *****
@@ -110,8 +111,9 @@ Delete an Assignment (line 95):
 Create an assignment
 
 ///////
-/ used variables
+/ pre-req variables
 //////
+
 $pre-Values = { 1885, 
                 0,
                 1,
@@ -134,15 +136,18 @@ VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Val
 *****
 
 SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes save this value
-SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved, will be used when we delete the data from the database.
+SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved, it will be used as ID when we identify and delete the data from the database.
 
 *****
 * Update information on an assignment
 * send parameters inputs to duggaedservice.php 
 *****
 
-$opt = DELDU
-$qid = the value 
+send
+{
+    $opt = "DELDU";
+    $qid = // the saved ID value;
+}
 
 *****
 * repet the SQL-query
@@ -164,22 +169,29 @@ Add Variant (contents of quiz) (line 110):
 * pre-req:
 *****
 
-{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
-$opt = ADDVARI
+{ (checklogin = true) && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
 
 *****
 * checking current number of quizzes, and save vid. 	
 *****
 
-SQL-query: SELECT count(vid) FROM variant; // counts the number of variants save this value
+SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value
+SQL-query: SELECT MAX(quizID) FROM variant;    // the newest addition to the table will have the highest value. save $quizID=value+1 to variable  
 
 *****
 * Add a new variant
 * send parameters inputs to duggaedservice.php 
 *****
 
-$opt = ADDVARI
-$qid = the value 
+send
+{
+    $opt = "ADDVARI";
+    $qid = $quizID;
+    $userid = 2;
+    $param = 
+}
+  
 
 *****
 * repet the SQL-query
@@ -193,8 +205,6 @@ SQL-query: SELECT count(id) FROM quiz; 	// save the value in a different variabl
 
 count - 1 = passed
 no change = failed  
-
-
 
 
 Delete variant and useranswer? (line 134)
