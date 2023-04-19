@@ -810,8 +810,8 @@ const elementTypesNames = {
 
     SDState: "SDState",
 
-    UMLInitialState: "UMLInitialState",
-    UMLFinalState: "UMLFinalState"
+    UMLInitialState: "UMLInitialState", //TODO these seem unused, remove?
+    UMLFinalState: "UMLFinalState" //TODO these seem unused, remove?
 
 }
 
