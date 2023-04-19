@@ -222,14 +222,15 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
                 
-                if(isset($_GET['userLogEntries'])){
-                    $order = $_GET['userLogEntries'];
+                if(isset($_POST['userLogEntries'])){
+                    echo "Hello!";
+                    $order = $_POST['userLogEntries'];
                 }
                 else{
                     $order = 'id';
                 }
-                if(isset($_GET['sort'])){
-                    $sort = $_GET['sort'];
+                if(isset($_POST['sort'])){
+                    $sort = $_POST['sort'];
                 }
                 else{
                     $sort = 'ASC';
