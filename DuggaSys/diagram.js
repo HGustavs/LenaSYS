@@ -1390,309 +1390,86 @@ function getData()
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes(){
-    //ER + UML + IE + SD
-    if (!!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
-        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
+    var firstShown = false; // used to not hide the first button in either category
+
+    // ER buttons
+    if (diagramType.ER) { // if this type should be here, add functions to it
         document.getElementById("elementPlacement0").onmousedown = function () {
             holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement4").onmousedown = function () {
-            holdPlacementButtonDown(4);
-        };
-        document.getElementById("elementPlacement6").onmousedown = function () {
-            holdPlacementButtonDown(6);
-        };
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(8);
         };
         document.getElementById("elementPlacement1").onmousedown = function () {
             holdPlacementButtonDown(1);
         };
-        document.getElementById("elementPlacement5").onmousedown = function () {
-            holdPlacementButtonDown(5);
-        };
-        document.getElementById("elementPlacement7").onmousedown = function () {
-            holdPlacementButtonDown(7);
-        };
-    }
 
-    //ER + UML + IE
-    else if (!!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !diagramType.SD) {
-        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
-        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
-        document.getElementById("elementPlacement0").onmousedown = function() {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement4").onmousedown = function() {
-            holdPlacementButtonDown(4);
-        };
-        document.getElementById("elementPlacement6").onmousedown = function() {
-            holdPlacementButtonDown(6);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function() {
-            holdPlacementButtonDown(1);
-        };
-        document.getElementById("elementPlacement5").onmousedown = function() {
-            holdPlacementButtonDown(5);
-        };
-        document.getElementById("elementPlacement7").onmousedown = function() {
-            holdPlacementButtonDown(7);
-        };
+        if (firstShown) { // if the first type is already shown hide this one since it will then be a submenu
+            document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
+            document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
+        }
+        firstShown = true; // could be placed inside an else after the above if-statement
     }
-
-    //ER + UML + SD
-    else if (!!diagramType.ER && !!diagramType.UML && !diagramType.IE && !!diagramType.SD) {
-        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
-        document.getElementById("elementPlacement0").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement4").onmousedown = function () {
-            holdPlacementButtonDown(4);
-        };
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(8);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function () {
-            holdPlacementButtonDown(1);
-        };
-        document.getElementById("elementPlacement5").onmousedown = function () {
-            holdPlacementButtonDown(5);
-        };
-    }
-
-    //ER + IE + SD
-    else if (!!diagramType.ER && !diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
-        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
-        document.getElementById("elementPlacement0").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement6").onmousedown = function () {
-            holdPlacementButtonDown(6);
-        };
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(8);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function () {
-            holdPlacementButtonDown(1);
-        };
-        document.getElementById("elementPlacement7").onmousedown = function () {
-            holdPlacementButtonDown(7);
-        };
-    }
-
-    //UML + IE + SD
-    else if (!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !!diagramType.SD) {
+    else { // if this type shouldn't be here, hide it entirely
         Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/State
-        document.getElementById("elementPlacement0").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement4").onmousedown = function () {
-            holdPlacementButtonDown(4);
-        };
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(8);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function () {
-            holdPlacementButtonDown(1);
-        };
-        document.getElementById("elementPlacement5").onmousedown = function () {
-            holdPlacementButtonDown(5);
-        };
     }
-    // ER+SD, UML+SD, IE+SD
-    // ER + UML
-    else if (!!diagramType.ER && !!diagramType.UML && !diagramType.IE && !diagramType.SD) {
-        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");// UML Entity/CLass
-        document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");// UML Inheritance
-        document.getElementById("elementPlacement0").onmousedown = function() {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement4").onmousedown = function() {
-            holdPlacementButtonDown(4);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function() {
-            holdPlacementButtonDown(1);
-        };
-        document.getElementById("elementPlacement5").onmousedown = function() {
-            holdPlacementButtonDown(5);
-        };
-    }
-    // ER + IE
-    else if (!!diagramType.ER && !diagramType.UML && !!diagramType.IE && !diagramType.SD){
-        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
-        document.getElementById("elementPlacement0").onmousedown = function() {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement6").onmousedown = function() {
-            holdPlacementButtonDown(6);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function() {
-            holdPlacementButtonDown(1);
-        };
-        document.getElementById("elementPlacement7").onmousedown = function() {
-            holdPlacementButtonDown(7);
-        };
-    }
-    // ER + SD
-    else if (!!diagramType.ER && !diagramType.UML && !diagramType.IE && !!diagramType.SD) {
-        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/CLass
-        document.getElementById("elementPlacement0").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(6);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function () {
-            holdPlacementButtonDown(1);
-        };
-    }
-    // UML + IE
-    else if (!diagramType.ER && !!diagramType.UML && !!diagramType.IE && !diagramType.SD){
-        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");// IE Inheritance
-        document.getElementById("elementPlacement4").onmousedown = function() {
-            holdPlacementButtonDown(4);
-        };
-        document.getElementById("elementPlacement6").onmousedown = function() {
-            holdPlacementButtonDown(6);
-        };
-        document.getElementById("elementPlacement5").onmousedown = function() {
-            holdPlacementButtonDown(5);
-        };
-        document.getElementById("elementPlacement7").onmousedown = function() {
-            holdPlacementButtonDown(7);
-        };
-    }
-    // UML + SD
-    else if (!diagramType.ER && !!diagramType.UML && !diagramType.IE && !!diagramType.SD) {
-        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/CLass
+
+    // UML buttons
+    if (diagramType.UML) {
         document.getElementById("elementPlacement4").onmousedown = function () {
             holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(6);
         };
         document.getElementById("elementPlacement5").onmousedown = function () {
             holdPlacementButtonDown(1);
         };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
+            document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
     }
-    // IE + SD
-    else if (!diagramType.ER && !!diagramType.UML && !diagramType.IE && !!diagramType.SD) {
-        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
+    else {
         Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// SD Entity/CLass
+    }
+
+    // IE buttons
+    if (diagramType.IE) {
         document.getElementById("elementPlacement6").onmousedown = function () {
             holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(6);
         };
         document.getElementById("elementPlacement7").onmousedown = function () {
             holdPlacementButtonDown(1);
         };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");
+            document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
     }
-    //ER
-    else if(!!diagramType.ER && !diagramType.UML && !diagramType.IE){
-        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
+    else {
         Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        document.getElementById("togglePlacementTypeButton0").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton1").classList.add("hiddenPlacementType");
     }
-    //UML
-    else if(!diagramType.ER && !!diagramType.UML && !diagramType.IE){
-        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("togglePlacementTypeButton4").classList.add("hiddenPlacementType");
-        document.getElementById("togglePlacementTypeButton5").classList.add("hiddenPlacementType");
+
+    // SD buttons
+    if (diagramType.UML) {
+        document.getElementById("elementPlacement8").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
     }
-    //IE
-    else if (!diagramType.ER && !diagramType.UML && !!diagramType.IE){
-        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
+    else {
+        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
-        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
-    }
-    //SD
-    else if (!diagramType.ER && !diagramType.UML && !diagramType.IE && !!diagramType.SD) {
-        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-        document.getElementById("togglePlacementTypeButton6").classList.add("hiddenPlacementType");// IE Entity/CLass
-        document.getElementById("togglePlacementTypeButton7").classList.add("hiddenPlacementType");// IE Inheritance
     }
 }
 //<-- UML functionality end
