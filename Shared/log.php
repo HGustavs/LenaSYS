@@ -243,6 +243,7 @@
                     <tr>
                         <th><a href='?order=id&&sort=$sort'>id</a></th>
                         <th><a href='?order=uid&&sort=$sort'>uid</a></th>
+                    </tr>
                 ";
                 while($rows = $resultSet->fetch_assoc()){
                     $id = $rows['id'];
@@ -255,7 +256,6 @@
                     ";
                 }
                 echo"
-                    </tr>
                 </table>
                 ";
                 
