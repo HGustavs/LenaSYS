@@ -8913,6 +8913,7 @@ function drawElement(element, ghosted = false)
 
     // Check if element is SDState
     else if (element.kind == "SDState") {
+        elemAttri = element.attributes.length;
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -8939,9 +8940,8 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate SD content
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
-        //Draw SD-content if any attributes exists
-        if ((element.attributes != null) && (element.attributes != 0)) {
-            elemAttri = element.attributes.length;
+        //Draw SD-content if there exist at least one attribute
+        if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
