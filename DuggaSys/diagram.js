@@ -7507,7 +7507,7 @@ function drawLine(line, targetGhost = false)
         line.type = 'ER';
     } */
     //gives the lines the correct type based on the from and to element.
-    if ((felem.type == 'UML_STATE') || (telem.type == 'UML_STATE')) {
+    if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
