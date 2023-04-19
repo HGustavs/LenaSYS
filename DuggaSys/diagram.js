@@ -8893,56 +8893,66 @@ function drawElement(element, ghosted = false)
 
     // Check if element is SDState
     else if (element.kind == "SDState") {
-        elemAttri = element.attributes.length;
-        //div to encapuslate SD element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        try {
+
+            elemAttri = (element.attributes.length ?? null);
+
+            if (!elemAttri || elemAttri == null) throw Error(`Element attribute for ${element.name} is missing or is null!`);
+
+            //div to encapuslate SD element
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
-        }
-        str += `'>`;
+            if (context.includes(element)) {
+                str += `z-index: 1;`;
+            }
+            if (ghosted) {
+                str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            }
+            str += `'>`;
 
-        //div to encapuslate SD header
-        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
-        //svg for SD header, background and text
-        str += `<svg width='${boxw}' height='${boxh}' style='border-top-left-radius: ${boxh/2}px; border-top-right-radius: ${boxh/2}px;'>`; //This is a silly way to round corners, should be done in the rect but the merge is tomorrow
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+            //div to encapuslate SD header
+            str += `<div style='width: ${boxw}; height: ${boxh};'>`;
+            //svg for SD header, background and text
+            str += `<svg width='${boxw}' height='${boxh}' style='border-top-left-radius: ${boxh/2}px; border-top-right-radius: ${boxh/2}px;'>`; //This is a silly way to round corners, should be done in the rect but the merge is tomorrow
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text style='fill: ${element.stroke};' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`; //style shouldn't be needed, the div randomly gets fill: rgb(0, 0, 0), no clue why'
-        //end of svg for SD header
-        str += `</svg>`;
-        //end of div for SD header
-        str += `</div>`;
+            //end of svg for SD header
+            str += `</svg>`;
+            //end of div for SD header
+            str += `</div>`;
 
-        //div to encapuslate SD content
-        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
-        //Draw SD-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
+            //div to encapuslate SD content
+            str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+            //Draw SD-content if there exist at least one attribute
+            if (elemAttri != 0) {
+                //svg for background
+                str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
+                str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
+                for (var i = 0; i < elemAttri; i++) {
+                    str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
+                }
+                //end of svg for background
+                str += `</svg>`;
+                // Draw SD-content if there are no attributes.
+            } else {
+                //svg for background
+                str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+                str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+                str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+                //end of svg for background
+                str += `</svg>`;
             }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw SD-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
+            //end of div for SD content
+            str += `</div>`;
+        } catch (e) {
+            console.error(e);
+            errorData.push(element);
+            displayMessage(messageTypes.ERROR, e.message);
         }
-        //end of div for SD content
-        str += `</div>`;
     }
 
     //Check if element is UMLRelation
