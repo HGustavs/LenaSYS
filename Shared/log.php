@@ -175,7 +175,7 @@
                 </table>
                 ";
                 
-                echo "<table style='width:100%'>";
+                /*echo "<table style='width:100%'>";
                     
                 echo '<tr>';
                     echo '<th> id </th>';
@@ -200,7 +200,7 @@
                         echo '<td>'.$row["remoteAddress"].'</td>';
                         echo '</tr>';
                 }  
-                echo "</table>";
+                echo "</table>";*/
             }            
             
 
