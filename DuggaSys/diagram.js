@@ -2988,7 +2988,19 @@ function getElementLines(element) {
 function elementHasLines(element) {
     return (getElementLines(element).length > 0);
 }
-
+function isElementConnected(element) {
+  // iterate over all the lines
+  for (let line of lines) {
+    // check if the starting or ending point of the line matches the element
+    if (
+      (line.start.id === element.id || line.end.id === element.id) &&
+      line.isAttached()
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
 /**
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
@@ -2999,8 +3011,9 @@ function changeState()
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
     console.log(elementHasLines(element));
+    console.log(isElementConnected(element));
     /* If the element has a new type and got lines, then it can't change type. */
-    if ((newType !== undefined && oldType != newType && numOfExistingLines != 0) || (oldType == 'UML' && newType != 'UML'  && elementHasLines(element))) {
+    if ((newType !== undefined && oldType != newType && isElementConnected(element)) || (oldType == 'UML' && newType != 'UML'  && elementHasLines(element))) {
         displayMessage("error", `
             Can't change type from \"${oldType}\" to \"${newType}\" as
             these types should not be able to connect with each other.`
