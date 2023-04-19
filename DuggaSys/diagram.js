@@ -3644,9 +3644,9 @@ function rectsIntersect (left, right)
          obj.x = Math.round(obj.x);
          obj.y = Math.round(obj.y);
        });
-       updatepos(0, 0);
        if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
      }
+     updatepos(0, 0);
  }
 
 function isKeybindValid(e, keybind)
