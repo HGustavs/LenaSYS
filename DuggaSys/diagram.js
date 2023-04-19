@@ -3734,28 +3734,39 @@ function entityIsOverlapping(id, x, y)
 
         for(var i = 0; i < data.length; i++){
             if(data[i].id === id) continue
-            
-            //COMPARED ELEMENT
-            const compX2 = data[i].x + data[i].width;
-            var compY2 = data[i].y + data[i].height;
 
-            // Change height if element is an UML Entity
-            for (var j = 0; j < UMLHeight.length; j++) {
+            // Doesn't compare if the other element is moving
+            var compare = true;
+            if(context.length > 1){
+              for (var j = 0; j < context.length; j++) {
+                if (data[i].id == context[j].id && !data[i].isLocked) {
+                  compare = false;
+                }
+              }
+            }
+            if(compare){
+              //COMPARED ELEMENT
+              const compX2 = data[i].x + data[i].width;
+              var compY2 = data[i].y + data[i].height;
+
+              // Change height if element is an UML Entity
+              for (var j = 0; j < UMLHeight.length; j++) {
                 if (data[i].id == UMLHeight[j].id) {
-                    compY2 = data[i].y + UMLHeight[j].height;
+                  compY2 = data[i].y + UMLHeight[j].height;
                 }
-            }
-            // Change height if element is an IE Entity
-            for (var j = 0; j < IEHeight.length; j++) {
+              }
+              // Change height if element is an IE Entity
+              for (var j = 0; j < IEHeight.length; j++) {
                 if (data[i].id == IEHeight[j].id) {
-                    compY2 = data[i].y + IEHeight[j].height;
+                  compY2 = data[i].y + IEHeight[j].height;
                 }
-            }
+              }
 
-            if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
-                (targetY < compY2) && (targetY + elementHeight) > data[i].y){
+              if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
+                (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
                 break;
+              }
             }
         }
         return isOverlapping;
