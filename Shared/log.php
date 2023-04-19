@@ -167,6 +167,7 @@
                 echo"
                 </table>
                 ";
+                print_r($array);
                 
                 /*
                 // gathers information from database table userLogEntries
