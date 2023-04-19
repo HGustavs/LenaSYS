@@ -3604,7 +3604,7 @@ function rectsIntersect (left, right)
         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)){
             overlapping = true;
         }
-     }
+     });
 
      if (overlapping) {
        displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
