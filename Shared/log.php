@@ -125,48 +125,8 @@
                 if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
                     // gathers information from database table exampleLoadLogEntries
                     
-                    /*if(isset($_GET['order'])){
-                        $order = $_GET['order'];
-                    }
-                    else{
-                        $order = 'id';
-                    }
-                    if(isset($_GET['sort'])){
-                        $sort = $_GET['sort'];
-                    }
-                    else{
-                        $sort = 'ASC';
-                    }
-                    $resultSet = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY $order $sort;');
-                    if($resultSet->num_rows > 0){
-
-                        $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-
-                        echo"
-                        <table border='1'>
-                            <tr>
-                                <th><a href='?order=id&&sort=$sort'>id</a></th>
-                                <th><a href='?order=uid&&sort=$sort'>uid</a></th>
-                        ";
-                        while($rows = $resultSet->fetch_assoc()){
-                            $id = $rows['id'];
-                            $uid = $rows['uid'];
-                            echo"
-                            <tr>
-                                <td>$id</td>
-                                <td>$uid</td>
-                            </tr>
-                            ";
-                        }
-                        echo"
-                            </tr>
-                        </table>
-                        ";
-                    }
-                    else{
-                        echo "No records returned.";
-                    }*/
-
+                    
+                    
                     /*echo "<table style='width:100%'>";
                         
                     echo '<tr>';
