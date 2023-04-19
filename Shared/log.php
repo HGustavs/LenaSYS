@@ -99,7 +99,7 @@
                         ";
                     }
                     else{
-                        echo "No records returned.";
+                        echo "\nNo records returned.";
                     }
                     /*
                     echo '<tr>';
