@@ -32,6 +32,8 @@
 <body>
     <?php
 
+    getGitHubURL('https://github.com/e21krida/experiment');
+
     //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
     if(isset($_POST['action'])) 
     {
@@ -46,8 +48,6 @@
     {
         getGitHubURL($githubURL);
     }
-
-    getGitHubURL('https://github.com/e21krida/experiment');
 
 
     function getGitHubURL($url)
