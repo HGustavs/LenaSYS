@@ -98,7 +98,12 @@ function fetchGitHubRepo(gitHubURL)
 			type: "POST",
 			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
 			dataType: "json",
-			success: function(response) { console.log(response) }
+			success: function(response) { 
+				console.log(response)
+			},
+			error: function(response){
+				alert("The service is unavailable at the time")
+			}
 		});
 	} 
 }

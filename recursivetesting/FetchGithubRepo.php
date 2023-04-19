@@ -113,6 +113,7 @@
             $context = stream_context_create($opts);
             // Fetches the data with the stream included
             $data = @file_get_contents($currentUrl, true, $context);
+            $data = false;
             if ($data) {
                 // Decodes the fetched data into JSON
                 $json = json_decode($data, true);
@@ -156,7 +157,7 @@
                     }
                 }
             } else {
-                echo "<h2 style='display: flex; place-content: center;'>Invalid Link or API-Fetch limited</h2>";     
+                echo "<h2 style='display: flex; place-content: center;'>Invalid Link or API-Fetch limited</h2>";  
             }
         }
     }
