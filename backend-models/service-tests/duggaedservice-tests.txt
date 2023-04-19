@@ -193,3 +193,44 @@ SQL-query: SELECT count(id) FROM quiz; 	// save the value in a different variabl
 
 count - 1 = passed
 no change = failed  
+
+
+
+
+Delete variant and useranswer? (line 134)
+-----------------------------------------------------------------------------------------------------------------------------------------
+*****
+* pre-req:
+*****
+
+{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
+$opt = DELVARI
+
+*****
+* checking current number of quizzes, and save vid. 	
+*****
+
+SQL-query: SELECT count(variant) FROM userAnswer; // counts the number of userAnswer save this value for later
+SQL-query: SELECT count(vid) FROM variant; // counts the number of variants save this value for later
+
+*****
+* Delete old variant and userAnswer
+* send parameters inputs to duggaedservice.php 
+*****
+
+$opt = DELVARI
+$vid = the value 
+
+*****
+* repeat the SQL-query
+*****
+
+SQL-query: SELECT count(variant) FROM userAnswer; // save the value in a different variable 
+SQL-query: SELECT count(vid) FROM quiz; 	// save the value in a different variable 
+
+*****
+* compare results
+*****
+
+count - 1 = passed // for both selected counts, needs to be checked for both tables. 
+no change = failed  
