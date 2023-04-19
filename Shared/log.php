@@ -137,17 +137,17 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
                 
-                if(isset($_GET['order'])){
+                /*if(isset($_GET['order'])){
                     $order = $_GET['order'];
                 }
                 else{
-                    $order = '';
+                    $order = 'id';
                 }
                 if(isset($_GET['sort'])){
                     $sort = $_GET['sort'];
                 }
                 else{
-                    $sort = '';
+                    $sort = 'ASC';
                 }
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
@@ -173,9 +173,9 @@
                 }
                 echo"
                 </table>
-                ";
+                ";*/
                 
-                /*echo "<table style='width:100%'>";
+                echo "<table style='width:100%'>";
                     
                 echo '<tr>';
                     echo '<th> id </th>';
@@ -200,7 +200,7 @@
                         echo '<td>'.$row["remoteAddress"].'</td>';
                         echo '</tr>';
                 }  
-                echo "</table>";*/
+                echo "</table>";
             }            
             
 
