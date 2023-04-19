@@ -2988,18 +2988,6 @@ function getElementLines(element) {
 function elementHasLines(element) {
     return (getElementLines(element).length > 0);
 }
-function isElementConnected(element) {
-  // iterate over all the lines
-  for (let line of lines) {
-    // check if the starting or ending point of the line matches the element
-    if (
-      (line.start.id === element.id || line.end.id === element.id)
-    ) {
-      return true;
-    }
-  }
-  return false;
-}
 /**
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
