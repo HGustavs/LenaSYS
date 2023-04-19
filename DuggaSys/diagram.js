@@ -3741,6 +3741,7 @@ function entityIsOverlapping(id, x, y)
               for (var j = 0; j < context.length; j++) {
                 if (data[i].id == context[j].id && !data[i].isLocked) {
                   compare = false;
+                  break;
                 }
               }
             }
