@@ -3006,7 +3006,7 @@ function changeState()
             these types should not be able to connect with each other.`
         );
         return;
-    }else if (newType == oldType) 
+    }else if (newType == oldType && elementHasLines(element)) 
     {
         if (element.type == 'ER') {
 
