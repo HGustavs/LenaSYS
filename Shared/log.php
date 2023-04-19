@@ -124,10 +124,7 @@
                     
                 if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
                     // gathers information from database table exampleLoadLogEntries
-                    
-                    
-                    
-                    /*echo "<table style='width:100%'>";
+                    echo "<table style='width:100%'>";
                         
                     echo '<tr>';
                         echo '<th> id </th>';
@@ -151,7 +148,7 @@
                             echo '</tr>';
                     }  
                     echo "</table>";
-                }*/
+                }
         
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
                 // gathers information from database table userHistory
