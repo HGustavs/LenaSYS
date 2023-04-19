@@ -31,7 +31,11 @@
 
 <body>
     <?php
+    include_once "../Shared/sessions.php";
+    session_start();
 
+    pdoConnect(); // Connect to database and start session
+    
     //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
     if(isset($_POST['action'])) 
     {
@@ -44,34 +48,50 @@
     //Calls getGithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
     function getNewCourseGitHub($githubURL)
     {
-        getGitHubURL($githubURL);
+        // getGitHubURL($githubURL);
     }
 
 
-    function getGitHubURL($url)
-    {
-        $urlParts = explode('/', $url);
-        // In normal GitHub Repo URL:s, the username is the third object separated by a slash
-        $username = $urlParts[3];
-        // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
-        $repository = $urlParts[4];
-        // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
-        $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-        bfs($translatedURL, $repository);
-    }
+    // function getGitHubURL($url)
+    // {
+    //     $urlParts = explode('/', $url);
+    //     // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    //     $username = $urlParts[3];
+    //     // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    //     $repository = $urlParts[4];
+    //     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+
+    //     $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+    //     bfs($translatedURL, $repository);
+    // }
 
     // ------ DUMMY DATA FOR TESTING------ 
-    // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
+    // // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
     // $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
-    // Dismantles the $url into an array of each component, separated by a slash
+    // // Dismantles the $url into an array of each component, separated by a slash
     // $urlParts = explode('/', $url);
-    // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    // // In normal GitHub Repo URL:s, the username is the third object separated by a slash
     // $username = $urlParts[3];
-    // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    // // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
     // $repository = $urlParts[4];
+    
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+
+    
+    // Added for tesing ebuging 
+    $translatedURL = 'https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/Examples/App_Demo';
+    $repository = 'Webbprogrammering-Examples';
+
+    $_POST['metaData'] = array();
+    array_push($_POST['metaData'],"Hej");
+    array_push($_POST['metaData'],"Hej igen");
+
+    print_r($_POST['metaData']); 
+
+
+
     // $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    // bfs($translatedURL, $repository);
+    bfs($translatedURL, $repository);
     // ----------------------------------
 
     function bfs($url, $repository)
@@ -129,6 +149,21 @@
                             if (!file_exists((dirname($path)))) {
                                 mkdir(dirname($path), 0777, true);
                             } 
+                            
+                            
+                            // $cid = 1; // 1 för webbprogramering
+                            // $fileText = "Bing bong"; // File name
+                            // $filesize = 69;
+                            // $kindid = 3;
+                            
+                            // $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
+                            
+                            // $query->bindParam(':cid', $cid);
+                            // $query->bindParam(':filename', $fileText);
+                            // $query->bindParam(':filesize', $filesize);
+                            // $query->bindParam(':kindid', $kindid);
+                            
+                            
                             // Writes the file to the respective folder. 
                             file_put_contents($path, $fileContents);
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
