@@ -8918,7 +8918,7 @@ function drawElement(element, ghosted = false)
         //then make a horizontal line that is the negative width
         //finally, close the path
         str += `<path 
-            d="M${linew},${(linew)+5}
+            d="M${linew},${(linew)+20}
                 q5,-5 0,-5
                 h${(boxw - (linew * 2))-5}
                 q5,5 5,0
@@ -8954,8 +8954,8 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            /* str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`; */
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             //start path and define it as:
             //move to the x and y for the top left corner of this shape.
             //then crete a quadratic bezier curve to x5 y5, with -5.5 as a control point, relative to the current position of the path.
