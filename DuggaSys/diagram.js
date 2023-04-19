@@ -6296,8 +6296,10 @@ function generateContextProperties()
                 str += '</select>'; 
             }
         }
-                else if (element.kind ='SDState'){
-                    
+        //Selected SD type
+        else if (element.type == 'SD') {
+            //if SDState kind
+            if (element.kind == 'SDState') {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -6312,7 +6314,7 @@ function generateContextProperties()
                             break;
                     }
                 }
-            
+            }
         }
     
 
