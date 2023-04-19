@@ -2993,8 +2993,7 @@ function isElementConnected(element) {
   for (let line of lines) {
     // check if the starting or ending point of the line matches the element
     if (
-      (line.start.id === element.id || line.end.id === element.id) &&
-      line.isAttached()
+      (line.start.id === element.id || line.end.id === element.id)
     ) {
       return true;
     }
