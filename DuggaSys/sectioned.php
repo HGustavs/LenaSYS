@@ -579,6 +579,51 @@
 		</div>
 	</div>
 
+	<!-- github template  -->
+
+	<!-- 
+
+					1. ändra namn på chooseTemplateContainer
+
+					2. ändra namn på chooseTemplate ?
+
+					3. onklick ändra
+
+					4. göm 
+
+	--> 
+	<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
+				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
+					<div class='loginBoxheader'>
+						<h3>Choose Template</h3>
+						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
+					</div>
+					<table width="100%">
+						<tr>
+							<td id="templat1" class="tmpl"><input id="templateno" type="hidden" value="0" />
+								<img class='templatethumbicon wiggle' onclick='changetemplate("1");' src='../Shared/icons/template1_butt.svg' />
+							</td>
+							<td id="templat2" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("2");' src='../Shared/icons/template2_butt.svg' /></td>
+							<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3");' src='../Shared/icons/template3_butt.svg' /></td>
+							<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4");' src='../Shared/icons/template4_butt.svg' /></td>
+							<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5");' src='../Shared/icons/template5_butt.svg' /></td>
+							<td id="templat6" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("6");' src='../Shared/icons/template6_butt.svg' /></td>
+							<td id="templat7" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("7");' src='../Shared/icons/template7_butt.svg' /></td>
+							<td id="templat8" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("8");' src='../Shared/icons/template8_butt.svg' /></td>
+							<td id="templat9" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("9");' src='../Shared/icons/template9_butt.svg' /></td>
+							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10");' src='../Shared/icons/template10_butt.svg' /></td>
+						</tr>
+					</table>
+					<table id="templateOptions" width="100%">
+					</table>
+					<table width="100%">
+						<tr>
+							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
+						</tr>
+					</table>
+				</div>
+		</div>
+
 
 </body>
 
