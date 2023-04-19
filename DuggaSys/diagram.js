@@ -3000,7 +3000,7 @@ function changeState()
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
         console.log(oldType);
     /* If the element has a new type and got lines, then it can't change type. */
-    if (newType !== undefined && oldType != newType && elementHasLines(element)) {
+    if (newType == undefined && oldType != newType && elementHasLines(element)) {
         displayMessage("error", `
             Can't change type from \"${oldType}\" to \"${newType}\" as
             these types should not be able to connect with each other.`
