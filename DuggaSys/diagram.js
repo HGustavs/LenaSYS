@@ -11524,6 +11524,20 @@ function updateCSSForAllElements()
                         }
                     }
                 }
+                // Update SDState
+                else if (element.kind == "SDState") {
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        if (markedOverOne()) {
+                            fillColor.style.fill = `${"#927b9e"}`;
+                            fontColor.style.fill = `${"#ffffff"}`;
+                        } else {
+                            fillColor.style.fill = `${element.fill}`;
+                            fontContrast();
+                        }
+                    }
+                }
                 // Update Elements with double borders.
                 else if(element.state == "weak" || element.state == "multiple") {
                     for (let index = 0; index < 2; index++) {
@@ -11599,6 +11613,15 @@ function updateCSSForAllElements()
                 }
                 // Update IEEntity
                 else if(element.kind == "IEEntity"){
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        fontColor = elementDiv.children[index].children[0];
+                        fillColor.style.fill = `${element.fill}`;
+                        fontContrast();
+                    }
+                }
+                // Update SDState
+                else if (element.kind == "SDState") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
