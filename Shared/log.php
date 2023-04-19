@@ -146,7 +146,7 @@
                         <table border='1'>
                             <tr>
                                 <th><a href='?order=id&&sort=$sort'>id</a></th>
-                                <th><a href='?order=uid&&sort=$sort'>eventype</a></th>
+                                <th><a href='?order=uid&&sort=$sort'>uid</a></th>
                         ";
                         while($rows = $resultSet->fetch_assoc()){
                             $id = $rows['id'];
