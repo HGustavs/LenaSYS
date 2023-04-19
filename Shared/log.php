@@ -167,7 +167,7 @@
                 echo"
                 </table>
                 ";
-                print_r($array);
+                var_dump( (array) $resultSet );
                 
                 /*
                 // gathers information from database table userLogEntries
