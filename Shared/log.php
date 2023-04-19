@@ -157,10 +157,6 @@
                 ";
                 foreach($array as $row) {
                 //while($row = mysqli_fetch_assoc($resultSet)){
-                    while ($row = mysql_fetch_object($resultSet)){
-                        echo $row->id;
-                        echo $row->uid;
-                    }
                     echo"
                     <tr>
                         <td>".$row[0]."</td>
