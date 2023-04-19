@@ -189,7 +189,9 @@ send
     $opt = "ADDVARI";
     $qid = $quizID;
     $userid = 2;
-    $param = 
+    $disable = 1;
+    $param = "{"type":"md","filelink":"md","gType":"","diagram_File":"Empty canvas","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}";
+    $answare = "Bara Text";
 }
   
 
@@ -213,8 +215,8 @@ Delete variant and useranswer? (line 134)
 * pre-req:
 *****
 
-{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
-$opt = DELVARI
+{ (checklogin = true) && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
 
 *****
 * checking current number of quizzes, and save vid. 	
@@ -228,8 +230,11 @@ SQL-query: SELECT count(vid) FROM variant; // counts the number of variants save
 * send parameters inputs to duggaedservice.php 
 *****
 
-$opt = DELVARI
-$vid = the value 
+send 
+{
+    $opt = "DELVARI"; 
+    $vid = the value 
+}
 
 *****
 * repeat the SQL-query
