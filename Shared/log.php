@@ -134,12 +134,20 @@
                 echo "</table>";
             }
 
+            if(isset($_GET['order'])){
+                $order = $_GET['order'];
+            }
+            else{
+                $order = 'id';
+            }
+            if(isset($_GET['sort'])){
+                $sort = $_GET['sort'];
+            }
+            else{
+                $sort = 'ASC';
+            }
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
-                
-                $order = 'id';
-                $sort = 'ASC';
-
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
 
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
