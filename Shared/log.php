@@ -73,30 +73,34 @@
                         $sort = 'ASC';
                     }
                     $resultSet = $log_db->query('SELECT * FROM logEntries ORDER BY $order $sort;');
+                    if($resultSet->num_rows > 0){
 
-                    $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                        $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
 
-                    echo"
-                    <table border='1'>
-                        <tr>
-                            <th><a href='?order=id&&sort=$sort'>id</a></th>
-                            <th><a href='?order=eventype&&sort=$sort'>eventype</a></th>
-                    ";
-                    while($rows = $resultSet->fetch_assoc()){
-                        $id = $rows['id'];
-                        $eventype = $rows['eventype'];
                         echo"
-                        <tr>
-                            <td>$id</td>
-                            <td>$eventype</td>
-                        </tr>
+                        <table border='1'>
+                            <tr>
+                                <th><a href='?order=id&&sort=$sort'>id</a></th>
+                                <th><a href='?order=eventype&&sort=$sort'>eventype</a></th>
+                        ";
+                        while($rows = $resultSet->fetch_assoc()){
+                            $id = $rows['id'];
+                            $eventype = $rows['eventype'];
+                            echo"
+                            <tr>
+                                <td>$id</td>
+                                <td>$eventype</td>
+                            </tr>
+                            ";
+                        }
+                        echo"
+                            </tr>
+                        </table>
                         ";
                     }
-                    echo"
-                        </tr>
-                    </table>
-                    ";
-                    
+                    else{
+                        echo "No records returned.";
+                    }
                     /*
                     echo '<tr>';
                         echo '<th> id </th>';
