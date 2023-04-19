@@ -164,8 +164,8 @@
                 while($rows = $resultSet->fetch_assoc()){
                     echo"
                     <tr>
-                        <td>".$rows['id']."</td>
-                        <td>".$rows['uid']."</td>
+                        <td>".$rows[0]."</td>
+                        <td>".$rows[]."</td>
                     </tr>
                     ";
                 }
