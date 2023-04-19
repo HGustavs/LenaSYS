@@ -6519,24 +6519,6 @@ function generateContextProperties()
                 str += '</select>'; 
             }
         }
-                /* else if (element.kind ='SDState'){
-                    
-                for (const property in element) {
-                    switch (property.toLowerCase()) {
-                        case 'name':
-                            str += `<div style='color:white'>Name</div>`;
-                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                            break;
-                        case 'attributes':
-                            str += `<div style='color:white'>Attributes</div>`;
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            
-        } */
         //Selected SD type
         else if (element.type == 'SD') {
             //if SDState kind
