@@ -60,14 +60,13 @@
                 if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                     // gathers information from database table userHistory
                     echo "<table style='width:100%'>";
-                    echo '<tr>';
-                        echo '<th> id </th>';
-                        echo '<th> eventype </th>';
-                        echo '<th> description </th>';
-                        echo '<th> userAgent </th>';
-                        echo '<th> timestamp </th>';
-                    echo '<tr>';
-                    
+                        echo '<tr>';
+                            echo '<th> id </th>';
+                            echo '<th> eventype </th>';
+                            echo '<th> description </th>';
+                            echo '<th> userAgent </th>';
+                            echo '<th> timestamp </th>';
+                        echo '<tr>';
                     foreach($log_db->query('SELECT * FROM logEntries;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
@@ -75,7 +74,7 @@
                             echo '<td>'.$row["description"].'</td>';
                             echo '<td>'.$row["userAgent"].'</td>';
                             echo '<td>'.$row["timestamp"].'</td>';
-                            echo '</tr>';
+                        echo '</tr>';
                     }  
                     echo "</table>";
                 }
@@ -83,17 +82,15 @@
                 if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
                     // gathers information from database table exampleLoadLogEntries
                     echo "<table style='width:100%'>";
-                        
-                    echo '<tr>';
-                        echo '<th> id </th>';
-                        echo '<th> type </th>';
-                        echo '<th> courseid </th>';
-                        echo '<th> uid </th>';
-                        echo '<th> username </th>';
-                        echo '<th> exampleid </th>';
-                        echo '<th> timestamp </th>';
-                    echo '<tr>';
-                    
+                        echo '<tr>';
+                            echo '<th> id </th>';
+                            echo '<th> type </th>';
+                            echo '<th> courseid </th>';
+                            echo '<th> uid </th>';
+                            echo '<th> username </th>';
+                            echo '<th> exampleid </th>';
+                            echo '<th> timestamp </th>';
+                        echo '<tr>';
                     foreach($log_db->query('SELECT * FROM exampleLoadLogEntries;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
@@ -103,24 +100,22 @@
                             echo '<td>'.$row["username"].'</td>';
                             echo '<td>'.$row["exampleid"].'</td>';
                             echo '<td>'.$row["timestamp"].'</td>';
-                            echo '</tr>';
+                        echo '</tr>';
                     }  
                     echo "</table>";
                 }
-        
+
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
                 // gathers information from database table userHistory
                 echo "<table style='width:100%'>";
-                    
-                echo '<tr>';
-                    echo '<th> refer </th>';
-                    echo '<th> userid </th>';
-                    echo '<th> username </th>';
-                    echo '<th> IP </th>';
-                    echo '<th> URLParams </th>';
-                    echo '<th> timestamp </th>';
-                echo '<tr>';
-                
+                    echo '<tr>';
+                        echo '<th> refer </th>';
+                        echo '<th> userid </th>';
+                        echo '<th> username </th>';
+                        echo '<th> IP </th>';
+                        echo '<th> URLParams </th>';
+                        echo '<th> timestamp </th>';
+                    echo '<tr>';
                 foreach($log_db->query('SELECT * FROM userHistory;') as $row) {
                     echo '<tr>';
                         echo '<td>'.$row["refer"].'</td>';
@@ -129,27 +124,24 @@
                         echo '<td>'.$row["IP"].'</td>';
                         echo '<td>'.$row["URLParams"].'</td>';
                         echo '<td>'.$row["timestamp"].'</td>';
-                        echo '</tr>';
+                    echo '</tr>';
                 }  
                 echo "</table>";
             }
 
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
-                
                 echo "<table style='width:100%'>";
-                    
-                echo '<tr>';
-                    echo '<th> id </th>';
-                    echo '<th> uid </th>';
-                    echo '<th> username </th>';
-                    echo '<th> eventType </th>';
-                    echo '<th> description </th>';
-                    echo '<th> timestamp </th>';
-                    echo '<th> userAgent </th>';
-                    echo '<th> remoteAddress </th>';
-                echo '<tr>';
-                
+                    echo '<tr>';
+                        echo '<th> id </th>';
+                        echo '<th> uid </th>';
+                        echo '<th> username </th>';
+                        echo '<th> eventType </th>';
+                        echo '<th> description </th>';
+                        echo '<th> timestamp </th>';
+                        echo '<th> userAgent </th>';
+                        echo '<th> remoteAddress </th>';
+                    echo '<tr>';
                 foreach($log_db->query('SELECT * FROM userLogEntries;') as $row) {
                     echo '<tr>';
                         echo '<td>'.$row["id"].'</td>';
@@ -160,16 +152,14 @@
                         echo '<td>'.$row["timestamp"].'</td>';
                         echo '<td>'.$row["userAgent"].'</td>';
                         echo '<td>'.$row["remoteAddress"].'</td>';
-                        echo '</tr>';
+                    echo '</tr>';
                 }  
                 echo "</table>";
-            }            
-            
+            }
 
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
                 // collects information from database table serviceLogEntries
                 echo "<table style='width:100%'>";
-                    
                     echo '<tr>';
                         echo '<th> id </th>';
                         echo '<th> uuid </th>';
@@ -183,8 +173,7 @@
                         echo '<th> referer </th>';
                         echo '<th> IP </th>';
                         echo '<th> browser </th>';
-                    echo '<tr>';
-                    
+                    echo '</tr>';
                     foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
@@ -205,12 +194,10 @@
                     }  
                 echo "</table>";
             }
-           
             
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
                 // collects information from database table duggaLoadLogEntries
                 echo "<table style='width:100%'>";
-
                     echo '<tr>';
                         echo '<th> id </th>';
                         echo '<th> type </th>';
@@ -221,7 +208,6 @@
                         echo '<th> quizid </th>';
                         echo '<th> timestamp </th>';
                     echo '<tr>';
-                    
                     foreach($log_db->query('SELECT * FROM duggaLoadLogEntries;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
@@ -232,8 +218,8 @@
                             echo '<td>'.$row["vers"].'</td>';
                             echo '<td>'.$row["quizid"].'</td>';
                             echo '<td>'.$row["timestamp"].'</td>';
-                            echo '</tr>';
-                    }  
+                        echo '</tr>';
+                    }
                 echo "</table>";
             }
         ?>    
