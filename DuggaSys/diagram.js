@@ -3000,82 +3000,80 @@ function changeState()
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
 
     /* If the element has a new type and got lines, then it can't change type. */
-    if ((newType !== undefined && oldType != newType && elementHasLines(element))) {
+    if ((newType !== undefined && oldType != newType && elementHasLines(element)) || (oldType == 'UML' && newType != 'UML')) {
         displayMessage("error", `
             Can't change type from \"${oldType}\" to \"${newType}\" as
             these types should not be able to connect with each other.`
         );
         return;
-    }else if (newType == oldType && elementHasLines(element)) 
-    {
-        if (element.type == 'ER') {
+    }
 
-            //If not attribute, also save the current type and check if kind also should be updated
-            if (element.kind != 'ERAttr') {
-                //Check if type has been changed
-                if (oldType != newType) {
-                    var newKind = element.kind;
-                    newKind = newKind.replace(oldType, newType);
-                    //Update element kind
-                    element.kind = newKind;
-                    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-                }
+    if (element.type == 'ER') {
 
-                //Update element type
-                element.type = newType;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        //If not attribute, also save the current type and check if kind also should be updated
+        if (element.kind != 'ERAttr') {
+            //Check if type has been changed
+            if (oldType != newType) {
+                var newKind = element.kind;
+                newKind = newKind.replace(oldType, newType);
+                //Update element kind
+                element.kind = newKind;
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
             }
 
+            //Update element type
+            element.type = newType;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        var property = document.getElementById("propertySelect").value;
+        element.state = property;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    }
+    else if(element.type=='UML') {
+        //Save the current property if not an UML or IE entity since niether entities does have variants.
+        if (element.kind != 'UMLEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-
         }
-        else if(element.type=='UML') {
-            //Save the current property if not an UML or IE entity since niether entities does have variants.
-            if (element.kind != 'UMLEntity') {
-                var property = document.getElementById("propertySelect").value;
-                element.state = property;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
 
-            //Check if type has been changed
-            if (oldType != newType) {
-                var newKind = element.kind;
-                newKind = newKind.replace(oldType, newType);
-                //Update element kind
-                element.kind = newKind;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
-            //Update element type
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-        else if(element.type=='IE') {
-            //Save the current property if not an UML or IE entity since niether entities does have variants.
-            if (element.kind != 'IEEntity') {
-                var property = document.getElementById("propertySelect").value;
-                element.state = property;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
-            //Check if type has been changed
-            if (oldType != newType) {
-                var newKind = element.kind;
-                newKind = newKind.replace(oldType, newType);
-                //Update element kind
-                element.kind = newKind;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
-            //Update element type
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-
-        }
-        console.log("Did not Work");
     }
-    console.log("Worked");
+    else if(element.type=='IE') {
+        //Save the current property if not an UML or IE entity since niether entities does have variants.
+        if (element.kind != 'IEEntity') {
+            var property = document.getElementById("propertySelect").value;
+            element.state = property;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    }
+
 }
 
 /**
