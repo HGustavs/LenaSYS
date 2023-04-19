@@ -3607,7 +3607,7 @@ function rectsIntersect (left, right)
      }
 
      if (overlapping) {
-       return displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+       displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
      } else {
        objects.forEach(obj => {
 
