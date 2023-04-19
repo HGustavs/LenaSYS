@@ -159,8 +159,8 @@
                 //while($row = mysqli_fetch_assoc($resultSet)){
                     echo"
                     <tr>
-                        <td>".$row['id']."</td>
-                        <td>".$row['uid']."</td>
+                        <td>".$row[0]."</td>
+                        <td>".$row[1]."</td>
                     </tr>
                     ";
                 }
