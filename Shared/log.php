@@ -219,46 +219,47 @@
                 echo "</table>";
             }
 
+            if(isset($_GET['order'])){
+                $order = $_GET['order'];
+            }
+            else{
+                $order = 'id';
+            }
+            if(isset($_GET['sort'])){
+                $sort = $_GET['sort'];
+            }
+            else{
+                $sort = 'ASC';
+            }
+            $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
+
+            $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+
+            echo"
+            <table border='1'>
+                <tr>
+                    <th><a href='?order=id&&sort=$sort'>id</a></th>
+                    <th><a href='?order=uid&&sort=$sort'>uid</a></th>
+                </tr>
+            ";
+            while($rows = $resultSet->fetch_assoc()){
+                $id = $rows['id'];
+                $uid = $rows['uid'];
+                echo"
+                <tr>
+                    <td>$id</td>
+                    <td>$uid</td>
+                </tr>
+                ";
+            }
+            echo"
+            </table>
+            ";
+
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
                 
-                if(isset($_POST['userLogEntries'])){
-                    echo "Hello!";
-                    $order = $_POST['userLogEntries'];
-                }
-                else{
-                    $order = 'id';
-                }
-                if(isset($_POST['sort'])){
-                    $sort = $_POST['sort'];
-                }
-                else{
-                    $sort = 'ASC';
-                }
-                $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
-
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-
-                echo"
-                <table border='1'>
-                    <tr>
-                        <th><a href='?order=id&&sort=$sort'>id</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>uid</a></th>
-                    </tr>
-                ";
-                while($rows = $resultSet->fetch_assoc()){
-                    $id = $rows['id'];
-                    $uid = $rows['uid'];
-                    echo"
-                    <tr>
-                        <td>$id</td>
-                        <td>$uid</td>
-                    </tr>
-                    ";
-                }
-                echo"
-                </table>
-                ";
+                
                 
                 /*echo "<table style='width:100%'>";
                     
