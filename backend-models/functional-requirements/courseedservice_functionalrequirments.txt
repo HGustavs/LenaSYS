@@ -1,0 +1,58 @@
+courseedservice.php seems to handle the course panel
+
+___________________
+
+      Service
+___________________
+
+--- SuperUser ---
+All underlaying should only be available if user is super
+
+
+CREATE NEW COURSE
+
+* User should be able to create a new course
+* A creation of a new course should be logged
+
+
+CREATE NEW COURSE VERSION
+
+* User can create new course version
+* New course version is logged
+
+
+UPDATE COURSE VERSION
+
+* User can update course version
+
+
+CHANGE COURSE VERSION
+
+* User can change a course version
+
+
+COPYING COURSE VERSION
+
+* User can copy a course version
+* This copy is logged
+* All following content should be duplicated:
+	- Code examples and it's components box, improws, impwordlist
+	- Listentries
+
+UPDATE COURSE NAME
+
+* Update name and or visibility of course 
+
+CHANGE VERSION SETTINGS
+
+* Set message of the day
+* Option to set read only
+
+___________________________
+
+   Retrieve Information
+___________________________
+
+* Gather all courses for student
+* Delete course material that have been marked as deleted
+

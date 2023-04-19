@@ -1,0 +1,56 @@
+﻿Check login
+
+
+Description/input/output:
+Check if the user is a super user, if they are, block access to below methods or set $status = “wrongpassword” .
+If the system notices that the user is a superuser then $status = “teacher”, this will in turn bring a super user down to the echo part of the file at row 113.
+The user can choose to either change update the users security question (Challenge) or update password (Password)
+The system gets the right user by comparing the user's input (password) with what's in the database. This will grant the user access to the methods.
+
+
+73 - if the previous statement (select access from user_course) returns > 0 rows, the user must be a teacher, since a row will be affected, hence the rowCount will return > 0. This seems to be kept as extra safety measures if the first if statement at row 47 is somehow bypassed.
+
+
+Testing here only affects non-functional requirements, however testing if a superuser can somehow access challenge/password changing overall might be possible.
+
+
+—------------------------------------------------------
+Challenge
+
+
+Functional:
+A non-superuser will be able to change challenge/security question.
+
+
+Description/Input/Output:
+The user updates the securityquestion and securityquestionanswer in the user table. If everything went successfully the $success will be set to “true”.
+
+
+Testing possibilities: Try changing challenge question while logged into a superuser/teacher.
+
+
+—------------------------------------------------------
+Password
+
+
+Functional:
+A non-superuser will be able to change password.
+
+
+Description/Input/Output:
+The user updates the password in the user table. If everything went successfully the $success will be set to “true”.
+
+
+Testing possibilities: Try changing password while logged into a superuser/teacher.
+
+
+—------------------------------------------------------
+
+
+
+
+
+
+$success, $status and $debug will get output as a json array.
+If everything went well the $success should output “success”, $status should output nothing, and $debug should output “NONE!” or error messages.
+Furthermore, for description, logging is done during the process of accessing and ends after completion of either method. This could perhaps be tested, although this only affects the non-functional aspect of the file.
