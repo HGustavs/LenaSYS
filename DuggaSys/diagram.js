@@ -8909,7 +8909,7 @@ function drawElement(element, ghosted = false)
         //div to encapuslate SD header
         str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //svg for SD header, background and text
-        str += `<svg width='${boxw}' height='${boxh}' style='border-top-left-radius: ${boxh/2}px; border-top-right-radius: ${boxh/2}px;'>`; //This is a silly way to round corners, should be done in the rect but the merge is tomorrow
+        str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text style='fill: ${element.stroke};' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`; //style shouldn't be needed, the div randomly gets fill: rgb(0, 0, 0), no clue why'
@@ -8923,7 +8923,7 @@ function drawElement(element, ghosted = false)
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
