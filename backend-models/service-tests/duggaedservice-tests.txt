@@ -7,27 +7,30 @@ Create an assignment (line 57):
 *********
 * pre-req:
 ********* 
-{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
+
+{ (checklogin = true) && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
 
 *checking current number of quizzes, and save qid. 	
-SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes 
-SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved, will be used when we delete the data from the database.
+SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes, save it to a variable 
 
 *******
 * send parameters inputs to duggaedservice.php 
 ******
-$opt = SAVDUGGA
+send
+{
+    $opt = "SAVDUGGA"
+    $qid = null or $qid = “UNK”
+    $cid = 1000
+    $userid = // this is automatically added from session 
+    $courserver = 10000
 
-$qid = null or $qid = “UNK”
-
-$cid = 1000
-$userid = // this is automatically added from session 
-$courserver = 10000
+} 
 
 *****
-* repet the SQL-query
+* Get newly creaded Assignment ID, repet the SQL-query
 *****
-
+SQL-query: SELECT MAX(id) FROM quiz;     // this value will identify the last assignment that was created (it has the highest ID number)
 SQL-query: SELECT count(id) FROM quiz;
 
 *****
@@ -52,28 +55,32 @@ Update an Assignment (line 68):
 * pre-req:
 *****
 
-{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
+{ (checklogin = true) && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
 
 (is_null($qid)||strcmp($qid,"UNK")===0) = false 
 
-Create an assignment, and save information on all attribute 
+Create an assignment, and save information on all attribute in an array  
 
 SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (1885,0,1, 'AutomaticTest', 'Quiz' , '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}',0);
 
 *****
 * This will get the information that you need.
 *****
-
+// these two querys are te be used in tandum, it retrives a singel rows compleat information of the last added assignment 
 SQL-query: SELECT @cid:= MAX(id) FROM quiz;
-SQL-query: SELECT * FROM quiz WHERE id = @cid;
+SQL-query: SELECT * FROM quiz WHERE id = @cid; 
 
 *****
 * Update information on an assignment
 * send parameters inputs to duggaedservice.php 
 *****
 
-$opt = SAVDUGGA
-$qid = the value “id” that was saved  
+send
+{
+    $opt = SAVDUGGA
+    $qid = the value “id” that was saved  
+}
 
 *****
 * compare results
@@ -88,7 +95,7 @@ might be a good idea to check all values individually!
 * remove inserted row from DB, using qid 
 *****
 
-SQL-query: DELETE FROM quiz WHERE id = id; // id here is the value previously saved. 
+SQL-query: DELETE FROM quiz WHERE id = id; // id is one of the value previously saved. 
 
 
 Delete an Assignment (line 95):
@@ -97,11 +104,26 @@ Delete an Assignment (line 95):
 * pre-req:
 ****
 
-{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
-$opt = DELDU
-
+{ (checklogin = true) && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
 
 Create an assignment
+
+///////
+/ used variables
+//////
+$pre-Values["cid"][1885];
+$pre-Values["autograde"][0];
+$pre-Values["gradesystem"][1];
+$pre-Values["qname"]["AutomaticTest"];
+$pre-Values["quizFile"]["Quiz"];
+$pre-Values["qrelease"]["2023-04-27 00:00:00"];
+$pre-Values["deadline"]["2023-04-28 00:00:00"];
+$pre-Values["creator"]["2"];
+$pre-Values["vers"]["1337"];
+$pre-Values["qstart"]["2023-04-17"];
+$pre-Values["jsondeadline"]["{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}"];
+$pre-Values["group"][0];
 
 SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (1885,0,1, 'AutomaticTest', 'Quiz' , '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}',0);
 
@@ -144,7 +166,7 @@ Add Variant (contents of quiz) (line 110):
 $opt = ADDVARI
 
 *****
-* checking current number of quizzes, and save qid. 	
+* checking current number of quizzes, and save vid. 	
 *****
 
 SQL-query: SELECT count(vid) FROM variant; // counts the number of variants save this value
