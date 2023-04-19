@@ -34,14 +34,14 @@ function updateCourse()
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
-	var coursegiturl = $("#editcoursegit-url").val();
+	var courseGitURL = $("#editcoursegit-url").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
-
+	fetchGitHubRepo(courseGitURL);
 	$("#overlay").css("display", "none");
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : coursegiturl }, "COURSE");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 	localStorage.setItem('courseid', courseid);
 	localStorage.setItem('updateCourseName', true);
 }
@@ -77,12 +77,30 @@ function createNewCourse()
 {
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
-	var coursegiturl = $("#ncoursegit-url").val();
+	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
+	fetchGitHubRepo(courseGitURL);
+  	localStorage.setItem('lastCC', true);
+	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+}
 
-    localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : coursegiturl  }, "COURSE");
+//Send valid GitHub-URL to PHP-script which fetches the contents of the repo
+function fetchGitHubRepo(gitHubURL) 
+{
+	//Remove .git, if it exists
+	regexURL = gitHubURL.replace(/.git$/, "");
+
+	if(regexURL){
+		$.ajax({
+			async: false,
+			url: "../recursivetesting/FetchGithubRepo.php",
+			type: "POST",
+			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
+			dataType: "json",
+			success: function(response) { console.log(response) }
+		});
+	} 
 }
 
 function copyVersion()
@@ -562,7 +580,8 @@ function setActiveCodes() {
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
-	coursegitURL: /^(https?:\/\/)?(github)(\.com)([/\w \.-]*)*\/?(\.git)$/
+	courseGitURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/
+
 };
 
 //Validates single element against regular expression returning true if valid and false if invalid
@@ -602,7 +621,7 @@ function elementIsValid(element) {
 		element.classList.remove("bg-color-change-invalid");
 
 		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		if(element.name === "coursegitURL") {
+		if(element.name === "courseGitURL") {
 			return true;
 		}
 		return false;

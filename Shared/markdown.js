@@ -85,7 +85,7 @@ function thumbnailImg(x,size) {
 // parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
 //				  function replace with regular expressions.
 //                Is called by returned in codeviewer.js
-//								Identical php code exists in showdoc any changes must be propagated
+//				  No longer need to update showdoc.php with identical code
 //----------------------------------------------------------------------------------
 
 function parseMarkdown(inString)

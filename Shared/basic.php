@@ -154,9 +154,19 @@ if(!file_exists ('../../log')) {
 	}
 }
 //---------------------------------------------------------------------------------------------------------------
+// connect metadata database - Open metadata database
+//---------------------------------------------------------------------------------------------------------------
+if(!file_exists ('../../githubMetadata')) {
+	if(!mkdir('../../githubMetadata')){
+		echo "Error creating folder: githubMetadata";
+		die;
+	}
+}
+//---------------------------------------------------------------------------------------------------------------
 // IF MAKING CHANGES TO SQLite tables, increment this value!
 //---------------------------------------------------------------------------------------------------------------
-$dbVersion = 6;
+$dbVersion = 6; 
+$metadataDbVersion = 2;
 //---------------------------------------------------------------------------------------------------------------
 
 try {
@@ -227,6 +237,26 @@ $sql = '
 	);
 ';
 $log_db->exec($sql);
+
+try {
+	$metadata_db = new PDO('sqlite:../../githubMetadata/metadata'.$metadataDbVersion.'.db');
+} catch (PDOException $e) {
+	echo "Failed to connect to the database";
+	throw $e;
+} 
+
+$sql2 = '
+	CREATE TABLE IF NOT EXISTS gitRepos ( 
+		repoID INTEGER PRIMARY KEY AUTOINCREMENT,
+		repoName VARCHAR(50), 
+    repoURL VARCHAR(255), 
+    repoFileType VARCHAR(50), 
+    repoDownloadURL VARCHAR(255), 
+    repoSHA VARCHAR(255) UNIQUE, 
+    repoPath VARCHAR(255) 
+	);
+'; 
+$metadata_db->exec($sql2);
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site

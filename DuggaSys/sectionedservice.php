@@ -63,6 +63,8 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
+$exampelid=getOP('exampelid');
+
 $visbile = 0;
 $avgfeedbackscore = 0;
 
@@ -175,7 +177,7 @@ if($gradesys=="UNK") $gradesys=0;
 		            $debug="Failed to get group members!";
 		        }
 		    }
-
+			
 			if($ha || $studentTeacher) {
 				// The code for modification using sessions
 				if(strcmp($opt,"DEL")===0) {
@@ -456,15 +458,35 @@ if($gradesys=="UNK") $gradesys=0;
                         $error=$query->errorInfo();
                         $debug="Error updating entries".$error[2]; 
                     }
-				}
-					else if (strcmp($coursevers, "null")!==0) {
+				} else if (strcmp($coursevers, "null")!==0) {
 					// Get every coursevers of courses so we seed groups to every courseversion
 					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
 					$stmt->bindParam(":cid", $courseid);
 					$stmt->execute();
 					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 					$totalGroups = 24 * count($courseversions);
-
+				} else if(strcmp($opt,"REFGIT")===0) {
+					class githubDB extends SQLite3 {
+						function __construct() {
+							$this->open("../../githubMetadata/metadata2.db");
+						}
+					}
+					$query = $pdo->prepare("SELECT runlink FROM courseexample WHERE exampelid=:exampelid;");
+					$query->bindParam(":exampelid", $exampelid);
+					$query->execute();
+					$runlink = "";
+					foreach($query->fetchAll() as $row) {
+						$runlink = $runlink.$row['runlink'];
+					}
+					$gdb = new githubDB();
+					$id=1;
+					$que = $gdb->query("SELECT repoURL FROM gitRepos WHERE repoID=".$id.";");
+					$url = "";
+					while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
+						$url = $url.$row['repoURL'];
+					}
+					$gdb->close();
+					//13179 här anropas uppdateringsfunktionen
 				}
 			}
 		}

@@ -32,15 +32,61 @@
 <body>
     <?php
 
-    // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
-    bfs('https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/');
+    //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
+    if(isset($_POST['action'])) 
+    {
+        if($_POST['action'] == 'getNewCourseGitHub') 
+        {
+            getNewCourseGitHub($_POST['githubURL']);
+        }
+    };
 
-    function bfs($url)
+    //Calls getGithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
+    function getNewCourseGitHub($githubURL)
+    {
+        getGitHubURL($githubURL);
+    }
+
+
+    function getGitHubURL($url)
+    {
+        $urlParts = explode('/', $url);
+        // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+        $username = $urlParts[3];
+        // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+        $repository = $urlParts[4];
+        // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+        $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+        bfs($translatedURL, $repository);
+    }
+
+    // ------ DUMMY DATA FOR TESTING------ 
+    // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
+    // $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
+    // Dismantles the $url into an array of each component, separated by a slash
+    // $urlParts = explode('/', $url);
+    // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    // $username = $urlParts[3];
+    // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    // $repository = $urlParts[4];
+    // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+    // $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+    // bfs($translatedURL, $repository);
+    // ----------------------------------
+
+    function bfs($url, $repository)
     {
         $visited = array();
         $fifoQueue = array();
-
+        // If the directory doesn't exist, make it
+        if(!file_exists('../../LenaSYS/courses/' . $repository . '')) {
+	        if(!mkdir('../../LenaSYS/courses/' . $repository . '')){
+		        echo "Error creating folder: $repository";
+		        die;
+	        }
+        }
         array_push($fifoQueue, $url);
+        $pdo = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
@@ -75,6 +121,16 @@
                     if ($json) {
                         // Checks if the fetched item is of type 'file'
                         if ($item['type'] == 'file') {
+                            // Retrieves the contents of each individual file based on the fetched "download_url"
+                            $fileContents = file_get_contents($item['download_url']);
+                            $path = '../../LenaSYS/courses/'.  $repository . '/' . $item['path'];
+                            echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
+                            // Creates the directory for each individual file based on the fetched "path"
+                            if (!file_exists((dirname($path)))) {
+                                mkdir(dirname($path), 0777, true);
+                            } 
+                            // Writes the file to the respective folder. 
+                            file_put_contents($path, $fileContents);
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                             echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                             // Checks if the fetched item is of type 'dir'
@@ -86,13 +142,21 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
+                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                        $query->bindParam(':repoName', $item['name']);
+                        $query->bindParam(':repoURL', $item['repoURL']);
+                        $query->bindParam(':repoFileType', $item['type']);
+                        $query->bindParam(':repoDownloadURL', $item['download_url']);
+                        $query->bindParam(':repoSHA', $item['sha']);
+                        $query->bindParam(':repoPath', $item['path']);
+                        $query->execute();
                         echo "</table>";
                     } else {
-                        echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";    
+                        echo "<h2 style='display: flex; place-content: center;'>Invalid JSON</h2>";
                     }
                 }
             } else {
-                echo "<h2 style='display: flex; place-content: center;'>Invalid Link</h2>";     
+                echo "<h2 style='display: flex; place-content: center;'>Invalid Link or API-Fetch limited</h2>";     
             }
         }
     }
