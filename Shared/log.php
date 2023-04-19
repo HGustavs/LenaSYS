@@ -62,6 +62,7 @@
                     echo "<table style='width:100%'>";
                         
                     echo '<tr>';
+                        echo '<th>'.$_POST['name'].'</th>';
                         echo '<th> id </th>';
                         echo '<th> eventype </th>';
                         echo '<th> description </th>';
