@@ -1,0 +1,182 @@
+courseedservice.php
+
+---------------------------------------------------------------------------------------------------------------------
+
+========================================================================
+========================================================================
+===                           New Course                             ===
+========================================================================
+========================================================================
+
+*********
+* pre-req:
+********* 
+
+if(checklogin()){
+	$isSuperUserVar=isSuperUser($userid);
+
+	$ha = $isSuperUserVar;
+
+	if($ha){
+
+$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
+
+*******
+* bind parameters
+******
+
+$query->bindParam(':usrid', $userid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':coursename', $coursename);
+$query->bindParam(':courseGitURL', $courseGitURL);
+
+*******
+* show error if we can't update entries
+******
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error updating entries\n".$error[2];
+} 
+
+*******
+* Logging for creating new course
+******
+
+$description=$coursename." ".$coursecode." "."Hidden";
+logUserEvent($userid, $username, EventTypes::AddCourse, $description);
+
+*******
+* Get username based on uid
+******
+
+$query_1 = $pdo->prepare( "SELECT cid FROM course ORDER BY cid DESC LIMIT 1");
+$query_1-> execute();
+
+*******
+* show error if we can't read courses
+******
+
+if(!$query_1->execute()) {
+	$error=$query_1->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+}
+
+*******
+* push into array if we don't have any errors
+*******
+
+else{
+	foreach($query_1->fetchAll(PDO::FETCH_ASSOC) as $row){
+		array_push(
+			$LastCourseCreated,
+				array(
+					'LastCourseCreatedId' => $row['cid'],
+				)
+		);
+	}
+}
+
+========================================================================
+========================================================================
+===                           New version                            ===
+========================================================================
+========================================================================
+
+*********
+* pre-req:
+********* 
+
+if(checklogin()){
+	$isSuperUserVar=isSuperUser($userid);
+
+	$ha = $isSuperUserVar;
+
+	if($ha){
+
+$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) 
+values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
+
+*********
+* bind paramters:
+********* 
+
+$query->bindParam(':cid', $cid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':vers', $versid);
+$query->bindParam(':versname', $versname);
+$query->bindParam(':coursename', $coursename);
+$query->bindParam(':coursenamealt', $coursenamealt);
+$query->bindParam(':motd', $motd);
+
+*********
+* insert null in db if start/end-values are null:
+********* 
+
+if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+else $query->bindParam(':startdate', $startdate);
+
+if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+else $query->bindParam(':enddate', $enddate);
+
+*******
+* show error if we can't update entries
+******
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error updating entries\n".$error[2];
+}
+
+*******
+* Make active version
+******
+
+if($makeactive==3){
+	$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $versid);
+
+*******
+* show error if we can't read courses
+******
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+}
+
+*******
+* Logging for create a fresh course version
+******
+
+$description=$cid." ".$versid;
+logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
+
+========================================================================
+========================================================================
+===                         Update version                           ===
+========================================================================
+========================================================================
+
+
+
+========================================================================
+========================================================================
+===                         Change version                           ===
+========================================================================
+========================================================================
+
+
+========================================================================
+========================================================================
+===                           Copy version                           ===
+========================================================================
+========================================================================
+
+
+========================================================================
+========================================================================
+===                         Update version                           ===
+========================================================================
+========================================================================
