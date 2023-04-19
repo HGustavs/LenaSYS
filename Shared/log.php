@@ -137,7 +137,7 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
                 
-                if(isset($_GET['order'])){
+                /*if(isset($_GET['order'])){
                     $order = $_GET['order'];
                 }
                 else{
@@ -164,16 +164,16 @@
                 while($rows = $resultSet->fetch_assoc()){
                     echo"
                     <tr>
-                        <td>".$rows[0]."</td>
-                        <td>".$rows[1]."</td>
+                        <td>".$rows['id']."</td>
+                        <td>".$rows['uid']."</td>
                     </tr>
                     ";
                 }
                 echo"
                 </table>
-                ";
+                ";*/
                 
-                /*echo "<table style='width:100%'>";
+                echo "<table style='width:100%'>";
                     
                 echo '<tr>';
                     echo '<th> id </th>';
@@ -198,7 +198,7 @@
                         echo '<td>'.$row["remoteAddress"].'</td>';
                         echo '</tr>';
                 }  
-                echo "</table>";*/
+                echo "</table>";
             }            
             
 
