@@ -138,7 +138,7 @@
                         $sort = 'ASC';
                     }
                     $resultSet = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY $order $sort;');
-                    if($resultSet->num_rows > 0){
+                    /*if($resultSet->num_rows > 0){
 
                         $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
 
@@ -162,7 +162,7 @@
                             </tr>
                         </table>
                         ";
-                    }
+                    }*/
                     else{
                         echo "No records returned.";
                     }
