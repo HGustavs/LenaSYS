@@ -578,6 +578,6 @@
 #ERTable {
     user-select: text;
 }
-.SDStateDiagram {
-    border-radius: 20px;
+.rounded {
+    border-radius: 30px;
 }
