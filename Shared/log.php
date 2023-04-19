@@ -146,32 +146,27 @@
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 
-                if($resultSet->num_rows>0){
-                    $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+            
+                echo"
+                <table border='1'>
+                    <tr>
+                        <th><a href='?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='?order=uid&&sort=$sort'>uid</a></th>
+                    </tr>
+                ";
+                foreach($resultSet as $row) {
+                //while($rows = mysqli_fetch_assoc($resultSet)){
                     echo"
-                    <table border='1'>
-                        <tr>
-                            <th><a href='?order=id&&sort=$sort'>id</a></th>
-                            <th><a href='?order=uid&&sort=$sort'>uid</a></th>
-                        </tr>
-                    ";
-                    foreach($resultSet as $row) {
-                    //while($rows = mysqli_fetch_assoc($resultSet)){
-                        echo"
-                        <tr>
-                            <td>".$row['id']."</td>
-                            <td>".$row['uid']."</td>
-                        </tr>
-                        ";
-                    }
-                    echo"
-                    </table>
+                    <tr>
+                        <td>".$row['id']."</td>
+                        <td>".$row['uid']."</td>
+                    </tr>
                     ";
                 }
-                else{
-                    echo "No records returned.";
-                }
+                echo"
+                </table>
+                ";
                 
                 /*
                 // gathers information from database table userLogEntries
