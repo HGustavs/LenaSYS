@@ -44,9 +44,9 @@
     //Calls getGithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
     function getNewCourseGitHub($githubURL)
     {
-        $translatedURL = getGitHubURL($githubURL);
-        bfs($translatedURL);
+        getGitHubURL($githubURL);
     }
+
 
     function getGitHubURL($url)
     {
@@ -57,31 +57,31 @@
         $repository = $urlParts[4];
         // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
         $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-        return $translatedURL;
+        bfs($translatedURL, $repository);
     }
 
-    //------ DUMMY DATA FOR TESTING------ 
+    // ------ DUMMY DATA FOR TESTING------ 
     // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
-    //$url = 'https://github.com/e21krida/Webbprogrammering-Examples';
+    // $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
     // Dismantles the $url into an array of each component, separated by a slash
-    //$urlParts = explode('/', $url);
+    // $urlParts = explode('/', $url);
     // In normal GitHub Repo URL:s, the username is the third object separated by a slash
-    //$username = $urlParts[3];
+    // $username = $urlParts[3];
     // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
-    //$repository = $urlParts[4];
+    // $repository = $urlParts[4];
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
-    //$translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    //bfs($translatedURL);
-    //----------------------------------
+    // $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+    // bfs($translatedURL, $repository);
+    // ----------------------------------
 
-    function bfs($url)
+    function bfs($url, $repository)
     {
         $visited = array();
         $fifoQueue = array();
         // If the directory doesn't exist, make it
-        if(!file_exists('../../LenaSYS/courses/Webbprogrammering-Examples')) {
-	        if(!mkdir('../../LenaSYS/courses/Webbprogrammering-Examples')){
-		        echo "Error creating folder: Webbprogrammering";
+        if(!file_exists('../../LenaSYS/courses/' . $repository . '')) {
+	        if(!mkdir('../../LenaSYS/courses/' . $repository . '')){
+		        echo "Error creating folder: $repository";
 		        die;
 	        }
         }
@@ -123,7 +123,7 @@
                         if ($item['type'] == 'file') {
                             // Retrieves the contents of each individual file based on the fetched "download_url"
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = '../../LenaSYS/courses/Webbprogrammering-Examples/' . $item['path'];
+                            $path = '../../LenaSYS/courses/'.  $repository . '/' . $item['path'];
                             echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                             // Creates the directory for each individual file based on the fetched "path"
                             if (!file_exists((dirname($path)))) {
