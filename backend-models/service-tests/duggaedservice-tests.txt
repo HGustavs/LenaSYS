@@ -112,20 +112,22 @@ Create an assignment
 ///////
 / used variables
 //////
-$pre-Values["cid"][1885];
-$pre-Values["autograde"][0];
-$pre-Values["gradesystem"][1];
-$pre-Values["qname"]["AutomaticTest"];
-$pre-Values["quizFile"]["Quiz"];
-$pre-Values["qrelease"]["2023-04-27 00:00:00"];
-$pre-Values["deadline"]["2023-04-28 00:00:00"];
-$pre-Values["creator"]["2"];
-$pre-Values["vers"]["1337"];
-$pre-Values["qstart"]["2023-04-17"];
-$pre-Values["jsondeadline"]["{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}"];
-$pre-Values["group"][0];
+$pre-Values = { 1885, 
+                0,
+                1,
+                "AutomaticTest",
+                "Quiz",
+                "2023-04-27 00:00:00",
+                "2023-04-28 00:00:00",
+                2,
+                "1337",
+                "2023-04-17",
+                "{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
+                0 }; 
 
-SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (1885,0,1, 'AutomaticTest', 'Quiz' , '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}',0);
+
+SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
 
 *****
 * checking current number of quizzes, and save qid. 	
