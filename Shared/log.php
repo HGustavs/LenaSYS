@@ -222,8 +222,8 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
                 
-                if(isset($_GET['order'])){
-                    $order = $_GET['order'];
+                if(isset($_GET['userLogEntries'])){
+                    $order = $_GET['userLogEntries'];
                 }
                 else{
                     $order = 'id';
