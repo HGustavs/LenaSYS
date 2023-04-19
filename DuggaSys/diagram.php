@@ -130,7 +130,11 @@
                     </span>
                 </div>
                 <div>
-                    <div id="elementPlacement0" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'><!--<-- UML functionality -->
+                    <div id="elementPlacement0"
+                         class="ERButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(0); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp()'
+                         onmousedown="holdPlacementButtonDown(0)"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Add an ER entity to the diagram</p><br>
@@ -168,7 +172,11 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement4" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement4"
+                         class="UMLButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(4); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(4)">
                         <img src="../Shared/icons/diagram_UML_entity.svg"/>
                         <span class="toolTipText"><b>UML class</b><br>
                             <p>Add an UML class to the diagram</p><br>
@@ -206,7 +214,11 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <div id="elementPlacement6" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(6); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement6"
+                         class="IEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(6); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(6)">
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>IE entity</b><br>
                             <p>Add an IE entity to the diagram</p><br>
@@ -244,11 +256,11 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <!--
-
-                    !!! NOTE: Commented out due to merge conflict between "SDState" and "UMLInitialState". !!!
-
-                    <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement8" 
+                        class="SDButton diagramIcons toolbarMode" 
+                        onclick='setElementPlacementType(8); setMouseMode(2);'
+                        onmouseup='holdPlacementButtonUp();'
+                        onmousedown='holdPlacementButtonDown(8);'>
                         <img src="../Shared/icons/diagram_IE_entity.svg"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add state diagram state to the diagram</p><br>
@@ -258,8 +270,6 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg"/>
                         </div>
                     </div>
-
-                    -->
                     <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                         <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_entity.svg"/>
@@ -273,13 +283,13 @@
                                 <p>Change to UML class</p>
                             </span>
                         </div>
-                        <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                        <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                             <img src="../Shared/icons/diagram_IE_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                 <p>Change to IE entity</p>
                             </span>
                         </div>
-                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                        <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                             <img src="../Shared/icons/diagram_IE_entity.svg"/>
                             <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
                                 <p>Change to state diagram state</p>
@@ -288,7 +298,11 @@
                     </div>
                 </div><!--<-- State diagram functionality end -->
                 <div>
-                    <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> <!--<-- UML functionality -->
+                    <div id="elementPlacement1"
+                         class="ERButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(1); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(1)"> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"/>
                         <span class="toolTipText"><b>ER relation</b><br>
                             <p>Add a ER relation to the diagram</p><br>
@@ -320,7 +334,11 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement5" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement5"
+                         class="UMLButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(5); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(5)">
                         <img src="../Shared/icons/diagram_inheritance.svg"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p><br>
@@ -352,7 +370,11 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement7" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(7); setMouseMode(2);'onmouseup='holdPlacementButtonUp();'>
+                    <div id="elementPlacement7"
+                         class="IEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(7); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(7)">
                         <img src="../Shared/icons/diagram_IE_inheritance.svg"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
                             <p>Add an IE inheritance to the diagram</p><br>
@@ -398,7 +420,7 @@
                     </span>
                 </div>
                 <!-- UML Initial state selection -->
-                <div id="elementPlacement8" class="diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_initial_state.svg"/>
                     <span class="toolTipText"><b>UML initial state</b><br>
                         <p>Creates an initial state for UML.</p><br>
@@ -406,7 +428,7 @@
                     </span>
                 </div>
                 <!-- UML Final state selection -->
-                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_final_state.svg"/>
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p><br>
@@ -498,14 +520,14 @@
                 </span>
             </div>
         </fieldset>   
-        <fieldset>
+        <!-- <fieldset>
             <legend>Include</legend>
             <div id="Include" class="diagramIcons" onclick="toggleErTable()">
                 <img src="../Shared/icons/angelBrackets.svg"/>
                 <span class="toolTipText"><b>To use less than</b><br>
                     <p>To use less than type & #60; <br><strong>"EX: <& #60;Include>>"</STRONG> </p><br>
                 </span>
-        </fieldset>      
+        </fieldset> -->      
     </div>
 
     <!-- Message prompt -->
@@ -561,24 +583,35 @@
             <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden' style="position: absolute;">
             </fieldset>
 
-            <fieldset class='options-fieldset options-section' style='position: absolute;'>
+            <fieldset class='options-fieldset options-section' style='auto;'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
+                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
+                <div class="dropdownContent">
+                    <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
+                        <option >Null</option>
+                        <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
+                        <option  value="JSON/UMLDiagramMockup.json">UML diagrams</option>
+                        <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
+                    </select>
+                    <button onclick="loadMockupDiagram();">Load</button>
+                </div>
+
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style='position: absolute; top: 35%; margin-top: 2%;'>
+            <fieldset class='options-fieldset options-section' style='auto;'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style="position: absolute; top: 48%; margin-top: 2%;">
+            <fieldset class='options-fieldset options-section' style="auto;">
                 <legend>Import</legend>
                 <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>

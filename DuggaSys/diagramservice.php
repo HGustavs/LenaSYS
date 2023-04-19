@@ -112,7 +112,7 @@
         $array = array('debug' => $debug, 'weeks' => $weeks);
         echo json_encode($array);
     } catch (Exception $e) {
-        // Somehting went wrong
+        echo 'Message: ' .$e->getMessage();
     }
 
 
