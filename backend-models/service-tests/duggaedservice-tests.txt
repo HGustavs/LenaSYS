@@ -1,0 +1,171 @@
+
+duggaedservice.php
+
+
+Create an assignment (line 57):
+---------------------------------------------------------------------------------------------------------------------
+*********
+* pre-req:
+********* 
+{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
+
+*checking current number of quizzes, and save qid. 	
+SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes 
+SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved, will be used when we delete the data from the database.
+
+*******
+* send parameters inputs to duggaedservice.php 
+******
+$opt = SAVDUGGA
+
+$qid = null or $qid = “UNK”
+
+$cid = 1000
+$userid = // this is automatically added from session 
+$courserver = 10000
+
+*****
+* repet the SQL-query
+*****
+
+SQL-query: SELECT count(id) FROM quiz;
+
+*****
+* compare results
+*****
+
+count + 1 = passed
+no change = failed  
+
+*****
+* remove inserted row from DB, using qid 
+*****
+
+SQL-query: DELETE FROM quiz WHERE id = qid; // qid here is the value previously saved. 
+
+
+
+
+Update an Assignment (line 68):
+-------------------------------------------------------------------------------------------------------------------------
+*****
+* pre-req:
+*****
+
+{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
+
+(is_null($qid)||strcmp($qid,"UNK")===0) = false 
+
+Create an assignment, and save information on all attribute 
+
+SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (1885,0,1, 'AutomaticTest', 'Quiz' , '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}',0);
+
+*****
+* This will get the information that you need.
+*****
+
+SQL-query: SELECT @cid:= MAX(id) FROM quiz;
+SQL-query: SELECT * FROM quiz WHERE id = @cid;
+
+*****
+* Update information on an assignment
+* send parameters inputs to duggaedservice.php 
+*****
+
+$opt = SAVDUGGA
+$qid = the value “id” that was saved  
+
+*****
+* compare results
+*****
+
+Are the values unchanged?
+yes = fail
+no = pass
+might be a good idea to check all values individually! 
+
+*****
+* remove inserted row from DB, using qid 
+*****
+
+SQL-query: DELETE FROM quiz WHERE id = id; // id here is the value previously saved. 
+
+
+Delete an Assignment (line 95):
+-------------------------------------------------------------------------------------------------------------------------------------------------
+*****
+* pre-req:
+****
+
+{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
+$opt = DELDU
+
+
+Create an assignment
+
+SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (1885,0,1, 'AutomaticTest', 'Quiz' , '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}',0);
+
+*****
+* checking current number of quizzes, and save qid. 	
+*****
+
+SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes save this value
+SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved, will be used when we delete the data from the database.
+
+*****
+* Update information on an assignment
+* send parameters inputs to duggaedservice.php 
+*****
+
+$opt = DELDU
+$qid = the value 
+
+*****
+* repet the SQL-query
+*****
+
+SQL-query: SELECT count(id) FROM quiz; 	// save the value in a different variable 
+
+*****
+* compare results
+*****
+
+count - 1 = passed
+no change = failed  
+
+
+Add Variant (contents of quiz) (line 110):
+-----------------------------------------------------------------------------------------------------------------------------------------
+*****
+* pre-req:
+*****
+
+{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
+$opt = ADDVARI
+
+*****
+* checking current number of quizzes, and save qid. 	
+*****
+
+SQL-query: SELECT count(vid) FROM variant; // counts the number of variants save this value
+
+*****
+* Add a new variant
+* send parameters inputs to duggaedservice.php 
+*****
+
+$opt = ADDVARI
+$qid = the value 
+
+*****
+* repet the SQL-query
+*****
+
+SQL-query: SELECT count(id) FROM quiz; 	// save the value in a different variable 
+
+*****
+* compare results
+*****
+
+count - 1 = passed
+no change = failed  
