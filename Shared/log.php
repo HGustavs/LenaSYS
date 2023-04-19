@@ -59,10 +59,50 @@
 
                 if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                     // gathers information from database table userHistory
-                    echo "<table style='width:100%'>";
-                        
+                    //echo "<table style='width:100%'>";
+                    if(isset($_GET['order'])){
+                        $order = $_GET['order'];
+                    }
+                    else{
+                        $order = 'id';
+                    }
+                    if(isset($_GET['sort'])){
+                        $sort = $_GET['sort'];
+                    }
+                    else{
+                        $sort = 'ASC';
+                    }
+                    $resultSet = $log_db->query('SELECT * FROM logEntries ORDER BY $order $sort;');
+                    if($resultSet->num_rows > 0){
+
+                        $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+
+                        echo"
+                        <table border='1'>
+                            <tr>
+                                <th><a href='?order=id&&sort=$sort'>id</a></th>
+                                <th><a href='?order=eventype&&sort=$sort'>eventype</a></th>
+                        ";
+                        while($rows = $resultSet->fetch_assoc()){
+                            $id = $rows['id'];
+                            $eventype = $rows['eventype'];
+                            echo"
+                            <tr>
+                                <td>$id</td>
+                                <td>$eventype</td>
+                            </tr>
+                            ";
+                        }
+                        echo"
+                            </tr>
+                        </table>
+                        ";
+                    }
+                    else{
+                        echo "No records returned.";
+                    }
+                    /*
                     echo '<tr>';
-                        echo '<th>'.$_POST['name'].'</th>';
                         echo '<th> id </th>';
                         echo '<th> eventype </th>';
                         echo '<th> description </th>';
@@ -79,7 +119,7 @@
                             echo '<td>'.$row["timestamp"].'</td>';
                             echo '</tr>';
                     }  
-                    echo "</table>";
+                    echo "</table>";*/
                 }
                     
                 if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
