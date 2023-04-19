@@ -1,0 +1,20 @@
+Duggaedservice.php
+
+Possible paths to take
+----------------------
+
+1. If the user is logged in and has write-permission/if the user is a student with access to set course:
+	1. If the "opt" variable is set to "SAVDUGGA";
+		1. If "qid" is either NULL or is equivalent to "UNK";
+			- A new quiz is generated and added to the database.
+		2. if "qid" is not equivalent to "UNK" or NULL;
+			- The quiz, that's already existing, will be updated.
+	2. If "opt" is set to "DELDU";
+		- The quiz with that given "qid" will be deleted. Also removed from the database.
+	3. If the variable "opt" is set to "ADDVARI";
+		- New variant will be added to the quiz with the given "qid" in the database.
+2. If the user is not logged in or have write-access to the course:
+	- They will be redirected to the login page.
+
+
+
