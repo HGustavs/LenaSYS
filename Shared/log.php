@@ -155,7 +155,7 @@
                         <th><a href='?order=uid&&sort=$sort'>uid</a></th>
                     </tr>
                 ";
-                while($rows = mysql_fetch_assoc($resultSet)){
+                while($rows = mysqli_fetch_assoc($resultSet)){
                     echo"
                     <tr>
                         <td>".$rows['id']."</td>
