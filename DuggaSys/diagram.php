@@ -580,10 +580,10 @@
             </span>
         </div>
         <div id ="fieldsetBox">
-            <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden' style="position: absolute;">
+            <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden'>
             </fieldset>
 
-            <fieldset class='options-fieldset options-section' style='auto;'>
+            <fieldset class='options-fieldset options-section'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
@@ -606,12 +606,12 @@
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style='auto;'>
+            <fieldset class='options-fieldset options-section'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
-            <fieldset class='options-fieldset options-section' style="auto;">
+            <fieldset class='options-fieldset options-section'>
                 <legend>Import</legend>
                 <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>

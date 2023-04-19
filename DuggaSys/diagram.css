@@ -568,6 +568,7 @@
 /*  options panel  */
 .options-fieldset {
     width: 90%;
+    margin: auto;
 }
 .options-fieldset-show {
     display: block;
