@@ -47,6 +47,9 @@
         getGitHubURL($githubURL);
     }
 
+    getGitHubURL('https://github.com/e21krida/experiment');
+
+
     function getGitHubURL($url)
     {
         $urlParts = explode('/', $url);
