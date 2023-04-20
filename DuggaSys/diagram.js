@@ -962,6 +962,7 @@ var wasDblClicked = false;
 var targetDelta;
 var mousePressed;
 var erTableToggle = false; //Used only in toggleErTable() and generateContextProperties().
+var testCaseToggle = false;
 var selectionBoxLowX;
 var selectionBoxHighX;
 var selectionBoxLowY;
@@ -4254,9 +4255,26 @@ function toggleErTable()
 {
     if(erTableToggle == false){
         erTableToggle = true;
+        testCaseToggle = false;
     }
     else if (erTableToggle == true){
         erTableToggle = false;
+    }
+    generateContextProperties();
+}
+
+
+/**
+ * @description Toggles the testcases for the diagram in the "Options side-bar" on/off.
+ */
+function toggleTestCase()
+{
+    if (testCaseToggle == false) {
+        testCaseToggle = true;
+        erTableToggle = false;
+    }
+    else if (testCaseToggle == true) {
+        testCaseToggle = false;
     }
     generateContextProperties();
 }
@@ -6135,7 +6153,7 @@ function generateContextProperties()
     } */
 
     //No element or line selected
-    if (context.length == 0 && contextLine.length == 0 && !erTableToggle) {
+    if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
         //Hide properties and show the other options
         propSet.classList.add('options-fieldset-hidden');
         propSet.classList.remove('options-fieldset-show');
@@ -6153,6 +6171,12 @@ function generateContextProperties()
         var ertable = generateErTableString();
         str += ertable;
         str += `</div>`
+    }
+    //If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
+    else if (testCaseToggle) {
+        str += '<div id="ERTable">'; //using same styling for now, maybe change later
+        str += 'Debug testcase'
+        str += '</div>';
     }
     else {
       //One element selected, no lines
