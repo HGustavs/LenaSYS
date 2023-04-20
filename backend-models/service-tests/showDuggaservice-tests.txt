@@ -27,3 +27,6 @@ SQL query: If active_users is updated the test has succeded
 Compare the values.
 
 --------------------------------------------------------------------------------------------------------
+TEST#2
+saveDuggaTest(254-312)
+Test to ensure a student can save a dugga (NOT A TEACHER)
