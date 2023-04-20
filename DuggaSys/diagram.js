@@ -8949,7 +8949,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         str += `</div>`;
-        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+        //str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         if (elemFunc != 0) {
            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
            // str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
@@ -8962,7 +8962,7 @@ function drawElement(element, ghosted = false)
         
         //end of div for SD content
         
-        str += `</div>`;
+        //str += `</div>`;
     }
 
     //Check if element is UMLRelation
