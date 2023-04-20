@@ -31,7 +31,7 @@
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 
-		$print = $query->fetchAll();
+		$print = $query->fetch();
 		
 		// $query = fetch_assoc($query);
 		// $a=    $query;  
