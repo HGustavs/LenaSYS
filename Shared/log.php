@@ -129,24 +129,19 @@
                 echo "</table>";
             }
 
+            if(isset($_GET['order'])){
+                $order = $_GET['order'];
+            }
+            else{
+                $order = 'timestamp';
+            }
+            if(isset($_GET['sort'])){
+                $sort = $_GET['sort'];
+            }
+            else{
+                $sort = 'ASC';
+            }
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
-
-                /*if(isset($_GET['id'])){
-                    echo "It works";
-                    $order = $_GET['id'];
-                }
-                else{
-                    $order = 'timestamp';
-                }
-                if(isset($_GET['sort'])){
-                    $sort = $_GET['sort'];
-                }
-                else{
-                    $sort = 'ASC';
-                }*/
-                $order = "timestamp";
-                $sort = "ASC";
-
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
