@@ -85,8 +85,14 @@
             if(isset($_GET['order'])){
                 $order = $_GET['order'];
             }
+            else{
+                $order = 'timestamp';
+            }
             if(isset($_GET['sort'])){
                 $sort = $_GET['sort'];
+            }
+            else{
+                $sort = 'DESC';
             }
             
             // Gathers information from database table logEntries
