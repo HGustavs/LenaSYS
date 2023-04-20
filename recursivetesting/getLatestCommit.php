@@ -26,14 +26,20 @@
 	getCourseID("https://github.com/HGustavs/DiagrammingSYS");
 
 	function getCourseID($githubURL) {
+
+		$newURL = str_replace("/", "&#47;", $githubURL);
+		print_r($newURL);
+
 		global $pdo;
-		$query = $pdo->prepare('SELECT * FROM course WHERE courseGitURL = :githubURL;');
-		$query->bindParam(':githubURL', $githubURL);
+		$query = $pdo->prepare('SELECT cid FROM course WHERE courseGitURL = :githubURL;');
+		$query->bindParam(':githubURL', $newURL);
 		$query->execute();
 
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo $row['cid'];
 		}
+
+		//$query -> fetch_column
 
 		// $print = $query->fetch();
 		
