@@ -50,8 +50,41 @@
                             echo $row['name'];
                         echo '</option>';
                     }
-                echo '</select>';   
+                echo '</select>';
 
+        ?>
+
+        <br>
+        <label for="search">Search:</label>
+        <input type="text" name="search" id="search" value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>">
+        <input type="submit" name="submit" value="Submit">
+        <?php
+
+        if(isset($_POST['name'])) {
+    // get the selected table name
+    $table = $_POST['name'];
+    
+    // get the search query
+    $search = isset($_POST['search']) ? trim($_POST['search']) : '';
+    
+    // execute the SQL query with search criteria
+    $query = "SELECT * FROM $table";
+    if(!empty($search)) {
+        $query .= " WHERE description LIKE '%$search%'"; // adjust the WHERE clause to match the column you want to search
+    }
+    
+    echo "<table style='width:100%'>";
+    // output the table headers
+    // ...
+
+    // execute the SQL query
+    foreach($log_db->query($query) as $row) {
+        // output the table rows
+        // ...
+    }
+    echo "</table>";
+}
+    
 
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
