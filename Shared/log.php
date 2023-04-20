@@ -57,6 +57,8 @@
 // Present data  <-- Presents the information from each db table 
 //---------------------------------------------------------------------------------------------------
 
+            // Set to default button
+            echo "<a href='log.php?order=&&sort='>Set to default</a>";
             // Code used to sort tables.
             // Default values are time in descending order.
             if(isset($_GET['order'])){
