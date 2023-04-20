@@ -19,11 +19,11 @@ SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes, save i
 ******
 send
 {
-    $opt = "SAVDUGGA"
-    $qid = null or $qid = “UNK”
-    $cid = 1000
-    $userid = // this is automatically added from session 
-    $courserver = 10000
+    $opt = "SAVDUGGA";
+    $qid = null; or $qid = “UNK”;
+    $cid = 1885;
+    $userid = 2;        // this is automatically added depending on what session is active (if any), we want the value to be 2
+    $courserver = 1337;
 
 } 
 
@@ -235,9 +235,12 @@ no change = failed
 SQL-query: DELETE FROM variant WHERE quizID = $quizID; // quizID is the same as the INSERT. 
 
 
+
+
 -------------------------------------------------------------------------------------------------------------------------
-Update a variant (line 123):
+- Update a variant (line 123):
 -------------------------------------------------------------------------------------------------------------------------
+
 *****
 * pre-req:
 *****
