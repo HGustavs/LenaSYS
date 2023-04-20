@@ -8928,8 +8928,10 @@ function drawElement(element, ghosted = false)
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
             str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+            const padding = 20; // add 20 pixels of padding
+            const totalHeight = boxh / 2 + (boxh * (elemAttri + elemFunc) / 2) + padding;
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemAttri + elemFunc) / 2)}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
+            str += `<svg width='${boxw}' height='${totalHeight}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * (elemAttri + elemFunc)) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
@@ -8937,7 +8939,7 @@ function drawElement(element, ghosted = false)
             }
             
             if (elemFunc != 0) {
-                str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
+                str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2) + padding}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
                 // str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
                  //stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
                  for (var i = 0; i < elemFunc; i++) {
