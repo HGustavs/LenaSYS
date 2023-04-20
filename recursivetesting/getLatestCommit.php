@@ -1,4 +1,10 @@
 <?php 
+
+	// Used to display errors on screen since PHP doesn't do that automatically.
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+
 	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
 	if(isset($_POST['action'])) 
 	{
@@ -16,11 +22,6 @@
 	}
 
 	function getCommit($url) {
-		// Used to display errors on screen since PHP doesn't do that automatically.
-		ini_set('display_errors', 1);
-		ini_set('display_startup_errors', 1);
-		error_reporting(E_ALL);
-
 		//$url = "https://github.com/HGustavs/LenaSYS"; // TODO: This url should be the one you fetch from the database!
 
 		$html = file_get_contents($url);
