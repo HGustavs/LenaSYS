@@ -148,31 +148,9 @@
                 echo"
                 </table>
                 ";
-                print "<pre>";
+                /*print "<pre>";
                 print_r($userHistoryResults);
-                print "</pre>";
-                
-
-                /*echo "<table style='width:100%'>";
-                    echo '<tr>';
-                        echo '<th> refer </th>';
-                        echo '<th> userid </th>';
-                        echo '<th> username </th>';
-                        echo '<th> IP </th>';
-                        echo '<th> URLParams </th>';
-                        echo '<th> timestamp </th>';
-                    echo '<tr>';
-                foreach($log_db->query('SELECT * FROM userHistory ORDER BY timestamp DESC;') as $row) {
-                    echo '<tr>';
-                        echo '<td>'.$row["refer"].'</td>';
-                        echo '<td>'.$row["userid"].'</td>';
-                        echo '<td>'.$row["username"].'</td>';
-                        echo '<td>'.$row["IP"].'</td>';
-                        echo '<td>'.$row["URLParams"].'</td>';
-                        echo '<td>'.$row["timestamp"].'</td>';
-                    echo '</tr>';
-                }  
-                echo "</table>";*/
+                print "</pre>";*/
             }
 
             // Gathers information from database table userLogEntries
@@ -207,8 +185,7 @@
                 ";
                 /*print "<pre>";
                 print_r($userLogEntriesResults);
-                print "</pre>";
-                */
+                print "</pre>";*/
             }
 
             // Gathers information from database table serviceLogEntries
