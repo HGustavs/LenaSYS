@@ -21,22 +21,12 @@ include_once "../Shared/sessions.php";
 session_start();
 
 pdoConnect(); // Connect to database and start session
-// print_r("courseid: ". $_POST['courseid']. "<br>"); //
-// print_r("coursevers: ". $_POST['coursevers']. "<br>"); // ?
-// print_r("kind: " . $_POST['kind']. "<br>"); // ?
-// print_r("link: ". $_POST['link']. "<br>"); // ?
-// print_r("selectedfile: ". $_POST['selectedfile']. "<br>"); // ?
 
 $cid = getOP('courseid');
 $vers = getOP('coursevers');
 $kind = getOP('kind');
 $link = getOP('link');
 $selectedfile = getOP('selectedfile');
-print_r("courseid: ". $cid. "<br>"); //
-print_r("coursevers: ". $vers. "<br>"); // ?
-print_r("kind: " . $kind. "<br>"); // ?
-print_r("link: ". $link. "<br>"); // ?
-print_r("selectedfile: ". $selectedfile. "<br>"); // ?
 
 $error = false;
 
