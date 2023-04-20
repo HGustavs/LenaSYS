@@ -39,19 +39,7 @@
 			echo $row['cid'];
 		}
 
-		//$query -> fetch_column
-
-		// $print = $query->fetch();
-		
-		// $query = fetch_assoc($query);
-		// $a=    $query;  
-		// echo   $a['cid'];
-		// $result = $query->fetch(PDO::FETCH_ASSOC);
-		
-
-		// print_r($query);
-		// print_r($githubURL);
-		//getCommit($githubURL);
+		getCommit($githubURL);
 	}
 
 	function getCommit($url) {
