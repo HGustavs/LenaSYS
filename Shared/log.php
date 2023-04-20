@@ -132,6 +132,7 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
 
                 if(isset($_GET['order'])){
+                    echo "It works";
                     $order = $_GET['order'];
                 }
                 else{
