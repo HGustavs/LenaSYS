@@ -129,35 +129,26 @@
                 echo "</table>";
             }
 
+            if(isset($_GET['order'])){
+                $order = $_GET['order'];
+            }
+            else{
+                $order = 'id';
+            }
+            if(isset($_GET['sort'])){
+                $sort = $_GET['sort'];
+            }
+            else{
+                $sort = 'ASC';
+            }
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
 
-                if(isset($_GET['order'])){
-                    $order = $_GET['order'];
-                }
-                else{
-                    $order = 'id';
-                }
-                if(isset($_GET['sort'])){
-                    $sort = $_GET['sort'];
-                }
-                else{
-                    $sort = 'ASC';
-                }
-                
                 $sql = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
-                $result = mysqli_query($log_db, $sql);
-                $datas = array();
-                if(mysqli_num_rows($result)>0){
-                    while($row = mysqli_fetch_assoc($result)){
-                        $datas[] = $row;
-                    }
-                }
-                print_r($datas);
-                /*$array2 = array(
+                $array2 = array(
                     0 => "a",
                     1 => mysql_fetch_assoc($sql),
                 );
-                print_r($array2);*/
+                print_r($array2);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
             
                 echo"
