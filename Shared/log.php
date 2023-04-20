@@ -147,35 +147,39 @@
                 $sql = $log_db->query('SELECT * FROM userLogEntries;'); // ORDER BY $order $sort
                 $userLogEntriesResults = $sql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-            
-                echo"
-                <table border='1'>
-                    <tr>
-                        <th><a href='?order=id&&sort=$sort'>id</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>uid</a></th>
-                        <th><a href='?order=username&&sort=$sort'>username</a></th>
-                        <th><a href='?order=eventType&&sort=$sort'>eventType</a></th>
-                        <th><a href='?order=description&&sort=$sort'>description</a></th>
-                        <th><a href='?order=timestamp&&sort=$sort'>timestamp</a></th>
-                        <th><a href='?order=userAgent&&sort=$sort'>userAgent</a></th>
-                        <th><a href='?order=remoteAddress&&sort=$sort'>remoteAddress</a></th>
-                    </tr>
-                ";
-                foreach($userLogEntriesResults as $rows) {
-                    echo"<tr>";
-                    foreach($rows as $row) {
-                        echo"
-                            <td>".$row."</td>
-                        ";
+                if($userLogEntriesResults->num_rows>0){
+                    echo"
+                    <table border='1'>
+                        <tr>
+                            <th><a href='?order=id&&sort=$sort'>id</a></th>
+                            <th><a href='?order=uid&&sort=$sort'>uid</a></th>
+                            <th><a href='?order=username&&sort=$sort'>username</a></th>
+                            <th><a href='?order=eventType&&sort=$sort'>eventType</a></th>
+                            <th><a href='?order=description&&sort=$sort'>description</a></th>
+                            <th><a href='?order=timestamp&&sort=$sort'>timestamp</a></th>
+                            <th><a href='?order=userAgent&&sort=$sort'>userAgent</a></th>
+                            <th><a href='?order=remoteAddress&&sort=$sort'>remoteAddress</a></th>
+                        </tr>
+                    ";
+                    foreach($userLogEntriesResults as $rows) {
+                        echo"<tr>";
+                        foreach($rows as $row) {
+                            echo"
+                                <td>".$row."</td>
+                            ";
+                        }
+                        echo"</tr>";
                     }
-                    echo"</tr>";
+                    echo"
+                    </table>
+                    ";
+                    print "<pre>";
+                    print_r($userLogEntriesResults);
+                    print "</pre>";
                 }
-                echo"
-                </table>
-                ";
-                print "<pre>";
-                print_r($userLogEntriesResults);
-                print "</pre>";
+                else{
+                    echo "No records returned.";
+                }
                 /*
                 // gathers information from database table userLogEntries
                 echo "<table style='width:100%'>";
