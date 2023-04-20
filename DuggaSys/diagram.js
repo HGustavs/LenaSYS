@@ -4134,7 +4134,12 @@ function toggleReplay()
         zoomIndicator.style.bottom = "55px";
         zoomIndicator.style.left = "45px";
         zoomContainer.style.bottom = "54px";
-        zoomContainer.style.left = "-68px";
+        if (optionsPane.className == "show-options-pane") {
+            zoomContainer.style.left = "240px";
+        }
+        else {
+            zoomContainer.style.left = "-68px";
+        }
         replyMessage.style.visibility = "visible";
     }
     drawRulerBars(scrollx, scrolly);
