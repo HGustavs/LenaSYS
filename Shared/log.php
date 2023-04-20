@@ -142,7 +142,7 @@
                 $sort = 'ASC';
             }
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
-                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY id'.$sort.';');
+                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
