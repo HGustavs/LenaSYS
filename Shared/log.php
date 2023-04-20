@@ -144,16 +144,18 @@
                     $sort = 'ASC';
                 }
                 
-                $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
-                
-                while ($row = $resultSet->fetch_assoc()){
-                    $products[] = $row;
+                $sql = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
+                $result = mysqli_query($log_db, $sql);
+                $datas = array();
+                if(mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_assoc($result)){
+                        $datas[] = $row;
+                    }
                 }
-                print_r($products[]);
-/*
-                $array2 = array(
+                print_r($datas);
+                /*$array2 = array(
                     0 => "a",
-                    1 => mysql_fetch_assoc($resultSet),
+                    1 => mysql_fetch_assoc($sql),
                 );
                 print_r($array2);*/
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
@@ -166,7 +168,7 @@
                     </tr>
                 ";
                 foreach($array2 as $row) {
-                //while($row = mysqli_fetch_assoc($resultSet)){
+                //while($row = mysqli_fetch_assoc($sql)){
                     echo"
                     <tr>
                         <td>".$row[0]."</td>
