@@ -8928,13 +8928,13 @@ function drawElement(element, ghosted = false)
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemAttri+ elemFunc) / 2) - (linew * 2)}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemAttri) / 2)}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * (elemAttri+ elemFunc) / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes[i]}</text>`;
             }
-            str += `</svg>`;
+           
             //end of svg for background
             
             // Draw SD-content if there are no attributes.
@@ -8948,8 +8948,8 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             str += `</svg>`;
         }
-        //str += `</div>`;
-        //str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `</div>`;
+        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         if (elemFunc != 0) {
            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
            // str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
@@ -8960,7 +8960,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         //end of div for SD content
-        
+        str += `</svg>`;
         str += `</div>`;
     }
 
