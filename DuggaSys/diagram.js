@@ -8940,7 +8940,7 @@ function drawElement(element, ghosted = false)
                 // str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
                  //stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
                  for (var i = 0; i < elemFunc; i++) {
-                     str += `<text x='${xAnchor}'  y='${boxh / 2 + (elemAttri > 0 ? boxh / 2 : 0)}' dominant-baseline='middle' text-anchor='${vAlignment}'>exit:${element.functions[i]}</text>`;
+                     str += `<text x='${xAnchor}'  y='${boxh / 2 + (elemAttri > 0 ? boxh * i / 2 : 0)}' dominant-baseline='middle' text-anchor='${vAlignment}'>exit:${element.functions[i]}</text>`;
                  }
                  str += `</svg>`;
              }
