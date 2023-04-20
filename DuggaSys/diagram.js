@@ -4123,6 +4123,7 @@ function toggleReplay()
     var ruler = document.getElementById("rulerOverlay");
     var zoomIndicator = document.getElementById("zoom-message-box");
     var replyMessage = document.getElementById("diagram-replay-message");
+    var zoomContainer = document.getElementById("zoom-container");
 
     if (settings.replay.active) {
         // Restore the diagram to state before replay-mode
@@ -4136,6 +4137,8 @@ function toggleReplay()
         ruler.style.left = "50px";
         zoomIndicator.style.bottom = "5px";
         zoomIndicator.style.left = "100px";
+        zoomContainer.style.bottom = "4px";
+        zoomContainer.style.left = "-100px";
         replyMessage.style.visibility = "hidden";
     } else {
         settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
@@ -4167,6 +4170,13 @@ function toggleReplay()
         ruler.style.left = "0";
         zoomIndicator.style.bottom = "55px";
         zoomIndicator.style.left = "45px";
+        zoomContainer.style.bottom = "54px";
+        if (optionsPane.className == "show-options-pane") {
+            zoomContainer.style.left = "240px";
+        }
+        else {
+            zoomContainer.style.left = "-68px";
+        }
         replyMessage.style.visibility = "visible";
     }
     drawRulerBars(scrollx, scrolly);
