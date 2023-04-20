@@ -18,7 +18,11 @@
 		$query = $pdo->query('SELECT cid FROM course WHERE courseGitURL = :githubURL');
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
-		print_r($query);
+		
+		print_r($query['cid']);
+
+		// getCommit($githubURL);
+		
 	}
 
 	function getCommit($url) {
