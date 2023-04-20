@@ -14,11 +14,20 @@
 	// 	}
 	// };
 
+
+	// Include basic application services!
+	include_once "../Shared/basic.php";
+	include_once "../Shared/sessions.php";
+
+	// Connect to database and start session
+	pdoConnect();
+	session_start();
+
 	getCourseID("https://github.com/HGustavs/DiagrammingSYS");
 
 	function getCourseID($githubURL) {
-		$querystring = 'SELECT cid FROM course WHERE courseGitURL = :githubURL';
-		$query  = $pdo->prepare($querystring);
+		global $pdo;
+		$query = $pdo->query('SELECT cid FROM course WHERE courseGitURL = :githubURL');
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 		
@@ -57,6 +66,9 @@
 		$latestCommit = preg_replace($regex, "", $href);
 		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
 	}
+
+
+	//$pdo = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
 	/*
 function saveIntoLatestCommit ($url) {
