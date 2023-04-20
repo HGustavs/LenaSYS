@@ -67,7 +67,7 @@
                             echo '<th> userAgent </th>';
                             echo '<th> timestamp </th>';
                         echo '<tr>';
-                    foreach($log_db->query('SELECT * FROM logEntries;') as $row) {
+                    foreach($log_db->query('SELECT * FROM logEntries ORDER BY timestamp DESC;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
                             echo '<td>'.$row["eventype"].'</td>';
@@ -91,7 +91,7 @@
                             echo '<th> exampleid </th>';
                             echo '<th> timestamp </th>';
                         echo '<tr>';
-                    foreach($log_db->query('SELECT * FROM exampleLoadLogEntries;') as $row) {
+                    foreach($log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY timestamp DESC;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
                             echo '<td>'.$row["type"].'</td>';
@@ -116,7 +116,7 @@
                         echo '<th> URLParams </th>';
                         echo '<th> timestamp </th>';
                     echo '<tr>';
-                foreach($log_db->query('SELECT * FROM userHistory;') as $row) {
+                foreach($log_db->query('SELECT * FROM userHistory ORDER BY timestamp DESC;') as $row) {
                     echo '<tr>';
                         echo '<td>'.$row["refer"].'</td>';
                         echo '<td>'.$row["userid"].'</td>';
@@ -221,7 +221,7 @@
                         echo '<th> IP </th>';
                         echo '<th> browser </th>';
                     echo '</tr>';
-                    foreach($log_db->query('SELECT * FROM serviceLogEntries;') as $row) {
+                    foreach($log_db->query('SELECT * FROM serviceLogEntries ORDER BY timestamp DESC;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
                             echo '<td>'.$row["uuid"].'</td>';
@@ -255,7 +255,7 @@
                         echo '<th> quizid </th>';
                         echo '<th> timestamp </th>';
                     echo '<tr>';
-                    foreach($log_db->query('SELECT * FROM duggaLoadLogEntries;') as $row) {
+                    foreach($log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY timestamp DESC;') as $row) {
                         echo '<tr>';
                             echo '<td>'.$row["id"].'</td>';
                             echo '<td>'.$row["type"].'</td>';
