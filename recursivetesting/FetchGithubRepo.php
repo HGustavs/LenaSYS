@@ -82,7 +82,7 @@
 
     function insertToFileLink($cid, $item) {
         global $pdo;
-        $fileText = $item['name'];
+        $fileText = $item['name']; 
         $filesize = $item['size']; // Size
         $kindid = 3; // The kind(course local/version local/global), 3 = course local
 
@@ -166,7 +166,7 @@
                         if ($item['type'] == 'file') {
                             // Retrieves the contents of each individual file based on the fetched "download_url"
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = '../../LenaSYS/courses/'. $cid . '/' . $item['path'];
+                            $path = '../../LenaSYS/courses/'. $cid . '/' . "Github" .'/' . $item['path'];
                             echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                             // Creates the directory for each individual file based on the fetched "path"
                             if (!file_exists((dirname($path)))) {
