@@ -55,7 +55,7 @@
         <?php    
                 date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
 
-                echo 'choose table';
+                echo 'Choose table: ';
 
                 echo '<select onchange="submit();" name="name" >';
 
