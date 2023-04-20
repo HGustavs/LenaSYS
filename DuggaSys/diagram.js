@@ -8929,7 +8929,7 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             const rectHeight = boxh / 2 + (boxh * Math.max(elemAttri, elemFunc) / 2) - (linew * 2);
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;' >`;
+            str += `<svg width='${boxw}' height='${rectHeight}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;' >`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${rectHeight}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
