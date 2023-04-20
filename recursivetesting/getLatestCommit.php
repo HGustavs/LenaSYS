@@ -32,8 +32,8 @@
 		$query->execute();
 		
 		print_r($query);
-
-		getCommit($githubURL);
+		print_r($githubURL);
+		//getCommit($githubURL);
 	}
 
 	function getCommit($url) {
