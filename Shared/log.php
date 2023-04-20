@@ -146,11 +146,18 @@
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 
+                while ($row = $resultSet->fetch_assoc()){
+                    $products[] = $row;
+                }
+                foreach($products as $product){
+                    echo $product["id"];
+                }
+/*
                 $array2 = array(
                     0 => "a",
                     1 => mysql_fetch_assoc($resultSet),
                 );
-                print_r($array2);
+                print_r($array2);*/
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
             
                 echo"
