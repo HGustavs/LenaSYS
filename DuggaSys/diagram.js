@@ -8914,7 +8914,7 @@ function drawElement(element, ghosted = false)
             d="M${linew+cornerRadius},${(linew)}
                 h${(boxw - (linew * 2))-(cornerRadius*2)}
                 a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
-                v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-(cornerRadius)}
+                v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius)}
                 h${(boxw - (linew * 2))*-1}
                 v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-(cornerRadius))*-1}
                 a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius)*-1}
@@ -8937,8 +8937,22 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            /* str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`; */
+            str += `<path 
+                d="M${linew},${(linew)}
+                    h${(boxw - (linew * 2))}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius*-1)},${cornerRadius}
+                    h${(boxw - (linew * 2)-(cornerRadius*2))*-1}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius)*-1},${(cornerRadius)*-1}
+                    v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius)*-1}
+                    z
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
             }
