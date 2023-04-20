@@ -742,7 +742,7 @@ if ($pdo) {
 }
 
 ************************************************************************************************
-* Testing case 1 (Duplicate code examples and its components (boxes, improws, and impwordlist) *
+* Testing case 2 (Duplicate code examples and its components (boxes, improws, and impwordlist) *
 ************************************************************************************************
 
 // Set the course ID, old version, and new version
@@ -781,5 +781,129 @@ if (!$query->execute()) {
   } else {
     echo "Failed to duplicate code examples";
   }
+}
+
+**********************************************************
+* Testing case 3 (Duplicate boxes for each code example) *
+**********************************************************
+
+foreach ($codeexamplelist as $key => $value) {
+  $query = $pdo->prepare("SELECT * FROM box WHERE exampleid=:exampleid;");
+  $query->bindParam(':exampleid', $key);
+
+  if (!$query->execute()) {
+    die("Error: Unable to execute query.");
+  }
+
+  $boxes = $query->fetchAll(PDO::FETCH_ASSOC);
+
+  foreach ($boxes as $box) {
+    $newQuery = $pdo->prepare("INSERT INTO box (exampleid, title, description, code) VALUES (:exampleid, :title, :description, :code);");
+    $newQuery->bindParam(':exampleid', $value['id']);
+    $newQuery->bindParam(':title', $box['title']);
+    $newQuery->bindParam(':description', $box['description']);
+    $newQuery->bindParam(':code', $box['code']);
+
+    if (!$newQuery->execute()) {
+      die("Error: Unable to execute query.");
+    }
+  }
+}
+
+**********************************************************
+* Testing case 4 (Duplicating improws for a new example) *
+**********************************************************
+
+// Prepare test data
+$key = 1; // old example ID
+$value = 2; // new example ID
+
+
+// Duplicate improws for each code example
+$pruery = $pdo->prepare("SELECT * FROM improw WHERE exampleid=:oldexampleid;");
+$pruery->bindParam(':oldexampleid', $key);
+if (!$pruery->execute()) {
+    $error = $pruery->errorInfo();
+    $allOperationsSucceeded = false;
+    $debug .= "Error finding improws\n".$error[2];
+}
+foreach ($pruery->fetchAll(PDO::FETCH_ASSOC) as $improwz) {
+    if ($pruery->rowCount() > 0) {
+        $qruery = $pdo->prepare("INSERT INTO improw (boxid,exampleid,istart,iend,irowdesc,updated,uid) SELECT boxid,:newexampleid as exampleid,istart,iend,irowdesc,updated,uid FROM improw WHERE exampleid=:oldexampleid and impid=:oldimpid and boxid=:oldboxid;");
+        $qruery->bindParam(':oldboxid', $improwz["boxid"]);
+        $qruery->bindParam(':oldimpid', $improwz["impid"]);
+        $qruery->bindParam(':oldexampleid', $key);
+        $qruery->bindParam(':newexampleid', $value);
+        if (!$qruery->execute()) {
+            $error = $qruery->errorInfo();
+            $allOperationsSucceeded = false;
+            $debug .= "Error duplicating improws\n".$error[2];
+        }
+    }
+}
+
+************************************************************************************************
+Make duplicate of impwordlist for current code example and bind to the new copy (Line 324)
+************************************************************************************************
+
+The bindParam() method is then used to bind the value of a variable named $key to the named parameter :oldexampleid.
+This is done to prevent SQL injection attacks and to ensure that the query is executed safely.
+
+If the query fails to execute, an error message is appended to a variable named $debug and the boolean variable $allOperationsSucceeded is set to false.
+
+After the query is executed successfully, the results are retrieved using the fetchAll() method of the PDOStatement object and stored in an array named $impwordz.
+
+A foreach loop is then used to iterate over each row of the result set. If the result set contains any rows, a new query is executed to insert data into the same table impwordlist.
+This query uses a subquery in the SELECT clause to retrieve data from the same table where the value of exampleid and wordid match the values of :oldexampleid and $impwordz["wordid"], respectively.
+
+The values of :oldexampleid, $impwordz["wordid"], and $value are bound to named parameters in the query using the bindParam() method. If the query fails to execute, an error message is appended to the $debug variable and the $allOperationsSucceeded variable is set to false.
+
+The purpose of this code appears to be to duplicate certain rows of data from the impwordlist table and insert them with a new value for exampleid.
+
+
+Test case: (unit test function that simulates the behavior of the code and checks if the expected output is generated)
+
+function testImpwordList() {
+    // create a PDO object to connect to the database
+    $dsn = 'mysql:host=localhost;dbname=mydatabase';
+    $username = 'myusername';
+    $password = 'mypassword';
+    $pdo = new PDO($dsn, $username, $password);
+
+
+// prepare the query
+    $key = 1;
+    $value = 2;
+    $zruery = $pdo->prepare("SELECT * FROM impwordlist WHERE exampleid=:oldexampleid;");
+    $zruery->bindParam(':oldexampleid', $key);
+
+// execute the query and check for errors
+    $allOperationsSucceeded = true;
+    $debug = "";
+    if(!$zruery->execute()) {
+        $error=$zruery->errorInfo();
+        $allOperationsSucceeded = false;
+        $debug.="Error finding impwords\n".$error[2];
+    }
+
+// fetch all the rows and duplicate them
+    foreach ($zruery->fetchAll(PDO::FETCH_ASSOC) as $impwordz) {
+        if ($zruery->rowCount() > 0){
+            $zzqruery = $pdo->prepare("INSERT INTO impwordlist (exampleid,word,label,updated,uid) SELECT :newexampleid as exampleid,word,label,updated,uid FROM impwordlist WHERE exampleid=:oldexampleid and wordid=:oldwordid;");
+            $zzqruery->bindParam(':oldwordid', $impwordz["wordid"]);
+            $zzqruery->bindParam(':oldexampleid', $key);
+            $zzqruery->bindParam(':newexampleid', $value);
+
+            // execute the query and check for errors
+            if(!$zzqruery->execute()) {
+                $error=$zzqruery->errorInfo();
+                $allOperationsSucceeded = false;
+                $debug.="Error duplicating impwords: ".$error[2];
+            }
+        }
+    }
+
+// check if all operations succeeded
+    $this->assertTrue($allOperationsSucceeded, $debug);
 }
 
