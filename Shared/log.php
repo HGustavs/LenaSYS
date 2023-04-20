@@ -146,7 +146,7 @@
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 $array = (array) $resultSet;
-                print_r($array);
+                print_r($resultSet);
                 $array2 = array(
                     0 => $resultSet,
                     1 => "b",
