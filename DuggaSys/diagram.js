@@ -8911,7 +8911,7 @@ function drawElement(element, ghosted = false)
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path 
-            d="M${(linew)+(cornerRadius)},${(linew)}
+            d="M${linew+cornerRadius},${(linew)}
                 h${(boxw - (linew * 2))-30}
                 a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
                 v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-(cornerRadius)}
