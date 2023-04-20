@@ -15,6 +15,7 @@ pdoConnect();
 	<title>Profile</title>
 
 	<link id="themeBlack" type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 	<script src="darkmodeToggle.js"></script>
