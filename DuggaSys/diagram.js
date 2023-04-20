@@ -7382,13 +7382,28 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 newLine.cardinality = cardinal;
             }
         }
-
+        preProcessLine(newLine);
         addObjectToLines(newLine, stateMachineShouldSave);
         if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
         return newLine;
         
     } else {
         displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
+    }
+}
+/**
+ * @description Allows the line to be processed and edited just before it is created
+ * @param {object} line Line to process
+ */
+function preProcessLine(line) {
+    var felem, telem;
+
+    felem = data[findIndex(data, line.fromID)];
+    telem = data[findIndex(data, line.toID)];
+
+    //Sets the endIcon of the to-be-created line, if it an State entity
+    if ((felem.type === 'SD') && (telem.type === 'SD')) {
+        line.endIcon = "ARROW";
     }
 }
 //#endregion =====================================================================================
@@ -7556,6 +7571,9 @@ function drawLine(line, targetGhost = false)
     //gives the lines the correct type based on the from and to element.
     if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
+        if (targetGhost) {
+            line.endIcon = "ARROW";
+        }
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
