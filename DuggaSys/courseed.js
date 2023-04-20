@@ -98,13 +98,11 @@ function fetchGitHubRepo(gitHubURL)
 			type: "POST",
 			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
 			success: function(response) { 
-				console.log(response)
+				console.log(response);
 			},
 			error: function(data){
-				console.log(data)
 				switch(data.status){
 					case 422:
-						console.log("hallå")
 						alert(data.responseJSON.message);
 						break;
 					case 503:
