@@ -145,6 +145,9 @@
                 }
                 
                 $sql = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
+                $result = mysqli_query($log_db, $sql);
+                $log_entries = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                print_r($log_entries);
                 $array2 = array(
                     0 => "a",
                     1 => "b",
