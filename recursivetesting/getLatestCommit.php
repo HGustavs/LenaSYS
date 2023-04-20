@@ -31,13 +31,17 @@
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			print_r($row['cid']);
+		}
+
 		// $print = $query->fetch();
 		
 		// $query = fetch_assoc($query);
 		// $a=    $query;  
 		// echo   $a['cid'];
-		$result = $query->fetch(PDO::FETCH_ASSOC);
-		print_r($result['cid']);
+		// $result = $query->fetch(PDO::FETCH_ASSOC);
+		
 
 		// print_r($query);
 		// print_r($githubURL);
