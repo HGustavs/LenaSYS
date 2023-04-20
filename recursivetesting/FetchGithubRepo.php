@@ -83,6 +83,7 @@
     function insertToFileLink($cid, $item) {
         global $pdo;
         $fileText = $item['name']; 
+        $filePath = $item['path']; 
         $filesize = $item['size']; // Size
         $kindid = 3; // The kind(course local/version local/global), 3 = course local
 
@@ -95,9 +96,10 @@
         
         // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
         if ($norows == 0) {      
-            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
+            $query = $pdo->prepare("INSERT INTO fileLink(filename, path, kind,cid,filesize) VALUES(:filename, :filePath, :kindid,:cid,:filesize)");
             $query->bindParam(':cid', $cid);
             $query->bindParam(':filename', $fileText);
+            $query->bindParam(':filePath', $filePath);
             $query->bindParam(':filesize', $filesize);
             $query->bindParam(':kindid', $kindid);
             // Runs SQL query and runs general error handling if it fails.

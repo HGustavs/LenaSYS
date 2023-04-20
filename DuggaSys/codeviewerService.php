@@ -525,23 +525,33 @@
 			$filename=$row['filename'];
 			$content="";
 
-			$ruery = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+			$ruery = $pdo->prepare("SELECT filename,path,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 			$ruery->bindParam(':cid', $courseId);
 			$ruery->bindParam(':fname', $filename);
 			$sesult = $ruery->execute();
 			if($sow = $ruery->fetch(PDO::FETCH_ASSOC)){
 					$filekind=$sow['kind'];
 					$filename = $sow['filename'];
+					$path = $sow['path'];
 
 					if($filekind==2){
 						// Global
 						$file = "../courses/global/".$filename;
 					}else if($filekind==3){
 						// Course Local
-						$file = "../courses/".$courseId."/".$filename;
+						// TODO/WANT TODO new issue where we dont use filename but filepath, will reqire that path is placed in table filelink
+						// Or use a mix of both
+						// This would allow us to use folders and map structure inside of folder in coures. 
+						// Pretty please 
+
+						if ($path == null)
+							$file = "../courses/".$courseId."/".$filename;
+						else 
+							$file = "../courses/".$courseId."/Github/".$path;
+
 					}else if($filekind==4){
 						// Local
-						$file = "../courses/".$courseId."/".$courseVersion."/".$filename;
+						$file = "../courses/".$courseId."/".$courseVersion."/".$path;
 					}else{
 						$file = "UNK";
 					}
