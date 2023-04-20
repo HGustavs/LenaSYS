@@ -57,8 +57,23 @@
 // Present data  <-- Presents the information from each db table 
 //---------------------------------------------------------------------------------------------------
 
-                if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
-                    // gathers information from database table userHistory
+            // Code used to sort tables.
+            // Default values are time in descending order.
+            if(isset($_GET['order'])){
+                $order = $_GET['order'];
+            }
+            else{
+                $order = 'timestamp';
+            }
+            if(isset($_GET['sort'])){
+                $sort = $_GET['sort'];
+            }
+            else{
+                $sort = 'DESC';
+            }
+            
+            // Gathers information from database table userHistory
+            if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                     echo "<table style='width:100%'>";
                         echo '<tr>';
                             echo '<th> id </th>';
@@ -78,9 +93,9 @@
                     }  
                     echo "</table>";
                 }
-                    
+                
+                // Gathers information from database table exampleLoadLogEntries
                 if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
-                    // gathers information from database table exampleLoadLogEntries
                     echo "<table style='width:100%'>";
                         echo '<tr>';
                             echo '<th> id </th>';
@@ -105,8 +120,8 @@
                     echo "</table>";
                 }
 
+            // Gathers information from database table userHistory
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
-                // gathers information from database table userHistory
                 echo "<table style='width:100%'>";
                     echo '<tr>';
                         echo '<th> refer </th>';
@@ -129,18 +144,7 @@
                 echo "</table>";
             }
 
-            if(isset($_GET['order'])){
-                $order = $_GET['order'];
-            }
-            else{
-                $order = 'timestamp';
-            }
-            if(isset($_GET['sort'])){
-                $sort = $_GET['sort'];
-            }
-            else{
-                $sort = 'DESC';
-            }
+            // Gathers information from database table userLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
@@ -173,36 +177,11 @@
                 /*print "<pre>";
                 print_r($userLogEntriesResults);
                 print "</pre>";
-                *//*
-                // gathers information from database table userLogEntries
-                echo "<table style='width:100%'>";
-                    echo '<tr>';
-                        echo '<th> id </th>';
-                        echo '<th> uid </th>';
-                        echo '<th> username </th>';
-                        echo '<th> eventType </th>';
-                        echo '<th> description </th>';
-                        echo '<th> timestamp </th>';
-                        echo '<th> userAgent </th>';
-                        echo '<th> remoteAddress </th>';
-                    echo '<tr>';
-                foreach($log_db->query('SELECT * FROM userLogEntries ORDER BY timestamp DESC;') as $row) {
-                    echo '<tr>';
-                        echo '<td>'.$row["id"].'</td>';
-                        echo '<td>'.$row["uid"].'</td>';
-                        echo '<td>'.$row["username"].'</td>';
-                        echo '<td>'.$row["eventType"].'</td>';
-                        echo '<td>'.$row["description"].'</td>';
-                        echo '<td>'.$row["timestamp"].'</td>';
-                        echo '<td>'.$row["userAgent"].'</td>';
-                        echo '<td>'.$row["remoteAddress"].'</td>';
-                    echo '</tr>';
-                }  
-                echo "</table>";*/
+                */
             }
 
+            // Gathers information from database table serviceLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
-                // collects information from database table serviceLogEntries
                 echo "<table style='width:100%'>";
                     echo '<tr>';
                         echo '<th> id </th>';
@@ -239,8 +218,8 @@
                 echo "</table>";
             }
             
+            // Gathers information from database table duggaLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
-                // collects information from database table duggaLoadLogEntries
                 echo "<table style='width:100%'>";
                     echo '<tr>';
                         echo '<th> id </th>';
