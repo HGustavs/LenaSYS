@@ -145,6 +145,7 @@
                 }
                 
                 $sql = $log_db->query('SELECT * FROM userLogEntries;'); // ORDER BY $order $sort
+                $results = $sql->fetchAll(PDO::FETCH_ASSOC);
                 print_r($sql);
                 $array2 = array(
                     0 => "a",
