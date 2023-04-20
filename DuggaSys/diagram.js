@@ -8935,7 +8935,7 @@ function drawElement(element, ghosted = false)
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes[i]}</text>`;
             }
            
-
+            str += `</svg>`;
             //end of svg for background
             
             // Draw SD-content if there are no attributes.
@@ -8946,7 +8946,7 @@ function drawElement(element, ghosted = false)
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
-            
+            str += `</svg>`;
         }
         str += `</div>`;
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
@@ -8957,10 +8957,10 @@ function drawElement(element, ghosted = false)
             for (var i = 0; i < elemFunc; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>exit:${element.functions[i]}</text>`;
             }
-          
+            str += `</svg>`;
         }
         //end of div for SD content
-        str += `</svg>`;
+        
         str += `</div>`;
     }
 
