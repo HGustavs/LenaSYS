@@ -18,6 +18,8 @@
     }
     #set_to_default_button{
         display: block;
+        margin-top: 2vh;
+        margin-bottom: 2vh;
     }
     </style>    
 </head>
