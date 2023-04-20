@@ -8919,8 +8919,8 @@ function drawElement(element, ghosted = false)
         //finally, close the path
         str += `<path 
             d="M${(linew)},${(linew)}
-                h${(boxw - (linew * 2))-20}
-                a20,20 0 0 1 20,20
+                h${(boxw - (linew * 2))-15}
+                a15,15 0 0 1 15,15
                 v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-5}
                 h${(boxw - (linew * 2))*-1}
                 z
