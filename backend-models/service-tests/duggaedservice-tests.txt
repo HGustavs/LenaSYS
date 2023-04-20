@@ -9,11 +9,11 @@ duggaedservice.php
 * pre-req:
 ********* 
 
-{ (checklogin) IS TRUE && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
+    { (checklogin) IS TRUE && 
+    (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
-*checking current number of quizzes, and save qid. 	
-SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes, save it to a variable 
+*checking current number of quizzes 	
+    SQL-query: SELECT count(id) FROM quiz;      // counts the number of quizzes, save it to $preCount 
 
 *******
 * send parameters inputs to duggaedservice.php 
@@ -31,21 +31,22 @@ send
 *****
 * Get newly creaded Assignment ID, repet the SQL-query
 *****
-SQL-query: SELECT MAX(id) FROM quiz;     // save to variable $id this value will identify the last assignment that was created (it has the highest ID number)
-SQL-query: SELECT count(id) FROM quiz;   // save answare to a variable 
+    
+    SQL-query: SELECT MAX(id) FROM quiz;     // save to variable $id this value will identify the last assignment that was created (it has the highest ID number)
+    SQL-query: SELECT count(id) FROM quiz;   // save answare to a variable $postCount 
 
 *****
 * compare results
 *****
 
-count + 1 = passed
-no change = failed  
+    if preCount = postCount: failed
+    if preCount - postCount = 1: passed  
 
 *****
 * remove inserted row from DB, using qid 
 *****
 
-SQL-query: DELETE FROM quiz WHERE id = $id;
+    SQL-query: DELETE FROM quiz WHERE id = $id;
 
 
 
@@ -58,8 +59,8 @@ SQL-query: DELETE FROM quiz WHERE id = $id;
 * pre-req:
 *****
 
-{ (checklogin) IS TRUE && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
+    { (checklogin) IS TRUE && 
+    (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 Create an assignment, and save information on all attribute in an array  
 
@@ -82,12 +83,12 @@ $pre-Values = { null,
                 0 }; 
 
 
-SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
-VALUES ($pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10], $pre-Values[11] );
+SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+            VALUES ($pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10], $pre-Values[11] );
 
 // finally get the created Assignments id, save it in $pre-Values[0].
 
-SQL-Query: SELECT MAX(id) FROM quiz; 
+    SQL-Query: SELECT MAX(id) FROM quiz; 
 
 *****
 * Update information on an assignment
@@ -111,19 +112,19 @@ send
 * compare results
 *****
 
-if $pre-Values[4] = $name: failed
-if $pre-Values[2] = $autograde: failed
-if $pre-Values[3] = $gradesys: failed
-if $pre-Values[5] = $template: failed
-if $pre-Values[10] = $jsondeadline: failed
-if $pre-Values[11] = $groupAssignment: failed 
-else passed
+    if $pre-Values[4] = $name: failed
+    if $pre-Values[2] = $autograde: failed  
+    if $pre-Values[3] = $gradesys: failed
+    if $pre-Values[5] = $template: failed
+    if $pre-Values[10] = $jsondeadline: failed
+    if $pre-Values[11] = $groupAssignment: failed 
+    else passed
 
 *****
 * remove inserted row from DB, using qid 
 *****
 
-SQL-query: DELETE FROM quiz WHERE id = id; // id is one of the value previously saved. 
+    SQL-query: DELETE FROM quiz WHERE id = id; // id is one of the value previously saved. 
 
 
 
@@ -136,8 +137,8 @@ Delete an Assignment (line 95):
 * pre-req:
 ****
 
-{ (checklogin) IS TRUE && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
+    { (checklogin) IS TRUE && 
+    (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 Create an assignment
 
@@ -159,15 +160,15 @@ $pre-Values = { 1885,
                 0 }; 
 
 
-SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
-VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
+SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+            VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
 
 *****
 * checking current number of quizzes, and save qid. 	
 *****
 
-SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes save this value to $preCount
-SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
+    SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes save this value to $preCount
+    SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
 
 *****
 * Update information on an assignment
@@ -184,16 +185,17 @@ send
 * repet the SQL-query
 *****
 
-SQL-query: SELECT count(id) FROM quiz; 	// save the value in $postCount 
+    SQL-query: SELECT count(id) FROM quiz; 	// save the value in $postCount 
 
 *****
 * compare results
 *****
 
-if $preCount = postCount: failed 
-if $preCount - $postCount = 1: passed 
+    if $preCount = postCount: failed 
+    if $preCount - $postCount = 1: passed 
 
-
+// ALL THE INSERTS WILL HAVE TO BE DELETED.
+// That means that if the test failed, then this test needs to go in and delete the inserts we made
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -203,8 +205,8 @@ Add Variant (contents of quiz) (line 110):
 * pre-req:
 *****
 
-{ (checklogin) IS TRUE && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
+    { (checklogin) IS TRUE && 
+    (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 
 ///////
@@ -225,15 +227,15 @@ $pre-Values = { 1885,
                 0 }; 
 
 
-SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
-VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
+SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+            VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
 
 *****
 * Get the id for the created quiz. Then get the current number of variants. 	
 *****
 
-SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
-SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value in variable $preCount
+    SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
+    SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value in variable $preCount
 
 *****
 * Add a new variant
@@ -255,20 +257,20 @@ send
 * repet the SQL-query
 *****
 
-SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value in $postCount
+    SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value in $postCount
 
 *****
 * compare results
 *****
 
-if $preCount = $postCount: failed
-if $postCount - $preCount = 1: passed
+    if $preCount = $postCount: failed
+    if $postCount - $preCount = 1: passed
 
 *****
 * remove inserted row from DB, using qid 
 *****
 
-SQL-query: DELETE FROM quiz WHERE quizID = $id 
+    SQL-query: DELETE FROM quiz WHERE quizID = $id 
 
 
 
@@ -281,8 +283,8 @@ SQL-query: DELETE FROM quiz WHERE quizID = $id
 * pre-req:
 *****
 
-{ (checklogin) IS TRUE && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
+    { (checklogin) IS TRUE && 
+    (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 Create a quiz then Create a variant with the same ID, all attribute are to be saved in an array, they will  be compared after an update   
 
@@ -303,12 +305,12 @@ $preValuesQuiz = {  1885,
                     "{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
                     0 }; 
 
-SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
-VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10] );
+SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+            VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10] );
 
 check the highest quiz ID
-SQL-query: SELECT MAX(id) FROM quiz;      // Gets the newest addition to the table quiz, will be the $quizID for the the tables variant(highest id = last added), 
-                                            it will be used as ID when we identify and delete the data from the database.
+    SQL-query: SELECT MAX(id) FROM quiz;      // Gets the newest addition to the table quiz, will be the $quizID for the the tables variant(highest id = last added), 
+                                                it will be used as ID when we identify and delete the data from the database.
 
 
 $preValuesVariant = {   $quizID,
@@ -317,11 +319,12 @@ $preValuesVariant = {   $quizID,
                         '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;md&quot;,&quot;gType&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;Empty canvas&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
                         "some text" };
 
-SQL-Query: INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (preValuesVariant[0], preValuesVariant[1], preValuesVariant[2], preValuesVariant[3], preValuesVariant[4]);
+SQL-Query:  INSERT INTO variant(quizID,creator,disabled,param,variantanswer) 
+            VALUES (preValuesVariant[0], preValuesVariant[1], preValuesVariant[2], preValuesVariant[3], preValuesVariant[4]);
 
 Get the ID of the newly added variant, and save it in $variantID
 
-SQL-Query: SELECT MAX(quizID) FROM variant;
+    SQL-Query: SELECT MAX(quizID) FROM variant;
 
 *****
 * Update information on an assignment
@@ -341,18 +344,18 @@ send
 * compare results
 *****
 
-if $preValuesVariant[2] = $preValuesQuiz[2]: failed
-if $preValuesVariant[3] = $preValuesQuiz[3]: failed
-if $preValuesVariant[4] = $preValuesQuiz[4]: failed
-else : passed 
-
- 
+    if $preValuesVariant[2] = $preValuesQuiz[2]: failed
+    if $preValuesVariant[3] = $preValuesQuiz[3]: failed
+    if $preValuesVariant[4] = $preValuesQuiz[4]: failed
+    else : passed 
 
 *****
 * remove inserted row from table quiz DB, using quizID. This will delete both table entries (variant and quiz)
 *****
 
-SQL-query: DELETE FROM quiz WHERE id = $quizID;  
+    SQL-query: DELETE FROM quiz WHERE id = $quizID;  
+
+
 
 
 
@@ -363,8 +366,8 @@ Delete variant and useranswer? (line 134)
 * pre-req:
 *****
 
-{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
-$opt = DELVARI
+    { (checklogin)  IS TRUE
+    && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’ IS TRUE
 
 
 *****
@@ -386,53 +389,59 @@ $preValuesQuiz = {  1885,
                     "{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
                     0 }; 
 
-SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
-VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10] );
+SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+            VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10] );
 
-select MAX(id) from quiz; // will be saved to $id
+// Get the id for the created quiz 
+    SQL-Query: select MAX(id) from quiz; // will be saved to $id
 
 // Below is to make insert into listentries
 
-$preValuesListentries = {  1885, 
-                    "Inserttobedeleted",
-                    "UNK",
-                    4,
-                    12,
-                    2,
-                    1,
-                    1337,
-                    5019,
-                    1,
-                    1,
-                    0, 
-                    "UNK" }; 
+$preValuesListentries = {   1885, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
 
-SQL-query: INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10],$preValuesQuiz[11],$preValuesQuiz[12],$preValuesQuiz[13] );
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10],$preValuesQuiz[11],$preValuesQuiz[12]);
 
-select MAX(moment) from listentries; // will be saved to $moment
+
+// Get the id for moment the created listentie 
+    SQL-query: select MAX(moment) from listentries;     // will be saved to $moment
+
 
 // Below is to make insert into variant
-
 $preValuesVariant = {   $id,
                         2,
                         0,
                         '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;md&quot;,&quot;gType&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;Empty canvas&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
                         "some text" };
 
-SQL-Query: INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (preValuesVariant[0], preValuesVariant[1], preValuesVariant[2], preValuesVariant[3], preValuesVariant[4]);
+SQL-Query:  INSERT INTO variant(quizID,creator,disabled,param,variantanswer) 
+            VALUES (preValuesVariant[0], preValuesVariant[1], preValuesVariant[2], preValuesVariant[3], preValuesVariant[4]);
 
-select MAX(vid) from variant; //will be saved to $variant.
+
+// Get the id for the created variant
+    SQL-query: select MAX(vid) from variant;    //will be saved to $variant.
 
 // Below is to make insert into userAnswer
+$preValuesuserAnswer = {    1885, 
+                            $moment,
+                            $id,
+                            $variant }; 
 
-$preValuesuserAnswer = { 1885 , 
-                    $moment,
-                    $id,
-                    $variant }; 
 
-SQL-query: INSERT INTO userAnswer(cid,moment,quiz,variant) 
-VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4] );
+SQL-query:  INSERT INTO userAnswer(cid,moment,quiz,variant) 
+            VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4] );
 
 
 
@@ -440,29 +449,37 @@ VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[
 * checking current number of quizzes, and save the count. 	
 *****
 
-SQL-query: SELECT count(variant) FROM userAnswer; // counts the number of userAnswer save this value for later
-SQL-query: SELECT count(vid) FROM variant; // counts the number of variants save this value for later
+    SQL-query: SELECT count(variant) FROM userAnswer;    // save the value in variable preCountUserAnsware
+    SQL-query: SELECT count(vid) FROM variant;           // save the value in variable preCountVariant
 
 *****
 * Delete variant, userAnswer, listentries, quiz.
 * send parameters inputs to duggaedservice.php 
 *****
 
-$opt = DELVARI
-$vid = the value 
+send
+{
+    $opt = "DELVARI";
+    $vid = $variant; 
+}
 
 *****
 * repeat the SQL-query
 *****
 
-SQL-query: SELECT count(variant) FROM userAnswer; // save the value in a different variable 
-SQL-query: SELECT count(vid) FROM quiz; 	// save the value in a different variable 
+    SQL-query: SELECT count(variant) FROM userAnswer;   // save the value in variable postCountUserAnsware
+    SQL-query: SELECT count(vid) FROM variant; 	        // save the value in variable postCountVariant 
 
 *****
 * compare results
 *****
 
-count - 1 = passed // for both selected counts, needs to be checked for both tables. 
-no change = failed  
+    if preCountUserAnsware = postCountUserAnsware: failed
+    if postCountUserAnsware - preCountUserAnsware = 1: passed
 
-// ALL THE INSERTS WILL HAVE TO BE DELETED. the inserts made to do the test needs to be deleted probably. 
+    if preCountVariant = postCountVariant: failed
+    if postCountVariant - preCountVariant = 1: passed
+
+
+// ALL THE INSERTS WILL HAVE TO BE DELETED.
+// That means that if the test failed, then this test needs to go in and delete the inserts we made
