@@ -30,3 +30,6 @@ Compare the values.
 TEST#2
 saveDuggaTest(254-312)
 Test to ensure a student can save a dugga (NOT A TEACHER)
+Login to LenaSYS, either start a new dugga or update with hash.
+Make an sql query that either updates userAnswer with the values or insert a whole new table into userAnswer.
+The test will pass if both of these actions can be done
