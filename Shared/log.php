@@ -255,30 +255,37 @@
 
             // Gathers information from database table duggaLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
-                echo "<table style='width:100%'>";
-                    echo '<tr>';
-                        echo '<th> id </th>';
-                        echo '<th> type </th>';
-                        echo '<th> cid </th>';
-                        echo '<th> uid </th>';
-                        echo '<th> username </th>';
-                        echo '<th> vers </th>';
-                        echo '<th> quizid </th>';
-                        echo '<th> timestamp </th>';
-                    echo '<tr>';
-                    foreach($log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY timestamp DESC;') as $row) {
-                        echo '<tr>';
-                            echo '<td>'.$row["id"].'</td>';
-                            echo '<td>'.$row["type"].'</td>';
-                            echo '<td>'.$row["cid"].'</td>';
-                            echo '<td>'.$row["uid"].'</td>';
-                            echo '<td>'.$row["username"].'</td>';
-                            echo '<td>'.$row["vers"].'</td>';
-                            echo '<td>'.$row["quizid"].'</td>';
-                            echo '<td>'.$row["timestamp"].'</td>';
-                        echo '</tr>';
+                $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$order.' '.$sort.';');
+                $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                echo"
+                <table border='1'>
+                    <tr>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
+                        <th><a href='log.php?order=cid&&sort=$sort'>cid</a></th>
+                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
+                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='log.php?order=vers&&sort=$sort'>vers</a></th>
+                        <th><a href='log.php?order=quizid&&sort=$sort'>quizid</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                    </tr>
+                ";
+                foreach($duggaLoadLogEntriesResults as $rows) {
+                    echo"<tr>";
+                    foreach($rows as $row) {
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
-                echo "</table>";
+                    echo"</tr>";
+                }
+                echo"
+                </table>
+                ";
+                /*print "<pre>";
+                print_r($duggaLoadLogEntriesResults);
+                print "</pre>";*/
             }
         ?>    
     </body>
