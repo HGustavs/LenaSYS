@@ -8944,7 +8944,7 @@ function drawElement(element, ghosted = false)
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}' >`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:</text>`;
+            str += `<text x='5' y='${hboxh + boxh * 2}' dominant-baseline='middle' text-anchor='right'>do:</text>`;
             
             //end of svg for background
             str += `</svg>`;
