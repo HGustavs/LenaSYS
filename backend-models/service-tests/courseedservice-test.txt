@@ -77,6 +77,56 @@ else{
 	}
 }
 
+
+************************************************************************
+* Testing case 1 (User is not logged in and tries to add a new course) *
+************************************************************************
+
+// Arrange
+$userid = null;
+$coursecode = "CS101";
+$coursename = "Introduction to Computer Science";
+$courseGitURL = "https://github.com/cs101";
+
+// Act
+$result = addNewCourse($userid, $coursecode, $coursename, $courseGitURL);
+
+// Assert
+Assert::assertFalse($result);
+
+***************************************************************************************
+* Testing case 2 (User is logged in as a regular user and tries to add a new course.) *
+***************************************************************************************
+
+// Arrange
+$userid = 123;
+$coursecode = "CS101";
+$coursename = "Introduction to Computer Science";
+$courseGitURL = "https://github.com/cs101";
+
+// Act
+$result = addNewCourse($userid, $coursecode, $coursename, $courseGitURL);
+
+// Assert
+Assert::assertFalse($result);
+
+*****************************************************************************************
+* Testing case 3 (User is logged in as a superuser and adds a new course successfully.) *
+*****************************************************************************************
+
+// Arrange
+$userid = 456;
+$coursecode = "CS101";
+$coursename = "Introduction to Computer Science";
+$courseGitURL = "https://github.com/cs101";
+
+// Act
+$result = addNewCourse($userid, $coursecode, $coursename, $courseGitURL);
+
+// Assert
+Assert::assertTrue($result);
+
+
 ========================================================================
 ========================================================================
 ===                           New version                            ===
@@ -98,7 +148,7 @@ $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename
 values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
 
 *********
-* bind paramters:
+* bind parameters:
 ********* 
 
 $query->bindParam(':cid', $cid);
@@ -153,13 +203,212 @@ if(!$query->execute()) {
 $description=$cid." ".$versid;
 logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 
+
+*******************************************
+* Testing case 1 ( User is not logged in) *
+*******************************************
+
+// Set up
+$userid = null;
+$startdate = "2023-04-20";
+$enddate = "2023-05-20";
+$makeactive = 3;
+
+// Execute
+$result = executeScript($userid, $startdate, $enddate, $makeactive);
+
+// Verify
+assert($result == "User is not logged in.");
+
+*********************************************************
+* Testing case 2 ( User is logged in as a regular user) *
+*********************************************************
+
+// Set up
+$userid = 123;
+$startdate = "2023-04-20";
+$enddate = "2023-05-20";
+$makeactive = 3;
+
+// Execute
+$result = executeScript($userid, $startdate, $enddate, $makeactive);
+
+// Verify
+assert($result == "User is not authorized to perform this action.");
+
+****************************************************************************************
+* Testing case 3 (User is logged in as a superuser, and all input variables are valid) *
+****************************************************************************************
+
+// Set up
+$userid = 456;
+$startdate = "2023-04-20";
+$enddate = "2023-05-20";
+$makeactive = 3;
+
+// Execute
+$result = executeScript($userid, $startdate, $enddate, $makeactive);
+
+// Verify
+assert($result == "New course version created successfully.");
+// Also verify that the course version was inserted into the database correctly
+
+*************************************************************************************
+* Testing case 4 (User is logged in as a superuser, but the query fails to execute) *
+*************************************************************************************
+
+// Set up
+$userid = 456;
+$startdate = "2023-04-20";
+$enddate = "2023-05-20";
+$makeactive = 3;
+
+// Inject an error into the script
+$pdo = new PDO("sqlite::memory:");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo->exec("CREATE TABLE vers(cid INT, coursecode TEXT, vers INT, versname TEXT, coursename TEXT, coursenamealt TEXT, startdate DATE, enddate DATE, motd TEXT)");
+$pdo->exec("INSERT INTO vers(cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd) VALUES (1, 'ABC123', 1, 'Version 
+
+
 ========================================================================
 ========================================================================
 ===                         Update version                           ===
 ========================================================================
 ========================================================================
 
+*********
+* pre-req:
+********* 
 
+if(checklogin()){
+	$isSuperUserVar=isSuperUser($userid);
+
+	$ha = $isSuperUserVar;
+
+	if($ha){
+
+$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+
+*********
+* bind parameters:
+********* 
+
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':vers', $versid);
+$query->bindParam(':versname', $versname);
+
+*******
+* show error if we can't update entries
+******
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error updating entries\n".$error[2];
+}
+
+
+*******
+* Make active version
+******
+
+if($makeactive==3){
+	$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $versid);
+
+
+***************************************
+* Testing case 1 (User not logged in) *
+***************************************
+
+$_SESSION['loggedin'] = false;
+$_SESSION['userid'] = null;
+
+$courseid = 1;
+$coursecode = 'COMP101';
+$versid = 2;
+$versname = 'Version 2';
+$makeactive = 3;
+
+// Assert that version was not updated
+$query = $pdo->prepare("SELECT versname FROM vers WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':vers', $versid);
+$query->execute();
+$vers = $query->fetchColumn();
+assert($vers === 'Version 1');
+
+**********************************************************************************
+* Testing case 2 (User is a superuser and all necessary parameters are provided) *
+**********************************************************************************
+
+$_SESSION['loggedin'] = true;
+$_SESSION['userid'] = 123;
+function isSuperUser($userid) { return true; }
+
+$courseid = 1;
+$coursecode = 'COMP101';
+$versid = 2;
+$versname = 'Version 2';
+$makeactive = 3;
+
+// Assert that version was updated
+$query = $pdo->prepare("SELECT versname FROM vers WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':vers', $versid);
+$query->execute();
+$vers = $query->fetchColumn();
+assert($vers === 'Version 2');
+
+*****************************************************************************
+* Testing case 3 (User is a superuser and an invalid parameter is provided) *
+*****************************************************************************
+
+$_SESSION['loggedin'] = true;
+$_SESSION['userid'] = 123;
+function isSuperUser($userid) { return true; }
+
+$courseid = 1;
+$coursecode = 'COMP101';
+$versid = 2;
+$versname = '';
+$makeactive = 3;
+
+include 'update_version.php';
+
+// Assert that version was not updated and error message was displayed
+$query = $pdo->prepare("SELECT versname FROM vers WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':vers', $versid);
+$query->execute();
+$vers = $query->fetchColumn();
+assert($vers === 'Version 2');
+assert(strpos($debug, 'Error updating entries') !== false);
+
+*****************************************************************************
+* Testing case 4 (User is a superuser and makeactive parameter is set to 3) *
+*****************************************************************************
+
+$_SESSION['loggedin'] = true;
+$_SESSION['userid'] = 123;
+function isSuperUser($userid) { return true; }
+
+$courseid = 1;
+$coursecode = 'COMP101';
+$versid = 2;
+$versname = 'Version 3';
+$makeactive = 3;
+
+// Assert that version was updated and made active
+$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
+$query->bindParam(':cid', $courseid);
+$query->execute();
+$activeversion = $query->fetchColumn();
+assert($activeversion === '2');
 
 ========================================================================
 ========================================================================
@@ -167,6 +416,144 @@ logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 ========================================================================
 ========================================================================
 
+*********
+* pre-req:
+********* 
+
+if(checklogin()){
+	$isSuperUserVar=isSuperUser($userid);
+
+	$ha = $isSuperUserVar;
+
+	if($ha){
+
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+
+*********
+* bind parameters:
+********* 
+
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':vers', $versid);
+
+*******
+* show error if we can't update entries
+******
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error updating entries\n".$error[2];
+}
+
+**************************************************************************
+* Testing case 1 (Test that the function checklogin() returns a boolean) *
+**************************************************************************
+
+public function testCheckLoginReturnsBoolean() {
+    $result = checklogin();
+    $this->assertIsBool($result);
+}
+
+**********************************************************************************
+* Testing case 2 (Test that the function isSuperUser($userid) returns a boolean) *
+**********************************************************************************
+
+public function testIsSuperUserReturnsBoolean() {
+    $userid = 123; // replace with a valid user ID
+    $result = isSuperUser($userid);
+    $this->assertIsBool($result);
+}
+
+************************************************************************************************************
+* Testing case 3 (Test that the function isSuperUser($userid) returns true when the user is a super user.) *
+************************************************************************************************************
+
+public function testIsSuperUserReturnsTrueForSuperUser() {
+    $userid = 123; // replace with a valid super user ID
+    $result = isSuperUser($userid);
+    $this->assertTrue($result);
+}
+
+*****************************************************************************************************************
+* Testing case 4 (Test that the function isSuperUser($userid) returns false when the user is not a super user.) *
+*****************************************************************************************************************
+
+public function testIsSuperUserReturnsFalseForNonSuperUser() {
+    $userid = 456; // replace with a valid non-super user ID
+    $result = isSuperUser($userid);
+    $this->assertFalse($result);
+}
+
+
+******************************************************************************************************************
+* Testing case 5 (Test that the query statement is correctly prepared with the expected table and column names.) *
+******************************************************************************************************************
+
+public function testQueryStatementIsCorrectlyPrepared() {
+    $pdo = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
+    $courseid = 789; // replace with a valid course ID
+    $versid = 2; // replace with a valid version ID
+    $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+    $this->assertEquals("UPDATE course SET activeversion=:vers WHERE cid=:cid", $query->queryString);
+}
+
+
+********************************************************************************************************
+* Testing case 6 (Test that the query statement is correctly binding the "cid" and "vers" parameters.) *
+********************************************************************************************************
+
+public function testQueryStatementIsCorrectlyBindingParameters() {
+    $pdo = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
+    $courseid = 789; // replace with a valid course ID
+    $versid = 2; // replace with a valid version ID
+    $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+    $query->bindParam(':cid', $courseid);
+    $query->bindParam(':vers', $versid);
+    $this->assertTrue($query->execute());
+}
+
+*************************************************************************************************************************************
+* Testing case 7 (Test that the query executes successfully and updates the course's active version when the user is a super user.) *
+*************************************************************************************************************************************
+
+public function testQueryExecutesSuccessfullyForSuperUser() {
+    $pdo = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
+    $courseid = 789; // replace with a valid course ID
+    $versid = 2; // replace with a valid version ID
+    $userid = 123; // replace with a valid super user ID
+    $isSuperUserVar = isSuperUser($userid);
+    if ($isSuperUserVar) {
+        $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+        $query->bindParam(':cid', $courseid);
+        $query->bindParam(':vers', $versid);
+        $this->assertTrue($query->execute());
+    } else {
+        $this->markTestSkipped('Test skipped because user is not a super user');
+    }
+}
+
+************************************************************************************************************************
+* Testing case 8 (Test that an error message is generated when the query fails to update the course's active version.) *
+************************************************************************************************************************
+
+public function testQueryFailsToUpdateActiveVersion() {
+    $pdo = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
+    $courseid = 789; // replace with a valid course ID
+    $versid = 2; // replace with a valid version ID
+    $userid = 123; // replace with a valid super user ID
+    $isSuperUserVar = isSuperUser($userid);
+    if ($isSuperUserVar) {
+        $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+        $query->bindParam(':cid', $courseid);
+        $query->bindParam(':vers', $versid);
+        $this->assertFalse($query->execute());
+        $error = $query->errorInfo();
+        $debug = "Error updating entries\n" . $error[2];
+        $this->assertNotEmpty($debug);
+    } else {
+        $this->markTestSkipped('Test skipped because user is not a super user');
+    }
+}
 
 ========================================================================
 ========================================================================
@@ -175,8 +562,161 @@ logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 ========================================================================
 
 
-========================================================================
-========================================================================
-===                         Update version                           ===
-========================================================================
-========================================================================
+*********
+* pre-req:
+********* 
+
+if(checklogin()){
+	$isSuperUserVar=isSuperUser($userid);
+
+	$ha = $isSuperUserVar;
+
+	if($ha){
+
+$allOperationsSucceeded = true;
+try{
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$pdo->beginTransaction();
+
+$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd)
+values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
+
+*********
+* bind parameters:
+********* 
+
+$query->bindParam(':cid', $cid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':vers', $versid);
+$query->bindParam(':versname', $versname);
+$query->bindParam(':coursename', $coursename);
+$query->bindParam(':coursenamealt', $coursenamealt);
+$query->bindParam(':motd', $motd);
+
+
+*********
+* insert null in db if start/end-values are null:
+*********
+
+if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+	else $query->bindParam(':startdate', $startdate);
+if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+    else $query->bindParam(':enddate', $enddate);
+
+
+*******
+* show error if we can't update entries
+******
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error updating entries\n".$error[2];
+}
+
+*******
+* Logging for creating a copy of course version
+******
+
+$description=$cid." ".$versid;
+logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
+
+*******
+* Duplicate duggas and dugga variants
+******
+
+$duggalist=array();
+$query = $pdo->prepare("SELECT * from quiz WHERE cid=:cid AND vers = :oldvers;");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':oldvers', $copycourse);
+
+*******
+* show error if we can't read quiz
+******
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading quiz\n".$error[2];
+}
+
+*******
+* if we don't get error reading quiz, try to copy
+******
+
+foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,relativedeadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,qrelease,relativedeadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
+$ruery->bindParam(':oldid', $row['id']);
+$ruery->bindParam(':newvers', $versid);
+
+*******
+* show error if we can't copy
+******
+
+if(!$ruery->execute()) {
+	$error=$ruery->errorInfo();
+	$allOperationsSucceeded = false;
+	$debug.="Error copying quiz entry\n".$error[2];
+
+*******
+* if we don't get any errors, copy
+******
+else{
+	$duggalist[$row['id']]=$pdo->lastInsertId();
+}
+
+*******
+* try checking variant
+******
+
+foreach($duggalist as $key => $value){
+	$buery = $pdo->prepare("SELECT * from variant WHERE quizID=:quizid;");
+	$buery->bindParam(':quizid', $key);
+
+	
+*******
+* Error reading variants
+******
+
+	if(!$buery->execute()) {
+		$error=$buery->errorInfo();
+		$allOperationsSucceeded = false;
+		$debug="Error reading variants: ".$error[2];
+	}else{
+
+*******
+* try updating entry
+******
+
+	foreach($buery->fetchAll(PDO::FETCH_ASSOC) as $rowz){
+		$ruery = $pdo->prepare("INSERT INTO variant (quizID,param,variantanswer,modified,creator,disabled) SELECT :newquizid as quizID,param,variantanswer,modified,creator,disabled FROM variant WHERE vid = :oldvid;");
+		$ruery->bindParam(':oldvid', $rowz["vid"]);
+		$ruery->bindParam(':newquizid', $value);
+
+*******
+* Error updating entry
+******
+			if(!$ruery->execute()) {
+				$error=$ruery->errorInfo();
+				$allOperationsSucceeded = false;
+				$debug.="Error updating entry\n".$error[2];
+			}
+	}
+}
+
+*******
+* Duplicate codeexamples and it's components box, improws, impwordlist
+******
+
+$codeexamplelist=array();
+$query = $pdo->prepare("SELECT * from codeexample WHERE cid=:cid AND cversion = :oldvers;");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':oldvers', $copycourse);
+
+*******
+* Error reading codeexample
+******
+				if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$allOperationsSucceeded = false;
+						$debug="Error reading codeexample: ".$error[2];
+
+
