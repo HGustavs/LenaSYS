@@ -2,8 +2,9 @@
 duggaedservice.php
 
 ---------------------------------------------------------------------------------------------------------------------
-Create an assignment (line 57):
+- Create an assignment (line 57):
 ---------------------------------------------------------------------------------------------------------------------
+
 *********
 * pre-req:
 ********* 
@@ -30,7 +31,7 @@ send
 *****
 * Get newly creaded Assignment ID, repet the SQL-query
 *****
-SQL-query: SELECT MAX(id) FROM quiz;     // this value will identify the last assignment that was created (it has the highest ID number)
+SQL-query: SELECT MAX(id) FROM quiz;     // save to variable $id this value will identify the last assignment that was created (it has the highest ID number)
 SQL-query: SELECT count(id) FROM quiz;   // save answare to a variable 
 
 *****
@@ -44,13 +45,15 @@ no change = failed
 * remove inserted row from DB, using qid 
 *****
 
-SQL-query: DELETE FROM quiz WHERE id = qid; // qid here is the value previously saved. 
+SQL-query: DELETE FROM quiz WHERE id = $id;
+
 
 
 
 -------------------------------------------------------------------------------------------------------------------------
-Update an Assignment (line 68):
+- Update an Assignment (line 68):
 -------------------------------------------------------------------------------------------------------------------------
+
 *****
 * pre-req:
 *****
@@ -66,7 +69,8 @@ Create an assignment, and save information on all attribute in an array
 / pre-req variables
 //////
 
-$pre-Values = { 1885, 
+$pre-Values = { null,
+                1885, 
                 0,
                 1,
                 "AutomaticTest",
@@ -76,21 +80,16 @@ $pre-Values = { 1885,
                 2,
                 "1337",
                 "2023-04-17",
-                "{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
+                "{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
                 0 }; 
 
 
 SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
-VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
+VALUES ($pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10], $pre-Values[11] );
 
+// finally get the created Assignments id, save it in $pre-Values[0]
 
-*****
-* This will get the information that you need.
-*****
-
-// these two querys are te be used in tandum, it retrives a singel rows compleat information of the last added assignment 
-SQL-query: SELECT @cid:= MAX(id) FROM quiz;
-SQL-query: SELECT * FROM quiz WHERE id = @cid; 
+SQL-Query: SELECT MAX(id) FROM quiz; 
 
 *****
 * Update information on an assignment
@@ -100,7 +99,12 @@ SQL-query: SELECT * FROM quiz WHERE id = @cid;
 send
 {
     $opt = "SAVDUGGA";
-    $qid = // the value “id” that was saved;  
+    $qid = $pre-Values[0];
+    $name = "UpdatedAutomaticTest";
+    $autograde = 1;
+    $gradesys = 2;
+    $template = "dugga1";
+
 }
 
 *****
@@ -144,7 +148,7 @@ $pre-Values = { 1885,
                 2,
                 "1337",
                 "2023-04-17",
-                "{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
+                "{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
                 0 }; 
 
 
@@ -264,7 +268,7 @@ $preValuesQuiz = {  1885,
                     2,
                     "1337",
                     "2023-04-17",
-                    "{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
+                    "{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
                     0 }; 
 
 SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
