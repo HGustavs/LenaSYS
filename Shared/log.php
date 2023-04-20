@@ -150,9 +150,7 @@
                 //$array = mysqli_fetch_assoc($resultSet);
                 //$array = mysqli_fetch_array($resultSet);  
                 $userinfo = array();
-                while ($row_user = mysql_fetch_assoc($resultSet)){
-                    $userinfo[] = $row_user;
-                }
+                
                 print_r($userinfo);
                 $array2 = array(
                     0 => $array["id"],
