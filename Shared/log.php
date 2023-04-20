@@ -71,18 +71,14 @@
                         echo '</option>';
                     }
                 echo '</select>';
-                ?>
-                <script type="text/javascript">
-                    window.onbeforeunload = function() {
-                        return "Are you sure you want to leave?";
-                    }
-                </script>
-                <?php  
 
 
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
 //---------------------------------------------------------------------------------------------------
+
+                isset($order) ? $order : "";
+                isset($sort) ? $sort : "";
 
             // Set to default button
             echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
