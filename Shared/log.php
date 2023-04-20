@@ -24,10 +24,17 @@
     }
     th{
         background-color: #432a5a;
-        color: white;
     }
     th a{
+        color: white;
         text-decoration: none;
+    }
+    table tr:nth-child(even){
+        background-color: #f2f2f2;
+    }
+
+    table tr:hover {
+        background-color: #ddd;
     }
     </style>
 </head>
