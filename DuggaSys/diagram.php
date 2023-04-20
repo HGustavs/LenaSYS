@@ -512,11 +512,11 @@
         </fieldset>
         <fieldset>
             <legend>Testcase</legend>
-            <div id="testCaseGeneration" class="diagramIcons" onclick=""> <!--add func here later-->
+            <div id="testCaseToggle" class="diagramIcons" onclick="toggleTestCase()"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
-                <span class="toolTipText"><b>Generate test-cases from state diagram</b><br>
-                    <p>Click to generate test-cases</p><br>
-                    <p id="tooltip-GEN_TEST_CASES" class="key_tooltip">Keybinding:</p>
+                <span class="toolTipText"><b>Toggle test-cases</b><br>
+                    <p>Click to toggle test-cases in options</p><br>
+                    <p id="tooltip-TOGGLE_TEST_CASE" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset> 
