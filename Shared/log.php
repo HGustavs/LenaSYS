@@ -98,7 +98,38 @@
                 
                 // Gathers information from database table exampleLoadLogEntries
                 if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
-                    echo "<table style='width:100%'>";
+                    $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
+                    $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                    $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                    echo"
+                    <table border='1'>
+                        <tr>
+                            <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                            <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
+                            <th><a href='log.php?order=courseid&&sort=$sort'>courseid</a></th>
+                            <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
+                            <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                            <th><a href='log.php?order=exampleid&&sort=$sort'>exampleid</a></th>
+                            <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                        </tr>
+                    ";
+                    foreach($exampleLoadLogEntriesResults as $rows) {
+                        echo"<tr>";
+                        foreach($rows as $row) {
+                            echo"
+                                <td>".$row."</td>
+                            ";
+                        }
+                        echo"</tr>";
+                    }
+                    echo"
+                    </table>
+                    ";
+                    /*print "<pre>";
+                    print_r($userHistoryResults);
+                    print "</pre>";*/
+
+                    /*echo "<table style='width:100%'>";
                         echo '<tr>';
                             echo '<th> id </th>';
                             echo '<th> type </th>';
@@ -119,7 +150,7 @@
                             echo '<td>'.$row["timestamp"].'</td>';
                         echo '</tr>';
                     }  
-                    echo "</table>";
+                    echo "</table>";*/
                 }
 
             // Gathers information from database table userHistory
