@@ -21,7 +21,10 @@
         margin-top: 2vh;
         margin-bottom: 2vh;
     }
-    </style>    
+    th a{
+        color: black;
+    }
+    </style>
 </head>
     <body>
         <?php
