@@ -3964,22 +3964,45 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
- * @description hides or shows the diagram type dropdown 
+ * @description prints out info about state diagrams
  */
-function generateOutput()
+function printStateDiagram()
 {
+    var lineCounter=0;
+    var elementCounter=0;
+    //had to make a separate loop to count the lines otherwise if it is put in the other loop the counter behaves in a strange way. 
+    for(var i=0; i<lines.length; i++)
+    {
+        if(lines[i].type==entityType.SD)
+    lineCounter++; 
+    }
     for (var i=0; i<data.length; i++)
     {
+        if(data[i].kind==elementTypesNames.SDState)
+        elementCounter++;
         for(var j=0; j<lines.length; j++)
         {    
 if(data[i].kind==elementTypesNames.SDState)
 {
+    //checks weather the connection that goes from a line is the same as the element ID. 
     if(data[i].id==lines[j].fromID)
-    alert("output: "+lines[i].fromID);
+    {
+    console.log("line goes from "+ data[i].name)
+    }
+    //checks weather the connection that goes to a line is the same as the element ID. 
+    else if(data[i].id==lines[j].toID)
+    {
+        console.log("line goes to "+ data[i].name)
+    }
     }
 }
-    }
+    }alert("line counter is "+lineCounter+"and state counter is"+elementCounter);
+    
 }
+/**
+ * @description hides or shows the diagram type dropdown 
+ */
+
 function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
