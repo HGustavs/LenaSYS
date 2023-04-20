@@ -8918,9 +8918,9 @@ function drawElement(element, ghosted = false)
         //then make a horizontal line that is the negative width
         //finally, close the path
         str += `<path 
-            d="M${linew},${(linew)}
-                h${(boxw - (linew * 2))-5}
-                A 5 5 0 0 1 5,5
+            d="M${(linew)},${(linew)}
+                h${(boxw - (linew * 2))-20}
+                a20,20 0 0 1 20,20
                 v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-5}
                 h${(boxw - (linew * 2))*-1}
                 z
