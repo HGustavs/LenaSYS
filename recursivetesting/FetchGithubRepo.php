@@ -31,10 +31,13 @@
 
 <body>
     <?php
-    include_once "../Shared/sessions.php";
-    session_start();
 
-    pdoConnect(); // Connect to database and start session
+    // include_once "../Shared/sessions.php";
+    // include_once "../Shared/basic.php";    
+    // session_start();
+
+    // pdoConnect(); // Connect to database and start session
+
     
     //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
     if(isset($_POST['action'])) 
@@ -77,36 +80,67 @@
     
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
 
+
+    include_once "../Shared/sessions.php";
+    include_once "../Shared/basic.php";    
+    session_start();
+    pdoConnect(); // Connect to database and start session
     
+    $fileNames = array("App_Demo.html", "App_Demo_SearchResource.html", "App_Demo_StoreCustomer.html");
+    $cid = 1; // 1 för webbprogramering     TODO Make a query to the cources data base and get the cid for the cource, based on the name of the cource 
+    // $fileText = "App_Demo.html";  // File name
+    $filesize = 24602; // $item['size']; // Size
+    $kindid = 3; // The visuability for the file, and where it is located, eventiuall this will be used to reference the folder in cources  
+                          
+    foreach ($fileNames as $fileText) {
+        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;"); 
+        // bind query results into local vars.
+        $query->bindParam(':filename', $fileText);
+        $query->bindParam(':cid', $cid);
+        $query->execute();
+        $norows = $query->fetchColumn();
+        // $filesize = filesize($movname);
+
+        // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
+        if ($norows == 0) {      
+            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
+            $query->bindParam(':cid', $cid);
+            $query->bindParam(':filename', $fileText);
+            $query->bindParam(':filesize', $filesize);
+            $query->bindParam(':kindid', $kindid);
+            // Runs SQL query and runs general error handling if it fails.
+            if (!$query->execute()) {
+                $error = $query->errorInfo();
+                echo "Error updating file entries" . $error[2];
+                $errortype ="uploadfile";
+                $errorvar = $error[2];
+                print_r($error);
+                echo $errorvar;
+            } 
+        }
+    }
     // Added for tesing ebuging 
     $translatedURL = 'https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/Examples/App_Demo';
     $repository = 'Webbprogrammering-Examples';
 
-    $_POST['metaData'] = array();
-    array_push($_POST['metaData'],"Hej");
-    array_push($_POST['metaData'],"Hej igen");
-
-    print_r($_POST['metaData']); 
-
-
-
     // $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
     bfs($translatedURL, $repository);
     // ----------------------------------
-
+    
     function bfs($url, $repository)
     {
         $visited = array();
         $fifoQueue = array();
         // If the directory doesn't exist, make it
         if(!file_exists('../../LenaSYS/courses/' . $repository . '')) {
-	        if(!mkdir('../../LenaSYS/courses/' . $repository . '')){
+            if(!mkdir('../../LenaSYS/courses/' . $repository . '')){
 		        echo "Error creating folder: $repository";
 		        die;
 	        }
         }
         array_push($fifoQueue, $url);
-        $pdo = new PDO('sqlite:../../githubMetadata/metadata2.db');
+        $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
@@ -143,31 +177,21 @@
                         if ($item['type'] == 'file') {
                             // Retrieves the contents of each individual file based on the fetched "download_url"
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = '../../LenaSYS/courses/'.  $repository . '/' . $item['path'];
+                            $path = '../../LenaSYS/courses/'.  1 . '/' . $item['name'];
                             echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                             // Creates the directory for each individual file based on the fetched "path"
-                            if (!file_exists((dirname($path)))) {
-                                mkdir(dirname($path), 0777, true);
-                            } 
-                            
-                            
-                            // $cid = 1; // 1 för webbprogramering
-                            // $fileText = "Bing bong"; // File name
-                            // $filesize = 69;
-                            // $kindid = 3;
-                            
-                            // $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
-                            
-                            // $query->bindParam(':cid', $cid);
-                            // $query->bindParam(':filename', $fileText);
-                            // $query->bindParam(':filesize', $filesize);
-                            // $query->bindParam(':kindid', $kindid);
-                            
+                            // if (!file_exists((dirname($path)))) {
+                            //     mkdir(dirname($path), 0777, true);
+                            // } 
                             
                             // Writes the file to the respective folder. 
                             file_put_contents($path, $fileContents);
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                             echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
+
+                    
+                            
+
                             // Checks if the fetched item is of type 'dir'
                         } else if ($item['type'] == 'dir') {
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
@@ -177,7 +201,7 @@
                                 array_push($fifoQueue, $item['url']);
                             }
                         }
-                        $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                        $query = $pdoLite->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
                         $query->bindParam(':repoName', $item['name']);
                         $query->bindParam(':repoURL', $item['repoURL']);
                         $query->bindParam(':repoFileType', $item['type']);
