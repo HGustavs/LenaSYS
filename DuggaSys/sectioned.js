@@ -519,11 +519,14 @@ function confirmBox(operation, item = null) {
   }else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
-  }
-  
-  else if (operation == "openGitHubBox") {
-    console.log("testworkornah?");
+  }else if (operation == "openGitHubBox") {
+    console.log("testworkornah2?");
     $("#gitHubBox").css("display", "flex");
+  }
+  //ändra 
+  else if (operation == "openGitHubTemplate") {
+    console.log("testworkornah?");
+    $("#gitHubTemplate").css("display", "flex");
 
 
   } else if (operation == "closeConfirmBox") {
@@ -533,6 +536,7 @@ function confirmBox(operation, item = null) {
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
     $("#sectionShowConfirmBox").css("display", "none");
+    $("#gitHubTemplate").css("display", "none");
   }
   else if (operation == "showItems"&& !hideItemList.length == 0) {
     showMarkedItems(hideItemList);
@@ -1644,7 +1648,7 @@ function returnedSection(data) {
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
           str += "</td>";
         }
 
