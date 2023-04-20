@@ -1558,6 +1558,15 @@ function returnedSection(data) {
           }
         }
 
+        // Refresh button for moments
+        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;'>`;
+          str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
+                  id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+          str += " onclick='refreshCodeExample("+item['link']+")'"
+          str += "</td>";
+        }
+
         // Refresh button
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;'>`;
