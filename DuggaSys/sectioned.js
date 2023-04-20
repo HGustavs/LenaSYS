@@ -3603,3 +3603,49 @@ function showFeedbackquestion(){
     $("#inputwrapper-FeedbackQuestion").css("display","none");
   }
 }
+
+
+function changetemplate(templateno) 
+{
+    $(".tmpl").each(function (index) {
+      $(this).css("background", "#ccc");
+    });
+
+    document.getElementById("templat" + templateno).style.backgroundColor = "#fc4";
+    document.getElementById("templateno").value = templateno;
+
+    var templateOptions = document.getElementById('templateOptions');
+    var boxes;
+    switch (templateno) {
+      case '1':
+        boxes = 2;
+        break;
+      case '2':
+        boxes = 2;
+        break;
+      case '3':
+        boxes = 3;
+        break;
+      case '4':
+        boxes = 3;
+        break;
+      case '5':
+        boxes = 4;
+        break;
+      case '6':
+        boxes = 4;
+        break;
+      case '7':
+        boxes = 4;
+        break;
+      case '8':
+        boxes = 3;
+        break;
+      case '9':
+        boxes = 5;
+        break;
+      case '10':
+        boxes = 1;
+        break;
+    }
+}
