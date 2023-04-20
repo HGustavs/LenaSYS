@@ -6593,7 +6593,7 @@ function generateContextProperties()
                         }
                     });
                     str += `</select></label>`;
-                    str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+                    str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..." onkeyup="this.value=this.value.replace(/</g,'&lt;').replace(/>/g,'&gt;')"`;
                     if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
                     str += `/>`;
                 }
@@ -6601,7 +6601,7 @@ function generateContextProperties()
         }
         if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
-            str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+            str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..." onkeyup="this.value=this.value.replace(/</g,'&lt;').replace(/>/g,'&gt;')"`;
             if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
             str += `/>`;
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`;
