@@ -4231,6 +4231,7 @@ function toggleErTable()
 {
     if(erTableToggle == false){
         erTableToggle = true;
+        testCaseToggle = false;
     }
     else if (erTableToggle == true){
         erTableToggle = false;
@@ -4246,6 +4247,7 @@ function toggleTestCase()
 {
     if (testCaseToggle == false) {
         testCaseToggle = true;
+        erTableToggle = false;
     }
     else if (testCaseToggle == true) {
         testCaseToggle = false;
@@ -6148,7 +6150,7 @@ function generateContextProperties()
     }
     //If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     else if (testCaseToggle) {
-        str += '<div id="Testcase"';
+        str += '<div id="ERTable"'; //using same styling for now, maybe change later
         // Here is the place to add the contect of the generated text-cases
         str += '</div>';
     }
