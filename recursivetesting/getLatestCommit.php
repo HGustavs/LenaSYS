@@ -27,7 +27,7 @@
 
 	function getCourseID($githubURL) {
 		global $pdo;
-		$query = $pdo->query('SELECT cid FROM course WHERE courseGitURL = :githubURL');
+		$query = $pdo->prepare('SELECT cid FROM course WHERE courseGitURL = :githubURL;');
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 		
