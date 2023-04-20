@@ -9,8 +9,8 @@ duggaedservice.php
 * pre-req:
 ********* 
 
-{ (checklogin = true) && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
+{ (checklogin) IS TRUE && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 *checking current number of quizzes, and save qid. 	
 SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes, save it to a variable 
@@ -58,8 +58,8 @@ SQL-query: DELETE FROM quiz WHERE id = $id;
 * pre-req:
 *****
 
-{ (checklogin = true) && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true } 
+{ (checklogin) IS TRUE && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 Create an assignment, and save information on all attribute in an array  
 
@@ -125,15 +125,19 @@ else passed
 
 SQL-query: DELETE FROM quiz WHERE id = id; // id is one of the value previously saved. 
 
+
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------
 Delete an Assignment (line 95):
 -------------------------------------------------------------------------------------------------------------------------------------------------
+
 *****
 * pre-req:
 ****
 
-{ (checklogin = true) && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
+{ (checklogin) IS TRUE && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 Create an assignment
 
@@ -162,8 +166,8 @@ VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Val
 * checking current number of quizzes, and save qid. 	
 *****
 
-SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes save this value
-SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved, it will be used as ID when we identify and delete the data from the database.
+SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes save this value to $preCount
+SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
 
 *****
 * Update information on an assignment
@@ -173,21 +177,21 @@ SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved, it will b
 send
 {
     $opt = "DELDU";
-    $qid = // the saved ID value;
+    $qid = $id;
 }
 
 *****
 * repet the SQL-query
 *****
 
-SQL-query: SELECT count(id) FROM quiz; 	// save the value in a different variable 
+SQL-query: SELECT count(id) FROM quiz; 	// save the value in $postCount 
 
 *****
 * compare results
 *****
 
-count - 1 = passed
-no change = failed  
+if $preCount = postCount: failed 
+if $preCount - $postCount = 1: passed 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 Add Variant (contents of quiz) (line 110):
@@ -196,8 +200,8 @@ Add Variant (contents of quiz) (line 110):
 * pre-req:
 *****
 
-{ (checklogin = true) && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
+{ (checklogin) IS TRUE && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 *****
 * checking current number of quizzes, and save vid. 	
@@ -252,8 +256,8 @@ SQL-query: DELETE FROM variant WHERE quizID = $quizID; // quizID is the same as 
 * pre-req:
 *****
 
-{ (checklogin = true) && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
+{ (checklogin) IS TRUE && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 Create a quiz then Create a variant with the same ID, all attribute are to be saved in an array, they will  be compared after an update   
 
@@ -335,8 +339,8 @@ Delete variant and useranswer? (line 134)
 * pre-req:
 *****
 
-{ (checklogin = true) && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
+{ (checklogin) IS TRUE && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
 *****
 * checking current number of quizzes, and save vid. 	
