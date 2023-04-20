@@ -12,6 +12,44 @@
 
 <html>
 <head>
+
+<script>
+function searchTable() {
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementsByTagName("table")[0];
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        for (j = 0; j < tr[i].cells.length; j++) {
+            td = tr[i].cells[j];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+}
+
+function filterTable() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementsByTagName("table")[0].innerHTML = this.responseText;
+        }
+    };
+    var filter = document.getElementById("searchInput").value;
+    var table = document.getElementById("tableID").value;
+    xmlhttp.open("GET", "log.php?table=" + table + "&filter=" + filter, true);
+    xmlhttp.send();
+}
+</script>
+
     <style>
         table, th, td {
         border:1px solid black;
@@ -31,6 +69,10 @@
         <!----------------------------------------------------------------------------------->  
         <!------Creates a dropdown with all tables in the loglena database------------------->
         <!----------------------------------------------------------------------------------->
+
+        <input type="text" id="searchInput" placeholder="Search...">
+        <button type="button" onclick="searchTable()">Search</button>
+
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
                 date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
@@ -50,7 +92,32 @@
                             echo $row['name'];
                         echo '</option>';
                     }
-                echo '</select>';   
+                echo '</select>';
+
+                if (isset($_GET['table']) && isset($_GET['filter'])) {
+                    $table = $_GET['table'];
+                    $filter = $_GET['filter'];
+                    $query = "SELECT * FROM $table WHERE description LIKE '%$filter%'";
+                    $stmt = $log_db->prepare($query);
+                    $stmt->execute();
+                    $result = $stmt->fetchAll();
+                    echo "<tr>";
+                    echo "<th>id</th>";
+                    echo "<th>eventype</th>";
+                    echo "<th>description</th>";
+                    echo "<th>userAgent</th>";
+                    echo "<th>timestamp</th>";
+                    echo "</tr>";
+                    foreach ($result as $row) {
+                        echo "<tr>";
+                        echo "<td>".$row['id']."</td>";
+                        echo "<td>".$row['eventype']."</td>";
+                        echo "<td>".$row['description']."</td>";
+                        echo "<td>".$row['userAgent']."</td>";
+                        echo "<td>".$row['timestamp']."</td>";
+                        echo "</tr>";
+                    }
+                }
 
 
 //---------------------------------------------------------------------------------------------------
@@ -59,7 +126,7 @@
 
                 if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                     // gathers information from database table userHistory
-                    echo "<table style='width:100%'>";
+                    echo "<table id='tableID' style='width:100%'>";
                         
                     echo '<tr>';
                         echo '<th> id </th>';
@@ -83,7 +150,7 @@
                     
                 if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
                     // gathers information from database table exampleLoadLogEntries
-                    echo "<table style='width:100%'>";
+                    echo "<table id='tableID' style='width:100%'>";
                         
                     echo '<tr>';
                         echo '<th> id </th>';
@@ -111,7 +178,7 @@
         
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
                 // gathers information from database table userHistory
-                echo "<table style='width:100%'>";
+                echo "<table id='tableID' style='width:100%'>";
                     
                 echo '<tr>';
                     echo '<th> refer </th>';
@@ -137,7 +204,7 @@
 
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 // gathers information from database table userLogEntries
-                echo "<table style='width:100%'>";
+                echo "<table id='tableID' style='width:100%'>";
                     
                 echo '<tr>';
                     echo '<th> id </th>';
@@ -169,7 +236,7 @@
 
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
                 // collects information from database table serviceLogEntries
-                echo "<table style='width:100%'>";
+                echo "<table id='tableID' style='width:100%'>";
                     
                     echo '<tr>';
                         echo '<th> id </th>';
@@ -210,7 +277,7 @@
             
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
                 // collects information from database table duggaLoadLogEntries
-                echo "<table style='width:100%'>";
+                echo "<table id='tableID' style='width:100%'>";
 
                     echo '<tr>';
                         echo '<th> id </th>';
