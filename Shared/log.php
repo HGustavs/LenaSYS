@@ -75,61 +75,71 @@
                 $sort = 'DESC';
             }
             
-            // Gathers information from database table userHistory
+            // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
-                    echo "<table style='width:100%'>";
-                        echo '<tr>';
-                            echo '<th> id </th>';
-                            echo '<th> eventype </th>';
-                            echo '<th> description </th>';
-                            echo '<th> userAgent </th>';
-                            echo '<th> timestamp </th>';
-                        echo '<tr>';
-                    foreach($log_db->query('SELECT * FROM logEntries ORDER BY timestamp DESC;') as $row) {
-                        echo '<tr>';
-                            echo '<td>'.$row["id"].'</td>';
-                            echo '<td>'.$row["eventype"].'</td>';
-                            echo '<td>'.$row["description"].'</td>';
-                            echo '<td>'.$row["userAgent"].'</td>';
-                            echo '<td>'.$row["timestamp"].'</td>';
-                        echo '</tr>';
-                    }  
-                    echo "</table>";
-                }
-                
-                // Gathers information from database table exampleLoadLogEntries
-                if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
-                    $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
-                    $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                    $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                    echo"
-                    <table border='1'>
-                        <tr>
-                            <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
-                            <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
-                            <th><a href='log.php?order=courseid&&sort=$sort'>courseid</a></th>
-                            <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
-                            <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
-                            <th><a href='log.php?order=exampleid&&sort=$sort'>exampleid</a></th>
-                            <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
-                        </tr>
-                    ";
-                    foreach($exampleLoadLogEntriesResults as $rows) {
-                        echo"<tr>";
-                        foreach($rows as $row) {
-                            echo"
-                                <td>".$row."</td>
-                            ";
-                        }
-                        echo"</tr>";
+                $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
+                $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                echo"
+                <table border='1'>
+                    <tr>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=eventype&&sort=$sort'>eventype</a></th>
+                        <th><a href='log.php?order=description&&sort=$sort'>description</a></th>
+                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                    </tr>
+                ";
+                foreach($logEntriesResults as $rows) {
+                    echo"<tr>";
+                    foreach($rows as $row) {
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
-                    echo"
-                    </table>
-                    ";
-                    /*print "<pre>";
-                    print_r($userHistoryResults);
-                    print "</pre>";*/
+                    echo"</tr>";
                 }
+                echo"
+                </table>
+                ";
+                /*print "<pre>";
+                print_r($userHistoryResults);
+                print "</pre>";*/
+            }
+            
+            // Gathers information from database table exampleLoadLogEntries
+            if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
+                $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
+                $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                echo"
+                <table border='1'>
+                    <tr>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
+                        <th><a href='log.php?order=courseid&&sort=$sort'>courseid</a></th>
+                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
+                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='log.php?order=exampleid&&sort=$sort'>exampleid</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                    </tr>
+                ";
+                foreach($exampleLoadLogEntriesResults as $rows) {
+                    echo"<tr>";
+                    foreach($rows as $row) {
+                        echo"
+                            <td>".$row."</td>
+                        ";
+                    }
+                    echo"</tr>";
+                }
+                echo"
+                </table>
+                ";
+                /*print "<pre>";
+                print_r($userHistoryResults);
+                print "</pre>";*/
+            }
 
             // Gathers information from database table userHistory
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
