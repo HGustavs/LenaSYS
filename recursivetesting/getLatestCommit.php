@@ -32,7 +32,7 @@
 		$query->execute();
 
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			print_r($row);
+			echo $row['cid'];
 		}
 
 		// $print = $query->fetch();
