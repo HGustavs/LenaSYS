@@ -108,7 +108,7 @@
                 </table>
                 ";
                 /*print "<pre>";
-                print_r($userHistoryResults);
+                print_r($logEntriesResults);
                 print "</pre>";*/
             }
             
@@ -142,7 +142,7 @@
                 </table>
                 ";
                 /*print "<pre>";
-                print_r($userHistoryResults);
+                print_r($exampleLoadLogEntriesResults);
                 print "</pre>";*/
             }
 
@@ -216,7 +216,43 @@
 
             // Gathers information from database table serviceLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
-                echo "<table style='width:100%'>";
+                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$order.' '.$sort.';');
+                $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                echo"
+                <table border='1'>
+                    <tr>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=uuid&&sort=$sort'>uuid</a></th>
+                        <th><a href='log.php?order=eventType&&sort=$sort'>eventType</a></th>
+                        <th><a href='log.php?order=service&&sort=$sort'>service</a></th>
+                        <th><a href='log.php?order=userid&&sort=$sort'>userid</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
+                        <th><a href='log.php?order=operatingSystem&&sort=$sort'>operatingSystem</a></th>
+                        <th><a href='log.php?order=info&&sort=$sort'>info</a></th>
+                        <th><a href='log.php?order=referer&&sort=$sort'>referer</a></th>
+                        <th><a href='log.php?order=IP&&sort=$sort'>IP</a></th>
+                        <th><a href='log.php?order=browser&&sort=$sort'>browser</a></th>
+                    </tr>
+                ";
+                foreach($serviceLogEntriesResults as $rows) {
+                    echo"<tr>";
+                    foreach($rows as $row) {
+                        echo"
+                            <td>".$row."</td>
+                        ";
+                    }
+                    echo"</tr>";
+                }
+                echo"
+                </table>
+                ";
+                /*print "<pre>";
+                print_r($serviceLogEntriesResults);
+                print "</pre>";*/
+                
+                /*echo "<table style='width:100%'>";
                     echo '<tr>';
                         echo '<th> id </th>';
                         echo '<th> uuid </th>';
@@ -249,7 +285,7 @@
                             echo '<td>'.$row["browser"].'</td>';
                         echo '</tr>';
                     }  
-                echo "</table>";
+                echo "</table>";*/
             }
 
             // Gathers information from database table duggaLoadLogEntries
