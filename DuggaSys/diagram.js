@@ -6529,8 +6529,8 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            const attributes = element[property];
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${<div style='user-select:none'>do:</div>}</textarea>`;
+                            const attributes = str += `<div style= 'user-select: none'>do:</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${attributes + textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
                             break;
