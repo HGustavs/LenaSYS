@@ -8934,7 +8934,9 @@ function drawElement(element, ghosted = false)
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes[i]}</text>`;
             }
-           
+            if (elemFunc == 0) {
+                str += `<rect x='${linew}' y='${boxh / 2 + (boxh * elemAttri / 2) - linew}' width='${boxw - (linew * 2)}' height='${linew}' fill='${element.stroke}' />`;
+              }
             str += `</svg>`;
             //end of svg for background
             
@@ -8942,9 +8944,12 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
+            str += `<rect x='${linew}' y='${boxh / 2}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             str += `<text x='${xAnchor}' y='${hboxh + boxh * 0 / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:</text>`;
+            if (elemFunc == 0) {
+                str += `<rect x='${linew}' y='${boxh / 2 + (boxh * elemAttri / 2) - linew}' width='${boxw - (linew * 2)}' height='${linew}' fill='${element.stroke}' />`;
+              }
             
             //end of svg for background
             str += `</svg>`;
