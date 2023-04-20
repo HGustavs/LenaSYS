@@ -7577,7 +7577,7 @@ function drawLine(line, targetGhost = false)
     var felem, telem, dx, dy;
     var str = "";
 
-    var lengthConstant = 7; // Determines how "far inwards" on the element the line should have its origin and its end points.
+    var lengthConstant = 1; // Determines how "far inwards" on the element the line should have its origin and its end points.
     var x1Offset = 0;
     var x2Offset = 0;
     var y1Offset = 0;
