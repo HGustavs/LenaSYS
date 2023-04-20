@@ -6530,15 +6530,7 @@ function generateContextProperties()
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
                             const attributes = element[property];
-                            const nonEditablePart = "area: ";
-                            const editablePart = attributes.replace(nonEditablePart, "");
-                            const nonEditableDiv = document.createElement('div');
-                            nonEditableDiv.innerHTML = textboxFormatString(nonEditablePart);
-                            const editableDiv = document.createElement('div');
-                            editableDiv.setAttribute('contenteditable', 'false');
-                            editableDiv.innerHTML = textboxFormatString(editablePart);
-                            str += nonEditableDiv.outerHTML + editableDiv.outerHTML;
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${nonEditableDiv.outerHTML + editableDiv.outerHTML}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${<div style='user-select:none'>do:</div>}</textarea>`;
                             break;
                         default:
                             break;
