@@ -6,14 +6,13 @@
 	error_reporting(E_ALL);
 
 	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-	// if(isset($_POST['action'])) 
-	// {
-	// 	if($_POST['action'] == 'getCourseID') 
-	// 	{
-	// 		getCourseID($_POST['githubURL']);
-	// 	}
-	// };
-
+	if(isset($_POST['action'])) 
+	{
+		if($_POST['action'] == 'getCourseID') 
+		{
+			getCourseID($_POST['githubURL']);
+		}
+	};
 
 	// Include basic application services!
 	include_once "../Shared/basic.php";
@@ -23,7 +22,7 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/DiagrammingSYS");
+	//getCourseID("https://github.com/HGustavs/DiagrammingSYS");
 
 	function getCourseID($githubURL) {
 
@@ -42,11 +41,29 @@
 		// printing the result
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<td>".$row['cid']."</td>";
+			$cid = $row['cid'];
 		}
 		echo "</table>";
 
+		checkSQLite($cid, $githubURL);
 		// use the original url to get the latest commit
-		getCommit($githubURL);
+		//getCommit($githubURL);
+	}
+
+	function checkSQLite($cid, $githubURL) {
+		$query = $pdo->prepare("SELECT count(*) FROM latestCommit WHERE cid=:cid;"); 
+        // bind query results into local vars.
+        $query->bindParam(':cid', $cid);
+        $query->execute();
+        $norows = $query->fetchColumn();
+
+		if($norows == 0) {
+			//insert
+		}
+		else {
+			//get commit
+			//
+		}
 	}
 
 	// gets the latest commit from the url in the function above
