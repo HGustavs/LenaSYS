@@ -139,7 +139,7 @@
                 $sort = $_GET['sort'];
             }
             else{
-                $sort = 'ASC';
+                $sort = 'DESC';
             }
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
