@@ -8948,7 +8948,7 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             str += `</svg>`;
         }
-        str += `</div>`;
+        
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         if (elemFunc != 0) {
            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
@@ -8961,6 +8961,7 @@ function drawElement(element, ghosted = false)
         }
         //end of div for SD content
         str += `</svg>`;
+        str += `</div>`;
         str += `</div>`;
     }
 
