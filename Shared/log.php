@@ -154,14 +154,12 @@
                     $userinfo[] = $row_user;
                 }*/
                 while ($row = mysql_fetch_assoc($resultSet)) {
-                    echo $row["id"];
-                    echo $row["uid"];
+                    $array2 = array(
+                        0 => $row["id"],
+                        1 => "b",
+                    );
                 }
-                print_r($row);/*
-                $array2 = array(
-                    0 => $array["id"],
-                    1 => "b",
-                );*/
+                print_r($row);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
             
                 echo"
