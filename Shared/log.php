@@ -56,22 +56,16 @@
             date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
 
             echo 'Choose table: ';
-
             echo '<select onchange="submit();" name="name" >';
-
                 foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
-                
                     echo '<option value="'.$row['name'].'"';
                         if(isset($_POST['name'])){
                             if($_POST['name']==$row['name']) echo " selected ";
                         }
-                    echo '>';
-                    
-                        echo $row['name'];
-                    echo '</option>';
+                    echo '>'.$row['name'].'</option>';
+                    echo$row['name'];
                 }
             echo '</select>';
-
 
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
