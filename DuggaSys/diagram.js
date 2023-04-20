@@ -8918,7 +8918,7 @@ function drawElement(element, ghosted = false)
         //then make a horizontal line that is the negative width
         //finally, close the path
         str += `<path 
-            d="M${linew},${(linew)-5}
+            d="M${linew},${(linew)}
                 A 5 5 0 0 1 5,5
                 h${(boxw - (linew * 2))-5}
                 q5,5 5,0
