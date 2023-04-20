@@ -144,11 +144,8 @@
                 else{
                     $sort = 'ASC';
                 }*/
-                
-                $order = "id";
-                $sort = "ASC";
 
-                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY timestamp DESC;');
+                /*$userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY timestamp DESC;');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
@@ -179,7 +176,7 @@
                 print "<pre>";
                 print_r($userLogEntriesResults);
                 print "</pre>";
-                /*
+                */
                 // gathers information from database table userLogEntries
                 echo "<table style='width:100%'>";
                     echo '<tr>';
@@ -192,7 +189,7 @@
                         echo '<th> userAgent </th>';
                         echo '<th> remoteAddress </th>';
                     echo '<tr>';
-                foreach($log_db->query('SELECT * FROM userLogEntries;') as $row) {
+                foreach($log_db->query('SELECT * FROM userLogEntries ORDER BY timestamp DESC;') as $row) {
                     echo '<tr>';
                         echo '<td>'.$row["id"].'</td>';
                         echo '<td>'.$row["uid"].'</td>';
@@ -204,7 +201,7 @@
                         echo '<td>'.$row["remoteAddress"].'</td>';
                     echo '</tr>';
                 }  
-                echo "</table>";*/
+                echo "</table>";
             }
 
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
