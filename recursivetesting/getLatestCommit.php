@@ -8,13 +8,10 @@
 	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
 	if(isset($_POST['action'])) 
 	{
-
-		getCourseID($_POST['githubURL']);
-
-		/*if($_POST['action'] == 'getCourseID') 
+		if($_POST['action'] == 'getCourseID') 
 		{
-		
-		}*/
+			getCourseID($_POST['githubURL']);
+		}
 	};
 
 	function getCourseID($githubURL) {
