@@ -122,7 +122,38 @@
 
             // Gathers information from database table userHistory
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
-                echo "<table style='width:100%'>";
+                $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$order.' '.$sort.';');
+                $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+                echo"
+                <table border='1'>
+                    <tr>
+                        <th><a href='log.php?order=refer&&sort=$sort'>refer</a></th>
+                        <th><a href='log.php?order=userid&&sort=$sort'>userid</a></th>
+                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='log.php?order=IP&&sort=$sort'>IP</a></th>
+                        <th><a href='log.php?order=URLParams&&sort=$sort'>URLParams</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                    </tr>
+                ";
+                foreach($userHistoryResults as $rows) {
+                    echo"<tr>";
+                    foreach($rows as $row) {
+                        echo"
+                            <td>".$row."</td>
+                        ";
+                    }
+                    echo"</tr>";
+                }
+                echo"
+                </table>
+                ";
+                print "<pre>";
+                print_r($userHistoryResults);
+                print "</pre>";
+                
+
+                /*echo "<table style='width:100%'>";
                     echo '<tr>';
                         echo '<th> refer </th>';
                         echo '<th> userid </th>';
@@ -141,7 +172,7 @@
                         echo '<td>'.$row["timestamp"].'</td>';
                     echo '</tr>';
                 }  
-                echo "</table>";
+                echo "</table>";*/
             }
 
             // Gathers information from database table userLogEntries
@@ -217,7 +248,7 @@
                     }  
                 echo "</table>";
             }
-            
+
             // Gathers information from database table duggaLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
                 echo "<table style='width:100%'>";
