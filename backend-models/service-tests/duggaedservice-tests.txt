@@ -59,9 +59,7 @@ SQL-query: DELETE FROM quiz WHERE id = $id;
 *****
 
 { (checklogin = true) && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
-
-(is_null($qid)||strcmp($qid,"UNK")===0) = false 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true } 
 
 Create an assignment, and save information on all attribute in an array  
 
@@ -76,7 +74,7 @@ $pre-Values = { null,
                 "AutomaticTest",
                 "Quiz",
                 "2023-04-27 00:00:00",
-                "2023-04-28 00:00:00",
+                "2023-04-29 00:00:00",
                 2,
                 "1337",
                 "2023-04-17",
@@ -87,7 +85,7 @@ $pre-Values = { null,
 SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
 VALUES ($pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10], $pre-Values[11] );
 
-// finally get the created Assignments id, save it in $pre-Values[0]
+// finally get the created Assignments id, save it in $pre-Values[0].
 
 SQL-Query: SELECT MAX(id) FROM quiz; 
 
@@ -99,11 +97,13 @@ SQL-Query: SELECT MAX(id) FROM quiz;
 send
 {
     $opt = "SAVDUGGA";
-    $qid = $pre-Values[0];
+    $qid = $pre-Values[0];    
     $name = "UpdatedAutomaticTest";
     $autograde = 1;
     $gradesys = 2;
-    $template = "dugga1";
+    $template = "group-assignment";
+    $jsondeadline = '{&quot;deadline1&quot;:&quot;2023-04-28 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';,
+    $groupAssignment = 1; 
 
 }
 
@@ -111,10 +111,13 @@ send
 * compare results
 *****
 
-Are the values unchanged?
-yes = fail
-no = pass
-might be a good idea to check all values individually! 
+if $pre-Values[4] = $name: failed
+if $pre-Values[2] = $autograde: failed
+if $pre-Values[3] = $gradesys: failed
+if $pre-Values[5] = $template: failed
+if $pre-Values[10] = $jsondeadline: failed
+if $pre-Values[11] = $groupAssignment: failed 
+else passed
 
 *****
 * remove inserted row from DB, using qid 
