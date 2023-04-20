@@ -15,14 +15,14 @@
 	};
 
 	function getCourseID($githubURL) {
-		$query = $pdo->query('SELECT cid FROM course WHERE courseGitURL = :githubURL');
+		$querystring = 'SELECT cid FROM course WHERE courseGitURL = :githubURL';
+		$query  = $pdo->prepare($querystring);
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 		
 		print_r($query['cid']);
 
-		// getCommit($githubURL);
-		
+		getCommit($githubURL);
 	}
 
 	function getCommit($url) {
