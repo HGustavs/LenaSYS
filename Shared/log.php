@@ -16,6 +16,9 @@
         table, th, td {
         border:1px solid black;
     }
+    #set_to_default_button{
+        display: block;
+    }
     </style>    
 </head>
     <body>
@@ -58,7 +61,7 @@
 //---------------------------------------------------------------------------------------------------
 
             // Set to default button
-            echo "<a href='log.php?order=timestamp&&sort=DESC'>Set to default(timestamp, descending order)</a>";
+            echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
             
             // Code used to sort tables.
             // Default values are time in descending order.
