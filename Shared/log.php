@@ -146,7 +146,10 @@
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 $array = (array) $resultSet;
-                $array2 = [1,2];
+                $array2 = array(
+                    1 => "a",
+                    2 => "b",
+                );
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
             
                 echo"
