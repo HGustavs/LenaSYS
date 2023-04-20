@@ -135,7 +135,7 @@
                     $order = $_GET['order'];
                 }
                 else{
-                    $order = 'id';
+                    $order = 'timestamp';
                 }
                 if(isset($_GET['sort'])){
                     $sort = $_GET['sort'];
@@ -153,12 +153,12 @@
                     <tr>
                         <th><a href='?order=id&&sort=$sort'>id</a></th>
                         <th><a href='?order=uid&&sort=$sort'>uid</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>username</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>eventType</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>description</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>timestamp</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>userAgent</a></th>
-                        <th><a href='?order=uid&&sort=$sort'>remoteAddress</a></th>
+                        <th><a href='?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='?order=eventType&&sort=$sort'>eventType</a></th>
+                        <th><a href='?order=description&&sort=$sort'>description</a></th>
+                        <th><a href='?order=timestamp&&sort=$sort'>timestamp</a></th>
+                        <th><a href='?order=userAgent&&sort=$sort'>userAgent</a></th>
+                        <th><a href='?order=remoteAddress&&sort=$sort'>remoteAddress</a></th>
                     </tr>
                 ";
                 foreach($userLogEntriesResults as $rows) {
