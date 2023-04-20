@@ -88,12 +88,12 @@
             else{
                 $sort = 'DESC';
             }
-            $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-
+            
             // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                 $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
                 $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
