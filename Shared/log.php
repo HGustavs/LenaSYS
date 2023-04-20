@@ -15,14 +15,18 @@
     <style>
         table, th, td {
         border:1px solid black;
+        border-collapse: collapse;
     }
     #set_to_default_button{
         display: block;
         margin-top: 2vh;
         margin-bottom: 2vh;
     }
+    th{
+        background-color: #432a5a;
+        color: white;
+    }
     th a{
-        color: black;
         text-decoration: none;
     }
     </style>
