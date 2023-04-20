@@ -524,10 +524,16 @@ function confirmBox(operation, item = null) {
   else if (operation == "openGitHubBox") {
     console.log("testworkornah?");
     $("#gitHubBox").css("display", "flex");
+  }
+  //ändra till opengithubtemplate
+  else if (operation == "openGitHubTemplate") {
+    console.log("testworkornah?1231231");
+    $("#gitHubTemplate").css("display", "flex");
 
 
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
+    $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
     $("#sectionConfirmBox").css("display", "none");
     $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
@@ -1644,7 +1650,7 @@ function returnedSection(data) {
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"gitHubTemplate\", this);'>`;
           str += "</td>";
         }
 

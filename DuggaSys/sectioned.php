@@ -592,11 +592,11 @@
 					4. göm 
 
 	--> 
-	<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
+		<div id='gitHubTemplate' class="loginBoxContainer" style="display:none;">
 				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>
 						<h3>Choose Template</h3>
-						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
+						<div class='cursorPointer' onclick='confirmBox("closeConfirmBox");'>x</div>
 					</div>
 					<table width="100%">
 						<tr>
