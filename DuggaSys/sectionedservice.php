@@ -471,19 +471,20 @@ if($gradesys=="UNK") $gradesys=0;
 							$this->open("../../githubMetadata/metadata2.db");
 						}
 					}
-					$query = $pdo->prepare("SELECT runlink FROM box WHERE exampleid=:exampleid;");
+					$query = $pdo->prepare("SELECT filename FROM box WHERE exampleid=:exampleid;");
 					$query->bindParam(":exampleid", $exampleid);
 					$query->execute();
-					$runlink = "";
+					$files = array();
 					foreach($query->fetchAll() as $row) {
-						$runlink = $runlink.$row['runlink'];
+						array_push($files, $row['filename']);
 					}
 					$gdb = new githubDB();
-					$id=1;
-					$que = $gdb->query("SELECT repoURL FROM gitRepos WHERE repoID=".$id.";");
-					$url = "";
-					while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
-						$url = $url.$row['repoURL'];
+					$downloads = array();
+					foreach($files as $file) {
+						$que = $gdb->query("SELECT downloadURL FROM gitRepos WHERE fileName=".$file.";");
+						while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
+							array_push($downloads, $row['downloadURL']);
+						}
 					}
 					$gdb->close();
 					//13179 här anropas uppdateringsfunktionen
