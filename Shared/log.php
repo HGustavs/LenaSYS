@@ -149,13 +149,19 @@
                 //$array = mysqli_fetch_row($resultSet);
                 //$array = mysqli_fetch_assoc($resultSet);
                 //$array = mysqli_fetch_array($resultSet);  
-                $userinfo = array();
-                
-                print_r($userinfo);
+                /*$userinfo = array();
+                while ($row_user = mysql_fetch_assoc($resultSet)){
+                    $userinfo[] = $row_user;
+                }*/
+                while ($row = mysql_fetch_assoc($resultSet)) {
+                    echo $row["id"];
+                    echo $row["uid"];
+                }
+                print_r($row);/*
                 $array2 = array(
                     0 => $array["id"],
                     1 => "b",
-                );
+                );*/
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
             
                 echo"
