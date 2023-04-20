@@ -307,7 +307,7 @@ SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,de
 VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10] );
 
 check the highest quiz ID
-SQL-query: SELECT MAX(id) FROM quiz;     // Gets the newest addition to the table quiz, will be the $quizID for the the tables variant(highest id = last added), 
+SQL-query: SELECT MAX(id) FROM quiz;      // Gets the newest addition to the table quiz, will be the $quizID for the the tables variant(highest id = last added), 
                                             it will be used as ID when we identify and delete the data from the database.
 
 
@@ -357,33 +357,99 @@ SQL-query: DELETE FROM quiz WHERE id = $quizID;
 
 
 
------------------------------------------------------------------------------------------------------------------------------------------
 Delete variant and useranswer? (line 134)
 -----------------------------------------------------------------------------------------------------------------------------------------
 *****
 * pre-req:
 *****
 
-{ (checklogin) IS TRUE && 
-(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
+{ (checklogin = true) && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }’
+$opt = DELVARI
+
 
 *****
-* checking current number of quizzes, and save vid. 	
+* Needs to make insert into to tables to test the delete-method 	
+*****
+
+// Below is to make insert into quiz
+
+$preValuesQuiz = {  1885, 
+                    0,
+                    1,
+                    "AutomaticTest",
+                    "Quiz",
+                    "2023-04-27 00:00:00",
+                    "2023-04-28 00:00:00",
+                    2,
+                    "1337",
+                    "2023-04-17",
+                    "{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
+                    0 }; 
+
+SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10] );
+
+select MAX(id) from quiz; // will be saved to $id
+
+// Below is to make insert into listentries
+
+$preValuesListentries = {  1885, 
+                    "Inserttobedeleted",
+                    "UNK",
+                    4,
+                    12,
+                    2,
+                    1,
+                    1337,
+                    5019,
+                    1,
+                    1,
+                    0, 
+                    "UNK" }; 
+
+SQL-query: INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10],$preValuesQuiz[11],$preValuesQuiz[12],$preValuesQuiz[13] );
+
+select MAX(moment) from listentries; // will be saved to $moment
+
+// Below is to make insert into variant
+
+$preValuesVariant = {   $id,
+                        2,
+                        0,
+                        '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;md&quot;,&quot;gType&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;Empty canvas&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
+                        "some text" };
+
+SQL-Query: INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (preValuesVariant[0], preValuesVariant[1], preValuesVariant[2], preValuesVariant[3], preValuesVariant[4]);
+
+select MAX(vid) from variant; //will be saved to $variant.
+
+// Below is to make insert into userAnswer
+
+$preValuesuserAnswer = { 1885 , 
+                    $moment,
+                    $id,
+                    $variant }; 
+
+SQL-query: INSERT INTO userAnswer(cid,moment,quiz,variant) 
+VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4] );
+
+
+
+*****
+* checking current number of quizzes, and save the count. 	
 *****
 
 SQL-query: SELECT count(variant) FROM userAnswer; // counts the number of userAnswer save this value for later
 SQL-query: SELECT count(vid) FROM variant; // counts the number of variants save this value for later
 
 *****
-* Delete old variant and userAnswer
+* Delete variant, userAnswer, listentries, quiz.
 * send parameters inputs to duggaedservice.php 
 *****
 
-send 
-{
-    $opt = "DELVARI"; 
-    $vid = the value 
-}
+$opt = DELVARI
+$vid = the value 
 
 *****
 * repeat the SQL-query
@@ -398,3 +464,5 @@ SQL-query: SELECT count(vid) FROM quiz; 	// save the value in a different variab
 
 count - 1 = passed // for both selected counts, needs to be checked for both tables. 
 no change = failed  
+
+// ALL THE INSERTS WILL HAVE TO BE DELETED. the inserts made to do the test needs to be deleted probably. 
