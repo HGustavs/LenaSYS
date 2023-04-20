@@ -23,7 +23,7 @@
         margin-bottom: 2vh;
     }
     th{
-        background-color: #432a5a;
+        background-color: #614875;
     }
     th a{
         color: white;
