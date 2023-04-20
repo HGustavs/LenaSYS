@@ -146,10 +146,11 @@
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 //$array = (array) $resultSet;
-                $array = mysqli_fetch_row($resultSet);
+                //$array = mysqli_fetch_row($resultSet);
+                $array = mysqli_fetch_assoc($resultSet);
                 print_r($array);
                 $array2 = array(
-                    0 => $array[0],
+                    0 => $array["id"],
                     1 => "b",
                 );
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
