@@ -160,13 +160,15 @@
                         <th><a href='?order=uid&&sort=$sort'>uid</a></th>
                     </tr>
                 ";
-                foreach($userLogEntriesResults as $row) {
-                    echo"
-                    <tr>
-                        <td>".$row[0]."</td>
-                        <td>".$row[1]."</td>
-                    </tr>
-                    ";
+                foreach($userLogEntriesResults as $rows) {
+                    foreach($rows as $row) {
+                        echo"
+                        <tr>
+                            <td>".$row[0]."</td>
+                            <td>".$row[1]."</td>
+                        </tr>
+                        ";
+                    }
                 }
                 echo"
                 </table>
