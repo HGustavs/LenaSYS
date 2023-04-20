@@ -8939,7 +8939,7 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             
             // Draw SD-content if there are no attributes.
-        } else {
+        } /*else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
@@ -8947,7 +8947,7 @@ function drawElement(element, ghosted = false)
             str += `<text x='${xAnchor}' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do: </text>`;
             //end of svg for background
             str += `</svg>`;
-        }
+        }*/
         str += `</div>`;
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         if (elemFunc != 0) {
