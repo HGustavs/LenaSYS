@@ -107,9 +107,6 @@
                 echo"
                 </table>
                 ";
-                /*print "<pre>";
-                print_r($logEntriesResults);
-                print "</pre>";*/
             }
             
             // Gathers information from database table exampleLoadLogEntries
@@ -141,9 +138,6 @@
                 echo"
                 </table>
                 ";
-                /*print "<pre>";
-                print_r($exampleLoadLogEntriesResults);
-                print "</pre>";*/
             }
 
             // Gathers information from database table userHistory
@@ -174,9 +168,6 @@
                 echo"
                 </table>
                 ";
-                /*print "<pre>";
-                print_r($userHistoryResults);
-                print "</pre>";*/
             }
 
             // Gathers information from database table userLogEntries
@@ -209,9 +200,6 @@
                 echo"
                 </table>
                 ";
-                /*print "<pre>";
-                print_r($userLogEntriesResults);
-                print "</pre>";*/
             }
 
             // Gathers information from database table serviceLogEntries
@@ -248,9 +236,6 @@
                 echo"
                 </table>
                 ";
-                /*print "<pre>";
-                print_r($serviceLogEntriesResults);
-                print "</pre>";*/
             }
 
             // Gathers information from database table duggaLoadLogEntries
@@ -283,9 +268,6 @@
                 echo"
                 </table>
                 ";
-                /*print "<pre>";
-                print_r($duggaLoadLogEntriesResults);
-                print "</pre>";*/
             }
         ?>    
     </body>
