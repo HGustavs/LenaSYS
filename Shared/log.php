@@ -144,7 +144,7 @@
                     $sort = 'ASC';
                 }
                 
-                $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
+                $resultSet = $log_db->query('SELECT * FROM userLogEntries ;');
                 //$array = (array) $resultSet;
                 //$array = mysqli_fetch_row($resultSet);
                 $array = mysqli_fetch_assoc($resultSet);
