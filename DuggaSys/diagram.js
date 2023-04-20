@@ -6150,8 +6150,8 @@ function generateContextProperties()
     }
     //If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     else if (testCaseToggle) {
-        str += '<div id="ERTable"'; //using same styling for now, maybe change later
-        // Here is the place to add the contect of the generated text-cases
+        str += '<div id="ERTable">'; //using same styling for now, maybe change later
+        str += 'Debug testcase'
         str += '</div>';
     }
     else {
