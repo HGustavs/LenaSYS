@@ -1,35 +1,50 @@
 Fileedservice.php
 
 All tests
-----------------------
+----------
 
-- Test to check if the variable "$userid" has been set by session or not:
-	1. Set up the database and necessary databases.
-	2. Start by calling the function "session_start()".
-	3. Set "$_SESSION['uid']" to "null".
-	4. Call "fileedservice.php" with correct values for all parameters.
-	5. Check what the value is for "$userid". It should be 1.
-	6. Check what the value is for "$debug". It should be NONE.
+- Test 1: Test the user's login:
+	1. Start up the session.
+	2. Set the user ID in the session.
+	3. Call the function "checklogin()".
+	4. For the test to pass, the returning value should be true.
 
-- Test if "$kind" is'nt 2 and that the user has access to the course.
-	1. Arrange the database and it's appropriate tables.
-	2. Call the function "session_start()".
-	3. Set "$_SESSION['uid']" to a value that has access to the course. Be sure to also set "$_GET['kind']" to a value that's not equivalent to 2.
-	4. Call "fileedservice.php" with correct values for all parameters.
-	5. Check what the value is for "$hasAccess". It should be true.
-	6. Check what the value is for "$debug". It should be NONE.
+- Test 2: Test to get a username from the database:
+	1. Start up the session.
+	2. Set the user ID in the session.
+	3. Call the function "checklogin()".
+	4. Call the function "getUsername()".
+	5. For the test to pass, the returning value of the function "getUsername()" should be the user's username.
 
-- Test if "$kind" is 2 and if the user is a superuser.
-	1. Arrange the database and it's appropriate tables.
-	2. Start by calling the function "session_start()".
-	3. Set "$_SESSION['uid']" so it's a superuser.
-	4. Set $_GET['kind'] to 2.
-	5. Call "fileedservice.php" with correct values for all parameters.
-	6. Check what the value is for "$debug". It should be NONE.
+- Test 3: Test default user ID:
+	1. Start up the session.
+	2. Do not set the user ID in the session.
+	3. Call the function "checklogin()".
+	4. For the test to pass, the returning value should be true and the default user ID should be 1.
 
-- Test if "$kind" is 2 and but the user is not a superuser.
-	
-	
+- Test 4: Test the user's access to a course:
+	1. Start up the session.
+	2. Set the user ID in the session.
+	3. Call the function "hasAccess()". Try different access levels.
+	4. Examine the returning values.
+	5. For the test to pass, the returning value should be false if the user does not have access to the course and true if the user has.
 
+- Test 5: Test getting parameters from a GET request:
+	1. Set the values of all the parameters in the GET request.
+	2. Call the function.
+	3. Check if the values returning is correctly received.
+	4. For the test to pass, the values of the parameters received should be the same as the values set in the GET request.
 
+- Test 6: Test DELFILE service with no access:
+	1. Start up the session.
+	2. Set the user ID in the session.
+	3. Call the function with the service set to DELFILE and the user doesn't have access.
+	4. Examine if the file is deleted or not.
+	5. For the test to pass, the file is not deleted and no error message has been displayed.
 
+- Test 7: Test DELFILE service with access:
+	1. Start up the session.
+	2. Set the user ID in the session.
+	3. Call the function with the service set to DELFILE and the user have access.
+	4. Examine if the file is deleted or not.
+	5. For the test to pass, the file should be deleted.
