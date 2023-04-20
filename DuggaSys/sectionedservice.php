@@ -63,7 +63,7 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
-$exampelid=getOP('exampelid');
+$exampelid=getOP('exampleid');
 
 $visbile = 0;
 $avgfeedbackscore = 0;
@@ -471,8 +471,8 @@ if($gradesys=="UNK") $gradesys=0;
 							$this->open("../../githubMetadata/metadata2.db");
 						}
 					}
-					$query = $pdo->prepare("SELECT runlink FROM courseexample WHERE exampelid=:exampelid;");
-					$query->bindParam(":exampelid", $exampelid);
+					$query = $pdo->prepare("SELECT runlink FROM box WHERE exampleid=:exampleid;");
+					$query->bindParam(":exampleid", $exampleid);
 					$query->execute();
 					$runlink = "";
 					foreach($query->fetchAll() as $row) {
