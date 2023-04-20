@@ -149,7 +149,7 @@
                 $array = mysqli_fetch_row($resultSet);
                 print_r($array);
                 $array2 = array(
-                    0 => $resultSet,
+                    0 => $array[0],
                     1 => "b",
                 );
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
