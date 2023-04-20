@@ -8927,6 +8927,7 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+            str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemAttri + elemFunc) / 2)}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * (elemAttri+ elemFunc) / 2) - (linew * 2)}'
@@ -8949,7 +8950,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         
-        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+       
         if (elemFunc != 0) {
            //str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
            // str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
