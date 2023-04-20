@@ -702,21 +702,84 @@ foreach($duggalist as $key => $value){
 	}
 }
 
-*******
-* Duplicate codeexamples and it's components box, improws, impwordlist
-******
+**************************************************************************
+* Duplicate codeexamples and it's components box, improws, impwordlist (row 255)
+**************************************************************************
 
-$codeexamplelist=array();
-$query = $pdo->prepare("SELECT * from codeexample WHERE cid=:cid AND cversion = :oldvers;");
+*********
+* pre-req:
+********* 
+
+A database with a table codeexample with columns exampleid, cid, cversion, examplename, sectionname, beforeid, afterid, runlink, public, updated, uid, templateid
+A database with a table box with columns boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, segment, fontsize
+A database with a table improw with columns impid, boxid, exampleid, istart, iend, irowdesc, updated, uid
+A database with a table impwordlist with columns wordlistid, exampleid, wordid, word, worddesc, updated, uid
+
+**********************************************************************
+* Testing case 1 (Establish a connection to the database using PDO.) *
+**********************************************************************
+
+// Set the database connection details
+$host = "localhost";
+$dbname = "mydatabase";
+$username = "myusername";
+$password = "mypassword";
+
+// Connect to the database using PDO
+try {
+  $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+  exit;
+}
+
+// Test if the connection was successful
+if ($pdo) {
+  echo "Connected to database successfully";
+} else {
+  echo "Failed to connect to database";
+}
+
+************************************************************************************************
+* Testing case 1 (Duplicate code examples and its components (boxes, improws, and impwordlist) *
+************************************************************************************************
+
+// Set the course ID, old version, and new version
+$cid = 123;
+$copycourse = 1;
+$versid = 2;
+
+// Duplicate code examples and its components
+$codeexamplelist = array();
+$query = $pdo->prepare("SELECT * FROM codeexample WHERE cid=:cid AND cversion = :oldvers;");
 $query->bindParam(':cid', $cid);
 $query->bindParam(':oldvers', $copycourse);
 
-*******
-* Error reading codeexample
-******
-				if(!$query->execute()) {
-						$error=$query->errorInfo();
-						$allOperationsSucceeded = false;
-						$debug="Error reading codeexample: ".$error[2];
+if (!$query->execute()) {
+  $error = $query->errorInfo();
+  $allOperationsSucceeded = false;
+  $debug = "Error reading codeexample: ".$error[2];
+} else {
+  foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+    $ruery = $pdo->prepare("INSERT INTO codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, updated, uid, templateid) SELECT cid, examplename, sectionname, beforeid, afterid, runlink, :newvers as cversion, public, updated, uid, templateid FROM codeexample WHERE exampleid = :oldid;");
+    $ruery->bindParam(':oldid', $row['exampleid']);
+    $ruery->bindParam(':newvers', $versid);
 
+    if (!$ruery->execute()) {
+      $error = $ruery->errorInfo();
+      $allOperationsSucceeded = false;
+      $debug .= "Error copying codeexample entry\n".$error[2];
+    } else {
+      $codeexamplelist[$row['exampleid']] = $pdo->lastInsertId();
+    }
+  }
+
+  // Test if the code example was duplicated successfully
+  if (count($codeexamplelist) > 0) {
+    echo "Code examples duplicated successfully";
+  } else {
+    echo "Failed to duplicate code examples";
+  }
+}
 
