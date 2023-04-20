@@ -81,7 +81,7 @@ function createNewCourse()
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 	fetchGitHubRepo(courseGitURL);
-	// fetchLatestCommit(courseGitURL);
+	fetchLatestCommit(courseGitURL);
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
@@ -106,19 +106,19 @@ function fetchGitHubRepo(gitHubURL)
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
 //(To get and save the latest commit in the sqllite db)
-// function fetchLatestCommit(gitHubURL) 
-// {
-// 	if(gitHubURL){
-// 		$.ajax({
-// 			async: false,
-// 			url: "../recursivetesting/getLatestCommit.php",
-// 			type: "POST",
-// 			data: {'githubURL':gitHubURL, 'action':'getCourseID'},
-// 			dataType: "json",
-// 			success: function(response) { console.log(response) }
-// 		});
-// 	} 
-// }
+function fetchLatestCommit(gitHubURL) 
+{
+	if(gitHubURL){
+		$.ajax({
+			async: false,
+			url: "../recursivetesting/getLatestCommit.php",
+			type: "POST",
+			data: {'githubURL':gitHubURL, 'action':'getCourseID'},
+			dataType: "json",
+			success: function(response) { console.log(response) }
+		});
+	} 
+}
 
 function copyVersion()
 {
