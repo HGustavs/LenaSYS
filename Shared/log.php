@@ -147,7 +147,7 @@
                 $sql = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 $array2 = array(
                     0 => "a",
-                    1 => mysql_fetch_assoc($sql),
+                    1 => "b",
                 );
                 print_r($array2);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
@@ -160,7 +160,6 @@
                     </tr>
                 ";
                 foreach($array2 as $row) {
-                //while($row = mysqli_fetch_assoc($sql)){
                     echo"
                     <tr>
                         <td>".$row[0]."</td>
