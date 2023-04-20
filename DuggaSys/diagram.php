@@ -509,7 +509,17 @@
                     <p id="tooltip-TOGGLE_ER_TABLE" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-        </fieldset>     
+        </fieldset>
+        <fieldset>
+            <legend>Test-case Gen</legend>
+            <div id="testCaseGeneration" class="diagramIcons" onclick=""> <!--add func later-->
+                <img src="../Shared/icons/diagram_ER_table_info.svg"/>
+                <span class="toolTipText"><b>Generate test-cases from state diagram</b><br>
+                    <p>Click to generate test-cases</p><br>
+                    <p id="tooltip-GEN_TEST_CASES" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+        </fieldset> 
         <fieldset id = "errorCheckField">
         <legend>Check</legend>
             <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
