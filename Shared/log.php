@@ -53,32 +53,29 @@
         <!----------------------------------------------------------------------------------->
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
-                date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
+            date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
 
-                echo 'Choose table: ';
+            echo 'Choose table: ';
 
-                echo '<select onchange="submit();" name="name" >';
+            echo '<select onchange="submit();" name="name" >';
 
-                    foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
+                foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
+                
+                    echo '<option value="'.$row['name'].'"';
+                        if(isset($_POST['name'])){
+                            if($_POST['name']==$row['name']) echo " selected ";
+                        }
+                    echo '>';
                     
-                        echo '<option value="'.$row['name'].'"';
-                            if(isset($_POST['name'])){
-                                if($_POST['name']==$row['name']) echo " selected ";
-                            }
-                        echo '>';
-                        
-                            echo $row['name'];
-                        echo '</option>';
-                    }
-                echo '</select>';
+                        echo $row['name'];
+                    echo '</option>';
+                }
+            echo '</select>';
 
 
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
 //---------------------------------------------------------------------------------------------------
-
-                isset($order) ? $order : "";
-                isset($sort) ? $sort : "";
 
             // Set to default button
             echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
