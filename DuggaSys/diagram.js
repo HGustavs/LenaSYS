@@ -8929,7 +8929,7 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemAttri + elemFunc))}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemAttri + elemFunc) / 2)}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * (elemAttri+ elemFunc)) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
@@ -8945,8 +8945,9 @@ function drawElement(element, ghosted = false)
                  }
                str += `</svg>`;
              }
-             str += `</div>`;
+            
              str += `</svg>`;
+             str += `</div>`;
             //end of svg for background
             
             // Draw SD-content if there are no attributes.
