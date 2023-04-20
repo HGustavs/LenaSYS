@@ -1113,7 +1113,7 @@ var defaults = {
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
-    SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do:'], functions: [''] }, //<-- SD functionality
+    SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['']}, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" } // UML Final state.
@@ -6527,7 +6527,7 @@ function generateContextProperties()
                             str += `<div style='color:white'>Name</div>`;
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
-                        case 'functions':
+                        case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
@@ -8924,11 +8924,11 @@ function drawElement(element, ghosted = false)
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemFunc; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.functions[i]}</text>`;
+            for (var i = 0; i < elemAttri; i++) {
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
