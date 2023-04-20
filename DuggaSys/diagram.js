@@ -6538,6 +6538,7 @@ function generateContextProperties()
                             editableDiv.setAttribute('contenteditable', 'false');
                             editableDiv.innerHTML = textboxFormatString(editablePart);
                             str += nonEditableDiv.outerHTML + editableDiv.outerHTML;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${nonEditableDiv.outerHTML + editableDiv.outerHTML}</textarea>`;
                             break;
                         default:
                             break;
