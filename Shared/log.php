@@ -164,14 +164,7 @@
                     echo"<tr>";
                     foreach($rows as $row) {
                         echo"
-                            <td>".$row["id"]."</td>
-                            <td>".$row["uid"]."</td>
-                            <td>".$row["username"]."</td>
-                            <td>".$row["eventType"]."</td>
-                            <td>".$row["description"]."</td>
-                            <td>".$row["timestamp"]."</td>
-                            <td>".$row["userAgent"]."</td>
-                            <td>".$row["remoteAddress"]."</td>
+                            <td>".$row."</td>
                         ";
                     }
                     echo"</tr>";
