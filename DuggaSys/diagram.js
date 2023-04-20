@@ -6127,7 +6127,7 @@ function generateContextProperties()
     } */
 
     //No element or line selected
-    if (context.length == 0 && contextLine.length == 0 && !erTableToggle) {
+    if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
         //Hide properties and show the other options
         propSet.classList.add('options-fieldset-hidden');
         propSet.classList.remove('options-fieldset-show');
@@ -6146,7 +6146,12 @@ function generateContextProperties()
         str += ertable;
         str += `</div>`
     }
-    //erokimarker
+    //If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
+    else if (testCaseToggle) {
+        str += '<div id="Testcase"';
+        // Here is the place to add the contect of the generated text-cases
+        str += '</div>';
+    }
     else {
       //One element selected, no lines
       if (context.length == 1 && contextLine.length == 0) {
