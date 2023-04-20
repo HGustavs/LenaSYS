@@ -59,6 +59,7 @@
 
             // Set to default button
             echo "<a href='log.php?order=timestamp&&sort=DESC'>Set to default(timestamp, descending order)</a>";
+            
             // Code used to sort tables.
             // Default values are time in descending order.
             if(isset($_GET['order'])){
@@ -128,29 +129,6 @@
                     /*print "<pre>";
                     print_r($userHistoryResults);
                     print "</pre>";*/
-
-                    /*echo "<table style='width:100%'>";
-                        echo '<tr>';
-                            echo '<th> id </th>';
-                            echo '<th> type </th>';
-                            echo '<th> courseid </th>';
-                            echo '<th> uid </th>';
-                            echo '<th> username </th>';
-                            echo '<th> exampleid </th>';
-                            echo '<th> timestamp </th>';
-                        echo '<tr>';
-                    foreach($log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY timestamp DESC;') as $row) {
-                        echo '<tr>';
-                            echo '<td>'.$row["id"].'</td>';
-                            echo '<td>'.$row["type"].'</td>';
-                            echo '<td>'.$row["courseid"].'</td>';
-                            echo '<td>'.$row["uid"].'</td>';
-                            echo '<td>'.$row["username"].'</td>';
-                            echo '<td>'.$row["exampleid"].'</td>';
-                            echo '<td>'.$row["timestamp"].'</td>';
-                        echo '</tr>';
-                    }  
-                    echo "</table>";*/
                 }
 
             // Gathers information from database table userHistory
