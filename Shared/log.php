@@ -129,20 +129,21 @@
                 echo "</table>";
             }
 
-            if(isset($_GET['order'])){
-                $order = $_GET['order'];
-            }
-            else{
-                $order = 'id';
-            }
-            if(isset($_GET['sort'])){
-                $sort = $_GET['sort'];
-            }
-            else{
-                $sort = 'ASC';
-            }
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
 
+                if(isset($_GET['order'])){
+                    $order = $_GET['order'];
+                }
+                else{
+                    $order = 'id';
+                }
+                if(isset($_GET['sort'])){
+                    $sort = $_GET['sort'];
+                }
+                else{
+                    $sort = 'ASC';
+                }
+                
                 $sql = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 $array2 = array(
                     0 => "a",
