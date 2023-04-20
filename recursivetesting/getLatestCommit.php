@@ -31,7 +31,7 @@
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 		
-		print_r($query['cid']);
+		print_r($query);
 
 		getCommit($githubURL);
 	}
