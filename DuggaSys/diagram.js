@@ -8934,7 +8934,7 @@ function drawElement(element, ghosted = false)
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes[i]}</text>`;
             }
-            str += `</svg>`;
+           
             //end of svg for background
             
             // Draw SD-content if there are no attributes.
@@ -8959,7 +8959,7 @@ function drawElement(element, ghosted = false)
             }
             str += `</svg>`;
         }
-        
+        str += `</svg>`;
         //end of div for SD content
         
         str += `</div>`;
