@@ -144,7 +144,7 @@
                 else{
                     $sort = 'ASC';
                 }*/
-                $order = "id";
+                $order = "timestamp";
                 $sort = "ASC";
 
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.$sort.';');
