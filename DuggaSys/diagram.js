@@ -8724,7 +8724,7 @@ function drawElement(element, ghosted = false)
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
-    
+    var cornerRadius = Math.round((element.height/10) * zoomfact); //used for rounding the corners for SD states
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8911,13 +8911,13 @@ function drawElement(element, ghosted = false)
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path 
-            d="M${(linew)+15},${(linew)}
+            d="M${(linew)+(cornerRadius)},${(linew)}
                 h${(boxw - (linew * 2))-30}
-                a15,15 0 0 1 15,15
-                v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-15}
+                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
+                v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-(cornerRadius)}
                 h${(boxw - (linew * 2))*-1}
-                v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-15)*-1}
-                a15,15 0 0 1 15,-15
+                v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-(cornerRadius))*-1}
+                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius)*-1}
                 z
             "
             stroke-width='${linew}'
