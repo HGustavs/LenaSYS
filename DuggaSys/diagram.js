@@ -3975,7 +3975,7 @@ function generateOutput()
 if(data[i].kind==elementTypesNames.SDState)
 {
     if(data[i].id==lines[j].fromID)
-    console.log("output: "+lines[i].fromID);
+    alert("output: "+lines[i].fromID);
     }
 }
     }

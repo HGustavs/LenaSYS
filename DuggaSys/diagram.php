@@ -511,8 +511,8 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>Testcase</legend>
-            <div id="testCaseGeneration" class="diagramIcons" onclick="generateOutput()"> <!--add func here later-->
+            <legend onclick="generateOutput()">Testcase</legend> <!--add func here later-->
+            <div id="testCaseGeneration" class="diagramIcons" > 
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Generate test-cases from state diagram</b><br>
                     <p>Click to generate test-cases</p><br>
