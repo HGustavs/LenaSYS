@@ -146,6 +146,7 @@
                 
                 $resultSet = $log_db->query('SELECT * FROM userLogEntries ORDER BY $order $sort;');
                 $array = (array) $resultSet;
+                $array2 = [1,2];
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
             
                 echo"
@@ -155,7 +156,7 @@
                         <th><a href='?order=uid&&sort=$sort'>uid</a></th>
                     </tr>
                 ";
-                foreach($array as $row) {
+                foreach($array2 as $row) {
                 //while($row = mysqli_fetch_assoc($resultSet)){
                     echo"
                     <tr>
