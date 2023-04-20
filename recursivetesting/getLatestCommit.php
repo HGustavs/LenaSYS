@@ -31,13 +31,15 @@
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 
-		$print = $query->fetch();
+		// $print = $query->fetch();
 		
 		// $query = fetch_assoc($query);
 		// $a=    $query;  
 		// echo   $a['cid'];
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		print_r($result);
 
-		print_r($print);
+		print_r($query);
 		// print_r($githubURL);
 		//getCommit($githubURL);
 	}
