@@ -30,11 +30,13 @@
 		$query = $pdo->prepare('SELECT cid FROM course WHERE courseGitURL = :githubURL;');
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
-		
-		$result = mysql_query($query);
-		$row = mysql_fetch_row($result);
 
-		print_r($row);
+		$print = $query->fetchColumn();
+		
+		// $hej = $query;
+		// echo $query:
+
+		print_r($print);
 		print_r($githubURL);
 		//getCommit($githubURL);
 	}
