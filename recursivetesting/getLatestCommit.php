@@ -31,7 +31,10 @@
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 		
-		print_r($query);
+		$result = mysql_query($query);
+		$row = mysql_fetch_row($result);
+
+		print_r($row);
 		print_r($githubURL);
 		//getCommit($githubURL);
 	}
