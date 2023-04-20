@@ -27,21 +27,29 @@
 
 	function getCourseID($githubURL) {
 
+		echo "<table>";
+		// translates the url to the same structure as in mysql
+		// the "/" needs to be "&#47;" for the query to work
 		$newURL = str_replace("/", "&#47;", $githubURL);
 		print_r($newURL);
 
+		// fetching from the database
 		global $pdo;
 		$query = $pdo->prepare('SELECT cid FROM course WHERE courseGitURL = :githubURL;');
 		$query->bindParam(':githubURL', $newURL);
 		$query->execute();
 
+		// printing the result
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo $row['cid'];
+			echo "<td>".$row['cid']."</td>";
 		}
+		echo "</table>";
 
+		// use the original url to get the latest commit
 		getCommit($githubURL);
 	}
 
+	// gets the latest commit from the url in the function above
 	function getCommit($url) {
 		//$url = "https://github.com/HGustavs/LenaSYS"; // TODO: This url should be the one you fetch from the database!
 
