@@ -1,0 +1,29 @@
+showDuggaservice.php
+
+-------------------------------------------------------------------------------------------------------------
+TEST#1
+updateActiveUsersTest(100-118)
+Test to ensure active users can be updated/created.
+First make a sql query that creates an active_users in groupdugga. Then try updating the active_users with the newly created values.
+Or try updating an active users without a active_users token. Then it will create a AUtoken for that active users hash
+
+Pre-req: {($opt, "UPDATEAU")==0}
+
+SQL query to get active_users: SELECT active_users FROM groupdugga WHERE hash=hash;
+hash gets binded to $hash that is then executed
+active_users gets fetched and $active gets the value of active_users
+
+SQL query: If no active_users is found: INSERT INTO groupdugga(hash,active_users) VALUES(hash,AUtoken);
+hash gets bind to $hash
+AUtoken gets bind to $AUtoken
+Its the executed
+
+SQL query: If a active_users is found: UPDATE groupdugga SET active_users=AUtoken WHERE hash=hash;
+A $newToken is created and gets the values (int) from $active and $AUtoken
+It gets then executed
+
+To see if test worked: SELECT active_users FROM groupdugga WHERE hash=hash;
+SQL query: If active_users is updated the test has succeded
+Compare the values.
+
+--------------------------------------------------------------------------------------------------------
