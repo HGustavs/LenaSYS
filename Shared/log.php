@@ -26,6 +26,50 @@
 	            echo "Failed to connect to the database";
 	            throw $e;
             }
+
+            // Define columns to search inside
+$columns_to_search = ['logEntries', 'exampleLoadLogEntries', 'userHistory', 'userLogEntries', 'serviceLogEntries', 'duggaLoadLogEntries'];
+
+// Get search query from input field
+$search_query = $_GET['q'] ?? '';
+
+// Prepare SQL query to fetch data
+$sql_query = 'SELECT * FROM ';
+
+// Add search conditions to SQL query based on the entered query and columns to search inside
+$conditions = [];
+foreach ($columns_to_search as $column) {
+    $conditions[] = "$column.description LIKE '%$search_query%'";
+}
+$sql_query .= implode(' OR ', $conditions);
+
+// Execute SQL query and display results in table format
+echo "<table style='width:100%'>";
+echo '<tr>';
+echo '<th> id </th>';
+echo '<th> eventype </th>';
+echo '<th> description </th>';
+echo '<th> userAgent </th>';
+echo '<th> timestamp </th>';
+echo '<tr>';
+foreach ($log_db->query($sql_query) as $row) {
+    echo '<tr>';
+    echo '<td>'.$row["id"].'</td>';
+    echo '<td>'.$row["eventype"].'</td>';
+    echo '<td>'.$row["description"].'</td>';
+    echo '<td>'.$row["userAgent"].'</td>';
+    echo '<td>'.$row["timestamp"].'</td>';
+    echo '</tr>';
+}
+echo "</table>";
+?>
+
+<form method="get">
+    <input type="text" name="q" value="<?= htmlentities($_GET['q'] ?? '') ?>" />
+    <button type="submit">Search</button>
+</form>
+
+
         ?>
         
         <!----------------------------------------------------------------------------------->  
@@ -54,37 +98,7 @@
 
         ?>
 
-        <br>
-        <label for="search">Search:</label>
-        <input type="text" name="search" id="search" value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>">
-        <input type="submit" name="submit" value="Submit">
         <?php
-
-        if(isset($_POST['name'])) {
-    // get the selected table name
-    $table = $_POST['name'];
-    
-    // get the search query
-    $search = isset($_POST['search']) ? trim($_POST['search']) : '';
-    
-    // execute the SQL query with search criteria
-    $query = "SELECT * FROM $table";
-    if(!empty($search)) {
-        $query .= " WHERE description LIKE '%$search%'"; // adjust the WHERE clause to match the column you want to search
-    }
-    
-    echo "<table style='width:100%'>";
-    // output the table headers
-    // ...
-
-    // execute the SQL query
-    foreach($log_db->query($query) as $row) {
-        // output the table rows
-        // ...
-    }
-    echo "</table>";
-}
-    
 
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
@@ -92,6 +106,8 @@
 
                 if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                     // gathers information from database table userHistory
+
+                    
                     echo "<table style='width:100%'>";
                         
                     echo '<tr>';
