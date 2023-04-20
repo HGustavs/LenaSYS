@@ -8937,7 +8937,7 @@ function drawElement(element, ghosted = false)
                 const yOffset = boxh / 2 + (i * attriSpacing);
                 str += `<text x='${xAnchor}' y='${yOffset}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes[i]}</text>`;
             }
-            
+            str += `</svg>`;
             if (elemFunc != 0) {
                 str += `<svg width='${boxw}' y='${boxh / 2 + (elemAttri > 0 ? boxh / 2 : 0)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
                 // str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
@@ -8948,7 +8948,7 @@ function drawElement(element, ghosted = false)
                  str += `</svg>`;
              }
              
-            str += `</svg>`;
+            
             //end of svg for background
             
             // Draw SD-content if there are no attributes.
