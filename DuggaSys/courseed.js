@@ -106,19 +106,19 @@ function fetchGitHubRepo(gitHubURL)
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
 //(To get and save the latest commit in the sqllite db)
-function fetchLatestCommit(gitHubURL) 
-{
-	if(gitHubURL){
-		$.ajax({
-			async: false,
-			url: "../recursivetesting/getLatestCommit.php",
-			type: "POST",
-			data: {'githubURL':gitHubURL, 'action':'getCourseID'},
-			dataType: "json",
-			success: function(response) { console.log(response) }
-		});
-	} 
-}
+// function fetchLatestCommit(gitHubURL) 
+// {
+// 	if(gitHubURL){
+// 		$.ajax({
+// 			async: false,
+// 			url: "../recursivetesting/getLatestCommit.php",
+// 			type: "POST",
+// 			data: {'githubURL':gitHubURL, 'action':'getCourseID'},
+// 			dataType: "json",
+// 			success: function(response) { console.log(response) }
+// 		});
+// 	} 
+// }
 
 function copyVersion()
 {
