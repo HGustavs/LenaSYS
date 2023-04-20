@@ -47,25 +47,41 @@ $sql_query .= implode(' OR ', $conditions);
 echo "<table style='width:100%'>";
 echo '<tr>';
 echo '<th> id </th>';
-echo '<th> eventype </th>';
-echo '<th> description </th>';
-echo '<th> userAgent </th>';
+echo '<th> uuid </th>';
+echo '<th> eventType </th>';
+echo '<th> service </th>';
+echo '<th> userid </th>';
 echo '<th> timestamp </th>';
+echo '<th> userAgent </th>';
+echo '<th> operatingSystem </th>';
+echo '<th> info </th>';
+echo '<th> referer </th>';
+echo '<th> IP </th>';
+echo '<th> browser </th>';
 echo '<tr>';
 foreach ($log_db->query($sql_query) as $row) {
     echo '<tr>';
     echo '<td>'.$row["id"].'</td>';
-    echo '<td>'.$row["eventype"].'</td>';
-    echo '<td>'.$row["description"].'</td>';
+    echo '<td>'.$row["uuid"].'</td>';
+    echo '<td>'.$row["eventType"].'</td>';
+    echo '<td>'.$row["service"].'</td>';
+    echo '<td>'.$row["userid"].'</td>';
+    $timestamp=$row["timestamp"];
+    $timestamp = date('Y-m-d h:i:s', $timestamp/1000); //Divide by 1000 cause unix is in miliseconds
+    echo '<td>'.$timestamp.'</td>';
     echo '<td>'.$row["userAgent"].'</td>';
-    echo '<td>'.$row["timestamp"].'</td>';
+    echo '<td>'.$row["operatingSystem"].'</td>';
+    echo '<td>'.$row["info"].'</td>'; //  $info = $opt..$cid..$coursevers..$fid..$filename..$kind;
+    echo '<td>'.$row["referer"].'</td>';
+    echo '<td>'.$row["IP"].'</td>';
+    echo '<td>'.$row["browser"].'</td>';
     echo '</tr>';
 }
 echo "</table>";
 ?>
 
-<form method="get">
-    <input type="text" name="q" value="<?= htmlentities($_GET['q'] ?? '') ?>" />
+<form method="post">
+    <input type="text" name="q" value="<?= htmlentities($_POST['q'] ?? '') ?>" />
     <button type="submit">Search</button>
 </form>
 
