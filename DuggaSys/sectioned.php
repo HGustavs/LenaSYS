@@ -582,14 +582,10 @@
 	<!-- github template  -->
 
 	<!-- 
+					settings for github codeexample
+					
 
-					1. ändra namn på chooseTemplateContainer
-
-					2. ändra namn på chooseTemplate ?
-
-					3. onklick ändra
-
-					4. göm 
+					
 
 	--> 
 		<div id='gitHubTemplate' class="loginBoxContainer" style="display:none;">
@@ -621,10 +617,10 @@
 							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
 						</tr>
 					</table>
-					<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' disabled placeholder='Name.type' value=''/></div>
+					<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 					<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='hash' placeholder='GitHubDownloadUrl' value=''/></div>
 					<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
-					<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
+					<div class='inputwrapper'><span>Number of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 				</div>
 				
 
