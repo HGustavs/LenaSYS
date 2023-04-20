@@ -63,7 +63,7 @@
                             if($_POST['name']==$row['name']) echo " selected ";
                         }
                     echo '>'.$row['name'].'</option>';
-                    echo$row['name'];
+                    echo"<p>".$row['name']."</p>";
                 }
             echo '</select>';
 
