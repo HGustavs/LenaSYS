@@ -3966,6 +3966,20 @@ function boxSelect_Draw(str)
 /**
  * @description hides or shows the diagram type dropdown 
  */
+function generateOutput()
+{
+    for (var i=0; i<data.length; i++)
+    {
+        for(var j=0; j<lines.length; j++)
+        {    
+if(data[i].kind==elementTypesNames.SDState)
+{
+    if(data[i].id==lines[j].fromID)
+    console.log("output: "+lines[i].fromID);
+    }
+}
+    }
+}
 function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
