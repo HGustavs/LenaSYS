@@ -8927,23 +8927,23 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
-            const rectHeight = boxh / 2 + (boxh * Math.max(elemAttri, elemFunc) / 2) - (linew * 2);
+            
             //svg for background
-            str += `<svg width='${boxw}' height='${rectHeight}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;' >`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${rectHeight}'
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemAttri + elemFunc) / 2)}' style='border-bottom-left-radius: ${elemFunc == 0 ? boxh / 2 : 0}px; border-bottom-right-radius: ${elemFunc == 0 ? boxh / 2 : 0}px;' >`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * (elemAttri + elemFunc) / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes[i]}</text>`;
             }
             str += `<div>`;
             if (elemFunc != 0) {
-                //str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
+                str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * (elemFunc + elemAttri) / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
                 // str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
                  //stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
                  for (var i = 0; i < elemFunc; i++) {
                      str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>exit:${element.functions[i]}</text>`;
                  }
-                 //str += `</svg>`;
+                 str += `</svg>`;
              }
              str += `</div>`;
             str += `</svg>`;
@@ -8961,12 +8961,12 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         str += `</div>`;
-        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+        
         
         
         //end of div for SD content
         
-        str += `</div>`;
+        
     }
 
     //Check if element is UMLRelation
