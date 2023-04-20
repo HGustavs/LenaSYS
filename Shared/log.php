@@ -148,7 +148,7 @@
                 
                 $array2 = array(
                     0 => "a",
-                    1 => $resultSet[0],
+                    1 => mysql_fetch_assoc($resultSet),
                 );
                 print_r($array2);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
