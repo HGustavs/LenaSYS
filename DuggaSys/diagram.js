@@ -8941,10 +8941,10 @@ function drawElement(element, ghosted = false)
             // Draw SD-content if there are no attributes.
         } else {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' >`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
+            str += `<svg width='${boxw}' height='${boxh + (boxh)}' >`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh + (boxh) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:${element.attributes}</text>`;
+            str += `<text x='${xAnchor}' y='${hboxh + boxh * 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do:</text>`;
             
             //end of svg for background
             str += `</svg>`;
