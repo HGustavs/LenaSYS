@@ -3375,34 +3375,44 @@ function rectsIntersect (left, right)
  function setPos(objects, x, y)
  {
      var idList = [];
+     var overlapping = false;
+     
      objects.forEach(obj => {
+        if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)){
+            overlapping = true;
+        }
+     });
+
+     if (overlapping) {
+       displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+     } else {
+       objects.forEach(obj => {
 
          if (obj.isLocked) return;
-         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) return displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");;
 
          if (settings.grid.snapToGrid) {
 
-             if (!ctrlPressed) {
-                 //Different snap points for entity and others
-                 if (obj.kind == "EREntity") {
-                     // Calculate nearest snap point
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize*2)) / settings.grid.gridSize) * settings.grid.gridSize;
-                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                 } else{
-                     obj.x = Math.round((obj.x - (x * (1.0 / zoomfact))+(settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
-                     obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize*0.5)) * (settings.grid.gridSize*0.5);
-                 }
-                 // Set the new snap point to center of element
-                 obj.x -= obj.width / 2
-                 obj.y -= obj.height / 2;
-
+           if (!ctrlPressed) {
+             //Different snap points for entity and others
+             if (obj.kind == "EREntity") {
+               // Calculate nearest snap point
+               obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize * 2)) / settings.grid.gridSize) * settings.grid.gridSize;
+               obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
              } else {
-                 obj.x += (targetDelta.x / zoomfact);
-                 obj.y += ((targetDelta.y / zoomfact)+25);
+               obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
+               obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
              }
-         }else {
-             obj.x -= (x / zoomfact);
-             obj.y -= (y / zoomfact);
+             // Set the new snap point to center of element
+             obj.x -= obj.width / 2
+             obj.y -= obj.height / 2;
+
+           } else {
+             obj.x += (targetDelta.x / zoomfact);
+             obj.y += ((targetDelta.y / zoomfact) + 25);
+           }
+         } else {
+           obj.x -= (x / zoomfact);
+           obj.y -= (y / zoomfact);
          }
          // Add the object-id to the idList
          idList.push(obj.id);
@@ -3410,9 +3420,10 @@ function rectsIntersect (left, right)
          // Make the coordinates without decimals
          obj.x = Math.round(obj.x);
          obj.y = Math.round(obj.y);
-     });
+       });
+       if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
+     }
      updatepos(0, 0);
-     if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
  }
 
 function isKeybindValid(e, keybind)
@@ -3500,28 +3511,40 @@ function entityIsOverlapping(id, x, y)
 
         for(var i = 0; i < data.length; i++){
             if(data[i].id === id) continue
-            
-            //COMPARED ELEMENT
-            const compX2 = data[i].x + data[i].width;
-            var compY2 = data[i].y + data[i].height;
 
-            // Change height if element is an UML Entity
-            for (var j = 0; j < UMLHeight.length; j++) {
+            // Doesn't compare if the other element is moving
+            var compare = true;
+            if(context.length > 1){
+              for (var j = 0; j < context.length; j++) {
+                if (data[i].id == context[j].id && !data[i].isLocked) {
+                  compare = false;
+                  break;
+                }
+              }
+            }
+            if(compare){
+              //COMPARED ELEMENT
+              const compX2 = data[i].x + data[i].width;
+              var compY2 = data[i].y + data[i].height;
+
+              // Change height if element is an UML Entity
+              for (var j = 0; j < UMLHeight.length; j++) {
                 if (data[i].id == UMLHeight[j].id) {
-                    compY2 = data[i].y + UMLHeight[j].height;
+                  compY2 = data[i].y + UMLHeight[j].height;
                 }
-            }
-            // Change height if element is an IE Entity
-            for (var j = 0; j < IEHeight.length; j++) {
+              }
+              // Change height if element is an IE Entity
+              for (var j = 0; j < IEHeight.length; j++) {
                 if (data[i].id == IEHeight[j].id) {
-                    compY2 = data[i].y + IEHeight[j].height;
+                  compY2 = data[i].y + IEHeight[j].height;
                 }
-            }
+              }
 
-            if( (targetX < compX2) && (targetX + element.width) > data[i].x &&
-                (targetY < compY2) && (targetY + elementHeight) > data[i].y){
+              if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
+                (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
                 break;
+              }
             }
         }
         return isOverlapping;
