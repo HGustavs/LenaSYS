@@ -256,7 +256,7 @@ $sql2 = '
 		repoPath VARCHAR(255) 
 	);
 
-	CREATE TABLE latestCommit (
+	CREATE TABLE IF NOT EXISTS latestCommit (
 		githubURL VARCHAR(255) PRIMARY KEY,
 		commitID VARCHAR(50)
 	);
