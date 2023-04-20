@@ -31,13 +31,13 @@
 		$query->bindParam(':githubURL', $githubURL);
 		$query->execute();
 
-		// $print = $query->fetchColumn();
+		$print = $query->fetchAll();
 		
-		$query = mysql_fetch_assoc($query);
-		$a=    $query;  
-		echo   $a['cid'];
+		// $query = fetch_assoc($query);
+		// $a=    $query;  
+		// echo   $a['cid'];
 
-		// print_r($print);
+		print_r($print);
 		print_r($githubURL);
 		//getCommit($githubURL);
 	}
