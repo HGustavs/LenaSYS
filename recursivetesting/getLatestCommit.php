@@ -51,18 +51,45 @@
 	}
 
 	function checkSQLite($cid, $githubURL) {
-		$query = $pdo->prepare("SELECT count(*) FROM latestCommit WHERE cid=:cid;"); 
+		global $pdo; // we need this? kolla olles kod senare kanske
+		
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		
+		$query = $pdolite->prepare("SELECT count(*) FROM latestCommit WHERE cid=:cid;"); 
         // bind query results into local vars.
         $query->bindParam(':cid', $cid);
         $query->execute();
         $norows = $query->fetchColumn();
 
+		//TODO: get commit
+		// save as variable
+
 		if($norows == 0) {
-			//insert
+			// insert into sqllite
 		}
 		else {
-			//get commit
-			//
+			// compare commit from db with commit variable from above
+			// update sqllite
+
+			/*
+			 // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
+			if ($norows == 0) {
+				$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':filename', $fileText);
+				$query->bindParam(':filesize', $filesize);
+				$query->bindParam(':kindid', $kindid);
+				// Runs SQL query and runs general error handling if it fails.
+				if (!$query->execute()) {
+					$error = $query->errorInfo();
+					echo "Error updating file entries" . $error[2];
+					// $errortype ="uploadfile";
+					$errorvar = $error[2];
+					print_r($error);
+					echo $errorvar;
+				} 
+			}
+			*/
 		}
 	}
 
