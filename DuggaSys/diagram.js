@@ -6530,7 +6530,7 @@ function generateContextProperties()
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
                             str += `<div style='color:white'>do: </div>`;
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'></textarea>`;
                             break;
                         default:
                             break;
