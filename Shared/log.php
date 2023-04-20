@@ -145,8 +145,7 @@
                     $sort = 'ASC';
                 }
                 
-                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY ? ?;'); // ORDER BY $order $sort
-                $userLogEntriesSql->execute([$order, $sort]);
+                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '$order' '$sort';'); // ORDER BY $order $sort
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
