@@ -1,7 +1,7 @@
 
 duggaedservice.php
 
-
+---------------------------------------------------------------------------------------------------------------------
 Create an assignment (line 57):
 ---------------------------------------------------------------------------------------------------------------------
 *********
@@ -48,7 +48,7 @@ SQL-query: DELETE FROM quiz WHERE id = qid; // qid here is the value previously 
 
 
 
-
+-------------------------------------------------------------------------------------------------------------------------
 Update an Assignment (line 68):
 -------------------------------------------------------------------------------------------------------------------------
 *****
@@ -62,7 +62,27 @@ Update an Assignment (line 68):
 
 Create an assignment, and save information on all attribute in an array  
 
-SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (1885,0,1, 'AutomaticTest', 'Quiz' , '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}',0);
+///////
+/ pre-req variables
+//////
+
+$pre-Values = { 1885, 
+                0,
+                1,
+                "AutomaticTest",
+                "Quiz",
+                "2023-04-27 00:00:00",
+                "2023-04-28 00:00:00",
+                2,
+                "1337",
+                "2023-04-17",
+                "{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
+                0 }; 
+
+
+SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
+
 
 *****
 * This will get the information that you need.
@@ -98,7 +118,7 @@ might be a good idea to check all values individually!
 
 SQL-query: DELETE FROM quiz WHERE id = id; // id is one of the value previously saved. 
 
-
+-------------------------------------------------------------------------------------------------------------------------------------------------
 Delete an Assignment (line 95):
 -------------------------------------------------------------------------------------------------------------------------------------------------
 *****
@@ -162,7 +182,7 @@ SQL-query: SELECT count(id) FROM quiz; 	// save the value in a different variabl
 count - 1 = passed
 no change = failed  
 
-
+-----------------------------------------------------------------------------------------------------------------------------------------
 Add Variant (contents of quiz) (line 110):
 -----------------------------------------------------------------------------------------------------------------------------------------
 *****
@@ -199,16 +219,106 @@ send
 * repet the SQL-query
 *****
 
-SQL-query: SELECT count(id) FROM quiz; 	// save the value in a different variable 
+SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value
 
 *****
 * compare results
 *****
 
-count - 1 = passed
-no change = failed  
+count + 1 = passed
+no change = failed
+
+*****
+* remove inserted row from DB, using qid 
+*****
+
+SQL-query: DELETE FROM variant WHERE quizID = $quizID; // quizID is the same as the INSERT. 
 
 
+-------------------------------------------------------------------------------------------------------------------------
+Update a variant (line 123):
+-------------------------------------------------------------------------------------------------------------------------
+*****
+* pre-req:
+*****
+
+{ (checklogin = true) && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) = true }
+
+Create a quiz then Create a variant with the same ID, all attribute are to be saved in an array, they will  be compared after an update   
+
+///////
+/ pre-req variables & table entries
+//////
+
+$preValuesQuiz = {  1885, 
+                    0,
+                    1,
+                    "AutomaticTest",
+                    "Quiz",
+                    "2023-04-27 00:00:00",
+                    "2023-04-28 00:00:00",
+                    2,
+                    "1337",
+                    "2023-04-17",
+                    "{&quot;deadline1&quot;:&quot;2023-04-18 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
+                    0 }; 
+
+SQL-query: INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
+VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10] );
+
+check the highest quiz ID
+SQL-query: SELECT MAX(id) FROM quiz;     // Gets the newest addition to the table quiz, will be the $quizID for the the tables variant(highest id = last added), 
+                                            it will be used as ID when we identify and delete the data from the database.
+
+
+$preValuesVariant = {   $quizID,
+                        2,
+                        0,
+                        '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;md&quot;,&quot;gType&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;Empty canvas&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
+                        "some text" };
+
+SQL-Query: INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (preValuesVariant[0], preValuesVariant[1], preValuesVariant[2], preValuesVariant[3], preValuesVariant[4]);
+
+Get the ID of the newly added variant, and save it in $variantID
+
+SQL-Query: SELECT MAX(quizID) FROM variant;
+
+*****
+* Update information on an assignment
+* send parameters inputs to duggaedservice.php 
+*****
+
+send
+{
+    $opt = "SAVVARI";
+    $vid = $variantID;
+    $disabled = 1;
+    $param = '{"type":"md","filelink":"","gType":"md","gFilelink":"","diagram_File":"","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""},{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}';
+    $answer = "new text";  
+}
+
+*****
+* compare results
+*****
+
+if $preValuesVariant[2] = $preValuesQuiz[2]: failed
+if $preValuesVariant[3] = $preValuesQuiz[3]: failed
+if $preValuesVariant[4] = $preValuesQuiz[4]: failed
+else : passed 
+
+ 
+
+*****
+* remove inserted row from table quiz DB, using quizID. This will delete both table entries (variant and quiz)
+*****
+
+SQL-query: DELETE FROM quiz WHERE id = $quizID;  
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
 Delete variant and useranswer? (line 134)
 -----------------------------------------------------------------------------------------------------------------------------------------
 *****
