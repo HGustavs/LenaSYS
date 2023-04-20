@@ -962,6 +962,7 @@ var wasDblClicked = false;
 var targetDelta;
 var mousePressed;
 var erTableToggle = false; //Used only in toggleErTable() and generateContextProperties().
+var testCaseToggle = false;
 var selectionBoxLowX;
 var selectionBoxHighX;
 var selectionBoxLowY;
@@ -4237,6 +4238,21 @@ function toggleErTable()
     generateContextProperties();
 }
 
+
+/**
+ * @description Toggles the testcases for the diagram in the "Options side-bar" on/off.
+ */
+function toggleTestCase()
+{
+    if (testCaseToggle == false) {
+        testCaseToggle = true;
+    }
+    else if (testCaseToggle == true) {
+        testCaseToggle = false;
+    }
+    generateContextProperties();
+}
+
 /**
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
@@ -6130,6 +6146,7 @@ function generateContextProperties()
         str += ertable;
         str += `</div>`
     }
+    //erokimarker
     else {
       //One element selected, no lines
       if (context.length == 1 && contextLine.length == 0) {
