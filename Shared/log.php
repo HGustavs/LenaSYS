@@ -12,7 +12,7 @@
 
 <html>
 <head>
-<!-- 
+
 <script>
 function searchTable() {
     var input, filter, table, tr, td, i, j, txtValue;
@@ -48,7 +48,7 @@ function filterTable() {
     xmlhttp.open("GET", "log.php?table=" + table + "&filter=" + filter, true);
     xmlhttp.send();
 }
-</script> -->
+</script>
 
     <style>
         table, th, td {
@@ -65,47 +65,6 @@ function filterTable() {
 	            throw $e;
             }
         ?>
-
-<?php
-
-function searchTable() {
-    $input = $_GET['searchInput'];
-    $filter = strtoupper($input);
-    $table = $_GET['table'];
-    $tr = $_GET['tr'];
-
-    for ($i = 0; $i < count($tr); $i++) {
-        for ($j = 0; $j < count($tr[$i]->cells); $j++) {
-            $td = $tr[$i]->cells[$j];
-            if ($td) {
-                $txtValue = $td->textContent || $td->innerText;
-                if (strpos(strtoupper($txtValue), $filter) !== false) {
-                    $tr[$i]->style->display = "";
-                    break;
-                } else {
-                    $tr[$i]->style->display = "none";
-                }
-            }
-        }
-    }
-}
-
-function filterTable() {
-    $filter = $_GET['searchInput'];
-    $table = $_GET['tableID'];
-
-    $xmlhttp = new XMLHttpRequest();
-    $xmlhttp->onreadystatechange = function() {
-        if ($xmlhttp->readyState == 4 && $xmlhttp->status == 200) {
-            $_GET['table'][0]->innerHTML = $xmlhttp->responseText;
-        }
-    };
-
-    $xmlhttp->open("GET", "log.php?table=" . $table . "&filter=" . $filter, true);
-    $xmlhttp->send();
-}
-
-?> 
         
         <!----------------------------------------------------------------------------------->  
         <!------Creates a dropdown with all tables in the loglena database------------------->
