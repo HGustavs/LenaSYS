@@ -8937,8 +8937,6 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            /* str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`; */
             str += `<path 
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
@@ -8962,23 +8960,20 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            //start path and define it as:
-            //move to the x and y for the top left corner of this shape.
-            //then crete a quadratic bezier curve to x5 y5, with -5.5 as a control point, relative to the current position of the path.
-            //then draw a horizontal line that is the length of the width of the shape.
-            //then make another quadratic bezier curve
-            /* str += `<path 
-                        d="M'${linew}','${linew}'
-                        q5,5 -5,5
-                        h'${boxw - (linew * 2)}'
-                        q5,5 -5,5
-                        v'${boxh / 2 + (boxh / 2) - (linew * 2)}'
-                        h'${(boxw - (linew * 2))*-1}'
-                        z
-                        "
-                        />` */
+            str += `<path 
+                d="M${linew},${(linew)}
+                    h${(boxw - (linew * 2))}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius*-1)},${cornerRadius}
+                    h${(boxw - (linew * 2)-(cornerRadius*2))*-1}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius)*-1},${(cornerRadius)*-1}
+                    v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius)*-1}
+                    z
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
             str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
             str += `</svg>`;
