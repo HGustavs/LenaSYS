@@ -511,8 +511,8 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend onclick="printStateDiagram()">Testcase</legend> 
-            <div id="testCaseGeneration" class="diagramIcons" > 
+            <legend>Testcase</legend> 
+            <div id="testCaseGeneration" class="diagramIcons" onclick="printStateDiagram()"> 
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Generate test-cases from state diagram</b><br>
                     <p>Click to generate test-cases</p><br>
