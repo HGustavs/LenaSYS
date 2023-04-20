@@ -1050,8 +1050,6 @@ var pointerState = pointerStates.DEFAULT;
 var movingObject = false;
 var movingContainer = false;
 
-var wasMovingObject = false;
-
 //setting the base values for the allowed diagramtypes
 var diagramType = {ER:false,UML:false,IE:false,SD:false};
 
@@ -2486,7 +2484,6 @@ function mmoving(event)
 
                 // Moving object
                 movingObject = true;
-                wasMovingObject = true;
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
@@ -3502,9 +3499,8 @@ function entityIsOverlapping(id, x, y)
         console.log(targetX, targetY)
 
         for(var i = 0; i < data.length; i++){
-            if (data[i].id === id) continue;
-            if (context.includes(data[i]) && wasMovingObject) continue;
-
+            if(data[i].id === id) continue
+            
             //COMPARED ELEMENT
             const compX2 = data[i].x + data[i].width;
             var compY2 = data[i].y + data[i].height;
@@ -3528,7 +3524,6 @@ function entityIsOverlapping(id, x, y)
                 break;
             }
         }
-        wasMovingObject = false;
         return isOverlapping;
     }
 }
@@ -4139,12 +4134,7 @@ function toggleReplay()
         zoomIndicator.style.bottom = "55px";
         zoomIndicator.style.left = "45px";
         zoomContainer.style.bottom = "54px";
-        if (optionsPane.className == "show-options-pane") {
-            zoomContainer.style.left = "240px";
-        }
-        else {
-            zoomContainer.style.left = "-68px";
-        }
+        zoomContainer.style.left = "-68px";
         replyMessage.style.visibility = "visible";
     }
     drawRulerBars(scrollx, scrolly);
