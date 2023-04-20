@@ -145,10 +145,10 @@
                 }
                 
                 $sql = $log_db->query('SELECT * FROM userLogEntries;'); // ORDER BY $order $sort
-                $results = $sql->fetchAll(PDO::FETCH_ASSOC);
+                $userLogEntriesResults = $sql->fetchAll(PDO::FETCH_ASSOC);
                 /*$array2 = array(
-                    0 => $results[0],
-                    1 => $results[1],
+                    0 => $userLogEntriesResults[0],
+                    1 => $userLogEntriesResults[1],
                 );
                 print_r($array2);*/
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
@@ -160,7 +160,7 @@
                         <th><a href='?order=uid&&sort=$sort'>uid</a></th>
                     </tr>
                 ";
-                foreach($array2 as $row) {
+                foreach($userLogEntriesResults as $row) {
                     echo"
                     <tr>
                         <td>".$row[0]."</td>
@@ -172,7 +172,7 @@
                 </table>
                 ";
                 print "<pre>";
-                print_r($results);
+                print_r($userLogEntriesResults);
                 print "</pre>";
                 /*
                 // gathers information from database table userLogEntries
