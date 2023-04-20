@@ -8911,8 +8911,8 @@ function drawElement(element, ghosted = false)
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path 
-            d="M${(linew)},${(linew)}
-                h${(boxw - (linew * 2))-15}
+            d="M${(linew)+15},${(linew)}
+                h${(boxw - (linew * 2))-30}
                 a15,15 0 0 1 15,15
                 v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-15}
                 h${(boxw - (linew * 2))*-1}
