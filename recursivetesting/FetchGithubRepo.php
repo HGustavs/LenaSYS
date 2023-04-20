@@ -27,16 +27,14 @@
         border: 1px solid black;
         font-size: 14px;
     }
-</style>
+    </style>
 
 <body>
     <?php
-
-    // include_once "../Shared/sessions.php";
-    // include_once "../Shared/basic.php";    
-    // session_start();
-
-    // pdoConnect(); // Connect to database and start session
+    include_once "../Shared/sessions.php";
+    include_once "../Shared/basic.php";    
+    session_start();
+    pdoConnect(); // Connect to database and start session
 
     
     //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
@@ -51,56 +49,50 @@
     //Calls getGithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
     function getNewCourseGitHub($githubURL)
     {
-        // getGitHubURL($githubURL);
+        getGitHubURL($githubURL);
     }
 
 
-    // function getGitHubURL($url)
-    // {
-    //     $urlParts = explode('/', $url);
-    //     // In normal GitHub Repo URL:s, the username is the third object separated by a slash
-    //     $username = $urlParts[3];
-    //     // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
-    //     $repository = $urlParts[4];
-    //     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
-
-    //     $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    //     bfs($translatedURL, $repository);
-    // }
+    function getGitHubURL($url)
+    {
+        $urlParts = explode('/', $url);
+        // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+        $username = $urlParts[3];
+        // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+        $repository = $urlParts[4];
+        // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+        $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+        bfs($translatedURL, $repository);
+    }
 
     // ------ DUMMY DATA FOR TESTING------ 
-    // // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
-    // $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
-    // // Dismantles the $url into an array of each component, separated by a slash
-    // $urlParts = explode('/', $url);
-    // // In normal GitHub Repo URL:s, the username is the third object separated by a slash
-    // $username = $urlParts[3];
-    // // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
-    // $repository = $urlParts[4];
-    
+    // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
+    $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
+    // Dismantles the $url into an array of each component, separated by a slash
+    $urlParts = explode('/', $url);
+    // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    $username = $urlParts[3];
+    // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    $repository = $urlParts[4];
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+    $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+    bfs($translatedURL, $repository);
+    // ----------------------------------
 
 
-    include_once "../Shared/sessions.php";
-    include_once "../Shared/basic.php";    
-    session_start();
-    pdoConnect(); // Connect to database and start session
-    
-    $fileNames = array("App_Demo.html", "App_Demo_SearchResource.html", "App_Demo_StoreCustomer.html");
-    $cid = 1; // 1 för webbprogramering     TODO Make a query to the cources data base and get the cid for the cource, based on the name of the cource 
-    // $fileText = "App_Demo.html";  // File name
-    $filesize = 24602; // $item['size']; // Size
-    $kindid = 3; // The visuability for the file, and where it is located, eventiuall this will be used to reference the folder in cources  
-                          
-    foreach ($fileNames as $fileText) {
-        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;"); 
+    function insertToFileLink($cid, $item) {
+        global $pdo;
+        $fileText = $item['name'];
+        $filesize = $item['size']; // Size
+        $kindid = 3; // The kind(course local/version local/global), 3 = course local
+
+        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=$kindid;"); 
         // bind query results into local vars.
         $query->bindParam(':filename', $fileText);
         $query->bindParam(':cid', $cid);
         $query->execute();
         $norows = $query->fetchColumn();
-        // $filesize = filesize($movname);
-
+        
         // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
         if ($norows == 0) {      
             $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
@@ -112,20 +104,15 @@
             if (!$query->execute()) {
                 $error = $query->errorInfo();
                 echo "Error updating file entries" . $error[2];
-                $errortype ="uploadfile";
+                // $errortype ="uploadfile";
                 $errorvar = $error[2];
                 print_r($error);
                 echo $errorvar;
             } 
         }
     }
-    // Added for tesing ebuging 
-    $translatedURL = 'https://api.github.com/repos/e21krida/Webbprogrammering-Examples/contents/Examples/App_Demo';
-    $repository = 'Webbprogrammering-Examples';
 
-    // $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    bfs($translatedURL, $repository);
-    // ----------------------------------
+
     
     function bfs($url, $repository)
     {
@@ -141,6 +128,8 @@
         array_push($fifoQueue, $url);
         $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
+        // TODO link the course with cid, should not be hardcoded 
+        $cid = 1; // 1 för webbprogramering 
 
         while (!empty($fifoQueue)) {
             // Randomizes colors for easier presentation
@@ -177,21 +166,19 @@
                         if ($item['type'] == 'file') {
                             // Retrieves the contents of each individual file based on the fetched "download_url"
                             $fileContents = file_get_contents($item['download_url']);
-                            $path = '../../LenaSYS/courses/'.  1 . '/' . $item['name'];
+                            $path = '../../LenaSYS/courses/'. $cid . '/' . $item['path'];
                             echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                             // Creates the directory for each individual file based on the fetched "path"
-                            // if (!file_exists((dirname($path)))) {
-                            //     mkdir(dirname($path), 0777, true);
-                            // } 
+                            if (!file_exists((dirname($path)))) {
+                                mkdir(dirname($path), 0777, true);
+                            } 
                             
+                            insertToFileLink($cid, $item);
                             // Writes the file to the respective folder. 
                             file_put_contents($path, $fileContents);
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-                            echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
-
-                    
+                            echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';                           
                             
-
                             // Checks if the fetched item is of type 'dir'
                         } else if ($item['type'] == 'dir') {
                             echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
