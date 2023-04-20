@@ -22,6 +22,7 @@
         <?php
             try {
 	            $log_db = new PDO('sqlite:../../log/loglena6.db');
+                var_dump($log_db);
             } catch (PDOException $e) {
 	            echo "Failed to connect to the database";
 	            throw $e;
@@ -32,6 +33,7 @@ $columns_to_search = ['logEntries', 'exampleLoadLogEntries', 'userHistory', 'use
 
 // Get search query from input field
 $search_query = $_GET['q'] ?? '';
+echo $sql_query;
 
 // Prepare SQL query to fetch data
 $sql_query = 'SELECT * FROM ';
@@ -80,8 +82,8 @@ foreach ($log_db->query($sql_query) as $row) {
 echo "</table>";
 ?>
 
-<form method="post">
-    <input type="text" name="q" value="<?= htmlentities($_POST['q'] ?? '') ?>" />
+<form method="get">
+    <input type="text" name="q" value="<?= htmlentities($_GET['q'] ?? '') ?>" />
     <button type="submit">Search</button>
 </form>
 
@@ -91,7 +93,7 @@ echo "</table>";
         <!----------------------------------------------------------------------------------->  
         <!------Creates a dropdown with all tables in the loglena database------------------->
         <!----------------------------------------------------------------------------------->
-        <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
+        <span><form id="form1" name="form1" method="get" action="<?php echo $PHP_SELF; ?>">
         <?php    
                 date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
 
@@ -102,8 +104,8 @@ echo "</table>";
                     foreach($log_db->query( 'SELECT name FROM sqlite_master;' ) as $row){
                     
                         echo '<option value="'.$row['name'].'"';
-                            if(isset($_POST['name'])){
-                                if($_POST['name']==$row['name']) echo " selected ";
+                            if(isset($_GET['name'])){
+                                if($_GET['name']==$row['name']) echo " selected ";
                             }
                         echo '>';
                         
