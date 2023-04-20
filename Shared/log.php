@@ -149,9 +149,7 @@
                 while ($row = $resultSet->fetch_assoc()){
                     $products[] = $row;
                 }
-                foreach($products as $product){
-                    echo $product["id"];
-                }
+                print_r($products);
 /*
                 $array2 = array(
                     0 => "a",
