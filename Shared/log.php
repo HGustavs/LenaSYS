@@ -148,8 +148,8 @@
                 $results = $sql->fetchAll(PDO::FETCH_ASSOC);
                 print_r($results);
                 $array2 = array(
-                    0 => "a",
-                    1 => "b",
+                    0 => $results[0],
+                    1 => $results[1],
                 );
                 print_r($array2);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
