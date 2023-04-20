@@ -170,10 +170,10 @@
                 echo"
                 </table>
                 ";
-                print "<pre>";
+                /*print "<pre>";
                 print_r($userLogEntriesResults);
                 print "</pre>";
-                /*
+                *//*
                 // gathers information from database table userLogEntries
                 echo "<table style='width:100%'>";
                     echo '<tr>';
