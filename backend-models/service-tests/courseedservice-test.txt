@@ -907,3 +907,378 @@ function testImpwordList() {
     $this->assertTrue($allOperationsSucceeded, $debug);
 }
 
+****************************************************************
+Duplicate listentries (row 349)
+****************************************************************
+
+prepare query "SELECT * from listentries WHERE vers = :oldvers;"
+bind parameter ":oldvers" to value $copycourse
+if execution of query fails then
+	set $allOperationsSucceeded to false
+	get error information from query
+	set $debug to "Error reading courses" followed by the error message from errorInfo()
+end if
+
+
+// Test case 1: Successful execution of query
+$pdo = new PDO('mysql:host=localhost;dbname=mydb', 'myusername', 'mypassword');
+$copycourse = 'some_value';
+$query = $pdo->prepare("SELECT * from listentries WHERE vers = :oldvers;");
+$query->bindParam(':oldvers', $copycourse);
+$allOperationsSucceeded = true;
+$debug = '';
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$allOperationsSucceeded = false;
+	$debug="Error reading courses\n".$error[2];
+}
+
+// Assert that query was executed successfully
+assertTrue($allOperationsSucceeded);
+// Assert that debug information is empty
+assertEmpty($debug);
+
+
+// Test case 2: Failed execution of query
+$pdo = new PDO('mysql:host=localhost;dbname=mydb', 'myusername', 'mypassword');
+$copycourse = 'some_value';
+$query = $pdo->prepare("SELECT * from listentries WHERE vers = :oldvers;");
+$query->bindParam(':oldvers', $copycourse);
+$allOperationsSucceeded = true;
+$debug = '';
+
+// Force query execution to fail
+$query->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$query->execute(array(':oldvers' => $copycourse . '_non_existing'));
+
+try {
+	$query->execute();
+} catch (PDOException $e) {
+	$error = $query->errorInfo();
+	$allOperationsSucceeded = false;
+	$debug = "Error reading courses\n" . $error[2];
+}
+
+// Assert that query execution failed
+assertFalse($allOperationsSucceeded);
+// Assert that debug information is not empty
+assertNotEmpty($debug);
+
+
+****************************************************************
+else
+****************************************************************
+
+else {
+momentList = empty array
+for each row in query result set {
+ruery = prepare SQL statement to insert data into listentries table
+bind parameters for ruery
+if ruery execution is not successful {
+set allOperationsSucceeded to false
+set debug message for error in ruery execution
+} else {
+set momentlist at the current row's lid to the last inserted id
+}
+}
+for each moment in momentlist {
+ruery = prepare SQL statement to update moment in listentries table
+bind parameters for ruery
+if ruery execution is not successful {
+set allOperationsSucceeded to false
+set debug message for error in ruery execution
+}
+}
+for each quiz in duggalist {
+puery = prepare SQL statement to update link in listentries table
+bind parameters for puery
+if puery execution is not successful {
+set allOperationsSucceeded to false
+set debug message for error in puery execution
+}
+}
+for each example in codeexamplelist {
+puery = prepare SQL statement to update link in listentries table
+bind parameters for puery
+if puery execution is not successful {
+set allOperationsSucceeded to false
+set debug message for error in puery execution
+}
+}
+for each example in codeexamplelist {
+puery = prepare SQL statement to update beforeid in codeexample table
+bind parameters for puery
+if puery execution is not successful {
+set allOperationsSucceeded to false
+set debug message for error in puery execution
+}
+}
+for each example in codeexamplelist {
+puery = prepare SQL statement to update afterid in codeexample table
+bind parameters for puery
+if puery execution is not successful {
+set allOperationsSucceeded to false
+set debug message for error in puery execution
+}
+}
+}
+
+****************************************************************
+TESTS!
+****************************************************************
+
+// Test for successful execution of SQL statements
+public function testSqlExecutionSuccess() {
+// Arrange
+// Create a mock query with some mock data
+$query = $this->createMock(PDOStatement::class);
+$query->expects($this->any())
+->method('fetchAll')
+->will($this->returnValue(array(
+array('lid' => 1),
+array('lid' => 2)
+)));
+$pdo = $this->createMock(PDO::class);
+$pdo->expects($this->any())
+->method('prepare')
+->will($this->returnValue($this->createMock(PDOStatement::class)));
+$pdo->expects($this->any())
+->method('lastInsertId')
+->will($this->returnValue(3));
+$versid = 4;
+$duggalist = array('old_quiz' => 'new_quiz');
+$codeexamplelist = array('old_example' => 'new_example');
+// Create the class instance and set the properties for testing
+$class = new MyClass();
+$class->query = $query;
+$class->pdo = $pdo;
+$class->versid = $versid;
+$class->duggalist = $duggalist;
+$class->codeexamplelist = $codeexamplelist;
+// Act
+$result = $class->executeSqlStatements();
+// Assert
+$this->assertTrue($result);
+}
+
+public function testSqlExecutionFailure() {
+    // Arrange
+    // Create mock PDO object
+    $pdo = $this->getMockBuilder(PDO::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+
+    // Set PDO::execute() method to return false
+    $statement = $this->getMockBuilder(PDOStatement::class)
+                     ->disableOriginalConstructor()
+                     ->getMock();
+    $statement->expects($this->once())
+              ->method('execute')
+              ->willReturn(false);
+
+    // Add mocked error message to PDO::errorInfo() method
+    $statement->expects($this->once())
+              ->method('errorInfo')
+              ->willReturn(['SQLSTATE', 12345, 'Mocked error message']);
+
+    $pdo->expects($this->once())
+        ->method('prepare')
+        ->willReturn($statement);
+
+    // Act
+    // Call the method that executes SQL statements
+    $objectUnderTest = new YourClassName($pdo);
+    $result = $objectUnderTest->executeSqlStatement();
+
+    // Assert
+    // Check that the method returned the expected value
+    $this->assertFalse($result);
+
+    // Check that the expected error message was logged
+    $this->assertContains('Mocked error message', $objectUnderTest->getDebugLog());
+}
+
+******** end of line 431 ********
+
+******** start of line 433 ********
+
+****************************************************************
+IF makeactive==3!
+****************************************************************
+
+if makeactive equals 3:
+    prepare update statement for table course:
+        - set activeversion to versid
+        - where cid equals cid
+    bind cid to the value of $cid
+    bind versid to the value of $versid
+    
+    execute the query
+    if the query execution fails:
+        set allOperationsSucceeded to false
+        get the error information and set debug to "Error updating entries" followed by the error message
+
+
+****TESTS***
+
+// Test 1: makeactive is not equal to 3
+$makeactive = 2;
+$cid = 1;
+$versid = 2;
+$pdo = new PDO("sqlite::memory:");
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':vers', $versid);
+
+$result = $query->execute();
+assertTrue($result);
+
+// Test 2: update query succeeds
+$makeactive = 3;
+$cid = 1;
+$versid = 2;
+$pdo = new PDO("sqlite::memory:");
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':vers', $versid);
+
+$result = $query->execute();
+assertTrue($result);
+
+// Test 3: update query fails
+$makeactive = 3;
+$cid = 1;
+$versid = 2;
+$pdo = new PDO("sqlite::memory:");
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':vers', $versid);
+
+// Force query to fail
+$query->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+try {
+    $result = $query->execute();
+} catch(PDOException $ex) {
+    $error = $query->errorInfo();
+    $allOperationsSucceeded = false;
+    $debug = "Error updating entries\n".$error[2];
+}
+
+assertFalse($result);
+assertFalse($allOperationsSucceeded);
+assertEquals("Error updating entries\n", substr($debug, 0, 22));
+
+
+***************** LINE 445-500 *********************************
+
+
+
+if (allOperationsSucceeded) {
+    commit the transaction;
+} else {
+    rollback the transaction;
+}
+
+try {
+    if (opt == "INSERT") {
+        prepare a query to insert a new course into the database;
+        bind parameters to the query;
+        execute the query;
+        if the query fails, set the debug message to an error message;
+        else, log the user event for adding a new course;
+    } else if (opt == "UPDATE") {
+        prepare a query to update an existing course in the database;
+        bind parameters to the query;
+        execute the query;
+        if the query fails, set the debug message to an error message;
+        else, log the user event for editing a course;
+    } else if (opt == "SETTINGS") {
+        prepare a query to insert new settings into the database;
+        bind parameters to the query;
+        execute the query;
+        if the query fails, set the debug message to an error message;
+    }
+} catch (Exception $e) {
+    rollback the transaction;
+    set the debug message to an error message indicating a duplicate course name;
+}
+
+
+*****************TESTS********************************
+
+// Test case 1: All operations succeed
+$allOperationsSucceeded = true;
+$pdoMock = $this->getMockBuilder(PDO::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+$pdoMock->expects($this->once())
+        ->method('commit');
+$pdoMock->expects($this->never())
+        ->method('rollBack');
+$opt = "INSERT";
+$coursename = "Test Course";
+$visibility = 1;
+$coursecode = "TC101";
+$courseGitURL = "https://github.com/test/course";
+$cid = 0;
+$userid = 1;
+$username = "testuser";
+$logDescription = "Test Course TC101 Public";
+$motd = "Welcome to the Test Course!";
+$readonly = 1;
+logUserEvent($userid, $username, EventTypes::AddCourse, $logDescription);
+insertOrUpdateCourse($pdoMock, $opt, $coursename, $visibility, $coursecode, $courseGitURL, $cid, $userid, $username, $motd, $readonly);
+
+
+$allOperationsSucceeded = false;
+$pdoMock = $this->getMockBuilder(PDO::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+$pdoMock->expects($this->never())
+        ->method('commit');
+$pdoMock->expects($this->once())
+        ->method('rollBack');
+$opt = "INSERT";
+$coursename = "Test Course";
+$visibility = 1;
+$coursecode = "TC101";
+$courseGitURL = "https://github.com/test/course";
+$cid = 0;
+$userid = 1;
+$username = "testuser";
+$motd = "Welcome to the Test Course!";
+$readonly = 1;
+$debug = "Error updating entries";
+insertOrUpdateCourse($pdoMock, $opt, $coursename, $visibility, $coursecode, $courseGitURL, $cid, $userid, $username, $motd, $readonly);
+$this->assertEquals($debug, "Error updating entries");
+
+public function testUpdateCourse(): void
+{
+    // Arrange
+    $pdo = new PDO("mysql:host=localhost;dbname=test", "username", "password");
+    $opt = "UPDATE";
+    $cid = 1;
+    $coursename = "New Course Name";
+    $visibility = 1;
+    $coursecode = "ABC123";
+    $courseGitURL = "https://github.com/example/repo";
+    
+    // Act
+    $result = updateCourse($pdo, $opt, $cid, $coursename, $visibility, $coursecode, $courseGitURL);
+    
+    // Assert
+    $this->assertTrue($result);
+    
+    // Check database for updated values
+    $query = $pdo->prepare("SELECT coursename, visibility, coursecode, courseGitURL FROM course WHERE cid = :cid;");
+    $query->bindParam(':cid', $cid);
+    $query->execute();
+    $course = $query->fetch(PDO::FETCH_ASSOC);
+    
+    $this->assertEquals($coursename, $course['coursename']);
+    $this->assertEquals($visibility, $course['visibility']);
+    $this->assertEquals($coursecode, $course['coursecode']);
+    $this->assertEquals($courseGitURL, $course['courseGitURL']);
+}
