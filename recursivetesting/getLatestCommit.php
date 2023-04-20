@@ -6,21 +6,23 @@
 	error_reporting(E_ALL);
 
 	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-	if(isset($_POST['action'])) 
-	{
-		if($_POST['action'] == 'getCourseID') 
-		{
-			getCourseID($_POST['githubURL']);
-		}
-	};
+	// if(isset($_POST['action'])) 
+	// {
+	// 	if($_POST['action'] == 'getCourseID') 
+	// 	{
+	// 		getCourseID($_POST['githubURL']);
+	// 	}
+	// };
+
+	getCourseID("https://github.com/HGustavs/DiagrammingSYS");
 
 	function getCourseID($githubURL) {
-		// $querystring = 'SELECT cid FROM course WHERE courseGitURL = :githubURL';
-		// $query  = $pdo->prepare($querystring);
-		// $query->bindParam(':githubURL', $githubURL);
-		// $query->execute();
+		$querystring = 'SELECT cid FROM course WHERE courseGitURL = :githubURL';
+		$query  = $pdo->prepare($querystring);
+		$query->bindParam(':githubURL', $githubURL);
+		$query->execute();
 		
-		// print_r($query['cid']);
+		print_r($query['cid']);
 
 		getCommit($githubURL);
 	}
