@@ -8894,7 +8894,6 @@ function drawElement(element, ghosted = false)
     // Check if element is SDState
     else if (element.kind == "SDState") {
         elemAttri = element.attributes.length;
-        elemFunc = element.functions.length;
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
