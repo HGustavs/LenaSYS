@@ -471,23 +471,28 @@ if($gradesys=="UNK") $gradesys=0;
 							$this->open("../../githubMetadata/metadata2.db");
 						}
 					}
-					$query = $pdo->prepare("SELECT filename FROM box WHERE exampleid=:exampleid;");
-					$query->bindParam(":exampleid", $exampleid);
-					$query->execute();
+					$query1 = $pdo->prepare("SELECT filename FROM box WHERE exampleid=:exampleid;");
+					$query1->bindParam(":exampleid", $exampleid);
+					$query1->execute();
+					$query2 = $pdo->prepare("SELECT cid FROM codeexample WHERE exampleid=:exampleid;");
+					$query2->bindParam(":exampleid", $exampleid);
+					$query2->execute();
 					$files = array();
-					foreach($query->fetchAll() as $row) {
-						array_push($files, $row['filename']);
+					$row2 = $query2->fetchAll();
+					$cid = $row2['cid'];
+					foreach($query1->fetchAll() as $row1) {
+						array_push($files, $row1['filename']);
 					}
 					$gdb = new githubDB();
 					$downloads = array();
 					foreach($files as $file) {
-						$que = $gdb->query("SELECT downloadURL FROM gitRepos WHERE fileName=".$file.";");
+						$que = $gdb->query("SELECT downloadURL FROM gitFiles WHERE cid=".$cid." AND fileName=".$file.";");
 						while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
 							array_push($downloads, $row['downloadURL']);
 						}
 					}
 					$gdb->close();
-					//13179 här anropas uppdateringsfunktionen
+					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				}
 			}
 		}
