@@ -8912,7 +8912,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path 
             d="M${linew+cornerRadius},${(linew)}
-                h${(boxw - (linew * 2))-cornerRadius}
+                h${(boxw - (linew * 2))-(cornerRadius*2)}
                 a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
                 v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-(cornerRadius)}
                 h${(boxw - (linew * 2))*-1}
