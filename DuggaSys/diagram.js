@@ -1113,7 +1113,7 @@ var defaults = {
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
-    SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do:'], functions: []}, //<-- SD functionality
+    SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: [''], functions: []}, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" } // UML Final state.
@@ -8926,7 +8926,7 @@ function drawElement(element, ghosted = false)
         //div to encapuslate SD content
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
-        if (elemAttri >= 0) {
+        if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' >`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
@@ -8944,13 +8944,13 @@ function drawElement(element, ghosted = false)
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text x='${xAnchor}' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>do: </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>do: </text>`;
             //end of svg for background
             str += `</svg>`;
         }
         str += `</div>`;
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
-        if (elemFunc > 0) {
+        if (elemFunc != 0) {
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
             str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
