@@ -144,8 +144,10 @@
                 else{
                     $sort = 'ASC';
                 }*/
+                $order = "id";
+                $sort = "ASC";
 
-                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY timestamp DESC;');
+                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
