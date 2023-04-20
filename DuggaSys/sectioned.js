@@ -1560,10 +1560,10 @@ function returnedSection(data) {
 
         // Refresh button for moments
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;'>`;
+          str += `<td style='width:32px;' class='moment'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
-                  id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
-          str += " onclick='refreshCodeExample("+item['link']+")'"
+                  id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
+          str += ">";
           str += "</td>";
         }
 
