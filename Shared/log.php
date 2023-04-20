@@ -148,7 +148,7 @@
                 
                 $array2 = array(
                     0 => "a",
-                    1 => "b",
+                    1 => $resultSet[0],
                 );
                 print_r($array2);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
