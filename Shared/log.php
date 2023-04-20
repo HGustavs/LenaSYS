@@ -165,7 +165,7 @@
                     echo"<tr>";
                     foreach($rows as $row) {
                         echo"
-                            <td>".$row[0]."</td>
+                            <td>".$row."</td>
                         ";
                     }
                     echo"</tr>";
