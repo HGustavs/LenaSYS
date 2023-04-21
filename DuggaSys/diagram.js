@@ -3979,8 +3979,48 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
+ * @description returns a string containing info about state diagrams
+ */
+function generateStateDiagramInfo()
+{
+    let output="";
+    let lineCounter=0;
+    let elementCounter=0;
+    //had to make a separate loop to count the lines otherwise if it is put in the other loop the counter behaves in a strange way. 
+    for(var i=0; i<lines.length; i++)
+    {
+        if(lines[i].type==entityType.SD)
+    lineCounter++; 
+    }
+    for (var i=0; i<data.length; i++)
+    {
+        if(data[i].kind==elementTypesNames.SDState)
+        elementCounter++;
+        for(var j=0; j<lines.length; j++)
+        {    
+if(data[i].kind==elementTypesNames.SDState)
+{
+    //the output is broken for now. it does not print out the correct connections.
+    //checks weather the connection that goes from a line is the same as the element ID. 
+    if(data[i].id==lines[j].fromID)
+    {
+    output+="line goes from "+ data[i].name+"\n";
+    }
+    //checks weather the connection that goes to a line is the same as the element ID. 
+    else if(data[i].id==lines[j].toID)
+    {
+        output+="line goes to "+ data[i].name+"\n";
+    }
+    }
+}
+    }
+    output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
+    return output;
+}
+/**
  * @description hides or shows the diagram type dropdown 
  */
+
 function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
@@ -6175,7 +6215,7 @@ function generateContextProperties()
     //If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     else if (testCaseToggle) {
         str += '<div id="ERTable">'; //using same styling for now, maybe change later
-        str += 'Debug testcase'
+        str += generateStateDiagramInfo();
         str += '</div>';
     }
     else {
