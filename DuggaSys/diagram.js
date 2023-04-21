@@ -8843,7 +8843,7 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}'
             />`;
             for (var i = 0; i < elemAttri; i++) {
-                if(sdOption.value){
+                if(sdOption){
                     str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${sdOption.value + element.attributes[i]}</text>`;
                 }
                 else {
