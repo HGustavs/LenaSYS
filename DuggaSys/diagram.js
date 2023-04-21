@@ -2866,6 +2866,8 @@ function saveProperties()
     const children = propSet.children;
 
     var propsChanged = {};
+    var sdTextBoxDo = document.querySelector('SDState-Do');
+    var sdTextBoxExit = document.querySelector('SDState-Exit');
 
     for (var index = 0; index < children.length; index++) {
         const child = children[index];
@@ -2886,7 +2888,13 @@ function saveProperties()
                 var formatArr = [];
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        formatArr.push(arrElementAttr[i]);
+                        if(sdTextBoxDo == getElementById(propName)) {
+                            formatArr.push("Do: " + arrElementAttr[i]);
+                        }else if (sdTextBoxExit == getElementById(propName)){
+                            formatArr.push("Exit: " + arrElementAttr[i]);
+                        }else {
+                            formatArr.push(arrElementAttr[i]);
+                        }
                     } 
                 }
                 //Update the attribute array
@@ -6379,7 +6387,8 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}' class='SDState-Do' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}' class='SDState-Exit' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
                             break;
