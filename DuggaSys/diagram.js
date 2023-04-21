@@ -8843,7 +8843,12 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}'
             />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${sdOption + element.attributes[i]}</text>`;
+                if(sdOption.value != null){
+                    str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${sdOption.value + element.attributes[i]}</text>`;
+                }
+                else {
+                    str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
+                }
             }
             //end of svg for background
             str += `</svg>`;
