@@ -6380,9 +6380,9 @@ function generateContextProperties()
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
                             str += `<div>`;
-                            str += `<select id='SDOption'>`;
-                                str +=  `<option value ="Do:" selected>Do</option>`;
-                                str += `<option value="Exit:">Exit</option>`;
+                            str += `<select id="SDOption">`;
+                                str +=  `<option value ="Do: " selected>Do</option>`;
+                                str += `<option value="Exit: ">Exit</option>`;
                             str += `</select>`;
                             str += `</div>`;
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
@@ -8824,7 +8824,8 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
-            let sdOption = document.getElementById('SDOption').value;
+            let sdOption = document.getElementById("SDOption");
+            console.log(sdOption.value);
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path 
