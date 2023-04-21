@@ -57,3 +57,56 @@ Boxcount 5 = templateNumber 9
 
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values ('1885', 'testG2-v3-00000000', 'New code 9023', NULL, NULL, NULL, '1337', '0', '1', '0');
 
+Forces box to have content html1
+SELECT * FROM box WHERE boxid = 5 AND exampleid = 9022;
+
+Does Not display? Have they made it in another database that displays it?
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values ('1885', 'testG2-v3-00000000', 'New code 9023', NULL, NULL, NULL, '1337', '0', '1', '0');
+
+
+Update and insert file in to box(line 133):
+--------------------------------------------------------------------------------------------
+
+Insert:
+exampleid must be a pre existence value from codeexample, it is a foreignkey
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid,fontsize) VALUES (5, 9025, "testestest", "code", "[viktig=1]", "TESTtest.html", 4, 9);
+
+Inserted values{
+	boxid
+	exampleid
+	boxtitle
+	boxcontent
+	settings
+	filename
+	wordlistid
+	fontsize
+}
+
+Update:
+Make exampleid same as insert example
+UPDATE box SET boxcontent = "DOCUMENT", filename = "updateTEST", wordlistid = 3 WHERE boxid = 5 AND exampleid = 9025;
+
+Updated values{
+	boxcontent
+filename
+wordlisti
+}
+
+
+EDITEXAMPLE(line 160):
+--------------------------------------------------------------------------------------------
+POST{
+['playlink'] {$playlink = $_POST['playlink'];} //All values are null, what does it do?
+['examplename'] {$exampleName = $_POST['examplename'];}
+['sectionname'] {$sectionName = $_POST['sectionname'];}
+['beforeid'] {$beforeId = $_POST['beforeid'];}	 //Sets previous id before change
+['afterid'] {$afterId = $_POST['afterid'];}	 //Sets post change id after change
+}
+
+:playlink, $playlink
+:examplename, $exampleName
+:sectionname, $sectionName
+:exampleid, $exampleId
+:cid, $courseId
+:cvers, $courseVersion
+
