@@ -6379,8 +6379,8 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<div class="dropdownContent">`;
-                            str += `<select id="diagramTypeDropdown" onchange="checkDropdownOption()">`;
+                            str += `<div>`;
+                            str += `<select>`;
                                 str +=  `<option value ="Do:">Do</option>`;
                                 str += `<option value="Exit:">Exit</option>`;
                             str += `</select>`;
