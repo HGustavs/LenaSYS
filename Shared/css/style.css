@@ -309,7 +309,7 @@ p {
 }
 
 .cardinalityLabel {
-    fill: rgba(0, 0, 0, 0);
+    fill: white;
 }
 
 .cardinalityLabelText {
