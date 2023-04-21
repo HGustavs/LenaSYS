@@ -2245,7 +2245,9 @@ function determineLineSelect(mouseX, mouseY)
         bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
   
         var hasPoints = allLines[i].getAttribute('points'); // If line has attribute point (polyline)
+
         if (hasPoints != null) {
+
             var points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
             for (var j = 0; j < points.length-1; j++) {
@@ -2272,6 +2274,9 @@ function determineLineSelect(mouseX, mouseY)
                     c: ((currentLineSegment.x1 - currentLineSegment.x2)*currentLineSegment.y1 + (currentLineSegment.y2-currentLineSegment.y1)*currentLineSegment.x1)
                 }
                 lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
+
+                console.log(currentLineSegment);
+
                 if(lineWasHit == true && labelWasHit == false) {
                     // Return the current line that registered as a "hit".;
                     return lines.filter(function(line) {
@@ -2387,6 +2392,7 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
 function mouseMode_onMouseMove(event)
 {
     mouseOverLine = determineLineSelect(event.clientX, event.clientY);
+
     // Change cursor style if mouse pointer is over a line.
     if(mouseOverLine && !mouseButtonDown){
         cursorStyle.cursor = "pointer";
@@ -7579,11 +7585,7 @@ function drawLine(line, targetGhost = false)
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
         if (isClose(felem, telem)) {
-            str += `<polyline id='${line.id}' class='lineColor' points='
-                ${fx} ${fy},
-                ${tx} ${ty}
-                ' 
-                fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
             str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
