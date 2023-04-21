@@ -1,13 +1,84 @@
 Fileedservice.php
 
-All tests
-----------
+--------------------------------------------------------------------------------------------------------------------------------------------
+Test the user's login (line 203)
+--------------------------------------------------------------------------------------------------------------------------------------------
 
-- Test 1: Test the user's login:
-	1. Start up the session.
-	2. Set the user ID in the session.
-	3. Call the function "checklogin()".
-	4. For the test to pass, the returning value should be true.
+*********
+* pre-req:
+*********
+
+include_once "../fileedservice.php";
+
+session_start();
+$_SESSION['uid'] = 1;
+
+*********
+* Call checklogin function:
+*********
+
+$result = checklogin();
+
+*********
+* Check if function returned true:
+*********
+
+if ($result) {
+    echo "Test passed.";
+} else {
+    echo "Test failed.";
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Test to get a username from the database (line 16)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+*********
+
+date_default_timezone_set("Europe/Stockholm");
+
+include_once "../Shared/sessions.php";
+include_once "../Shared/basic.php";
+
+pdoConnect();
+session_start();
+
+*********
+* Start up the session:
+*********
+
+if (isset($_SESSION['uid'])) {
+    $userid = $_SESSION['uid'];
+} else {
+    $userid = "1";
+}
+
+*********
+* Set the user ID in the session:
+*********
+
+$query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query->execute();
+
+*********
+* Call the function "checklogin()", "getUsername()" and check values:
+*********
+
+if (checklogin()) {				
+    $username = getUsername();
+    if ($username === "expected_username") {
+        echo "Test passed!";
+    } else {
+        echo "Test failed!";
+    }
+} else {
+    echo "Failed to login.";
+}
+
+
 
 - Test 2: Test to get a username from the database:
 	1. Start up the session.
