@@ -91,9 +91,10 @@
             
             // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
+                $sort = isset($_GET['sort']) && $_GET['sort'] == 'DESC' ? 'ASC' : 'DESC';
+                $order = isset($_GET['order']) ? $_GET['order'] : 'id';
                 $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
                 $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -120,9 +121,10 @@
             
             // Gathers information from database table exampleLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
+                $sort = isset($_GET['sort']) && $_GET['sort'] == 'DESC' ? 'ASC' : 'DESC';
+                $order = isset($_GET['order']) ? $_GET['order'] : 'id';
                 $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
                 $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -151,9 +153,10 @@
 
             // Gathers information from database table userHistory
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
+                $sort = isset($_GET['sort']) && $_GET['sort'] == 'DESC' ? 'ASC' : 'DESC';
+                $order = isset($_GET['order']) ? $_GET['order'] : 'id';
                 $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$order.' '.$sort.';');
                 $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -181,9 +184,10 @@
 
             // Gathers information from database table userLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
+                $sort = isset($_GET['sort']) && $_GET['sort'] == 'DESC' ? 'ASC' : 'DESC';
+                $order = isset($_GET['order']) ? $_GET['order'] : 'id';
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -213,9 +217,10 @@
 
             // Gathers information from database table serviceLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
+                $sort = isset($_GET['sort']) && $_GET['sort'] == 'DESC' ? 'ASC' : 'DESC';
+                $order = isset($_GET['order']) ? $_GET['order'] : 'id';
                 $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$order.' '.$sort.';');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -249,9 +254,10 @@
 
             // Gathers information from database table duggaLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
+                $sort = isset($_GET['sort']) && $_GET['sort'] == 'DESC' ? 'ASC' : 'DESC';
+                $order = isset($_GET['order']) ? $_GET['order'] : 'id';
                 $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$order.' '.$sort.';');
                 $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
