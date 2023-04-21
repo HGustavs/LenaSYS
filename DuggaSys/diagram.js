@@ -6379,12 +6379,12 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<div>`;
+                           /* find me str += `<div>`;
                             str += `<select id="SDOption">`;
                                 str +=  `<option value ="Do: " selected>Do</option>`;
                                 str += `<option value="Exit: ">Exit</option>`;
                             str += `</select>`;
-                            str += `</div>`;
+                            str += `</div>`; */
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
@@ -8824,8 +8824,8 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
-            let sdOption = document.getElementById("SDOption");
-            console.log(sdOption);
+           /* find me let sdOption = document.getElementById("SDOption");
+            console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path 
@@ -8843,7 +8843,7 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}'
             />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${sdOption + element.attributes[i]}</text>`;
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
