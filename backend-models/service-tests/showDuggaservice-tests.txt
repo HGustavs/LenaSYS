@@ -53,3 +53,45 @@ If not $debug="Unable to save dugga!"
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST#3
 allmightyViewTest(318-451)
+This test ensures that a teacher (user with a super account) can view all answer by users
+This service is pretty big but i shall try and be a short as possible
+
+To test this service try to get everything a teacher can access in the userAnswer table in the db
+
+Pre-req: {isSuperUser($userid)}
+if the hash is "UNK" then the program tries to get data from userAnswer where hash = hash (distinct user hash)
+SQL query: SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=hash;
+this is then the fetched as $rows
+This test works if the data is presented in MySql
+
+If the hash didnt work to retrive all answers for that moment it tries select the same values but instead of where hash = hash its moment = moment
+SQL query: SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE moment=moment;
+It will the fetch the same way as above
+This test works if the data is presented in MySql
+
+This data is then presented with a foreach loop for $rows
+
+After this is done the service gets the entryname for the moment (ex biträkningsdugga 1)
+SQL query for this: SELECT entryname FROM listentries WHERE lid=moment;
+:moment is then bound to $moment and then executed
+This text works if a list of all entrynames is presented
+
+If the everything works the data should be presented on Lenasys.
+If not $debug gets error message and the data is reset
+
+That was the first part of the if statement
+This part is for a "normal" user to view only the users answer
+
+If hash and password is unknown the service gets the data
+SQL query for users dugga: SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=hash AND password=hashpwd
+This is almost the same as the teachers query but at the end the users hashpwd is selected which will only provide 1 dugga.
+This is succeful if only a single dugga is presented in the db and on LenaSYS
+
+If the service finds hash and password the service gets data by
+SQL query to get data: SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param,l.entryname AS dugga_title FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=hash AND password=hashpwd LEFT JOIN (select cid,link,entryname from listentries) as l ON l.cid=l.cid AND l.link=quiz.id WHERE quiz.id=did AND vid=variant AND l.cid=cid LIMIT 1;
+It then prepares this query, binds the values and executes it
+Its then presented with a foreachloop
+The data is also presented on LenaSYS with processDuggaFiles();
+
+
+
