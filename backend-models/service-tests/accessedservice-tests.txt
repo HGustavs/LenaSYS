@@ -1,0 +1,23 @@
+
+accessedservice.php
+
+-------------------
+
+********
+* pre-req
+********
+
+(checklogin() is TRUE && (hasAccess($userid, $cid, 'w') || isSuperUser($userid,) is TRUE))
+
+--------------------
+
+Test 1: try to update a created user by changing the username
+To make sure the update of a user works and what response it will get form the database.
+It can be done by creating a user with SQL-query.
+   SQL-query: insert into user( username, email, firstname, lastname, ssn, password, addedtime, class) 
+       VALUES ( :username, :email, :firstname, :lastname, :ssn, :password, now(), :class)
+Then make an update by useing SQL-query.
+   SQL-query: UPDATE user SET username=:username WHERE uid=:uid
+To update the username of the user. The values to be checked are username and uid.
+If the update was unable to succeed, it should display an error message which says 
+that the user does not exist in the database.
