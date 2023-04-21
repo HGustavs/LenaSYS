@@ -2872,7 +2872,6 @@ function saveProperties()
     for (var index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
-        console.log(child.id);
         switch (propName) {
             case "name":
                 const value = child.value.trim();
@@ -2889,14 +2888,13 @@ function saveProperties()
                 var formatArr = [];
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        /* if(sdTextBoxDo == getElementById(child.id)) {
+                        if(sdTextBoxDo == getElementById(child.id)) {
                             formatArr.push("Do: " + arrElementAttr[i]);
                         }else if (sdTextBoxExit == getElementById(child.id)){
                             formatArr.push("Exit: " + arrElementAttr[i]);
                         }else {
                             formatArr.push(arrElementAttr[i]);
-                        } */
-                        formatArr.push(arrElementAttr[i]);
+                        }
                     } 
                 }
                 //Update the attribute array
