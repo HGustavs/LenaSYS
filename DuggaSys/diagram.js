@@ -6839,7 +6839,7 @@ function generateContextProperties()
  */
 function setLineLabel()
 {
-    document.getElementById("lineLabel").value = "&#62&#62Include&#60&#60";
+    document.getElementById("lineLabel").value = "&#60&#60Include&#62&#62";
 }
 
 /**
