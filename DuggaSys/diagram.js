@@ -1917,8 +1917,10 @@ function ddown(event)
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
             event.preventDefault(); // Needed in order for focus() to work properly 
             var input = document.getElementById("elementProperty_name");
-            input.focus();
-            input.setSelectionRange(0,input.value.length); // Select the whole text.
+            if (input !== null) {
+                input.focus();
+                input.setSelectionRange(0, input.value.length); // Select the whole text.
+            }
             document.getElementById('optmarker').innerHTML = "&#x203A;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
