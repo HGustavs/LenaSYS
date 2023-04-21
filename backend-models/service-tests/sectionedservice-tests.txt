@@ -1,0 +1,124 @@
+sectionedservice.php
+
+----------------------------------
+getGroupsTest() line 100:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "GRP"
+* courseid = "1"
+* coursevers = "45656"
+
+/////////////////////////
+
+
+*****************
+ Compare results
+*****************
+
+If $debug is empty then successfully gathered all groups
+
+
+----------------------------------
+deleteTest() line 181:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* sectid != null
+* opt = "DEL"
+
+/////////////////////////
+
+You also need to gather all listentries to compare if deleted.
+Do before call:
+SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" save into beforeDeleted
+
+**************************
+ Get deleted listentries
+**************************
+
+SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterDeleted
+
+
+*****************
+ Compare results
+*****************
+
+If beforeDeleted(count) > afterDeleted(count): passed
+If beforeDeleted(count) < afterDeleted(count): failed
+If $debug not empty: failed
+
+----------------------------------
+deletedTest() line 181:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "DELETED"
+* sectid != null
+
+/////////////////////////
+
+You also need to gather all listentries to compare if deleted.
+Do before call:
+SQL Query: "SELECT visible FROM listentries WHERE lid=:lid" or "SELECT visible FROM listentries" save into beforeMarkedDeleted
+
+**************************
+ Get deleted listentries
+**************************
+
+SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterMarkedDeleted
+
+
+*****************
+ Compare results
+*****************
+
+If any visible has been updated to "3": passed
+If non visible has been updated to "3": failed
+If $debug not empty: failed
+
+
+----------------------------------
+newCodeExampleTest() line 181:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "New"
+* sectid != null
+* courseid != null
+* coursevers != null
+* sectname != null
+* sname != null
+
+/////////////////////////
