@@ -8823,8 +8823,8 @@ function drawElement(element, ghosted = false)
         //div to encapuslate SD content
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
-        let sdOption = document.getElementById('SDOption').value;
         if (elemAttri != 0) {
+            let sdOption = document.getElementById('SDOption').value;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path 
