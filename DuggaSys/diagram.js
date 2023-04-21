@@ -2870,6 +2870,7 @@ function saveProperties()
     for (var index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
+        console.log(propName);
         switch (propName) {
             case "name":
                 const value = child.value.trim();
@@ -2884,6 +2885,7 @@ function saveProperties()
                 //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
                 var formatArr = [];
+                
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
                         formatArr.push(arrElementAttr[i]);
@@ -6379,7 +6381,8 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property} SDState-Do' value='Do:'rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property} SDState-Exit' value='Exit:'rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
                             break;
@@ -8818,6 +8821,9 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+            const doText = document.querySelector('.SDState-Do').value;
+            const exitText = document.querySelector('.SDState-Exit').value;
+
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path 
