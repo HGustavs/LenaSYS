@@ -6379,12 +6379,12 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<div class="dropdownContent">`
-                            str += `<select id="diagramTypeDropdown" onchange="checkDropdownOption()">`
-                                str +=  `<option value ="Do:">Do</option>`
-                                str += `<option value="Exit:">Exit</option>`
-                            str += `</select>`
-                            srt += `</div>`
+                            str += `<div class="dropdownContent">`;
+                            str += `<select id="diagramTypeDropdown" onchange="checkDropdownOption()">`;
+                                str +=  `<option value ="Do:">Do</option>`;
+                                str += `<option value="Exit:">Exit</option>`;
+                            str += `</select>`;
+                            str += `</div>`;
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
