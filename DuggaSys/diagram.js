@@ -4014,7 +4014,7 @@ if(data[i].kind==elementTypesNames.SDState)
     }
 }
     }
-    output+="line counter is "+lineCounter+"and state counter is"+elementCounter;
+    output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
     return output;
 }
 /**
