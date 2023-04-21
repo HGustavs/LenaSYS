@@ -962,6 +962,7 @@ var wasDblClicked = false;
 var targetDelta;
 var mousePressed;
 var erTableToggle = false; //Used only in toggleErTable() and generateContextProperties().
+var testCaseToggle = false;
 var selectionBoxLowX;
 var selectionBoxHighX;
 var selectionBoxLowY;
@@ -1091,7 +1092,9 @@ var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
-var IEHeight = []; // List with IE Entities' real heigt
+var IEHeight = []; // List with IE Entities' real height
+var SDHeight = []; // List with SD Entities' real height
+
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -3503,6 +3506,12 @@ function entityIsOverlapping(id, x, y)
                 elementHeight = IEHeight[i].height;
             }
         }
+        // Change height if element is an SD Entity
+        for (var i = 0; i < SDHeight.length; i++) {
+            if (element.id == SDHeight[i].id) {
+                elementHeight = SDHeight[i].height;
+            }
+        }
 
         targetX = x //(x / zoomfact);
         targetY =  y//(y / zoomfact);
@@ -3537,6 +3546,12 @@ function entityIsOverlapping(id, x, y)
               for (var j = 0; j < IEHeight.length; j++) {
                 if (data[i].id == IEHeight[j].id) {
                   compY2 = data[i].y + IEHeight[j].height;
+                }
+              }
+              // Change height if element is an SD Entity
+              for (var j = 0; j < SDHeight.length; j++) {
+                if (data[i].id == SDHeight[j].id) {
+                  compY2 = data[i].y + SDHeight[j].height;
                 }
               }
 
@@ -4146,6 +4161,7 @@ function toggleReplay()
     var ruler = document.getElementById("rulerOverlay");
     var zoomIndicator = document.getElementById("zoom-message-box");
     var replyMessage = document.getElementById("diagram-replay-message");
+    var zoomContainer = document.getElementById("zoom-container");
 
     if (settings.replay.active) {
         // Restore the diagram to state before replay-mode
@@ -4159,6 +4175,8 @@ function toggleReplay()
         ruler.style.left = "50px";
         zoomIndicator.style.bottom = "5px";
         zoomIndicator.style.left = "100px";
+        zoomContainer.style.bottom = "4px";
+        zoomContainer.style.left = "-100px";
         replyMessage.style.visibility = "hidden";
     } else {
         settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
@@ -4190,6 +4208,13 @@ function toggleReplay()
         ruler.style.left = "0";
         zoomIndicator.style.bottom = "55px";
         zoomIndicator.style.left = "45px";
+        zoomContainer.style.bottom = "54px";
+        if (optionsPane.className == "show-options-pane") {
+            zoomContainer.style.left = "240px";
+        }
+        else {
+            zoomContainer.style.left = "-68px";
+        }
         replyMessage.style.visibility = "visible";
     }
     drawRulerBars(scrollx, scrolly);
@@ -4267,9 +4292,26 @@ function toggleErTable()
 {
     if(erTableToggle == false){
         erTableToggle = true;
+        testCaseToggle = false;
     }
     else if (erTableToggle == true){
         erTableToggle = false;
+    }
+    generateContextProperties();
+}
+
+
+/**
+ * @description Toggles the testcases for the diagram in the "Options side-bar" on/off.
+ */
+function toggleTestCase()
+{
+    if (testCaseToggle == false) {
+        testCaseToggle = true;
+        erTableToggle = false;
+    }
+    else if (testCaseToggle == true) {
+        testCaseToggle = false;
     }
     generateContextProperties();
 }
@@ -6148,7 +6190,7 @@ function generateContextProperties()
     } */
 
     //No element or line selected
-    if (context.length == 0 && contextLine.length == 0 && !erTableToggle) {
+    if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
         //Hide properties and show the other options
         propSet.classList.add('options-fieldset-hidden');
         propSet.classList.remove('options-fieldset-show');
@@ -6166,6 +6208,12 @@ function generateContextProperties()
         var ertable = generateErTableString();
         str += ertable;
         str += `</div>`
+    }
+    //If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
+    else if (testCaseToggle) {
+        str += '<div id="ERTable">'; //using same styling for now, maybe change later
+        str += 'Debug testcase'
+        str += '</div>';
     }
     else {
       //One element selected, no lines
@@ -7395,13 +7443,28 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 newLine.cardinality = cardinal;
             }
         }
-
+        preProcessLine(newLine);
         addObjectToLines(newLine, stateMachineShouldSave);
         if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
         return newLine;
         
     } else {
         displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
+    }
+}
+/**
+ * @description Allows the line to be processed and edited just before it is created
+ * @param {object} line Line to process
+ */
+function preProcessLine(line) {
+    var felem, telem;
+
+    felem = data[findIndex(data, line.fromID)];
+    telem = data[findIndex(data, line.toID)];
+
+    //Sets the endIcon of the to-be-created line, if it an State entity
+    if ((felem.type === 'SD') && (telem.type === 'SD')) {
+        line.endIcon = "ARROW";
     }
 }
 //#endregion =====================================================================================
@@ -7416,7 +7479,7 @@ function drawLine(line, targetGhost = false)
     var felem, telem, dx, dy;
     var str = "";
 
-    var lengthConstant = 7; // Determines how "far inwards" on the element the line should have its origin and its end points.
+    var lengthConstant = 1; // Determines how "far inwards" on the element the line should have its origin and its end points.
     var x1Offset = 0;
     var x2Offset = 0;
     var y1Offset = 0;
@@ -7569,6 +7632,9 @@ function drawLine(line, targetGhost = false)
     //gives the lines the correct type based on the from and to element.
     if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
+        if (targetGhost) {
+            line.endIcon = "ARROW";
+        }
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
@@ -8733,6 +8799,21 @@ function drawElement(element, ghosted = false)
     // Check if element is SDState
     else if (element.kind == "SDState") {
         elemAttri = element.attributes.length;
+
+        // Removes the previouse value in SDHeight for the element
+        for (var i = 0; i < SDHeight.length; i++) {
+            if (element.id == SDHeight[i].id) {
+                SDHeight.splice(i, 1);
+            }
+        }
+
+        // Calculate and store the SDEntity's real height
+        var SDEntityHeight = {
+            id: element.id,
+            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
+        }
+        SDHeight.push(SDEntityHeight);
+
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
@@ -8865,7 +8946,7 @@ function drawElement(element, ghosted = false)
             }
         }
 
-        // Calculate and store the UMLEntity's real height
+        // Calculate and store the IEEntity's real height
         var IEEntityHeight = {
             id: element.id,
             height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)

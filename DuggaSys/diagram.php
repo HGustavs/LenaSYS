@@ -436,7 +436,7 @@
                     </span>
                 </div>
         </fieldset>
-        <fieldset>
+        <!-- <fieldset>
             <legend>Zoom</legend>
             <div class="diagramIcons" onclick='zoomin();'>
                 <img src="../Shared/icons/diagram_zoomin.svg"/>
@@ -459,7 +459,7 @@
                     <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-        </fieldset>
+        </fieldset> -->
         <fieldset>
             <legend>Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
@@ -511,12 +511,12 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>Testcase</legend> 
-            <div id="testCaseGeneration" class="diagramIcons" onclick="printStateDiagram()"> 
+            <legend>Testcase</legend>
+            <div id="testCaseToggle()" class="diagramIcons" onclick="toggleTestCase()"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
-                <span class="toolTipText"><b>Generate test-cases from state diagram</b><br>
-                    <p>Click to generate test-cases</p><br>
-                    <p id="tooltip-GEN_TEST_CASES" class="key_tooltip">Keybinding:</p>
+                <span class="toolTipText"><b>Toggle test-cases</b><br>
+                    <p>Click to toggle test-cases in options</p><br>
+                    <p id="tooltip-TOGGLE_TEST_CASE" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset> 
@@ -626,6 +626,29 @@
                 <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
             </fieldset>
+        </div>
+        <div id="zoom-container">
+            <div class="diagramZoomIcons" onclick='zoomin();'>
+                <img src="../Shared/icons/diagram_zoomin.svg"/>
+                <span class="zoomToolTipText"><b>Zoom IN</b><br>
+                    <p>Zoom in on viewed area</p><br>
+                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div class="diagramZoomIcons" onclick='zoomout();'>
+                <img src="../Shared/icons/diagram_zoomout.svg"/>
+                <span class="zoomToolTipText"><b>Zoom OUT</b><br>
+                    <p>Zoom out on viewed area</p><br>
+                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+            <div class="diagramZoomIcons" onclick="zoomreset()">
+                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
+                <span class="zoomToolTipText"><b>Zoom RESET</b><br>
+                    <p>Reset the zoom to 1x</p><br>
+                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
         </div>
     </div>
     </div>
