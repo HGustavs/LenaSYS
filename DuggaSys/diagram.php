@@ -542,10 +542,11 @@
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
-    <div id ="zoom-message-box">
-        <img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/>
-        <text id ="zoom-message">1x</text>
-        
+    <div id="zoom-container">
+        <div id ="zoom-message-box">
+            <img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/>
+            <text id ="zoom-message">1x</text>
+        </div>
         <div class="diagramZoomIcons" onclick='zoomin();'>
             <img src="../Shared/icons/diagram_zoomin.svg"/>
             <span class="zoomToolTipText"><b>Zoom IN</b><br>
@@ -567,8 +568,8 @@
                 <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
             </span>
         </div>
-    
     </div>
+    
 
     <!-- Diagram drawing system canvas. -->
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
