@@ -7611,10 +7611,14 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
         if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' `;
+            str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
+            str += `fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' `;
+            str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
+            str += `fill = none stroke = '${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
