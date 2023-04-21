@@ -49,24 +49,24 @@
 		//getCommit($githubURL);
 	}
 
-	function checkSQLite($cid, $githubURL) {
-		global $pdo; // we need this? kolla olles kod senare kanske
+	// function checkSQLite($cid, $githubURL) {
+		// global $pdo; // we need this? kolla olles kod senare kanske
 		
-		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		// $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		
-		$query = $pdolite->prepare("SELECT count(*) FROM latestCommit WHERE cid=:cid;"); 
-        // bind query results into local vars.
-        $query->bindParam(':cid', $cid);
-        $query->execute();
-        $norows = $query->fetchColumn();
+		// $query = $pdolite->prepare("SELECT count(*) FROM latestCommit WHERE cid=:cid;"); 
+        // // bind query results into local vars.
+        // $query->bindParam(':cid', $cid);
+        // $query->execute();
+        // $norows = $query->fetchColumn();
 
 		//TODO: get commit
 		// save as variable
 
-		if($norows == 0) {
+		// if($norows == 0) {
 			// insert into sqllite
-		}
-		else {
+		// }
+		// else {
 			// compare commit from db with commit variable from above
 			// update sqllite
 
@@ -89,8 +89,8 @@
 				} 
 			}
 			*/
-		}
-	}
+		// }
+	// }
 
 	// gets the latest commit from the url in the function above
 	function getCommit($url) {
