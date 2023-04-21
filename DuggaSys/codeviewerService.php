@@ -539,11 +539,6 @@
 						$file = "../courses/global/".$filename;
 					}else if($filekind==3){
 						// Course Local
-						// TODO/WANT TODO new issue where we dont use filename but filepath, will reqire that path is placed in table filelink
-						// Or use a mix of both
-						// This would allow us to use folders and map structure inside of folder in coures. 
-						// Pretty please 
-
 						if ($path == null)
 							$file = "../courses/".$courseId."/".$filename;
 						else 

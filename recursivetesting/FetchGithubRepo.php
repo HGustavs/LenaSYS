@@ -87,10 +87,12 @@
         $filesize = $item['size']; // Size
         $kindid = 3; // The kind(course local/version local/global), 3 = course local
 
-        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=$kindid;"); 
+        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid AND path=:filePath;"); 
         // bind query results into local vars.
         $query->bindParam(':filename', $fileText);
         $query->bindParam(':cid', $cid);
+        $query->bindParam(':filePath', $filePath);
+        $query->bindParam(':kindid', $kindid);
         $query->execute();
         $norows = $query->fetchColumn();
         
