@@ -327,7 +327,7 @@
     background-color: #FEEFB3;
 }
 
-#zoom-message-box{
+/* #zoom-message-box{
     position: absolute;
     background-color: rgba(0, 0, 0, 0.8);
     width: 75px;
@@ -338,7 +338,7 @@
     text-align: center;
     z-index: 100;
     pointer-events: none;
-}
+} */
 
 /*tooltip*/
 
@@ -582,13 +582,13 @@
 .SDState-rounded {
     border-radius: 12px;
 }
-#zoom-container {
+#zoom-container, #zoom-message-box {
     visibility: visible;
     position: absolute;
     width: 90px;
     height: 29px;
     bottom: 4px;
-    left: -100px;
+    left: -150px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
     display: flex;
