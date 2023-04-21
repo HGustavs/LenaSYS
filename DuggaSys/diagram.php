@@ -543,7 +543,7 @@
     <!-- Message prompt -->
     <div id="diagram-message"></div>
     <div id="zoom-container">
-        <div id ="zoom-message-box">
+        <div class="diagramZoomIcons">
             <img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/>
             <text id ="zoom-message">1x</text>
         </div>
