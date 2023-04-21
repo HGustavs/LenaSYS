@@ -2888,9 +2888,9 @@ function saveProperties()
                 var formatArr = [];
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        if(sdTextBoxDo == getElementById(child.id)) {
+                        if(sdTextBoxDo == getElementById(propName)) {
                             formatArr.push("Do: " + arrElementAttr[i]);
-                        }else if (sdTextBoxExit == getElementById(child.id)){
+                        }else if (sdTextBoxExit == getElementById(propName)){
                             formatArr.push("Exit: " + arrElementAttr[i]);
                         }else {
                             formatArr.push(arrElementAttr[i]);
