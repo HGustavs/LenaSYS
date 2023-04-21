@@ -545,29 +545,29 @@
     <div id ="zoom-message-box">
         <img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/>
         <text id ="zoom-message">1x</text>
-        <div id="zoom-container">
-            <div class="diagramZoomIcons" onclick='zoomin();'>
-                <img src="../Shared/icons/diagram_zoomin.svg"/>
-                <span class="zoomToolTipText"><b>Zoom IN</b><br>
-                    <p>Zoom in on viewed area</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick='zoomout();'>
-                <img src="../Shared/icons/diagram_zoomout.svg"/>
-                <span class="zoomToolTipText"><b>Zoom OUT</b><br>
-                    <p>Zoom out on viewed area</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
-                <span class="zoomToolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to 1x</p><br>
-                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
+        
+        <div class="diagramZoomIcons" onclick='zoomin();'>
+            <img src="../Shared/icons/diagram_zoomin.svg"/>
+            <span class="zoomToolTipText"><b>Zoom IN</b><br>
+                <p>Zoom in on viewed area</p><br>
+                <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
+            </span>
         </div>
+        <div class="diagramZoomIcons" onclick='zoomout();'>
+            <img src="../Shared/icons/diagram_zoomout.svg"/>
+            <span class="zoomToolTipText"><b>Zoom OUT</b><br>
+                <p>Zoom out on viewed area</p><br>
+                <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+        <div class="diagramZoomIcons" onclick="zoomreset()">
+            <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
+            <span class="zoomToolTipText"><b>Zoom RESET</b><br>
+                <p>Reset the zoom to 1x</p><br>
+                <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+    
     </div>
 
     <!-- Diagram drawing system canvas. -->
