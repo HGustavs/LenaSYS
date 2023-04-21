@@ -8821,6 +8821,8 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+            const doText = document.querySelector('.SDState-Do').value;
+            const exitText = document.querySelector('.SDState-Exit').value;
 
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
