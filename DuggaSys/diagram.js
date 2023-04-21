@@ -2951,7 +2951,7 @@ function saveProperties()
                 break;
         }
     }
-
+    console.log(propsChanged);
     stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos(0,0);
