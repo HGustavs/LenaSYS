@@ -658,20 +658,20 @@
             <fieldset style="display: flex; justify-content: space-between">
                 <div id="diagram-replay-switch">
                     <div class="diagramIcons" onclick="stateMachine.replay()">
-                        <img src="../Shared/icons/Play.svg">
+                        <img src="../Shared/icons/Play.svg" alt="An icon depicting a play symbol">
                         <span class="toolTipText" style="top: -80px"><b>Play</b><br>
                             <p>Play history of changes made to the diagram</p><br>
                         </span>
                     </div>
                 </div>
                 <div class="diagramIcons" onclick="stateMachine.replay(-1)">
-                    <img src="../Shared/icons/replay.svg">
+                    <img src="../Shared/icons/replay.svg" alt="An icon depicting a replay symbol">
                     <span class="toolTipText" style="top: -80px"><b>Replay</b><br>
                         <p>Replay history of changes made to the diagram</p><br>
                     </span>
                 </div>
                 <div class="diagramIcons" onclick="exitReplayMode()">
-                    <img src="../Shared/icons/exit.svg">
+                    <img src="../Shared/icons/exit.svg" alt="An icon depicting a exit symbol">
                     <span class="toolTipText" style="top: -95px"><b>Exit</b><br>
                         <p>Exit the replay-mode</p><br>
                         <p id="tooltip-ESCAPE" class="key_tooltip">Keybinding:</p>
