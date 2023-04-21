@@ -7178,12 +7178,13 @@ function clearLinesForElement(element)
  */
 function determineLine(line, targetGhost = false)
 {
-    var felem, telem, dx, dy;
+    var felem, telem, dx, dy
 
     felem = data[findIndex(data, line.fromID)];
 
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
     telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
+
     line.dx = felem.cx - telem.cx;
     line.dy = felem.cy - telem.cy;
 
@@ -7247,7 +7248,7 @@ function sortElementAssociations(element)
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
- 
+
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
 
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
@@ -7381,6 +7382,25 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
     }
 }
+
+/**
+ * @description Returns true or false if element is considered close to each other.
+ * @param {Object} elementFrom
+ * @param {Object} elementTo
+ * @param {int} concideredNearValue
+ * @return {boolean} result
+ */
+function isClose(elementFrom, elementTo, concideredNearValue = 350) {
+    const fromX = elementFrom.cx,
+          fromY = elementFrom.cy,
+          toX = elementTo.cx,
+          toY = elementTo.cy,
+          deltaX = toX - fromX,
+          deltaY = toY - fromY;
+    if (deltaX < concideredNearValue && deltaY < concideredNearValue) return true;
+    else return false;
+}
+
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
 /**
@@ -7398,6 +7418,7 @@ function drawLine(line, targetGhost = false)
     var x2Offset = 0;
     var y1Offset = 0;
     var y2Offset = 0;
+
     if (line.kind=="Dashed") {
         var strokeDash="10";
     }
@@ -7412,9 +7433,6 @@ function drawLine(line, targetGhost = false)
     }
 
     //ineColor = '#000000';
-        
-
-    
 
     if(contextLine.includes(line)){
         lineColor = selectedColor;
@@ -7556,9 +7574,18 @@ function drawLine(line, targetGhost = false)
 
     // If element is UML or IE (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
+
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
-        if (line.ctype == 'TB' || line.ctype == 'BT') {
+
+        if (isClose(felem, telem)) {
+            str += `<polyline id='${line.id}' class='lineColor' points='
+                ${fx} ${fy},
+                ${tx} ${ty}
+                ' 
+                fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+        }
+        else if (line.ctype == 'TB' || line.ctype == 'BT') {
             str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'LR' || line.ctype == 'RL') {
