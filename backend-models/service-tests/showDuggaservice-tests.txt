@@ -33,3 +33,20 @@ Test to ensure a student can save a dugga (NOT A TEACHER)
 Login to LenaSYS, either start a new dugga or update with hash.
 Make an sql query that either updates userAnswer with the values or insert a whole new table into userAnswer.
 The test will pass if both of these actions can be done
+
+Pre-req: {$opt, "SAVDU"}, {!isSuperUser($userid)}
+SQL query to get password, timesSubmitted, timesAccessed and grade: SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=hash;
+grade = $grade. This is used to determine if the user already has a grade in the dugga. If thats the case then the service will end.
+
+If the user doesnt have a passing grade then this the user can first update the dugga answer.
+SQL query for updating answer: UPDATE userAnswer SET submitted=NOW(), useranswer=useranswer, timesSubmitted=timesSubmitted+1 WHERE hash=hash AND password=hashpwd;
+hash, hashpwd and useranswer is bound to $query and then executed()
+If the userAnswer is updated in the db this test has succeded.
+
+If the user doesnt have an answer the user can insert the answer to the db (userAnswer)
+SQL query to insert into userAnswer: INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(cid,did,moment,coursevers,variant,hash,password,1,1,useranswer,now());
+:cid, :coursevers, :did, :moment, :variant, :hash, :password and :useranswer is bindParam to $query and then executed
+If all of the above is inserted into userAnswer this has succeded.
+If not $debug="Unable to save dugga!"
+
+
