@@ -6381,7 +6381,7 @@ function generateContextProperties()
                             str += `<div style='color:white'>Attributes</div>`;
                             str += `<div>`;
                             str += `<select id='SDOption'>`;
-                                str +=  `<option value ="Do:">Do</option>`;
+                                str +=  `<option value ="Do:" selected>Do</option>`;
                                 str += `<option value="Exit:">Exit</option>`;
                             str += `</select>`;
                             str += `</div>`;
