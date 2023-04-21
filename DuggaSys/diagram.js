@@ -2924,6 +2924,7 @@ function saveProperties()
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
                         
                         formatArr.push("Do: " + arrElementAttr[i]);
+                        console.log("Do: " + arrElementAttr[i]);
                     } 
                 }
                 //Update the attribute array
