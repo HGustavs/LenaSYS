@@ -587,7 +587,7 @@
     position: absolute;
     width: auto;
     height: 29px;
-    bottom: 4px;
+    bottom: 20px;
     left: -120px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
@@ -604,9 +604,6 @@
     width: 27px;
     float: left;
     border: solid 1px rgba(0, 0, 0, 0.8);
-    flex-direction: row;
-    align-items: center;
-    margin-right: 10px;
 }
 .diagramZoomIcons:hover {
     border: solid 1px var(--color-primary-light);
