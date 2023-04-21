@@ -501,7 +501,7 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>ER-Table</legend>
+            <legend >ER-Table</legend>
             <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
@@ -512,7 +512,7 @@
         </fieldset>
         <fieldset>
             <legend>Testcase</legend>
-            <div id="testCaseToggle()" class="diagramIcons" onclick="toggleTestCase()"> <!--add func here later-->
+            <div id="testCaseToggle" class="diagramIcons" onclick="toggleTestCase()">
                 <img src="../Shared/icons/diagram_ER_table_info.svg"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options</p><br>
