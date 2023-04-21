@@ -39,7 +39,10 @@ function updateCourse()
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
-	fetchGitHubRepo(courseGitURL);
+	if(courseGitURL) 
+	{
+		fetchGitHubRepo(courseGitURL);
+	}
 	$("#overlay").css("display", "none");
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 	localStorage.setItem('courseid', courseid);
@@ -80,7 +83,9 @@ function createNewCourse()
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-	fetchGitHubRepo(courseGitURL);
+	if(courseGitURL) {
+		fetchGitHubRepo(courseGitURL);
+	}
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
