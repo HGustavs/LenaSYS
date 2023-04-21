@@ -6380,7 +6380,7 @@ function generateContextProperties()
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
                             str += `<div>`;
-                            str += `<select>`;
+                            str += `<select id="SDOption>"`;
                                 str +=  `<option value ="Do:">Do</option>`;
                                 str += `<option value="Exit:">Exit</option>`;
                             str += `</select>`;
@@ -8823,6 +8823,7 @@ function drawElement(element, ghosted = false)
         //div to encapuslate SD content
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
+        let sdOption = document.getElementById("SDOption").value;
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
@@ -8841,7 +8842,7 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}'
             />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${sdOption + element.attributes[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8863,7 +8864,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>Do: </text>`;
             //end of svg for background
             str += `</svg>`;
         }
