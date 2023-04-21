@@ -587,8 +587,8 @@
     position: absolute;
     width: auto;
     height: 29px;
-    bottom: 20px;
-    left: -120px;
+    bottom: 4px;
+    left: -160px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
     display: flex;
@@ -600,10 +600,11 @@
     width: 27px;
 }
 #zoom-message {
-    height: 27px;
-    width: 27px;
+    height: 30px;
+    width: 40px;
     float: left;
     border: solid 1px rgba(0, 0, 0, 0.8);
+    text-align: center;
 }
 .diagramZoomIcons {
     height: 27px;
