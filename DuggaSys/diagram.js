@@ -2866,8 +2866,7 @@ function saveProperties()
     const children = propSet.children;
 
     var propsChanged = {};
-    var sdTextBoxDo = document.querySelector('SDState-Do');
-    var sdTextBoxExit = document.querySelector('SDState-Exit');
+
 
     for (var index = 0; index < children.length; index++) {
         const child = children[index];
@@ -2889,13 +2888,7 @@ function saveProperties()
                 var formatArr = [];
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        /* if(sdTextBoxDo == getElementById(child.id)) {
-                            formatArr.push("Do: " + arrElementAttr[i]);
-                        }else if (sdTextBoxExit == getElementById(child.id)){
-                            formatArr.push("Exit: " + arrElementAttr[i]);
-                        }else {
-                            formatArr.push(arrElementAttr[i]);
-                        } */
+                        
                         formatArr.push(arrElementAttr[i]);
                     } 
                 }
@@ -2921,7 +2914,40 @@ function saveProperties()
                 element[propName] = arrElementFunc;
                 propsChanged.functions = arrElementFunc;
                 break;
-
+            case 'attributesDo':
+                //Get string from textarea
+                var elementAttr = child.value;
+                //Create an array from string where newline seperates elements
+                var arrElementAttr = elementAttr.split('\n');
+                var formatArr = [];
+                for (var i = 0; i < arrElementAttr.length; i++) {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
+                        
+                        formatArr.push("Do: " + arrElementAttr[i]);
+                    } 
+                }
+                //Update the attribute array
+                arrElementAttr = formatArr;
+                element[propName] = arrElementAttr;
+                propsChanged.attributes = arrElementAttr;
+                break;
+            case 'attributesExit':
+                //Get string from textarea
+                var elementAttr = child.value;
+                //Create an array from string where newline seperates elements
+                var arrElementAttr = elementAttr.split('\n');
+                var formatArr = [];
+                for (var i = 0; i < arrElementAttr.length; i++) {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
+                        
+                        formatArr.push("Exit: " + arrElementAttr[i]);
+                    } 
+                }
+                //Update the attribute array
+                arrElementAttr = formatArr;
+                element[propName] = arrElementAttr;
+                propsChanged.attributes = arrElementAttr;
+                break;
             default:
                 break;
         }
@@ -6389,8 +6415,8 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<textarea id='elementProperty_${property}' class='SDState-Do' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            str += `<textarea id='elementProperty_${property}' class='SDState-Exit' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}Do' class='SDState-Do' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}Exit' class='SDState-Exit' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
                             break;
