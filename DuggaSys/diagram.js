@@ -6369,7 +6369,6 @@ function generateContextProperties()
         }
         //Selected SD type
         else if (element.type == 'SD') {
-            var sdOption;
             //if SDState kind
             if (element.kind == 'SDState') {
                 for (const property in element) {
@@ -6387,7 +6386,6 @@ function generateContextProperties()
                             str += `</select>`;
                             str += `</div>`;
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            sdOption = document.getElementById("SDOption").value;
                             break;
                         default:
                             break;
@@ -8826,8 +8824,8 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
-            
-            
+            let sdOption = document.getElementById("SDOption");
+            console.log(sdOption);
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path 
@@ -8867,7 +8865,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * 0 / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>Do: </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>Do: </text>`;
             //end of svg for background
             str += `</svg>`;
         }
