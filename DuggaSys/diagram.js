@@ -2927,7 +2927,6 @@ function saveProperties()
  */
 function changeLineProperties()
 {
-    // TODO : DOES NOT STORE ANYTHING TO THE STATE MACHINE, VERY BAD!
     // Set lineKind
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
