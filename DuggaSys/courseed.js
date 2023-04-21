@@ -81,7 +81,7 @@ function createNewCourse()
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 	fetchGitHubRepo(courseGitURL);
-	fetchLatestCommit(courseGitURL);
+	// fetchLatestCommit(courseGitURL);
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 }
