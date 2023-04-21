@@ -6369,7 +6369,6 @@ function generateContextProperties()
         }
         //Selected SD type
         else if (element.type == 'SD') {
-            var sdOption;
             //if SDState kind
             if (element.kind == 'SDState') {
                 for (const property in element) {
@@ -6380,14 +6379,8 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<div>`;
-                            str += `<select id="SDOption">`;
-                                str +=  `<option value ="Do: " selected>Do</option>`;
-                                str += `<option value="Exit: ">Exit</option>`;
-                            str += `</select>`;
-                            str += `</div>`;
+                            str += `${generateSDOption()}`;
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            sdOption = document.getElementById("SDOption").value;
                             break;
                         default:
                             break;
@@ -8580,6 +8573,14 @@ function drawRulerBars(X,Y)
     svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
+function generateSDOption() {
+    <div>
+    <select id="SDOption">
+        <option value ="Do: " selected>Do</option>
+        <option value="Exit: ">Exit</option>
+    </select>
+    </div>
+}
 /**
  * @description Construct an string containing all the elements for an data-object.
  * @param {Object} element The object that should be drawn.
@@ -8826,7 +8827,7 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
-            
+            let sdOption = document.getElementById("SDOption").value;
             
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
