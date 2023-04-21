@@ -21,3 +21,16 @@ Then make an update by useing SQL-query.
 To update the username of the user. The values to be checked are username and uid.
 If the update was unable to succeed, it should display an error message which says 
 that the user does not exist in the database.
+
+---------------------
+
+Test 2: try to add two users with same ssn or username
+By adding two users with same ssn or username to see how the database will react.
+This can be done with the SQL-query to insert a user.
+   SQL-query: INSERT INTO user( username, email, firstname, lastname, ssn, password, addedtime, class) 
+       VALUES ( :username, :email, :firstname, :lastname, :ssn, :password, now(), :class)
+Both the username and ssn values should be checked, to avoid duplcation. If there are two or more
+users with the same ssn or username, it should display an error message. Which the database will indicates 
+there is a duplicate ssn or username.
+
+---------------------- 
