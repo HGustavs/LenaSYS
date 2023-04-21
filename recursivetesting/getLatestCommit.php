@@ -44,7 +44,7 @@
 		}
 		echo "</table>";
 
-		checkSQLite($cid, $githubURL);
+		// checkSQLite($cid, $githubURL);
 		// use the original url to get the latest commit
 		//getCommit($githubURL);
 	}
