@@ -543,10 +543,10 @@
     <!-- Message prompt -->
     <div id="diagram-message"></div>
     <div id="zoom-container">
-        <div class="diagramZoomIcons">
+        <div id ="zoom-message-box" class="diagramZoomIcons">
             <img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg"/>
             <text id ="zoom-message">1x</text>
-        </div>
+    </div>
         <div class="diagramZoomIcons" onclick='zoomin();'>
             <img src="../Shared/icons/diagram_zoomin.svg"/>
             <span class="zoomToolTipText"><b>Zoom IN</b><br>
