@@ -8825,7 +8825,7 @@ function drawElement(element, ghosted = false)
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
             let sdOption = document.getElementById("SDOption");
-            console.log(sdOption.value);
+            console.log(sdOption);
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path 
