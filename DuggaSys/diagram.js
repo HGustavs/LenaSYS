@@ -6380,7 +6380,7 @@ function generateContextProperties()
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
                             str += `<div>`;
-                            str += `<select id="SDOption>"`;
+                            str += `<select id='SDOption'>`;
                                 str +=  `<option value ="Do:">Do</option>`;
                                 str += `<option value="Exit:">Exit</option>`;
                             str += `</select>`;
@@ -8823,7 +8823,7 @@ function drawElement(element, ghosted = false)
         //div to encapuslate SD content
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
-        let sdOption = document.getElementById("SDOption").value;
+        let sdOption = document.getElementById('SDOption').value;
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
