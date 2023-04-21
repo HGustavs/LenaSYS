@@ -2867,7 +2867,6 @@ function saveProperties()
 
     var propsChanged = {};
 
-
     for (var index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
@@ -2888,7 +2887,6 @@ function saveProperties()
                 var formatArr = [];
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        
                         formatArr.push(arrElementAttr[i]);
                     } 
                 }
@@ -6416,8 +6414,8 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
-                            str += `<textarea id='elementProperty_${property}Do' class='SDState-Do' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            str += `<textarea id='elementProperty_${property}Exit' class='SDState-Exit' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}Do' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<textarea id='elementProperty_${property}Exit' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
                             break;
