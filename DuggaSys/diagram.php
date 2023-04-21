@@ -114,7 +114,7 @@
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
-            <legend>Modes</legend>
+            <legend aria-hidden="true" aria-hidden="true">Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
@@ -461,7 +461,7 @@
             </div>
         </fieldset> -->
         <fieldset>
-            <legend>Camera</legend>
+            <legend aria-hidden="true">Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">/>
                 <span class="toolTipText"><b>Reset view</b><br>
@@ -471,7 +471,7 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>History</legend>
+            <legend aria-hidden="true">History</legend>
             <div id="erTableToggle" class="diagramIcons" onclick="resetDiagramAlert()">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
@@ -501,7 +501,7 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>ER-Table</legend>
+            <legend aria-hidden="true">ER-Table</legend>
             <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
@@ -511,7 +511,7 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>Testcase</legend>
+            <legend aria-hidden="true">Testcase</legend>
             <div id="testCaseToggle" class="diagramIcons" onclick="toggleTestCase()"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
@@ -521,7 +521,7 @@
             </div>
         </fieldset> 
         <fieldset id = "errorCheckField">
-        <legend>Check</legend>
+        <legend aria-hidden="true">Check</legend>
             <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
                 <img src="../Shared/icons/diagram_errorCheck.svg" alt="Toggle error check"/>
                 <span class="toolTipText"><b>Toggle error check</b><br>
