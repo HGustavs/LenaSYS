@@ -91,7 +91,7 @@
         }
             
             // Gathers information from database table logEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
+            if((isset($_POST['name'])) && ($_POST['name']=='logEntries')  || isset($_SESSION['name']) && $_SESSION['name'] == 'logEntries'){
                 $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort = ($_SESSION['sort'] == 'DESC') ? 'ASC' : 'DESC';
@@ -120,7 +120,7 @@
             }
             
             // Gathers information from database table exampleLoadLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
+            if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')  || isset($_SESSION['name']) && $_SESSION['name'] == 'exampleLoadLogEntries'){
                 $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort = ($_SESSION['sort'] == 'DESC') ? 'ASC' : 'DESC';
@@ -151,7 +151,7 @@
             }
 
             // Gathers information from database table userHistory
-            if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
+            if((isset($_POST['name'])) && ($_POST['name']=='userHistory')  || isset($_SESSION['name']) && $_SESSION['name'] == 'userHistory'){
                 $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
                 $sort = ($_SESSION['sort'] == 'DESC') ? 'ASC' : 'DESC';
@@ -181,7 +181,7 @@
             }
 
             // Gathers information from database table userLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
+            if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')  || isset($_SESSION['name']) && $_SESSION['name'] == 'userLogEntries'){
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort = ($_SESSION['sort'] == 'DESC') ? 'ASC' : 'DESC';
@@ -213,7 +213,7 @@
             }
 
             // Gathers information from database table serviceLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
+            if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')  || isset($_SESSION['name']) && $_SESSION['name'] == 'serviceLogEntries'){
                 $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort = ($_SESSION['sort'] == 'DESC') ? 'ASC' : 'DESC';
@@ -249,7 +249,7 @@
             }
 
             // Gathers information from database table duggaLoadLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
+            if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')  || isset($_SESSION['name']) && $_SESSION['name'] == 'duggaLoadLogEntries'){
                 $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort = ($_SESSION['sort'] == 'DESC') ? 'ASC' : 'DESC';
