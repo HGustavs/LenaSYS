@@ -93,7 +93,7 @@
             
             // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
-                $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
+                $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
@@ -109,21 +109,20 @@
                 foreach($logEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>".$row['id']."</td>";
-                        echo "<td>".$row['eventype']."</td>";
-                        echo "<td>".$row['description']."</td>";
-                        echo "<td>".$row['userAgent']."</td>";
-                        echo "<td>".$row['timestamp']."</td>";
-                        echo "</tr>";
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
+                    echo"</tr>";
                 }
-                echo "</table>";
+                echo"
+                </table>
+                ";
             }
             
             // Gathers information from database table exampleLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
-                $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
+                $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
@@ -141,23 +140,20 @@
                 foreach($exampleLoadLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>".$row['id']."</td>";
-                        echo "<td>".$row['type']."</td>";
-                        echo "<td>".$row['courseid']."</td>";
-                        echo "<td>".$row['uid']."</td>";
-                        echo "<td>".$row['username']."</td>";
-                        echo "<td>".$row['exampleid']."</td>";
-                        echo "<td>".$row['timestamp']."</td>";
-                        echo "</tr>";
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
+                    echo"</tr>";
                 }
-                echo"</table>";
+                echo"
+                </table>
+                ";
             }
 
             // Gathers information from database table userHistory
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
-                $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$order.' '.$sort.';');
+                $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
@@ -174,22 +170,20 @@
                 foreach($userHistoryResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>".$row['refer']."</td>";
-                        echo "<td>".$row['userid']."</td>";
-                        echo "<td>".$row['username']."</td>";
-                        echo "<td>".$row['IP']."</td>";
-                        echo "<td>".$row['URLParams']."</td>";
-                        echo "<td>".$row['timestamp']."</td>";
-                        echo "</tr>";
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
+                    echo"</tr>";
                 }
-                echo"</table>";
+                echo"
+                </table>
+                ";
             }
 
             // Gathers information from database table userLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
-                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
+                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
@@ -208,16 +202,9 @@
                 foreach($userLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>".$row['id']."</td>";
-                        echo "<td>".$row['uid']."</td>";
-                        echo "<td>".$row['username']."</td>";
-                        echo "<td>".$row['eventType']."</td>";
-                        echo "<td>".$row['description']."</td>";
-                        echo "<td>".$row['timestamp']."</td>";
-                        echo "<td>".$row['userAgent']."</td>";
-                        echo "<td>".$row['remoteAddress']."</td>";
-                        echo "</tr>";
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
                     echo"</tr>";
                 }
@@ -228,7 +215,7 @@
 
             // Gathers information from database table serviceLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
-                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$order.' '.$sort.';');
+                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
@@ -251,28 +238,20 @@
                 foreach($serviceLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>".$row['id']."</td>";
-                        echo "<td>".$row['uuid']."</td>";
-                        echo "<td>".$row['eventType']."</td>";
-                        echo "<td>".$row['service']."</td>";
-                        echo "<td>".$row['userid']."</td>";
-                        echo "<td>".$row['timestamp']."</td>";
-                        echo "<td>".$row['userAgent']."</td>";
-                        echo "<td>".$row['operatingSystem']."</td>";
-                        echo "<td>".$row['info']."</td>";
-                        echo "<td>".$row['referer']."</td>";
-                        echo "<td>".$row['IP']."</td>";
-                        echo "<td>".$row['browser']."</td>";
-                        echo "</tr>";
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
+                    echo"</tr>";
                 }
-                echo"</table>";
+                echo"
+                </table>
+                ";
             }
 
             // Gathers information from database table duggaLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
-                $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$order.' '.$sort.';');
+                $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$_SESSION['order'].' '.$_SESSION['sort'].';');
                 $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
@@ -291,17 +270,11 @@
                 foreach($duggaLoadLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>".$row['id']."</td>";
-                        echo "<td>".$row['type']."</td>";
-                        echo "<td>".$row['cid']."</td>";
-                        echo "<td>".$row['uid']."</td>";
-                        echo "<td>".$row['username']."</td>";
-                        echo "<td>".$row['vers']."</td>";
-                        echo "<td>".$row['quizid']."</td>";
-                        echo "<td>".$row['timestamp']."</td>";
-                        echo "</tr>";
+                        echo"
+                            <td>".$row."</td>
+                        ";
                     }
+                    echo"</tr>";
                 }
                 echo"
                 </table>
