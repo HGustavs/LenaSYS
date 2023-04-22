@@ -54,7 +54,7 @@
         <!----------------------------------------------------------------------------------->  
         <!------Creates a dropdown with all tables in the loglena database------------------->
         <!----------------------------------------------------------------------------------->
-        <span><form id="form1" name="form1" method="get" action="<?php echo $PHP_SELF; ?>">
+        <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
             date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
 
