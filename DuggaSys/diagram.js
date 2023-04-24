@@ -912,7 +912,7 @@ const lineCardinalitys = {
  * @description Available options of icons to display at the end of lines connecting two UML elements.
  */
  const UMLLineIcons = {//TODO: Replace with actual icons for the dropdown
-    ARROW: `<img src="../Shared/icons/diagram_zoomin.svg" alt="Arrow"/>`,
+    ARROW: `<img src="../Shared/icons/arrow.svg" alt="Arrow"/>`,
     TRIANGLE: "Triangle",
     BLACK_TRIANGLE: "Black_Triangle",
     WHITEDIAMOND: "White_Diamond",
@@ -6514,7 +6514,7 @@ function generateContextProperties()
                     //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
                     //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
                     else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        str += `<option value='${icon}' selected>${UMLLineIcons[icon]}</option>`;
                     }
                     else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
                         str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
