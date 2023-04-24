@@ -7640,7 +7640,7 @@ function drawLine(line, targetGhost = false)
         line.type = 'UML';
     }
 
-    // If element is UML or IE (use straight line segments instead)
+    // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
