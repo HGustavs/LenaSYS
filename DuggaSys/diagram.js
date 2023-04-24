@@ -7112,7 +7112,7 @@ function multipleColorsTest()
  * @param {Number} axis 
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
-function sortvectors(currentElementID, compareElementID, ends, elementid, axis) // TODO : Replace variable names a and b
+function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
     var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
