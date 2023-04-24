@@ -2275,8 +2275,6 @@ function determineLineSelect(mouseX, mouseY)
                 }
                 lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
 
-                console.log(currentLineSegment);
-
                 if(lineWasHit == true && labelWasHit == false) {
                     // Return the current line that registered as a "hit".;
                     return lines.filter(function(line) {
@@ -3520,8 +3518,6 @@ function entityIsOverlapping(id, x, y)
 
         targetX = x //(x / zoomfact);
         targetY =  y//(y / zoomfact);
-
-        console.log(targetX, targetY)
 
         for(var i = 0; i < data.length; i++){
             if(data[i].id === id) continue
@@ -7427,6 +7423,7 @@ function drawLine(line, targetGhost = false)
     var y1Offset = 0;
     var y2Offset = 0;
 
+
     if (line.kind=="Dashed") {
         var strokeDash="10";
     }
@@ -7455,6 +7452,13 @@ function drawLine(line, targetGhost = false)
     fy = felem.cy;
     tx = telem.cx;
     ty = telem.cy;
+
+    const elemsAreClose = isClose (
+        (fx + x1Offset),
+        (tx + x2Offset),
+        (fy + y1Offset),
+        (ty + y2Offset)
+    );
 
     // Collect coordinates
     if (line.ctype == "BT"){
@@ -7586,14 +7590,7 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
-        const elemsAreClose = isClose (
-            (fx + x1Offset),
-            (tx + x2Offset),
-            (fy + y1Offset),
-            (ty + y2Offset)
-        );
-
-        if (elemsAreClose) {
+        if (felem.type == 'SD' && elemsAreClose) {
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
@@ -8162,7 +8159,7 @@ function drawLine(line, targetGhost = false)
     }
     else {
         if (line.kind == "Normal"){
-            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`; 
+            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Double") {
             // We mirror the line vector
             dy = -(tx - fx);
@@ -11870,7 +11867,6 @@ function loadMockupDiagram(path){
     
     let fileType = document.getElementById("diagramTypeDropdown").value;
     path = fileType;
-    console.log(path);
     //make sure its not null first
     if (path != null) {
         //via fetch API, request the json file 
