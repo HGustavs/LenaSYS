@@ -42,11 +42,13 @@
 			echo "<td>".$row['cid']."</td>";
 			$cid = $row['cid'];
 		}
+
+		echo "<td>".$githubURL."</td>"
 		echo "</table>";
 
 		// checkSQLite($cid, $githubURL);
 		// use the original url to get the latest commit
-		//getCommit($githubURL);
+		getCommit($githubURL);
 	}
 
 	// function checkSQLite($cid, $githubURL) {
