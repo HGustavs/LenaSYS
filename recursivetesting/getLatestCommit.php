@@ -46,7 +46,6 @@
 			$cid = $row['cid'];
 		}
 
-		echo "<td>".$githubURL."</td>"
 		echo "</table>";
 
 		// checkSQLite($cid, $githubURL);
