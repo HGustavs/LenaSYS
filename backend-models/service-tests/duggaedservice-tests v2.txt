@@ -12,8 +12,6 @@ duggaedservice.php
     { (checklogin) IS TRUE && 
     (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
-*checking current number of quizzes 	
-    SQL-query: SELECT count(id) FROM quiz;      // counts the number of quizzes, save it to $preCount 
 
 *******
 * send parameters inputs to duggaedservice.php 
@@ -32,15 +30,14 @@ send
 * Get newly creaded Assignment ID, repet the SQL-query
 *****
     
-    SQL-query: SELECT MAX(id) FROM quiz;     // save to variable $id this value will identify the last assignment that was created (it has the highest ID number)
-    SQL-query: SELECT count(id) FROM quiz;   // save answare to a variable $postCount 
+    SQL-query: SELECT MAX(id) FROM quiz;     // save to variable $id this value will identify the last assignment that was created (it has the highest ID number) 
 
 *****
-* compare results
+* Gather service output
 *****
 
-    if preCount = postCount: failed
-    if preCount - postCount = 1: passed  
+    Save the values of the echoed array (at the end of the file. echo json_encode($array);)
+    this is the expected output for the micro service. 
 
 *****
 * remove inserted row from DB, using qid 
