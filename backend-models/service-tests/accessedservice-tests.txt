@@ -62,8 +62,10 @@ By updating the access of the user_course. The values of access, uid and cid sho
 -----------------------
 
 Test 4: try to change the user password
+Row: 143 - 151
+Pre-req: { ($opt, "CHPWD")==0 }
 To see if the user is able to change their password and how the database will respond. By using the SQL-query 
-to update user password: 
+to update user password. 
    SQL-query: UPDATE user SET password=:pwd, requestedpasswordchange=0 WHERE uid=:uid
 Both uid and pwd values should be checked, to be able to request a change of password. 
 If the update was unable to change the password, then it should display an error message.
