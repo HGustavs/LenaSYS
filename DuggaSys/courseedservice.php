@@ -673,14 +673,6 @@ echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseedservice.php",$userid,$info);
 
 
-$info = array(
-	"opt",$opt,
-	"cid",$cid,
-	"coursename", $coursename,
-	"versid", $versid,
-	"visibility", $visibility,
-);
-	
-	$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
 
 ?>

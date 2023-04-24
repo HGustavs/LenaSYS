@@ -312,12 +312,5 @@
     //logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "diagramservice.php",$userid,$info);
 
 
-    $info = array(
-        "opt",$opt,
-        "courseid",$courseid,
-        "coursename", $coursename,
-    );
-        
-        
-        $json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT)
+    
 ?>

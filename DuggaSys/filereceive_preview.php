@@ -138,16 +138,7 @@ if (!$error) {
 }
 
 
-$info = array(
-    "cid",$cid,
-    "vers", $vers,
-    "kind", $kind,
-    "fileName", $fileName,
-    "error", $error,
-    "filo", $filo
-);
-    
-    $json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
 
 ?>
 </body>

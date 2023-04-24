@@ -621,17 +621,7 @@
 	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "codeviewerService.php",$userid,$info);
 
 
-	$info = array(
-		"opt",$opt,
-		"courseId",$courseId,
-		"courseVersion", $courseVersion,
-		"exampleName", $exampleName,
-		"sectionName", $sectionName,
-		"exampleId", $exampleId 
-	);
-		
-		
-		$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+	
 
 
 ?>

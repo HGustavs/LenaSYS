@@ -321,17 +321,7 @@ echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "fileedservice.php", $userid, $info);
 
 
-$info = array(
-    "opt",$opt,
-    "cid",$cid,
-    "coursevers", $coursevers,
-    "fid", $fid,
-    "filename", $filename,
-    "kind", $kind
-);
-    
-    
-    $json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
 
 
 ?>
