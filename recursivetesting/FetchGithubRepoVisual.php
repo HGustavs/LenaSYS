@@ -8,6 +8,19 @@
 </head>
 
 <style>
+
+html {
+	display: flex;
+	justify-content: center;
+}
+
+    table {
+        margin: 0 auto;
+        border-collapse: collapse;
+        text-align: left;
+        border: 1px solid black;
+    }
+
 	th,
 	td,
 	tr {
