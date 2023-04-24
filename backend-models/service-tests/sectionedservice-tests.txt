@@ -25,7 +25,6 @@ getGroupsTest() line 100:
 
 If $debug is empty then successfully gathered all groups
 
-
 ----------------------------------
 deleteTest() line 181:
 ----------------------------------
@@ -45,7 +44,6 @@ AND $ha || $studentTeache IS TRUE
 /////////////////////////
 
 You also need to gather all listentries to compare if deleted.
-Do before call:
 SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" save into beforeDeleted
 
 **************************
@@ -53,7 +51,6 @@ SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries"
 **************************
 
 SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterDeleted
-
 
 *****************
  Compare results
@@ -82,7 +79,6 @@ AND $ha || $studentTeache IS TRUE
 /////////////////////////
 
 You also need to gather all listentries to compare if deleted.
-Do before call:
 SQL Query: "SELECT visible FROM listentries WHERE lid=:lid" or "SELECT visible FROM listentries" save into beforeMarkedDeleted
 
 **************************
@@ -90,7 +86,6 @@ SQL Query: "SELECT visible FROM listentries WHERE lid=:lid" or "SELECT visible F
 **************************
 
 SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterMarkedDeleted
-
 
 *****************
  Compare results
@@ -100,9 +95,8 @@ If any visible has been updated to "3": passed
 If non visible has been updated to "3": failed
 If $debug not empty: failed
 
-
 ----------------------------------
-newCodeExampleTest() line 181:
+newCodeExampleTest() line 210:
 ----------------------------------
 
 *********
@@ -114,11 +108,331 @@ AND $ha || $studentTeache IS TRUE
 
 //// PRE-REQ Values /////
 
-* opt = "New"
-* sectid != null
+* opt = "NEW"
 * courseid != null
 * coursevers != null
 * sectname != null
 * sname != null
+* gradesys != null
+* tabs != null
+* userid != null
+* sectname != null
+* link != null
+* kind != null
+* comments != null
+* visibility != null
+* highscoremode != null
+* pos != null
 
 /////////////////////////
+
+You also need to gather all codeexamples to compare if any new.
+SQL Query: "SELECT * FROM codeexample" save into beforeNew
+You also need to fetch all listentries with:
+"SELECT * FROM listentries"
+
+***************************************
+ Get new code examples and listentries
+***************************************
+
+SQL Query: "SELECT * FROM codeexample" save into afterNewC
+SQL Query: "SELECT * FROM listentries" save into afterNewL
+
+*****************
+ Compare results
+*****************
+
+If any new table to codeexample and listentries: passed
+If non new table to codeexample and listentries: failed
+If $debug not empty: failed
+
+----------------------------------
+newRecorderTest() line 275:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "RECORDER"
+* order != 0
+* armin[] != null
+
+/////////////////////////
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT pos,moment FROM listentries" save into beforeUpdated
+
+*************************
+ Get updated listentries
+*************************
+
+SQL Query: "SELECT pos,moment FROM listentries" save into afterUpdated
+
+*****************
+ Compare results
+*****************
+
+If pos and moment has been updated: passed
+If non has been updated: failed
+If $debug not empty: failed
+
+----------------------------------
+updateTest() line 291:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "UPDATE"
+* courseid != 0
+* coursevers != 0
+* sectid != 0
+* sectname != 0
+* sname != 0
+* sectid != 0
+* sectname != 0
+* comments != 0
+* highscoremode != 0
+* feedbackenabled != 0
+* feedbackquestion != 0
+* moment != 0
+* kind != 0
+* link != 0
+* visibility != 0
+
+/////////////////////////
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT * FROM listentries" save into beforeUpdatedL
+You also new all code examples
+SQL Query: "SELECT * FROM codeexample" save into beforeUpdatedC
+And lastly the list table for the specific course
+SQL Query: "SELECT * FROM list" save into beforeUpdatedList
+
+*******************************************
+ Get updated code examples and listentries
+*******************************************
+
+SQL Query: "SELECT * FROM codeexample" save into afterNewC
+SQL Query: "SELECT * FROM listentries" save into afterNewL
+SQL Query: "SELECT * FROM list" save into afterNewList
+
+*****************
+ Compare results
+*****************
+
+If any new table to codeexample and list, and updated listentries: passed
+If non new table: failed
+If $debug not empty: failed
+
+----------------------------------
+updateDeadlineTest() line 371:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "UPDATEDEADLINE"
+* deadline != 0
+* relativedeadline != 0
+* link != 0
+
+/////////////////////////
+
+You also need to gather all quizzes to compare if any updated.
+SQL Query: "SELECT deadline, relativedeadline FROM quiz" save into beforeUpdated
+
+*******************************************
+ Get updated deadlines
+*******************************************
+
+SQL Query: "SELECT deadline, relativedeadline FROM codeexample" save into afterUpdated
+
+*****************
+ Compare results
+*****************
+
+If deadline, relativedeadline has been updated: passed
+If deadline, relativedeadline not updated (same as beforeUpdated): failed
+If $debug not empty: failed
+
+----------------------------------
+updateTabsTest() line 381:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "UPDATETABS"
+* sectid != 0
+* tabs != 0
+
+/////////////////////////
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT gradesystem FROM listentries" save into beforeUpdated
+
+*******************************************
+ Get updated listentries
+*******************************************
+
+SQL Query: "SELECT gradesystem FROM listentries" save into afterUpdated
+
+*****************
+ Compare results
+*****************
+
+If gradesystem has been updated: passed
+If gradesystem not updated (same as beforeUpdated): failed
+If $debug not empty: failed
+
+----------------------------------
+updateVersTest() line 381:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "UPDATEVRS"
+* courseid != 0
+* coursecode != 0
+* versid != 0
+* motd != 0
+* versname != 0
+
+/////////////////////////
+
+You also need to gather all vers to compare if any updated.
+SQL Query: "SELECT * FROM vers" save into beforeUpdatedV
+And also course.
+SQL Query: "SELECT activeversion FROM course" save into beforeUpdatedC
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT activeversion FROM course" save into afterUpdatedC
+SQL Query: "SELECT * FROM vers" save into afterUpdatedV
+
+*****************
+ Compare results
+*****************
+
+If activeversion has been updated: passed
+If any variable in vers has been updated: passed
+If no table updated: failed
+If $debug not empty: failed
+
+----------------------------------
+changeVersTest() line 434:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "CHGVERS"
+* courseid != 0
+* versid != 0
+
+/////////////////////////
+
+You also need to gather all courses to compare if any updated.
+SQL Query: "SELECT activeversion FROM course" save into beforeUpdated
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT activeversion FROM course" save into afterUpdated
+
+*****************
+ Compare results
+*****************
+
+If activeversion has been updated: passed
+If activeversion has not been updated: failed
+If $debug not empty: failed
+
+----------------------------------
+hiddenTest() line 434:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "HIDDEN"
+* sectid != 0
+* visible != 0
+
+/////////////////////////
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT visible FROM listentries" save into afterUpdated
+
+*****************
+ Compare results
+*****************
+
+If visible has been updated: passed
+If visible has not been updated: failed
+If $debug not empty: failed
+
+----------------------------------
+publicTest() line 434:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeache IS TRUE
+
+//// PRE-REQ Values /////
+
+* opt = "PUBLIC"
+* sectid != 0
+* visible != 0
+
+/////////////////////////
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT visible FROM listentries" save into afterUpdated
+
+*****************
+ Compare results
+*****************
+
+If visible has been updated: passed
+If visible has not been updated: failed
+If $debug not empty: failed
