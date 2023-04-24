@@ -4280,6 +4280,7 @@ function toggleErTable()
     //if the options pane is hidden, show it.
     if (document.getElementById("options-pane").className == "hide-options-pane") {
         toggleOptionsPane();
+        erTableToggle = true;
     }
 }
 
