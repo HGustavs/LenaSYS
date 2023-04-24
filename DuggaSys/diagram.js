@@ -4281,6 +4281,7 @@ function toggleErTable()
     if (document.getElementById("options-pane").className == "hide-options-pane") {
         toggleOptionsPane();
         erTableToggle = true;
+        testCaseToggle = false;
     }
 }
 
@@ -4298,6 +4299,11 @@ function toggleTestCase()
         testCaseToggle = false;
     }
     generateContextProperties();
+    if (document.getElementById("options-pane").className == "hide-options-pane") {
+        toggleOptionsPane();
+        testCaseToggle = true;
+        erTableToggle = false;
+    }
 }
 
 /**
