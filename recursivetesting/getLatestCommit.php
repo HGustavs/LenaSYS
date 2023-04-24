@@ -15,7 +15,7 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/OSMMapProcess"); // Dummy Code to see if everything works
+	getCourseID("https://github.com/HGustavs/LenaSYS"); // Dummy Code to see if everything works
 
 	function getCourseID($githubURL) {
 
