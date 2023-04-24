@@ -78,20 +78,50 @@ if (checklogin()) {
     echo "Failed to login.";
 }
 
+--------------------------------------------------------------------------------------------------------------------------------------------
+Test default user ID (line 9)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+*********
+
+* $_SESSION['uid'] needs to not be set. *
+
+session_start();
+$_SESSION['uid'] = null;
 
 
-- Test 2: Test to get a username from the database:
-	1. Start up the session.
-	2. Set the user ID in the session.
-	3. Call the function "checklogin()".
-	4. Call the function "getUsername()".
-	5. For the test to pass, the returning value of the function "getUsername()" should be the user's username.
+*********
+* Start up the session:
+*********
 
-- Test 3: Test default user ID:
-	1. Start up the session.
-	2. Do not set the user ID in the session.
-	3. Call the function "checklogin()".
-	4. For the test to pass, the returning value should be true and the default user ID should be 1.
+session_start();
+
+*********
+* Do not set the user ID in the session and call the function:
+*********
+
+$_SESSION['uid'] = null;
+$result = checklogin();
+
+*********
+* Check the values of the functions:
+*********
+
+if ($result && $_SESSION['uid'] == 1) {
+    echo "Test passed.";
+} else {
+    echo "Test failed.";
+}
+
+"For the test to pass, the returning value should be true and the default user ID should be 1."
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Test the user's access to a course (line 39)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 - Test 4: Test the user's access to a course:
 	1. Start up the session.
