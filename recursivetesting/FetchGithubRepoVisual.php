@@ -20,7 +20,7 @@
 		$repository = $urlParts[4];
 		// Translates the parts broken out of $url into the correct URL syntax for an API-URL 
 		$translatedURL = 'https://api.github.com/repos/' . $username . '/' . $repository . '/contents/';
-		bfs($translatedURL, $repository);
+		bfs($translatedURL);
 	}
 
 	function bfs($url)
@@ -74,7 +74,7 @@
 					}
 				}
 			} else {
-				echo "<h2 style='display: flex; place-content: center;'>Invalid Link</h2>";
+				echo "<h2 style='display: flex; place-content: center;'>Invalid Link or Fetch-limited</h2>";
 			}
 		}
 	}
