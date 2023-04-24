@@ -1,4 +1,13 @@
 <?php
+  $debug = "varför fungerar du inte?";
+  function debug($e){
+    echo "<div>";
+      echo $e; 
+    echo "</div>";
+  }
+  debug($debug);
+?>
+<?php
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 session_start();
@@ -8,13 +17,6 @@ $vers=getOPG('coursevers');
 ?>
 <script>var cid = <?php echo $cid ?>,vers = <?php echo $vers ?>;</script>
 <?php
-  $debug = "varför fungerar du inte?";
-  function debug($e){
-    echo "<div>";
-      echo $e; 
-    echo "</div>";
-  }
-  debug($debug);
 ?>
 
 <!DOCTYPE html>
