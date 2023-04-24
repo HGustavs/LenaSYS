@@ -15,7 +15,7 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/saraTest"); // Dummy Code to see if everything works
+	getCourseID("https://github.com/HGustavs/SVG_Diagramming"); // Dummy Code to see if everything works
 
 	function getCourseID($githubURL) {
 
@@ -43,6 +43,7 @@
 
 		// use the original url to get the latest commit
 		$latestCommit = getCommit($githubURL);
+		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
 	}
 
 	// --------------------- Get Latest Commit Function -----------------------------------------
@@ -77,7 +78,6 @@
 
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
-			print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
 			return $latestCommit;
 		} else {
 			print_r("No matches in database!");
