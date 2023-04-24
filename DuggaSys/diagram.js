@@ -4276,13 +4276,13 @@ function toggleErTable()
     else if (erTableToggle == true){
         erTableToggle = false;
     }
-    generateContextProperties();
     //if the options pane is hidden, show it.
     if (document.getElementById("options-pane").className == "hide-options-pane") {
         toggleOptionsPane();
         erTableToggle = true;
         testCaseToggle = false;
     }
+    generateContextProperties();
 }
 
 
@@ -4298,12 +4298,12 @@ function toggleTestCase()
     else if (testCaseToggle == true) {
         testCaseToggle = false;
     }
-    generateContextProperties();
     if (document.getElementById("options-pane").className == "hide-options-pane") {
         toggleOptionsPane();
         testCaseToggle = true;
         erTableToggle = false;
     }
+    generateContextProperties();
 }
 
 /**
