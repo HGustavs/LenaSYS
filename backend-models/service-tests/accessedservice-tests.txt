@@ -61,7 +61,7 @@ By updating the access of the user_course. The values of access, uid and cid sho
 
 -----------------------
 
-Test 4: try to change the user password
+Test 4: try to change the user password (not a teacher)
 Row: 143 - 151
 Pre-req: { ($opt, "CHPWD")==0 }
 To see if the user is able to change their password and how the database will respond. By using the SQL-query 
