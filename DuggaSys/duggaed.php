@@ -8,12 +8,13 @@ $vers=getOPG('coursevers');
 ?>
 <script>var cid = <?php echo $cid ?>,vers = <?php echo $vers ?>;</script>
 <?php
+  $debug = "varför fungerar du inte?";
   function debug($e){
     echo "<div>";
       echo $e; 
     echo "</div>";
   }
-  debug($cid);
+  debug($debug);
 ?>
 
 <!DOCTYPE html>
