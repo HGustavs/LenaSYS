@@ -71,3 +71,17 @@ Both uid and pwd values should be checked, to be able to request a change of pas
 If the update was unable to change the password, then it should display an error message.
 
 ------------------------
+
+Test 5: try to add a class
+Row: 128 - 142 and 198 - 205
+Pre-req: { ($opt, "ADDCLASS")==0 }
+To make sure the inserting of a class works and what response it will get from the database.
+Can be done with the SQL-query to create a class.
+   SQL-query: INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) 
+      VALUES (:class, :responsible, :classname, :regcode, :classcode, :hp, :tempo, :hpProgress)
+The values that need to be check are: class, responsible, classname, regcode, classcode,   
+hp, tempo, hpProgress. If the insert into database was unable to succeed, then it should display an error message.
+
+Pre-req: { ($classname, "UNK")!==0 }
+Compare the test result by using SQL-query: SELECT class FROM class WHERE class=:clsnme
+If the test failed, it should display an error message.
