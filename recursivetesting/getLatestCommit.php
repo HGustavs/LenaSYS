@@ -48,8 +48,6 @@
 
 	function getCommit($url) {
 
-		echo "<p>URL Test: ".$url."</p>";
-
 		$html = file_get_contents($url);
 		$dom = new DomDocument;
 		$dom->preserveWhiteSpace = FALSE;
@@ -68,20 +66,12 @@
 
 		$href = "";
 		foreach ($links as $link) {
-
-			print_r($link);
-
 			$value = $link->getAttribute("href");
-
-			echo "<p>Value: ".$value."</p>";
-
 			if(preg_match($regex, $value)) {
 				$href = $value; // Takes the first matching value and stores it in an array
 				break; //exits the loop since only the first match is necessary
 			}
 		}
-
-		echo "<p>Href: ".$href."</p>";
 
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
