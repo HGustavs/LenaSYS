@@ -7396,15 +7396,17 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  * @param {int} concideredNearValue
  * @return {boolean} result
  */
-function isClose(elementFrom, elementTo, concideredNearValue = 350) {
-    const fromX = elementFrom.cx,
-          fromY = elementFrom.cy,
-          toX = elementTo.cx,
-          toY = elementTo.cy,
+function isClose(fromX, toX, fromY, toY) {
+
+    const concideredNearValue = 600,
           deltaX = toX - fromX,
           deltaY = toY - fromY;
-    if (deltaX < concideredNearValue && deltaY < concideredNearValue) return true;
-    else return false;
+
+    if (deltaX < concideredNearValue && deltaY < concideredNearValue) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 //#endregion =====================================================================================
@@ -7584,7 +7586,14 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
-        if (isClose(felem, telem)) {
+        const elemsAreClose = isClose (
+            (fx + x1Offset),
+            (tx + x2Offset),
+            (fy + y1Offset),
+            (ty + y2Offset)
+        );
+
+        if (elemsAreClose) {
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
@@ -7720,7 +7729,10 @@ function drawLine(line, targetGhost = false)
                 var iconSizeStart=20;
                 break;
             case UMLLineIcons.ARROW:
-                if (line.ctype == 'TB') {
+                if (elemsAreClose) {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
@@ -7796,16 +7808,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case SDLineIcons.ARROW:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeStart=40;
                 break;
@@ -8016,16 +8028,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case SDLineIcons.ARROW:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=20;
                 break;
