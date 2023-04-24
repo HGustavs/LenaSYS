@@ -9,8 +9,11 @@
 
 <style>
   td {
-    width: 500px
+    width: 450px
   }
+	tr {
+		text-align: left;
+	}
 </style>
 
 <body>
