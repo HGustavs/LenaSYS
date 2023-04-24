@@ -1684,7 +1684,7 @@ document.addEventListener('keyup', function (e)
             if (context.length !== 0){
                 
                 // Filter - keeps only the lines that are connectet to and from selected elements.
-                var contextConnectedLines = getLines().filter(line => {
+                var contextConnectedLines = lines.filter(line => {
                     return (context.filter(element => {
                         return line.toID == element.id || line.fromID == element.id
                     })).length > 1
@@ -2686,16 +2686,6 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     showdata();
     redrawArrows();
 }
-
-/**
- * @description Will return all lines in the data array. This is mainly used for debugging purposes since we can log whenever the lines are read from.
- * @returns Returns all lines in the data array.
- */
-function getLines() // TODO : Replace all lines[i] with getLines()[i], or event introduce a new getLineAt(i)?
-{
-    return lines;
-}
-
 /**
  * @description Generatesa a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
  * @see ghostElement
