@@ -39,15 +39,7 @@ $vers=getOPG('coursevers');
 
 </head>
 <body onload="setup(); displayNavIcons();">
-<?php
-  $debug = "varför fungerar du inte?";
-  function debug($e){
-    echo "<div>";
-      echo $e; 
-    echo "</div>";
-  }
-  debug($debug);
-?>
+ 
 	<!-- Navigation Header START -->
 	<?php
 		$noup="SECTION";
@@ -325,6 +317,14 @@ $vers=getOPG('coursevers');
 			<i class='arrow up' id='scrollUp'></i>
 		</div>
 
-
+    <?php
+  $debug = "varför fungerar du inte?";
+  function debug($e){
+    echo "<div>";
+      echo $e; 
+    echo "</div>";
+  }
+  debug($debug);
+?>
 </body>
 </html>
