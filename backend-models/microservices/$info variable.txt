@@ -1,0 +1,254 @@
+$info variable
+
+
+accessedservice.php
+$info=$opt,$cid,$uid,$username,$newusers.
+
+
+$info = array(
+"opt", $opt, 
+"cid",$cid,
+"uid",$uid,
+"username",$username,
+"newusers",$newusers
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+-------------------------------------
+
+codeviewerService.php
+$info=$opt." ".$courseId." ".$courseVersion." ".$exampleName." ".$sectionName." ".$exampleId;
+
+
+$info = array(
+"opt",$opt,
+"courseId",$courseId,
+"courseVersion", $courseVersion,
+"exampleName", $exampleName,
+"sectionName", $sectionName,
+"exampleId", $exampleId 
+)
+
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+---------------------------------------
+courseedservice.php
+$info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+
+$info = array(
+"opt",$opt,
+"cid",$cid,
+"coursename", $coursename,
+"versid", $versid,
+"visibility", $visibility,
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+----------------------------------------
+
+diagramservice.php
+$info=$opt." ".$courseid." ".$coursename;
+
+$info = array(
+"opt",$opt,
+"courseid",$courseid,
+"coursename", $coursename,
+)
+
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+---------------------------------------
+
+
+duggaedservice.php
+$info=$opt." ".$cid." ".$qid." ".$vid." ".$param." ".$answer." ".$disabled." ".$uid." ".$name;
+
+$info = array(
+"opt",$opt,
+"cid",$cid,
+"qid", $qid,
+"vid", $vid,
+"param", $param,
+"answer", $answer,
+"disabled", $disabled,
+"uid", $uid,
+"name", $name
+)
+
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+--------------------------------------------
+
+fileedservice.php
+$info = $opt . " " . $cid . " " . $coursevers . " " . $fid . " " . $filename . " " . $kind;
+
+
+
+$info = array(
+"opt",$opt,
+"cid",$cid,
+"coursevers", $coursevers,
+"fid", $fid,
+"filename", $filename,
+"kind", $kind
+)
+
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+---------------------------------------------
+
+
+
+filereceive.php
+$info = $cid . " " . $vers . " " . $kind . " " . $link . " " . $selectedfile . " " . $error . " " . $filo;
+
+
+
+
+$info = array(
+"cid",$cid,
+"vers", $vers,
+"kind", $kind,
+"link", $link,
+"selectedfile", $selectedfile,
+"error", $error,
+"filo", $filo
+)
+
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+---------------------------------------------
+
+filereceive_dugga.php
+
+$info=$cid." ".$vers." ".$moment." ".$segment." ".$duggaid." ".$fieldtype." ".$fieldkind." ".$link." ".$filo;
+
+
+$info = array(
+"cid",$cid,
+"vers", $vers,
+"moment", $moment,
+"segment", $segment,
+"duggaid", $duggaid,
+"fieldtype", $fieldtype,
+"fieldkind", $fieldkind,
+"link", $link,
+"filo", $filo
+)
+
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+
+
+
+---------------------------------------------
+
+filereceive_preview.php
+$info=$cid." ".$vers." ".$kind." ".$fileName." ".$error." ".$filo;
+
+
+
+$info = array(
+"cid",$cid,
+"vers", $vers,
+"kind", $kind,
+"fileName", $fileName,
+"error", $error,
+"filo", $filo
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+
+--------------------------------------------
+
+highscoreservice.php
+$info=$opt." ".$courseid." ".$coursename;
+
+
+$info = array(
+"opt",$opt,
+"courseid", $courseid,
+"coursename", $coursename
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+--------------------------------------------
+profileservice.php
+$info=$action." ".$userid;
+
+
+$info = array(
+"action",$action,
+"userid", $userid
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+--------------------------------------------
+
+sectionedservice.php
+$info=$opt." ".$courseid." ".$coursevers." ".$coursename;
+
+
+
+
+$info = array(
+"opt",$opt,
+"courseid", $courseid,
+"coursevers", $coursevers,
+"coursename", $coursename
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+---------------------------------------------
+
+showDuggaservice.php
+$info=$opt." ".$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$segment." ".$answer;
+
+
+
+
+
+$info = array(
+"opt",$opt,
+"courseid", $courseid,
+"coursevers", $coursevers,
+"duggaid", $duggaid,
+"moment", $moment,
+"segment", $segment,
+"answer", $answer
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+---------------------------------------------
+
+404.php
+$info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+
+
+
+$info = array(
+"opt",$opt,
+"cid", $cid,
+"coursename", $coursename,
+"versid", $versid,
+"visibility", $visibility
+)
+
+$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
+--------------------------------------------
+
+
+
+
