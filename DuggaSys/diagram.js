@@ -6477,6 +6477,7 @@ function generateContextProperties()
                         }
                     });
                     str += `</select></label>`;
+                    str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                     str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
                     if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
                     str += `/>`;
@@ -6485,6 +6486,7 @@ function generateContextProperties()
         }
         if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+            str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
             if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
             str += `/>`;
@@ -6715,6 +6717,14 @@ function generateContextProperties()
       multipleColorsTest();
     }
 
+/**
+ * 
+ * @description function for include button to the options panel,writes out << Include >>
+ */
+function setLineLabel()
+{
+    document.getElementById("lineLabel").value = "&#60&#60include&#62&#62";
+}
 
 /**
  * @description Toggles the option menu being open or closed.
