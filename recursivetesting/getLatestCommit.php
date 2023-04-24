@@ -63,6 +63,7 @@
 		
 		$links = $dom->getElementsByTagName('a');
 
+		$href = "";
 		foreach ($links as $link) {
 			$value = $link->getAttribute("href");
 			if(preg_match($regex, $value)) {
@@ -70,8 +71,12 @@
 				break; //exits the loop since only the first match is necessary
 			}
 		}
-
-		$latestCommit = preg_replace($regex, "", $href);
-		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
+		
+		if($href != "") {
+			$latestCommit = preg_replace($regex, "", $href);
+			print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
+		} else {
+			print_r("No matches in database!");
+		}
 	}
 ?>
