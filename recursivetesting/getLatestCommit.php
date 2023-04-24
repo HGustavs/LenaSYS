@@ -15,11 +15,11 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/SVG_Diagramming"); // Dummy Code to see if everything works
+	getCourseID("https://github.com/HGustavs/OSMMapProcess"); // Dummy Code to see if everything works
 
 	function getCourseID($githubURL) {
 
-		$latestCommit = getCommit($githubURL, true);
+		$latestCommit = getCommit($githubURL);
 
 		echo "<p>Original URL: ".$githubURL."</p>";
 		// translates the url to the same structure as in mysql
@@ -41,14 +41,14 @@
 		}
 
 		// use the original url to get the latest commit
-		$latestCommit = getCommit($githubURL, false);
+		$latestCommit = getCommit($githubURL);
 		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
 	}
 
 	// --------------------- Get Latest Commit Function -----------------------------------------
 
 
-	function getCommit($url, $firstTime) {
+	function getCommit($url) {
 
 		$html = file_get_contents($url);
 		$dom = new DomDocument;
@@ -79,9 +79,7 @@
 			$latestCommit = preg_replace($regex, "", $href);
 			return $latestCommit;
 		} else {
-			if(!$firstTime) {
-				print_r("No matches in database!");
-			}
+			//print_r("No matches in database!");
 		}
 	}
 ?>
