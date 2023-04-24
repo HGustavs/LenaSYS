@@ -5542,7 +5542,7 @@ function generateErTableString()
     }
     //if its empty, show a message instead.
     if (stri == "") {
-        stri = "The feature you are trying to use is linked to ER tables and it appears you do not have any ER elements placed."
+        stri = "The feature you are trying to use is linked to ER tables and it appears you do not have any ER elements placed. Please place an ER element and try again."
     }
     return stri;
 }
