@@ -5540,6 +5540,7 @@ function generateErTableString()
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
+    console.log(stri);
     return stri;
 }
 /**
