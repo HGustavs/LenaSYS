@@ -7477,7 +7477,7 @@ function drawLine(line, targetGhost = false)
     var str = "";
 
     var lengthConstant = 1; // Determines how "far inwards" on the element the line should have its origin and its end points.
-    var lengthConstantSD_TB_Y = 20;
+    var lengthConstantSD_Y = 15;
     var x1Offset = 0;
     var x2Offset = 0;
     var y1Offset = 0;
@@ -7607,16 +7607,16 @@ function drawLine(line, targetGhost = false)
         x2Offset = lengthConstant;
     } else if ((fy > ty) && (line.ctype == "TB") ){
         if (felem.type == 'SD' || telem.type == 'SD'){
-            y1Offset = lengthConstantSD_TB_Y;
-            y2Offset = -lengthConstantSD_TB_Y; 
+            y1Offset = lengthConstantSD_Y;
+            y2Offset = -lengthConstantSD_Y; 
         }else{
             y1Offset = lengthConstant;
             y2Offset = -lengthConstant; 
         }
     } else if ((fy < ty) && (line.ctype == "BT") ){
         if (felem.type == 'SD' || telem.type == 'SD'){
-            y1Offset = -lengthConstantSD_TB_Y;
-            y2Offset = lengthConstantSD_TB_Y; 
+            y1Offset = -lengthConstantSD_Y;
+            y2Offset = lengthConstantSD_Y; 
         }else{
             y1Offset = -lengthConstant;
             y2Offset = lengthConstant; 
