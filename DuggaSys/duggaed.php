@@ -1,12 +1,4 @@
-<?php
-  $debug = "varför fungerar du inte?";
-  function debug($e){
-    echo "<div>";
-      echo $e; 
-    echo "</div>";
-  }
-  debug($debug);
-?>
+
 <?php
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
@@ -47,7 +39,15 @@ $vers=getOPG('coursevers');
 
 </head>
 <body onload="setup(); displayNavIcons();">
-
+<?php
+  $debug = "varför fungerar du inte?";
+  function debug($e){
+    echo "<div>";
+      echo $e; 
+    echo "</div>";
+  }
+  debug($debug);
+?>
 	<!-- Navigation Header START -->
 	<?php
 		$noup="SECTION";
