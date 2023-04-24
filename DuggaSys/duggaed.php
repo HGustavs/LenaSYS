@@ -13,7 +13,7 @@ $vers=getOPG('coursevers');
       echo $e; 
     echo "</div>";
   }
-  debug("chalabadab");
+  debug($cid);
 ?>
 
 <!DOCTYPE html>
