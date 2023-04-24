@@ -55,8 +55,6 @@ Boxcount 3 = templateNumber 3, 4, 8
 Boxcount 4 = templateNumber 5, 6, 7
 Boxcount 5 = templateNumber 9
 
-insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values ('1885', 'testG2-v3-00000000', 'New code 9023', NULL, NULL, NULL, '1337', '0', '1', '0');
-
 Forces box to have content html1
 SELECT * FROM box WHERE boxid = 5 AND exampleid = 9022;
 
@@ -109,4 +107,124 @@ POST{
 :exampleid, $exampleId
 :cid, $courseId
 :cvers, $courseVersion
+
+Change content of example (line 167):
+--------------------------------------------------------------------------------------------
+Checking to see that attributes that are to be changed are different before the update and after the update. 
+
+runlink = :playlink , examplename = :examplename, sectionname = :sectionname 
+ WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
+
+
+Checking to see that attributes that are to be changed are different before the update and after the update. 
+
+Run select first to see values and save somewhere:
+SELECT runlink, examplename, sectionname FROM codeexample where exampleid = 9026 and cid = 1885;
+
+Update the values
+Updates runlink, examplename and sectionname using exempleid and cid values
+update codeexample set runlink = 'PHP-TEST1.PHP', examplename = 'TestTESTX', sectionname = 'secnameTEST' where exampleid = 9026 and cid = 1885;
+
+Run select again to compare changes, if the select before the update and the select after are the same the update did not work. 
+SELECT runlink, examplename, sectionname FROM codeexample where exampleid = 9026 and cid = 1885;
+
+Check for better way to get and set before/afterId BEFOREID (line 180)
+--------------------------------------------------------------------------------------------
+
+pre-reg: if($beforeId!="UNK"){
+
+Checking to see that attributes that are to be changed are different before the update and after the update. 
+
+Run select first to see values and save somewhere:
+SELECT beforeid FROM codeexample where exampleid = 9026 and cid = 1885 and cversion=1337;
+
+Update the values
+UPDATE codeexample SET beforeid = 9999  WHERE exampleid = 9026 AND cid = 1885  AND cversion = 1337;
+
+Run select again to compare changes, if the select before the update and the select after are the same the update did not work. 
+SELECT beforeid FROM codeexample where exampleid = 9026 and cid = 1885, cversion=1337;
+
+Check for better way to get and set before/afterId AFTERID (line 192)
+--------------------------------------------------------------------------------------------
+
+SELECT afterid FROM codeexample where exampleid = 9026 and cid = 1885 and conversion 1337;
+
+UPDATE codeexample SET afterid = 9998  WHERE exampleid = 9026 AND cid = 1885  AND cversion = 1337;
+
+SELECT afterid FROM codeexample where exampleid = 9026 and cid = 1885 and cversion = 1337;
+
+
+
+
+
+
+add words (line 203)
+--------------------------------------------------------------------------------------------
+pre-req:
+if(isset($_POST['addedWords'])) {
+
+max wordid should be higher after insert for test to work. 
+Run select first to see values and save somewhere:
+
+select * from impwordlist where wordid=(select max(wordid) from impwordlist);
+Make insert
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (9026, "Test", 1);
+Run select again to compare changes, if the select before the update and the select after are the same the update did not work. 
+select * from impwordlist where wordid=(select max(wordid) from impwordlist);
+
+
+remove words (line 219)
+--------------------------------------------------------------------------------------------
+
+max wordid should be lower after insert for test to work
+
+pre-req:
+if(isset($_POST['removedWords'])) {
+
+Run select first to see values and save somewhere:
+
+select * from impwordlist where wordid=(select max(wordid) from impwordlist);
+
+Make delete 
+
+DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
+
+Run select again to compare changes, if the select before the update and the select after are the same the update did not work. Max should be lower for test to bu successful.
+
+select * from impwordlist where wordid=(select max(wordid) from impwordlist);
+
+
+remove words (line 234)
+--------------------------------------------------------------------------------------------
+	}else if(strcmp('EDITCONTENT',$opt)===0) {
+
+
+Checking to see that attributes that are to be changed are different before the update and after the update. 
+
+Run select first to see values and save somewhere:
+select  boxtitle,boxcontent, filename, fontsize, wordlistid from box where boxid=5 and exampleid=9025;
+
+Update the values
+UPDATE box SET boxtitle="Test2", boxcontent="TestFormat", filename="Test.html", fontsize=10, wordlistid="4" WHERE boxid=5 AND exampleid=9025;
+
+Run select again to compare changes, if the select before the update and the select after are the same the update did not work. 
+select  boxtitle,boxcontent, filename, fontsize, wordlistid from box where boxid=5 and exampleid=9025;
+
+
+
+add rows (line 255)
+--------------------------------------------------------------------------------------------
+
+pre-req:
+if (isset($_POST['addedRows'])) {
+
+select old values from max
+select * from improw where impid=(select max(impid) from improw);
+Insert new improw values
+INSERT INTO improw(boxid,exampleid,istart,iend,uid) VALUES (5, 9025, 999, 999, 1);
+
+
+ select values from new max. Should not be same. 
+select * from improw where impid=(select max(impid) from improw);
+
 
