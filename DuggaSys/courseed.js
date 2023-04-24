@@ -81,9 +81,9 @@ function createNewCourse()
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 	fetchGitHubRepo(courseGitURL);
-	fetchLatestCommit(courseGitURL);
   	localStorage.setItem('lastCC', true);
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+	fetchLatestCommit(courseGitURL);
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
