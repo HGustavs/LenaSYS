@@ -574,7 +574,7 @@
 			</div>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 
-			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''></div>
+			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''></select></div>
 			
 			
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
