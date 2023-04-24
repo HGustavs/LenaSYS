@@ -3991,6 +3991,10 @@ if(data[i].kind==elementTypesNames.SDState)
 }
     }
     output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
+    //if no state diagram exists, return a message to the user instead.
+    if ((lineCounter == 0) && (elementCounter == 0)) {
+        output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
+    }
     return output;
 }
 /**
