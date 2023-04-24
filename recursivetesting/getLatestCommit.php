@@ -41,7 +41,7 @@
 		// Get the latest commit from the URL, then print it
 		$latestCommit = getCommit($githubURL);
 		// The commit doesn't always work, try to get it up to 10 times	
-		for($counter = 0; $counter > 10; $counter++) {
+		for($counter = 0; $counter < 10; $counter++) {
 			print_r("Loop!");
 			if($latestCommit == "") {
 				$latestCommit = getCommit($githubURL);
