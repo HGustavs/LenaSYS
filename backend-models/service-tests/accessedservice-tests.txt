@@ -12,6 +12,8 @@ accessedservice.php
 --------------------
 
 Test 1: try to update a created user by changing the username
+Row: 62 - 80 and 220 - 238
+pre-req: { ($opt, "UPDATE")==0 }
 To make sure the update of a user works and what response it will get form the database.
 It can be done by creating a user with SQL-query.
    SQL-query: insert into user( username, email, firstname, lastname, ssn, password, addedtime, class) 
@@ -21,6 +23,8 @@ Then make an update by useing SQL-query.
 To update the username of the user. The values to be checked are username and uid.
 If the update was unable to succeed, it should display an error message which says 
 that the user does not exist in the database.
+Compare the result to make sure the test worked, by using SQL-query.
+   SQL-query: SELECT uid FROM user WHERE ssn=:ssn 
 
 ---------------------
 
