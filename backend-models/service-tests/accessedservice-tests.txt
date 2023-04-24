@@ -29,6 +29,8 @@ Compare the result to make sure the test worked, by using SQL-query.
 ---------------------
 
 Test 2: try to add two users with same ssn or username
+Row: 161 - 167 and 220 - 248
+Pre-req: { ($user[0]!="PNR") }
 By adding two users with same ssn or username to see how the database will react.
 This can be done with the SQL-query to insert a user.
    SQL-query: INSERT INTO user( username, email, firstname, lastname, ssn, password, addedtime, class) 
@@ -36,6 +38,10 @@ This can be done with the SQL-query to insert a user.
 Both the username and ssn values should be checked, to avoid duplcation. If there are two or more
 users with the same ssn or username, it should display an error message. Which the database will indicates 
 there is a duplicate ssn or username.
+
+Pre-req: { (count($user) == 1&&strcmp($user[0], " ")!==0) }
+Check the test result if a user was added with username or ssn, by using SQL-query.
+   SQL-query: SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2
 
 ---------------------- 
 
