@@ -7,7 +7,7 @@ Test to ensure active users can be updated/created.
 First make a sql query that creates an active_users in groupdugga. Then try updating the active_users with the newly created values.
 Or try updating an active users without a active_users token. Then it will create a AUtoken for that active users hash
 
-Pre-req: {($opt, "UPDATEAU")==0}
+Pre-req: -
 
 SQL query to get active_users: SELECT active_users FROM groupdugga WHERE hash=hash;
 hash gets binded to $hash that is then executed
