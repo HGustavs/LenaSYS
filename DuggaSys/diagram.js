@@ -5540,7 +5540,10 @@ function generateErTableString()
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
-    console.log(stri);
+    //if its empty, show a message instead.
+    if (stri == "") {
+        stri = "The feature you are trying to use is linked to ER tables and it appears you do not have any ER elements placed."
+    }
     return stri;
 }
 /**
