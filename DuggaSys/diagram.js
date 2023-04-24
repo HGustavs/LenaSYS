@@ -7109,31 +7109,31 @@ function multipleColorsTest()
 //#region ================================ ELEMENT CALCULATIONS ==================================
 /**
  * @description Sorts all lines connected to an element on each side.
- * @param {String} a Hexadecimal id for the element at current test index for sorting.
- * @param {String} b Hexadecimal id for the element were comparing to.
+ * @param {String} currentElementID Hexadecimal id for the element at current test index for sorting.
+ * @param {String} compareElementID Hexadecimal id for the element were comparing to.
  * @param {Array<Object>} ends Array of all lines connected on this side.
  * @param {String} elementid Hexadecimal id for element to perform sorting on.
  * @param {Number} axis 
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
-function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable names a and b
+function sortvectors(currentElementID, compareElementID, ends, elementid, axis) // TODO : Replace variable names a and b
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
-    var lineA = (ghostLine && a === ghostLine.id) ? ghostLine : lines[findIndex(lines, a)];
-    var lineB = (ghostLine && b === ghostLine.id) ? ghostLine : lines[findIndex(lines, b)];
+    var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
+    var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-     if (lineA.fromID == elementid) {
-        toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
+     if (currentElementLine.fromID == elementid) {
+        toElementA = (currentElementLine == ghostLine) ? ghostElement : data[findIndex(data, currentElementLine.toID)];
     } else {
-        toElementA = data[findIndex(data, lineA.fromID)];
+        toElementA = data[findIndex(data, currentElementLine.fromID)];
     }
 
-    if (lineB.fromID == elementid) {
-        toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
+    if (compareElementLine.fromID == elementid) {
+        toElementB = (compareElementLine == ghostLine) ? ghostElement : data[findIndex(data, compareElementLine.toID)];
     } else {
-        toElementB = data[findIndex(data, lineB.fromID)];
+        toElementB = data[findIndex(data, compareElementLine.fromID)];
     }
 
     if (toElementA.id === toElementB.id) {
@@ -7149,8 +7149,8 @@ function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable nam
     // If lines cross swap otherwise keep as is
     if (axis == 0 || axis == 1) {
         // Left side
-        ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
-        by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
+        ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
+        by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
         if (axis == 0) parentx = parent.x1
         else parentx = parent.x2;
 
@@ -7158,8 +7158,8 @@ function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable nam
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
-        ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
-        bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
+        ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
+        bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
         if (axis == 2) parenty = parent.y1
         else parenty = parent.y2;
 
