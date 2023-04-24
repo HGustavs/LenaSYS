@@ -68,7 +68,13 @@
 
 		$href = "";
 		foreach ($links as $link) {
+
+			echo "<p>Links: ".$link."</p>";
+
 			$value = $link->getAttribute("href");
+
+			echo "<p>Value: ".$value."</p>";
+			
 			if(preg_match($regex, $value)) {
 				$href = $value; // Takes the first matching value and stores it in an array
 				break; //exits the loop since only the first match is necessary
