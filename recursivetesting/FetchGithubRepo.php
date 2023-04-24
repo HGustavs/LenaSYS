@@ -40,21 +40,62 @@ function getGitHubURL($url)
 // bfs($translatedURL, $repository);
 // ----------------------------------
 
+function insertToFileLink($cid, $item) {
+    global $pdo;
+    $fileText = $item['name']; 
+    $filePath = $item['path']; 
+    $filesize = $item['size']; // Size
+    $kindid = 3; // The kind(course local/version local/global), 3 = course local
+
+    $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid AND path=:filePath;"); 
+    // bind query results into local vars.
+    $query->bindParam(':filename', $fileText);
+    $query->bindParam(':cid', $cid);
+    $query->bindParam(':filePath', $filePath);
+    $query->bindParam(':kindid', $kindid);
+    $query->execute();
+    $norows = $query->fetchColumn();
+
+    // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
+    if ($norows == 0) {      
+        $query = $pdo->prepare("INSERT INTO fileLink(filename, path, kind,cid,filesize) VALUES(:filename, :filePath, :kindid,:cid,:filesize)");
+        $query->bindParam(':cid', $cid);
+        $query->bindParam(':filename', $fileText);
+        $query->bindParam(':filePath', $filePath);
+        $query->bindParam(':filesize', $filesize);
+        $query->bindParam(':kindid', $kindid);
+        // Runs SQL query and runs general error handling if it fails.
+        if (!$query->execute()) {
+            $error = $query->errorInfo();
+            echo "Error updating file entries" . $error[2];
+            // $errortype ="uploadfile";
+            $errorvar = $error[2];
+            print_r($error);
+            echo $errorvar;
+        } 
+    }
+}
+    
 function bfs($url, $repository)
 {
     $visited = array();
     $fifoQueue = array();
+    // TODO remove repository creation bacuse we create folders in course local
     // If the directory doesn't exist, make it
     if(!file_exists('../../LenaSYS/courses/' . $repository . '')) {
-      if(!mkdir('../../LenaSYS/courses/' . $repository . '')){
+        if(!mkdir('../../LenaSYS/courses/' . $repository . '')){
         echo "Error creating folder: $repository";
         die;
       }
     }
     array_push($fifoQueue, $url);
-    $pdo = new PDO('sqlite:../../githubMetadata/metadata2.db');
+    $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
+    // TODO link the course with cid, should not be hardcoded 
+    $cid = 1; // 1 för webbprogramering 
+    
     while (!empty($fifoQueue)) {
+        // TODO REMOVE RGB old styling 
         // Randomizes colors for easier presentation
         $R = rand(155, 255);
         $G = rand(155, 255);
@@ -88,18 +129,22 @@ function bfs($url, $repository)
                     if ($item['type'] == 'file') {
                         // Retrieves the contents of each individual file based on the fetched "download_url"
                         $fileContents = file_get_contents($item['download_url']);
-                        $path = '../../LenaSYS/courses/'.  $repository . '/' . $item['path'];
+                        $path = '../../LenaSYS/courses/'. $cid . '/' . "Github" .'/' . $item['path'];
                         echo "<script>console.log('Debug Objects: " . $path . "' );</script>";
                         // Creates the directory for each individual file based on the fetched "path"
                         if (!file_exists((dirname($path)))) {
                             mkdir(dirname($path), 0777, true);
                         } 
+
+                        insertToFileLink($cid, $item);
                         // Writes the file to the respective folder. 
                         file_put_contents($path, $fileContents);
+                        // TODO remove old html style
                         echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-                        echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
+                        echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';                           
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
+                        // TODO REMOVE old styling 
                         echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
                         echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                         if (!in_array($item['url'], $visited)) {
@@ -107,7 +152,7 @@ function bfs($url, $repository)
                             array_push($fifoQueue, $item['url']);
                         }
                     }
-                    $query = $pdo->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
+                    $query = $pdoLite->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
                     $query->bindParam(':repoName', $item['name']);
                     $query->bindParam(':repoURL', $item['repoURL']);
                     $query->bindParam(':repoFileType', $item['type']);
@@ -115,7 +160,7 @@ function bfs($url, $repository)
                     $query->bindParam(':repoSHA', $item['sha']);
                     $query->bindParam(':repoPath', $item['path']);
                     $query->execute();
-                    echo "</table>";
+                    echo "</table>"; 
                 }
             } else {
                 //422: Unprocessable entity
