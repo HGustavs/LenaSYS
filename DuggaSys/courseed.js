@@ -39,14 +39,23 @@ function updateCourse()
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
-	if(courseGitURL) 
-	{
-		fetchGitHubRepo(courseGitURL);
+	if(courseGitURL) {
+		dataCheck = fetchGitHubRepo(courseGitURL);
+		if(dataCheck) {
+			$("#overlay").css("display", "none");
+			AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+			localStorage.setItem('courseid', courseid);
+			localStorage.setItem('updateCourseName', true);
+			alert("Course " + coursename + " updated!"); 
+		}
+	} else {
+		$("#overlay").css("display", "none");
+		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+		localStorage.setItem('courseid', courseid);
+		localStorage.setItem('updateCourseName', true);
+		alert("Course updated!"); 
 	}
-	$("#overlay").css("display", "none");
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-	localStorage.setItem('courseid', courseid);
-	localStorage.setItem('updateCourseName', true);
+
 }
 function updateCourseColor(courseid){
 	document.getElementById(courseid).firstChild.classList.add("highlightChange");
@@ -78,16 +87,28 @@ function newCourse()
 
 function createNewCourse()
 {
+	console.log("HI")
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-	if(courseGitURL) {
+	//Check if data is correct for gitURL
+	//if(courseGitURL) {
+		console.log("Before fetch");
 		fetchGitHubRepo(courseGitURL);
-	}
-  	localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+		console.log("After fetch");
+		console.log(dataCheck + " INSIDE CREATENEWCOURSE");
+		if(fetchGitHubRepo) {
+			localStorage.setItem('lastCC', true);
+			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+			alert("New course, " + coursename + "added!");
+		}
+	//} else {
+	//	localStorage.setItem('lastCC', true);
+	//	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+	//	alert("New course, " + coursename + "added!");
+	//}
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
@@ -95,30 +116,34 @@ function fetchGitHubRepo(gitHubURL)
 {
 	//Remove .git, if it exists
 	regexURL = gitHubURL.replace(/.git$/, "");
-
-	if(regexURL){
-		$.ajax({
-			async: false,
-			url: "../recursivetesting/FetchGithubRepo.php",
-			type: "POST",
-			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
-			success: function(response) { 
-				console.log(response);
-			},
-			error: function(data){
-				switch(data.status){
-					case 422:
-						alert(data.responseJSON.message);
-						break;
-					case 503:
-						alert(data.responseJSON.message);
-						break;
-					default:
-						alert("Something went wrong...");
-				}
+	var dataCheck;
+	$.ajax({
+		async: false,
+		url: "../recursivetesting/FetchGithubRepo.php",
+		type: "POST",
+		data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
+		success: function(response) { 
+			console.log(response);
+			dataCheck = true;
+			console.log(dataCheck + " INSIDE AJAX");
+			return true;
+		},
+		error: function(data){
+			switch(data.status){
+				case 422:
+					alert(data.responseJSON.message + "\nDid not create/update course");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not create/update course");
+					break;
+				default:
+					alert("Something went wrong...");
 			}
-		});
-	} 
+		 	//dataCheck = false;
+			return false;
+		}
+	});
+	//return dataCheck;
 }
 
 function copyVersion()
@@ -695,10 +720,9 @@ function validateForm(formid) {
 	if(numberOfValidInputs === inputs.length) {
 		if(formid === "newCourse") {
 			createNewCourse();
-			alert("New course added!");
+			console.log("Created a new course");
 		} else if(formid === "editCourse") {
 			updateCourse();
-			alert("Course updated!"); 
 		}
 
 		//Reset inputs
