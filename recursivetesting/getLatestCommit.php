@@ -1,16 +1,9 @@
 <?php 
+
 	// Used to display errors on screen since PHP doesn't do that automatically.
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
-
-	// Include basic application services!
-	include_once "../Shared/basic.php";
-	include_once "../Shared/sessions.php";
-
-	// Connect to database and start session
-	pdoConnect();
-	session_start();
 
 	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
 	if(isset($_POST['action'])) 
@@ -21,15 +14,23 @@
 		}
 	};
 
-	// DUMMY CODE
-	getCourseID("https://github.com/HGustavs/DiagrammingSYS");
+	// Include basic application services!
+	include_once "../Shared/basic.php";
+	include_once "../Shared/sessions.php";
+
+	// Connect to database and start session
+	pdoConnect();
+	session_start();
+
+	//getCourseID("https://github.com/HGustavs/DiagrammingSYS");
 
 	function getCourseID($githubURL) {
+
 		echo "<table>";
-		
 		// translates the url to the same structure as in mysql
 		// the "/" needs to be "&#47;" for the query to work
 		$newURL = str_replace("/", "&#47;", $githubURL);
+		print_r($newURL);
 
 		// fetching from the database
 		global $pdo;
