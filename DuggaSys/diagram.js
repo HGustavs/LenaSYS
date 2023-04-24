@@ -1917,8 +1917,10 @@ function ddown(event)
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
             event.preventDefault(); // Needed in order for focus() to work properly 
             var input = document.getElementById("elementProperty_name");
-            input.focus();
-            input.setSelectionRange(0,input.value.length); // Select the whole text.
+            if (input !== null) {
+                input.focus();
+                input.setSelectionRange(0, input.value.length); // Select the whole text.
+            }
             document.getElementById('optmarker').innerHTML = "&#x203A;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
@@ -6198,11 +6200,19 @@ function generateContextProperties()
         propSet.classList.remove('options-fieldset-show');
         for (var i = 0; i < menuSet.length; i++) {
             menuSet[i].classList.add('options-fieldset-show');
-            menuSet[i].classList.remove('options-fieldset-hidden');  
+            menuSet[i].classList.remove('options-fieldset-hidden');
         }
     }
-
-
+    // No element or line selected, but either erTableToggle or testCaseToggle is active.
+    else if (context.length == 0 && contextLine.length == 0 && (erTableToggle || testCaseToggle)) {
+        //Show properties and hide the other options
+        propSet.classList.add('options-fieldset-show');
+        propSet.classList.remove('options-fieldset-hidden');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-hidden');
+            menuSet[i].classList.remove('options-fieldset-show');
+        }
+    }
 
     //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     if (erTableToggle == true) {
