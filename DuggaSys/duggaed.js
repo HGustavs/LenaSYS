@@ -647,7 +647,7 @@ function showVariantEditor() {
 }
 
 function returnedFile(data){
-	console.log(data);
+	console.log("hejhopp"+data);
 	retdata = data;
 	filearray = [];
 	
