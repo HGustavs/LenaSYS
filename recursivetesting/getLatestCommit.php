@@ -42,6 +42,7 @@
 		$latestCommit = getCommit($githubURL);
 		// The commit doesn't always work, try to get it up to 10 times	
 		for($counter = 0; $counter > 10; $counter++) {
+			print_r("Loop!");
 			if($latestCommit == "") {
 				$latestCommit = getCommit($githubURL);
 				print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
