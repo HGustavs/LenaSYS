@@ -5,14 +5,7 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
-	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-	if(isset($_POST['action'])) 
-	{
-		if($_POST['action'] == 'getCourseID') 
-		{
-			getCourseID($_POST['githubURL']);
-		}
-	};
+	
 
 	// Include basic application services!
 	include_once "../Shared/basic.php";
@@ -21,6 +14,15 @@
 	// Connect to database and start session
 	pdoConnect();
 	session_start();
+
+	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
+	if(isset($_POST['action'])) 
+	{
+		if($_POST['action'] == 'getCourseID') 
+		{
+			getCourseID($_POST['githubURL']);
+		}
+	};
 
 	//getCourseID("https://github.com/HGustavs/DiagrammingSYS");
 
