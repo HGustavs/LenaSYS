@@ -40,7 +40,7 @@
 		}
 
 		// use the original url to get the latest commit
-		getCommit($githubURL);
+		$latestCommit = getCommit($githubURL);
 	}
 
 	// --------------------- Get Latest Commit Function -----------------------------------------
@@ -76,6 +76,7 @@
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
 			print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
+			return $latestCommit;
 		} else {
 			print_r("No matches in database!");
 		}
