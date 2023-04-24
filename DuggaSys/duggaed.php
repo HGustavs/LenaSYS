@@ -316,15 +316,5 @@ $vers=getOPG('coursevers');
 			<span class='tooltiptextScroll'>Back to top</span>
 			<i class='arrow up' id='scrollUp'></i>
 		</div>
-
-    <?php
-  $debug = "varför fungerar du inte?";
-  function debug($e){
-    echo "<div>";
-      echo $e; 
-    echo "</div>";
-  }
-  debug($debug);
-?>
 </body>
 </html>
