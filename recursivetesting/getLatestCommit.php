@@ -13,13 +13,13 @@
 	session_start();
 
 	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-	// if(isset($_POST['action'])) 
-	// {
-	// 	if($_POST['action'] == 'getCourseID') 
-	// 	{
-	// 		getCourseID($_POST['githubURL']);
-	// 	}
-	// };
+	if(isset($_POST['action'])) 
+	{
+		if($_POST['action'] == 'getCourseID') 
+		{
+			getCourseID($_POST['githubURL']);
+		}
+	};
 
 	// DUMMY CODE
 	getCourseID("https://github.com/HGustavs/DiagrammingSYS");
