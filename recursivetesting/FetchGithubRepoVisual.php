@@ -8,8 +8,7 @@
 </head>
 
 <style>
-  td,
-  tr {
+  td {
     width: 500px
   }
 </style>
