@@ -8,7 +8,13 @@
 </head>
 
 <style>
+	th,
+	td,
 	tr {
+		width: 325px;
+		padding: 10px;
+		border: 1px solid black;
+		font-size: 14px;
 		text-align: left;
 	}
 </style>
@@ -63,12 +69,12 @@
 					if ($json) {
 						// Checks if the fetched item is of type 'file'
 						if ($item['type'] == 'file') {
-							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ');"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-							echo '<tr><td style="width: 450px">' . $item['name'] . '</td><td style="width: 250px"><a href="' . $item['html_url'] . '">HTML URL</a></td><td style="width: 150px">' . $item['type'] . '</td><td style="width: 150px">' . $item['size'] . '</td><td style="width: 250px"><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td style="width: 150px">' . $item['path'] . '</td></tr>';
+							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
+							echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
 							// Checks if the fetched item is of type 'dir'
 						} else if ($item['type'] == 'dir') {
-							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ');"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-							echo '<tr><td style="width: 450px">' . $item['name'] . '</td><td style="width: 250px"><a href="' . $item['html_url'] . '">HTML URL</a></td><td style="width: 150px">' . $item['type'] . '</td><td>-</td><td style="width: 150px">NULL</td><td>' . $item['sha'] . '</td><td style="width: 150px">' . $item['path'] . '</td></tr>';
+							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
+							echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
 							if (!in_array($item['url'], $visited)) {
 								array_push($visited, $item['url']);
 								array_push($fifoQueue, $item['url']);
