@@ -8831,7 +8831,7 @@ function drawElement(element, ghosted = false)
         str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<path 
+        str += `<path class="text" 
             d="M${linew+cornerRadius},${(linew)}
                 h${(boxw - (linew * 2))-(cornerRadius*2)}
                 a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
@@ -8846,7 +8846,7 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />
         
-        <text style='fill: ${element.stroke};' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`; //style shouldn't be needed, the div randomly gets fill: rgb(0, 0, 0), no clue why'
+        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //end of svg for SD header
         str += `</svg>`;
         //end of div for SD header
@@ -8858,7 +8858,7 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<path 
+            str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius}
@@ -8881,7 +8881,7 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<path 
+            str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
                     v${(boxh / 2 + (boxh / 2) - (linew * 2))-cornerRadius}
