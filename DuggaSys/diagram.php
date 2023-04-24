@@ -146,7 +146,7 @@
                     </div>    
                     <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                         <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
-                            <img src="../Shared/icons/diagram_entity.svg"/>
+                            <img src="../Shared/icons/arrow.svg"/>
                             <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                 <p>Change to ER entity</p>
                             </span>
