@@ -19,13 +19,12 @@
 
 	function getCourseID($githubURL) {
 
-		$latestCommit = getCommit($githubURL);
+		$latestCommit = getCommit($githubURL, true);
 
 		echo "<p>Original URL: ".$githubURL."</p>";
 		// translates the url to the same structure as in mysql
 		// the "/" needs to be "&#47;" for the query to work
 		$newURL = str_replace("/", "&#47;", $githubURL);
-		echo "<p>Updated URL: ".$newURL."</p>";
 
 		// fetching from the database
 		global $pdo;
@@ -42,14 +41,14 @@
 		}
 
 		// use the original url to get the latest commit
-		$latestCommit = getCommit($githubURL);
+		$latestCommit = getCommit($githubURL, false);
 		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
 	}
 
 	// --------------------- Get Latest Commit Function -----------------------------------------
 
 
-	function getCommit($url) {
+	function getCommit($url, $firstTime) {
 
 		$html = file_get_contents($url);
 		$dom = new DomDocument;
@@ -80,7 +79,9 @@
 			$latestCommit = preg_replace($regex, "", $href);
 			return $latestCommit;
 		} else {
-			print_r("No matches in database!");
+			if(!$firstTime) {
+				print_r("No matches in database!");
+			}
 		}
 	}
 ?>
