@@ -87,28 +87,28 @@ function newCourse()
 
 function createNewCourse()
 {
-	console.log("HI")
+	var dataCheck;
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 	//Check if data is correct for gitURL
-	//if(courseGitURL) {
+	if(courseGitURL) {
 		console.log("Before fetch");
-		fetchGitHubRepo(courseGitURL);
+		dataCheck = fetchGitHubRepo(courseGitURL);
 		console.log("After fetch");
-		console.log(dataCheck + " INSIDE CREATENEWCOURSE");
-		if(fetchGitHubRepo) {
+		//console.log(dataCheck + " INSIDE CREATENEWCOURSE");
+		if(dataCheck) {
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 			alert("New course, " + coursename + "added!");
 		}
-	//} else {
-	//	localStorage.setItem('lastCC', true);
-	//	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-	//	alert("New course, " + coursename + "added!");
-	//}
+	} else {
+		localStorage.setItem('lastCC', true);
+		AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+		alert("New course, " + coursename + "added!");
+	}
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
@@ -135,6 +135,7 @@ function fetchGitHubRepo(gitHubURL)
 					break;
 				case 503:
 					alert(data.responseJSON.message + "\nDid not create/update course");
+					console.log(data.responseJSON.data);
 					break;
 				default:
 					alert("Something went wrong...");

@@ -122,7 +122,8 @@ function bfs($url, $repository)
                 http_response_code(422);
                 header('Content-type: application/json');
                 $response = array(
-                    'message' => "The JSON-file is invalid"
+                    'message' => "The JSON-file is invalid",
+                    'json' => $json
                 );
 
                 echo json_encode($response);
@@ -132,7 +133,8 @@ function bfs($url, $repository)
             http_response_code(503);
             header('Content-type: application/json');
             $response = array(
-                'message' => "Github services are unavailable at this time."
+                'message' => "Github services are unavailable at this time.",
+                'data' => $data
             );
 
             echo json_encode($response);
