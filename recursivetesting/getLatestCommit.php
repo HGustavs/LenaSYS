@@ -47,6 +47,9 @@
 
 
 	function getCommit($url) {
+
+		echo "<p>URL Test: ".$url."</p>";
+
 		$html = file_get_contents($url);
 		$dom = new DomDocument;
 		$dom->preserveWhiteSpace = FALSE;
@@ -71,7 +74,7 @@
 				break; //exits the loop since only the first match is necessary
 			}
 		}
-		
+
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
 			print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
