@@ -316,5 +316,6 @@ $vers=getOPG('coursevers');
 			<span class='tooltiptextScroll'>Back to top</span>
 			<i class='arrow up' id='scrollUp'></i>
 		</div>
+    
 </body>
 </html>
