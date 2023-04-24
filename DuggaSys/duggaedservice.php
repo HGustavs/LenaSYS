@@ -260,4 +260,20 @@ echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "duggaedservice.php",$userid,$info);
 
+
+$info = array(
+	"opt",$opt,
+	"cid",$cid,
+	"qid", $qid,
+	"vid", $vid,
+	"param", $param,
+	"answer", $answer,
+	"disabled", $disabled,
+	"uid", $uid,
+	"name", $name
+);
+	
+	
+	$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
 ?>

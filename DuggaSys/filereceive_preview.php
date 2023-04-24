@@ -137,6 +137,18 @@ if (!$error) {
     echo "<script>window.location.replace('fileed.php?cid=" . $cid . "&coursevers=" . $vers . "&confirmation=". $fileName. "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 
+
+$info = array(
+    "cid",$cid,
+    "vers", $vers,
+    "kind", $kind,
+    "fileName", $fileName,
+    "error", $error,
+    "filo", $filo
+);
+    
+    $json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
 ?>
 </body>
 </html>

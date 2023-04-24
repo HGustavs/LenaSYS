@@ -535,4 +535,19 @@ function formatTimeSheetInput(){
 
 	return $inputString;
 }
+
+$info = array(
+	"cid",$cid,
+	"vers", $vers,
+	"moment", $moment,
+	"segment", $segment,
+	"duggaid", $duggaid,
+	"fieldtype", $fieldtype,
+	"fieldkind", $fieldkind,
+	"link", $link,
+	"filo", $filo
+);
+	
+	
+	$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
 ?>

@@ -438,4 +438,18 @@ if (!$error) {
 }*/
 
 echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
+
+$info = array(
+    "cid",$cid,
+    "vers", $vers,
+    "kind", $kind,
+    "link", $link,
+    "selectedfile", $selectedfile,
+    "error", $error,
+    "filo", $filo
+);
+    
+    
+    $json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+
 ?>
