@@ -15,7 +15,7 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/LenaSYS"); // Dummy Code to see if everything works
+	getCourseID("https://github.com/HGustavs/Webbprogrammering-Examples"); // Dummy Code to see if everything works
 
 	function getCourseID($githubURL) {
 
@@ -41,9 +41,9 @@
 		// Get the latest commit from the URL, then print it
 		$latestCommit = getCommit($githubURL);
 		print_r($latestCommit);
+
 		// The commit doesn't always work, try to get it up to 10 times	
 		for($counter = 0; $counter < 10; $counter++) {
-			print_r("Loop!");
 			if($latestCommit == "") {
 				$latestCommit = getCommit($githubURL);
 				print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
