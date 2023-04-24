@@ -1175,15 +1175,19 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 /* Diagram line style */
 .diagram-umlicon-triangle {
-  fill: white;
-  stroke: white;
+    fill: white;
 }
+.diagram-umlicon-black-triangle {
+    fill: black;
+}
+/*
 .diagram-umlicon-darkmode {
     stroke: white;
-  }
-  .diagram-umlicon-darkmode-sd {
+}  
+*/
+.diagram-umlicon-darkmode-sd {
     fill: white;
-  }
+}
 
 
 /* Diagram Messages */
