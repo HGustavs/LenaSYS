@@ -11716,10 +11716,8 @@ function isDarkTheme(){
 	    let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
-        if(cssUrl == 'blackTheme.css'){
-            return true;
-        }
-        else return false;
+
+        return cssUrl === 'blackTheme.css'
     }
 }
 /**
