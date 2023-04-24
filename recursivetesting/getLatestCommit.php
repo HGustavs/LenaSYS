@@ -15,9 +15,11 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/DiagrammingSYS"); // Dummy Code to see if everything works
+	getCourseID("https://github.com/HGustavs/saraTest"); // Dummy Code to see if everything works
 
 	function getCourseID($githubURL) {
+
+		$latestCommit = getCommit($githubURL);
 
 		echo "<p>Original URL: ".$githubURL."</p>";
 		// translates the url to the same structure as in mysql
