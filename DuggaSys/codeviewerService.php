@@ -525,28 +525,23 @@
 			$filename=$row['filename'];
 			$content="";
 
-			$ruery = $pdo->prepare("SELECT filename,path,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+			$ruery = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 			$ruery->bindParam(':cid', $courseId);
 			$ruery->bindParam(':fname', $filename);
 			$sesult = $ruery->execute();
 			if($sow = $ruery->fetch(PDO::FETCH_ASSOC)){
 					$filekind=$sow['kind'];
 					$filename = $sow['filename'];
-					$path = $sow['path'];
 
 					if($filekind==2){
 						// Global
 						$file = "../courses/global/".$filename;
 					}else if($filekind==3){
 						// Course Local
-						if ($path == null)
-							$file = "../courses/".$courseId."/".$filename;
-						else 
-							$file = "../courses/".$courseId."/Github/".$path;
-
+						$file = "../courses/".$courseId."/".$filename;
 					}else if($filekind==4){
 						// Local
-						$file = "../courses/".$courseId."/".$courseVersion."/".$path;
+						$file = "../courses/".$courseId."/".$courseVersion."/".$filename;
 					}else{
 						$file = "UNK";
 					}

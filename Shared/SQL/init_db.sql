@@ -238,7 +238,6 @@ CREATE TABLE vers(
 CREATE TABLE fileLink(
 	fileid					INT(11) NOT NULL AUTO_INCREMENT,
 	filename				VARCHAR(128) NOT NULL,
-	path					VARCHAR(128),
 	kind					INTEGER,
 	cid						INT UNSIGNED NOT NULL,
 	isGlobal				BOOLEAN DEFAULT 0,

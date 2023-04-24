@@ -15,7 +15,7 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------	
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 session_start();
@@ -54,7 +54,7 @@ $info = $cid . " " . $vers . " " . $kind . " " . $link . " " . $selectedfile . "
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive.php", $userid, $info);
 
 //  Handle files! One by one  -- if all is ok add file name to database
-//  login for user is successful & has either write access or is superuser
+//  login for user is successful & has either write access or is superuser					
 
 // $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 // if ($ha) {
@@ -119,7 +119,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive.php", $u
                 }
             }
         }
-
+        
     }else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
         if (!file_exists($currcvd . "/courses/" . $cid)) {
@@ -185,7 +185,7 @@ if ($storefile) {
         //	"rar"		=> [
     ];
     // Uploading of dummy-files in fileed
-    if($kind == "EFILE"){
+    if($kind == "EFILE"){ 
         $fileText = $_POST["newEmptyFile"][0]; //Name of the file
         $fileLocation = $_POST["efilekind"][0]; // global or corselocal
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
@@ -271,8 +271,8 @@ if ($storefile) {
                         $error = $query->errorInfo();
                         echo "Error updating filesize and uploaddate: " . $error[2];
                         $errortype ="updatefile";
-                        $errorvar = $error[2];
-                    }
+                        $errorvar = $error[2]; 
+                    }        
         }
         else{ // Not allowed extension
             $errortype ="extension";
@@ -287,7 +287,7 @@ if ($storefile) {
     //print_r($swizzled);
 
     foreach ($swizzled as $key => $filea) {
-
+        
         // Uncomment for debug printing
         //print_r($filea) . "<br />";
 
@@ -299,7 +299,7 @@ if ($storefile) {
             $extension = end($temp); //stores the file type
             $extension = strtolower($extension);
 
-
+           
             $filetype = "";
             if (function_exists('mime_content_type'))
                 // Determine file MIME-type
@@ -307,7 +307,7 @@ if ($storefile) {
             else
                 // Use the file type given at upload because the extension "fileinfo" has not been enabled in php.ini
                 $filetype = $filea['type'];
-
+            
             if (array_key_exists($extension, $allowedExtensions)) {
                 //  if file type is allowed, continue the uploading process.
 
@@ -324,7 +324,7 @@ if ($storefile) {
                     logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 } else if ($kind == "MFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
-
+                    
                     // Logging for course local files
                     $description="CourseLocal"." ".$fname;
                     logUserEvent($userid, $username, EventTypes::AddFile, $description);
@@ -404,7 +404,7 @@ if ($storefile) {
                         echo "Error updating filesize and uploaddate: " . $error[2];
                         $errortype ="updatefile";
                         $errorvar = $error[2];
-
+                        
                     }
 
                 } else {
@@ -436,5 +436,6 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filereceive.php", $use
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }*/
+
 echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>
