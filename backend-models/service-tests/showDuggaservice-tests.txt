@@ -74,7 +74,7 @@ This data is then presented with a foreach loop for $rows
 After this is done the service gets the entryname for the moment (ex biträkningsdugga 1)
 SQL query for this: SELECT entryname FROM listentries WHERE lid=moment;
 :moment is then bound to $moment and then executed
-This text works if a list of all entrynames is presented
+This test works if a list of all entrynames is presented
 
 If the everything works the data should be presented on Lenasys.
 If not $debug gets error message and the data is reset
@@ -92,6 +92,3 @@ SQL query to get data: SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'
 It then prepares this query, binds the values and executes it
 Its then presented with a foreachloop
 The data is also presented on LenaSYS with processDuggaFiles();
-
-
-
