@@ -248,10 +248,10 @@ try {
 $sql2 = '
 	CREATE TABLE IF NOT EXISTS gitRepos ( 
 		cid INTEGER,
-	repoName VARCHAR(50), 
+	  repoName VARCHAR(50), 
     repoURL VARCHAR(255), 
-	lastCommit VARCHAR(50),
-	PRIMARY KEY (cid)
+	  lastCommit VARCHAR(50),
+	  PRIMARY KEY (cid)
 	);
 '; 
 $metadata_db->exec($sql2);
@@ -264,7 +264,7 @@ $sql3 = '
     downloadURL VARCHAR(255), 
     fileSHA VARCHAR(255), 
     filePath VARCHAR(255),
-	PRIMARY KEY (cid, fileName)
+	  PRIMARY KEY (cid, fileName)
 	);
 '; 
 $metadata_db->exec($sql3);

@@ -97,8 +97,21 @@ function fetchGitHubRepo(gitHubURL)
 			url: "../recursivetesting/FetchGithubRepo.php",
 			type: "POST",
 			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
-			dataType: "json",
-			success: function(response) { console.log(response) }
+			success: function(response) { 
+				console.log(response);
+			},
+			error: function(data){
+				switch(data.status){
+					case 422:
+						alert(data.responseJSON.message);
+						break;
+					case 503:
+						alert(data.responseJSON.message);
+						break;
+					default:
+						alert("Something went wrong...");
+				}
+			}
 		});
 	} 
 }
