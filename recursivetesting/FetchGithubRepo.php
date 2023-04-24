@@ -1,4 +1,9 @@
 <?php
+include_once "../Shared/sessions.php";
+include_once "../Shared/basic.php";    
+session_start();
+pdoConnect(); // Connect to database and start session
+
 //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
 if(isset($_POST['action'])) 
 {
