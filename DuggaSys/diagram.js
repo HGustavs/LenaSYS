@@ -912,7 +912,7 @@ const lineCardinalitys = {
  * @description Available options of icons to display at the end of lines connecting two UML elements.
  */
  const UMLLineIcons = {//TODO: Replace with actual icons for the dropdown
-    ARROW: "Arrow",
+    ARROW: str += `<img src="../Shared/icons/arrow.svg">`,
     TRIANGLE: "Triangle",
     BLACK_TRIANGLE: "Black_Triangle",
     WHITEDIAMOND: "White_Diamond",
