@@ -654,6 +654,7 @@ function returnedFile(data){
 	console while in the variant editor. After parsing they're placed in array which then gets filtered for JSON files*/
 	for (var i = 0; i < retdata['entries'].length; i++){
 		filearray[i] = JSON.parse(retdata['entries'][i].filename);
+		console.log(retdata['entries'][i].filename);
 	}
 	filteredarray = filearray.filter(x => x.extension === "json");
 	instrArray = filearray.filter(x => x.extension === $("#type").val());
