@@ -1476,21 +1476,6 @@ function showDiagramTypes(){
     }
 }
 //<-- UML functionality end
-/**
- * @description Used to determine if returned data is correct.
- * @param {*} ret Returned data to determine.
- * @deprecated This function is no longer in use since the new drawing system of April 2021.
- */
-// TODO : No references of this function throughout the entire codebase. Should be deleted?
-function data_returned(ret)
-{
-    if (typeof ret.data !== "undefined") {
-        service = ret;
-        showdata();
-    } else {
-        alert("Error receiveing data!");
-    }
-}
 //#endregion ===================================================================================
 //#region ================================ EVENTS               ================================
 // --------------------------------------- Window Events    --------------------------------
