@@ -46,11 +46,15 @@ Check the test result if a user was added with username or ssn, by using SQL-que
 ---------------------- 
 
 Test 3: try to update a created user_course by changing the access
+Row: 83 - 99 and 258 - 278
+Pre-req: { ($uid, "UNK") }
 To make sure the updating the user_course works and how the database will respond. 
 It can be done with SQL-query to create a user_course: 
    SQL-query: INSERT INTO user_course (uid, cid, access, vers, vershistory) 
       VALUES (:uid, :cid, ‘R’, :vers, ‘ ’) ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers, ‘, ‘))
 It should display an error message if the insert of a user to the user_course into the database was unable.
+
+Pre-req: { ($opt, "UPDATE")==0 }
 After the user_course was created, then make an update of the user_course by using SQL-query: 
   SQL-query: UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid
 By updating the access of the user_course. The values of access, uid and cid should be checked. 
