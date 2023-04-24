@@ -75,7 +75,7 @@
 			}
 		}
 
-		print_r($href);
+		echo "<p>Href: ".$href."</p>";
 
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
