@@ -8891,7 +8891,7 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<path 
+            str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
                     v${(boxh / 2 + (boxh / 2) - (linew * 2))-cornerRadius}
