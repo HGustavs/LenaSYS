@@ -574,9 +574,9 @@
 			</div>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 
-			<div class='inputwrapper'><span>file:</span><select class='' id='' placeholder='Name.type' value=''></div>
+			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''></div>
 			
-			<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='hash' placeholder='GitHubDownloadUrl' value=''/></div>
+			
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 		</div>
