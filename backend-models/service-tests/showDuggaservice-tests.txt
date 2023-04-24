@@ -85,7 +85,7 @@ The second part of the service is for a "normal" user to view only the users ans
 If hash and password is unknown the service gets the data
 SQL query for users dugga: SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=hash AND password=hashpwd
 This is almost the same as the teachers query but at the end the users hashpwd is selected which will only provide 1 dugga.
-This is succeful if only a single dugga is presented in the db and on LenaSYS
+This is successful if only a single dugga is presented in the db and on LenaSYS
 
 If the service finds hash and password the service gets data by
 SQL query to get data: SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param,l.entryname AS dugga_title FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=hash AND password=hashpwd LEFT JOIN (select cid,link,entryname from listentries) as l ON l.cid=l.cid AND l.link=quiz.id WHERE quiz.id=did AND vid=variant AND l.cid=cid LIMIT 1;
