@@ -70,7 +70,7 @@ function bfs($url, $repository)
                     // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
                     // To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
                     // Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
-                     'Authorization: Bearer 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'
+                    // 'Authorization: Bearer YOUR_GITHUB_API_KEY'
                 ]
             ]
         ];

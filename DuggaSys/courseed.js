@@ -95,11 +95,7 @@ function createNewCourse()
 	//$("#overlay").css("display", "none");
 	//Check if data is correct for gitURL
 	if(courseGitURL) {
-		console.log("Before fetch");
-		dataCheck = fetchGitHubRepo(courseGitURL);
-		console.log("After fetch");
-		//console.log(dataCheck + " INSIDE CREATENEWCOURSE");
-		if(dataCheck) {
+		if(fetchGitHubRepo(courseGitURL)) {
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 			alert("New course, " + coursename + "added!");
@@ -122,11 +118,8 @@ function fetchGitHubRepo(gitHubURL)
 		url: "../recursivetesting/FetchGithubRepo.php",
 		type: "POST",
 		data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
-		success: function(response) { 
-			console.log(response);
+		success: function() { 
 			dataCheck = true;
-			console.log(dataCheck + " INSIDE AJAX");
-			return true;
 		},
 		error: function(data){
 			switch(data.status){
@@ -140,11 +133,10 @@ function fetchGitHubRepo(gitHubURL)
 				default:
 					alert("Something went wrong...");
 			}
-		 	//dataCheck = false;
-			return false;
+		 	dataCheck = false;
 		}
 	});
-	//return dataCheck;
+	return dataCheck;
 }
 
 function copyVersion()
