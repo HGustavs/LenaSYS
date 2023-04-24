@@ -9,8 +9,7 @@
 
 <style>
   td,
-  tr,
-  th {
+  tr {
     width: 500px
   }
 </style>
