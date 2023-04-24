@@ -75,6 +75,8 @@
 			}
 		}
 
+		print_r($href);
+
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
 			print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
