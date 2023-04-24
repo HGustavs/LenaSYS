@@ -80,7 +80,7 @@ If the everything works the data should be presented on Lenasys.
 If not $debug gets error message and the data is reset
 
 That was the first part of the if statement
-This part is for a "normal" user to view only the users answer
+The second part of the service is for a "normal" user to view only the users answer
 
 If hash and password is unknown the service gets the data
 SQL query for users dugga: SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=hash AND password=hashpwd
