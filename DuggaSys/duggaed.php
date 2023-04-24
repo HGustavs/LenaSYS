@@ -8,7 +8,14 @@ $vers=getOPG('coursevers');
 ?>
 <script>var cid = <?php echo $cid ?>,vers = <?php echo $vers ?>;</script>
 <?php
+  function debug($e){
+    echo "<div>";
+      echo $e; 
+    echo "</div>";
+  }
+  debug("chalabadab");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
