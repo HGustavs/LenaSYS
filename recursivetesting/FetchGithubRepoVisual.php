@@ -7,6 +7,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
+<style>
+  td,
+  tr,
+  th {
+    width: 500px
+  }
+</style>
+
 <body>
 	<?php
 	// Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
@@ -57,12 +65,12 @@
 					if ($json) {
 						// Checks if the fetched item is of type 'file'
 						if ($item['type'] == 'file') {
-							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . '); margin: 0 auto; border-collapse: collapse; text-align: left; border: 1px solid black;"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-							echo '<tr style="width: 350px; padding: 10px; border: 1px solid black; font-size: 14px;"><td style="width: 350px; padding: 10px; border: 1px solid black; font-size: 14px;">' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
+							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ');"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
+							echo '<tr"><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
 							// Checks if the fetched item is of type 'dir'
 						} else if ($item['type'] == 'dir') {
-							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . '); margin: 0 auto; border-collapse: collapse; text-align: left; border: 1px solid black;"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-							echo '<tr style="width: 350px; padding: 10px; border: 1px solid black; font-size: 14px;"><td style="width: 350px; padding: 10px; border: 1px solid black; font-size: 14px;">' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
+							echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ');"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
+							echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
 							if (!in_array($item['url'], $visited)) {
 								array_push($visited, $item['url']);
 								array_push($fifoQueue, $item['url']);
