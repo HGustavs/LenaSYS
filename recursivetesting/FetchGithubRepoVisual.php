@@ -8,18 +8,17 @@
 </head>
 
 <style>
+	html {
+		display: flex;
+		justify-content: center;
+	}
 
-html {
-	display: flex;
-	justify-content: center;
-}
-
-    table {
-        margin: 0 auto;
-        border-collapse: collapse;
-        text-align: left;
-        border: 1px solid black;
-    }
+	table {
+		margin: 0 auto;
+		border-collapse: collapse;
+		text-align: left;
+		border: 1px solid black;
+	}
 
 	th,
 	td,
@@ -35,7 +34,7 @@ html {
 <body>
 	<?php
 	// Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
-	GetGitHubURL('https://github.com/e21krida/Webbprogrammering-Examples');
+	getGitHubURL('https://github.com/e21krida/Webbprogrammering-Examples');
 	function getGitHubURL($url)
 	{
 		$urlParts = explode('/', $url);
