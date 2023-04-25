@@ -2952,13 +2952,9 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 
 //Creates all examples from github that doesnt exists yet
-function createExamples() {
+function createExamples() {//TODO HERE
   cid = 0;
-  rows = 0;
-  for(i = 0; i < rows; i++) {
-    inputText = "";
-    
-  }
+  AJAXService("CreGitEx", {courseid : cid});
 }
 
 // ------ Validates all versionnames ------
