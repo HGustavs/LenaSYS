@@ -494,7 +494,19 @@ if($gradesys=="UNK") $gradesys=0;
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				} else if(strcmp($opt,"CreGitEx")===0) {
+					$query = $pdo->prepare("SELECT ? FROM codeexample WHERE cid=:cid;");
+					$query->bindParam(":cid", $courseid);
+					$query->execute();
+					foreach($query->fetchAll() as $row) {
+						$row['exampleid'];
+					}
 
+					$file = file("../../courses/".$courseid."");
+					$count = 0;
+					foreach($file as $line) {
+						$count += 1;
+						echo str_pad($count, 2, 0, STR_PAD_LEFT).". ".$line;
+					}
 				}
 			}
 		}
