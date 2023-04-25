@@ -798,9 +798,3 @@ function localStorageCourse(){
 function glowNewCourse(courseid){
     document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
 }
-
-function showCreateVersion() {
-    $("#newCourseVersion").css("display", "flex");
-    toggleTab(true);
-    enableTab(document.getElementById("newCourseVersion"));
-}
