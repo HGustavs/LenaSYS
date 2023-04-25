@@ -8799,7 +8799,21 @@ function drawElement(element, ghosted = false)
 
     // Check if element is SDState
     else if (element.kind == "SDState") {
-        elemAttri = element.attributes.length;
+
+        const maxCharactersPerLine = Math.floor(boxw / texth);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.attributes.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;
 
         // Removes the previouse value in SDHeight for the element
         for (var i = 0; i < SDHeight.length; i++) {
@@ -8873,7 +8887,7 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}'
             />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
