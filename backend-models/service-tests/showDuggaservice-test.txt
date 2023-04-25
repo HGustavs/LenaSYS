@@ -63,3 +63,52 @@ Gather service output
 	SQL-query DELETE FROM groupdugga WHERE hash = $hash;
 
 —------------------------------------------------------------------------------------------------------------------
+
+—------------------------------------------------------------------------------------------------------------------
+TEST #3
+Update active users
+
+***
+Pre-req: $active != NULL
+***
+
+***
+Pre-req variables
+***
+    $pre-values =
+    {
+    $hash = “hjk4ert6”
+    $AUtoken = 52
+    }
+
+    SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES($pre-values[0], $pre-values[1])
+
+***
+* Get newly created active users, 
+***
+	SQL-query: SELECT * FROM groupdugga WHERE hash=$pre-values[0]; //
+
+
+***
+* Update information on a active users
+* send parameters input to showDuggaservice.php
+***
+send
+    {
+    $opt = “UPDATEAU”
+    $hash = “hjk4ert6”
+    $newToken = 9999
+    }
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query DELETE FROM groupdugga WHERE hash = $hash;
+
+—------------------------------------------------------------------------------------------------------------------
