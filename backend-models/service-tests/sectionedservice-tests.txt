@@ -34,7 +34,7 @@ deleteTest() line 181:
 *********
 
 (checklogin) IS TRUE
-AND $ha || $studentTeache IS TRUE
+AND $ha || $studentTeacher IS TRUE
 
 //// PRE-REQ Values /////
 
@@ -303,7 +303,7 @@ If gradesystem not updated (same as beforeUpdated): failed
 If $debug not empty: failed
 
 ----------------------------------
-updateVersTest() line 381:
+updateVersTest() line 390:
 ----------------------------------
 
 (checklogin) IS TRUE
