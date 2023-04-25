@@ -1,6 +1,5 @@
 <?php
 
-
 error_reporting(E_ALL);
 
 function customErrorHandler($errno, $errstr, $errfile, $errline) {
@@ -95,7 +94,7 @@ function getOPG($name)
 {
 		if(isset($_GET[$name]))	return ($_GET[$name]);
 		else return "UNK";
-		echo "<script>console.log($name)</script>";
+		debug_to_console($name);
 }
 
 //------------------------------------------------------------------------------------------------
