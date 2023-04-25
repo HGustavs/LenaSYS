@@ -543,7 +543,7 @@
     <!-- Message prompt -->
     <div id="diagram-message"></div>
 
-   // <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg" alt="An icon depicting a magnifying glass"/><text id ="zoom-message">1x</text></div>
+  <!--  <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg" alt="An icon depicting a magnifying glass"/><text id ="zoom-message">1x</text></div> -->
 
 
     <!-- Diagram drawing system canvas. -->
