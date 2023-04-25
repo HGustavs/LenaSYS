@@ -13,11 +13,24 @@ accessedservice.php
 
 Test 1: try to update a created user by changing the username
 Row: 62 - 80 and 220 - 238
-pre-req: { ($opt, "UPDATE")==0 }
+Send {
+   $opt = "ADDUSER"
+   $uid = "UNK"
+   $regstatus = "UNK"
+}
 To make sure the update of a user works and what response it will get form the database.
 It can be done by creating a user with SQL-query.
    SQL-query: insert into user( username, email, firstname, lastname, ssn, password, addedtime, class) 
        VALUES ( :username, :email, :firstname, :lastname, :ssn, :password, now(), :class)
+
+Send {
+   $opt = "UPDATE"
+   $prop = "firstname"
+   $prop = "lastname"
+   $prop = "ssn"
+   $prop = "username"
+   $prop = "class"
+}
 Then make an update by useing SQL-query.
    SQL-query: UPDATE user SET username=:username WHERE uid=:uid
 To update the username of the user. The values to be checked are username and uid.
@@ -30,7 +43,12 @@ Compare the result to make sure the test worked, by using SQL-query.
 
 Test 2: try to add two users with same ssn or username
 Row: 161 - 167 and 220 - 248
-Pre-req: { ($user[0]!="PNR") }
+Send {
+   $opt = "ADDUSER"
+   $username = "username"
+   $ssn = "ssn"
+   $uid = "UNK"
+}
 By adding two users with same ssn or username to see how the database will react.
 This can be done with the SQL-query to insert a user.
    SQL-query: INSERT INTO user( username, email, firstname, lastname, ssn, password, addedtime, class) 
@@ -38,8 +56,6 @@ This can be done with the SQL-query to insert a user.
 Both the username and ssn values should be checked, to avoid duplcation. If there are two or more
 users with the same ssn or username, it should display an error message. Which the database will indicates 
 there is a duplicate ssn or username.
-
-Pre-req: { (count($user) == 1&&strcmp($user[0], " ")!==0) }
 Check the test result if a user was added with username or ssn, by using SQL-query.
    SQL-query: SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2
 
@@ -47,23 +63,37 @@ Check the test result if a user was added with username or ssn, by using SQL-que
 
 Test 3: try to update a created user_course by changing the access
 Row: 83 - 99 and 258 - 278
-Pre-req: { ($uid, "UNK") }
+Send {
+   $opt = "ADDUSER"
+   $uid = "UNK"
+   $regstatus = "UNK"
+}
 To make sure the updating the user_course works and how the database will respond. 
 It can be done with SQL-query to create a user_course: 
    SQL-query: INSERT INTO user_course (uid, cid, access, vers, vershistory) 
       VALUES (:uid, :cid, ‘R’, :vers, ‘ ’) ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers, ‘, ‘))
 It should display an error message if the insert of a user to the user_course into the database was unable.
 
-Pre-req: { ($opt, "UPDATE")==0 }
+Send {
+   $opt = "UPDATE"
+   $prop = "examiner"
+   $prop = "vers"
+   $prop = "access"
+   $prop = "group"
+}
 After the user_course was created, then make an update of the user_course by using SQL-query: 
   SQL-query: UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid
-By updating the access of the user_course. The values of access, uid and cid should be checked. 
+By updating the access of the user_course. 
 
 -----------------------
 
 Test 4: try to change the user password (not a teacher)
 Row: 143 - 151
-Pre-req: { ($opt, "CHPWD")==0 }
+Send {
+   $opt = "CHPWD"
+   $uid = "uid"
+   $pw = "standardPasswordHash"
+}
 To see if the user is able to change their password and how the database will respond. By using the SQL-query 
 to update user password. 
    SQL-query: UPDATE user SET password=:pwd, requestedpasswordchange=0 WHERE uid=:uid
@@ -74,14 +104,26 @@ If the update was unable to change the password, then it should display an error
 
 Test 5: try to add a class
 Row: 128 - 142 and 198 - 205
-Pre-req: { ($opt, "ADDCLASS")==0 }
+Send {
+   $opt = "ADDCLASS"
+   $class = "class"
+   $responsible = "responsible"
+   $classname = "classname"
+   $regcode = "regcode"
+   $classcode = "classcode"
+   $hp = "hp"
+   $tempo = "tempo"
+   $hpProgress = "hpProgress"
+}
 To make sure the inserting of a class works and what response it will get from the database.
 Can be done with the SQL-query to create a class.
    SQL-query: INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) 
       VALUES (:class, :responsible, :classname, :regcode, :classcode, :hp, :tempo, :hpProgress)
-The values that need to be check are: class, responsible, classname, regcode, classcode,   
-hp, tempo, hpProgress. If the insert into database was unable to succeed, then it should display an error message.
+If the insert into database was unable to succeed, then it should display an error message.
 
-Pre-req: { ($classname, "UNK")!==0 }
+Send {
+   $opt = "ADDUSER"
+   $classname = "UNK"
+}
 Compare the test result by using SQL-query: SELECT class FROM class WHERE class=:clsnme
 If the test failed, it should display an error message.
