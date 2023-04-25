@@ -279,7 +279,7 @@
                 ";
             }
 
-
+            print_r($infoArray);
          
 
         ?>    
