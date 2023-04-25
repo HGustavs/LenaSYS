@@ -290,6 +290,7 @@
             );
                 
                 $json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+                print_r($info);
 
         ?>    
     </body>
