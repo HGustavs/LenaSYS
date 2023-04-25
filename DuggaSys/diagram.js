@@ -3979,7 +3979,7 @@ function generateStateDiagramInfo()
     let output = "";
 
     // Picks out the lines of type "State Diagram" and place it in its local array.
-    for (var i=0; i<lines.length; i++)
+    for (let i=0; i<lines.length; i++)
     {
         if (lines[i].type == entityType.SD) { 
             stateLines.push(lines[i]);
@@ -3987,7 +3987,7 @@ function generateStateDiagramInfo()
     }
 
     // Picks out the entities related to State Diagrams and place them in their local arrays.
-    for (var i=0; i<data.length; i++)
+    for (let i=0; i<data.length; i++)
     {
         if (data[i].kind == elementTypesNames.SDState) {
             stateElements.push([data[i], false]);
@@ -4029,7 +4029,7 @@ function generateStateDiagramInfo()
 
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-            output += `<p>\"${head[ENTITY].name}\" goes to \"${connections[i][ENTITY].name}\"</p>`;
+            output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
                 queue.push(connections[i]);
