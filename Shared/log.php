@@ -40,6 +40,7 @@
 </head>
     <body>
         <?php
+        session_start();
             try {
 	            $log_db = new PDO('sqlite:../../log/loglena6.db');
             } catch (PDOException $e) {
@@ -72,36 +73,47 @@
 //---------------------------------------------------------------------------------------------------
 
             // Set to default button
-            echo "<a href='?name=$tableName&order=timestamp&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
+            echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
             
             // Code used to sort tables.
             // Default values are time in descending order.
-            if(isset($_POST['order'])){
-                $order = $_POST['order'];
+            if(isset($_SESSION['order'])){
+                $order = $_SESSION['order'];
             }
             else{
                 $order = 'timestamp';
             }
-            if(isset($_POST['sort'])){
-                $sort = $_POST['sort'];
+            if(isset($_SESSION['sort'])){
+                $sort = $_SESSION['sort'];
             }
             else{
                 $sort = 'DESC';
             }
-            $nextSort = $sort == 'DESC' ? 'ASC' : 'DESC';
+            
+            if ($sort == 'DESC') {
+                $sort = 'ASC';
+            } else {
+                $sort = 'DESC';
+            }
+            $_SESSION['sort'] = $sort;
+
+            $order = $_GET['order'];
+            $_SESSION['order'] = $order;
+
             
             // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                 $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
                 $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
-                    <th><a href='?name=$tableName&order=id&sort=$nextSort'>id</a></th>
-                    <th><a href='?name=$tableName&order=eventype&sort=$nextSort'>eventype</a></th>
-                    <th><a href='?name=$tableName&order=description&sort=$nextSort'>description</a></th>
-                    <th><a href='?name=$tableName&order=userAgent&sort=$nextSort'>userAgent</a></th>
-                    <th><a href='?name=$tableName&order=timestamp&sort=$nextSort'>timestamp</a></th>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=eventype&&sort=$sort'>eventype</a></th>
+                        <th><a href='log.php?order=description&&sort=$sort'>description</a></th>
+                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
                     </tr>
                 ";
                 foreach($logEntriesResults as $rows) {
@@ -122,16 +134,17 @@
             if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
                 $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
                 $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
-                    <th><a href='?name=$tableName&order=id&sort=$nextSort'>id</a></th>
-                    <th><a href='?name=$tableName&order=type&sort=$nextSort'>type</a></th>
-                    <th><a href='?name=$tableName&order=courseid&sort=$nextSort'>courseid</a></th>
-                    <th><a href='?name=$tableName&order=uid&sort=$nextSort'>uid</a></th>
-                    <th><a href='?name=$tableName&order=username&sort=$nextSort'>username</a></th>
-                    <th><a href='?name=$tableName&order=exampleid&sort=$nextSort'>exampleid</a></th>
-                    <th><a href='?name=$tableName&order=timestamp&sort=$nextSort'>timestamp</a></th>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
+                        <th><a href='log.php?order=courseid&&sort=$sort'>courseid</a></th>
+                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
+                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='log.php?order=exampleid&&sort=$sort'>exampleid</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
                     </tr>
                 ";
                 foreach($exampleLoadLogEntriesResults as $rows) {
@@ -152,15 +165,16 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
                 $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$order.' '.$sort.';');
                 $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
-                    <th><a href='?name=$tableName&order=refer&sort=$nextSort'>refer</a></th>
-                    <th><a href='?name=$tableName&order=userid&sort=$nextSort'>userid</a></th>
-                    <th><a href='?name=$tableName&order=username&sort=$nextSort'>username</a></th>
-                    <th><a href='?name=$tableName&order=IP&sort=$nextSort'>IP</a></th>
-                    <th><a href='?name=$tableName&order=URLParams&sort=$nextSort'>URLParams</a></th>
-                    <th><a href='?name=$tableName&order=timestamp&sort=$nextSort'>timestamp</a></th>
+                        <th><a href='log.php?order=refer&&sort=$sort'>refer</a></th>
+                        <th><a href='log.php?order=userid&&sort=$sort'>userid</a></th>
+                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='log.php?order=IP&&sort=$sort'>IP</a></th>
+                        <th><a href='log.php?order=URLParams&&sort=$sort'>URLParams</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
                     </tr>
                 ";
                 foreach($userHistoryResults as $rows) {
@@ -181,17 +195,18 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
-                    <th><a href='?name=$tableName&order=id&sort=$nextSort'>id</a></th>
-                    <th><a href='?name=$tableName&order=uid&sort=$nextSort'>uid</a></th>
-                    <th><a href='?name=$tableName&order=username&sort=$nextSort'>username</a></th>
-                    <th><a href='?name=$tableName&order=eventType&sort=$nextSort'>eventType</a></th>
-                    <th><a href='?name=$tableName&order=description&sort=$nextSort'>description</a></th>
-                    <th><a href='?name=$tableName&order=timestamp&sort=$nextSort'>timestamp</a></th>
-                    <th><a href='?name=$tableName&order=userAgent&sort=$nextSort'>userAgent</a></th>
-                    <th><a href='?name=$tableName&order=remoteAddress&sort=$nextSort'>remoteAddress</a></th>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
+                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='log.php?order=eventType&&sort=$sort'>eventType</a></th>
+                        <th><a href='log.php?order=description&&sort=$sort'>description</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
+                        <th><a href='log.php?order=remoteAddress&&sort=$sort'>remoteAddress</a></th>
                     </tr>
                 ";
                 foreach($userLogEntriesResults as $rows) {
@@ -212,20 +227,22 @@
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
                 $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$order.' '.$sort.';');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
-                    <th><a href='?name=$tableName&order=id&sort=$nextSort'>id</a></th>
-                    <th><a href='?name=$tableName&order=uuid&sort=$nextSort'>uuid</a></th>
-                    <th><a href='?name=$tableName&order=service&sort=$nextSort'>service</a></th>
-                    <th><a href='?name=$tableName&order=userid&sort=$nextSort'>userid</a></th>
-                    <th><a href='?name=$tableName&order=timestamp&sort=$nextSort'>timestamp</a></th>
-                    <th><a href='?name=$tableName&order=userAgent&sort=$nextSort'>userAgent</a></th>
-                    <th><a href='?name=$tableName&order=operatingSystem&sort=$nextSort'>operatingSystem</a></th>
-                    <th><a href='?name=$tableName&order=info&sort=$nextSort'>info</a></th>
-                    <th><a href='?name=$tableName&order=referer&sort=$nextSort'>referer</a></th>
-                    <th><a href='?name=$tableName&order=IP&sort=$nextSort'>IP</a></th>
-                    <th><a href='?name=$tableName&order=browser&sort=$nextSort'>browser</a></th>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=uuid&&sort=$sort'>uuid</a></th>
+                        <th><a href='log.php?order=eventType&&sort=$sort'>eventType</a></th>
+                        <th><a href='log.php?order=service&&sort=$sort'>service</a></th>
+                        <th><a href='log.php?order=userid&&sort=$sort'>userid</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
+                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
+                        <th><a href='log.php?order=operatingSystem&&sort=$sort'>operatingSystem</a></th>
+                        <th><a href='log.php?order=info&&sort=$sort'>info</a></th>
+                        <th><a href='log.php?order=referer&&sort=$sort'>referer</a></th>
+                        <th><a href='log.php?order=IP&&sort=$sort'>IP</a></th>
+                        <th><a href='log.php?order=browser&&sort=$sort'>browser</a></th>
                     </tr>
                 ";
                 foreach($serviceLogEntriesResults as $rows) {
@@ -246,17 +263,18 @@
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
                 $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$order.' '.$sort.';');
                 $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
-                    <th><a href='?name=$tableName&order=id&sort=$nextSort'>id</a></th>
-                    <th><a href='?name=$tableName&order=type&sort=$nextSort'>type</a></th>
-                    <th><a href='?name=$tableName&order=cid&sort=$nextSort'>cid</a></th>
-                    <th><a href='?name=$tableName&order=uid&sort=$nextSort'>uid</a></th>
-                    <th><a href='?name=$tableName&order=username&sort=$nextSort'>username</a></th>
-                    <th><a href='?name=$tableName&order=vers&sort=$nextSort'>vers</a></th>
-                    <th><a href='?name=$tableName&order=quizid&sort=$nextSort'>quizid</a></th>
-                    <th><a href='?name=$tableName&order=timestamp&sort=$nextSort'>timestamp</a></th>
+                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
+                        <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
+                        <th><a href='log.php?order=cid&&sort=$sort'>cid</a></th>
+                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
+                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
+                        <th><a href='log.php?order=vers&&sort=$sort'>vers</a></th>
+                        <th><a href='log.php?order=quizid&&sort=$sort'>quizid</a></th>
+                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
                     </tr>
                 ";
                 foreach($duggaLoadLogEntriesResults as $rows) {
