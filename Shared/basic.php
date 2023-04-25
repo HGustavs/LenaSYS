@@ -94,8 +94,8 @@ function gettheOP($name)
 function getOPG($name)
 {
 		if(isset($_GET[$name]))	return ($_GET[$name]);
-		echo "<script>console.log($name)</script>"
 		else return "UNK";
+		echo "<script>console.log($name)</script>";
 }
 
 //------------------------------------------------------------------------------------------------
