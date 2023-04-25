@@ -29,6 +29,14 @@ $fid = getOP('fid');
 $filename = getOP('filename');
 $kind = getOP('kind');
 $contents = getOP('contents');
+// Get the path, should be done by using json in the future 
+$query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
+$query->bindParam(':fid', $fid);
+$result = $query->execute();
+if($row = $query->fetch(PDO::FETCH_ASSOC)){
+    $path = $row['path'];
+} 
+
 $debug = "NONE!";
 $studentTeacher = false;
 
@@ -115,8 +123,13 @@ if (checklogin() && $hasAccess) {
 				if ($kind == 2) {
 					$currcwd .= "/courses/global/" . $filename;
 				} else if ($kind == 3) {
-					$currcwd .= "/courses/" . $cid . "/" . $filename;
-				} else if ($kind == 4) {
+                    $debug = "PATH: ". $path;
+                    if ($path == null)
+                        $currcwd .= "/courses/" . $cid . "/" . $filename;
+                    else 
+                        $currcwd .= "/courses/" . $cid . "/Github/" . $path;
+
+                } else if ($kind == 4) {
 					$currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
 				}
 
