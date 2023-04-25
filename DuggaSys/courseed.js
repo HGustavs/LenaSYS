@@ -39,24 +39,24 @@ function updateCourse()
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
+	
 	if(courseGitURL) {
-		dataCheck = fetchGitHubRepo(courseGitURL);
-		if(dataCheck) {
+		if(fetchGitHubRepo(courseGitURL)) {
 			$("#overlay").css("display", "none");
 			AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 			localStorage.setItem('courseid', courseid);
 			localStorage.setItem('updateCourseName', true);
-			alert("Course " + coursename + " updated!"); 
+			alert("Course " + coursename + " updated with new GitHub-link!"); 
 		}
 	} else {
 		$("#overlay").css("display", "none");
 		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 		localStorage.setItem('courseid', courseid);
 		localStorage.setItem('updateCourseName', true);
-		alert("Course updated!"); 
+		alert("Course " + coursename + " updated!"); 
 	}
-
 }
+
 function updateCourseColor(courseid){
 	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
@@ -87,18 +87,18 @@ function newCourse()
 
 function createNewCourse()
 {
-	var dataCheck;
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
+
 	//Check if data is correct for gitURL
 	if(courseGitURL) {
 		if(fetchGitHubRepo(courseGitURL)) {
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-			alert("New course, " + coursename + "added!");
+			alert("New course, " + coursename + "added with GitHub-link!");
 		}
 	} else {
 		localStorage.setItem('lastCC', true);
