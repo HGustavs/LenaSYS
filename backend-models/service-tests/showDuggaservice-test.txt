@@ -1,1 +1,29 @@
 showDuggaservice.php
+
+—------------------------------------------------------------------------------------------------------------------------
+***
+* TEST #1
+    Get active users
+***
+
+***
+* Pre-req: -
+***
+    Send parameters inputs to showDuggaservice.php
+    send
+    {
+        $opt = “UPDATEAU”
+    $hash = hash
+
+    }
+
+    SQL-query: SELECT active_users FROM groupdugga WHERE hash=hash
+    This should show all active users
+
+***
+* Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+—------------------------------------------------------------------------------------------------------------------
