@@ -247,21 +247,28 @@ try {
 
 $sql2 = '
 	CREATE TABLE IF NOT EXISTS gitRepos ( 
-		repoID INTEGER PRIMARY KEY AUTOINCREMENT,
-		repoName VARCHAR(50), 
-		repoURL VARCHAR(255), 
-		repoFileType VARCHAR(50), 
-		repoDownloadURL VARCHAR(255), 
-		repoSHA VARCHAR(255) UNIQUE, 
-		repoPath VARCHAR(255) 
-	);
-
-	CREATE TABLE IF NOT EXISTS latestCommit (
-		githubURL VARCHAR(255) PRIMARY KEY,
-		commitID VARCHAR(50)
+		cid INTEGER,
+	  repoName VARCHAR(50), 
+    repoURL VARCHAR(255), 
+	  lastCommit VARCHAR(50),
+	  PRIMARY KEY (cid)
 	);
 '; 
 $metadata_db->exec($sql2);
+
+$sql3 = '
+	CREATE TABLE IF NOT EXISTS gitFiles ( 
+		cid INTEGER,
+		fileName VARCHAR(50), 
+    fileType VARCHAR(50),
+		fileURL VARCHAR(255),
+    downloadURL VARCHAR(255), 
+    fileSHA VARCHAR(255), 
+    filePath VARCHAR(255),
+		PRIMARY KEY (cid, fileName)
+	);
+'; 
+$metadata_db->exec($sql3);
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site

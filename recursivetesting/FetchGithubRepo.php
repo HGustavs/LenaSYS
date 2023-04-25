@@ -157,13 +157,14 @@ function bfs($url, $repository)
                             array_push($fifoQueue, $item['url']);
                         }
                     }
-                    $query = $pdoLite->prepare('INSERT INTO gitRepos (repoName, repoURL, repoFileType, repoDownloadURL, repoSHA, RepoPath) VALUES (:repoName, :repoURL, :repoFileType, :repoDownloadURL, :repoSHA, :repoPath)');
-                    $query->bindParam(':repoName', $item['name']);
-                    $query->bindParam(':repoURL', $item['repoURL']);
-                    $query->bindParam(':repoFileType', $item['type']);
-                    $query->bindParam(':repoDownloadURL', $item['download_url']);
-                    $query->bindParam(':repoSHA', $item['sha']);
-                    $query->bindParam(':repoPath', $item['path']);
+                    $query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
+                    $query->bindParam(':cid', $cid);
+                    $query->bindParam(':fileName', $item['name']);
+                    $query->bindParam(':fileType', $item['type']);
+                    $query->bindParam(':fileURL', $item['url']);
+                    $query->bindParam(':downloadURL', $item['download_url']);
+                    $query->bindParam(':fileSHA', $item['sha']);
+                    $query->bindParam(':filePath', $item['path']);
                     $query->execute();
                     echo "</table>"; 
                 }

@@ -9,6 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+include_once "../recursivetesting/FetchGithubRepo.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -493,6 +494,8 @@ if($gradesys=="UNK") $gradesys=0;
 					}
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
+
+
 				} else if(strcmp($opt,"CreGitEx")===0) {
 					$query = $pdo->prepare("SELECT ? FROM codeexample WHERE cid=:cid;");
 					$query->bindParam(":cid", $courseid);
