@@ -40,7 +40,9 @@ function updateCourse()
 	// Show dialog
 	$("#editCourse").css("display", "none");
 	
+	//Check if courseGitURL has a value
 	if(courseGitURL) {
+		//Check if fetchGitHubRepo returns true
 		if(fetchGitHubRepo(courseGitURL)) {
 			$("#overlay").css("display", "none");
 			AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
@@ -48,7 +50,10 @@ function updateCourse()
 			localStorage.setItem('updateCourseName', true);
 			alert("Course " + coursename + " updated with new GitHub-link!"); 
 		}
+		//Else: get error message from the fetchGitHubRepo function.
+
 	} else {
+		//If courseGitURL has no value, update the course as usual.
 		$("#overlay").css("display", "none");
 		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 		localStorage.setItem('courseid', courseid);
@@ -95,13 +100,16 @@ function createNewCourse()
 
 	//Check if user has input for Git-URL
 	if(courseGitURL) {
-		//Check if fetching GitHub-Repo is ok
+		//Check if fetchGitHubRepo returns true
 		if(fetchGitHubRepo(courseGitURL)) {
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 			alert("New course, " + coursename + " added with GitHub-link!");
 		}
+		//Else: get error message from the fetchGitHubRepo function.
+
 	} else {
+		//If courseGitURL has no value, update the course as usual.
 		localStorage.setItem('lastCC', true);
 		AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 		alert("New course, " + coursename + " added!");
@@ -121,9 +129,11 @@ function fetchGitHubRepo(gitHubURL)
 		type: "POST",
 		data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
 		success: function() { 
+			//Returns true if the data and JSON is correct
 			dataCheck = true;
 		},
 		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 422:
 					alert(data.responseJSON.message + "\nDid not create/update course");
