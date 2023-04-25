@@ -121,14 +121,41 @@ if ($result && $_SESSION['uid'] == 1) {
 Test the user's access to a course (line 39)
 --------------------------------------------------------------------------------------------------------------------------------------------
 
+*********
+* pre-req:
+*********
+
+$cid = 5678;
+$userid = 1234;
+$expectedResults = [
+    'w' => false, // should be false if the user does not have 'w' access level
+    'st' => true, // should be true if the user has 'st' access level
+    'sv' => true, // should be true if the user has 'sv' access level
+];
 
 
-- Test 4: Test the user's access to a course:
-	1. Start up the session.
-	2. Set the user ID in the session.
-	3. Call the function "hasAccess()". Try different access levels.
-	4. Examine the returning values.
-	5. For the test to pass, the returning value should be false if the user does not have access to the course and true if the user has.
+*********
+* Start up the session:
+*********
+
+session_start();
+
+
+*********
+* Test access:
+*********
+
+foreach ($expectedResults as $accessLevel => $expectedResult) {
+    $result = hasAccess($cid, $userid, $accessLevel);
+    if ($result !== $expectedResult) {
+        echo "The test has failed: hasAccess( $cid, $userid, '$accessLevel') returned " . var_export($result, true) . ", expected " . var_export($expectedResult, true) . PHP_TEST;
+        exit(1);
+    }
+}
+
+echo "The test has passed." . PHP_TEST;
+
+*For the test to pass, the returning value should be false if the user does not have access to the course and true if the user has*
 
 - Test 5: Test getting parameters from a GET request:
 	1. Set the values of all the parameters in the GET request.
