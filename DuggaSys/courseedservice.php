@@ -57,7 +57,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 }
 
 $log_uuid = getOP('log_uuid');
-$info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+$info=."opt".$opt." "."cid".$cid." "."coursename."$coursename." "."versid".$versid." "."visibility".$visibility;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
