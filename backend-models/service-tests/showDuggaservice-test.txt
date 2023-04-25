@@ -148,3 +148,57 @@ Gather service output
     This is the expected output for the micro service.
 
 —------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+TEST #5
+update submitted dugga
+
+***
+Pre-req: !isset($grade) || !$grade > 1 &&
+isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0
+***
+
+***
+Pre-req variables
+***
+    $pre-values =
+    {
+        $aid = 999
+        $cid = 2
+        $hash = “dfg4zxc5”
+        $haspwd = “asdfasdf”
+        $moment = 2002
+        $answer = NULL
+    }
+
+    SQL-query: INSERT INTO userAnswer(aid,cid,hash,password,moment,useranswer) VALUES (pre-values[0], pre-values[1], pre-values[2], pre-values[3], pre-values[4], pre-values[5]);
+
+    * Get newly created data
+    SELECT * WHERE hash=pre-values[2];
+
+***
+* Update information on userAnswer
+* send parameters input to showDuggaservice.php
+***
+    send
+    {
+        $opt = SAVDU
+        $hash = “dfg4zxc5”
+        $haspwd = “asdfasdf”
+        $answer = “im updated”
+    }
+
+    SQL-query: "UPDATE userAnswer SET submitted=NOW(), useranswer=$answer, timesSubmitted=timesSubmitted+1 WHERE hash=$hash AND password=$hashpwd
+    
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query: DELETE FROM userAnswer WHERE hash = pre-values[2];
+
+—------------------------------------------------------------------------------------------------------------------
