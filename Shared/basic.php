@@ -258,7 +258,7 @@ $metadata_db->exec($sql2);
 
 $sql3 = '
 	CREATE TABLE IF NOT EXISTS gitFiles ( 
-		cid INTEGER PRIMARY KEY,
+		cid INTEGER,
 		fileName VARCHAR(50), 
     fileType VARCHAR(50),
 		fileURL VARCHAR(255),
