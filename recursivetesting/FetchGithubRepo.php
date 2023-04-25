@@ -128,7 +128,6 @@ function bfs($url, $repository)
             // Decodes the fetched data into JSON
             $json = json_decode($data, true);
             // Loops through each item fetched in the JSON data
-            $json = false;
             if ($json) {
                 foreach ($json as $item) {
                     // Checks if the fetched item is of type 'file'
