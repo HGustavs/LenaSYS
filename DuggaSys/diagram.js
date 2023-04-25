@@ -7460,9 +7460,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  * @param {int} concideredNearValue
  * @return {boolean} result
  */
-function isClose(fromX, toX, fromY, toY) {
-
-    const concideredNearValue = 600,
+function isClose(fromX, toX, fromY, toY, zoom = 1) {
+    const concideredNearValue = 600 * zoom,
           deltaX = toX - fromX,
           deltaY = toY - fromY;
 
@@ -7540,7 +7539,8 @@ function drawLine(line, targetGhost = false)
         (fx + x1Offset),
         (tx + x2Offset),
         (fy + y1Offset),
-        (ty + y2Offset)
+        (ty + y2Offset),
+        zoomfact
     );
 
     // Collect coordinates
