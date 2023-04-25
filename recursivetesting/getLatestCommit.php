@@ -6,6 +6,13 @@
 
 	$url = "https://github.com/HGustavs/LenaSYS"; // TODO: This url should be the one you fetch from the database!
 
+  $urlParts = explode('/', $url);
+  // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+  $repository = $urlParts[4];
+
+	print_r($username);
+	print_r($repository);
+
 	$html = file_get_contents($url);
 	$dom = new DomDocument;
 	$dom->preserveWhiteSpace = FALSE;
