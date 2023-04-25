@@ -39,12 +39,29 @@ function updateCourse()
 	var courseid = "C"+cid;
 	// Show dialog
 	$("#editCourse").css("display", "none");
-	fetchGitHubRepo(courseGitURL);
-	$("#overlay").css("display", "none");
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-	localStorage.setItem('courseid', courseid);
-	localStorage.setItem('updateCourseName', true);
+	
+	//Check if courseGitURL has a value
+	if(courseGitURL) {
+		//Check if fetchGitHubRepo returns true
+		if(fetchGitHubRepo(courseGitURL)) {
+			$("#overlay").css("display", "none");
+			AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+			localStorage.setItem('courseid', courseid);
+			localStorage.setItem('updateCourseName', true);
+			alert("Course " + coursename + " updated with new GitHub-link!"); 
+		}
+		//Else: get error message from the fetchGitHubRepo function.
+
+	} else {
+		//If courseGitURL has no value, update the course as usual.
+		$("#overlay").css("display", "none");
+		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+		localStorage.setItem('courseid', courseid);
+		localStorage.setItem('updateCourseName', true);
+		alert("Course " + coursename + " updated!"); 
+	}
 }
+
 function updateCourseColor(courseid){
 	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
@@ -80,9 +97,23 @@ function createNewCourse()
 	var courseGitURL = $("#ncoursegit-url").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
-	fetchGitHubRepo(courseGitURL);
-  	localStorage.setItem('lastCC', true);
-	AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+
+	//Check if user has input for Git-URL
+	if(courseGitURL) {
+		//Check if fetchGitHubRepo returns true
+		if(fetchGitHubRepo(courseGitURL)) {
+			localStorage.setItem('lastCC', true);
+			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+			alert("New course, " + coursename + " added with GitHub-link!");
+		}
+		//Else: get error message from the fetchGitHubRepo function.
+
+	} else {
+		//If courseGitURL has no value, update the course as usual.
+		localStorage.setItem('lastCC', true);
+		AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+		alert("New course, " + coursename + " added!");
+	}
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
@@ -90,30 +121,33 @@ function fetchGitHubRepo(gitHubURL)
 {
 	//Remove .git, if it exists
 	regexURL = gitHubURL.replace(/.git$/, "");
-
-	if(regexURL){
-		$.ajax({
-			async: false,
-			url: "../recursivetesting/FetchGithubRepo.php",
-			type: "POST",
-			data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
-			success: function(response) { 
-				console.log(response);
-			},
-			error: function(data){
-				switch(data.status){
-					case 422:
-						alert(data.responseJSON.message);
-						break;
-					case 503:
-						alert(data.responseJSON.message);
-						break;
-					default:
-						alert("Something went wrong...");
-				}
+	//Used to return success(true) or error(false) to the calling function
+	var dataCheck;
+	$.ajax({
+		async: false,
+		url: "../recursivetesting/FetchGithubRepo.php",
+		type: "POST",
+		data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
+		success: function() { 
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch(data.status){
+				case 422:
+					alert(data.responseJSON.message + "\nDid not create/update course");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not create/update course");
+					break;
+				default:
+					alert("Something went wrong...");
 			}
-		});
-	} 
+		 	dataCheck = false;
+		}
+	});
+	return dataCheck;
 }
 
 function copyVersion()
@@ -690,10 +724,8 @@ function validateForm(formid) {
 	if(numberOfValidInputs === inputs.length) {
 		if(formid === "newCourse") {
 			createNewCourse();
-			alert("New course added!");
 		} else if(formid === "editCourse") {
 			updateCourse();
-			alert("Course updated!"); 
 		}
 
 		//Reset inputs
