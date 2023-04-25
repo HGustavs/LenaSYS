@@ -281,12 +281,12 @@
 
 
             $info = array(
-                "opt",$opt,
-                "courseid", $courseid,
-                "coursename", $coursename,
-                "action",$action,
-                "userid", $userid,
-                "coursevers", $coursevers
+                "opt:"=>$opt,
+                "courseid:"=> $courseid,
+                "coursename:"=> $coursename,
+                "action"=>$action,
+                "userid"=>$userid,
+                "coursevers"=> $coursevers
             );
                 
                 $json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
