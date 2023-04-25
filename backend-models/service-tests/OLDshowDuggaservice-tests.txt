@@ -12,6 +12,7 @@ Pre-req: -
 SQL query to get active_users: SELECT active_users FROM groupdugga WHERE hash=hash;
 hash gets binded to $hash that is then executed
 active_users gets fetched and $active gets the value of active_users
+Look at output and chose a specific groupdugga and use this as a base case
 
 SQL query: If no active_users is found: INSERT INTO groupdugga(hash,active_users) VALUES(hash,AUtoken);
 hash gets bind to $hash
