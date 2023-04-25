@@ -93,8 +93,9 @@ function createNewCourse()
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 
-	//Check if data is correct for gitURL
+	//Check if user has input for Git-URL
 	if(courseGitURL) {
+		//Check if fetching GitHub-Repo is ok
 		if(fetchGitHubRepo(courseGitURL)) {
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
@@ -112,6 +113,7 @@ function fetchGitHubRepo(gitHubURL)
 {
 	//Remove .git, if it exists
 	regexURL = gitHubURL.replace(/.git$/, "");
+	//Used to return success(true) or error(false) to the calling function
 	var dataCheck;
 	$.ajax({
 		async: false,
@@ -128,7 +130,6 @@ function fetchGitHubRepo(gitHubURL)
 					break;
 				case 503:
 					alert(data.responseJSON.message + "\nDid not create/update course");
-					console.log(data.responseJSON.data);
 					break;
 				default:
 					alert("Something went wrong...");

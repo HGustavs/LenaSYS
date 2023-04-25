@@ -183,8 +183,7 @@ function bfs($url, $repository)
             http_response_code(503);
             header('Content-type: application/json');
             $response = array(
-                'message' => "Github services are unavailable at this time.",
-                'data' => $data
+                'message' => "Github services are unavailable at this time."
             );
 
             echo json_encode($response);
