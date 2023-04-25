@@ -671,7 +671,7 @@ $array = array(
 echo json_encode($array);
 
 
-/*$info = array(
+$infoArray = array(
 	"opt"=>$opt,
 	"cid"=>$cid,
 	"coursename"=> $coursename,
@@ -680,8 +680,9 @@ echo json_encode($array);
 	
 );
 	
-	$json = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
-	print_r($info);*/
+	//$JSON = json_encode($info , JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
+	$info=$JSON.stringify($infoArray);
+	print_r($infoArray);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseedservice.php",$userid,$info);
 
