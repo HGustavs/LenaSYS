@@ -76,25 +76,24 @@
             
             // Code used to sort tables.
             // Default values are time in descending order.
-            if(isset($_GET['order'])){
-                $order = $_GET['order'];
+            if(isset($_POST['order'])){
+                $order = $_POST['order'];
             }
             else{
                 $order = 'timestamp';
             }
-            if(isset($_GET['sort'])){
-                $sort = $_GET['sort'];
+            if(isset($_POST['sort'])){
+                $sort = $_POST['sort'];
             }
             else{
                 $sort = 'DESC';
             }
-            
+            $nextSort = $sort == 'DESC' ? 'ASC' : 'DESC';
             
             // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                 $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
                 $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -123,7 +122,6 @@
             if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
                 $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
                 $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -154,7 +152,6 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
                 $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$order.' '.$sort.';');
                 $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -184,7 +181,6 @@
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -216,7 +212,6 @@
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
                 $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$order.' '.$sort.';');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
@@ -251,7 +246,6 @@
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
                 $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$order.' '.$sort.';');
                 $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"
                 <table border='1'>
                     <tr>
