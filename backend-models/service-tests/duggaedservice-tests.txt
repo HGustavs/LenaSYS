@@ -22,8 +22,15 @@ send
     $qid = null; or $qid = “UNK”;
     $cid = 1885;
     $userid = 2;        // this is automatically added depending on what session is active (if any), we want the value to be 2
-    $courserver = 1337;
-
+    $coursevers = 1337;
+    $qname = "TestQuiz";
+    $autograde = 1;
+    $gradesys = 2;
+    $template = "Quiz";
+    $jsondeadline = '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';
+    $release = "2023-04-27 00:00:00";
+    $deadline = "2023-04-29 00:00:00";
+    $qstart = "2023-04-17";
 } 
 
 *****
@@ -102,9 +109,11 @@ send
     $autograde = 1;
     $gradesys = 2;
     $template = "group-assignment";
-    $jsondeadline = '{&quot;deadline1&quot;:&quot;2023-04-28 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';,
+    $jsondeadline = '{&quot;deadline1&quot;:&quot;2023-04-30 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';,
     $groupAssignment = 1; 
-
+    $release = "2023-04-28 00:00:00";
+    $deadline = "2023-04-30 00:00:00";
+    $qstart = "2023-04-18";
 }
 
 *****
@@ -233,9 +242,9 @@ send
     $opt = "ADDVARI";
     $qid = $quizID;
     $userid = 2;
-    $disable = 1;
+    $disabled = 1;
     $param = "{"type":"md","filelink":"md","gType":"","diagram_File":"Empty canvas","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}";
-    $answare = "Bara Text";
+    $answer = "Bara Text";
 }
   
 *****
