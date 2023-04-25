@@ -2951,6 +2951,16 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
 }
 
+//Creates all examples from github that doesnt exists yet
+function createExamples() {
+  cid = 0;
+  rows = 0;
+  for(i = 0; i < rows; i++) {
+    inputText = "";
+    
+  }
+}
+
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
