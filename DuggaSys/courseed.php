@@ -107,40 +107,6 @@ if(isset($_SESSION['uid'])){
 	</div>
 	<!-- New Course Section Dialog END -->
 
-<!-- New Version Dialog START -->
-		<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
-    	<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
-			<div class='loginBoxheader'>
-				<h3>New Course Version</h3>
-				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
-			</div>
-			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">Only numbers(between 3-8 numbers)</span></div>
-				<!--<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-8 numbers)</p>-->
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
-				<!--<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be A-Z 0-9.</p>-->
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-25px;"><span id="dialog3" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
-				<!--<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>-->
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-12px;"><span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span></div>
-				<div class="formDialog" style="display: block; left:50px; top:4px;"><span id="dialog42" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols.</span></div>
-				<!--<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
-				<!--<p id="dialog42" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
-				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
-				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
-				<p id="EndDialog2" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
-			</div>
-			<div style='padding:5px;'>
-				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onclick="validateForm('newCourseVersion')" />
-			</div>
-		</div>
-	</div>
-	<!-- New Verison Dialog END -->
-
 	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;  overflow:hidden;'>
