@@ -86,13 +86,6 @@ function bfs($url, $repository)
     $visited = array();
     $fifoQueue = array();
     // TODO remove repository creation bacuse we create folders in course local
-    // If the directory doesn't exist, make it
-    if(!file_exists('../../LenaSYS/courses/' . $repository . '')) {
-        if(!mkdir('../../LenaSYS/courses/' . $repository . '')){
-        echo "Error creating folder: $repository";
-        die;
-      }
-    }
     array_push($fifoQueue, $url);
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
