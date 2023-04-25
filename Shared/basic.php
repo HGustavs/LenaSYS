@@ -260,7 +260,8 @@ $sql3 = '
 	CREATE TABLE IF NOT EXISTS gitFiles ( 
 		cid INTEGER,
 		fileName VARCHAR(50), 
-    fileType VARCHAR(50), 
+    fileType VARCHAR(50),
+		fileURL VARCHAR(255),
     downloadURL VARCHAR(255), 
     fileSHA VARCHAR(255), 
     filePath VARCHAR(255),

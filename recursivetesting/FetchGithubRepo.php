@@ -157,9 +157,10 @@ function bfs($url, $repository)
                             array_push($fifoQueue, $item['url']);
                         }
                     }
-                    $query = $pdoLite->prepare('INSERT INTO gitFiles (fileName, fileType, downloadURL, fileSHA, filePath) VALUES (:fileName, :fileType, :downloadURL, :fileSHA, :filePath)');
+                    $query = $pdoLite->prepare('INSERT INTO gitFiles (fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:fileName, :fileType, , :fileURL, :downloadURL, :fileSHA, :filePath)');
                     $query->bindParam(':fileName', $item['name']);
                     $query->bindParam(':fileType', $item['type']);
+                    $query->bindParam(':fileURL', $item['url']);
                     $query->bindParam(':downloadURL', $item['download_url']);
                     $query->bindParam(':fileSHA', $item['sha']);
                     $query->bindParam(':filePath', $item['path']);

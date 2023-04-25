@@ -8,7 +8,7 @@
 
   $urlParts = explode('/', $url);
   // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
-  $repository = $urlParts[4];
+  $repository = $urlParts[4]; // Use the $repository variable to insert into "repoName"
 
 	print_r($username);
 	print_r($repository);
