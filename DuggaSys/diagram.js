@@ -7648,7 +7648,7 @@ function drawLine(line, targetGhost = false)
         x1Offset = -lengthConstant;
         x2Offset = lengthConstant;
     } else if ((fy > ty) && (line.ctype == "TB") ){
-        if (felem.type == 'SD' || telem.type == 'SD'){
+        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE'){
             y1Offset = lengthConstantSD_Y;
             y2Offset = -lengthConstantSD_Y; 
         }else{
@@ -7656,7 +7656,7 @@ function drawLine(line, targetGhost = false)
             y2Offset = -lengthConstant; 
         }
     } else if ((fy < ty) && (line.ctype == "BT") ){
-        if (felem.type == 'SD' || telem.type == 'SD'){
+        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE'){
             y1Offset = -lengthConstantSD_Y;
             y2Offset = lengthConstantSD_Y; 
         }else{
