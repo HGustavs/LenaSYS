@@ -581,13 +581,7 @@
 
 	<!-- github template  -->
 
-	<!-- 
-					settings for github codeexample
-					
 
-					
-
-	--> 
 		<div id='gitHubTemplate' class="loginBoxContainer" style="display:none;">
 				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>
@@ -612,19 +606,16 @@
 					</table>
 					<table id="templateOptions" width="100%">
 					</table>
-					<table width="100%">
+					<!-- <table width="100%">
 						<tr>
 							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
 						</tr>
-					</table>
-					<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
-					<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='hash' placeholder='GitHubDownloadUrl' value=''/></div>
-					<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
-					<div class='inputwrapper'><span>Number of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
+					</table> -->
 				</div>
-				
-
-
+				<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
+				<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='hash' placeholder='GitHubDownloadUrl' value=''/></div>
+				<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
+				<div class='inputwrapper'><span>Number of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 				
 		</div>
 
