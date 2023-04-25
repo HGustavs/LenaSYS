@@ -12,6 +12,8 @@ duggaedservice.php
     { (checklogin) IS TRUE && 
     (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
 
+*checking current number of quizzes 	
+    SQL-query: SELECT count(id) FROM quiz;      // counts the number of quizzes, save it to $preCount 
 
 *******
 * send parameters inputs to duggaedservice.php 
@@ -22,29 +24,23 @@ send
     $qid = null; or $qid = “UNK”;
     $cid = 1885;
     $userid = 2;        // this is automatically added depending on what session is active (if any), we want the value to be 2
-    $coursevers = 1337;
-    $qname = "TestQuiz";
-    $autograde = 1;
-    $gradesys = 2;
-    $template = "Quiz";
-    $jsondeadline = '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';
-    $release = "2023-04-27 00:00:00";
-    $deadline = "2023-04-29 00:00:00";
-    $qstart = "2023-04-17";
+    $courserver = 1337;
+
 } 
 
 *****
-* Get newly creaded Assignment ID
+* Get newly creaded Assignment ID, repet the SQL-query
 *****
     
-    SQL-query: SELECT MAX(id) FROM quiz;     // save to variable $id this value will identify the last assignment that was created (it has the highest ID number) 
+    SQL-query: SELECT MAX(id) FROM quiz;     // save to variable $id this value will identify the last assignment that was created (it has the highest ID number)
+    SQL-query: SELECT count(id) FROM quiz;   // save answare to a variable $postCount 
 
 *****
-* Gather service output
+* compare results
 *****
 
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    this is the expected output for the micro service.  
+    if preCount = postCount: failed
+    if preCount - postCount = 1: passed  
 
 *****
 * remove inserted row from DB, using qid 
@@ -90,9 +86,7 @@ $pre-Values = { null,
 SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
             VALUES ($pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10], $pre-Values[11] );
 
-//////
 // finally get the created Assignments id, save it in $pre-Values[0].
-//////
 
     SQL-Query: SELECT MAX(id) FROM quiz; 
 
@@ -109,25 +103,29 @@ send
     $autograde = 1;
     $gradesys = 2;
     $template = "group-assignment";
-    $jsondeadline = '{&quot;deadline1&quot;:&quot;2023-04-30 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';,
+    $jsondeadline = '{&quot;deadline1&quot;:&quot;2023-04-28 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';,
     $groupAssignment = 1; 
-    $release = "2023-04-28 00:00:00";
-    $deadline = "2023-04-30 00:00:00";
-    $qstart = "2023-04-18";
+
 }
 
 *****
-* Gather service output 
+* compare results
 *****
 
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    this is the expected output for the micro service.  
+    if $pre-Values[4] = $name: failed
+    if $pre-Values[2] = $autograde: failed  
+    if $pre-Values[3] = $gradesys: failed
+    if $pre-Values[5] = $template: failed
+    if $pre-Values[10] = $jsondeadline: failed
+    if $pre-Values[11] = $groupAssignment: failed 
+    else passed
 
 *****
 * remove inserted row from DB, using qid 
 *****
 
-    SQL-query: DELETE FROM quiz WHERE id = $pre-Values[0]; 
+    SQL-query: DELETE FROM quiz WHERE id = id; // id is one of the value previously saved. 
+
 
 
 
@@ -166,9 +164,10 @@ SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,d
             VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
 
 *****
-* Save qid. 	
+* checking current number of quizzes, and save qid. 	
 *****
 
+    SQL-query: SELECT count(id) FROM quiz;   // counts the number of quizzes save this value to $preCount
     SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
 
 *****
@@ -183,12 +182,17 @@ send
 }
 
 *****
-* Gather service output 
+* repet the SQL-query
 *****
 
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    this is the expected output for the micro service.  
+    SQL-query: SELECT count(id) FROM quiz; 	// save the value in $postCount 
 
+*****
+* compare results
+*****
+
+    if $preCount = postCount: failed 
+    if $preCount - $postCount = 1: passed 
 
 // ALL THE INSERTS WILL HAVE TO BE DELETED.
 // That means that if the test failed, then this test needs to go in and delete the inserts we made
@@ -227,11 +231,12 @@ SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,d
             VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
 
 *****
-* Get the id for the created quiz.
+* Get the id for the created quiz. Then get the current number of variants. 	
 *****
 
     SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
-    
+    SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value in variable $preCount
+
 *****
 * Add a new variant
 * send parameters inputs to duggaedservice.php 
@@ -242,17 +247,24 @@ send
     $opt = "ADDVARI";
     $qid = $quizID;
     $userid = 2;
-    $disabled = 1;
+    $disable = 1;
     $param = "{"type":"md","filelink":"md","gType":"","diagram_File":"Empty canvas","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}";
-    $answer = "Bara Text";
+    $answare = "Bara Text";
 }
   
+
 *****
-* Gather service output 
+* repet the SQL-query
 *****
 
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    this is the expected output for the micro service.  
+    SQL-query: SELECT count(vid) FROM variant;  // counts the number of variants save this value in $postCount
+
+*****
+* compare results
+*****
+
+    if $preCount = $postCount: failed
+    if $postCount - $preCount = 1: passed
 
 *****
 * remove inserted row from DB, using qid 
@@ -329,11 +341,13 @@ send
 }
 
 *****
-* Gather service output 
+* compare results
 *****
 
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    this is the expected output for the micro service.  
+    if $preValuesVariant[2] = $preValuesQuiz[2]: failed
+    if $preValuesVariant[3] = $preValuesQuiz[3]: failed
+    if $preValuesVariant[4] = $preValuesQuiz[4]: failed
+    else : passed 
 
 *****
 * remove inserted row from table quiz DB, using quizID. This will delete both table entries (variant and quiz)
@@ -430,6 +444,14 @@ SQL-query:  INSERT INTO userAnswer(cid,moment,quiz,variant)
             VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4] );
 
 
+
+*****
+* checking current number of quizzes, and save the count. 	
+*****
+
+    SQL-query: SELECT count(variant) FROM userAnswer;    // save the value in variable preCountUserAnsware
+    SQL-query: SELECT count(vid) FROM variant;           // save the value in variable preCountVariant
+
 *****
 * Delete variant, userAnswer, listentries, quiz.
 * send parameters inputs to duggaedservice.php 
@@ -442,11 +464,21 @@ send
 }
 
 *****
-* Gather service output 
+* repeat the SQL-query
 *****
 
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    this is the expected output for the micro service. 
+    SQL-query: SELECT count(variant) FROM userAnswer;   // save the value in variable postCountUserAnsware
+    SQL-query: SELECT count(vid) FROM variant; 	        // save the value in variable postCountVariant 
+
+*****
+* compare results
+*****
+
+    if preCountUserAnsware = postCountUserAnsware: failed
+    if postCountUserAnsware - preCountUserAnsware = 1: passed
+
+    if preCountVariant = postCountVariant: failed
+    if postCountVariant - preCountVariant = 1: passed
 
 
 // ALL THE INSERTS WILL HAVE TO BE DELETED.
