@@ -653,7 +653,7 @@
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
             </fieldset>
         </div>
-      /*
+      <!-- 
         <div id="zoom-container">
             <div class="diagramZoomIcons" onclick='zoomin();'>
                 <img src="../Shared/icons/diagram_zoomin.svg" alt="Zoom in"/>
@@ -677,7 +677,7 @@
                 </span>
             </div>
         </div>
-  */
+   -->
 
     </div>
     </div>
