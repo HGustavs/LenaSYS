@@ -4027,20 +4027,20 @@ function generateStateDiagramInfo()
         }
     }
 
-    output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
-    //if no state diagram exists, return a message to the user instead.
-    if ((lineCounter == 0) && (elementCounter == 0)) {
-        output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
-    }
-
-
+    //output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
+    
+    
     // Adds additional information in the view.
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>SD States: ${stateElements.length}</p>`;
     output += `<p>Lines: ${stateLines.length}</p>`;
-
-
+    
+    //if no state diagram exists, return a message to the user instead.
+    if ((stateLines.length == 0) && (stateElements.length == 0)) {
+        output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
+    }
+    
     return output;
 }
 /**
