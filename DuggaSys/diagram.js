@@ -4027,11 +4027,19 @@ function generateStateDiagramInfo()
         }
     }
 
+    output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
+    //if no state diagram exists, return a message to the user instead.
+    if ((lineCounter == 0) && (elementCounter == 0)) {
+        output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
+    }
+
+
     // Adds additional information in the view.
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>SD States: ${stateElements.length}</p>`;
     output += `<p>Lines: ${stateLines.length}</p>`;
+
 
     return output;
 }
@@ -4318,6 +4326,12 @@ function toggleErTable()
     else if (erTableToggle == true){
         erTableToggle = false;
     }
+    //if the options pane is hidden, show it.
+    if (document.getElementById("options-pane").className == "hide-options-pane") {
+        toggleOptionsPane();
+        erTableToggle = true;
+        testCaseToggle = false;
+    }
     generateContextProperties();
 }
 
@@ -4333,6 +4347,11 @@ function toggleTestCase()
     }
     else if (testCaseToggle == true) {
         testCaseToggle = false;
+    }
+    if (document.getElementById("options-pane").className == "hide-options-pane") {
+        toggleOptionsPane();
+        testCaseToggle = true;
+        erTableToggle = false;
     }
     generateContextProperties();
 }
@@ -5570,6 +5589,10 @@ function generateErTableString()
     var stri = "";
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
+    }
+    //if its empty, show a message instead.
+    if (stri == "") {
+        stri = "The feature you are trying to use is linked to ER tables and it appears you do not have any ER elements placed. Please place an ER element and try again."
     }
     return stri;
 }
