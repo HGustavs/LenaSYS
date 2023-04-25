@@ -112,3 +112,39 @@ Gather service output
 	SQL-query DELETE FROM groupdugga WHERE hash = $hash;
 
 —------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+***
+Test#4
+get data from userAnswer
+***
+
+***
+pre-req: !isSuperUser($userid) &&	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) == TRUE &&
+isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"] == TRUE
+***
+
+    $pre-values = {
+        $hash = “AcIj-Ld6”
+        $hashpwd = “OjOEh8R”
+        $variant = 13
+    }
+
+    //Get the selected user by hash
+    SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=$hash;
+
+***
+send parameters input to showDuggaservice.php
+***
+    send 
+    {
+        $opt = “SAVDU”
+        $hash = “AcIj-Ld6”
+    }
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+—------------------------------------------------------------------------------------------------------------------
