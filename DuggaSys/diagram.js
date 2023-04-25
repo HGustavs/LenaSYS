@@ -4026,7 +4026,7 @@ function generateStateDiagramInfo()
             }
         }
     }
-      
+
     // Adds additional information in the view.
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
@@ -4034,7 +4034,7 @@ function generateStateDiagramInfo()
     output += `<p>Lines: ${stateLines.length}</p>`;
     
     //if no state diagram exists, return a message to the user instead.
-    if ((stateLines.length == 0) && (stateElements.length == 0)) {
+    if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0)) {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
     }
     
