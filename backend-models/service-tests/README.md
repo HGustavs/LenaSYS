@@ -18,6 +18,10 @@ saveDuggaNewTest (line 57): \
   * Compare results, if a new quiz has been added (amount of quizes has increased by one), test has passed \
   * Clean up database !!!! VERY IMPORTANT !!!!
 
+ We want to be able to translate this test-case into php, and be able to produce tests for the file in question, preferably without having to read the code.
+ This means you need to research valid values that can be used with a test-case!
+
+ Since the output of each servicefile is encoded into a JSON string, we need to find this output and use it as expected output in our tests. This can be done using the inspector in your browser.
 test2:
 
   etc....
