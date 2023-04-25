@@ -27,3 +27,39 @@ showDuggaservice.php
     This is the expected output for the micro service.
 
 —------------------------------------------------------------------------------------------------------------------
+
+—------------------------------------------------------------------------------------------------------------------
+TEST #2
+Create active users
+
+***
+Pre-req: $active == NULL
+***
+
+Send parameters inputs to showDuggaservice.php
+    send
+    {
+        $opt = “UPDATEAU”
+    $hash = “tj7dh2nb”
+    $AUtoken = 999
+    }
+
+    SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken)
+***
+* Get newly added active users
+***
+	SQL-query: SELECT MAX(active_users) FROM groupdugga; // Save to variable $active_users this will identify the last active user that was created (it has the highest AUtoken)
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query DELETE FROM groupdugga WHERE hash = $hash;
+
+—------------------------------------------------------------------------------------------------------------------
