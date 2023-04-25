@@ -4026,10 +4026,7 @@ function generateStateDiagramInfo()
             }
         }
     }
-
-    //output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
-    
-    
+      
     // Adds additional information in the view.
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
