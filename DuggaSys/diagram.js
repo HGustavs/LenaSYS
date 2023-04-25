@@ -3957,42 +3957,92 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
- * @description returns a string containing info about state diagrams
+ * @description Generates the string that contains the current State Diagram info.
+ * @returns Connected State Diagram in the form of a string.
  */
 function generateStateDiagramInfo()
 {
-    let output="";
-    let lineCounter=0;
-    let elementCounter=0;
-    //had to make a separate loop to count the lines otherwise if it is put in the other loop the counter behaves in a strange way. 
-    for(var i=0; i<lines.length; i++)
+    const ENTITY = 0, SEEN = 1;
+    const stateInitial = [];
+    const stateFinal = [];
+    const stateElements = [];
+    const stateLines = [];
+    const queue = [];
+    let output = "";
+
+    // Picks out the lines of type "State Diagram" and place it in its local array.
+    for (let i=0; i<lines.length; i++)
     {
-        if(lines[i].type==entityType.SD)
-    lineCounter++; 
+        if (lines[i].type == entityType.SD) { 
+            stateLines.push(lines[i]);
+        }
     }
-    for (var i=0; i<data.length; i++)
+
+    // Picks out the entities related to State Diagrams and place them in their local arrays.
+    for (let i=0; i<data.length; i++)
     {
-        if(data[i].kind==elementTypesNames.SDState)
-        elementCounter++;
-        for(var j=0; j<lines.length; j++)
-        {    
-if(data[i].kind==elementTypesNames.SDState)
-{
-    //the output is broken for now. it does not print out the correct connections.
-    //checks weather the connection that goes from a line is the same as the element ID. 
-    if(data[i].id==lines[j].fromID)
-    {
-    output+="line goes from "+ data[i].name+"\n";
+        if (data[i].kind == elementTypesNames.SDState) {
+            stateElements.push([data[i], false]);
+        }
+        else if (data[i].kind == elementTypesNames.UMLInitialState) {
+            stateInitial.push([data[i], false]); 
+        }
+        else if (data[i].kind == elementTypesNames.UMLFinalState) {
+            stateFinal.push([data[i], true]);
+        }
     }
-    //checks weather the connection that goes to a line is the same as the element ID. 
-    else if(data[i].id==lines[j].toID)
-    {
-        output+="line goes to "+ data[i].name+"\n";
+
+    // Initialises the BFS by adding the Initial states to the queue.
+    for (let i = 0; i < stateInitial.length; i++) {
+        stateInitial[i][SEEN] = true;
+        queue.push(stateInitial[i]);
     }
+
+    // Loop through all entities that are connected.
+    while (queue.length > 0) {
+        let head = queue.shift();
+        const connections = [];
+
+        // Finds all entities connected to the current "head".
+        for (let i = 0; i < stateLines.length; i++) {
+            if (stateLines[i].fromID == head[ENTITY].id) {
+                for (let j = 0; j < stateElements.length; j++) {
+                    if (stateLines[i].toID == stateElements[j][ENTITY].id) {
+                        connections.push(stateElements[j]);
+                    }
+                }
+                for (let j = 0; j < stateFinal.length; j++) {
+                    if (stateLines[i].toID == stateFinal[j][ENTITY].id) {
+                        connections.push(stateFinal[j]);
+                    }
+                }
+            }
+        }
+
+        // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
+        for (let i = 0; i < connections.length; i++) {
+            output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+            if (connections[i][SEEN] === false) {
+                connections[i][SEEN] = true;
+                queue.push(connections[i]);
+            }
+        }
     }
-}
-    }
+
     output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
+    //if no state diagram exists, return a message to the user instead.
+    if ((lineCounter == 0) && (elementCounter == 0)) {
+        output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
+    }
+
+
+    // Adds additional information in the view.
+    output += `<p>Initial States: ${stateInitial.length}</p>`;
+    output += `<p>Final States: ${stateFinal.length}</p>`;
+    output += `<p>SD States: ${stateElements.length}</p>`;
+    output += `<p>Lines: ${stateLines.length}</p>`;
+
+
     return output;
 }
 /**
@@ -4156,8 +4206,8 @@ function toggleReplay()
         ruler.style.left = "50px";
         zoomIndicator.style.bottom = "5px";
         zoomIndicator.style.left = "100px";
-        zoomContainer.style.bottom = "4px";
-        zoomContainer.style.left = "-100px";
+        zoomContainer.style.bottom = "5px";
+        zoomContainer.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
         settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
@@ -4190,12 +4240,6 @@ function toggleReplay()
         zoomIndicator.style.bottom = "55px";
         zoomIndicator.style.left = "45px";
         zoomContainer.style.bottom = "54px";
-        if (optionsPane.className == "show-options-pane") {
-            zoomContainer.style.left = "240px";
-        }
-        else {
-            zoomContainer.style.left = "-68px";
-        }
         replyMessage.style.visibility = "visible";
     }
     drawRulerBars(scrollx, scrolly);
@@ -4278,6 +4322,12 @@ function toggleErTable()
     else if (erTableToggle == true){
         erTableToggle = false;
     }
+    //if the options pane is hidden, show it.
+    if (document.getElementById("options-pane").className == "hide-options-pane") {
+        toggleOptionsPane();
+        erTableToggle = true;
+        testCaseToggle = false;
+    }
     generateContextProperties();
 }
 
@@ -4293,6 +4343,11 @@ function toggleTestCase()
     }
     else if (testCaseToggle == true) {
         testCaseToggle = false;
+    }
+    if (document.getElementById("options-pane").className == "hide-options-pane") {
+        toggleOptionsPane();
+        testCaseToggle = true;
+        erTableToggle = false;
     }
     generateContextProperties();
 }
@@ -5531,6 +5586,10 @@ function generateErTableString()
     for (var i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
+    //if its empty, show a message instead.
+    if (stri == "") {
+        stri = "The feature you are trying to use is linked to ER tables and it appears you do not have any ER elements placed. Please place an ER element and try again."
+    }
     return stri;
 }
 /**
@@ -6405,6 +6464,12 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
+                           /* find me str += `<div>`;
+                            str += `<select id="SDOption">`;
+                                str +=  `<option value ="Do: " selected>Do</option>`;
+                                str += `<option value="Exit: ">Exit</option>`;
+                            str += `</select>`;
+                            str += `</div>`; */
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
@@ -7108,7 +7173,7 @@ function multipleColorsTest()
  * @param {Number} axis 
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
-function sortvectors(currentElementID, compareElementID, ends, elementid, axis) // TODO : Replace variable names a and b
+function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
     var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
@@ -7500,6 +7565,7 @@ function drawLine(line, targetGhost = false)
     var str = "";
 
     var lengthConstant = 1; // Determines how "far inwards" on the element the line should have its origin and its end points.
+    var lengthConstantSD_Y = 20;
     var x1Offset = 0;
     var x2Offset = 0;
     var y1Offset = 0;
@@ -7635,11 +7701,21 @@ function drawLine(line, targetGhost = false)
         x1Offset = -lengthConstant;
         x2Offset = lengthConstant;
     } else if ((fy > ty) && (line.ctype == "TB") ){
-        y1Offset = lengthConstant;
-        y2Offset = -lengthConstant;   
+        if (felem.type == 'SD' || telem.type == 'SD'){
+            y1Offset = lengthConstantSD_Y;
+            y2Offset = -lengthConstantSD_Y; 
+        }else{
+            y1Offset = lengthConstant;
+            y2Offset = -lengthConstant; 
+        }
     } else if ((fy < ty) && (line.ctype == "BT") ){
-        y1Offset = -lengthConstant;
-        y2Offset = lengthConstant;   
+        if (felem.type == 'SD' || telem.type == 'SD'){
+            y1Offset = -lengthConstantSD_Y;
+            y2Offset = lengthConstantSD_Y; 
+        }else{
+            y1Offset = -lengthConstant;
+            y2Offset = lengthConstant; 
+        }
     }
 
     // Do not draw the lines longer for UMLRelations.
@@ -7670,7 +7746,7 @@ function drawLine(line, targetGhost = false)
         line.type = 'UML';
     }
 
-    // If element is UML or IE (use straight line segments instead)
+    // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
 
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
@@ -7896,10 +7972,10 @@ function drawLine(line, targetGhost = false)
                 break;
             case SDLineIcons.ARROW:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy - 5 * zoomfact},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8119,7 +8195,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8838,7 +8914,21 @@ function drawElement(element, ghosted = false)
 
     // Check if element is SDState
     else if (element.kind == "SDState") {
-        elemAttri = element.attributes.length;
+
+        const maxCharactersPerLine = Math.floor(boxw / texth);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.attributes.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;
 
         // Removes the previouse value in SDHeight for the element
         for (var i = 0; i < SDHeight.length; i++) {
@@ -8895,6 +8985,8 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+           /* find me let sdOption = document.getElementById("SDOption");
+            console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
@@ -8912,7 +9004,7 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}'
             />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8934,7 +9026,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>Do: </text>`;
             //end of svg for background
             str += `</svg>`;
         }
