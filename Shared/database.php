@@ -31,7 +31,7 @@ function dbConnect()
 	}
 
 	// Connect to DB server
-	$OC_db = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or err("Could not connect to database ".mysql_errno(),$hdr);
+	$OC_db = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD) or err("Could not connect to database ".mysql_errno(),$hdr);
 	mysql_set_charset('utf8',$OC_db);
 	// Select DB
 	mysql_select_db(DB_NAME) or err("Could not select database \"".DB_NAME."\" error code".mysql_errno(),$hdr);
