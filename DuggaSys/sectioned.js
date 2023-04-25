@@ -519,20 +519,25 @@ function confirmBox(operation, item = null) {
   }else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
-  }
-  
-  else if (operation == "openGitHubBox") {
-    console.log("testworkornah?");
+  }else if (operation == "openGitHubBox") {
+    console.log("testworkornah2?");
     $("#gitHubBox").css("display", "flex");
+  }
+  //ändra 
+  else if (operation == "openGitHubTemplate") {
+    console.log("testworkornah?");
+    $("#gitHubTemplate").css("display", "flex");
 
 
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
+    $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
     $("#sectionConfirmBox").css("display", "none");
     $("#tabConfirmBox").css("display", "none");
     $("#sectionHideConfirmBox").css("display", "none");
     $("#noMaterialConfirmBox").css("display", "none");
     $("#sectionShowConfirmBox").css("display", "none");
+    $("#gitHubTemplate").css("display", "none");
   }
   else if (operation == "showItems"&& !hideItemList.length == 0) {
     showMarkedItems(hideItemList);
@@ -1558,6 +1563,15 @@ function returnedSection(data) {
           }
         }
 
+        // Refresh button for moments
+        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='moment'>`;
+          str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
+                  id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
+          str += ">";
+          str += "</td>";
+        }
+
         // Refresh button
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;'>`;
@@ -1644,7 +1658,7 @@ function returnedSection(data) {
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
           str += "</td>";
         }
 
@@ -2942,6 +2956,12 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
 }
 
+//Creates all examples from github that doesnt exists yet
+function createExamples() {//TODO HERE
+  cid = 0;
+  AJAXService("CreGitEx", {courseid : cid});
+}
+
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
@@ -3597,4 +3617,50 @@ function showFeedbackquestion(){
   }else{
     $("#inputwrapper-FeedbackQuestion").css("display","none");
   }
+}
+
+
+function changetemplate(templateno) 
+{
+    $(".tmpl").each(function (index) {
+      $(this).css("background", "#ccc");
+    });
+
+    document.getElementById("templat" + templateno).style.backgroundColor = "#fc4";
+    document.getElementById("templateno").value = templateno;
+
+    var templateOptions = document.getElementById('templateOptions');
+    var boxes;
+    switch (templateno) {
+      case '1':
+        boxes = 2;
+        break;
+      case '2':
+        boxes = 2;
+        break;
+      case '3':
+        boxes = 3;
+        break;
+      case '4':
+        boxes = 3;
+        break;
+      case '5':
+        boxes = 4;
+        break;
+      case '6':
+        boxes = 4;
+        break;
+      case '7':
+        boxes = 4;
+        break;
+      case '8':
+        boxes = 3;
+        break;
+      case '9':
+        boxes = 5;
+        break;
+      case '10':
+        boxes = 1;
+        break;
+    }
 }
