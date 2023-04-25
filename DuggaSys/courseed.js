@@ -98,12 +98,12 @@ function createNewCourse()
 		if(fetchGitHubRepo(courseGitURL)) {
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-			alert("New course, " + coursename + "added with GitHub-link!");
+			alert("New course, " + coursename + " added with GitHub-link!");
 		}
 	} else {
 		localStorage.setItem('lastCC', true);
 		AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-		alert("New course, " + coursename + "added!");
+		alert("New course, " + coursename + " added!");
 	}
 }
 
