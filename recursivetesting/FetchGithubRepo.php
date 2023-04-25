@@ -123,10 +123,10 @@ function bfs($url, $repository)
         // Starts a stream with the required headers
         $context = stream_context_create($opts);
         // Fetches the data with the stream included
-        $data = @file_get_contents($currentUrl, false, $context);
+        $data = @file_get_contents($currentUrl, true, $context);
         if ($data) {
             // Decodes the fetched data into JSON
-            $json = json_decode($data, true);
+            $json = json_decode($data, false);
             // Loops through each item fetched in the JSON data
             if ($json) {
                 foreach ($json as $item) {
