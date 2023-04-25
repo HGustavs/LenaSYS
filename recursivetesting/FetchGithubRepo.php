@@ -172,8 +172,7 @@ function bfs($url, $repository)
                 http_response_code(422);
                 header('Content-type: application/json');
                 $response = array(
-                    'message' => "The JSON-file is invalid",
-                    'json' => $json
+                    'message' => "The JSON-file is invalid"
                 );
 
                 echo json_encode($response);

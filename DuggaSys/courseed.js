@@ -724,7 +724,6 @@ function validateForm(formid) {
 	if(numberOfValidInputs === inputs.length) {
 		if(formid === "newCourse") {
 			createNewCourse();
-			console.log("Created a new course");
 		} else if(formid === "editCourse") {
 			updateCourse();
 		}
