@@ -158,7 +158,7 @@ function bfs($url, $repository)
                         }
                     }
                     $query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, , :fileURL, :downloadURL, :fileSHA, :filePath)');
-                    $query->bindParam(':cid', 1);
+                    $query->bindParam(':cid', $cid);
                     $query->bindParam(':fileName', $item['name']);
                     $query->bindParam(':fileType', $item['type']);
                     $query->bindParam(':fileURL', $item['url']);
