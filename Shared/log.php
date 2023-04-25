@@ -279,7 +279,7 @@
                 ";
             }
 
-            print_r($infoArray);
+            print_r(json_decode($json, true));
          
 
         ?>    
