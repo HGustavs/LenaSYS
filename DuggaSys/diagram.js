@@ -1476,21 +1476,6 @@ function showDiagramTypes(){
     }
 }
 //<-- UML functionality end
-/**
- * @description Used to determine if returned data is correct.
- * @param {*} ret Returned data to determine.
- * @deprecated This function is no longer in use since the new drawing system of April 2021.
- */
-// TODO : No references of this function throughout the entire codebase. Should be deleted?
-function data_returned(ret)
-{
-    if (typeof ret.data !== "undefined") {
-        service = ret;
-        showdata();
-    } else {
-        alert("Error receiveing data!");
-    }
-}
 //#endregion ===================================================================================
 //#region ================================ EVENTS               ================================
 // --------------------------------------- Window Events    --------------------------------
@@ -1699,7 +1684,7 @@ document.addEventListener('keyup', function (e)
             if (context.length !== 0){
                 
                 // Filter - keeps only the lines that are connectet to and from selected elements.
-                var contextConnectedLines = getLines().filter(line => {
+                var contextConnectedLines = lines.filter(line => {
                     return (context.filter(element => {
                         return line.toID == element.id || line.fromID == element.id
                     })).length > 1
@@ -1917,8 +1902,10 @@ function ddown(event)
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
             event.preventDefault(); // Needed in order for focus() to work properly 
             var input = document.getElementById("elementProperty_name");
-            input.focus();
-            input.setSelectionRange(0,input.value.length); // Select the whole text.
+            if (input !== null) {
+                input.focus();
+                input.setSelectionRange(0, input.value.length); // Select the whole text.
+            }
             document.getElementById('optmarker').innerHTML = "&#x203A;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
@@ -2699,16 +2686,6 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     showdata();
     redrawArrows();
 }
-
-/**
- * @description Will return all lines in the data array. This is mainly used for debugging purposes since we can log whenever the lines are read from.
- * @returns Returns all lines in the data array.
- */
-function getLines() // TODO : Replace all lines[i] with getLines()[i], or event introduce a new getLineAt(i)?
-{
-    return lines;
-}
-
 /**
  * @description Generatesa a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
  * @see ghostElement
@@ -2927,7 +2904,6 @@ function saveProperties()
  */
 function changeLineProperties()
 {
-    // TODO : DOES NOT STORE ANYTHING TO THE STATE MACHINE, VERY BAD!
     // Set lineKind
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
@@ -3979,8 +3955,48 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
+ * @description returns a string containing info about state diagrams
+ */
+function generateStateDiagramInfo()
+{
+    let output="";
+    let lineCounter=0;
+    let elementCounter=0;
+    //had to make a separate loop to count the lines otherwise if it is put in the other loop the counter behaves in a strange way. 
+    for(var i=0; i<lines.length; i++)
+    {
+        if(lines[i].type==entityType.SD)
+    lineCounter++; 
+    }
+    for (var i=0; i<data.length; i++)
+    {
+        if(data[i].kind==elementTypesNames.SDState)
+        elementCounter++;
+        for(var j=0; j<lines.length; j++)
+        {    
+if(data[i].kind==elementTypesNames.SDState)
+{
+    //the output is broken for now. it does not print out the correct connections.
+    //checks weather the connection that goes from a line is the same as the element ID. 
+    if(data[i].id==lines[j].fromID)
+    {
+    output+="line goes from "+ data[i].name+"\n";
+    }
+    //checks weather the connection that goes to a line is the same as the element ID. 
+    else if(data[i].id==lines[j].toID)
+    {
+        output+="line goes to "+ data[i].name+"\n";
+    }
+    }
+}
+    }
+    output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
+    return output;
+}
+/**
  * @description hides or shows the diagram type dropdown 
  */
+
 function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
@@ -4235,10 +4251,10 @@ function setReplayRunning(state)
     var stateSlider = document.getElementById("replay-range");
 
     if (state){
-        button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg"><span class="toolTipText" style="top: -80px;"><b>Pause</b><br><p>Pause history of changes made to the diagram</p><br></span></div>';
+        button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg" alt="Pause"><span class="toolTipText" style="top: -80px;"><b>Pause</b><br><p>Pause history of changes made to the diagram</p><br></span></div>';
         stateSlider.disabled = true;
     }else{
-        button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg"><span class="toolTipText" style="top: -80px;"><b>Play</b><br><p>Play history of changes made to the diagram</p><br></span></div>';
+        button.innerHTML = '<div class="diagramIcons" onclick="stateMachine.replay()"><img src="../Shared/icons/Play.svg" alt="Play"><span class="toolTipText" style="top: -80px;"><b>Play</b><br><p>Play history of changes made to the diagram</p><br></span></div>';
         stateSlider.disabled = false;
     }
 }
@@ -6153,11 +6169,19 @@ function generateContextProperties()
         propSet.classList.remove('options-fieldset-show');
         for (var i = 0; i < menuSet.length; i++) {
             menuSet[i].classList.add('options-fieldset-show');
-            menuSet[i].classList.remove('options-fieldset-hidden');  
+            menuSet[i].classList.remove('options-fieldset-hidden');
         }
     }
-
-
+    // No element or line selected, but either erTableToggle or testCaseToggle is active.
+    else if (context.length == 0 && contextLine.length == 0 && (erTableToggle || testCaseToggle)) {
+        //Show properties and hide the other options
+        propSet.classList.add('options-fieldset-show');
+        propSet.classList.remove('options-fieldset-hidden');
+        for (var i = 0; i < menuSet.length; i++) {
+            menuSet[i].classList.add('options-fieldset-hidden');
+            menuSet[i].classList.remove('options-fieldset-show');
+        }
+    }
 
     //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     if (erTableToggle == true) {
@@ -6169,7 +6193,7 @@ function generateContextProperties()
     //If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     else if (testCaseToggle) {
         str += '<div id="ERTable">'; //using same styling for now, maybe change later
-        str += 'Debug testcase'
+        str += generateStateDiagramInfo();
         str += '</div>';
     }
     else {
@@ -6443,6 +6467,7 @@ function generateContextProperties()
                         }
                     });
                     str += `</select></label>`;
+                    str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                     str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
                     if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
                     str += `/>`;
@@ -6451,6 +6476,7 @@ function generateContextProperties()
         }
         if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+            str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
             if(contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
             str += `/>`;
@@ -6681,6 +6707,14 @@ function generateContextProperties()
       multipleColorsTest();
     }
 
+/**
+ * 
+ * @description function for include button to the options panel,writes out << Include >>
+ */
+function setLineLabel()
+{
+    document.getElementById("lineLabel").value = "&#60&#60include&#62&#62";
+}
 
 /**
  * @description Toggles the option menu being open or closed.
@@ -7065,31 +7099,31 @@ function multipleColorsTest()
 //#region ================================ ELEMENT CALCULATIONS ==================================
 /**
  * @description Sorts all lines connected to an element on each side.
- * @param {String} a Hexadecimal id for the element at current test index for sorting.
- * @param {String} b Hexadecimal id for the element were comparing to.
+ * @param {String} currentElementID Hexadecimal id for the element at current test index for sorting.
+ * @param {String} compareElementID Hexadecimal id for the element were comparing to.
  * @param {Array<Object>} ends Array of all lines connected on this side.
  * @param {String} elementid Hexadecimal id for element to perform sorting on.
  * @param {Number} axis 
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
-function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable names a and b
+function sortvectors(currentElementID, compareElementID, ends, elementid, axis) // TODO : Replace variable names a and b
 {
     // Get dx dy centered on association end e.g. invert vector if necessary
-    var lineA = (ghostLine && a === ghostLine.id) ? ghostLine : lines[findIndex(lines, a)];
-    var lineB = (ghostLine && b === ghostLine.id) ? ghostLine : lines[findIndex(lines, b)];
+    var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
+    var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
     var parent = data[findIndex(data, elementid)];
 
     // Retrieve opposite element - assume element center (for now)
-     if (lineA.fromID == elementid) {
-        toElementA = (lineA == ghostLine) ? ghostElement : data[findIndex(data, lineA.toID)];
+     if (currentElementLine.fromID == elementid) {
+        toElementA = (currentElementLine == ghostLine) ? ghostElement : data[findIndex(data, currentElementLine.toID)];
     } else {
-        toElementA = data[findIndex(data, lineA.fromID)];
+        toElementA = data[findIndex(data, currentElementLine.fromID)];
     }
 
-    if (lineB.fromID == elementid) {
-        toElementB = (lineB == ghostLine) ? ghostElement : data[findIndex(data, lineB.toID)];
+    if (compareElementLine.fromID == elementid) {
+        toElementB = (compareElementLine == ghostLine) ? ghostElement : data[findIndex(data, compareElementLine.toID)];
     } else {
-        toElementB = data[findIndex(data, lineB.fromID)];
+        toElementB = data[findIndex(data, compareElementLine.fromID)];
     }
 
     if (toElementA.id === toElementB.id) {
@@ -7105,8 +7139,8 @@ function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable nam
     // If lines cross swap otherwise keep as is
     if (axis == 0 || axis == 1) {
         // Left side
-        ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
-        by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
+        ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
+        by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
         if (axis == 0) parentx = parent.x1
         else parentx = parent.x2;
 
@@ -7114,8 +7148,8 @@ function sortvectors(a, b, ends, elementid, axis) // TODO : Replace variable nam
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
-        ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(a) + 1));
-        bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(b) + 1));
+        ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
+        bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
         if (axis == 2) parenty = parent.y1
         else parenty = parent.y2;
 
@@ -7611,10 +7645,14 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
         if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' `;
+            str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
+            str += `fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' `;
+            str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
+            str += `fill = none stroke = '${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
@@ -7774,16 +7812,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeStart=20;
                 break;
@@ -7819,16 +7857,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case SDLineIcons.ARROW:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeStart=40;
                 break;
@@ -8039,16 +8077,16 @@ function drawLine(line, targetGhost = false)
                 break;
             case SDLineIcons.ARROW:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 var iconSizeEnd=20;
                 break;
@@ -8111,7 +8149,7 @@ function drawLine(line, targetGhost = false)
                 posX -= iconSizeStart;
             }
             str += `<rect class="text cardinalityLabel" id=${line.id + "startLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
-            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
+            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
         }
         if (line.endLabel && line.endLabel != '') {
             const offsetOnLine = 20 * zoomfact;
@@ -8168,7 +8206,7 @@ function drawLine(line, targetGhost = false)
                 posX += iconSizeEnd;
             }
             str += `<rect class="text cardinalityLabel" id=${line.id + "endLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
-            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
+            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
         }
     }
     else {
@@ -8793,7 +8831,7 @@ function drawElement(element, ghosted = false)
         str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<path 
+        str += `<path class="text" 
             d="M${linew+cornerRadius},${(linew)}
                 h${(boxw - (linew * 2))-(cornerRadius*2)}
                 a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
@@ -8808,7 +8846,7 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />
         
-        <text style='fill: ${element.stroke};' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`; //style shouldn't be needed, the div randomly gets fill: rgb(0, 0, 0), no clue why'
+        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //end of svg for SD header
         str += `</svg>`;
         //end of div for SD header
@@ -8822,7 +8860,7 @@ function drawElement(element, ghosted = false)
             console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<path 
+            str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius}
@@ -8845,7 +8883,7 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<path 
+            str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
                     v${(boxh / 2 + (boxh / 2) - (linew * 2))-cornerRadius}
@@ -11680,10 +11718,8 @@ function isDarkTheme(){
 	    let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
-        if(cssUrl == 'blackTheme.css'){
-            return true;
-        }
-        else return false;
+
+        return cssUrl === 'blackTheme.css'
     }
 }
 /**
