@@ -33,14 +33,14 @@
     <?php
 
     //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
- /*   if(isset($_POST['action'])) 
+    if(isset($_POST['action'])) 
     {
         if($_POST['action'] == 'getNewCourseGitHub') 
-        {*/
-        getNewCourseGitHub("https://github.com/b21sebgr/Webbprogrammering-Examples"/*$_POST['githubURL']*/);
-   /*     }
+        {
+            getNewCourseGitHub($_POST['githubURL']);
+        }
     };
-*/
+
     //Calls getGithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
     function getNewCourseGitHub($githubURL)
     {
