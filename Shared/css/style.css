@@ -8916,6 +8916,11 @@ border: none !important;
 .templatethumbicon:hover{
   background-color: #7D5CA0;
 }
+.templatethumbicon {
+  width: 88%;
+  margin: 2% 1% 2% 1%;
+  padding: 3%;
+}
 
 .themeicon:hover {
   background-color: #7D5CA0;
