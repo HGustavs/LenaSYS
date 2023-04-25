@@ -3955,42 +3955,84 @@ function boxSelect_Draw(str)
 //#endregion =====================================================================================
 //#region ================================ GUI                  ==================================
 /**
- * @description returns a string containing info about state diagrams
+ * @description Generates the string that contains the current State Diagram info.
+ * @returns Connected State Diagram in the form of a string.
  */
 function generateStateDiagramInfo()
 {
-    let output="";
-    let lineCounter=0;
-    let elementCounter=0;
-    //had to make a separate loop to count the lines otherwise if it is put in the other loop the counter behaves in a strange way. 
-    for(var i=0; i<lines.length; i++)
+    const ENTITY = 0, SEEN = 1;
+    const stateInitial = [];
+    const stateFinal = [];
+    const stateElements = [];
+    const stateLines = [];
+    const queue = [];
+    let output = "";
+
+    // Picks out the lines of type "State Diagram" and place it in its local array.
+    for (let i=0; i<lines.length; i++)
     {
-        if(lines[i].type==entityType.SD)
-    lineCounter++; 
+        if (lines[i].type == entityType.SD) { 
+            stateLines.push(lines[i]);
+        }
     }
-    for (var i=0; i<data.length; i++)
+
+    // Picks out the entities related to State Diagrams and place them in their local arrays.
+    for (let i=0; i<data.length; i++)
     {
-        if(data[i].kind==elementTypesNames.SDState)
-        elementCounter++;
-        for(var j=0; j<lines.length; j++)
-        {    
-if(data[i].kind==elementTypesNames.SDState)
-{
-    //the output is broken for now. it does not print out the correct connections.
-    //checks weather the connection that goes from a line is the same as the element ID. 
-    if(data[i].id==lines[j].fromID)
-    {
-    output+="line goes from "+ data[i].name+"\n";
+        if (data[i].kind == elementTypesNames.SDState) {
+            stateElements.push([data[i], false]);
+        }
+        else if (data[i].kind == elementTypesNames.UMLInitialState) {
+            stateInitial.push([data[i], false]); 
+        }
+        else if (data[i].kind == elementTypesNames.UMLFinalState) {
+            stateFinal.push([data[i], true]);
+        }
     }
-    //checks weather the connection that goes to a line is the same as the element ID. 
-    else if(data[i].id==lines[j].toID)
-    {
-        output+="line goes to "+ data[i].name+"\n";
+
+    // Initialises the BFS by adding the Initial states to the queue.
+    for (let i = 0; i < stateInitial.length; i++) {
+        stateInitial[i][SEEN] = true;
+        queue.push(stateInitial[i]);
     }
+
+    // Loop through all entities that are connected.
+    while (queue.length > 0) {
+        let head = queue.shift();
+        const connections = [];
+
+        // Finds all entities connected to the current "head".
+        for (let i = 0; i < stateLines.length; i++) {
+            if (stateLines[i].fromID == head[ENTITY].id) {
+                for (let j = 0; j < stateElements.length; j++) {
+                    if (stateLines[i].toID == stateElements[j][ENTITY].id) {
+                        connections.push(stateElements[j]);
+                    }
+                }
+                for (let j = 0; j < stateFinal.length; j++) {
+                    if (stateLines[i].toID == stateFinal[j][ENTITY].id) {
+                        connections.push(stateFinal[j]);
+                    }
+                }
+            }
+        }
+
+        // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
+        for (let i = 0; i < connections.length; i++) {
+            output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+            if (connections[i][SEEN] === false) {
+                connections[i][SEEN] = true;
+                queue.push(connections[i]);
+            }
+        }
     }
-}
-    }
-    output+="line counter is "+lineCounter+" and state counter is "+elementCounter;
+
+    // Adds additional information in the view.
+    output += `<p>Initial States: ${stateInitial.length}</p>`;
+    output += `<p>Final States: ${stateFinal.length}</p>`;
+    output += `<p>SD States: ${stateElements.length}</p>`;
+    output += `<p>Lines: ${stateLines.length}</p>`;
+
     return output;
 }
 /**
