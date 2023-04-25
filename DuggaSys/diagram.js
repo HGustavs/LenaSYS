@@ -4204,8 +4204,8 @@ function toggleReplay()
         ruler.style.left = "50px";
         zoomIndicator.style.bottom = "5px";
         zoomIndicator.style.left = "100px";
-        zoomContainer.style.bottom = "4px";
-        zoomContainer.style.left = "-100px";
+        zoomContainer.style.bottom = "5px";
+        zoomContainer.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
         settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
@@ -4238,12 +4238,6 @@ function toggleReplay()
         zoomIndicator.style.bottom = "55px";
         zoomIndicator.style.left = "45px";
         zoomContainer.style.bottom = "54px";
-        if (optionsPane.className == "show-options-pane") {
-            zoomContainer.style.left = "240px";
-        }
-        else {
-            zoomContainer.style.left = "-68px";
-        }
         replyMessage.style.visibility = "visible";
     }
     drawRulerBars(scrollx, scrolly);
@@ -6468,6 +6462,12 @@ function generateContextProperties()
                             break;
                         case 'attributes':
                             str += `<div style='color:white'>Attributes</div>`;
+                           /* find me str += `<div>`;
+                            str += `<select id="SDOption">`;
+                                str +=  `<option value ="Do: " selected>Do</option>`;
+                                str += `<option value="Exit: ">Exit</option>`;
+                            str += `</select>`;
+                            str += `</div>`; */
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
@@ -8946,6 +8946,8 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+           /* find me let sdOption = document.getElementById("SDOption");
+            console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
@@ -8985,7 +8987,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>Do: </text>`;
             //end of svg for background
             str += `</svg>`;
         }

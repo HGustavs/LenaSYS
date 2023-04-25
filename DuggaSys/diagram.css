@@ -328,8 +328,6 @@
 }
 
 #zoom-message-box{
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.8);
     width: 75px;
     left: 100px;
     bottom: 5px;
@@ -582,13 +580,13 @@
 .SDState-rounded {
     border-radius: 12px;
 }
-#zoom-container {
+#zoom-container{
     visibility: visible;
     position: absolute;
-    width: 90px;
+    width: auto;
     height: 29px;
     bottom: 4px;
-    left: -100px;
+    left: 105px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
     display: flex;
@@ -598,6 +596,10 @@
 .diagramZoomIcons img {
     height: 27px;
     width: 27px;
+}
+#zoom-message {
+    height: 30px;
+    width: 40px;
 }
 .diagramZoomIcons {
     height: 27px;
