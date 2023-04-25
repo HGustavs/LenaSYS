@@ -124,6 +124,7 @@ function bfs($url, $repository)
         $context = stream_context_create($opts);
         // Fetches the data with the stream included
         $data = @file_get_contents($currentUrl, true, $context);
+        $data = false;
         if ($data) {
             // Decodes the fetched data into JSON
             $json = json_decode($data, true);
