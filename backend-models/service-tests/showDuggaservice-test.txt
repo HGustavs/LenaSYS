@@ -245,3 +245,32 @@ Gather service output
 	SQL-query: DELETE FROM userAnswer WHERE hash = $hash;
 
 —------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+TEST #7
+super-view data from useranswer on hash
+
+***
+Pre-req: 
+    isSuperUser = TRUE
+    $hash != NULL
+***
+
+***
+* send parameters input to showDuggaservice.php
+***
+    send
+    {
+        $hash = hash
+    }
+
+***
+get all data
+***
+    SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=hash;
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+—------------------------------------------------------------------------------------------------------------------
