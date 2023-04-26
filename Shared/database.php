@@ -22,7 +22,7 @@ function err ($errmsg,$hdr='')
 
 function dbConnect()
 {
-	$printHeaderFunction=0;
+/* 	$printHeaderFunction=0;
 	// Send header info to err()?
 	if ($printHeaderFunction) {
 		$hdr = 'Database Connection Error';
@@ -34,7 +34,15 @@ function dbConnect()
 	$OC_db = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or err("Could not connect to database ".mysql_errno(),$hdr);
 	mysql_set_charset('utf8',$OC_db);
 	// Select DB
-	mysql_select_db(DB_NAME) or err("Could not select database \"".DB_NAME."\" error code".mysql_errno(),$hdr);
+	mysql_select_db(DB_NAME) or err("Could not select database \"".DB_NAME."\" error code".mysql_errno(),$hdr); */
+
+    global $pdo;
+    try {
+        $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8', DB_USER, DB_PASSWORD);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        err('Could not connect to database: '.$e->getMessage(), 'Database Connection Error');
+    }
 }
 
 function pdoConnect()
