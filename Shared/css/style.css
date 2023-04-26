@@ -6819,13 +6819,11 @@ only screen and (max-device-width: 568px) {
 /* Diagram line style */
 .diagram-umlicon-triangle {
   fill: white;
-  stroke: black;
 }
 
 /* Diagram black line style */
 .diagram-umlicon-black-triangle {
   fill: black;
-  stroke: black;
 }
 
 /* --------------================################================-------------- *

@@ -649,7 +649,7 @@ function showVariantEditor() {
 function returnedFile(data){
 	retdata = data;
 	filearray = [];
-
+	
 	/*Because the 'filename' value is just raw JSON, it needs to be parsed. You can test this by printing retdata in the
 	console while in the variant editor. After parsing they're placed in array which then gets filtered for JSON files*/
 	for (var i = 0; i < retdata['entries'].length; i++){
