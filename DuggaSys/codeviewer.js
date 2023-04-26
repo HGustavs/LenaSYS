@@ -71,11 +71,11 @@ function setup() {
 		exampleid = querystring['exampleid'];
 		cvers = querystring['cvers'];
 
-		AJAXService("EDITEXAMPLE", {
+		/*AJAXService("EDITEXAMPLE", {
 			courseid: courseid,
 			exampleid: exampleid,
 			cvers: cvers
-		}, "CODEVIEW");
+		}, "CODEVIEW");*/
 	} catch (e) {
 		alert("Error while setting up: " + e.message)
 	}
@@ -713,7 +713,7 @@ function displayEditExample() {
 // updateExample: Updates example data in the database if changed
 //----------------------------------------------------------------------------------
 
-/*function updateExample() {
+function updateExample() {
 	// Set beforeid if set
 	var beforeid = "UNK";
 	if (retData['before'].length != 0) {
@@ -755,7 +755,7 @@ function displayEditExample() {
 	}
 
 	document.getElementById("editExampleContainer").style.display = "none"; 
-}*/
+}
 
 function removeExample() {
 	var courseid = querystring['courseid'];
