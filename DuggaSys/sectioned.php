@@ -619,7 +619,7 @@
 							// $query->execute();
 
 
-							foreach($pdo->query( "SELECT filename, cid FROM fileLink WHERE cid=:cid;") as  $row){
+							foreach($pdo->query( "SELECT filename, cid FROM fileLink;") as  $row){
 								
 								echo "<option value=''>.$row['filename']</option>";
 							}
