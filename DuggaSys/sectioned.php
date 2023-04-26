@@ -22,7 +22,7 @@
 		$simmy = $query->fetch(PDO::FETCH_ASSOC);
 		// echo "<option value='1'>".$simmy['fileName']"</option>";
 		if($simmy){
-			return "<p>" . $simmy['fileName'] . "</p>";
+			return "<p> good </p>";
 
 		}else{
 			return "<p> bad </p>";
