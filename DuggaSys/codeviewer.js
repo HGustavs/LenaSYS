@@ -71,11 +71,11 @@ function setup() {
 		exampleid = querystring['exampleid'];
 		cvers = querystring['cvers'];
 
-		/*AJAXService("EDITEXAMPLE", {
+		AJAXService("EDITEXAMPLE", {
 			courseid: courseid,
 			exampleid: exampleid,
 			cvers: cvers
-		}, "CODEVIEW");*/
+		}, "CODEVIEW");
 	} catch (e) {
 		alert("Error while setting up: " + e.message)
 	}
@@ -1003,7 +1003,7 @@ function updateContent(file, content, boxnumber)
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
-			setTimeout("location.reload()", 500);
+			setTimeout("location.reload()", 5000);
 		}
 	} else {
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
