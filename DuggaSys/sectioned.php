@@ -20,7 +20,7 @@
 		$query->bindParam(':cid', 1);
 		$query->execute();
 		$simmy = $query->fetch(PDO::FETCH_ASSOC);
-		echo "<option value='1'>".$simmy['fileName']"</option>";
+		// echo "<option value='1'>".$simmy['fileName']"</option>";
 		if($simmy){
 			echo "<p>" . $simmy['fileName'] . "</p>";
 
