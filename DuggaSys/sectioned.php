@@ -11,20 +11,20 @@
 		$userid="00";
 	}
 
-	// $cid = getOPG('courseid');
-	// $cid = 1;
+	$cid = getOPG('courseid');
+	$cid = 1;
 
-	// function testingtesting($cid){
-	// 	$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-	// 	$query =  $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid;');
-	// 	$query->bindParam(':cid', $cid);
-	// 	$query->execute();
-	// 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-	// 		echo "<option value='1'>".$row['cid']"</option>";
+	function testingtesting($cid){
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		$query =  $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid;');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<option value='1'>".$row['cid']"</option>";
 
-	// 	}
+		}
 
-	// }
+	}
 	
 
 	
