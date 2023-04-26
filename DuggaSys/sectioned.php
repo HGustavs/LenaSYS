@@ -11,29 +11,6 @@
 	}
 
 
-		//connecta till sqllite där vi fetchat ner repos till
-		class githubDB extends SQLite3 {
-			function __construct(){
-				$this->open("../../githubMetadata/metadata2.db"); // i samma fil
-			}
-		}
-	
-	
-		$gdb = new githubDB();
-		// ändra till correct fil
-		$query = $gdb->query( "SELECT fileType FROM gitFiles WHERE fileType = dir");
-		$query->bindParam(':dir', $dir);
-		$query->execute();
-	
-		// $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
-		// $codeLinkQuery->execute();
-		
-		
-		$gdb ->close();//stäng i slutet av användning
-	
-	
-	
-	
 
 
 	
@@ -601,6 +578,29 @@
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> <!-- lägg till id och options här med php? -->
 
 				<?php
+
+
+							//connecta till sqllite där vi fetchat ner repos till
+							// class githubDB extends SQLite3 {
+							// 	function __construct(){
+							// 		$this->open("../../githubMetadata/metadata2.db"); // i samma fil
+							// 	}
+							// }
+						
+							$pdoLite = new PDO('../../githubMetadata/metadata2.db');
+
+							// $gdb = new githubDB();
+							// ändra till correct fil
+							// $query = $pdoLite->query( "SELECT fileType FROM gitFiles WHERE fileType = dir");
+							// $query->bindParam(':dir', $dir);
+							$query->execute();
+						
+							// $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
+							// $codeLinkQuery->execute();
+							
+							
+							// $gdb ->close();//stäng i slutet av användning
+						
 							// while($row = $query->FETCH(PDO::FETCH_ASSOC)){
 							// 	$fileName = $row['filename'];
 							// 	$cid = $row['cid'];
@@ -609,9 +609,9 @@
 							// 		echo "<option value='$fileInfo'>$fileName</option>";
 							// 	}
 							// }
-							foreach($query){
+							foreach($pdoLite->query( 'SELECT * FROM gitFiles WHERE fileType = dir;') as  $row){
 								
-								echo "<option value=''>1</option>";
+								echo "<option value=''>.$row['fileType']</option>";
 							}
 				?>
 			</select></div>
