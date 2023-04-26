@@ -16,9 +16,14 @@
 
 	function testingtesting(){
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-		$query =  $pdolite->prepare('SELECT fileName FROM gitFiles WHERE cid = :cid;');
-		$query->bindParam(':cid', 1);
-		$query->execute();
+		try{
+
+			$query =  $pdolite->prepare('SELECT fileName FROM gitFiles WHERE cid = :cid;');
+			$query->bindParam(':cid', 1);
+			$query->execute();
+		}catch(PDOException $e) {
+			return '<p>Error: ' . $e->getMessage() . '</p>';
+		}
 		$simmy = $query->fetch(PDO::FETCH_ASSOC);
 		// echo "<option value='1'>".$simmy['fileName']"</option>";
 		if($simmy){
