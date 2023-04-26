@@ -37,7 +37,7 @@ $debug = "NONE!";
 
 // Create arguments for log
 $log_uuid = getOP('log_uuid'); // Cookie id or something.. 
-$info=$action." ".$userid;
+$info="action: ".$action."userid: ".$userid;
 
 // Log the start event of this service query. This is logged in log.db (not MySQL)
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, __FILE__, $userid, $info);

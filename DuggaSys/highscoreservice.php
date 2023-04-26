@@ -33,7 +33,7 @@ $hash=getOP("hash");
 $debug="NONE!";	
 
 $log_uuid = getOP('log_uuid');
-$info=$opt." ".$courseid." ".$coursename;
+$info="opt: ".$opt."courseid: ".$courseid."coursename: ".$coursename;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "highscoreservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------

@@ -23,7 +23,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $log_uuid = getOP('log_uuid');
-$info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+$info="opt: ".$opt."cid: ".$cid."coursename: ".$coursename."versid: ".$versid."visibility: ".$visibility;
 $service = "404:".$_SERVER['REQUEST_URI'];
 logServiceEvent($log_uuid, EventTypes::PageNotFound ,$service ,$userid,$info);
 
