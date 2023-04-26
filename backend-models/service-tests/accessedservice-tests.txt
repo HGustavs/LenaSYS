@@ -1,0 +1,12 @@
+
+accessedservice.php
+-------------------
+
+-------------------
+Update a user
+
+****
+Pre-req:
+  (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
+
+****
