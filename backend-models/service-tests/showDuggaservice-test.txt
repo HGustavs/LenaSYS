@@ -252,7 +252,7 @@ super-view data from useranswer on hash
 ***
 Pre-req: 
     isSuperUser = TRUE
-    $hash != NULL
+    $hash != "UNK"
 ***
 
 ***
@@ -279,8 +279,10 @@ TEST #8 (rows 327-334)
 super-view data from useranswer on moment
 
 ***
-Pre-req: isSuperUser = TRUE
-	  $hash = NULL
+Pre-req: 
+    isSuperUser = TRUE
+    $hash != "UNK"
+    $rows = NULL
 ***
 
 ***
@@ -302,4 +304,34 @@ Gather service output
     Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
     This is the expected output for the micro service.
 —------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+TEST #9 - 345 - 351
+super-view data on quizname
+
+***
+Pre-req: 
+    isSuperUser = TRUE
+    $hash != “UNK”
+***
+
+***
+* send parameters input to showDuggaservice.php
+***
+    send
+    {
+        $moment = moment
+    }
+
+***
+get all entrynames
+***
+    SELECT entryname FROM listentries WHERE lid=moment;
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+—------------------------------------------------------------------------------------------------------------------
+
 
