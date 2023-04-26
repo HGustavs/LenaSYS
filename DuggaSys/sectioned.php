@@ -610,13 +610,13 @@
 							// 	}
 							// }
 
-							$cid = getOPG('courseid');
+							// $cid = getOPG('courseid');
 
-							// fetch data from database. Used to create fileed.php table of existing files.
+							// // fetch data from database. Used to create fileed.php table of existing files.
 							
-							$query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
-							$query->bindParam(':cid', $cid);
-							$query->execute();
+							// $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
+							// $query->bindParam(':cid', $cid);
+							// $query->execute();
 
 
 							for($i=0,$i<3,$i++){
