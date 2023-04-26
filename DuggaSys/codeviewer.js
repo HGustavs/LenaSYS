@@ -482,7 +482,7 @@ function handleFiles(files, boxnumber) {
 	} else {
 		alert("FILETYPE [" + filetype + "] NOT SUPPORTED")
 	}
-
+	/*
     reader.onload = event => {
 		const iframe = document.getElementById("iframeFileed").contentWindow;
 		showHiddenIframe();
@@ -496,7 +496,7 @@ function handleFiles(files, boxnumber) {
 			// Lastly, apply the new file to that of the code viewer
 			updateContent(file.name, boxcontent, boxnumber);
 		}, { once: true });
-    };
+    };*/
 }
 
 function handleDrop(e)
