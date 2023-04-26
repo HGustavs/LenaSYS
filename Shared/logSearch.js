@@ -32,3 +32,24 @@ function filterTable() {
     xmlhttp.open("GET", "log.php?table=" + table + "&filter=" + filter, true);
     xmlhttp.send();
 }
+
+function initSort() {
+    const headers = document.querySelectorAll('th a');
+    headers.forEach(header => {
+        header.addEventListener('click', function(event) {
+            event.preventDefault();
+            const column = this.getAttribute('data-column');
+            const currentSort = this.getAttribute('data-sort');
+            const newSort = currentSort === 'asc' ? 'desc' : 'asc';
+            const sortParam = `${column} ${newSort}`;
+            const url = `log.php?name=serviceLogEntries&sort=${sortParam}`;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('table').innerHTML = data;
+                    this.setAttribute('data-sort', newSort);
+                })
+                .catch(error => console.error(error));
+        });
+    });
+}

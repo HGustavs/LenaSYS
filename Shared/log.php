@@ -40,7 +40,9 @@
     }
     </style>
 
-   <script type="text/javascript" src="logSearch.js"></script>
+   <script type="text/javascript" src="logSearch.js">
+    window.addEventListener('load', initSort);
+   </script>
 </head>
     <body>
         <?php
@@ -82,7 +84,8 @@
             
             // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
-                $logEntriesSql = $log_db->query('SELECT * FROM logEntries');
+                $sort = isset($_GET['sort']) ? $_GET['sort'] : 'timestamp DESC';
+                $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY $sort');
                 $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 echo"
                 <table border='1'>
@@ -114,7 +117,8 @@
             
             // Gathers information from database table exampleLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
-                $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries');
+                $sort = isset($_GET['sort']) ? $_GET['sort'] : 'timestamp DESC';
+                $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY $sort');
                 $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 echo"
                 <table border='1'>
@@ -148,8 +152,8 @@
 
             // Gathers information from database table userHistory
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
-
-                $userHistorySql = $log_db->query('SELECT * FROM userHistory');
+                $sort = isset($_GET['sort']) ? $_GET['sort'] : 'timestamp DESC';
+                $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY $sort');
                 $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
                 echo"
                 <table border='1'>
@@ -182,8 +186,8 @@
 
             // Gathers information from database table userLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
-
-                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries');
+                $sort = isset($_GET['sort']) ? $_GET['sort'] : 'timestamp DESC';
+                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY $sort');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 echo"
                 <table border='1'>
@@ -218,8 +222,8 @@
 
             // Gathers information from database table serviceLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
-
-                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries');
+                $sort = isset($_GET['sort']) ? $_GET['sort'] : 'timestamp DESC';
+                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY $sort');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 echo"
                 <table border='1'>
@@ -258,7 +262,8 @@
 
             // Gathers information from database table duggaLoadLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
-                $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries');
+                $sort = isset($_GET['sort']) ? $_GET['sort'] : 'timestamp DESC';
+                $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY $sort');
                 $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 echo"
                 <table border='1'>
