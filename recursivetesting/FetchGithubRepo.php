@@ -87,7 +87,6 @@ function bfs($url)
 {
     $visited = array();
     $fifoQueue = array();
-    // TODO remove repository creation bacuse we create folders in course local
     array_push($fifoQueue, $url);
     global $pdoLite;
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
