@@ -21,13 +21,16 @@
 			$query =  $pdolite->prepare('SELECT fileName FROM gitFiles ');
 			// $query->bindParam(':cid', 1);
 			$query->execute();
-			$simmy = $query->fetch(PDO::FETCH_ASSOC);
+			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
 		}catch(PDOException $e) {
 			return '<p>Error: ' . $e->getMessage() . '</p>';
 		}
-		if($simmy){
-			echo "<option value='1'>".$simmy['fileName']"</option>";
+		if($rows){
+			// return .$simmy['fileName'];
 			// return " good " ;
+			foreach($rows as $row){
+				$output = '<p>' . $row['fileName'] . '</p>';
+			}
 
 		}else{
 			return " bad ";
