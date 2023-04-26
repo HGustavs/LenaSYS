@@ -611,7 +611,7 @@
 							// }
 							foreach($row = $query->FETCH(PDO::FETCH_ASSOC)){
 								$fileName = $row['fileName'];
-								echo "<option value='$fileInfo'>$fileName</option>";
+								echo "<option value=''>$fileName</option>";
 							}
 				?>
 			</select></div>
