@@ -587,7 +587,7 @@
 							// 	}
 							// }
 						
-							$pdoLite = new PDO('../../githubMetadata/metadata2.db');
+							// $pdoLite = new PDO('../../githubMetadata/metadata2.db');
 
 							// $gdb = new githubDB();
 							// ändra till correct fil
@@ -609,9 +609,19 @@
 							// 		echo "<option value='$fileInfo'>$fileName</option>";
 							// 	}
 							// }
-							foreach($pdoLite->query( 'SELECT * FROM gitFiles WHERE fileType = dir;') as  $row){
+
+							// $cid = getOPG('courseid');
+
+							// fetch data from database. Used to create fileed.php table of existing files.
+							
+							// $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
+							// $query->bindParam(':cid', $cid);
+							// $query->execute();
+
+
+							foreach($pdo->query( "SELECT filename, cid FROM fileLink WHERE cid=:cid;") as  $row){
 								
-								echo "<option value=''>.$row['fileType']</option>";
+								echo "<option value=''>.$row['filename']</option>";
 							}
 				?>
 			</select></div>
