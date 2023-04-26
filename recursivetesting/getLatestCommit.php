@@ -86,6 +86,7 @@
 		$testquery->execute();
 		$norows = $testquery->fetchColumn();
 
+		print_r("It did it??");
 		print_r($norows);
 	}
 
