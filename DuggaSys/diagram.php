@@ -412,60 +412,12 @@
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <!-- <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                     <span class="toolTipText"><b>Line</b><br>
                         <p>Make a line between elements</p><br>
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div> -->
-                <div>
-                    <div id="mouseMode3"
-                         class="normalLine diagramIcons toolbarMode"
-                         onclick='clearContext(); setMouseMode(3);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(0)">
-                        <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
-                        <span class="toolTipText"><b>Line</b><br>
-                            <p>Make a line between elements</p><br>
-                            <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
-                        </span>
-                        <div id="togglePlacementTypeButton0" class="placementTypeIcon togglePlacementTypeButton">
-                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
-                        </div>
-                    </div>    
-                    <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                        <div class="diagonalLine placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); clearContext(); setMouseMode(3);'>
-                            <img src="../Shared/icons/diagram_line.svg" alt="Diagonal line"/>
-                            <span class="placementTypeToolTipText"><b>Diagonal line</b><br>
-                                <p>Change to diagonal line</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div id="mouseMode3"
-                         class="diagonalLine diagramIcons toolbarMode"
-                         onclick='clearContext(); setMouseMode(3);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(7)">
-                        <img src="../Shared/icons/diagram_line.svg" alt="Diagonal line"/>
-                        <span class="toolTipText"><b>Diagonal line</b><br>
-                            <p>Make a diagonal line between elements</p><br>
-                            <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
-                        </span>
-                        <div id="togglePlacementTypeButton13" class="placementTypeIcon togglePlacementTypeButton">
-                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
-                        </div>
-                    </div>    
-                    <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                        <div class="line placementTypeBoxIcons" onclick='togglePlacementType(1,1); clearContext(); setMouseMode(3);'>
-                            <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
-                            <span class="placementTypeToolTipText"><b>Line</b><br>
-                                <p>Change to line</p>
-                            </span>
-                        </div>
-                    </div>
                 </div>
                 <!-- UML Initial state selection -->
                 <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
