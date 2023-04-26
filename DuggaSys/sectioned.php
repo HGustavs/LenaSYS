@@ -21,10 +21,10 @@
 			$query =  $pdolite->prepare('SELECT fileName FROM gitFiles WHERE cid = :cid;');
 			$query->bindParam(':cid', 1);
 			$query->execute();
+			$simmy = $query->fetch(PDO::FETCH_ASSOC);
 		}catch(PDOException $e) {
 			return '<p>Error: ' . $e->getMessage() . '</p>';
 		}
-		$simmy = $query->fetch(PDO::FETCH_ASSOC);
 		// echo "<option value='1'>".$simmy['fileName']"</option>";
 		if($simmy){
 			return " good " ;
