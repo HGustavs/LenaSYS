@@ -593,7 +593,7 @@
 
 				<?php
 
-					testingtesting()
+					testingtesting($cid);
 							//connecta till sqllite där vi fetchat ner repos till
 							// class githubDB extends SQLite3 {
 							// 	function __construct(){
