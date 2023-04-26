@@ -9,7 +9,7 @@ if(isset($_POST['action']))
 {
     if($_POST['action'] == 'getNewCourseGitHub') 
     {
-       GetGitHubURL($_POST['githubURL']);
+       getGitHubURL($_POST['githubURL']);
     }
 };
 
@@ -25,7 +25,8 @@ function getGitHubURL($url)
     bfs($translatedURL);
 }
 
-function insertToFileLink($cid, $item) {
+function insertToFileLink($cid, $item) 
+{
     global $pdo;
     $kindid = 3; // The kind(course local/version local/global), 3 = course local
     $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid AND path=:filePath;"); 
@@ -55,7 +56,8 @@ function insertToFileLink($cid, $item) {
     }
 }
 
-function insertToMetaData($cid, $item) {
+function insertToMetaData($cid, $item) 
+{
     global $pdoLite;
     $query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
     $query->bindParam(':cid', $cid);
@@ -68,7 +70,7 @@ function insertToMetaData($cid, $item) {
     $query->execute();
 }
     
-function bfs($url)
+function bfs($url) 
 {
     $visited = array();
     $fifoQueue = array();
