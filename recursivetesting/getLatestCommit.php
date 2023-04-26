@@ -54,7 +54,13 @@
 				break;
 			}
 		}
-		insertIntoSQLite($githubURL, $cid, $latestCommit);
+
+		if($cid != null) {
+			insertIntoSQLite($githubURL, $cid, $latestCommit);
+		} else {
+			print_r("No matches in database!");
+		}
+		
 	}
 
 	// --------------------- Insert into SQL Lite db when new course is created -------------------------------
