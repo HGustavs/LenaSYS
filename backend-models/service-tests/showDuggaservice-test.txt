@@ -333,5 +333,61 @@ Gather service output
     Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
     This is the expected output for the micro service.
 —------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+TEST #10 - 374 - 402
+view data on userAnswer
+
+***
+Pre-req: !isSuperUser 
+	  $hash != “UNK” && password != “UNK”
+***
+    send
+    {
+        $cid = 2
+        $coursevers = 52432
+        $duggaid = 1
+        $moment = 2002
+        $variant = 3
+        $hash = “ghj1ghj2”
+        $haspwd = “asddasdd”
+        $answer = NULL
+    }
+
+    SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(2, 1, 2002, 52432 , 3, “ghj1ghj2” , “asddasdd”,1 ,1 , NULL ,now());")
+
+***
+get newly created user
+
+***
+	SQL-query: SELECT * FROM userAnser WHERE hash=”ghj1gh2”
+
+***
+* send parameters input to showDuggaservice.php
+***
+    send
+    {
+        $hash = hash
+        $hashpwd = hashpwd
+    }
+
+***
+get all entrynames
+***
+    SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=“ghj1ghj2” AND password=“asddasdd”
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query: DELETE FROM userAnswer WHERE hash = “ghj1ghj2”;
+
+
+—------------------------------------------------------------------------------------------------------------------
 
 
