@@ -16,14 +16,14 @@
 
 	function testingtesting($cid){
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-		$query =  $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid;');
+		$query =  $pdolite->prepare('SELECT fileName FROM gitFiles WHERE cid = :cid;');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
-		// echo
-		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		// 	echo "<option value='1'>".$row['cid']"</option>";
+		
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<option value='1'>".$row['fileName']"</option>";
 
-		// }
+		}
 
 	}
 	
