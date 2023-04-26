@@ -75,7 +75,7 @@ function insertToFileLink($cid, $item) {
     }
 }
     
-function bfs($url, $repository)
+function bfs($url)
 {
     $visited = array();
     $fifoQueue = array();
