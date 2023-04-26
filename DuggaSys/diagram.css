@@ -505,8 +505,7 @@
 .togglePlacementTypeBoxRI{
     display: none;
     position: absolute;
-    top:13.2%;
-    left: 100%;
+    left: 172%;
     padding:5px;
     background-color:var(--color-primary);
     
