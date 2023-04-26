@@ -435,6 +435,14 @@
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <!-- Sequence diagram lifeline | for now is bound to uml final state -->
+                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
+                    <span class="toolTipText"><b>Sequence lifeline</b><br>
+                        <p>Creates a lifeline for a sequnece diagram</p><br>
+                        <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
