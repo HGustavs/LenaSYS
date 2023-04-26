@@ -22,3 +22,23 @@ Using SQL-query: UPDATE user SET username=:username WHERE uid=:uid // changing t
 Should display an error message if the update was unable to succeed.
 
 --------------------
+
+Test 2: Update user_course
+Row: 83 - 99
+****
+Pre-req:
+  (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
+
+****
+
+Send {
+    $opt = "UPDATE"
+    $vers = "vers"
+    $cid = "cid"
+    $uid = "uid"
+}
+
+To see if the updating of user_course works and how the database will respond.
+Using the SQL-query: UPDATE user_course SET vers WHERE uid=:uid AND cid=:cid // updating vers
+
+---------------------
