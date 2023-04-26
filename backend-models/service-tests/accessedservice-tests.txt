@@ -3,10 +3,22 @@ accessedservice.php
 -------------------
 
 -------------------
-Update a user
-
+Test 1: Update a user
+Row: 62 - 80
 ****
 Pre-req:
   (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
 
 ****
+
+Send {
+    $opt = "UPDATE"
+    $username = "username"
+    $uid = "uid"
+}
+
+To make sure the update of a created user works and what response it will get form the database.
+Using SQL-query: UPDATE user SET username=:username WHERE uid=:uid // changing the username
+Should display an error message if the update was unable to succeed.
+
+--------------------
