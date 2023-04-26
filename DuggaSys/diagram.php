@@ -435,6 +435,14 @@
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <!-- UML Super state selection -->
+                <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML super state"/>
+                    <span class="toolTipText"><b>UML super state</b><br>
+                        <p>Creates a super state.</p><br>
+                        <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
