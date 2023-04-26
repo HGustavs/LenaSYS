@@ -7614,6 +7614,16 @@ function drawLine(line, targetGhost = false)
     tx = telem.cx;
     ty = telem.cy;
 
+    // Modify coordinates for recursive relations
+    if (felem.id === telem.id) {
+        // Draw line to ghost element for recursive relations
+        targetGhost = true;
+        fx = felem.cx;
+        fy = felem.cy;
+        tx = ghostElement.cx;
+        ty = ghostElement.cy;
+    }
+
     const elemsAreClose = isClose (
         (fx + x1Offset),
         (tx + x2Offset),
