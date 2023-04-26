@@ -6281,7 +6281,7 @@ function generateContextProperties()
 
               //Create a dropdown menu for diagram type
               var value = Object.values(entityType);
-              var selected = context[0].type;
+              //var selected = context[0].type;
 
               str += '<select id="typeSelect">';
                for (i = 0; i < value.length; i++) {
