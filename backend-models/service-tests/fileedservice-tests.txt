@@ -1,0 +1,45 @@
+Fileedservice.php
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Test to deleting a file (line 58)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+*********
+(checklogin() && $hasAccess) { IS &&
+(strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) IS TRUE
+
+
+*********
+* Send parameters inputs to fileedservice.php:
+*********
+
+send
+{
+$cid = 1234;
+$opt = "DELFILE";
+$coursevers = "test";
+$filename = "test.txt";
+$kind = 1;
+$fid = 1;
+$contents = "";
+}
+
+*********
+* Call the file deletion function:
+*********
+
+$result = delete_file($cid, $opt, $coursevers, $fid, $filename, $kind, $contents);
+
+*********
+* Verify that the file has been deleted:
+*********
+
+if ($result === true) {
+    echo "File deleted successfully.";
+} else {
+    echo "Error deleting file: " . $result;
+}
+
+
