@@ -41,16 +41,13 @@ function getGitHubURL($url)
 
 function insertToFileLink($cid, $item) {
     global $pdo;
-    $fileText = $item['name']; 
-    $filePath = $item['path']; 
-    $filesize = $item['size']; // Size
     $kindid = 3; // The kind(course local/version local/global), 3 = course local
 
     $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid AND path=:filePath;"); 
     // bind query results into local vars.
-    $query->bindParam(':filename', $fileText);
+    $query->bindParam(':filename', $item['name']);
     $query->bindParam(':cid', $cid);
-    $query->bindParam(':filePath', $filePath);
+    $query->bindParam(':filePath', $item['path']);
     $query->bindParam(':kindid', $kindid);
     $query->execute();
     $norows = $query->fetchColumn();
@@ -59,9 +56,9 @@ function insertToFileLink($cid, $item) {
     if ($norows == 0) {      
         $query = $pdo->prepare("INSERT INTO fileLink(filename, path, kind,cid,filesize) VALUES(:filename, :filePath, :kindid,:cid,:filesize)");
         $query->bindParam(':cid', $cid);
-        $query->bindParam(':filename', $fileText);
-        $query->bindParam(':filePath', $filePath);
-        $query->bindParam(':filesize', $filesize);
+        $query->bindParam(':filename', $item['name']);
+        $query->bindParam(':filePath', $item['path']);
+        $query->bindParam(':filesize', $item['size']);
         $query->bindParam(':kindid', $kindid);
         // Runs SQL query and runs general error handling if it fails.
         if (!$query->execute()) {
