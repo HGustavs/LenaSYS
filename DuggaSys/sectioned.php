@@ -11,25 +11,25 @@
 	}
 
 
-		//connecta till sqllite där vi fetchat ner repos till
-		class githubDB extends SQLite3 {
-			function __construct(){
-				$this->open("../../githubMetadata/metadata2.db"); // i samma fil
-			}
-		}
+		// //connecta till sqllite där vi fetchat ner repos till
+		// class githubDB extends SQLite3 {
+		// 	function __construct(){
+		// 		$this->open("../../githubMetadata/metadata2.db"); // i samma fil
+		// 	}
+		// }
 	
 	
-		$gdb = new githubDB();
-		// ändra till correct fil
-		$query = $pdo->prepare( "SELECT fileType FROM gitFiles WHERE fileType = dir");
-		$query->bindParam(':dir', $dir);
-		$query->execute();
+		// $gdb = new githubDB();
+		// // ändra till correct fil
+		// $query = $pdo->prepare( "SELECT fileType FROM gitFiles WHERE fileType = dir");
+		// $query->bindParam(':dir', $dir);
+		// $query->execute();
 	
-		// $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
-		// $codeLinkQuery->execute();
+		// // $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
+		// // $codeLinkQuery->execute();
 		
 		
-		$gdb ->close();//stäng i slutet av användning
+		// $gdb ->close();//stäng i slutet av användning
 	
 	
 	
