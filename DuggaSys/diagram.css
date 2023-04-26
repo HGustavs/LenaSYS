@@ -496,9 +496,9 @@
 .togglePlacementTypeBoxEntity{
     display: none;
     position: absolute;
-    top:9.2%;
-    left: 100%;
-    padding:5px;
+    left: 130%;
+    bottom: 0;
+    padding: 2px;
     background-color:var(--color-primary);
     
 }
@@ -506,7 +506,8 @@
     display: none;
     position: absolute;
     left: 172%;
-    padding:5px;
+    bottom: 0;
+    padding:2px;
     background-color:var(--color-primary);
     
 }
