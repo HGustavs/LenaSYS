@@ -47,7 +47,7 @@ function insertToFileLink($cid, $item) {
     $query->bindParam(':kindid', $kindid);
     $query->execute();
     // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
-    if ($query->fetchColumn()) {      
+    if ($query->fetchColumn() == 0) {      
         $query = $pdo->prepare("INSERT INTO fileLink(filename, path, kind,cid,filesize) VALUES(:filename, :filePath, :kindid,:cid,:filesize)");
         $query->bindParam(':cid', $cid);
         $query->bindParam(':filename', $item['name']);
