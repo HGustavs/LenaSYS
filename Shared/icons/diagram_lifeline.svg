@@ -3,9 +3,9 @@
  <g>
   <title>Layer 1</title>
   <rect rx="5" stroke-width="10" id="svg_1" height="218" width="48" y="191" x="376" stroke="#fff" fill="#fff"/>
-  <line stroke="#000" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="186" x2="400" y1="142" x1="400" fill="none"/>
-  <line stroke="#000" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_4" y2="123" x2="400" y1="79" x1="400" fill="none"/>
-  <line stroke="#000" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_6" y2="520" x2="400" y1="476" x1="400" fill="none"/>
-  <line stroke="#000" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_7" y2="457" x2="400" y1="413" x1="400" fill="none"/>
+  <line stroke="#fff" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="186" x2="400" y1="142" x1="400" fill="none"/>
+  <line stroke="#fff" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_4" y2="123" x2="400" y1="79" x1="400" fill="none"/>
+  <line stroke="#fff" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_6" y2="520" x2="400" y1="476" x1="400" fill="none"/>
+  <line stroke="#fff" stroke-width="7" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_7" y2="457" x2="400" y1="413" x1="400" fill="none"/>
  </g>
 </svg>
