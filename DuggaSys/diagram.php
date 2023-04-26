@@ -444,7 +444,7 @@
                     </span>
                 </div>
                 <!-- Sequence activation selection -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode"> //add onclick for placing activation box
+                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
                         <p>Creates an activation box.</p><br>
