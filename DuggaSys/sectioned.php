@@ -609,9 +609,9 @@
 							// 		echo "<option value='$fileInfo'>$fileName</option>";
 							// 	}
 							// }
-							foreach($row = $query->FETCH(PDO::FETCH_ASSOC)){
-								$fileName = $row['fileName'];
-								echo "<option value=''>$fileName</option>";
+							foreach($query->FETCH(PDO::FETCH_ASSOC)){
+								// $fileName = $row['fileName'];
+								echo "<option value=''>1</option>";
 							}
 				?>
 			</select></div>
