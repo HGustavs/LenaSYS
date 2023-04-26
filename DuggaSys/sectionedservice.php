@@ -494,21 +494,34 @@ if($gradesys=="UNK") $gradesys=0;
 					}
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
-
-
 				} else if(strcmp($opt,"CreGitEx")===0) {
-					$query = $pdo->prepare("SELECT ? FROM codeexample WHERE cid=:cid;");
+					$query = $pdo->prepare("SELECT runlink FROM codeexample WHERE cid=:cid;");
 					$query->bindParam(":cid", $courseid);
 					$query->execute();
-					foreach($query->fetchAll() as $row) {
-						$row['exampleid'];
-					}
 
-					$file = file("../../courses/".$courseid."");
+					$file = file("../../courses/".$courseid."/");
 					$count = 0;
 					foreach($file as $line) {
-						$count += 1;
-						echo str_pad($count, 2, 0, STR_PAD_LEFT).". ".$line;
+						$exampleName = $line;//filter out to only be the example name
+						$sectionName = $line;//filter out to only be the section name
+						$runlink = $line;//filter out to only be the runlink
+						$exists = false;
+						foreach($query->fetchAll() as $row) {
+							if($row['runlink'] == $runlink) {
+								$exists = true;
+							}
+						}
+						if(!$exists) {
+							//create codeexample
+							//work? probably not!
+							//add to listentries too?
+							$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+							$query->bindParam(":cid", $courseid);
+							$query->bindParam(":ename", $examplename);
+							$query->bindParam(":sname", $sectionname);
+							$query->bindParam(":cversion", $coursevers);
+							$query->execute();
+						}
 					}
 				}
 			}
