@@ -9,15 +9,9 @@ if(isset($_POST['action']))
 {
     if($_POST['action'] == 'getNewCourseGitHub') 
     {
-        getNewCourseGitHub($_POST['githubURL']);
+        getGitHubURL($_POST['githubURL']);
     }
 };
-
-//Calls getGithubURL to get the correct URL for the API. Then calls the Breadth-first algorithm to get all files.
-function getNewCourseGitHub($githubURL)
-{
-    getGitHubURL($githubURL);
-}
 
 function getGitHubURL($url)
 {
