@@ -5,8 +5,6 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
-	// --------------------- Fetch CID from MySQL with Github URL -------------------------------
-
 	// Include basic application services!
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
@@ -15,7 +13,13 @@
 	pdoConnect();
 	session_start();
 
+	global $pdo;
+	$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+
 	getCourseID("https://github.com/HGustavs/Webbprogrammering-Examples"); // Dummy Code to see if everything works
+
+	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit -------------------------------
+	// --------------------- This only happens when creating a new course -----------------------------------------------
 
 	function getCourseID($githubURL) {
 
@@ -51,10 +55,33 @@
 				break;
 			}
 		}
+		insertIntoSQLite($githubURL, $cid, $latestCommit);
+	}
+
+	// --------------------- Insert into SQL Lite db when new course is created -------------------------------
+
+	// Create a new row if it doesn't exist
+	function insertIntoSQLite($url, $cid, $commit) {
+		$query = $pdolite->prepare("INSERT INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $repoURL);
+		$query->bindParam(':commits', $commit);
+		$query->execute();
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating file entries" . $error[2];
+			$errorvar = $error[2];
+			print_r($error);
+			echo $errorvar;
+		} 
+		$testquery = $pdolite->prepare('SELECT * FROM gitRepos');
+		$testquery->execute();
+		$norows = $testquery->fetchColumn();
+
+		print_r($norows);
 	}
 
 	// --------------------- Get Latest Commit Function -----------------------------------------
-
 
 	function getCommit($url) {
 
