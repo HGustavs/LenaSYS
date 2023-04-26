@@ -597,11 +597,7 @@
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
-			<div>
-			<?php
-	testingtesting();
-			?>
-			</div>
+
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> <!-- lägg till id och options här med php? -->
 
 				<?php
@@ -661,6 +657,11 @@
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 		</div>
+		<div>
+			<?php
+	testingtesting();
+			?>
+			</div>
 	</div>
 
 	<!-- github template  -->
