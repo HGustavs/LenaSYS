@@ -21,7 +21,12 @@
 		$query->execute();
 		$simmy = $query->fetch(PDO::FETCH_ASSOC);
 		// echo "<option value='1'>".$simmy['fileName']"</option>";
-		echo "<p>" . $simmy['fileName'] . "</p>";
+		if($simmy){
+			echo "<p>" . $simmy['fileName'] . "</p>";
+
+		}else{
+			echo "<p> bad </p>";
+		}
 		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		// 	echo "<option value='1'>".$row['fileName']"</option>";
 
