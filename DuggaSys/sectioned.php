@@ -26,11 +26,12 @@
 			return '<p>Error: ' . $e->getMessage() . '</p>';
 		}
 		if($rows){
-			return  print_r($rows); 
+			// return  print_r($rows); 
 			// return .$simmy['fileName'];
 			// return " good " ;
 			foreach($rows as $row){
-				return '<p>' . $row['fileName'] . '</p>';
+				// return '<p>' . $row['fileName'] . '</p>';
+				return print_r($row['fileName']);
 			}
 
 		}else{
