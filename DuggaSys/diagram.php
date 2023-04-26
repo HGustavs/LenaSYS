@@ -164,7 +164,7 @@
                             </span>
                         </div>
                         <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                            <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
+                            <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                             <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                 <p>Change to state diagram state</p>
                             </span>
@@ -206,7 +206,7 @@
                             </span>
                         </div>
                         <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                            <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
+                            <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                             <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                 <p>Change to state diagram state</p>
                             </span>
@@ -261,7 +261,7 @@
                         onclick='setElementPlacementType(8); setMouseMode(2);'
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown='holdPlacementButtonDown(8);'>
-                        <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
+                        <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add state diagram state to the diagram</p><br>
                             <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
@@ -290,7 +290,7 @@
                             </span>
                         </div>
                         <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                            <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
+                            <img src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
                             <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
                                 <p>Change to state diagram state</p>
                             </span>
