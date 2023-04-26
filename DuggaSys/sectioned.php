@@ -662,7 +662,9 @@
 		</div>
 		<div>
 			<?php
-	testingtesting();
+		
+	echo testingtesting();
+	
 			?>
 			</div>
 	</div>
