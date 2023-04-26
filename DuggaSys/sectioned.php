@@ -619,9 +619,9 @@
 							$query->execute();
 
 
-							foreach($query as  $row){
+							foreach($query){
 								
-								echo "<option value=''>.$row['filename']</option>";
+								echo "<option value=''>1</option>";
 							}
 				?>
 			</select></div>
