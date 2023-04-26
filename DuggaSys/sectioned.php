@@ -26,7 +26,7 @@
 	
 	
 		// ändra till correct fil
-		$query = $pdo->prepare( "SELECT repoFileType FROM gitRepos WHERE repoFileType = dir");
+		$query = $pdo->prepare( "SELECT fileType FROM gitFiles WHERE fileType = dir");
 		$query->bindParam(':dir', $dir);
 		$query->execute();
 	
