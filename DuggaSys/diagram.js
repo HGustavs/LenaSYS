@@ -6295,18 +6295,18 @@ function generateContextProperties()
            }
 
           //Selected ER type
-          if (element.type == 'ER') {
+          //if (element.type == 'ER') {
               //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-              for (const property in element) {
-                  switch (property.toLowerCase()) {
-                      case 'name':
-                          str += `<div style='color:white'>Name</div>`;
-                          str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                          break;
-                      default:
-                          break;
-                  }
-              }
+             // for (const property in element) {
+                  //switch (property.toLowerCase()) {
+                      //case 'name':
+                         // str += `<div style='color:white'>Name</div>`;
+                         // str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                         // break;
+                      //default:
+                        //  break;
+                 // }
+             // }
               str += `<div style='color:white'>Variant</div>`;
 
               //Creates drop down for changing state of ER elements
@@ -6335,29 +6335,29 @@ function generateContextProperties()
           }
 
           //Selected UML type
-          else if (element.type == 'UML') {
+          //else if (element.type == 'UML') {
               //If UML entity
-              if (element.kind == 'UMLEntity') {
+              //if (element.kind == 'UMLEntity') {
                   //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-                  for (const property in element) {
-                      switch (property.toLowerCase()) {
-                          case 'name':
-                              str += `<div style='color:white'>Name</div>`;
-                              str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                              break;
-                          case 'attributes':
-                              str += `<div style='color:white'>Attributes</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                              break;
-                          case 'functions':
-                              str += `<div style='color:white'>Functions</div>`;
-                              str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                              break;
-                          default:
-                              break;
-                      }
-                  }
-              }
+                 // for (const property in element) {
+                     // switch (property.toLowerCase()) {
+                         // case 'name':
+                            //  str += `<div style='color:white'>Name</div>`;
+                            //  str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            //  break;
+                         // case 'attributes':
+                            //  str += `<div style='color:white'>Attributes</div>`;
+                             // str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                             // break;
+                          //case 'functions':
+                            //  str += `<div style='color:white'>Functions</div>`;
+                            //  str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            //  break;
+                         // default:
+                           //   break;
+                     // }
+                //  }
+              //}
 
               //If UML inheritance
               else if (element.kind = 'UMLRelation') {
