@@ -15,7 +15,7 @@
 
 	global $pdo;
 
-	getCourseID("https://github.com/HGustavs/saraTest"); // Dummy Code to see if everything works
+	getCourseID("https://github.com/g21emmka/test-for-se-project"); // Dummy Code to see if everything works
 
 	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit -------------------------------
 	// --------------------- This only happens when creating a new course -----------------------------------------------
