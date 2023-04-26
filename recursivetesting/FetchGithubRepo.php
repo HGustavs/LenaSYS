@@ -9,23 +9,26 @@ if(isset($_POST['action']))
 {
     if($_POST['action'] == 'getNewCourseGitHub') 
     {
-        $url = ($_POST['githubURL']);
-        // Dismantles the $url into an array of each word, separated by a slash
-        $urlParts = explode('/', $url);
-        // In normal GitHub Repo URL:s, the username is the third object separated by a slash
-        $username = $urlParts[3];
-        // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
-        $repository = $urlParts[4];
-        // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
-        $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-        bfs($translatedURL);
+       GetGitHubURL($_POST['githubURL']);
     }
 };
+
+function getGitHubURL($url)
+{
+    $urlParts = explode('/', $url);
+    // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    $username = $urlParts[3];
+    // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    $repository = $urlParts[4];
+    // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+    $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
+    bfs($translatedURL);
+}
 
 // ------ DUMMY DATA FOR TESTING------ 
 // Here you paste the appropriate link for the given repo that you wish to inspect and traverse.
 // $url = 'https://github.com/e21krida/Webbprogrammering-Examples';
-// Dismantles the $url into an array of each word, separated by a slash
+// Dismantles the $url into an array of each component, separated by a slash
 // $urlParts = explode('/', $url);
 // In normal GitHub Repo URL:s, the username is the third object separated by a slash
 // $username = $urlParts[3];
@@ -92,11 +95,6 @@ function bfs($url)
     $cid = 1; // 1 för webbprogramering 
     
     while (!empty($fifoQueue)) {
-        // TODO REMOVE RGB old styling 
-        // Randomizes colors for easier presentation
-        $R = rand(155, 255);
-        $G = rand(155, 255);
-        $B = rand(155, 255);
         $currentUrl = array_shift($fifoQueue);
         // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
         $opts = [
@@ -134,21 +132,14 @@ function bfs($url)
                         insertToFileLink($cid, $item);
                         insertToMetaData($cid, $item);
                         // Writes the file to the respective folder. 
-                        file_put_contents($path, $fileContents);
-                        // TODO remove old html style
-                        echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-                        echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>' . $item['size'] . '</td><td><a href="' . $item['download_url'] . '">Download URL</a></td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';                           
+                        file_put_contents($path, $fileContents);                      
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
-                        // TODO REMOVE old styling 
-                        echo '<table style="background-color: rgb(' . $R . ',' . $G . ',' . $B . ')"><tr><th>Name</th><th>URL</th><th>Type</th><th>Size</th><th>Download URL</th><th>SHA</th><th>Path</th></tr>';
-                        echo '<tr><td>' . $item['name'] . '</td><td><a href="' . $item['html_url'] . '">HTML URL</a></td><td>' . $item['type'] . '</td><td>-</td><td>NULL</td><td>' . $item['sha'] . '</td><td>' . $item['path'] . '</td></tr>';
                         if (!in_array($item['url'], $visited)) {
                             array_push($visited, $item['url']);
                             array_push($fifoQueue, $item['url']);
                         }
                     }
-                    echo "</table>"; 
                 }
             } else {
                 //422: Unprocessable entity
@@ -167,7 +158,6 @@ function bfs($url)
             $response = array(
                 'message' => "Github services are unavailable at this time."
             );
-
             echo json_encode($response);
         }
     }
