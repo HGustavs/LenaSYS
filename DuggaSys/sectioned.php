@@ -18,15 +18,15 @@
 		try{
 			$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
-			$query =  $pdolite->prepare('SELECT fileName FROM gitFiles WHERE cid = :cid;');
-			$query->bindParam(':cid', 1);
+			$query =  $pdolite->prepare('SELECT fileName FROM gitFiles ');
+			// $query->bindParam(':cid', 1);
 			$query->execute();
-			// $simmy = $query->fetch(PDO::FETCH_ASSOC);
+			$simmy = $query->fetch(PDO::FETCH_ASSOC);
 		}catch(PDOException $e) {
 			return '<p>Error: ' . $e->getMessage() . '</p>';
 		}
 		// echo "<option value='1'>".$simmy['fileName']"</option>";
-		if(true){
+		if($simmy){
 			return " good " ;
 
 		}else{
