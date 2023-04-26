@@ -1,0 +1,247 @@
+showDuggaservice.php
+
+—------------------------------------------------------------------------------------------------------------------------
+TEST #1 - 100-105
+Get active users
+
+***
+Pre-req: -
+***
+Send parameters inputs to showDuggaservice.php
+    send
+    {
+        $opt = “UPDATEAU”
+        $hash = hash
+
+    }
+
+    SQL-query: SELECT active_users FROM groupdugga WHERE hash=hash
+    This should show all active users
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+—------------------------------------------------------------------------------------------------------------------
+TEST #2 - 106-110
+Create active users
+
+***
+Pre-req: $active == NULL
+***
+
+Send parameters inputs to showDuggaservice.php
+    send
+    {
+        $opt = “UPDATEAU”
+        $hash = “tj7dh2nb”
+        $AUtoken = 999
+    }
+
+    SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken)
+***
+* Get newly added active users
+***
+	SQL-query: SELECT MAX(active_users) FROM groupdugga; // Save to variable $active_users this will identify the last active user that was created (it has the highest AUtoken)
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query DELETE FROM groupdugga WHERE hash = $hash;
+
+—------------------------------------------------------------------------------------------------------------------
+
+—------------------------------------------------------------------------------------------------------------------
+TEST #3 - 111-117
+update active users
+
+***
+Pre-req: $active != NULL
+***
+
+***
+Pre-req variables
+***
+$pre-values =
+    {
+        $hash = “hjk4ert6”
+        $AUtoken = 52
+    }
+
+    SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES($pre-values[0], $pre-values[1])
+
+***
+* Get newly created active users, 
+***
+	SQL-query: SELECT * FROM groupdugga WHERE hash=$pre-values[0]; //
+
+
+***
+* Update information on a active users
+* send parameters input to showDuggaservice.php
+***
+send
+    {
+        $opt = “UPDATEAU”
+        $hash = “hjk4ert6”
+        $newToken = 9999
+    }
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query: DELETE FROM groupdugga WHERE hash = $hash;
+
+—------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+***
+Test#4 - 261 - 309
+get data from userAnswer
+***
+
+***
+pre-req: 
+    !isSuperUser($userid) && isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) == TRUE &&
+    isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"] == TRUE
+***
+
+$pre-values = {
+        $hash = “AcIj-Ld6”
+        $hashpwd = “OjOEh8R”
+        $variant = 13
+    }
+
+    //Get the selected user by hash
+    SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=$hash;
+
+***
+send parameters input to showDuggaservice.php
+***
+send 
+    {
+        $opt = “SAVDU”
+        $hash = “AcIj-Ld6”
+    }
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+—------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+TEST #5 - 279 - 287
+update submitted dugga
+
+***
+Pre-req: 
+    !isset($grade) || !$grade > 1 &&
+    isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0
+***
+
+***
+Pre-req variables
+***
+$pre-values =
+    {
+        $aid = 999
+        $cid = 2
+        $hash = “dfg4zxc5”
+        $haspwd = “asdfasdf”
+        $moment = 2002
+        $answer = NULL
+    }
+
+    SQL-query: INSERT INTO userAnswer(aid,cid,hash,password,moment,useranswer) VALUES (pre-values[0], pre-values[1], pre-values[2], pre-values[3], pre-values[4], pre-values[5]);
+
+* Get newly created data
+    SELECT * WHERE hash=pre-values[2];
+
+***
+* Update information on userAnswer
+* send parameters input to showDuggaservice.php
+***
+send
+    {
+        $opt = SAVDU
+        $hash = “dfg4zxc5”
+        $haspwd = “asdfasdf”
+        $answer = “im updated”
+    }
+
+    SQL-query: "UPDATE userAnswer SET submitted=NOW(), useranswer=$answer, timesSubmitted=timesSubmitted+1 WHERE hash=$hash AND password=$hashpwd
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query: DELETE FROM userAnswer WHERE hash = pre-values[2];
+
+—------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+TEST #6 - 293 - 307
+submit dugga
+
+***
+Pre-req: !isset($grade) || !$grade > 1
+***
+
+***
+* send parameters input to showDuggaservice.php
+***
+    send
+    {
+        $opt = “SAVDU”
+        $cid = 2
+        $coursevers = 52432
+        $duggaid = 1
+        $moment = 2002
+        $variant = 3
+        $hash = “ghj1ghj2”
+        $haspwd = “asddasdd”
+        $answer = NULL
+    }
+
+    SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(2, 1, 2002, 52432 , 3, “ghj1ghj2” , “asddasdd”,1 ,1 , NULL ,now());")
+
+***
+get newly created data
+***
+
+	SQL-query: SELECT hash FROM useranswer WHERE hash = $hash
+
+***
+Gather service output
+***
+    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+    This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query: DELETE FROM userAnswer WHERE hash = $hash;
+
+—------------------------------------------------------------------------------------------------------------------
