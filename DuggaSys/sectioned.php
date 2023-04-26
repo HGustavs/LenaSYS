@@ -12,6 +12,16 @@
 
 
 
+	function testingtesting(){
+		$pdolite = new PDO('../../githubMetadata/metadata2.db');
+		$query = = $pdolite->prepare('SELECT * FROM gitRepos');
+		$query->execute();
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<option value=''>".$row['cid']"</option>"
+
+		}
+
+	}
 
 	
 ?>
