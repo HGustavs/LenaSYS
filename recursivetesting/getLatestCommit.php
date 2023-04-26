@@ -34,6 +34,7 @@
 		$query->execute();
 
 		// printing the result
+		$cid = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<p>Course ID: ".$row['cid']."</p>";
 			$cid = $row['cid'];
