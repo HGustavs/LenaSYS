@@ -495,20 +495,18 @@
 }
 .togglePlacementTypeBoxEntity{
     display: none;
-    position: fixed;
+    position: absolute;
     bottom: 833px;
-    transform: translateX(-50%);
-    left: 9.5%;
+    left: 100%;
     padding:5px;
     background-color:var(--color-primary);
     
 }
 .togglePlacementTypeBoxRI{
     display: none;
-    position: fixed;
+    position: absolute;
     bottom: 795px;
-    transform: translateX(-50%);
-    left: 8.5%;
+    left: 100%;
     padding:5px;
     background-color:var(--color-primary);
     
