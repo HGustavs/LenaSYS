@@ -7665,7 +7665,12 @@ function drawLine(line, targetGhost = false)
     }else if (line.ctype == "LR"){
         fx = felem.x1;
         if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
-        tx = telem.x2;
+        if (felem.id === telem.id) {
+            tx = felem.x2;
+            ty = felem.y1 + (felem.width/2);
+        } else {
+            tx = telem.x2;
+        }
     }
 
     // Set line end-point in center of UMLRelations.
