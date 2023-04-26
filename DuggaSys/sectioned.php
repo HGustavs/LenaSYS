@@ -1,5 +1,5 @@
 <?php
-	// include_once "../Shared/basic.php";
+	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
 	session_start();
 	//include_once "../../coursesyspw.php";
@@ -11,18 +11,21 @@
 		$userid="00";
 	}
 
+	$cid = getOPG('courseid');
+	$cid = "1";
 
-
-	function testingtesting(){
-		// $pdolite = new PDO('../../githubMetadata/metadata2.db');
+	function testingtesting($cid){
+		$pdolite = new PDO('../../githubMetadata/metadata2.db');
 		$query = = $pdolite->prepare('SELECT * FROM gitRepos');
+		$query->bindParam(':cid', $cid);
 		$query->execute();
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<option value=''>".$row['cid']"</option>"
+			echo "<option value='1'>".$row['cid']"</option>"
 
 		}
 
 	}
+	
 
 	
 ?>
@@ -590,7 +593,7 @@
 
 				<?php
 
-
+					testingtesting()
 							//connecta till sqllite där vi fetchat ner repos till
 							// class githubDB extends SQLite3 {
 							// 	function __construct(){
