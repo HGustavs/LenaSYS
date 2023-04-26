@@ -20,18 +20,20 @@
 	
 	
 		$gdb = new githubDB();
-		$gdb ->close();//stäng i slutet av användning
-	
-	
-	
-	
 		// ändra till correct fil
 		$query = $pdo->prepare( "SELECT fileType FROM gitFiles WHERE fileType = dir");
 		$query->bindParam(':dir', $dir);
 		$query->execute();
 	
-		$codeLinkQuery = $pdo->prepare( "SELECT repoFileType FROM gitRepos");
-		$codeLinkQuery->execute();
+		// $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
+		// $codeLinkQuery->execute();
+		
+		
+		$gdb ->close();//stäng i slutet av användning
+	
+	
+	
+	
 
 
 	
@@ -596,7 +598,26 @@
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
-			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''></select></div> <!-- lägg till id och options här med php? -->
+			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> <!-- lägg till id och options här med php? -->
+
+				<?php
+							// while($row = $query->FETCH(PDO::FETCH_ASSOC)){
+							// 	$fileName = $row['filename'];
+							// 	$cid = $row['cid'];
+							// 	$fileInfo = $fileName . ',' . $cid;
+							// 	if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){
+							// 		echo "<option value='$fileInfo'>$fileName</option>";
+							// 	}
+							// }
+							foreach($row = $query->FETCH(PDO::FETCH_ASSOC)){
+								$fileName = $row['fileName'];
+								echo "<option value='$fileInfo'>$fileName</option>";
+							}
+				?>
+			</select></div>
+
+
+
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 		</div>
