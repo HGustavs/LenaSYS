@@ -29,7 +29,7 @@
 			// return .$simmy['fileName'];
 			// return " good " ;
 			foreach($rows as $row){
-				$output = '<p>' . $row['fileName'] . '</p>';
+				return '<p>' . $row['fileName'] . '</p>';
 			}
 
 		}else{
