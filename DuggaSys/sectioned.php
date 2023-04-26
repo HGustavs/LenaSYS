@@ -609,8 +609,8 @@
 							// 		echo "<option value='$fileInfo'>$fileName</option>";
 							// 	}
 							// }
-							foreach($row = $query->FETCH(gdb::SQLITE3_ASSOC)){
-								$fileName = $row['fileName'];
+							foreach($query){
+								
 								echo "<option value=''>1</option>";
 							}
 				?>
