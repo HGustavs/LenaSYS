@@ -443,6 +443,14 @@
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <!-- Sequence activation selection -->
+                <div id="elementPlacement12" class="diagramIcons toolbarMode"> //add onclick for placing activation box
+                    <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                    <span class="toolTipText"><b>Sequence activation</b><br>
+                        <p>Creates an activation box.</p><br>
+                        <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
