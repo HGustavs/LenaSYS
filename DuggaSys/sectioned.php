@@ -11,8 +11,8 @@
 		$userid="00";
 	}
 
-	$cid = getOPG('courseid');
-	$cid = "1";
+	// $cid = getOPG('courseid');
+	$cid = 1;
 
 	function testingtesting($cid){
 		$pdolite = new PDO('../../githubMetadata/metadata2.db');
