@@ -7493,6 +7493,19 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
     }
 
+    // If from and to elements are the same entity, create a recursive relation
+    if (fromElement.id === toElement.id) {
+        var newLine = {
+            id: makeRandomID(),
+            fromID: fromElement.id,
+            toID: toElement.id,
+            kind: "ERRecursiveRelation"
+        };
+        addObjectToLines(newLine, stateMachineShouldSave);
+        if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+        return newLine;
+    }
+
     // If there is no existing lines or is a special case
     if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
         var newLine = {
