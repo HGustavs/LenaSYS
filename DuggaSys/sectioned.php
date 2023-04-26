@@ -11,19 +11,21 @@
 		$userid="00";
 	}
 
-	$cid = getOPG('courseid');
-	$cid = 1;
+	// $cid = getOPG('courseid');
+	// $cid = 1;
 
-	function testingtesting($cid){
+	function testingtesting(){
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query =  $pdolite->prepare('SELECT fileName FROM gitFiles WHERE cid = :cid;');
-		$query->bindParam(':cid', $cid);
+		$query->bindParam(':cid', 1);
 		$query->execute();
-		
-		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<option value='1'>".$row['fileName']"</option>";
+		$simmy = $query->fetch(PDO::FETCH_ASSOC);
+		// echo "<option value='1'>".$simmy['fileName']"</option>";
+		echo "<p>" . $simmy['fileName'] . "</p>";
+		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		// 	echo "<option value='1'>".$row['fileName']"</option>";
 
-		}
+		// }
 
 	}
 	
@@ -590,11 +592,15 @@
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
+			<?php
+	testingtesting();
+			?>
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> <!-- lägg till id och options här med php? -->
 
 				<?php
 
-					testingtesting($cid);
+
+					// testingtesting($cid);
 							//connecta till sqllite där vi fetchat ner repos till
 							// class githubDB extends SQLite3 {
 							// 	function __construct(){
@@ -640,6 +646,8 @@
 	// }
 				?>
 			</select></div>
+			
+			
 
 
 
