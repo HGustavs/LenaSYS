@@ -11,25 +11,25 @@
 	}
 
 
-		// //connecta till sqllite där vi fetchat ner repos till
-		// class githubDB extends SQLite3 {
-		// 	function __construct(){
-		// 		$this->open("../../githubMetadata/metadata2.db"); // i samma fil
-		// 	}
-		// }
+		//connecta till sqllite där vi fetchat ner repos till
+		class githubDB extends SQLite3 {
+			function __construct(){
+				$this->open("../../githubMetadata/metadata2.db"); // i samma fil
+			}
+		}
 	
 	
-		// $gdb = new githubDB();
-		// // ändra till correct fil
-		// $query = $pdo->prepare( "SELECT fileType FROM gitFiles WHERE fileType = dir");
-		// $query->bindParam(':dir', $dir);
-		// $query->execute();
+		$gdb = new githubDB();
+		// ändra till correct fil
+		$query = $gdb->query( "SELECT fileType FROM gitFiles WHERE fileType = dir");
+		$query->bindParam(':dir', $dir);
+		$query->execute();
 	
-		// // $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
-		// // $codeLinkQuery->execute();
+		// $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
+		// $codeLinkQuery->execute();
 		
 		
-		// $gdb ->close();//stäng i slutet av användning
+		$gdb ->close();//stäng i slutet av användning
 	
 	
 	
@@ -600,7 +600,20 @@
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> <!-- lägg till id och options här med php? -->
 
-
+				<?php
+							// while($row = $query->FETCH(PDO::FETCH_ASSOC)){
+							// 	$fileName = $row['filename'];
+							// 	$cid = $row['cid'];
+							// 	$fileInfo = $fileName . ',' . $cid;
+							// 	if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){
+							// 		echo "<option value='$fileInfo'>$fileName</option>";
+							// 	}
+							// }
+							foreach($row = $query->FETCH(gdb::FETCH_ASSOC)){
+								$fileName = $row['fileName'];
+								echo "<option value=''>1</option>";
+							}
+				?>
 			</select></div>
 
 
