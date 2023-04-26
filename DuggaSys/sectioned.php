@@ -619,9 +619,9 @@
 							$query->execute();
 
 
-							foreach($query){
+							for($i=0,$i<3,$i++){
 								
-								echo "<option value=''>1</option>";
+								echo "<option value=''>.$i</option>";
 							}
 				?>
 			</select></div>
