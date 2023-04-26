@@ -1,19 +1,17 @@
 <?php
 
-$post_data = array(
-    'value1' => "Test",
-    'value2' => "Test"
+$postParameter = array(
+    'value1' => 'test',
+    'value2' => 'test'
 );
 
-$url = 'test.php';
-$curl = curl_init($url);
-
-curl_setopt($curl, CURLOPT_POST, true);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+$curl = curl_init('https://cms.webug.se/root/G2/students/c21alest/LenaSYS/Shared/test.php');
+curl_setopt($curl, CURLOPT_POSTFIELDS, $postParameter);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-$response = curl_exec($curl);
-
-echo $response;
-
+$curlResponse = curl_exec($curl);
 curl_close($curl);
+
+echo $curlResponse;
+
+?>

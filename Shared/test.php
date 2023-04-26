@@ -1,25 +1,30 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+    // Test 1
     echo json_encode(assertEqual($_POST['value1'], $_POST['value2']));
-
 }
 
+// Test 1: assert equal test
 function assertEqual($value1, $value2){
-    $equalTest = assert($value1, $value2);
-    if ($equalTest){
-        echo "Test 1 (assertEqual): passed";
-        $equalTestResult = "passed";
+    if (($_POST['value1'] != null) && ($_POST['value2'] != null)){
+        $equalTest = assert($value1, $value2);
+        if ($equalTest){
+            $equalTestResult = "passed";
+        }
+        else{
+            $equalTestResult = "failed";
+        }
     }
     else{
-        echo "test 1 (assertEqual): failed";
-        $equalTestResult = "failed";
+        $equalTestResult = "failed no valid values";
     }
 
     return array(
-        'Test 1 (assertEqual)' => $equalTestResult,
-    );
+            'Test 1 (assertEqual)' => $equalTestResult,
+            'value1' => $value1,
+            'value2' => $value2
+        );
 }
 
+?>
