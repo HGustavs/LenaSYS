@@ -19,10 +19,10 @@
 		$query =  $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid;');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
-		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<option value='1'>".$row['cid']"</option>";
+		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		// 	echo "<option value='1'>".$row['cid']"</option>";
 
-		}
+		// }
 
 	}
 	
