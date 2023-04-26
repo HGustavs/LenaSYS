@@ -9,6 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+include_once "../recursivetesting/FetchGithubRepo.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -63,7 +64,7 @@ $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
-$exampelid=getOP('exampelid');
+$exampelid=getOP('exampleid');
 
 $visbile = 0;
 $avgfeedbackscore = 0;
@@ -471,22 +472,44 @@ if($gradesys=="UNK") $gradesys=0;
 							$this->open("../../githubMetadata/metadata2.db");
 						}
 					}
-					$query = $pdo->prepare("SELECT runlink FROM courseexample WHERE exampelid=:exampelid;");
-					$query->bindParam(":exampelid", $exampelid);
-					$query->execute();
-					$runlink = "";
-					foreach($query->fetchAll() as $row) {
-						$runlink = $runlink.$row['runlink'];
+					$query1 = $pdo->prepare("SELECT filename FROM box WHERE exampleid=:exampleid;");
+					$query1->bindParam(":exampleid", $exampleid);
+					$query1->execute();
+					$query2 = $pdo->prepare("SELECT cid FROM codeexample WHERE exampleid=:exampleid;");
+					$query2->bindParam(":exampleid", $exampleid);
+					$query2->execute();
+					$files = array();
+					$row2 = $query2->fetchAll();
+					$cid = $row2['cid'];
+					foreach($query1->fetchAll() as $row1) {
+						array_push($files, $row1['filename']);
 					}
 					$gdb = new githubDB();
-					$id=1;
-					$que = $gdb->query("SELECT repoURL FROM gitRepos WHERE repoID=".$id.";");
-					$url = "";
-					while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
-						$url = $url.$row['repoURL'];
+					$downloads = array();
+					foreach($files as $file) {
+						$que = $gdb->query("SELECT downloadURL FROM gitFiles WHERE cid=".$cid." AND fileName=".$file.";");
+						while($row = $que->fetchArray(SQLITE3_ASSOC) ) {
+							array_push($downloads, $row['downloadURL']);
+						}
 					}
 					$gdb->close();
-					//13179 här anropas uppdateringsfunktionen
+					//TODO rest från 13179, här anropas uppdateringsfunktionen
+
+
+				} else if(strcmp($opt,"CreGitEx")===0) {
+					$query = $pdo->prepare("SELECT ? FROM codeexample WHERE cid=:cid;");
+					$query->bindParam(":cid", $courseid);
+					$query->execute();
+					foreach($query->fetchAll() as $row) {
+						$row['exampleid'];
+					}
+
+					$file = file("../../courses/".$courseid."");
+					$count = 0;
+					foreach($file as $line) {
+						$count += 1;
+						echo str_pad($count, 2, 0, STR_PAD_LEFT).". ".$line;
+					}
 				}
 			}
 		}

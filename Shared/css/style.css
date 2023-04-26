@@ -5034,6 +5034,7 @@ table.navheader div.menuButton {
   margin: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   padding: 20px;
+  border: 1px solid black;
 }
 
 .material-box h3 {
@@ -8913,6 +8914,11 @@ border: none !important;
 
 .templatethumbicon:hover{
   background-color: #7D5CA0;
+}
+.templatethumbicon {
+  width: 88%;
+  margin: 2% 1% 2% 1%;
+  padding: 3%;
 }
 
 .themeicon:hover {

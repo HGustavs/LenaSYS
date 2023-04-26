@@ -12,11 +12,13 @@
 
 <html>
 <head>
+
     <style>
         table, th, td {
         border:1px solid black;
         border-collapse: collapse;
     }
+
     #set_to_default_button{
         display: block;
         margin-top: 2vh;
@@ -37,6 +39,8 @@
         background-color: #ddd;
     }
     </style>
+
+   <script type="text/javascript" src="logSearch.js"></script>
 </head>
     <body>
         <?php
@@ -51,8 +55,13 @@
         <!----------------------------------------------------------------------------------->  
         <!------Creates a dropdown with all tables in the loglena database------------------->
         <!----------------------------------------------------------------------------------->
+
+        <input type="text" id="searchInput" placeholder="Search...">
+        <button type="button" onclick="searchTable()">Search</button>
+
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         <?php    
+
             date_default_timezone_set('Etc/GMT+2'); //Used in serviceLogEntries to convert unix to datetime
 
             echo 'Choose table: ';
@@ -70,6 +79,7 @@
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
 //---------------------------------------------------------------------------------------------------
+
 
             // Set to default button
             echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
@@ -151,6 +161,7 @@
 
             // Gathers information from database table userHistory
             if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
+
                 $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$order.' '.$sort.';');
                 $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
@@ -181,6 +192,7 @@
 
             // Gathers information from database table userLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
+
                 $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
                 $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
@@ -213,6 +225,7 @@
 
             // Gathers information from database table serviceLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
+
                 $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$order.' '.$sort.';');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
