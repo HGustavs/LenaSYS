@@ -84,10 +84,16 @@
 		} 
 		$testquery = $pdolite->prepare('SELECT * FROM gitRepos');
 		$testquery->execute();
-		$norows = $testquery->fetchRow();
+		//$norows = $testquery->fetchColumn();
 
 		print_r("It did it??");
-		print_r($norows);
+		foreach($testquery->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<p>Course ID: ".$row['cid']."</p>";
+			echo "<p>URL: ".$row['repoURL']."</p>";
+			echo "<p>Commit: ".$row['lastCommit']."</p>";
+		
+			// TODO: Limit this to only one result
+		}
 	}
 
 	// --------------------- Get Latest Commit Function -----------------------------------------
