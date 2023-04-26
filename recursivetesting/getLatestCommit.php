@@ -62,9 +62,9 @@
 	// Create a new row if it doesn't exist
 	function insertIntoSQLite($url, $cid, $commit) {
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-		$query = $pdolite->prepare("INSERT INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits);"); 
+		$query = $pdolite->prepare("INSERT INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
 		$query->bindParam(':cid', $cid);
-		$query->bindParam(':repoURL', $repoURL);
+		$query->bindParam(':repoURL', $url);
 		$query->bindParam(':commits', $commit);
 		$query->execute();
 		if (!$query->execute()) {
