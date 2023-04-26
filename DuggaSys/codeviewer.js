@@ -482,7 +482,7 @@ function handleFiles(files, boxnumber) {
 	} else {
 		alert("FILETYPE [" + filetype + "] NOT SUPPORTED")
 	}
-	/*
+
     reader.onload = event => {
 		const iframe = document.getElementById("iframeFileed").contentWindow;
 		showHiddenIframe();
@@ -496,7 +496,7 @@ function handleFiles(files, boxnumber) {
 			// Lastly, apply the new file to that of the code viewer
 			updateContent(file.name, boxcontent, boxnumber);
 		}, { once: true });
-    };*/
+    };
 }
 
 function handleDrop(e)
@@ -713,7 +713,7 @@ function displayEditExample() {
 // updateExample: Updates example data in the database if changed
 //----------------------------------------------------------------------------------
 
-function updateExample() {
+/*function updateExample() {
 	// Set beforeid if set
 	var beforeid = "UNK";
 	if (retData['before'].length != 0) {
@@ -755,7 +755,7 @@ function updateExample() {
 	}
 
 	document.getElementById("editExampleContainer").style.display = "none"; 
-}
+}*/
 
 function removeExample() {
 	var courseid = querystring['courseid'];
