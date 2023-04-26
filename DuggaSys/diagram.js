@@ -6505,7 +6505,7 @@ function generateContextProperties()
         if(selected == undefined) selected = normal;
 
         value = Object.values(lineKind);
-        if(context[0].type == 'UML' || context[0].type == 'IE' || context[0].type == 'ER') {
+        if(contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER') {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
             for(var i = 0; i < value.length; i++){
                 if(i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null){
