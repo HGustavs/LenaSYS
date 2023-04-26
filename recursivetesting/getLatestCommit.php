@@ -82,11 +82,13 @@
 			print_r($error);
 			echo $errorvar;
 		} 
-		$testquery = $pdolite->prepare('SELECT * FROM gitRepos');
+
+		// This is just for printing and should be removed later
+		$testquery = $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid');
+		$testquery->bindParam(':cid', $cid);
 		$testquery->execute();
 		//$norows = $testquery->fetchColumn();
 
-		print_r("It did it??");
 		foreach($testquery->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<p>Course ID: ".$row['cid']."</p>";
 			echo "<p>URL: ".$row['repoURL']."</p>";
