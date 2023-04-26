@@ -619,10 +619,10 @@
 							// $query->execute();
 
 
-							for($i=0,$i<3,$i++){
-								
-								echo "<option value=''>.$i</option>";
-							}
+	for($i=0;$i<3;$i++){
+		
+		echo "<option value=''>.$i</option>";
+	}
 				?>
 			</select></div>
 
