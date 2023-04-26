@@ -42,3 +42,22 @@ To see if the updating of user_course works and how the database will respond.
 Using the SQL-query: UPDATE user_course SET vers WHERE uid=:uid AND cid=:cid // updating vers
 
 ---------------------
+
+Test 3: change user password
+Row: 143 - 151
+Pre-req:
+  (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
+
+****
+
+Send {
+    $opt = "CHPWD"
+    $uid = "uid"
+    $pwd = "standardPasswordHash($pw)" 
+}
+
+To make sure if the user is able to change their password.
+Using the SQL-query: UPDATE user SET password=:pwd, requestedpasswordchange=0 WHERE uid=:uid // updating password 
+Should display an error message if the requested a password change was unable.
+
+----------------------
