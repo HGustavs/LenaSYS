@@ -61,3 +61,30 @@ Using the SQL-query: UPDATE user SET password=:pwd, requestedpasswordchange=0 WH
 Should display an error message if the requested a password change was unable.
 
 ----------------------
+
+Test 4: create a class
+Row: 128 - 142
+****
+Pre-req:
+  (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
+
+****
+
+Send {
+    $opt = "ADDCLASS"
+    $class = "class"
+    $responsible = "responsible"
+    $classname = "classname"
+    $regcode = "regcode"
+    $classcode = "classcode"
+    $hp = "hp"
+    $tempo = "tempo"
+    $hpProgress = "hpProgress"
+}
+
+To make sure the inserting of a class works and how the database will response.
+Using SQL-query: INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) 
+    VALUES (:class, :responsible, :classname, :regcode, :classcode, :hp, :tempo, :hpProgress)
+Should display an error message if the insert into database was unable to succeed.
+
+------------------------
