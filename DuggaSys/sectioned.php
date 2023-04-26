@@ -593,7 +593,7 @@
 							// ändra till correct fil
 							// $query = $pdoLite->query( "SELECT fileType FROM gitFiles WHERE fileType = dir");
 							// $query->bindParam(':dir', $dir);
-							$query->execute();
+							// $query->execute();
 						
 							// $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
 							// $codeLinkQuery->execute();
@@ -609,10 +609,10 @@
 							// 		echo "<option value='$fileInfo'>$fileName</option>";
 							// 	}
 							// }
-							// foreach($pdoLite->query( 'SELECT * FROM gitFiles WHERE fileType = dir;') as  $row){
+							foreach($pdoLite->query( 'SELECT * FROM gitFiles WHERE fileType = dir;') as  $row){
 								
-							// 	echo "<option value=''>.$row['fileType']</option>";
-							// }
+								echo "<option value=''>.$row['fileType']</option>";
+							}
 				?>
 			</select></div>
 
