@@ -142,6 +142,7 @@ function bfs($url)
                             mkdir(dirname($path), 0777, true);
                         } 
                         insertToFileLink($cid, $item);
+                        insertToMetaData($cid, $item);
                         // Writes the file to the respective folder. 
                         file_put_contents($path, $fileContents);
                         // TODO remove old html style
