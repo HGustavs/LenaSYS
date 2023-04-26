@@ -1,3 +1,4 @@
+
 <?php
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
@@ -9,6 +10,7 @@ $vers=getOPG('coursevers');
 <script>var cid = <?php echo $cid ?>,vers = <?php echo $vers ?>;</script>
 <?php
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +39,7 @@ $vers=getOPG('coursevers');
 
 </head>
 <body onload="setup(); displayNavIcons();">
-
+ 
 	<!-- Navigation Header START -->
 	<?php
 		$noup="SECTION";
@@ -314,7 +316,6 @@ $vers=getOPG('coursevers');
 			<span class='tooltiptextScroll'>Back to top</span>
 			<i class='arrow up' id='scrollUp'></i>
 		</div>
-
-
+    
 </body>
 </html>
