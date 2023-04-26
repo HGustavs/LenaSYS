@@ -14,7 +14,6 @@
 	session_start();
 
 	global $pdo;
-	$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
 	getCourseID("https://github.com/HGustavs/saraTest"); // Dummy Code to see if everything works
 
@@ -62,6 +61,7 @@
 
 	// Create a new row if it doesn't exist
 	function insertIntoSQLite($url, $cid, $commit) {
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare("INSERT INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits);"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $repoURL);
