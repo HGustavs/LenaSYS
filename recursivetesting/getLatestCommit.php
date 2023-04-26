@@ -64,7 +64,7 @@
 		
 	}
 
-	// --------------------- Insert into SQL Lite db when new course is created -------------------------------
+	// --------------------- Insert into Sqlite db when new course is created -------------------------------
 
 	// Create a new row if it doesn't exist
 	function insertIntoSQLite($url, $cid, $commit) {
@@ -83,6 +83,8 @@
 			echo $errorvar;
 		} 
 
+	//---------------------------------------For testing only -------------------------------------------------------------
+
 		// This is just for printing and should be removed later
 		$testquery = $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid');
 		$testquery->bindParam(':cid', $cid);
@@ -90,15 +92,18 @@
 		//$norows = $testquery->fetchColumn();
 
 		foreach($testquery->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<p>Course ID: ".$row['cid']."</p>";
-			echo "<p>URL: ".$row['repoURL']."</p>";
-			echo "<p>Commit: ".$row['lastCommit']."</p>";
+			echo "<p>Course ID from insert: ".$row['cid']."</p>";
+			echo "<p>URL from insert: ".$row['repoURL']."</p>";
+			echo "<p>Commit from insert: ".$row['lastCommit']."</p>";
 		
 			// TODO: Limit this to only one result
 		}
+
+		getCommitSqlite($cid);
+	//----------------------------------------------------------------------------------------------------------------------
 	}
 
-	// --------------------- Get Latest Commit Function -----------------------------------------
+	// --------------------- Get Latest Commit Function from URL-----------------------------------------
 
 	function getCommit($url) {
 
@@ -134,4 +139,19 @@
 			//print_r("No matches in database!");
 		}
 	}
+
+		// --------------------- Get Latest Commit from Sqlite-----------------------------------------
+
+	function getCommitSqlite($cid){
+
+		$query = $pdolite->prepare('SELECT lastCommit FROM gitRepos WHERE cid = :cid');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
+		}
+	}
+
+
 ?>
