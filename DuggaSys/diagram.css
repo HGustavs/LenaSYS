@@ -493,6 +493,13 @@
     width: 6.2px;
     height: 6.2px;
 }
+#diagramPopOut{
+    position: absolute;
+    right: -10%;
+    bottom: -10%;
+    width: 6.2px;
+    height: 6.2px;
+}
 .togglePlacementTypeBoxEntity{
     display: none;
     position: absolute;
