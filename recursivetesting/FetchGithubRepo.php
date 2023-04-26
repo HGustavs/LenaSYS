@@ -69,6 +69,19 @@ function insertToMetaData($cid, $item)
     $query->bindParam(':filePath', $item['path']);
     $query->execute();
 }
+
+function downloadToWebserver($cid, $item) 
+{
+    // Retrieves the contents of each individual file based on the fetched "download_url"
+    $fileContents = file_get_contents($item['download_url']);
+    $path = '../../LenaSYS/courses/'. $cid . '/' . "Github" .'/' . $item['path'];
+    // Creates the directory for each individual file based on the fetched "path"
+    if (!file_exists((dirname($path)))) {
+        mkdir(dirname($path), 0777, true);
+    } 
+    // Writes the file to the respective folder. 
+    file_put_contents($path, $fileContents);    
+}
     
 function bfs($url) 
 {
@@ -110,17 +123,9 @@ function bfs($url)
                 foreach ($json as $item) {
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
-                        // Retrieves the contents of each individual file based on the fetched "download_url"
-                        $fileContents = file_get_contents($item['download_url']);
-                        $path = '../../LenaSYS/courses/'. $cid . '/' . "Github" .'/' . $item['path'];
-                        // Creates the directory for each individual file based on the fetched "path"
-                        if (!file_exists((dirname($path)))) {
-                            mkdir(dirname($path), 0777, true);
-                        } 
                         insertToFileLink($cid, $item);
                         insertToMetaData($cid, $item);
-                        // Writes the file to the respective folder. 
-                        file_put_contents($path, $fileContents);                      
+                        downloadToWebserver($cid, $item);                   
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {
