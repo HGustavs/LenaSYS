@@ -25,9 +25,9 @@
 		}catch(PDOException $e) {
 			return '<p>Error: ' . $e->getMessage() . '</p>';
 		}
-		// echo "<option value='1'>".$simmy['fileName']"</option>";
 		if($simmy){
-			return " good " ;
+			echo "<option value='1'>".$simmy['fileName']"</option>";
+			// return " good " ;
 
 		}else{
 			return " bad ";
