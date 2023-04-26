@@ -6505,6 +6505,7 @@ function generateContextProperties()
         if(selected == undefined) selected = normal;
 
         value = Object.values(lineKind);
+        //this creates line kinds for UML IE AND ER
         if(contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER') {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
             for(var i = 0; i < value.length; i++){
