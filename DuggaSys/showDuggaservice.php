@@ -94,7 +94,7 @@ if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment !=
 }
 
 $log_uuid = getOP('log_uuid');
-$info="opt: ".$opt."courseid: ".$courseid."coursevers: ".$coursevers."duggaid: ".$duggaid."moment: ".$moment."segment: ".$segment."answer: ".$answer;
+$info="opt: ".$opt." courseid: ".$courseid." coursevers: ".$coursevers." duggaid: ".$duggaid." moment: ".$moment." segment: ".$segment." answer: ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
 
 if(strcmp($opt,"UPDATEAU")==0){

@@ -50,7 +50,7 @@ $log_uuid = getOP('log_uuid');
 
 $filo = print_r($_FILES, true);
 
-$info ="cid: ".$cid."vers: ".$vers."kind: ".$kind."link: ".$link."selectedfile: ".$selectedfile."error: ".$error."filo: ".$filo;
+$info ="cid: ".$cid." vers: ".$vers." kind: ".$kind." link: ".$link." selectedfile: ".$selectedfile." error: ".$error." filo: ".$filo;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive.php", $userid, $info);
 
 //  Handle files! One by one  -- if all is ok add file name to database

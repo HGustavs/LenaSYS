@@ -44,7 +44,7 @@ $coursename=getOP('coursename');
 $debug="NONE!";
 
 $log_uuid = getOP('log_uuid');
-$info="opt: ".$opt."cid: ".$cid."qid: ".$qid."vid: ".$vid."param: ".$param."answer: ".$answer."disabled: ".$disabled."uid: ".$uid."name: ".$name;
+$info="opt: ".$opt." cid: ".$cid." qid: ".$qid." vid: ".$vid." param: ".$param." answer: ".$answer." disabled: ".$disabled." uid: ".$uid." name: ".$name;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
