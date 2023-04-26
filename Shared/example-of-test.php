@@ -2,7 +2,9 @@
 
 $postParameter = array(
     'value1' => 'test',
-    'value2' => 'test'
+    'value2' => 'test',
+    'user' => 'brom',
+    'pwd' => 'password'
 );
 
 $curl = curl_init('https://cms.webug.se/root/G2/students/c21alest/LenaSYS/Shared/test.php');
