@@ -12,19 +12,19 @@
 	}
 
 	// $cid = getOPG('courseid');
-	$cid = 1;
+	// $cid = 1;
 
-	function testingtesting($cid){
-		$pdolite = new PDO('../../githubMetadata/metadata2.db');
-		$query =  $pdolite->prepare('SELECT * FROM gitRepos');
-		$query->bindParam(':cid', $cid);
-		$query->execute();
-		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<option value='1'>".$row['cid']"</option>";
+	// function testingtesting($cid){
+	// 	$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+	// 	$query =  $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid;');
+	// 	$query->bindParam(':cid', $cid);
+	// 	$query->execute();
+	// 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+	// 		echo "<option value='1'>".$row['cid']"</option>";
 
-		}
+	// 	}
 
-	}
+	// }
 	
 
 	
@@ -593,7 +593,7 @@
 
 				<?php
 
-					testingtesting($cid);
+					// testingtesting($cid);
 							//connecta till sqllite där vi fetchat ner repos till
 							// class githubDB extends SQLite3 {
 							// 	function __construct(){
@@ -633,10 +633,10 @@
 							// $query->execute();
 
 
-	for($i=0;$i<3;$i++){
+	// for($i=0;$i<3;$i++){
 		
-		echo "<option value=''>.$i</option>";
-	}
+	// 	echo "<option value=''>.$i</option>";
+	// }
 				?>
 			</select></div>
 
