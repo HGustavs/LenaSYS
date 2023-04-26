@@ -143,7 +143,7 @@
 		// --------------------- Get Latest Commit from Sqlite-----------------------------------------
 
 	function getCommitSqlite($cid){
-
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare('SELECT lastCommit FROM gitRepos WHERE cid = :cid');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
