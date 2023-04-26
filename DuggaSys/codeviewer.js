@@ -1003,7 +1003,7 @@ function updateContent(file, content, boxnumber)
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
-			setTimeout("location.reload()", 10000);
+			setTimeout("location.reload()", 500);
 		}
 	} else {
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
