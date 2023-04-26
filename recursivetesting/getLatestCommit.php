@@ -84,7 +84,7 @@
 		} 
 		$testquery = $pdolite->prepare('SELECT * FROM gitRepos');
 		$testquery->execute();
-		$norows = $testquery->fetchColumn();
+		$norows = $testquery->fetchRow();
 
 		print_r("It did it??");
 		print_r($norows);
