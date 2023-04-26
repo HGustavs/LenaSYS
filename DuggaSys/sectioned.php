@@ -15,7 +15,7 @@
 	$cid = 1;
 
 	function testingtesting($cid){
-		// $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		// $query =  $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid;');
 		// $query->bindParam(':cid', $cid);
 		// $query->execute();
