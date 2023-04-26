@@ -6295,18 +6295,18 @@ function generateContextProperties()
           }
 
           //Selected ER type
-          //if (element.type == 'ER') {
+          if (element.type == 'ER') {
               //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
-              //for (const property in element) {
-                  //switch (property.toLowerCase()) {
-                      //case 'name':
-                          //str += `<div style='color:white'>Name</div>`;
-                          //str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                         // break;
-                      //default:
-                         // break;
-                 // }
-              //}
+              for (const property in element) {
+                  switch (property.toLowerCase()) {
+                      case 'name':
+                          str += `<div style='color:white'>Name</div>`;
+                          str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                          break;
+                      default:
+                          break;
+                  }
+              }
               str += `<div style='color:white'>Variant</div>`;
 
               //Creates drop down for changing state of ER elements
