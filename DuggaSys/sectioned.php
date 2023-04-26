@@ -27,10 +27,10 @@
 		$simmy = $query->fetch(PDO::FETCH_ASSOC);
 		// echo "<option value='1'>".$simmy['fileName']"</option>";
 		if($simmy){
-			return "<p> good </p>";
+			return " good " ;
 
 		}else{
-			return "<p> bad </p>";
+			return " bad ";
 		}
 		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		// 	echo "<option value='1'>".$row['fileName']"</option>";
