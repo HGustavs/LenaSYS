@@ -14,7 +14,7 @@
 	session_start();
 
 	global $pdo;
-	global $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+	$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
 	getCourseID("https://github.com/HGustavs/saraTest"); // Dummy Code to see if everything works
 
