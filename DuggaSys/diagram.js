@@ -6272,27 +6272,27 @@ function generateContextProperties()
           }
 
           //Get selected element
-       //   var element = context[0];
+          var element = context[0];
 
           //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
           //TODO: Find a way to do this dynamically as new diagram types are added
-        //  if (element.kind != 'ERAttr') {
-             // str += `<div style='color:white'>Type</div>`;
+          if (element.kind != 'ERAttr') {
+              str += `<div style='color:white'>Type</div>`;
 
               //Create a dropdown menu for diagram type
             //  var value = Object.values(entityType);
             //  var selected = context[0].type;
 
-            //  str += '<select id="typeSelect">';
-            //   for (i = 0; i < value.length; i++) {
-               //    if (selected != value[i]) {
-                  //     str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                 //  } else if(selected == value[i]) {
-                 //      str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                //   }
-              // }
-             //  str += '</select>'; 
-        //   }
+              str += '<select id="typeSelect">';
+               for (i = 0; i < value.length; i++) {
+                   if (selected != value[i]) {
+                       str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                   } else if(selected == value[i]) {
+                       str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                   }
+               }
+               str += '</select>'; 
+           }
 
           //Selected ER type
           if (element.type == 'ER') {
