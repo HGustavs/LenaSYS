@@ -10,8 +10,31 @@
 		$userid="00";
 	}
 
-	
 
+		//connecta till sqllite där vi fetchat ner repos till
+		class githubDB extends SQLite3 {
+			function __construct(){
+				$this->open("../../githubMetadata/metadata2.db"); // i samma fil
+			}
+		}
+	
+	
+		$gdb = new githubDB();
+		$gdb ->close();//stäng i slutet av användning
+	
+	
+	
+	
+		// ändra till correct fil
+		$query = $pdo->prepare( "SELECT repoFileType FROM gitRepos WHERE repoFileType = dir");
+		$query->bindParam(':dir', $dir);
+		$query->execute();
+	
+		$codeLinkQuery = $pdo->prepare( "SELECT repoFileType FROM gitRepos");
+		$codeLinkQuery->execute();
+
+
+	
 ?>
 
 <!DOCTYPE html>
