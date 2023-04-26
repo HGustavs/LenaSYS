@@ -26,6 +26,7 @@
 			return '<p>Error: ' . $e->getMessage() . '</p>';
 		}
 		if($rows){
+			return '<p>' print_r($rows); '</p>';
 			// return .$simmy['fileName'];
 			// return " good " ;
 			foreach($rows as $row){
