@@ -488,10 +488,9 @@
 /* toggle placement types */
 .togglePlacementTypeButton{
     position: absolute;
-    right: -10%;
-    bottom: -10%;
+    right: 10%;
     width: 6.2px;
-    height: 6.2px;
+    height: 3.2px;
 }
 #diagramPopOut{
     position: absolute;

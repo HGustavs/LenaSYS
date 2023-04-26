@@ -188,30 +188,32 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                        <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
-                            <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
-                            <span class="placementTypeToolTipText"><b>ER entity</b><br>
-                                <p>Change to ER entity</p>
-                            </span>
-                        </div>
-                        <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
-                            <span class="placementTypeToolTipText"><b>UML class</b><br>
-                                <p>Change to UML class</p>
-                            </span>
-                        </div>
-                        <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
-                            <span class="placementTypeToolTipText"><b>IE entity</b><br>
-                                <p>Change to IE entity</p>
-                            </span>
-                        </div>
-                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                            <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
-                            <span class="placementTypeToolTipText"><b>State diagram state</b><br>
-                                <p>Change to state diagram state</p>
-                            </span>
+                    <div id="diagramPopOut">
+                        <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
+                                <span class="placementTypeToolTipText"><b>ER entity</b><br>
+                                    <p>Change to ER entity</p>
+                                </span>
+                            </div>
+                            <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
+                                <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
+                                <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                    <p>Change to UML class</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                                <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
+                                <span class="placementTypeToolTipText"><b>IE entity</b><br>
+                                    <p>Change to IE entity</p>
+                                </span>
+                            </div>
+                            <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                                <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
+                                <span class="placementTypeToolTipText"><b>State diagram state</b><br>
+                                    <p>Change to state diagram state</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
@@ -230,30 +232,32 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="State diagram state"/>
                         </div>
                     </div>
-                    <div id="togglePlacementTypeBox6" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                        <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
-                            <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
-                            <span class="placementTypeToolTipText"><b>ER entity</b><br>
-                                <p>Change to ER entity</p>
-                            </span>
-                        </div>
-                        <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
-                            <span class="placementTypeToolTipText"><b>UML class</b><br>
-                                <p>Change to UML class</p>
-                            </span>
-                        </div>
-                        <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
-                            <span class="placementTypeToolTipText"><b>IE entity</b><br>
-                                <p>Change to IE entity</p>
-                            </span>
-                        </div>
-                        <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                            <img src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
-                            <span class="placementTypeToolTipText"><b>State diagram state</b><br>
-                                <p>Change to state diagram state</p>
-                            </span>
+                    <div id="diagramPopOut">
+                        <div id="togglePlacementTypeBox6" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
+                                <span class="placementTypeToolTipText"><b>ER entity</b><br>
+                                    <p>Change to ER entity</p>
+                                </span>
+                            </div>
+                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
+                                <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
+                                <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                    <p>Change to UML class</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                                <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
+                                <span class="placementTypeToolTipText"><b>IE entity</b><br>
+                                    <p>Change to IE entity</p>
+                                </span>
+                            </div>
+                            <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                                <img src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
+                                <span class="placementTypeToolTipText"><b>State diagram state</b><br>
+                                    <p>Change to state diagram state</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
@@ -272,32 +276,34 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                        <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
-                            <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
-                            <span class="placementTypeToolTipText"><b>ER entity</b><br>
-                                <p>Change to ER entity</p>
-                            </span>
+                    <div id="diagramPopOut">
+                        <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
+                                <span class="placementTypeToolTipText"><b>ER entity</b><br>
+                                    <p>Change to ER entity</p>
+                                </span>
+                            </div>
+                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
+                                <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
+                                <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                    <p>Change to UML class</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                                <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
+                                <span class="placementTypeToolTipText"><b>IE entity</b><br>
+                                    <p>Change to IE entity</p>
+                                </span>
+                            </div>
+                            <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                                <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="Statediagram state"/>
+                                <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
+                                    <p>Change to state diagram state</p>
+                                </span>
+                            </div>
                         </div>
-                        <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
-                            <span class="placementTypeToolTipText"><b>UML class</b><br>
-                                <p>Change to UML class</p>
-                            </span>
-                        </div>
-                        <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
-                            <span class="placementTypeToolTipText"><b>IE entity</b><br>
-                                <p>Change to IE entity</p>
-                            </span>
-                        </div>
-                        <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                            <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="Statediagram state"/>
-                            <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
-                                <p>Change to state diagram state</p>
-                            </span>
-                    </div>
-                    </div>
+                    </div>    
                 </div><!--<-- State diagram functionality end -->
                 <div>
                     <div id="elementPlacement1"
