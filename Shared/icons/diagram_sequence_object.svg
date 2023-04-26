@@ -7,7 +7,7 @@
    xml:space="preserve"
    style="clip-rule:evenodd;fill:#ffffff;fill-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2"
    id="svg11126"
-   sodipodi:docname="diagram_object.svg"
+   sodipodi:docname="diagram_squence_object.svg"
    inkscape:export-filename="diagram_state.svg"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
@@ -27,7 +27,7 @@
    inkscape:deskcolor="#d1d1d1"
    showgrid="false"
    inkscape:zoom="23.580748"
-   inkscape:cx="11.768075"
+   inkscape:cx="9.0539961"
    inkscape:cy="10.898721"
    inkscape:window-width="1920"
    inkscape:window-height="1027"
@@ -38,10 +38,10 @@
     
     
 <rect
-   style="clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.32533;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none"
+   style="clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.97376;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none"
    id="rect1114-0"
-   width="22.67872"
-   height="9.4396515"
-   x="0.66239959"
-   y="7.2784896"
-   ry="2.3296556" /></svg>
+   width="22.026243"
+   height="9.4658937"
+   x="0.98688"
+   y="7.2653685"
+   ry="2.3361323" /></svg>
