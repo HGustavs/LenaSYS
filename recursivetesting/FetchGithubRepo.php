@@ -42,7 +42,6 @@ function getGitHubURL($url)
 function insertToFileLink($cid, $item) {
     global $pdo;
     $kindid = 3; // The kind(course local/version local/global), 3 = course local
-
     $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid AND path=:filePath;"); 
     // bind query results into local vars.
     $query->bindParam(':filename', $item['name']);
@@ -50,10 +49,8 @@ function insertToFileLink($cid, $item) {
     $query->bindParam(':filePath', $item['path']);
     $query->bindParam(':kindid', $kindid);
     $query->execute();
-    $norows = $query->fetchColumn();
-
     // creates SQL strings for inserts into filelink database table. Different if-blocks determine the visible scope of the file. Runs if the file doesn't exist in the DB.
-    if ($norows == 0) {      
+    if ($query->fetchColumn()) {      
         $query = $pdo->prepare("INSERT INTO fileLink(filename, path, kind,cid,filesize) VALUES(:filename, :filePath, :kindid,:cid,:filesize)");
         $query->bindParam(':cid', $cid);
         $query->bindParam(':filename', $item['name']);
