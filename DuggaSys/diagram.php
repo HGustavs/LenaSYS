@@ -443,6 +443,14 @@
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <!-- Sequence diagram object selection -->
+                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_sequence_object.svg" alt="UML super state"/>
+                    <span class="toolTipText"><b>Sequence Object</b><br>
+                        <p>Creates a sequence Object.</p><br>
+                        <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
