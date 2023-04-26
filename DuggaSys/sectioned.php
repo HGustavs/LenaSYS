@@ -609,10 +609,10 @@
 							// 		echo "<option value='$fileInfo'>$fileName</option>";
 							// 	}
 							// }
-							foreach($pdoLite->query( 'SELECT * FROM gitFiles WHERE fileType = dir;') as  $row){
+							// foreach($pdoLite->query( 'SELECT * FROM gitFiles WHERE fileType = dir;') as  $row){
 								
-								echo "<option value=''>.$row['fileType']</option>";
-							}
+							// 	echo "<option value=''>.$row['fileType']</option>";
+							// }
 				?>
 			</select></div>
 
