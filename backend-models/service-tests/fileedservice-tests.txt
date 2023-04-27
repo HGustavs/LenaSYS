@@ -78,3 +78,31 @@ $query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
 
 $this->assertEquals($expectedPath, $actualPath);
 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Test logging service events (line 17)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req values:
+*********
+
+$log_uuid = "123";
+$user_id = "1";
+$script_name = "fileedservice.php";
+$event_type = EventTypes::ServiceServerStart;
+$info = "DELFILE 123 2023-00-00 1 test.txt 2";
+
+*********
+* Call logServiceEvent to log the service start event:
+*********
+
+logServiceEvent($log_uuid, $event_type, $script_name, $user_id, $info);
+
+*********
+* Check if the log message was written correctly:
+*********
+
+$expected_log = "[$log_uuid] [ServiceServerStart] [fileedservice.php] [1] DELFILE 123 2023-00-00 1 test.txt 2";
+$logged_message = file_get_contents("path/to/log/test.txt");
+assert($expected_log == $logged_message, "Failed.");
