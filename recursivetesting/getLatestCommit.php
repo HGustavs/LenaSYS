@@ -45,12 +45,12 @@
 		// Get the latest commit from the URL, then print it
 		$latestCommit = getCommit($githubURL);
 		print_r("First: ".$latestCommit);
-		sleep(5);
-		$latestCommit = getCommit($githubURL);
-		print_r("Second: ".$latestCommit);
-		sleep(10);
-		$latestCommit = getCommit($githubURL);
-		print_r("Third: ".$latestCommit);
+		// sleep(5);
+		// $latestCommit = getCommit($githubURL);
+		// print_r("Second: ".$latestCommit);
+		// sleep(10);
+		// $latestCommit = getCommit($githubURL);
+		// print_r("Third: ".$latestCommit);
 		// The commit doesn't always work, try to get it up to 10 times	
 		// for($counter = 0; $counter < 10; $counter++) {
 		// 	if($latestCommit == "") {
@@ -120,7 +120,8 @@
 			$value = $link->getAttribute("href");
 			if(preg_match($regex, $value)) {
 				$href = $value; // Takes the first matching value and stores it in an array
-				break; //exits the loop since only the first match is necessary
+				echo $href;
+				//break; //exits the loop since only the first match is necessary
 			}
 		}
 
