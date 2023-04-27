@@ -108,82 +108,27 @@
 		$dom->loadHTML($html);
 		libxml_use_internal_errors(false);
 
-		/* TODO: This regex could be improved to take the explicit name of the user and repo,
-		* for example "/HGustavs/LenaSYS/commit/..."
-		* instead of just taking "/.../.../commit/...". */
-		$regex = "/^(.*?)\/tree\//";
 
-		// $divs = $dom->getElementsByClassName('Box');
-		// foreach ($divs as $div) {
-		// 	 if($div->nodeName == 'a'){
-		// 		$link = $div->getAttribute('href');
-		// 		echo print_r($link->nodeValue);
-		// 	 }
-		// }
 
+		$href = "";
 		$divs = $dom->getElementsByTagName('a');
-		foreach ($divs as $div) {
-				
+		foreach ($divs as $div) {		
 			if($div->getAttribute('class')=='d-none js-permalink-shortcut'){
 				$value = $div->getAttribute("href");
 				echo $value;
+				$href = $value;
 			}
 		}
-
-			// $classname = 'js-permalink-shortcut';
-		// $xpath = new DOMXpath($dom);
-		// $elements = $xpath->query("*/a[@class='box']");
-
-		// foreach($elements as $element) {
-		// 	$value = $element->getAttribute("href");
-		// 	echo "Value is: ".$value;
-		// }
-
-		// if (!is_null($elements)) {
-		// 	foreach ($elements as $element) {
-		// 		echo "hej";
-		// 		echo "<br/>[". $element->nodeName. "]";
-		
-		// 		$nodes = $element->childNodes;
-		// 		foreach ($nodes as $node) {
-		// 			echo "hejdå";
-		// 			echo $node->nodeValue. "\n";
-		// 		}
-		// 	}
-		// }
-
-
-			//$nodes = $xpath->query('//div[@class="' . $classname . '"]');
-			
-		
-			// $tmp_dom = new DOMDocument();
-			// foreach ($nodes as $node) {
-			// 	$tmp_dom->appendChild($tmp_dom->importNode($node, true));
-			// }
-		
-			// return trim($tmp_dom->saveHTML());
 	
-		//--------------------------------------------------------------------------------------------
-		
-		// $links = $dom->getElementsByClassName('js-permalink-shortcut');
+		// Regex to only keep the commit numbers, instead of the entire URL
+		$regex = "/^(.*?)\/tree\//";
 
-		// $href = "";
-		// foreach ($links as $link) {
-		// 	$value = $link->getAttribute("href");
-		
-			// if(preg_match($regex, $value)) {
-		//$href = $value; // Takes the first matching value and stores it in an array
-			// 	echo $value;
-			// 	//break; //exits the loop since only the first match is necessary
-			// }
-		//}
-
-		// if($href != "") {
-		// 	$latestCommit = preg_replace($regex, "", $href);
-		// 	return $latestCommit;
-		// } else {
-		// 	//print_r("No matches in database!");
-		// }
+		if($href != "") {
+			$latestCommit = preg_replace($regex, "", $href);
+			return $latestCommit;
+		} else {
+			print_r("No matches in database!");
+		}
 	}
 
 	// --------------------- Get Latest Commit from Sqlite-----------------------------------------
