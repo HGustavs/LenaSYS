@@ -764,6 +764,7 @@ const keybinds = {
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
         STATE_FINAL: { key: "<" , ctrl: true },
+        STATE_SUPER: { key: ">" , ctrl: false },
 };
 
 /** 
@@ -791,7 +792,9 @@ const elementTypes = {
 
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
-    UMLFinalState: 10
+    UMLFinalState: 10,
+
+    UMLSuperState:11,
 
 };
 
@@ -811,7 +814,9 @@ const elementTypesNames = {
     SDState: "SDState",
 
     UMLInitialState: "UMLInitialState",
-    UMLFinalState: "UMLFinalState"
+    UMLFinalState: "UMLFinalState",
+
+    UMLSuperState: "UMLSuperState",
 
 }
 
@@ -1119,8 +1124,9 @@ var defaults = {
     SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" } // UML Final state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
 
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1660,6 +1666,10 @@ document.addEventListener('keyup', function (e)
 
         if (isKeybindValid(e, keybinds.STATE_FINAL)) {
             setElementPlacementType(elementTypes.UMLFinalState);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        if (isKeybindValid(e, keybinds.STATE_SUPER)) {
+            setElementPlacementType(elementTypes.UMLSuperState);
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
 
@@ -3965,6 +3975,7 @@ function generateStateDiagramInfo()
     const ENTITY = 0, SEEN = 1;
     const stateInitial = [];
     const stateFinal = [];
+    const stateSuper = [];
     const stateElements = [];
     const stateLines = [];
     const queue = [];
@@ -3989,6 +4000,9 @@ function generateStateDiagramInfo()
         }
         else if (data[i].kind == elementTypesNames.UMLFinalState) {
             stateFinal.push([data[i], true]);
+        }
+        else if (data[i].kind == elementTypesNames.UMLSuperState) {
+            stateSuper.push([data[i], false]);
         }
     }
 
@@ -4016,6 +4030,11 @@ function generateStateDiagramInfo()
                         connections.push(stateFinal[j]);
                     }
                 }
+                for (let j = 0; j < stateSuper.length; j++) {
+                    if (stateLines[i].toID == stateSuper[j][ENTITY].id) {
+                        connections.push(stateSuper[j]);
+                    }
+                }
             }
         }
 
@@ -4032,11 +4051,12 @@ function generateStateDiagramInfo()
     // Adds additional information in the view.
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
+    output += `<p>Super States: ${stateSuper.length}</p>`;
     output += `<p>SD States: ${stateElements.length}</p>`;
     output += `<p>Lines: ${stateLines.length}</p>`;
     
     //if no state diagram exists, return a message to the user instead.
-    if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0)) {
+    if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0) && (stateSuper.length == 0)) {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
     }
     
@@ -6468,6 +6488,18 @@ function generateContextProperties()
                             str += `</select>`;
                             str += `</div>`; */
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else if (element.kind == 'UMLSuperState') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
                         default:
                             break;
@@ -8908,6 +8940,21 @@ function drawElement(element, ghosted = false)
                                 <circle cx="14.5" cy="14.5" r="5.5"/>
                             </g>
                         </svg>
+                </div>`;
+    }
+    else if (element.kind == 'UMLSuperState') {
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        str += `<div id="${element.id}" 
+                    class="element uml-Super"
+                    style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     onmousedown='ddown(event);' 
+                     onmouseenter='mouseEnter();' 
+                     onmouseleave='mouseLeave();'>
+                    <svg width="100%" height="100%">
+                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
+                    <rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
+                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${boxh/30}px">${element.name}</text>
+                    </svg>
                 </div>`;
     }
 
