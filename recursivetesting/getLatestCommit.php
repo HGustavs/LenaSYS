@@ -56,12 +56,13 @@
 			}
 		}
 
-		if($cid != null) {
+		if($cid != null && $latestCommit != "") {
 			insertIntoSQLite($githubURL, $cid, $latestCommit);
+		} else if ($latestCommit == "") {
+			print_r("Latest commit not valid");
 		} else {
 			print_r("No matches in database!");
 		}
-		
 	}
 
 	// --------------------- Insert into Sqlite db when new course is created -------------------------------
