@@ -2963,7 +2963,7 @@ function changeLineProperties()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML line
-    if ((line.type == 'UML') || (line.type == 'SD')) {
+    if (line.type == 'UML') {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -2985,8 +2985,32 @@ function changeLineProperties()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
+    // SD line
     if (line.type == 'SD') {
-        line.innerType = lineType.value.trim();
+        if (line.innerType != lineType.value) {
+            line.innerType = lineType.value.trim();
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // Start label, near side
+        if (line.startLabel != startLabel.value) {
+            startLabel.value = startLabel.value.trim();
+            line.startLabel = startLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // End label, opposite side
+        if (line.endLabel != endLabel.value) {
+            endLabel.value = endLabel.value.trim();
+            line.endLabel = endLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.startIcon != startIcon.value) {
+            line.startIcon = startIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.endIcon != endIcon.value) {
+            line.endIcon = endIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
     }
     showdata();
 }
