@@ -109,3 +109,22 @@ SQL-query: SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameo
 Should display an error message if the user does not exist in the database.
 
 ---------------------------
+
+Test 6: check if the user has an account
+Row: 178 - 196
+****
+Pre-req:
+  (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
+
+****
+
+Send {
+  $opt = "ADDUSER"
+  $uid = "UNK"
+  $ssn = "ssn"
+}
+
+Will check if a user has an account
+SQL-query: SELECT uid FROM user WHERE ssn=:ssn // check uid
+
+-----------------------------
