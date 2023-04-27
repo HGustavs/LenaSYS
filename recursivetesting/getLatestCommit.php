@@ -113,13 +113,22 @@
 		* instead of just taking "/.../.../commit/...". */
 		$regex = "/^(.*?)\/tree\//";
 
-		$divs = $dom->getElementsByClassName('Box');
+		// $divs = $dom->getElementsByClassName('Box');
+		// foreach ($divs as $div) {
+		// 	 if($div->nodeName == 'a'){
+		// 		$link = $div->getAttribute('href');
+		// 		echo print_r($link->nodeValue);
+		// 	 }
+		// }
+
+		$divs = $dom->getElementsByTagName('div');
 		foreach ($divs as $div) {
-			 if($div->nodeName == 'a'){
-				$link = $div->getAttribute('href');
-				echo print_r($link->nodeValue);
-			 }
+			echo "hej";
+			if($div->attribute('class')=='Box'){
+				echo "Attribute '".$div;
+			}
 		}
+
 			// $classname = 'js-permalink-shortcut';
 		// $xpath = new DOMXpath($dom);
 		// $elements = $xpath->query("*/a[@class='box']");
