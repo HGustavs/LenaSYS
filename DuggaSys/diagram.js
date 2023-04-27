@@ -1988,7 +1988,24 @@ function mouseMode_onMouseUp(event)
             break;
         }
         case mouseModes.EDGE_CREATION:
-            if (context.length > 1) {
+            if (context.length === 1){
+                if (event.target.id === "container"){   
+                    addLine(context[0], context[0], "Normal");
+                    clearContext();
+
+                    // Bust the ghosts
+                    ghostElement = null;
+                    ghostLine = null;
+
+                    showdata();
+                    updatepos(0,0);
+                } else {
+                    elementTypeSelected = elementTypes.Ghost;
+                    makeGhost();
+                    // Create ghost line
+                    ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                }
+            } else if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
                 clearContext();
@@ -1999,19 +2016,12 @@ function mouseMode_onMouseUp(event)
 
                 showdata();
                 updatepos(0,0);
-            }else if (context.length === 1){
-                if (event.target.id != "container"){   
-                    elementTypeSelected = elementTypes.Ghost;
-                    makeGhost();
-                    // Create ghost line
-                    ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }else{   
-                    clearContext();
-                    ghostElement = null;
-                    ghostLine = null;
-                    showdata();
-                }
-            }
+            } else {
+                clearContext();
+                ghostElement = null;
+                ghostLine = null;
+                showdata();
+            }  
             break;
 
         case mouseModes.BOX_SELECTION:
