@@ -143,18 +143,18 @@
 		// 	$value = $link->getAttribute("href");
 		
 			// if(preg_match($regex, $value)) {
-			$href = $value; // Takes the first matching value and stores it in an array
+		//$href = $value; // Takes the first matching value and stores it in an array
 			// 	echo $value;
 			// 	//break; //exits the loop since only the first match is necessary
 			// }
 		//}
 
-		if($href != "") {
-			$latestCommit = preg_replace($regex, "", $href);
-			return $latestCommit;
-		} else {
-			//print_r("No matches in database!");
-		}
+		// if($href != "") {
+		// 	$latestCommit = preg_replace($regex, "", $href);
+		// 	return $latestCommit;
+		// } else {
+		// 	//print_r("No matches in database!");
+		// }
 	}
 
 	// --------------------- Get Latest Commit from Sqlite-----------------------------------------
