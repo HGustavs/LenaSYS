@@ -75,7 +75,7 @@ Pre-req variables
 ***
 $pre-values =
     {
-        “hjk4ert6”
+        “hjk4ert6”,
         52
     };
 
@@ -122,11 +122,17 @@ pre-req:
     isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"] == TRUE
 ***
 
+pre-query: SELECT * FROM listentries WHERE moment=2008 // this should return something, else look for another moment and use it in the pre-values. Worst case a new listentries has to be created.
+
 $pre-values = {
-        $hash = “AcIj-Ld6”
-        $hashpwd = “OjOEh8R”
-        $variant = 13
-    }
+        “ghj1jfg2”,
+        “dsa4cxz5”,
+        13
+        2
+        2008
+    };
+
+    SQL-query:INSERT INTO userAnswer (hash, password, variant, cid, moment) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3], $pre-values[4])
 
     //Get the selected user by hash
     SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=$hash;
@@ -137,7 +143,7 @@ send parameters input to showDuggaservice.php
 send 
     {
         $opt = “SAVDU”
-        $hash = “AcIj-Ld6”
+        $hash = “ghj1jfg2”
     }
 
 ***
@@ -145,6 +151,12 @@ Gather service output
 ***
     Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
     This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using aid
+***
+
+	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
