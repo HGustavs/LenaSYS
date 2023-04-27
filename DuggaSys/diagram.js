@@ -8776,8 +8776,25 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") { 
-        elemAttri = element.attributes.length;
-        elemFunc = element.functions.length;
+        const maxCharactersPerLine = Math.floor(boxw / texth);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.attributes.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        const funcText = element.functions.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;
+        elemFunc = funcText.length;
 
         // Removes the previouse value in UMLHeight for the element
         for (var i = 0; i < UMLHeight.length; i++) {
@@ -8826,7 +8843,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8852,7 +8869,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemFunc/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemFunc; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${funcText[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
