@@ -70,7 +70,7 @@
 	function insertIntoSQLite($url, $cid, $commit) {
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		// Remove "or replace" later when everything works like it should
-		$query = $pdolite->prepare("INSERT INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
+		$query = $pdolite->prepare("INSERT INTO OR REPLACE gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $url);
 		$query->bindParam(':commits', $commit);
@@ -138,7 +138,7 @@
 		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
-			echo "<p>Commit from select: ".$row['repoURL']."</p>";
+			echo "<p>URL from select: ".$row['repoURL']."</p>";
 			$commit = $row['lastCommit'];
 			$url = $row['repoURL'];
 		}
