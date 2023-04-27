@@ -118,9 +118,10 @@
 		$href = "";
 		foreach ($links as $link) {
 			$value = $link->getAttribute("href");
+			echo $value;
 			if(preg_match($regex, $value)) {
 				$href = $value; // Takes the first matching value and stores it in an array
-				echo $href;
+		
 				//break; //exits the loop since only the first match is necessary
 			}
 		}
