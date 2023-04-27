@@ -936,6 +936,11 @@ const lineCardinalitys = {
  const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
     ARROW: "ARROW"
 };
+
+const SDLineType = {
+    STRAIGHT: "Straight",
+    SEGMENT: "Segment"
+}
 //#endregion ===================================================================================
 //#region ================================ GLOBAL VARIABLES     ================================
 // Data and html building variables
@@ -2917,8 +2922,9 @@ function changeLineProperties()
     var endLabel = document.getElementById("lineEndLabel");
     var startIcon= document.getElementById("lineStartIcon");
     var endIcon= document.getElementById("lineEndIcon");
+    var lineType = document.getElementById("lineType");
     var line = contextLine[0];
-    
+
     if(radio1.checked && line.kind != radio1.value) {
         line.kind = radio1.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -2978,6 +2984,9 @@ function changeLineProperties()
             line.endIcon = endIcon.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
+    }
+    if (line.type == 'SD') {
+        line.innerType = lineType.value.trim();
     }
     showdata();
 }
@@ -6728,6 +6737,16 @@ function generateContextProperties()
                 }
             });
             str += `</select>`;
+            str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
+            Object.keys(SDLineType).forEach(type => {
+                if (contextLine[0].innerType.localeCompare(type, undefined, { sensitivity: 'base' }) === 0) {
+                    str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
+                }
+                else {
+                    str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
+                }
+            });
+            str += `</select>`;
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
@@ -7547,6 +7566,12 @@ function preProcessLine(line) {
     //Sets the endIcon of the to-be-created line, if it an State entity
     if ((felem.type === 'SD') && (telem.type === 'SD')) {
         line.endIcon = "ARROW";
+        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
+            line.innerType = "Straight";
+        }
+        else {
+            line.innerType = "Segment";
+        }
     }
 }
 //#endregion =====================================================================================
@@ -7749,7 +7774,7 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
-        if (felem.type == 'SD' && elemsAreClose) {
+        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType == "Straight")) {
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
