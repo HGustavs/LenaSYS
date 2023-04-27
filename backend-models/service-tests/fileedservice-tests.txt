@@ -42,4 +42,39 @@ if ($result === true) {
     echo "Error deleting file: " . $result;
 }
 
+--------------------------------------------------------------------------------------------------------------------------------------------
+Test retrieving a file path (line 218)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+*********
+
+(checklogin() && $hasAccess) { IS TRUE
+
+
+*********
+* Set up testdata:
+*********
+
+$fid = 1;
+$expectedPath = "/path/to/file";
+
+
+*********
+* Query the database:
+*********
+
+$query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
+        $query->bindParam(':fid', $fid);
+        $result = $query->execute();
+        if($row = $query->fetch(PDO::FETCH_ASSOC)){
+            $actualPath = $row['path'];
+        }
+
+*********
+* Check that the actual path is equal to the expected path:
+*********
+
+$this->assertEquals($expectedPath, $actualPath);
 
