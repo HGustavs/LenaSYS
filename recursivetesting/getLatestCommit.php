@@ -116,7 +116,7 @@
 		//-----------------------------------------TESTA DETTA EFTER LUNCH------------------------------------------------
 			// $classname = 'js-permalink-shortcut';
 		$xpath = new DOMXpath($dom);
-		$elements = $xpath->query("*/div[@class='js-permalink-shortcut']");
+		$elements = $xpath->query("*/a[@class='js-permalink-shortcut']");
 
 		// foreach($elements as $element) {
 		// 	$value = $element->getAttribute("href");
