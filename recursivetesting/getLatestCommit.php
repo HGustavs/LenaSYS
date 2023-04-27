@@ -124,7 +124,7 @@
 		$divs = $dom->getElementsByTagName('a');
 		foreach ($divs as $div) {
 				
-			if($div->getAttribute('class')=='js-permalink-shortcut'){
+			if($div->getAttribute('class')=='d-none js-permalink-shortcut'){
 				$value = $div->getAttribute("href");
 				echo $value;
 			}
