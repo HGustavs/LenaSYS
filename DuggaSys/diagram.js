@@ -1988,24 +1988,7 @@ function mouseMode_onMouseUp(event)
             break;
         }
         case mouseModes.EDGE_CREATION:
-            if (context.length === 1){
-                if (event.target.id === "container"){   
-                    addLine(context[0], context[0], "Normal");
-                    clearContext();
-
-                    // Bust the ghosts
-                    ghostElement = null;
-                    ghostLine = null;
-
-                    showdata();
-                    updatepos(0,0);
-                } else {
-                    elementTypeSelected = elementTypes.Ghost;
-                    makeGhost();
-                    // Create ghost line
-                    ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }
-            } else if (context.length > 1) {
+            if (context.length > 1) {
                 // TODO: Change the static variable to make it possible to create different lines.
                 addLine(context[0], context[1], "Normal");
                 clearContext();
@@ -2016,12 +1999,19 @@ function mouseMode_onMouseUp(event)
 
                 showdata();
                 updatepos(0,0);
-            } else {
-                clearContext();
-                ghostElement = null;
-                ghostLine = null;
-                showdata();
-            }  
+            }else if (context.length === 1){
+                if (event.target.id != "container"){   
+                    elementTypeSelected = elementTypes.Ghost;
+                    makeGhost();
+                    // Create ghost line
+                    ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                }else{   
+                    clearContext();
+                    ghostElement = null;
+                    ghostLine = null;
+                    showdata();
+                }
+            }
             break;
 
         case mouseModes.BOX_SELECTION:
@@ -7403,20 +7393,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     }
 
-    // If from and to elements are the same entity, create a recursive relation
-    if (fromElement.id === toElement.id) {
-        var newLine = {
-            id: makeRandomID(),
-            fromID: fromElement.id,
-            toID: toElement.id,
-            kind: "Recursive"
-        };
-        addObjectToLines(newLine, stateMachineShouldSave);
-        if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
-        return newLine;
-    }
-
-    if (fromElement.kind != toElement.kind && !(kind === "Recursive")) {
+    if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
