@@ -305,7 +305,7 @@
                         </div>
                     </div>        
                 </div>
-                </div><!--<-- State diagram functionality end -->
+                <!--<-- State diagram functionality end -->
                 <div>
                     <div id="elementPlacement1"
                          class="ERButton diagramIcons toolbarMode"
@@ -458,7 +458,7 @@
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-        </fieldset>
+     </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
             <div class="diagramIcons" onclick='zoomin();'>
