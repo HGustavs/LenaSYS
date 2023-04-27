@@ -3,26 +3,36 @@ showDuggaservice.php
 —------------------------------------------------------------------------------------------------------------------------
 TEST #1 - 100-105
 Get active users
-(Maybe not needed)
+
 ***
 Pre-req: -
 ***
+$pre-values {
+                “hnf3j58s”
+                5
+            }
+
+Pre-query: INSERT INTO groupdugga(hash,active_users)  VALUES ($pre-values[0], $pre-values[1]);
+
 Send parameters inputs to showDuggaservice.php
-    send
-    {
-        $opt = “UPDATEAU”
-        $hash = hash
+send
+{
+	$opt = “UPDATEAU”
+    $hash = “hnf3j58s”
 
-    }
-
-    SQL-query: SELECT active_users FROM groupdugga WHERE hash=hash
-    This should show all active users
+}
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
+
+***
+* Remove inserted row from DB, using hash
+***
+
+	SQL-query DELETE FROM groupdugga WHERE hash = $hash;
 
 —------------------------------------------------------------------------------------------------------------------
 TEST #2 - 106-110
@@ -33,26 +43,26 @@ Pre-req: $active == NULL
 ***
 
 Pre query:
-    SQL-query: SELECT hash FROM groupdugga WHERE hash=’tj7dh2nb’; //This is to check that this hash isn't already in the db, this also makes the pre-req active==NULL true which will lead to an insert happening.
+SQL-query: SELECT hash FROM groupdugga WHERE hash=’tj7dh2nb’; //This is to check that this hash isn't already in the db, this also makes the pre-req active==NULL true which will lead to an insert happening.
 
-    Send parameters inputs to showDuggaservice.php
-    send
-    {
-        $opt = “UPDATEAU”
-        $hash = “tj7dh2nb”
-        $AUtoken = 999
-    }
+Send parameters inputs to showDuggaservice.php
+send
+{
+	$opt = “UPDATEAU”
+    $hash = “tj7dh2nb”
+    $AUtoken = 999
+}
 
 ***
 * Get newly added active users
 ***
-	SQL-query: SELECT MAX(active_users) FROM groupdugga; // Save to variable $active_users this will identify the last active user that was created (it has the highest active_users)
+	SQL-query: SELECT MAX(active_users) FROM groupdugga; // Save to variable $active_users this will identify the last active user that was created (it has the highest AUtoken)
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
 
 ***
 * Remove inserted row from DB, using hash
@@ -73,16 +83,18 @@ Pre-req: $active != NULL
 ***
 Pre-req variables
 ***
-$pre-values =
-    {
-        “hjk4ert6”,
-        52
-    };
 
-    SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES($pre-values[0], $pre-values[1])
+
+$pre-values =
+{
+    “hjk4ert6”,
+    52
+};
+
+SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES($pre-values[0], $pre-values[1])
 
 ***
-* Get newly created active users, 
+* Get newly created active users, make sure it was added
 ***
 	SQL-query: SELECT * FROM groupdugga WHERE hash=$pre-values[0]; //
 
@@ -92,16 +104,16 @@ $pre-values =
 * send parameters input to showDuggaservice.php
 ***
 send
-    {
-        $opt = “UPDATEAU”
-        $hash = “hjk4ert6”
-        $newToken = 9999
-    }
+{
+    $opt = “UPDATEAU”
+    $hash = “hjk4ert6”
+    $newToken = 9999
+}
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
 
 ***
 * Remove inserted row from DB, using hash
@@ -117,46 +129,69 @@ get data from userAnswer
 ***
 
 ***
-pre-req: 
-    !isSuperUser($userid) && isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) == TRUE &&
-    isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"] == TRUE
+pre-req: !isSuperUser($userid) &&			isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) == TRUE &&
+isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"] == TRUE
 ***
+Pre-querys:
+$preValuesCourse = {	
+                        9999
+                        1
+                    };
 
-pre-query: SELECT * FROM listentries WHERE moment=2008 // this should return something, else look for another moment and use it in the pre-values. Worst case a new listentries has to be created.
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
 
 $pre-values = {
-        “ghj1jfg2”,
-        “dsa4cxz5”,
-        13
-        2
-        2008
-    };
+                “ghj1jfg2”,
+                “dsa4cxz5”,
+                13,
+                9999,
+                5019
+            }
 
-    SQL-query:INSERT INTO userAnswer (hash, password, variant, cid, moment) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3], $pre-values[4])
+INSERT INTO userAnswer (hash, password, variant, cid, moment) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3], $pre-values[4])
 
-    //Get the selected user by hash
-    SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=$hash;
+//Get the selected user by hash
+SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=$hash;
 
 ***
 send parameters input to showDuggaservice.php
 ***
 send 
-    {
-        $opt = “SAVDU”
-        $hash = “ghj1jfg2”
-    }
+{
+    $opt = “SAVDU”
+    $hash = “ghj1jfg2”
+}
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
 
 ***
 * Remove inserted row from DB, using aid
 ***
 
 	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+			DELETE FROM listentries WHERE cid = 9999;
+			DELETE FROM course WHERE cid = 9999;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
@@ -164,54 +199,74 @@ TEST #5 - 279 - 287
 update submitted dugga
 
 ***
-Pre-req: 
-    !isset($grade) || !$grade > 1 &&
-    isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0
+Pre-req: !isset($grade) || !$grade > 1 &&
+isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0
 ***
 
 ***
 Pre-req variables
 ***
+Pre-querys:
+$preValuesCourse = {	9999
+			1
+};
 
-pre-query: SELECT * FROM listentries WHERE moment=2008 // this should return something, else look for another moment and use it in the pre-values. Worst case a new listentries has to be created.
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
 
 $pre-values =
-    {
-        2,
-        “dfg4zxc5”,
-        “asdfasdf”,
-        2008
-    };
-
-    SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
+{
+    9999,
+    “dfg4zxc5”,
+    “asdfasdf”,
+    5019
+};
+SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
 
 * Get newly created data
-    SELECT * WHERE hash=pre-values[2];
+SELECT * WHERE hash=pre-values[1];
 
 ***
 * Update information on userAnswer
 * send parameters input to showDuggaservice.php
 ***
 send
-    {
-        $opt = SAVDU
-        $hash = “dfg4zxc5”
-        $haspwd = “asdfasdf”
-        $answer = “im updated”
-    }
-
+{
+	$opt = SAVDU
+    $hash = “dfg4zxc5”
+    $haspwd = “asdfasdf”
+    $answer = “im updated”
+}
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
 
 ***
-* Remove inserted row from DB, using hash
+* Remove inserted row from DB, using aid
 ***
 
-SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+    DELETE FROM listentries WHERE cid = 9999;
+	DELETE FROM course WHERE cid = 9999;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
@@ -222,27 +277,45 @@ submit dugga
 Pre-req: !isset($grade) || !$grade > 1
 ***
 
-pre-query: SELECT * FROM course WHERE cid=2 // this should return something, otherwise cid has to be changed in the send.
+Pre-querys:
+$preValuesCourse = {	9999
+			1
+};
 
-pre-query: SELECT * FROM listentries WHERE moment=2002 // this should return something, else look for another moment and use it in the pre-values. Worst case a new listentries has to be created.
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
 
 ***
 * send parameters input to showDuggaservice.php
 ***
-    send
-    {
-        $opt = “SAVDU”
-        $cid = 2
-        $coursevers = 52432
-        $duggaid = 1
-        $moment = 2002
-        $variant = 3
-        $hash = “ghj1ghj2”
-        $haspwd = “asddasdd”
-        $answer = NULL
-    }
-
+send
+{
+	$opt = “SAVDU”
+	$cid = 9999
+	$coursevers = 52432
+	$duggaid = 1
+	$moment = 5019
+	$variant = 3
+    $hash = “ghj1ghj2”
+    $haspwd = “asddasdd”
+    $answer = NULL
+}
 
 ***
 get newly created data
@@ -253,103 +326,199 @@ get newly created data
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
 
 ***
 * Remove inserted row from DB, using hash
 ***
 
-SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+    DELETE FROM listentries WHERE cid = 9999;
+	DELETE FROM course WHERE cid = 9999;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
-TEST #7 (rows 319-324)
+TEST #7 - 319 - 324
 super-view data from useranswer on hash
 
 ***
-Pre-req: 
-    isSuperUser = TRUE
-    $hash != "UNK"
+Pre-req: isSuperUser = TRUE
+	  $hash != “UNK”
 ***
+
+Pre-querys:
+$preValuesCourse = {	9999
+			1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+
+$pre-values =
+{
+    9999,
+    “dfg4zxc5”,
+    “asdfasdf”,
+    5019
+};
+SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
 
 ***
 * send parameters input to showDuggaservice.php
 ***
-    send
-    {
-        $hash = hash
-    }
-
-***
-get all data
-***
-    SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=hash;
+send
+{
+	$hash = “dfg4zxc5”
+}
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
+
+***
+* Remove inserted rows from DB
+***
+
+SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+DELETE FROM listentries WHERE cid = 9999;
+DELETE FROM course WHERE cid = 9999;
 —------------------------------------------------------------------------------------------------------------------
+
 —------------------------------------------------------------------------------------------------------------------
-TEST #8 (rows 327-334)
+TEST #8 - 327 - 334
 super-view data from useranswer on moment
 
 ***
-Pre-req: 
-    isSuperUser = TRUE
-    $hash != "UNK"
-    $rows = NULL
+Pre-req: isSuperUser = TRUE
+	  $hash != “UNK”
+	  $rows == NULL
 ***
+Pre-query:
+
+$preValuesCourse = {	9999
+			1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+
+SELECT * FROM userAnswer WHERE hash = “xxxxxxxx”// This should return nothing, otherwise, change hash to something where previous query returns nothing.
 
 ***
 * send parameters input to showDuggaservice.php
 ***
-    send
-    {
-        $moment = moment
-    }
+send
+{
+	$moment = 5019
+}
 
-***
-get all data
-***
-    SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE moment=moment;
+
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
+
+***
+* Remove inserted rows from DB
+***
+
+SQL-query:DELETE FROM listentries WHERE cid = 9999;
+DELETE FROM course WHERE cid = 9999;
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
 TEST #9 - 345 - 351
 super-view data on quizname
 
 ***
-Pre-req: 
-    isSuperUser = TRUE
-    $hash != “UNK”
+Pre-req: isSuperUser = TRUE
+	  $hash != “UNK”
 ***
+
+Pre-query:
+
+$preValuesCourse = {	9999
+			1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
 
 ***
 * send parameters input to showDuggaservice.php
 ***
-    send
-    {
-        $moment = moment
-    }
+send
+{
+	$moment = 5019
+}
 
-***
-get all entrynames
-***
-    SELECT entryname FROM listentries WHERE lid=moment;
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
+
+***
+* Remove inserted rows from DB
+***
+
+SQL-query: DELETE FROM listentries WHERE cid = 9999;
+DELETE FROM course WHERE cid = 9999;
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
 TEST #10 - 374 - 402
@@ -359,53 +528,139 @@ view data on userAnswer
 Pre-req: !isSuperUser 
 	  $hash != “UNK” && password != “UNK”
 ***
-    send
-    {
-        $cid = 2
-        $coursevers = 52432
-        $duggaid = 1
-        $moment = 2002
-        $variant = 3
-        $hash = “ghj1ghj2”
-        $haspwd = “asddasdd”
-        $answer = NULL
-    }
+Pre-query:
 
-    SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(2, 1, 2002, 52432 , 3, “ghj1ghj2” , “asddasdd”,1 ,1 , NULL ,now());")
+$preValuesCourse = {	9999
+			1
+};
 
-***
-get newly created user
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-***
-	SQL-query: SELECT * FROM userAnser WHERE hash=”ghj1gh2”
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+
+$pre-values = {
+	$cid = 9999
+	$coursevers = 52432
+	$duggaid = 1
+	$moment = 5019
+	$variant = 3
+    $hash = “ghj1ghj2”
+    $haspwd = “asddasdd”
+    $answer = NULL
+}
+SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3] , $pre-values[4], $pre-values[5] , $pre-values[6],$pre-values[7] , $pre-values[8], $pre-values[9] ,now());")
 
 ***
 * send parameters input to showDuggaservice.php
 ***
-    send
-    {
-        $hash = hash
-        $hashpwd = hashpwd
-    }
+send
+{
+	$hash = “ghj1ghj2”
+	$hashpwd = “asddasdd”
+}
 
-***
-get all entrynames
-***
-    SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=“ghj1ghj2” AND password=“asddasdd”
 
 ***
 Gather service output
 ***
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    This is the expected output for the micro service.
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
 
 ***
 * Remove inserted row from DB, using hash
 ***
 
-	SQL-query: DELETE FROM userAnswer WHERE hash = “ghj1ghj2”;
+	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+    DELETE FROM listentries WHERE cid = 9999;
+	DELETE FROM course WHERE cid = 9999;
 
 
 —------------------------------------------------------------------------------------------------------------------
+—------------------------------------------------------------------------------------------------------------------
+TEST #11 - 402- 449
+super-view data on quizname
 
+***
+Pre-req: !isSuperUser 
+	  $hash = “UNK” || password = “UNK”
+***
+Pre-query:
+
+$preValuesCourse = {	9999
+			1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+
+$preValuesListentries = {   9999, 
+                            "Inserttobedeleted",
+                            "UNK",
+                            4,
+                            12,
+                            2,
+                            1,
+                            1337,
+                            5019,
+                            1,
+                            1,
+                            0, 
+                            "UNK" }; 
+
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+
+$pre-values = {
+	$cid = 9999
+	$coursevers = 52432
+	$duggaid = 1
+	$moment = 5019
+	$variant = 3
+    $hash = “ghj1ghj2”
+    $haspwd = “UNK”
+    $answer = NULL
+}
+SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3] , $pre-values[4], $pre-values[5] , $pre-values[6],$pre-values[7] , $pre-values[8], $pre-values[9] ,now());")
+
+***
+* send parameters input to showDuggaservice.php
+***
+send
+{
+	$courseid = 9999
+	$duggaid = 1
+    $tmpvariant = 3
+    $tmphash = “ghj1ghj2”
+    $tmphashpwd = “UNK”
+}
+
+
+***
+Gather service output
+***
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+This is the expected output for the micro service.
+
+SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+DELETE FROM listentries WHERE cid = 9999;
+DELETE FROM course WHERE cid = 9999;
+
+***
+*NOTE: This test might have better testing solutions, since the query is very complex.
+***
+—------------------------------------------------------------------------------------------------------------------
 
