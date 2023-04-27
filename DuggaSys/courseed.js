@@ -647,14 +647,10 @@ function elementIsValid(element) {
 			//This prevents it from being impossible to save course code without changing it
 			if(element.value !== element.dataset.origincode) {
 				if(activeCodes.includes(element.value)) {
-					console.log(messageElement);
-					console.log(messageElement.firstChild);
 					messageElement.firstChild.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				} else {
-					console.log(messageElement);
-					console.log(messageElement.firstChild);
-					messageElement.firstChild.innerHTML = "";
+					$(messageElement.firstChild).fadeOut();
 				}
 			}
 		}
