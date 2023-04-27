@@ -44,22 +44,6 @@
 
 		// Get the latest commit from the URL, then print it
 		$latestCommit = getCommit($githubURL);
-		print_r("First: ".$latestCommit);
-		// sleep(5);
-		// $latestCommit = getCommit($githubURL);
-		// print_r("Second: ".$latestCommit);
-		// sleep(10);
-		// $latestCommit = getCommit($githubURL);
-		// print_r("Third: ".$latestCommit);
-		// The commit doesn't always work, try to get it up to 10 times	
-		// for($counter = 0; $counter < 10; $counter++) {
-		// 	if($latestCommit == "") {
-		// 		$latestCommit = getCommit($githubURL);
-		// 		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
-		// 	} else {
-		// 		break;
-		// 	}
-		// }
 
 		if($cid != null && $latestCommit != "") {
 			insertIntoSQLite($githubURL, $cid, $latestCommit);
@@ -76,7 +60,7 @@
 	function insertIntoSQLite($url, $cid, $commit) {
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		// Remove "or replace" later when everything works like it should
-		$query = $pdolite->prepare("INSERT INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $url);
 		$query->bindParam(':commits', $commit);
@@ -157,21 +141,6 @@
 			sleep(2);
 			print_r("Again: ".$latestCommit);
 		}
-		
-
-
-
-		// The commit doesn't always work, try to get it up to 10 times	
-		// for($counter = 0; $counter < 10; $counter++) {
-		// 	if($latestCommit == "") {
-		// 		$latestCommit = getCommit($githubURL);
-		// 		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
-		// 	} else {
-		// 		break;
-		// 	}
-		// }
-
-
 	}
 
 
