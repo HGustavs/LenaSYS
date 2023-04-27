@@ -120,7 +120,7 @@
 
 		foreach($elements as $element) {
 			$value = $element->getAttribute("href");
-			echo $value;
+			echo "Value is: ".$value;
 		}
 
 
