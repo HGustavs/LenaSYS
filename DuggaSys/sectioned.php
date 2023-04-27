@@ -18,7 +18,7 @@
 		try{
 			$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
-			$query =  $pdolite->prepare('SELECT * FROM gitFiles ');
+			$query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir"');
 			// $query->bindParam(':cid', 1);
 			$query->execute();
 			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
