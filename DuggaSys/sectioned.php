@@ -18,7 +18,7 @@
 		try{
 			$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
-			$query =  $pdolite->prepare('SELECT * FROM gitFiles ');
+			$query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = dir');
 			// $query->bindParam(':cid', 1);
 			$query->execute();
 			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -26,10 +26,8 @@
 			return '<p>Error: ' . $e->getMessage() . '</p>';
 		}
 		foreach($rows as $row){
-			// return '<p>' . $row['fileName'] . '</p>';
 		echo "<option value=''>" .$row['fileName']. "</option>";
 		}
-
 	}
 	
 
@@ -597,71 +595,13 @@
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> <!-- lägg till id och options här med php? -->
-
 				<?php
-
-echo testingtesting();
-					// testingtesting($cid);
-							//connecta till sqllite där vi fetchat ner repos till
-							// class githubDB extends SQLite3 {
-							// 	function __construct(){
-							// 		$this->open("../../githubMetadata/metadata2.db"); // i samma fil
-							// 	}
-							// }
-						
-							// $pdoLite = new PDO('../../githubMetadata/metadata2.db');
-
-							// $gdb = new githubDB();
-							// ändra till correct fil
-							// $query = $pdoLite->query( "SELECT fileType FROM gitFiles WHERE fileType = dir");
-							// $query->bindParam(':dir', $dir);
-							// $query->execute();
-						
-							// $codeLinkQuery = $pdo->prepare( "SELECT FileType FROM gitRepos");
-							// $codeLinkQuery->execute();
-							
-							
-							// $gdb ->close();//stäng i slutet av användning
-						
-							// while($row = $query->FETCH(PDO::FETCH_ASSOC)){
-							// 	$fileName = $row['filename'];
-							// 	$cid = $row['cid'];
-							// 	$fileInfo = $fileName . ',' . $cid;
-							// 	if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){
-							// 		echo "<option value='$fileInfo'>$fileName</option>";
-							// 	}
-							// }
-
-							// $cid = getOPG('courseid');
-
-							// // fetch data from database. Used to create fileed.php table of existing files.
-							
-							// $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
-							// $query->bindParam(':cid', $cid);
-							// $query->execute();
-
-
-	// for($i=0;$i<3;$i++){
-		
-	// 	echo "<option value=''>.$i</option>";
-	// }
+					echo testingtesting();
 				?>
 			</select></div>
-			
-			
-
-
-
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 		</div>
-		<div>
-			<?php
-		
-	echo testingtesting();
-	
-			?>
-			</div>
 	</div>
 
 	<!-- github template  -->
