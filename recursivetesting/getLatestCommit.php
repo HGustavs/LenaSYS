@@ -136,10 +136,8 @@
 			print_r("Error! Couldn't get url and commit from SQLite db");
 		} else {
 			// Get the latest commit from the URL, then print it
-			$latestCommit = getCommit();
+			$latestCommit = getCommit($url);
 			print_r($latestCommit);
-			sleep(2);
-			print_r("Again: ".$latestCommit);
 		}
 	}
 
