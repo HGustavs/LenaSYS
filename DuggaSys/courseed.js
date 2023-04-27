@@ -649,8 +649,6 @@ function elementIsValid(element) {
 				if(activeCodes.includes(element.value)) {
 					messageElement.firstChild.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
-				} else {
-					$(messageElement.firstChild).fadeOut();
 				}
 			}
 		}
