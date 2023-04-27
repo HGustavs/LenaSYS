@@ -9094,11 +9094,13 @@ function drawElement(element, ghosted = false)
             }
         }
 
+        var nameArray = [element.name];
+
         const text = element.attributes.map(line => {
             return splitLengthyLine(line, maxCharactersPerLine);
         }).flat();
 
-        const nameText = element.name.map(line => {
+        const nameText = nameArray.map(line => {
             return splitLengthyLine(line, maxCharactersPerLine);
         }).flat();
 
