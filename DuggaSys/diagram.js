@@ -1989,8 +1989,17 @@ function mouseMode_onMouseUp(event)
         }
         case mouseModes.EDGE_CREATION:
             if (context.length > 1) {
+                if (context[0] === context[1]) { // if first and second objects are the same
+                    // create a new line object that connects the entity to itself
+                    const selfLine = { id: makeRandomID(), fromID: context[0].id, toID: context[0].id, kind: "Normal" };
+                    addLine(selfLine.fromID, selfLine.toID, selfLine.kind);
+                    stateMachine.save(StateChangeFactory.LineCreated(selfLine), StateChange.ChangeTypes.LINE_CREATED);
+                } else {
+                    addLine(context[0], context[1], "Normal");
+                    stateMachine.save(StateChangeFactory.LineCreated(ghostLine), StateChange.ChangeTypes.LINE_CREATED);
+                }
+
                 // TODO: Change the static variable to make it possible to create different lines.
-                addLine(context[0], context[1], "Normal");
                 clearContext();
                 
                 // Bust the ghosts
