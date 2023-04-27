@@ -128,3 +128,22 @@ Will check if a user has an account
 SQL-query: SELECT uid FROM user WHERE ssn=:ssn // check uid
 
 -----------------------------
+
+Test 7: check if there is a class
+Row: 198 - 205
+****
+Pre-req:
+  (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
+
+****
+
+Send {
+  $opt = "ADDUSER"
+  $classname = "UNK"
+}
+
+Make sure there is a class existing in the database.
+SQL-query: SELECT class FROM class WHERE class=:clsnme // check class
+Should display an error message if there are no classes in the database.
+
+-------------------------------
