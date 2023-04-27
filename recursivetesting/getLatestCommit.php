@@ -17,8 +17,8 @@
 
 	getCourseID("https://github.com/c21sebar/test"); // Dummy Code to see if everything works
 
-	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit -------------------------------
-	// --------------------- This only happens when creating a new course -----------------------------------------------
+	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit ----------------------------------------------
+	// --------------------- This only happens when creating a new course --------------------------------------------------------------
 
 	function getCourseID($githubURL) {
 
@@ -54,7 +54,7 @@
 		}
 	}
 
-	// --------------------- Insert into Sqlite db when new course is created -------------------------------
+	// --------------------- Insert into Sqlite db when new course is created ----------------------------------------------------------
 
 	// Create a new row if it doesn't exist
 	function insertIntoSQLite($url, $cid, $commit) {
@@ -74,50 +74,11 @@
 		} 
 		getCommitSqlite($cid); //testing !!!!!!! don't forget to remove!
 	}
-	//---------------------------------------When pressing refresh button: -------------------------------------------------------------
 
-	
-
-
-	// --------------------- Get Latest Commit Function from URL-----------------------------------------
-
-	function getCommit($url) {
-
-		$html = file_get_contents($url);
-		$dom = new DomDocument;
-		$dom->preserveWhiteSpace = FALSE;
-		
-		// Because of how dom works with html, this is necessary to not fill the screen with errors - the page still prints
-		libxml_use_internal_errors(true); 
-		$dom->loadHTML($html);
-		libxml_use_internal_errors(false);
-
-
-
-		$href = "";
-		$divs = $dom->getElementsByTagName('a');
-		foreach ($divs as $div) {		
-			if($div->getAttribute('class')=='d-none js-permalink-shortcut'){
-				$value = $div->getAttribute("href");
-				echo $value;
-				$href = $value;
-			}
-		}
-	
-		// Regex to only keep the commit numbers, instead of the entire URL
-		$regex = "/^(.*?)\/tree\//";
-
-		if($href != "") {
-			$latestCommit = preg_replace($regex, "", $href);
-			return $latestCommit;
-		} else {
-			print_r("No matches in database!");
-		}
-	}
-
-	// --------------------- Get Latest Commit from Sqlite-----------------------------------------
+	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
 
 	function getCommitSqlite($cid){
+		// Get old commit from Sqlite 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
 		$query->bindParam(':cid', $cid);
@@ -137,9 +98,47 @@
 		} else {
 			// Get the latest commit from the URL, then print it
 			$latestCommit = getCommit($url);
-			print_r($latestCommit);
+			print_r("Commit from URL that's been selected from db ".$latestCommit);
+
+		// Compare old commit in db with the new one from the url
+			if($latestCommit != $commit) {
+				print_r("The course should be updated!");
+			} else {
+				print_r("The course is already up to date!");
+			}
 		}
 	}
+	
+	// --------------------- Get Latest Commit Function from URL------------------------------------------------------------------------
 
+	function getCommit($url) {
 
+		$html = file_get_contents($url);
+		$dom = new DomDocument;
+		$dom->preserveWhiteSpace = FALSE;
+		
+		// Because of how dom works with html, this is necessary to not fill the screen with errors - the page still prints
+		libxml_use_internal_errors(true); 
+		$dom->loadHTML($html);
+		libxml_use_internal_errors(false);
+
+		$href = "";
+		$divs = $dom->getElementsByTagName('a');
+		foreach ($divs as $div) {		
+			if($div->getAttribute('class')=='d-none js-permalink-shortcut'){
+				$value = $div->getAttribute("href");
+				$href = $value;
+			}
+		}
+	
+		// Regex to only keep the commit numbers, instead of the entire URL
+		$regex = "/^(.*?)\/tree\//";
+
+		if($href != "") {
+			$latestCommit = preg_replace($regex, "", $href);
+			return $latestCommit;
+		} else {
+			print_r("No matches in database!");
+		}
+	}
 ?>
