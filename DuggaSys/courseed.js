@@ -652,7 +652,7 @@ function elementIsValid(element) {
 					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				} else {
-					console.log("debug3");
+					messageElement.innerHTML = ``;
 				}
 			}
 		}
