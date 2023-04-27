@@ -153,7 +153,6 @@ if (checklogin() && $hasAccess) {
             $description="Global"." ".$filename;
             logUserEvent($userid, $username, EventTypes::EditFile, $description);
         } else if ($kind == 3) {
-            $debug = "From savefile PATH: ". $path;
             if ($path == null)
                 $currcwd .= "/courses/" . $cid . "/" . $filename;
             else 
