@@ -742,6 +742,103 @@ function validateForm(formid) {
 			alert("You have entered incorrect information...");
 		}
 	}
+
+  // Validates Item form
+  if (formid === 'editSection') {
+    var sName = document.getElementById("sectionname").value;
+    var deadDate = document.getElementById("setDeadlineValue").value;
+    var item = document.getElementById("editSectionDialogTitle").innerHTML;
+
+    // If fields empty
+    if (sName == null || sName == "") {
+      alert("Fill in all fields");
+
+    }
+
+    //Name is a duplicate
+    if(sName == item){
+      window.bool11 = true;
+    }
+    else if(getCourseElements().indexOf(sName) >= 0){
+      window.bool11 = false;
+      alert('Name already exists, choose another one');
+    }else{
+      window.bool11 = true;
+    }
+
+    // if all information is correct
+    if (window.bool10 == true && window.bool11 == true) {
+      //delay added so that the loading process works correctly.
+      setTimeout(function(){
+      updateItem();
+      updateDeadline();
+      },10);
+      //Toggle for alert when update a item
+      var element = document.getElementById("updateAlert");
+      element.classList.toggle("createAlertToggle");
+      //Set text for the alert when update a item
+      document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+      //Add class to element so it will be highlighted.
+      setTimeout(function(){
+        var element = document.getElementById('I'+updatedLidsection).firstChild;
+        if(element.tagName == 'DIV') {
+        element = element.firstChild;
+        element.classList.add("highlightChange");
+        }else if (element.tagName == 'A'){
+          document.getElementById('I'+updatedLidsection).classList.add("highlightChange");
+        }else if (element.tagName == 'SPAN'){
+          document.getElementById('I'+updatedLidsection).firstChild.classList.add("highlightChange");
+        }
+      },200);
+      //Duration time for the alert before remove
+      setTimeout(function(){
+        $("#updateAlert").removeClass("createAlertToggle");
+        document.getElementById("updateAlert").innerHTML = "";
+      },3000);
+    } else {
+      alert("You have entered incorrect information");
+    }
+  }
+   //Validates new course version form
+  if (formid === 'newCourseVersion') {
+    var versName = document.getElementById("versname").value;
+    var versId = document.getElementById("cversid").value;
+
+    //If fields empty
+    if (versName == null || versName == "", versId == null || versId == "") {
+      alert("Fill in all fields");
+
+    }
+    // If all information is correct
+    if (window.bool5 === true && window.bool3 === true && window.bool === true) {
+      alert('New version created');
+      createVersion();
+      $('#newCourseVersion input').val("");
+
+    } else {
+      alert("You have entered incorrect information");
+    }
+  }
+
+  // Validates edit course version form
+  if (formid === 'editCourseVersion') {
+    var eversName = document.getElementById("eversname").value;
+
+    // If fields empty
+    if (eversName == null || eversName == "") {
+      alert("Fill in all fields");
+
+    }
+
+    // If all information is correct
+    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
+      alert('Version updated');
+      updateVersion();
+      resetMOTDCookieForCurrentCourse();
+    } else {
+      alert("You have entered incorrect information");
+    }
+  }
 }
 function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton){
 	const saveButton = document.getElementById(submitButton);
