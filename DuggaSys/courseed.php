@@ -88,7 +88,7 @@ if(isset($_SESSION['uid'])){
 					<span>Course code:</span>
 					<input oninput="quickValidateForm('newCourse','createCourse')"  class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 				</div>
-				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px; bottom:-5px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
 				<!-- Input field to Github repository-->
@@ -97,7 +97,7 @@ if(isset($_SESSION['uid'])){
 						<span style="padding-right: 10px;">GitHub URL:</span>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class="textinput validate" type="text" id="ncoursegit-url" name="courseGitURL" placeholder="https://github.com/..."/>
 					</div>
-					<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
+					<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px; bottom:0px;" class="formDialogText">Enter a valid github url</span></div>
 					<p id="dialog5" class="validationDialog">Enter a valid github url</p>
 				</div>
     		<div style='padding:5px;'>
