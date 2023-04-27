@@ -32,7 +32,10 @@ Create active users
 Pre-req: $active == NULL
 ***
 
-Send parameters inputs to showDuggaservice.php
+Pre query:
+    SQL-query: SELECT hash FROM groupdugga WHERE hash=’tj7dh2nb’; //This is to check that this hash isn't already in the db, this also makes the pre-req active==NULL true which will lead to an insert happening.
+
+    Send parameters inputs to showDuggaservice.php
     send
     {
         $opt = “UPDATEAU”
@@ -40,7 +43,6 @@ Send parameters inputs to showDuggaservice.php
         $AUtoken = 999
     }
 
-    SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken)
 ***
 * Get newly added active users
 ***
