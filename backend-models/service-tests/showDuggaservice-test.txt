@@ -46,7 +46,7 @@ Pre query:
 ***
 * Get newly added active users
 ***
-	SQL-query: SELECT MAX(active_users) FROM groupdugga; // Save to variable $active_users this will identify the last active user that was created (it has the highest AUtoken)
+	SQL-query: SELECT MAX(active_users) FROM groupdugga; // Save to variable $active_users this will identify the last active user that was created (it has the highest active_users)
 
 ***
 Gather service output
