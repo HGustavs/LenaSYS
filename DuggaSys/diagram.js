@@ -8951,7 +8951,7 @@ function drawElement(element, ghosted = false)
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
-                    <svg width="500" height="500">
+                    <svg width="100%" height="100%">
                     <rect width="500" height="500" fill="#FFF" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
                     <rect width="200" height="50" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
                         <text x='50' y='25' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
