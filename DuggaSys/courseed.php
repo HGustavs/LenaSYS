@@ -82,13 +82,13 @@ if(isset($_SESSION['uid'])){
 					<span>Course Name:</span>
 					<input oninput="quickValidateForm('newCourse','createCourse')"  class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 				</div>
-				<div class="formDialog" style="display: block;left:50px; top:-8px;"><span id="courseNameError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
+				<div class="formDialog" style="display: block;left:50px; top:-8px;"><span id="courseNameError" style="display: none; left:0px; bottom:-10px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
 					<input oninput="quickValidateForm('newCourse','createCourse')"  class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 				</div>
-				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px; bottom:-5px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px; bottom:5px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
 				<!-- Input field to Github repository-->
