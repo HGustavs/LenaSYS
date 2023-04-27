@@ -8992,7 +8992,7 @@ function drawElement(element, ghosted = false)
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius*2}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius*-1)},${cornerRadius}
                     h${(boxw - (linew * 2)-(cornerRadius*2))*-1}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius)*-1},${(cornerRadius)*-1}
