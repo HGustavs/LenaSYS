@@ -134,17 +134,25 @@
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
+		$commmit = "";
+		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
 			echo "<p>Commit from select: ".$row['repoURL']."</p>";
+			$commit = $row['lastCommit'];
+			$url = $row['repoURL'];
 		}
 
-		// Get the latest commit from the URL, then print it
-		$latestCommit = getCommit($githubURL);
-		print_r($latestCommit);
-		sleep(2);
-		print_r("Again: ".$latestCommit);
-
+		if($commit == "" || $url == "") {
+			print_r("Error! Couldn't get url and commit from SQLite db");
+		} else {
+			// Get the latest commit from the URL, then print it
+			$latestCommit = getCommit();
+			print_r($latestCommit);
+			sleep(2);
+			print_r("Again: ".$latestCommit);
+		}
+		
 
 
 
