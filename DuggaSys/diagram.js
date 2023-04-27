@@ -6494,6 +6494,18 @@ function generateContextProperties()
                     }
                 }
             }
+            else if (element.kind == 'UMLSuperState') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     
 
@@ -8940,8 +8952,8 @@ function drawElement(element, ghosted = false)
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
                     <svg width="500" height="500">
-                    <rect width="500" height="500" fill="#FFF" fill-opacity="0.1" stroke="#FFF" stroke-width="2" rx="20"/>
-                    <rect width="200" height="50" fill="#FFF" fill-opacity="0.4" stroke="#FFF" stroke-width="2" />   
+                    <rect width="500" height="500" fill="#FFF" fill-opacity="0.5" stroke="#FFF" stroke-width="2" rx="20"/>
+                    <rect width="200" height="50" fill="#FFF" fill-opacity="0.5" stroke="#FFF" stroke-width="2" />   
                         <text x='50' y='25' dominant-baseline='middle' fill-opacity="1" text-anchor='${vAlignment}'>${element.name}</text>
                     </svg>
                 </div>`;
