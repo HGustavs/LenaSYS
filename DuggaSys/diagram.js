@@ -8776,7 +8776,7 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") { 
-        const maxCharactersPerLine = Math.floor((boxw / texth)*1.5);
+        const maxCharactersPerLine = Math.floor((boxw / texth)*1.75);
 
         const splitLengthyLine = (str, max) => {
             if (str.length <= max) return str;
