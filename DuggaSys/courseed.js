@@ -646,8 +646,9 @@ function elementIsValid(element) {
 			//Check for duplicate course codes only if value of input is not same as the course code that will be editied
 			//This prevents it from being impossible to save course code without changing it
 			if(element.value !== element.dataset.origincode) {
-				console.log("debug");
+				console.log("debug1");
 				if(activeCodes.includes(element.value)) {
+				console.log("debug2");
 					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				}
