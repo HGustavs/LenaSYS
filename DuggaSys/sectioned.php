@@ -11,15 +11,16 @@
 		$userid="00";
 	}
 
-	// $cid = getOPG('courseid');
+
 	// $cid = 1;
 
 	function testingtesting(){
 		try{
+			$cid = getOPG('courseid');
 			$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
-			$query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir"');
-			// $query->bindParam(':cid', 1);
+			$query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
+			$query->bindParam(':cid', $cid);
 			$query->execute();
 			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
 		}catch(PDOException $e) {
