@@ -583,9 +583,6 @@
 #ERTable {
     user-select: text;
 }
-.SDState-rounded {
-    border-radius: 12px;
-}
 #zoom-container{
     visibility: visible;
     position: absolute;

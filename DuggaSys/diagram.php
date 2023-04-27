@@ -229,7 +229,7 @@
                             <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton6" class="placementTypeIcon togglePlacementTypeButton">
-                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="State diagram state"/>
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
                     <div id="diagramPopOut">
@@ -267,7 +267,7 @@
                         onclick='setElementPlacementType(8); setMouseMode(2);'
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown='holdPlacementButtonDown(8);'>
-                        <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
+                        <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add state diagram state to the diagram</p><br>
                             <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
@@ -304,6 +304,25 @@
                             </div>
                         </div>
                     </div>    
+                        <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
+                            <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
+                            <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                <p>Change to UML class</p>
+                            </span>
+                        </div>
+                        <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                            <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
+                            <span class="placementTypeToolTipText"><b>IE entity</b><br>
+                                <p>Change to IE entity</p>
+                            </span>
+                        </div>
+                        <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            <img src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
+                            <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
+                                <p>Change to state diagram state</p>
+                            </span>
+                    </div>
+                    </div>
                 </div><!--<-- State diagram functionality end -->
                 <div>
                     <div id="elementPlacement1"
@@ -447,6 +466,14 @@
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p><br>
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <!-- UML Super state selection -->
+                <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
+                    <span class="toolTipText"><b>UML super state</b><br>
+                        <p>Creates a super state.</p><br>
+                        <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
         </fieldset>
