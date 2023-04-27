@@ -1126,7 +1126,7 @@ var defaults = {
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
 
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#0000FF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#000000", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -8941,8 +8941,8 @@ function drawElement(element, ghosted = false)
                      onmouseleave='mouseLeave();'>
                     <svg width="500" height="500">
                         <rect width="500" height="500" fill="#FFF" fill-opacity="0.1" stroke="#FFF" stroke-width="2"/>
-                        <rect width="100" height="50" fill="#FFF" fill-opacity="0.4" stroke="#FFF" stroke-width="2"/>
-                        <text x='0' y='25' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+                        <rect width="200" height="50" fill="#FFF" fill-opacity="0.4" stroke="#FFF" stroke-width="2"/>
+                        <text x='10' y='25' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
                     </svg>
                 </div>`;
     }
