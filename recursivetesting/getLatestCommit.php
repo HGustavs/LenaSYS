@@ -115,8 +115,17 @@
 
 		//-----------------------------------------TESTA DETTA EFTER LUNCH------------------------------------------------
 			// $classname = 'js-permalink-shortcut';
-			// $xpath = new DOMXpath($dom);
-			// $nodes = $xpath->query('//div[@class="' . $classname . '"]');
+		$xpath = new DOMXpath($dom);
+		$elements = $xpath->query("*/div[@class='js-permalink-shortcut']");
+
+		foreach($elements as $element) {
+			$value = $element->getAttribute("href");
+			echo $value;
+		}
+
+
+			//$nodes = $xpath->query('//div[@class="' . $classname . '"]');
+			
 		
 			// $tmp_dom = new DOMDocument();
 			// foreach ($nodes as $node) {
@@ -138,7 +147,7 @@
 			// 	echo $value;
 			// 	//break; //exits the loop since only the first match is necessary
 			// }
-		}
+		//}
 
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
