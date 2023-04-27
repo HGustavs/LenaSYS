@@ -6467,10 +6467,8 @@ function generateContextProperties()
                                 str += `<option value="Exit: ">Exit</option>`;
                             str += `</select>`;
                             str += `</div>`; */
+                            str += `<button onclick='recursiveRelation()'>Create recursive relation</button>`;
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            break;
-                        case 'recursive':
-                            str += `<button onclick="addRecursiveLine()">Add Recursive Line</button>`;
                             break;
                         default:
                             break;
