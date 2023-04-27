@@ -75,9 +75,9 @@ Pre-req variables
 ***
 $pre-values =
     {
-        $hash = “hjk4ert6”
-        $AUtoken = 52
-    }
+        “hjk4ert6”
+        52
+    };
 
     SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES($pre-values[0], $pre-values[1])
 
