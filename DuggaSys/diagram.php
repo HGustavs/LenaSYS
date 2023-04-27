@@ -303,26 +303,8 @@
                                 </span>
                             </div>
                         </div>
-                    </div>    
-                        <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
-                            <span class="placementTypeToolTipText"><b>UML class</b><br>
-                                <p>Change to UML class</p>
-                            </span>
-                        </div>
-                        <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
-                            <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
-                            <span class="placementTypeToolTipText"><b>IE entity</b><br>
-                                <p>Change to IE entity</p>
-                            </span>
-                        </div>
-                        <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                            <img src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
-                            <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
-                                <p>Change to state diagram state</p>
-                            </span>
-                    </div>
-                    </div>
+                    </div>        
+                </div>
                 </div><!--<-- State diagram functionality end -->
                 <div>
                     <div id="elementPlacement1"
