@@ -124,7 +124,7 @@
 		$divs = $dom->getElementsByTagName('div');
 		foreach ($divs as $div) {
 			echo "hej";
-			if($div->attribute('class')=='Box'){
+			if($div->getAttribute('class')=='Box'){
 				echo "Attribute '".$div;
 			}
 		}
