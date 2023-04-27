@@ -27,7 +27,7 @@
 		}
 		foreach($rows as $row){
 			// return '<p>' . $row['fileName'] . '</p>';
-			return print_r($row['fileName']);
+			print_r($row['fileName']);
 		}
 		// if($rows){
 		// 	return  print_r($rows); 
