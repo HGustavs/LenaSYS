@@ -653,7 +653,6 @@ function elementIsValid(element) {
 					return false;
 				} else {
 					messageElement.innerHTML = "";
-					return true;
 				}
 			}
 		}
