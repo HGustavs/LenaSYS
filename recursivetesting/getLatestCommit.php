@@ -45,9 +45,12 @@
 		// Get the latest commit from the URL, then print it
 		$latestCommit = getCommit($githubURL);
 		print_r("First: ".$latestCommit);
-		sleep(2);
+		sleep(5);
 		$latestCommit = getCommit($githubURL);
 		print_r("Second: ".$latestCommit);
+		sleep(10);
+		$latestCommit = getCommit($githubURL);
+		print_r("Third: ".$latestCommit);
 		// The commit doesn't always work, try to get it up to 10 times	
 		// for($counter = 0; $counter < 10; $counter++) {
 		// 	if($latestCommit == "") {
