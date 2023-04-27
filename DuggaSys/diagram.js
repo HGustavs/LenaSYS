@@ -8742,7 +8742,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height/6) * zoomfact); //determines the corner radius for the SD states.
+    var cornerRadius = Math.round((element.height/8) * zoomfact); //determines the corner radius for the SD states.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8992,7 +8992,7 @@ function drawElement(element, ghosted = false)
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius*2}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius*-1)},${cornerRadius}
                     h${(boxw - (linew * 2)-(cornerRadius*2))*-1}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius)*-1},${(cornerRadius)*-1}
