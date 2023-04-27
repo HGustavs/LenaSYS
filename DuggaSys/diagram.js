@@ -764,6 +764,7 @@ const keybinds = {
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
         STATE_FINAL: { key: "<" , ctrl: true },
+        STATE_SUPER: { key: ">" , ctrl: false },
 };
 
 /** 
@@ -791,7 +792,9 @@ const elementTypes = {
 
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
-    UMLFinalState: 10
+    UMLFinalState: 10,
+
+    UMLSuperState:11,
 
 };
 
@@ -811,7 +814,9 @@ const elementTypesNames = {
     SDState: "SDState",
 
     UMLInitialState: "UMLInitialState",
-    UMLFinalState: "UMLFinalState"
+    UMLFinalState: "UMLFinalState",
+
+    UMLSuperState: "UMLSuperState",
 
 }
 
@@ -1126,8 +1131,9 @@ var defaults = {
     SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" } // UML Final state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
 
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1667,6 +1673,10 @@ document.addEventListener('keyup', function (e)
 
         if (isKeybindValid(e, keybinds.STATE_FINAL)) {
             setElementPlacementType(elementTypes.UMLFinalState);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
+        if (isKeybindValid(e, keybinds.STATE_SUPER)) {
+            setElementPlacementType(elementTypes.UMLSuperState);
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
 
@@ -4000,6 +4010,7 @@ function generateStateDiagramInfo()
     const ENTITY = 0, SEEN = 1;
     const stateInitial = [];
     const stateFinal = [];
+    const stateSuper = [];
     const stateElements = [];
     const stateLines = [];
     const queue = [];
@@ -4024,6 +4035,9 @@ function generateStateDiagramInfo()
         }
         else if (data[i].kind == elementTypesNames.UMLFinalState) {
             stateFinal.push([data[i], true]);
+        }
+        else if (data[i].kind == elementTypesNames.UMLSuperState) {
+            stateSuper.push([data[i], false]);
         }
     }
 
@@ -4051,6 +4065,11 @@ function generateStateDiagramInfo()
                         connections.push(stateFinal[j]);
                     }
                 }
+                for (let j = 0; j < stateSuper.length; j++) {
+                    if (stateLines[i].toID == stateSuper[j][ENTITY].id) {
+                        connections.push(stateSuper[j]);
+                    }
+                }
             }
         }
 
@@ -4067,11 +4086,12 @@ function generateStateDiagramInfo()
     // Adds additional information in the view.
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
+    output += `<p>Super States: ${stateSuper.length}</p>`;
     output += `<p>SD States: ${stateElements.length}</p>`;
     output += `<p>Lines: ${stateLines.length}</p>`;
     
     //if no state diagram exists, return a message to the user instead.
-    if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0)) {
+    if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0) && (stateSuper.length == 0)) {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
     }
     
@@ -6509,6 +6529,18 @@ function generateContextProperties()
                     }
                 }
             }
+            else if (element.kind == 'UMLSuperState') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     
 
@@ -6540,15 +6572,18 @@ function generateContextProperties()
         if(selected == undefined) selected = normal;
 
         value = Object.values(lineKind);
-        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-        for(var i = 0; i < value.length; i++){
-            if(i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null){
-                if(selected == value[i]){
-                    str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}' checked>`
-                    str += `<label for='${value[i]}'>${value[i]}</label><br>`
-                }else {
-                    str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}'>`
-                    str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+        //this creates line kinds for UML IE AND ER
+        if(contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER') {
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+            for(var i = 0; i < value.length; i++){
+                if(i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null){
+                    if(selected == value[i]){
+                        str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}' checked>`
+                        str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                    }else {
+                        str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}'>`
+                        str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+                    }
                 }
             }
         }
@@ -7814,6 +7849,7 @@ function drawLine(line, targetGhost = false)
             str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
             str += `fill = none stroke = '${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
+        //Line creation when adding icons
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
                 if (line.ctype == 'TB') {
@@ -8790,7 +8826,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height/8) * zoomfact); //determines the corner radius for the SD states.
+    var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8954,9 +8990,24 @@ function drawElement(element, ghosted = false)
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                             <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
                             <g style="fill:${element.fill}" transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)">
-                                <circle cx="14.5" cy="14.5" r="7.5"/>
+                                <circle cx="14.5" cy="14.5" r="5.5"/>
                             </g>
                         </svg>
+                </div>`;
+    }
+    else if (element.kind == 'UMLSuperState') {
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        str += `<div id="${element.id}" 
+                    class="element uml-Super"
+                    style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     onmousedown='ddown(event);' 
+                     onmouseenter='mouseEnter();' 
+                     onmouseleave='mouseLeave();'>
+                    <svg width="100%" height="100%">
+                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
+                    <rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
+                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${boxh/30}px">${element.name}</text>
+                    </svg>
                 </div>`;
     }
 
