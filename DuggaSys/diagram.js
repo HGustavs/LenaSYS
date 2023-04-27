@@ -7403,7 +7403,20 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     }
 
-    if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
+    // If from and to elements are the same entity, create a recursive relation
+    if (fromElement.id === toElement.id) {
+        var newLine = {
+            id: makeRandomID(),
+            fromID: fromElement.id,
+            toID: toElement.id,
+            kind: "Recursive"
+        };
+        addObjectToLines(newLine, stateMachineShouldSave);
+        if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+        return newLine;
+    }
+
+    if (fromElement.kind != toElement.kind && !(kind === "Recursive")) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -7501,19 +7514,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
             return;
         }
-    }
-
-    // If from and to elements are the same entity, create a recursive relation
-    if (fromElement.id === toElement.id) {
-        var newLine = {
-            id: makeRandomID(),
-            fromID: fromElement.id,
-            toID: toElement.id,
-            kind: "ERRecursiveRelation"
-        };
-        addObjectToLines(newLine, stateMachineShouldSave);
-        if(successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
-        return newLine;
     }
 
     // If there is no existing lines or is a special case
