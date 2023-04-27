@@ -113,28 +113,34 @@
 		* instead of just taking "/.../.../commit/...". */
 		$regex = "/^(.*?)\/tree\//";
 
-		//-----------------------------------------TESTA DETTA EFTER LUNCH------------------------------------------------
+		$divs = $dom->getElementsByClassName('Box');
+		foreach ($divs as $div) {
+			 if($div->nodeName == 'a'){
+				$link = $div->getAttribute('href');
+				echo print_r($link->nodeValue);
+			 }
+		}
 			// $classname = 'js-permalink-shortcut';
-		$xpath = new DOMXpath($dom);
-		$elements = $xpath->query("*/a[@class='js-permalink-shortcut']");
+		// $xpath = new DOMXpath($dom);
+		// $elements = $xpath->query("*/a[@class='box']");
 
 		// foreach($elements as $element) {
 		// 	$value = $element->getAttribute("href");
 		// 	echo "Value is: ".$value;
 		// }
 
-		if (!is_null($elements)) {
-			foreach ($elements as $element) {
-				echo "hej";
-				echo "<br/>[". $element->nodeName. "]";
+		// if (!is_null($elements)) {
+		// 	foreach ($elements as $element) {
+		// 		echo "hej";
+		// 		echo "<br/>[". $element->nodeName. "]";
 		
-				$nodes = $element->childNodes;
-				foreach ($nodes as $node) {
-					echo "hejdå";
-					echo $node->nodeValue. "\n";
-				}
-			}
-		}
+		// 		$nodes = $element->childNodes;
+		// 		foreach ($nodes as $node) {
+		// 			echo "hejdå";
+		// 			echo $node->nodeValue. "\n";
+		// 		}
+		// 	}
+		// }
 
 
 			//$nodes = $xpath->query('//div[@class="' . $classname . '"]');
