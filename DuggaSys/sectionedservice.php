@@ -499,8 +499,8 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(":cid", $courseid);
 					$query->execute();
 
-					$file = file("../../courses/".$courseid."/");
-					$count = 0;
+					$file = file("../../courses/".$courseid."/indexing.txt");
+
 					foreach($file as $line) {
 						$exampleName = $line;//filter out to only be the example name
 						$sectionName = $line;//filter out to only be the section name
@@ -512,14 +512,43 @@ if($gradesys=="UNK") $gradesys=0;
 							}
 						}
 						if(!$exists) {
+							$link = null;//TODO what is link????
+							$kind = null;//TODO find what kind it should be!
+							$visible = null;//TODO find how to make it visible!
+							$uid = 0;//TODO how do i find the creator? how does anyone find their creator?
+							$comment = null;//TODO do i have a comment on this one?
+							$gradesys = null;//TODO what even is gradesys?
+							$highscoremode = null;//TODO why highscore and what does a highscoremode even do?
+							$groupkind = null;//TODO what kind can a group have?
+
+							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
+							$query->bindParam(":cid", $courseid);
+							$query->bindParam(":entryname", $moment);
+							$query->execute();
+							$e = $query->fetchAll();
+							$pos = $e[0]['pos']+1;
 							//create codeexample
-							//work? probably not!
-							//add to listentries too?
 							$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 							$query->bindParam(":cid", $courseid);
 							$query->bindParam(":ename", $examplename);
 							$query->bindParam(":sname", $sectionname);
 							$query->bindParam(":cversion", $coursevers);
+							$query->execute();
+							//add the codeexample to listentries
+							$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+									   						  		  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+							$query->bindParam(":cid", $courseid);
+							$query->bindParam(":cvs", $coursevers);
+							$query->bindParam(":entryname", $examplename);
+							$query->bindParam(":link", $link);
+							$query->bindParam(":kind", $kind);
+							$query->bindParam(":pos", $pos);
+							$query->bindParam(":visible", $visible);
+							$query->bindParam(":usrid", $uid);
+							$query->bindParam(":comment", $comment);
+							$query->bindParam(":gradesys", $gradesys);
+							$query->bindParam(":highscoremode", $highscoremode);
+							$query->bindParam(":groupkind", $groupkind);
 							$query->execute();
 						}
 					}
