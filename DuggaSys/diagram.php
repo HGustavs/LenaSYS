@@ -473,9 +473,11 @@
                 </div>
                 <div>
                     <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                            <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                            <span class="toolTipText"><b>UML super state</b><br>
-                                <p>Add a super state.</p><br>
+                        <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
+                        <span class="toolTipText"><b>UML super state</b><br>
+                            <p>Add a super state.</p><br>
+                            <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
+                        </span>
                         <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
