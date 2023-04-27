@@ -3372,9 +3372,7 @@ function rectsIntersect (left, right)
      
      objects.forEach(obj => {
         if(entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)){
-            if (obj.kind != "UMLSuperState") {
-                overlapping = true;
-            } 
+            overlapping = true;
         }
      });
 
@@ -3545,7 +3543,11 @@ function entityIsOverlapping(id, x, y)
                 }
               }
 
-              if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
+              if (data[i].kind == "UMLSuperState") {
+                break;
+              }
+
+              else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
                 break;
