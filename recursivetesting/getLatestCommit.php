@@ -113,17 +113,17 @@
 		* instead of just taking "/.../.../commit/...". */
 		$regex = "/^(.*?)\/tree\//";
 		
-		$links = $dom->getElementsByTagName('a');
+		$links = $dom->getElementsByClassName('js-permalink-shortcut');
 
 		$href = "";
 		foreach ($links as $link) {
 			$value = $link->getAttribute("href");
 		
-			if(preg_match($regex, $value)) {
+			// if(preg_match($regex, $value)) {
 				$href = $value; // Takes the first matching value and stores it in an array
-				echo $value;
-				//break; //exits the loop since only the first match is necessary
-			}
+			// 	echo $value;
+			// 	//break; //exits the loop since only the first match is necessary
+			// }
 		}
 
 		if($href != "") {
