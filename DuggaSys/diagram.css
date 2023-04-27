@@ -493,21 +493,27 @@
     width: 6.2px;
     height: 6.2px;
 }
+#diagramPopOut{
+    position: absolute;
+    right: 10%;
+    width: 6.2px;
+    height: 3.2px;
+}
 .togglePlacementTypeBoxEntity{
     display: none;
     position: absolute;
-    top:11.1%;
-    left: 100%;
-    padding:5px;
+    left: 130%;
+    bottom: 0;
+    padding: 2px;
     background-color:var(--color-primary);
     
 }
 .togglePlacementTypeBoxRI{
     display: none;
     position: absolute;
-    top:15.9%;
-    left: 100%;
-    padding:5px;
+    left: 172%;
+    bottom: 0;
+    padding:2px;
     background-color:var(--color-primary);
     
 }

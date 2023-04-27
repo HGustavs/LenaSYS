@@ -8742,7 +8742,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height/8) * zoomfact); //determines the corner radius for the SD states.
+    var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8906,7 +8906,7 @@ function drawElement(element, ghosted = false)
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                             <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
                             <g style="fill:${element.fill}" transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)">
-                                <circle cx="14.5" cy="14.5" r="7.5"/>
+                                <circle cx="14.5" cy="14.5" r="5.5"/>
                             </g>
                         </svg>
                 </div>`;
