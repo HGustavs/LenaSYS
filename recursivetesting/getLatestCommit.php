@@ -112,15 +112,29 @@
 		* for example "/HGustavs/LenaSYS/commit/..."
 		* instead of just taking "/.../.../commit/...". */
 		$regex = "/^(.*?)\/tree\//";
-		
-		$links = $dom->getElementsByClassName('js-permalink-shortcut');
 
-		$href = "";
-		foreach ($links as $link) {
-			$value = $link->getAttribute("href");
+		//-----------------------------------------TESTA DETTA EFTER LUNCH------------------------------------------------
+			// $classname = 'js-permalink-shortcut';
+			// $xpath = new DOMXpath($dom);
+			// $nodes = $xpath->query('//div[@class="' . $classname . '"]');
+		
+			// $tmp_dom = new DOMDocument();
+			// foreach ($nodes as $node) {
+			// 	$tmp_dom->appendChild($tmp_dom->importNode($node, true));
+			// }
+		
+			// return trim($tmp_dom->saveHTML());
+	
+		//--------------------------------------------------------------------------------------------
+		
+		// $links = $dom->getElementsByClassName('js-permalink-shortcut');
+
+		// $href = "";
+		// foreach ($links as $link) {
+		// 	$value = $link->getAttribute("href");
 		
 			// if(preg_match($regex, $value)) {
-				$href = $value; // Takes the first matching value and stores it in an array
+			$href = $value; // Takes the first matching value and stores it in an array
 			// 	echo $value;
 			// 	//break; //exits the loop since only the first match is necessary
 			// }
