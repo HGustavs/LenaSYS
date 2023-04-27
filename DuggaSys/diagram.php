@@ -472,6 +472,14 @@
                     <span class="toolTipText"><b>Sequence Object</b><br>
                         <p>Creates a sequence object.</p><br>
                         <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                        </span>
+                </div>
+                <!-- Sequence activation selection -->
+                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
+                    <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                    <span class="toolTipText"><b>Sequence activation</b><br>
+                        <p>Creates an activation box.</p><br>
+                        <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
         </fieldset>
