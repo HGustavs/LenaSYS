@@ -6505,15 +6505,18 @@ function generateContextProperties()
         if(selected == undefined) selected = normal;
 
         value = Object.values(lineKind);
-        str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-        for(var i = 0; i < value.length; i++){
-            if(i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null){
-                if(selected == value[i]){
-                    str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}' checked>`
-                    str += `<label for='${value[i]}'>${value[i]}</label><br>`
-                }else {
-                    str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}'>`
-                    str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+        //this creates line kinds for UML IE AND ER
+        if(contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER') {
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+            for(var i = 0; i < value.length; i++){
+                if(i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null){
+                    if(selected == value[i]){
+                        str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}' checked>`
+                        str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                    }else {
+                        str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}'>`
+                        str += `<label for='${value[i]}'>${value[i]}</label><br>` 
+                    }
                 }
             }
         }
