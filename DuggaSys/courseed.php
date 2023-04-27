@@ -101,7 +101,7 @@ if(isset($_SESSION['uid'])){
 					<p id="dialog5" class="validationDialog">Enter a valid github url</p>
 				</div>
     		<div style='padding:5px;'>
-    			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
+    			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse'); showNewCourseVersion();" />
     		</div>
       </div>
 	</div>
