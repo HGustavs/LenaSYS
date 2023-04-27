@@ -8942,7 +8942,7 @@ function drawElement(element, ghosted = false)
                     <svg width="500" height="500">
                         <rect width="500" height="500" fill="#FFF" fill-opacity="0.1" stroke="#FFF" stroke-width="2"/>
                         <rect width="100" height="50" fill="#FFF" fill-opacity="0.4" stroke="#FFF" stroke-width="2"/>
-                        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
+                        <text x='0' y='25' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
                     </svg>
                 </div>`;
     }
