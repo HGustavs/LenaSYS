@@ -121,11 +121,12 @@
 		// 	 }
 		// }
 
-		$divs = $dom->getElementsByTagName('div');
+		$divs = $dom->getElementsByTagName('a');
 		foreach ($divs as $div) {
-			echo "hej";
-			if($div->getAttribute('class')=='Box'){
-				echo "Attribute '".$div;
+				
+			if($div->getAttribute('class')=='js-permalink-shortcut'){
+				$value = $div->getAttribute("href");
+				echo $value;
 			}
 		}
 
