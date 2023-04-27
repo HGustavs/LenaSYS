@@ -7748,12 +7748,10 @@ function drawLine(line, targetGhost = false)
 
     // Check if source and target elements are the same (self-referential relation)
     if (felem.id === telem.id) {
-        // Draw a curved line
-        const radius = 40; // Adjust the radius as needed
-        const cx = fx + x1Offset + radius;
-        const cy = fy + y1Offset - radius;
-        const d = `M ${cx},${cy} A ${radius},${radius} 0 1,1 ${cx+1},${cy}`;
-        str += `<path id='${line.id}' class='lineColor' d='${d}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+        var cx = fx + x1Offset + line.length;
+        var cy = fy + y1Offset + line.length;
+        str += `<path id='${line.id}' class='lineColor' d='M${fx + x1Offset},${fy + y1Offset} C${cx},${fy + y1Offset} ${cx},${cy} ${fx + x1Offset},${fy + y1Offset}' `;
+        str += `fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
     } else if (felem.type != 'ER' || telem.type != 'ER') {     // If element is UML, IE or SD (use straight line segments instead)
 
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
