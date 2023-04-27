@@ -22,6 +22,7 @@
 
 	function getCourseID($githubURL) {
 
+		echo "<h2> Outputs for creating a new course </h2>";
 		echo "<p>Original URL: ".$githubURL."</p>";
 		// translates the url to the same structure as in mysql
 		// the "/" needs to be "&#47;" for the query to work
@@ -42,9 +43,11 @@
 			// TODO: Limit this to only one result
 		}
 
-		// Get the latest commit from the URL, then print it
+		// Get the latest commit from the URL
 		$latestCommit = getCommit($githubURL);
+		print_r($latestCommit);
 
+		// Check if not null, else add it to Sqlite db
 		if($cid != null && $latestCommit != "") {
 			insertIntoSQLite($githubURL, $cid, $latestCommit);
 		} else if ($latestCommit == "") {
@@ -84,6 +87,8 @@
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
+		echo "<h2> Outputs for fetching data when updating a course </h2>";
+
 		$commmit = "";
 		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -98,9 +103,8 @@
 		} else {
 			// Get the latest commit from the URL, then print it
 			$latestCommit = getCommit($url);
-			print_r("Commit from URL that's been selected from db ".$latestCommit);
 
-		// Compare old commit in db with the new one from the url
+			// Compare old commit in db with the new one from the url
 			if($latestCommit != $commit) {
 				print_r("The course should be updated!");
 			} else {
