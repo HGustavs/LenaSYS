@@ -88,3 +88,24 @@ Using SQL-query: INSERT INTO class (class, responsible, classname, regcode, clas
 Should display an error message if the insert into database was unable to succeed.
 
 ------------------------
+
+Test 5: check if the user was added with username or ssn
+Row: 161 - 178
+****
+Pre-req:
+  (checklogin() IS TRUE) && (hasAccess($userid, $cid, ‘w’ ) || isSuperUser($userid)) IS TRUE
+
+****
+
+Send {
+  $opt = "ADDUSER"
+  $uid = "UNK"
+  $username = "username"
+  $ssn = "ssn"
+}
+
+Will count all the users, to see if a user was added by username or ssn.
+SQL-query: SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2 // check username or ssn
+Should display an error message if the user does not exist in the database.
+
+---------------------------
