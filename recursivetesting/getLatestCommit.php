@@ -82,26 +82,12 @@
 			print_r($error);
 			echo $errorvar;
 		} 
-
-	//---------------------------------------For testing only -------------------------------------------------------------
-
-		// This is just for printing and should be removed later
-		$testquery = $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid');
-		$testquery->bindParam(':cid', $cid);
-		$testquery->execute();
-		//$norows = $testquery->fetchColumn();
-
-		foreach($testquery->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<p>Course ID from insert: ".$row['cid']."</p>";
-			echo "<p>URL from insert: ".$row['repoURL']."</p>";
-			echo "<p>Commit from insert: ".$row['lastCommit']."</p>";
-		
-			// TODO: Limit this to only one result
-		}
-
-		getCommitSqlite($cid);
-	//----------------------------------------------------------------------------------------------------------------------
+		getCommitSqlite($cid); //testing !!!!!!! don't forget to remove!
 	}
+	//---------------------------------------When pressing refresh button: -------------------------------------------------------------
+
+	
+
 
 	// --------------------- Get Latest Commit Function from URL-----------------------------------------
 
@@ -140,17 +126,39 @@
 		}
 	}
 
-		// --------------------- Get Latest Commit from Sqlite-----------------------------------------
+	// --------------------- Get Latest Commit from Sqlite-----------------------------------------
 
 	function getCommitSqlite($cid){
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-		$query = $pdolite->prepare('SELECT lastCommit FROM gitRepos WHERE cid = :cid');
+		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
+			echo "<p>Commit from select: ".$row['repoURL']."</p>";
 		}
+
+		// Get the latest commit from the URL, then print it
+		$latestCommit = getCommit($githubURL);
+		print_r($latestCommit);
+		sleep(2);
+		print_r("Again: ".$latestCommit);
+
+
+
+
+		// The commit doesn't always work, try to get it up to 10 times	
+		// for($counter = 0; $counter < 10; $counter++) {
+		// 	if($latestCommit == "") {
+		// 		$latestCommit = getCommit($githubURL);
+		// 		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
+		// 	} else {
+		// 		break;
+		// 	}
+		// }
+
+
 	}
 
 
