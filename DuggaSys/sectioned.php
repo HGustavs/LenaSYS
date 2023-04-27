@@ -27,7 +27,7 @@
 		}
 		foreach($rows as $row){
 			// return '<p>' . $row['fileName'] . '</p>';
-		echo "<option value=''>" print_r($row['fileName']) "</option>";
+		echo "<option value=''>" .$row['fileName']. "</option>";
 		}
 
 	}
