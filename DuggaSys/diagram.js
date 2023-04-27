@@ -7746,13 +7746,8 @@ function drawLine(line, targetGhost = false)
         line.type = 'UML';
     }
 
-    // Check if source and target elements are the same (self-referential relation)
-    if (felem.id === telem.id) {
-        var cx = fx + x1Offset + line.length;
-        var cy = fy + y1Offset + line.length;
-        str += `<path id='${line.id}' class='lineColor' d='M${fx + x1Offset},${fy + y1Offset} C${cx},${fy + y1Offset} ${cx},${cy} ${fx + x1Offset},${fy + y1Offset}' `;
-        str += `fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-    } else if (felem.type != 'ER' || telem.type != 'ER') {     // If element is UML, IE or SD (use straight line segments instead)
+    // If element is UML, IE or SD (use straight line segments instead)
+    if (felem.type != 'ER' || telem.type != 'ER') {
 
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
