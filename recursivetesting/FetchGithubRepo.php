@@ -70,7 +70,7 @@ function insertToMetaData($cid, $item)
     $query->execute();
 }
 
-function downloadToWebserver($cid, $item) 
+function downloadToWebServer($cid, $item) 
 {
     // Retrieves the contents of each individual file based on the fetched "download_url"
     $fileContents = file_get_contents($item['download_url']);
