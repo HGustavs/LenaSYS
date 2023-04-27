@@ -6469,6 +6469,9 @@ function generateContextProperties()
                             str += `</div>`; */
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
+                        case 'recursive':
+                            str += `<button onclick="addRecursiveLine()">Add Recursive Line</button>`;
+                            break;
                         default:
                             break;
                     }
