@@ -7601,38 +7601,31 @@ function drawLine(line, targetGhost = false)
     tx = telem.cx;
     ty = telem.cy;
 
-    if (felem.id === telem.id) { // Self-referential line case
-        fx = felem.x1 + felem.width / 2;
-        fy = felem.y1 + felem.height / 2;
-        tx = fx;
-        ty = fy;
-    } else {
-        const elemsAreClose = isClose(
-          fx + x1Offset,
-          tx + x2Offset,
-          fy + y1Offset,
-          ty + y2Offset,
-          zoomfact
-        );
+    const elemsAreClose = isClose (
+        (fx + x1Offset),
+        (tx + x2Offset),
+        (fy + y1Offset),
+        (ty + y2Offset),
+        zoomfact
+    );
 
-        // Collect coordinates
-        if (line.ctype == "BT"){
-            fy = felem.y2;
-            if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
-            ty = telem.y1;
-        }else if (line.ctype == "TB"){
-            fy = felem.y1;
-            if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
-            ty = telem.y2;
-        }else if (line.ctype == "RL"){
-            fx = felem.x2;
-            if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
-            tx = telem.x1;
-        }else if (line.ctype == "LR"){
-            fx = felem.x1;
-            if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
-            tx = telem.x2;
-        }
+   // Collect coordinates
+   if (line.ctype == "BT"){
+        fy = felem.y2;
+        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
+        ty = telem.y1;
+    }else if (line.ctype == "TB"){
+        fy = felem.y1;
+        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
+        ty = telem.y2;
+    }else if (line.ctype == "RL"){
+        fx = felem.x2;
+        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
+        tx = telem.x1;
+    }else if (line.ctype == "LR"){
+        fx = felem.x1;
+        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
+        tx = telem.x2;
     }
 
     // Set line end-point in center of UMLRelations.
