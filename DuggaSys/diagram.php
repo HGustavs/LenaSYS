@@ -444,17 +444,17 @@
                     </span>
                 </div> -->
                 <div>
-                    <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                        <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
-                        <span class="toolTipText"><b>UML final state</b><br>
-                            <p>Change to final state.</p><br>
-                            <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
-                        </span>
-                        <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
-                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
-                        </div>
-                    </div>
-                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
+                        <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
+                            <span class="toolTipText"><b>UML final state</b><br>
+                                <p>Change to final state.</p><br>
+                                <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                                <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                            </div>
+                        </div>    
                         <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                             <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                             <span class="toolTipText"><b>UML initial state</b><br>
@@ -480,7 +480,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
                         <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                             <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                             <span class="toolTipText"><b>UML final state</b><br>
@@ -508,7 +508,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
                         <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                             <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                             <span class="toolTipText"><b>UML final state</b><br>
