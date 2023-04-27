@@ -27,21 +27,8 @@
 		}
 		foreach($rows as $row){
 			// return '<p>' . $row['fileName'] . '</p>';
-			print_r($row['fileName']);
+		echo "<option value=''>" print_r($row['fileName']) "</option>";
 		}
-		// if($rows){
-		// 	return  print_r($rows); 
-		// 	// return .$simmy['fileName'];
-		// 	// return " good " ;
-
-		// }else{
-		// 	return " bad ";
-		// }
-		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		// 	echo "<option value='1'>".$row['fileName']"</option>";
-
-		// }
-
 
 	}
 	
@@ -613,7 +600,7 @@
 
 				<?php
 
-
+echo testingtesting();
 					// testingtesting($cid);
 							//connecta till sqllite där vi fetchat ner repos till
 							// class githubDB extends SQLite3 {
