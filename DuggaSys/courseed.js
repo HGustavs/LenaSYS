@@ -705,6 +705,108 @@ function quickValidateForm(formid, submitButton){
 		saveButton.disabled = true;
 	}
 	return false;
+
+  var valid = true;
+  //Validates Item form
+  if (formid === 'editSection') {
+    var sName = document.getElementById("sectionname").value;
+    var deadDate = document.getElementById("setDeadlineValue").value;
+    var item = document.getElementById("editSectionDialogTitle").innerHTML;
+    var endialog = document.getElementById("EndDialog1");
+    endialog.innerHTML = "";
+    valid = true;
+    var deadlinepart = document.getElementById('inputwrapper-deadline');
+    var deadlinedisplayattribute = deadlinepart.style.display;
+    valid = valid && validateSectName('sectionname');
+
+    // Validates Deadline
+    if (deadlinedisplayattribute != 'none'){
+      valid = valid && showCourseDate('setDeadlineValue','dialog8');
+    }
+
+
+    //If fields empty
+    if (sName == null || sName == "") {
+      //alert("Fill in all fields");
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
+    }
+
+    //Name is a duplicate
+    if(sName == item){
+      window.bool11 = true;
+
+    }
+
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+   //Validates new course version form
+  if (formid === 'newCourseVersion') {
+    var versName = document.getElementById("versname").value;
+    var versId = document.getElementById("cversid").value;
+    var endialog = document.getElementById("EndDialog2");
+    endialog.innerHTML = "";
+    valid = true;
+    //Compilator is stupid. Cannot use one bool. Does not execute other methods if bool is already false.
+    valid2 = true;
+    valid3 = true;
+    valid4 = true;
+
+
+    valid = (valid && validateCourseID('cversid', 'dialog2'));
+
+    //valid = (valid && validateVersionName('versname', 'dialog')); >:|
+    valid2 = (valid2 && validateVersionName('versname', 'dialog'));
+
+    valid3 = (valid3 && validateDate('startdate','enddate','dialog3'));
+
+    valid4 = (valid4 && validateMOTD('vmotd','dialog4', 'dialog42', 'submitCourseMotd'));
+
+    valid = valid && valid2 && valid3 && valid4
+
+     //If fields empty
+     if (versName == null || versName == "", versId == null || versId == "") {
+      //alert("Fill in all fields");
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
+    }
+
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
+
+  // validates edit course version form
+  if (formid === 'editCourseVersion') {
+    var eversName = document.getElementById("eversname").value;
+    var endialog = document.getElementById("EndDialog3");
+    endialog.innerHTML = "";
+    valid = true;
+
+    valid = valid && validateVersionName('eversname', 'dialog5')
+    valid = valid && validateDate('estartdate','eenddate','dialog6')
+    valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
+
+    //If fields empty
+    if (eversName == null || eversName == "") {
+      //alert("Fill in all fields");
+      //endialog.innerHTML += "Fill in all fields </br>";
+      valid = false;
+    }
+
+
+    if (valid){
+      saveButton.disabled = false;
+    }else{
+      saveButton.disabled = true;
+    }
+  }
 }
 
 //Validates whole form
@@ -962,5 +1064,157 @@ function createVersion() {
     $("#newCourseVersion").css("display", "none");
     changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
     querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
+  }
+}
+
+// ------ Validate versionID ------
+function validateCourseID(courseid, dialogid) {
+
+  //regex numbers, letters and dashes, between 3 and 8 numbers
+  var Code = /^[0-9]{3,8}$/;
+  var code = document.getElementById(courseid);
+  var x2 = document.getElementById(dialogid);
+  var val = document.getElementById(courseid).value;
+
+  if (val.match(Code)) {
+    $(x2).fadeOut();
+    code.style.borderColor = "#383";
+    code.style.borderWidth = "2px";
+    //code.style.backgroundColor = "#fff";
+
+    code.style.backgroundColor = backgroundColorTheme;
+    //x2.style.display = "none";
+    window.bool = true;
+  } else {
+    $(x2).fadeIn();
+    code.style.borderColor = "#E54";
+    //code.style.backgroundColor = "#f57";
+    code.style.borderWidth = "2px";
+    //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
+    //x2.style.display = "block";
+    window.bool = false;
+    return false;
+  }
+
+  const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
+  if(versionIsValid) {
+    $(x2).fadeIn();
+    code.style.borderColor = "#E54";
+    //code.style.backgroundColor = "#f57";
+    code.style.borderWidth = "2px";
+    x2.innerHTML = "Version ID already exists, try another";
+    //x2.style.display = "block";
+    window.bool = false;
+  }else{
+    return true;
+  }
+
+  return false
+}
+
+function validateMOTD(motd,  syntaxdialogid, rangedialogid, submitButton){
+  const saveButton = document.getElementById(submitButton);
+  var emotd = document.getElementById(motd);
+  var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
+  var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(syntaxdialogid);
+	var x8 = document.getElementById(rangedialogid);
+	if (emotd.value.match(Emotd) ) {
+    $(x4).fadeOut()
+		//x4.style.display = "none";
+		window.bool9 = true;
+  } else {
+    $(x4).fadeIn()
+		//x4.style.display = "block";
+		window.bool9 = false;
+  }
+
+	if (emotd.value.match(EmotdRange)){
+		$(x8).fadeOut()
+		//x8.style.display = "none";
+		window.bool9 = true;
+	}else{
+		$(x8).fadeIn()
+		//x8.style.display = "block";
+		window.bool9 = false;
+	}
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) ){
+    //emotd.style.backgroundColor = "#ffff";
+
+    emotd.style.backgroundColor = backgroundColorTheme;
+		emotd.style.borderColor = "#383";
+		emotd.style.borderWidth = "2px";
+		saveButton.disabled = false;
+    return true;
+	}else{
+    //emotd.style.backgroundColor = "#f57";
+		emotd.style.borderColor = "#E54";
+		emotd.style.borderWidth = "2px";
+		saveButton.disabled = true;
+    return false;
+	}
+}
+
+// ------ Validates that start date comes before end date ------
+function validateDate(startDate, endDate, dialogID) {
+  var sdate = document.getElementById(startDate);
+  var edate = document.getElementById(endDate);
+  var x3 = document.getElementById(dialogID);
+
+  var date1 = new Date(sdate.value);
+  var date2 = new Date(edate.value);
+
+  // If one of the dates is not filled in
+  if (sdate.value == 'yyyy-mm-dd' || sdate.value == "" || edate.value == 'yyyy-mm-dd' || edate.value == "") {
+    sdate.style.borderColor = "#E54";
+    edate.style.borderColor = "#E54";
+    sdate.style.borderWidth = "2px";
+    edate.style.borderWidth = "2px";
+    //sdate.style.backgroundColor = "#f57";
+    //edate.style.backgroundColor = "#f57";
+    $(x3).fadeIn();
+    x3.innerHTML = "Both start date and end date must be filled in";
+    //x3.style.display = "block";
+    return false;
+  }
+ // If start date is less than end date
+  if (date1 < date2) {
+    sdate.style.borderColor = "#383";
+    edate.style.borderColor = "#383";
+    sdate.style.borderWidth = "2px";
+    edate.style.borderWidth = "2px";
+    //sdate.style.backgroundColor = "#fff";
+    //edate.style.backgroundColor = "#fff";
+
+    sdate.style.backgroundColor = backgroundColorTheme;
+    edate.style.backgroundColor = backgroundColorTheme;
+    $(x3).fadeOut();
+    //x3.style.display = "none";
+    if (startDate === 'startdate' && endDate === 'enddate') {
+      window.bool5 = true;
+    }
+    if (startDate === 'estartdate' && endDate === 'eenddate') {
+      window.bool6 = true;
+    }
+    return true;
+  }
+  // If end date is less than start date
+  if (date2 < date1) {
+    sdate.style.borderColor = "#E54";
+    edate.style.borderColor = "#E54";
+    //sdate.style.backgroundColor = "#f57";
+    //edate.style.backgroundColor = "#f57";
+    $(x3).fadeIn();
+    x3.innerHTML = "Start date has to be before end date";
+    //x3.style.display = "block";
+    sdate.style.borderWidth = "2px";
+    edate.style.borderWidth = "2px";
+    if (startDate === 'startdate' && endDate === 'enddate') {
+      window.bool5 = false;
+    }
+    if (startDate === 'estartdate' && endDate === 'eenddate') {
+      window.bool6 = false;
+    }
+    return false;
   }
 }
