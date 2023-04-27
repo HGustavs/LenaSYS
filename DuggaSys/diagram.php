@@ -420,28 +420,110 @@
                     </span>
                 </div>
                 <!-- UML Initial state selection -->
-                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <!-- <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                     <span class="toolTipText"><b>UML initial state</b><br>
                         <p>Creates an initial state for UML.</p><br>
                         <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>
+                </div> -->
                 <!-- UML Final state selection -->
-                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <!-- <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p><br>
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>
+                </div> -->
                 <!-- UML Super state selection -->
-                <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <!-- <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                     <span class="toolTipText"><b>UML super state</b><br>
                         <p>Creates a super state.</p><br>
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
+                </div> -->
+                <div>
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
+                        <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
+                            <span class="toolTipText"><b>UML final state</b><br>
+                                <p>Change to final state.</p><br>
+                                <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                                <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                            </div>
+                        </div>    
+                        <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
+                            <span class="toolTipText"><b>UML initial state</b><br>
+                                <p>Change to initial state.</p><br>
+                                <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                            </span>
+                        </div>
+                        <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
+                            <span class="toolTipText"><b>UML super state</b><br>
+                                <p>Change to super state.</p><br>
+                                <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
+                            <span class="toolTipText"><b>UML super state</b><br>
+                                <p>Add a super state.</p><br>
+                        <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>    
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
+                        <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
+                            <span class="toolTipText"><b>UML final state</b><br>
+                                <p>Change to final state.</p><br>
+                                <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
+                            </span>
+                        </div>
+                        <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
+                            <span class="toolTipText"><b>UML initial state</b><br>
+                                <p>Change to initial state.</p><br>
+                                <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                        <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
+                        <span class="toolTipText"><b>UML initial state</b><br>
+                            <p>Creates an initial state for UML.</p><br>
+                            <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>    
+                    <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
+                        <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
+                            <span class="toolTipText"><b>UML final state</b><br>
+                                <p>Change to final state.</p><br>
+                                <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
+                            </span>
+                        </div>
+                        <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
+                            <span class="toolTipText"><b>UML super state</b><br>
+                                <p>Change to super state.</p><br>
+                                <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
+                            </span>
+                        </div>
+                    </div>
                 </div>
         </fieldset>
         <!-- <fieldset>
