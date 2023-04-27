@@ -648,11 +648,13 @@ function elementIsValid(element) {
 			if(element.value !== element.dataset.origincode) {
 				if(activeCodes.includes(element.value)) {
 					console.log(messageElement);
-					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
+					console.log(messageElement.firstChild);
+					messageElement.firstChild.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				} else {
 					console.log(messageElement);
-					messageElement.innerHTML = "";
+					console.log(messageElement.firstChild);
+					messageElement.firstChild.innerHTML = "";
 				}
 			}
 		}
