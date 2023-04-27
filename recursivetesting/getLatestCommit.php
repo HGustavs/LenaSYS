@@ -5,8 +5,6 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
-	// --------------------- Fetch CID from MySQL with Github URL -------------------------------
-
 	// Include basic application services!
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
@@ -15,7 +13,12 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/Webbprogrammering-Examples"); // Dummy Code to see if everything works
+	global $pdo;
+
+	getCourseID("https://github.com/c21sebar/test"); // Dummy Code to see if everything works
+
+	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit -------------------------------
+	// --------------------- This only happens when creating a new course -----------------------------------------------
 
 	function getCourseID($githubURL) {
 
@@ -31,6 +34,7 @@
 		$query->execute();
 
 		// printing the result
+		$cid = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<p>Course ID: ".$row['cid']."</p>";
 			$cid = $row['cid'];
@@ -51,10 +55,55 @@
 				break;
 			}
 		}
+
+		if($cid != null) {
+			insertIntoSQLite($githubURL, $cid, $latestCommit);
+		} else {
+			print_r("No matches in database!");
+		}
+		
 	}
 
-	// --------------------- Get Latest Commit Function -----------------------------------------
+	// --------------------- Insert into Sqlite db when new course is created -------------------------------
 
+	// Create a new row if it doesn't exist
+	function insertIntoSQLite($url, $cid, $commit) {
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		// Remove "or replace" later when everything works like it should
+		$query = $pdolite->prepare("INSERT INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $url);
+		$query->bindParam(':commits', $commit);
+		$query->execute();
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating file entries" . $error[2];
+			$errorvar = $error[2];
+			print_r($error);
+			echo $errorvar;
+		} 
+
+	//---------------------------------------For testing only -------------------------------------------------------------
+
+		// This is just for printing and should be removed later
+		$testquery = $pdolite->prepare('SELECT * FROM gitRepos WHERE cid = :cid');
+		$testquery->bindParam(':cid', $cid);
+		$testquery->execute();
+		//$norows = $testquery->fetchColumn();
+
+		foreach($testquery->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<p>Course ID from insert: ".$row['cid']."</p>";
+			echo "<p>URL from insert: ".$row['repoURL']."</p>";
+			echo "<p>Commit from insert: ".$row['lastCommit']."</p>";
+		
+			// TODO: Limit this to only one result
+		}
+
+		getCommitSqlite($cid);
+	//----------------------------------------------------------------------------------------------------------------------
+	}
+
+	// --------------------- Get Latest Commit Function from URL-----------------------------------------
 
 	function getCommit($url) {
 
@@ -90,4 +139,19 @@
 			//print_r("No matches in database!");
 		}
 	}
+
+		// --------------------- Get Latest Commit from Sqlite-----------------------------------------
+
+	function getCommitSqlite($cid){
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		$query = $pdolite->prepare('SELECT lastCommit FROM gitRepos WHERE cid = :cid');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
+		}
+	}
+
+
 ?>
