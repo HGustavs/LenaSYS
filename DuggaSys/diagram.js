@@ -936,7 +936,9 @@ const lineCardinalitys = {
  const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
     ARROW: "ARROW"
 };
-
+/**
+ * @description Available options of Line types between two SD elements
+ */
 const SDLineType = {
     STRAIGHT: "Straight",
     SEGMENT: "Segment"
@@ -7591,10 +7593,10 @@ function preProcessLine(line) {
     if ((felem.type === 'SD') && (telem.type === 'SD')) {
         line.endIcon = "ARROW";
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
-            line.innerType = "Straight";
+            line.innerType = SDLineType.STRAIGHT;
         }
         else {
-            line.innerType = "Segment";
+            line.innerType = SDLineType.SEGMENT;
         }
     }
 }
@@ -7798,7 +7800,7 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
-        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType == "Straight")) {
+        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
