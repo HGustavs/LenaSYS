@@ -118,9 +118,22 @@
 		$xpath = new DOMXpath($dom);
 		$elements = $xpath->query("*/div[@class='js-permalink-shortcut']");
 
-		foreach($elements as $element) {
-			$value = $element->getAttribute("href");
-			echo "Value is: ".$value;
+		// foreach($elements as $element) {
+		// 	$value = $element->getAttribute("href");
+		// 	echo "Value is: ".$value;
+		// }
+
+		if (!is_null($elements)) {
+			foreach ($elements as $element) {
+				echo "hej";
+				echo "<br/>[". $element->nodeName. "]";
+		
+				$nodes = $element->childNodes;
+				foreach ($nodes as $node) {
+					echo "hejdå";
+					echo $node->nodeValue. "\n";
+				}
+			}
 		}
 
 
