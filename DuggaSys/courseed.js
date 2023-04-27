@@ -651,6 +651,8 @@ function elementIsValid(element) {
 				console.log("debug2");
 					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
+				} else {
+					console.log("debug3");
 				}
 			}
 		}
