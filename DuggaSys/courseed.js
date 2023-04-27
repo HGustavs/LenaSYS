@@ -653,7 +653,7 @@ function elementIsValid(element) {
 					return false;
 				} else {
 					if(messageElement.firstChild) {
-						messageElement.innerHTML = "";
+						messageElement.firstChild.innerHTML = "";
 					}
 				}
 			}
