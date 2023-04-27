@@ -9085,8 +9085,20 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == "IEEntity") { 
-        elemAttri = element.attributes.length;
-        //elemFunc = element.functions.length;
+        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.attributes.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;
 
         // Removes the previouse value in IEHeight for the element
         for (var i = 0; i < IEHeight.length; i++) {
@@ -9135,7 +9147,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text class='text' x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
