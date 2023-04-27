@@ -1,31 +1,25 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-
-    $test1Result = false;
-    $test2Result = false;
-    $test3Result = false;
+function testHandler($testData){
 
     // Test 1 assertEqual
-    echo json_encode(assertEqualTest($_POST['value1'], $_POST['value2'], $_POST['test1Debug']));
+    echo json_encode(assertEqualTest($testData['value1'], $testData['value2'], $testData['test1Debug']));
 
     // Test 2 login
-    echo json_encode(loginTest($_POST['user'], $_POST['pwd'], $_POST['test2Debug']));
+    echo json_encode(loginTest($testData['user'], $testData['pwd'], $testData['test2Debug']));
 
     // Test 3 callService
-    echo json_encode(callServiceTest($_POST['service'], $_POST['serviceData'], $_POST['test3Debug']));
-
+    echo json_encode(callServiceTest($testData['service'], $testData['serviceData'], $testData['test3Debug']));
 
 }
 
 // Test 1: assert equal test
 function assertEqualTest($value1, $value2, $debug){
 
-    if (($_POST['value1'] != null) && ($_POST['value2'] != null)){
+    if (($value1 != null) && ($value2 != null)){
         $equalTest = assert($value1, $value2);
         if ($equalTest){
             $equalTestResult = "passed";
-            $test1Result = true;
         }
         else{
             $equalTestResult = "failed";
@@ -58,7 +52,6 @@ function loginTest($user, $pwd, $debug){
 
     if (login($user, $pwd, true)) {
         $loginTestResult = "passed";
-        $test2Result = true;
     }
     else{
         $loginTestResult = "failed";
@@ -74,7 +67,7 @@ function loginTest($user, $pwd, $debug){
     }
     else{
         return array(
-            'Test 2 (login):' => "passed",
+            'Test 2 (login):' => $loginTestResult,
         );
     }
 }
@@ -93,7 +86,6 @@ function callServiceTest($service, $data, $debug){
 
     if ($curl) {
         $callServiceTestResult = "passed";
-        $test3Result = true;
     }
     else{
         $callServiceTestResult = "failed";
