@@ -9098,6 +9098,11 @@ function drawElement(element, ghosted = false)
             return splitLengthyLine(line, maxCharactersPerLine);
         }).flat();
 
+        const nameText = element.name.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemName = nameText.length;
         elemAttri = text.length;
 
         // Removes the previouse value in IEHeight for the element
@@ -9131,8 +9136,10 @@ function drawElement(element, ghosted = false)
         //svg for IE header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+        for (var i = 0; i < elemName; i++) {
+            str += `<text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}' > ${nameText[i]}</text >`;
+         }
         //end of svg for IE header
         str += `</svg>`;
         //end of div for IE header
