@@ -222,6 +222,11 @@ submit dugga
 Pre-req: !isset($grade) || !$grade > 1
 ***
 
+pre-query: SELECT * FROM course WHERE cid=2 // this should return something, otherwise cid has to be changed in the send.
+
+pre-query: SELECT * FROM listentries WHERE moment=2002 // this should return something, else look for another moment and use it in the pre-values. Worst case a new listentries has to be created.
+
+
 ***
 * send parameters input to showDuggaservice.php
 ***
@@ -238,7 +243,6 @@ Pre-req: !isset($grade) || !$grade > 1
         $answer = NULL
     }
 
-    SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(2, 1, 2002, 52432 , 3, “ghj1ghj2” , “asddasdd”,1 ,1 , NULL ,now());")
 
 ***
 get newly created data
@@ -256,7 +260,7 @@ Gather service output
 * Remove inserted row from DB, using hash
 ***
 
-	SQL-query: DELETE FROM userAnswer WHERE hash = $hash;
+SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
