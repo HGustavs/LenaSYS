@@ -44,17 +44,19 @@
 
 		// Get the latest commit from the URL, then print it
 		$latestCommit = getCommit($githubURL);
-		print_r($latestCommit);
-
+		print_r("First: ".$latestCommit);
+		sleep(2);
+		$latestCommit = getCommit($githubURL);
+		print_r("Second: ".$latestCommit);
 		// The commit doesn't always work, try to get it up to 10 times	
-		for($counter = 0; $counter < 10; $counter++) {
-			if($latestCommit == "") {
-				$latestCommit = getCommit($githubURL);
-				print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
-			} else {
-				break;
-			}
-		}
+		// for($counter = 0; $counter < 10; $counter++) {
+		// 	if($latestCommit == "") {
+		// 		$latestCommit = getCommit($githubURL);
+		// 		print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
+		// 	} else {
+		// 		break;
+		// 	}
+		// }
 
 		if($cid != null && $latestCommit != "") {
 			insertIntoSQLite($githubURL, $cid, $latestCommit);
