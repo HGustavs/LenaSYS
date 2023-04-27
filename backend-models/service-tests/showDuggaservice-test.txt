@@ -172,17 +172,18 @@ Pre-req:
 ***
 Pre-req variables
 ***
+
+pre-query: SELECT * FROM listentries WHERE moment=2008 // this should return something, else look for another moment and use it in the pre-values. Worst case a new listentries has to be created.
+
 $pre-values =
     {
-        $aid = 999
-        $cid = 2
-        $hash = “dfg4zxc5”
-        $haspwd = “asdfasdf”
-        $moment = 2002
-        $answer = NULL
-    }
+        2,
+        “dfg4zxc5”,
+        “asdfasdf”,
+        2008
+    };
 
-    SQL-query: INSERT INTO userAnswer(aid,cid,hash,password,moment,useranswer) VALUES (pre-values[0], pre-values[1], pre-values[2], pre-values[3], pre-values[4], pre-values[5]);
+    SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
 
 * Get newly created data
     SELECT * WHERE hash=pre-values[2];
@@ -199,7 +200,6 @@ send
         $answer = “im updated”
     }
 
-    SQL-query: "UPDATE userAnswer SET submitted=NOW(), useranswer=$answer, timesSubmitted=timesSubmitted+1 WHERE hash=$hash AND password=$hashpwd
 
 ***
 Gather service output
@@ -211,7 +211,7 @@ Gather service output
 * Remove inserted row from DB, using hash
 ***
 
-	SQL-query: DELETE FROM userAnswer WHERE hash = pre-values[2];
+SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
