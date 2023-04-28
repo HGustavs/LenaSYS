@@ -1099,6 +1099,7 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
+var SDSuperStateHeight = []; // List with state diagram super states' real height
 
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
@@ -8947,6 +8948,20 @@ function drawElement(element, ghosted = false)
                 </div>`;
     }
     else if (element.kind == 'UMLSuperState') {
+        // Removes the previouse value in SDSuperStateHeight for the element
+        for (var i = 0; i < SDSuperStateHeight.length; i++) {
+            if (element.id == SDSuperStateHeight[i].id) {
+                SDSuperStateHeight.splice(i, 1);
+            }
+        }
+
+        // Calculate and store the SDSuperStateHeight's real height
+        var SDSuperStateEntityHeight = {
+            id: element.id,
+            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
+        }
+        SDSuperStateHeight.push(SDSuperStateEntityHeight);
+
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
