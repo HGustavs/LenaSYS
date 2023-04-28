@@ -7473,7 +7473,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             if (line.fromID == relationID) connElemsIds.push(line.toID);
             else connElemsIds.push(line.fromID);
         });
-        var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
         var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
         for (i = 0; i < allAttrToEntityRelations.length; i++) {
             if (allAttrToEntityRelations[i] == fromElement.id) {
@@ -7487,7 +7486,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 break;
             }
         }
-        if (hasRecursive || hasOtherLines){
+        if (hasOtherLines){
             displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
             return;
         }
