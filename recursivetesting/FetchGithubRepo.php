@@ -22,7 +22,7 @@ function getGitHubURL($url)
     $repository = $urlParts[4];
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
     $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    bfs($translatedURL);
+    bfs($translatedURL, $url);
 }
 
 function insertToFileLink($cid, $item) 
@@ -82,8 +82,24 @@ function downloadToWebServer($cid, $item)
     // Writes the file to the respective folder. 
     file_put_contents($path, $fileContents);    
 }
+
+function getCid($url) {
+	// Translate the URL so the select works like it should
+	$translatedURL = str_replace("/", "&#47;", $url);
+
+	global $pdo;
+
+	//Select cid from MYSQL db
+	$query = $pdo->prepare('SELECT cid FROM course WHERE courseGitURL = :gitURL;');
+	$query->bindParam(':gitURL', $translatedURL);
+	$query->execute();
+
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		return $row['cid'];
+	}
+}
     
-function bfs($url) 
+function bfs($url, $originalURL) 
 {
     $visited = array();
     $fifoQueue = array();
@@ -91,9 +107,8 @@ function bfs($url)
     global $pdoLite;
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
-    // TODO link the course with cid, should not be hardcoded 
-    $cid = 1; // 1 för webbprogramering 
-    
+    $cid = getCid($originalURL); // Get the cid based on the giturl from the input
+
     while (!empty($fifoQueue)) {
         $currentUrl = array_shift($fifoQueue);
         // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
