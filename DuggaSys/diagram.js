@@ -2001,14 +2001,14 @@ function mouseMode_onMouseUp(event)
                 showdata();
                 updatepos(0,0);
             }else if (context.length === 1){
-                if (event.target.id != "container" && context[0].id !== ghostElement.id){   
+                if (event.target.id != "container"){   
                     elementTypeSelected = elementTypes.Ghost;
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 }else if (event.target.id === "container" && context[0].id === ghostElement.id) { 
                     // create a line from the element to itself
-                    addLine(context[0], context[0], "Normal");
+                    addLine(context[0], context[0], "Recursive");
                     clearContext();
         
                     // Bust the ghosts
