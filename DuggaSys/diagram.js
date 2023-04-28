@@ -2006,7 +2006,7 @@ function mouseMode_onMouseUp(event)
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }else if (event.target.id === "container") { 
+                }else if (event.target.id === "container" && context[0].id === ghostElement.id) { 
                     // create a line from the element to itself
                     addLine(context[0], context[0], "Recursive");
                     clearContext();
@@ -8352,7 +8352,7 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}-1' class='lineColor' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Recursive"){
-            str += `<path id='${line.id}' d='M ${fx + x1Offset},${fy + y1Offset + height} C ${fx + x1Offset + width / 2},${fy + y1Offset + height + 10} ${tx + x2Offset - 10},${ty + y2Offset + height / 2} ${tx + x2Offset},${ty + y2Offset + height / 2}' stroke='${lineColor}' stroke-width='${strokewidth}' fill='none'/>`;
+            str += `<path id='${line.id}' d='M ${fx + x1Offset},${fy + y1Offset + height} C ${fx + x1Offset + width / 2},${fy + y1Offset + height + 10} ${tx + x2Offset - 10},${ty + y2Offset + height / 2} ${tx + x2Offset},${ty + y2Offset + height / 2}' stroke='${lineColor}' stroke-width='${strokewidth}' fill=':${lineColor}'/>`;
         }
 
         // If the line got cardinality
