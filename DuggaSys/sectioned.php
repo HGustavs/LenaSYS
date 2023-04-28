@@ -12,24 +12,10 @@
 	}
 
 
-	// $cid = 1;
 
-	function testingtesting(){
-		try{
-			$cid = getOPG('courseid');
-			$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+	// function testingtesting(){
 
-			$query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
-			$query->bindParam(':cid', $cid);
-			$query->execute();
-			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
-		}catch(PDOException $e) {
-			return '<p>Error: ' . $e->getMessage() . '</p>';
-		}
-		foreach($rows as $row){
-		echo "<option value=''>" .$row['fileName']. "</option>";
-		}
-	}
+	// }
 	
 
 	
@@ -596,9 +582,22 @@
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> <!-- lägg till id och options här med php? -->
-				<?php
-					echo testingtesting();
-				?>
+					<?php
+								try{
+									$cid = getOPG('courseid');
+									$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+						
+									$query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
+									$query->bindParam(':cid', $cid);
+									$query->execute();
+									$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+								}catch(PDOException $e) {
+									return '<p>Error: ' . $e->getMessage() . '</p>';
+								}
+								foreach($rows as $row){
+								echo "<option value=''>" .$row['fileName']. "</option>";
+								}
+					?>
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
