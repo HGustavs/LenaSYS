@@ -8353,9 +8353,14 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Recursive"){
             const radius = 20;
-            const cx = fx - radius; // the x-coordinate of the center of the loop
-            const cy = fy + radius; // the y-coordinate of the center of the loop
-            str += `<path id='${line.id}' class='lineColor' d='M ${fx + x1Offset},${fy + y1Offset}A ${radius},${radius} 0 0,1 ${cx + x1Offset},${cy + y1Offset}A ${radius},${radius} 0 0,1 ${fx + x1Offset},${fy + y1Offset}L ${tx + x2Offset},${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}' fill='none' />`;
+            const cx = fx - radius; // the x-coordinate
+            const cy = fy + radius; // the y-coordinate
+            const r = 10; // radius
+            const angle = Math.PI/2; // the angle of the arc that creates the loop
+            const startX = cx - r;
+            const startY = cy + r;
+        
+            str += `<path id='${line.id}' class='lineColor' d='M ${fx + x1Offset},${fy + y1Offset}A ${radius},${radius} 0 0,1 ${cx + x1Offset},${cy + y1Offset}A ${r},${r} 0 0,0 ${startX + x1Offset},${startY + y1Offset}A ${r},${r} 0 0,1 ${cx + x1Offset - r*Math.sin(angle)},${cy + y1Offset + r*Math.cos(angle)}L ${tx + x2Offset},${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}' fill='none' />`;
         }
 
         // If the line got cardinality
