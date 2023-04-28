@@ -8352,7 +8352,10 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}-1' class='lineColor' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Recursive"){
-            str += `<path id='${line.id}' d='M ${fx + x1Offset},${fy + y1Offset + height} C ${fx + x1Offset + width / 2},${fy + y1Offset + height + 10} ${tx + x2Offset - 10},${ty + y2Offset + height / 2} ${tx + x2Offset},${ty + y2Offset + height / 2}' stroke='${lineColor}' stroke-width='${strokewidth}' fill=':${lineColor}'/>`;
+            const radius = 20;
+            const cx = fx - radius; // the x-coordinate of the center of the loop
+            const cy = fy + radius; // the y-coordinate of the center of the loop
+            str += `<path id='${line.id}' class='lineColor' d='M ${fx + x1Offset},${fy + y1Offset}A ${radius},${radius} 0 0,1 ${cx + x1Offset},${cy + y1Offset}A ${radius},${radius} 0 0,1 ${fx + x1Offset},${fy + y1Offset}L ${tx + x2Offset},${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}' fill='none' />`;
         }
 
         // If the line got cardinality
