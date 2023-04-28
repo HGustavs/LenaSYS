@@ -2008,7 +2008,7 @@ function mouseMode_onMouseUp(event)
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 }else if (event.target.id === "container" && context[0].id === ghostElement.id) { 
                     // create a line from the element to itself
-                    addLine(context[0], context[0], "Normal");
+                    addLine(context[0], context[0], "Recursive");
                     clearContext();
         
                     // Bust the ghosts
