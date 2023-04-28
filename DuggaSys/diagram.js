@@ -7473,6 +7473,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             if (line.fromID == relationID) connElemsIds.push(line.toID);
             else connElemsIds.push(line.fromID);
         });
+        var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
         var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
         for (i = 0; i < allAttrToEntityRelations.length; i++) {
             if (allAttrToEntityRelations[i] == fromElement.id) {
@@ -7486,7 +7487,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 break;
             }
         }
-        if (hasOtherLines){
+        if (hasRecursive || hasOtherLines){
             displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
             return;
         }
@@ -7743,6 +7744,18 @@ function drawLine(line, targetGhost = false)
     }
     else {
         line.type = 'UML';
+    }
+
+    // Check if the line is between the same SD entity
+    if (felem.type == 'SD' && telem.type == 'SD' && felem.id === telem.id) {
+
+        var startX = fx + x1Offset + felem.width;
+        var startY = fy + y1Offset + felem.height/2;
+        var endX = startX;
+        var endY = fy + y1Offset;
+
+        str += `<polyline id='${line.id}' class='lineColor' points='${startX},${startY} ${startX},${endY} ${endX},${endY}' `;
+        str += `fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
     }
 
     // If element is UML, IE or SD (use straight line segments instead)
