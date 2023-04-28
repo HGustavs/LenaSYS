@@ -941,6 +941,13 @@ const lineCardinalitys = {
  const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
     ARROW: "ARROW"
 };
+/**
+ * @description Available options of Line types between two SD elements
+ */
+const SDLineType = {
+    STRAIGHT: "Straight",
+    SEGMENT: "Segment"
+}
 //#endregion ===================================================================================
 //#region ================================ GLOBAL VARIABLES     ================================
 // Data and html building variables
@@ -2927,11 +2934,14 @@ function changeLineProperties()
     var endLabel = document.getElementById("lineEndLabel");
     var startIcon= document.getElementById("lineStartIcon");
     var endIcon= document.getElementById("lineEndIcon");
+    var lineType = document.getElementById("lineType");
     var line = contextLine[0];
-    
-    if(radio1.checked && line.kind != radio1.value) {
-        line.kind = radio1.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    if (radio1) {
+        if (radio1.checked && line.kind != radio1.value) {
+            line.kind = radio1.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
     } 
     else if(radio2){
         if(radio2.checked && line.kind != radio2.value){
@@ -2967,7 +2977,7 @@ function changeLineProperties()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML line
-    if ((line.type == 'UML') || (line.type == 'SD')) {
+    if (line.type == 'UML') {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -2985,6 +2995,33 @@ function changeLineProperties()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if(line.endIcon != endIcon.value){
+            line.endIcon = endIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
+    // SD line
+    if (line.type == 'SD') {
+        if (line.innerType != lineType.value) {
+            line.innerType = lineType.value.trim();
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // Start label, near side
+        if (line.startLabel != startLabel.value) {
+            startLabel.value = startLabel.value.trim();
+            line.startLabel = startLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // End label, opposite side
+        if (line.endLabel != endLabel.value) {
+            endLabel.value = endLabel.value.trim();
+            line.endLabel = endLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.startIcon != startIcon.value) {
+            line.startIcon = startIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.endIcon != endIcon.value) {
             line.endIcon = endIcon.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
@@ -6763,6 +6800,16 @@ function generateContextProperties()
                 }
             });
             str += `</select>`;
+            str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
+            Object.keys(SDLineType).forEach(type => {
+                if (contextLine[0].innerType.localeCompare(type, undefined, { sensitivity: 'base' }) === 0) {
+                    str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
+                }
+                else {
+                    str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
+                }
+            });
+            str += `</select>`;
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
@@ -7582,6 +7629,12 @@ function preProcessLine(line) {
     //Sets the endIcon of the to-be-created line, if it an State entity
     if ((felem.type === 'SD') && (telem.type === 'SD')) {
         line.endIcon = "ARROW";
+        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
+            line.innerType = SDLineType.STRAIGHT;
+        }
+        else {
+            line.innerType = SDLineType.SEGMENT;
+        }
     }
 }
 //#endregion =====================================================================================
@@ -7784,8 +7837,10 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
-        //Line creation for UML, IE, SD. line = straight line, polyline = line that splits in 90-degree segments.
-        if (line.ctype == 'TB' || line.ctype == 'BT') {
+        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+        }
+        else if (line.ctype == 'TB' || line.ctype == 'BT') {
             str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' `;
             str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
             str += `fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
