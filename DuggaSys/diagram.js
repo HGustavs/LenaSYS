@@ -2000,12 +2000,23 @@ function mouseMode_onMouseUp(event)
                 showdata();
                 updatepos(0,0);
             }else if (context.length === 1){
-                if (event.target.id != "container"){   
+                if (event.target.id != "container" && context[0].id !== ghostElement.id){   
                     elementTypeSelected = elementTypes.Ghost;
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }else{   
+                }else if (event.target.id === "container" && context[0].id === ghostElement.id) { 
+                    // create a line from the element to itself
+                    addLine(context[0], context[0], "Normal");
+                    clearContext();
+        
+                    // Bust the ghosts
+                    ghostElement = null;
+                    ghostLine = null;
+        
+                    showdata();
+                    updatepos(0,0);
+                } else{   
                     clearContext();
                     ghostElement = null;
                     ghostLine = null;
@@ -7744,18 +7755,6 @@ function drawLine(line, targetGhost = false)
     }
     else {
         line.type = 'UML';
-    }
-
-    // Check if the line is between the same SD entity
-    if (felem.type == 'SD' && telem.type == 'SD' && felem.id === telem.id) {
-
-        var startX = fx + x1Offset + felem.width;
-        var startY = fy + y1Offset + felem.height/2;
-        var endX = startX;
-        var endY = fy + y1Offset;
-
-        str += `<polyline id='${line.id}' class='lineColor' points='${startX},${startY} ${startX},${endY} ${endX},${endY}' `;
-        str += `fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
     }
 
     // If element is UML, IE or SD (use straight line segments instead)
