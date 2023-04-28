@@ -3544,11 +3544,7 @@ function entityIsOverlapping(id, x, y)
                 }
               }
 
-              if (data[i].kind == "UMLSuperState") {
-                break;
-              }
-
-              else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
+              if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
                 break;
