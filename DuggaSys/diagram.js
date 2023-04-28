@@ -898,7 +898,8 @@ const relationState = {
 const lineKind = {
     NORMAL: "Normal",
     DOUBLE: "Double",
-    DASHED: "Dashed"
+    DASHED: "Dashed",
+    RECURSIVE: "Recursive"
 };
 
 /**
@@ -8350,6 +8351,8 @@ function drawLine(line, targetGhost = false)
     
             str += `<line id='${line.id}-1' class='lineColor' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+        } else if (line.kind == "Recursive"){
+            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy - height/2 + y1Offset}' x2='${fx + width + x2Offset}' y2='${fy - height/2 + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}' marker-end='url(#arrow)'/>`;
         }
 
         // If the line got cardinality
