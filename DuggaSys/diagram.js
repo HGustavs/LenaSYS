@@ -3542,7 +3542,7 @@ function entityIsOverlapping(id, x, y)
                   compY2 = data[i].y + SDHeight[j].height;
                 }
               }
-              //if youre moving something ontop of a super state, just break.
+              //if its overlapping with a super state, just break since that is allowed.
               if (data[i].kind == "UMLSuperState") {
                 break;
               }
