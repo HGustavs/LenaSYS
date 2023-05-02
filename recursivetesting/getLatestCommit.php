@@ -75,7 +75,7 @@
 			print_r($error);
 			echo $errorvar;
 		} 
-		//refreshGithubRepo($cid); //testing !!!!!!! don't forget to remove!
+		refreshGithubRepo($cid); //testing !!!!!!! don't forget to remove!
 	}
 
 	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
@@ -108,6 +108,12 @@
 
 			// Compare old commit in db with the new one from the url
 			if($latestCommit != $commit) {
+				// Update the SQLite DB with the new commit
+				$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':latestCommit', $latestCommit);
+				$query->execute();
+
 				echo '<script>console.log("The course should be updated!"); </script>';
 				//print_r("The course should be updated!");
 			} else {
