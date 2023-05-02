@@ -7754,12 +7754,12 @@ function drawLine(line, targetGhost = false)
             const endY = fy - 15 * zoomfact;
             const cornerX = fx + length;
             const cornerY = fy - length;
-            line.endIcon = "ARROW";
+            arrow = "ARROW";
 
             str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' marker-end='${line.endIcon}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' marker-end='${line.endIcon}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' marker-end='${arrow}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${cornerX + x1Offset},${cornerY + y1Offset},${cornerX + x1Offset + 5 * zoomfact},${cornerY + y1Offset + 10 * zoomfact},${cornerX + x1Offset},${cornerY + y1Offset + 20 * zoomfact},${cornerX + x1Offset - 5 * zoomfact},${cornerY + y1Offset + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
         }
     }
