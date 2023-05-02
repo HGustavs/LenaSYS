@@ -1601,7 +1601,7 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
+            if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
             if (context.length > 0) {
                 removeElements(context);
             } else if (contextLine.length > 0) {
