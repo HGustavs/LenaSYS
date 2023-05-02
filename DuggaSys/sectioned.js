@@ -1568,7 +1568,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='moment'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
-          str +=  " onclick='refreshMoment("+item['lid']+")'"
+          str +=  " onclick='refreshMoment("+item['lid']+")'";
           str += ">";
           str += "</td>";
         }
@@ -3533,7 +3533,7 @@ async function refreshCodeExample(exampleid) {
 //------------------------------------------------------------------------------
 function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
-  retdata.entries.map(sectionListEntry =>  {
+  retdata.entries.map(sectionListEntry => {
     //If current entry is within chosen moment and is a codeexample, try to refresh it
     if(sectionListEntry.moment == momentID && sectionListEntry.kind == 2){
       refreshCodeExample(sectionListEntry.link);
