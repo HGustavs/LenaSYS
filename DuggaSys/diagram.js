@@ -7562,7 +7562,11 @@ function preProcessLine(line) {
 
     //Sets the endIcon of the to-be-created line, if it an State entity
     if ((felem.type === 'SD') && (telem.type === 'SD')) {
-//        line.endIcon = "ARROW";
+        if (line.kind === 'Recursive') {
+            line.endIcon = '';
+        } else {
+            line.endIcon = 'ARROW';
+        }
     }
 }
 //#endregion =====================================================================================
@@ -7767,7 +7771,7 @@ function drawLine(line, targetGhost = false)
     if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
         if (targetGhost) {
-//            line.endIcon = "ARROW";
+            line.endIcon = "ARROW";
         }
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
