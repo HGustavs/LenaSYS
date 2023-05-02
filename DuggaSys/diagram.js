@@ -7562,7 +7562,7 @@ function preProcessLine(line) {
 
     //Sets the endIcon of the to-be-created line, if it an State entity
     if ((felem.type === 'SD') && (telem.type === 'SD')) {
-        line.endIcon = "ARROW";
+//        line.endIcon = "ARROW";
     }
 }
 //#endregion =====================================================================================
