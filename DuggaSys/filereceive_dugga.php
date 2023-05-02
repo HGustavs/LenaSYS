@@ -108,7 +108,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser
 $filo=print_r($_FILES,true);
-$info=$cid." ".$vers." ".$moment." ".$segment." ".$duggaid." ".$fieldtype." ".$fieldkind." ".$link." ".$filo;
+$info="cid: ".$cid." vers: ".$vers." moment: ".$moment." segment: ".$segment." duggaid: ".$duggaid." fieldtype: ".$fieldtype." fieldkind: ".$fieldkind." link: ".$link." filo: ".$filo;
 $log_uuid= rand();
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive_dugga.php",$userid,$info);
 

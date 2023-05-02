@@ -40,7 +40,7 @@ if(isset($_SESSION['uid'])){
 $log_uuid = getOP('log_uuid');
 
 $filo=print_r($_FILES,true);
-$info=$cid." ".$vers." ".$kind." ".$fileName." ".$error." ".$filo;
+$info="cid: ".$cid." vers: ".$vers." kind: ".$kind." fileName: ".$fileName." error: ".$error." filo: ".$filo;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve_preview.php",$userid,$info);
 
 //  Handle files! One by one  -- if all is ok add file name to database
