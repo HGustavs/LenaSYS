@@ -7767,7 +7767,7 @@ function drawLine(line, targetGhost = false)
     if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
         if (targetGhost) {
-            line.endIcon = "ARROW";
+//            line.endIcon = "ARROW";
         }
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
