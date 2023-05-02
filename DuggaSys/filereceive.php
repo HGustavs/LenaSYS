@@ -284,12 +284,12 @@ if ($storefile) {
     $swizzled = swizzleArray($_FILES['uploadedfile']);
     echo "<pre>";
     // Uncomment for debug printing
-    //print_r($swizzled);
+    print_r($swizzled);
 
     foreach ($swizzled as $key => $filea) {
 
         // Uncomment for debug printing
-        //print_r($filea) . "<br />";
+        print_r($filea) . "<br />";
 
         //  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
         echo $filea["name"];
