@@ -7481,7 +7481,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     // Prevent a line to be drawn between elements of different types.
-    if (fromElement.type != toElement.type) {
+    if (fromElement.type != toElement.type || fromElement.kind == 'SDState' != toElement.kind == 'UML Initial State') {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
     }
