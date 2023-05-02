@@ -7406,7 +7406,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     
-    if (fromElement.kind === 'SD' && toElement.kind === 'SD') {
+    if (fromElement.kind === 'SD' == toElement.kind === 'SD' && fromElement.id === toElement.id) {
         // If both elements are of type 'SD', skip error message
         return;
     } else if (fromElement.kind === toElement.kind && fromElement.id === toElement.id) {
