@@ -764,6 +764,7 @@ const keybinds = {
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
         STATE_FINAL: { key: "<" , ctrl: true },
+        STATE_SUPER: { key: ">" , ctrl: false },
 };
 
 /** 
@@ -791,7 +792,9 @@ const elementTypes = {
 
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
-    UMLFinalState: 10
+    UMLFinalState: 10,
+
+    UMLSuperState:11,
 
 };
 
@@ -811,7 +814,9 @@ const elementTypesNames = {
     SDState: "SDState",
 
     UMLInitialState: "UMLInitialState",
-    UMLFinalState: "UMLFinalState"
+    UMLFinalState: "UMLFinalState",
+
+    UMLSuperState: "UMLSuperState",
 
 }
 
@@ -937,6 +942,13 @@ const lineCardinalitys = {
  const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
     ARROW: "ARROW"
 };
+/**
+ * @description Available options of Line types between two SD elements
+ */
+const SDLineType = {
+    STRAIGHT: "Straight",
+    SEGMENT: "Segment"
+}
 //#endregion ===================================================================================
 //#region ================================ GLOBAL VARIABLES     ================================
 // Data and html building variables
@@ -1120,8 +1132,9 @@ var defaults = {
     SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" } // UML Final state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
 
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1663,6 +1676,10 @@ document.addEventListener('keyup', function (e)
             setElementPlacementType(elementTypes.UMLFinalState);
             setMouseMode(mouseMode.PLACING_ELEMENT);
         }
+        if (isKeybindValid(e, keybinds.STATE_SUPER)) {
+            setElementPlacementType(elementTypes.UMLSuperState);
+            setMouseMode(mouseMode.PLACING_ELEMENT);
+        }
 
 
         if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
@@ -1801,6 +1818,7 @@ function mdown(event)
     
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
+                    document.getElementById('optmarker').innerHTML = "&#9650;Options";
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
             }
@@ -1907,7 +1925,7 @@ function ddown(event)
                 input.focus();
                 input.setSelectionRange(0, input.value.length); // Select the whole text.
             }
-            document.getElementById('optmarker').innerHTML = "&#x203A;Options";
+            document.getElementById('optmarker').innerHTML = "&#9650;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }   
@@ -2473,7 +2491,7 @@ function mmoving(event)
 
         case pointerStates.CLICKED_ELEMENT:
             if(mouseMode != mouseModes.EDGE_CREATION){
-                console.log("Moving object")
+
                 var prevTargetPos = {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
@@ -2929,11 +2947,14 @@ function changeLineProperties()
     var endLabel = document.getElementById("lineEndLabel");
     var startIcon= document.getElementById("lineStartIcon");
     var endIcon= document.getElementById("lineEndIcon");
+    var lineType = document.getElementById("lineType");
     var line = contextLine[0];
-    
-    if(radio1.checked && line.kind != radio1.value) {
-        line.kind = radio1.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    if (radio1) {
+        if (radio1.checked && line.kind != radio1.value) {
+            line.kind = radio1.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
     } 
     else if(radio2){
         if(radio2.checked && line.kind != radio2.value){
@@ -2969,7 +2990,7 @@ function changeLineProperties()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML line
-    if ((line.type == 'UML') || (line.type == 'SD')) {
+    if (line.type == 'UML') {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -2987,6 +3008,33 @@ function changeLineProperties()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if(line.endIcon != endIcon.value){
+            line.endIcon = endIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
+    // SD line
+    if (line.type == 'SD') {
+        if (line.innerType != lineType.value) {
+            line.innerType = lineType.value.trim();
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // Start label, near side
+        if (line.startLabel != startLabel.value) {
+            startLabel.value = startLabel.value.trim();
+            line.startLabel = startLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // End label, opposite side
+        if (line.endLabel != endLabel.value) {
+            endLabel.value = endLabel.value.trim();
+            line.endLabel = endLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.startIcon != startIcon.value) {
+            line.startIcon = startIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.endIcon != endIcon.value) {
             line.endIcon = endIcon.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
@@ -3544,8 +3592,11 @@ function entityIsOverlapping(id, x, y)
                   compY2 = data[i].y + SDHeight[j].height;
                 }
               }
-
-              if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
+              //if its overlapping with a super state, just break since that is allowed.
+              if (data[i].kind == "UMLSuperState") {
+                break;
+              }
+              else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
                 break;
@@ -3977,6 +4028,7 @@ function generateStateDiagramInfo()
     const ENTITY = 0, SEEN = 1;
     const stateInitial = [];
     const stateFinal = [];
+    const stateSuper = [];
     const stateElements = [];
     const stateLines = [];
     const queue = [];
@@ -4001,6 +4053,9 @@ function generateStateDiagramInfo()
         }
         else if (data[i].kind == elementTypesNames.UMLFinalState) {
             stateFinal.push([data[i], true]);
+        }
+        else if (data[i].kind == elementTypesNames.UMLSuperState) {
+            stateSuper.push([data[i], false]);
         }
     }
 
@@ -4028,6 +4083,11 @@ function generateStateDiagramInfo()
                         connections.push(stateFinal[j]);
                     }
                 }
+                for (let j = 0; j < stateSuper.length; j++) {
+                    if (stateLines[i].toID == stateSuper[j][ENTITY].id) {
+                        connections.push(stateSuper[j]);
+                    }
+                }
             }
         }
 
@@ -4044,11 +4104,12 @@ function generateStateDiagramInfo()
     // Adds additional information in the view.
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
+    output += `<p>Super States: ${stateSuper.length}</p>`;
     output += `<p>SD States: ${stateElements.length}</p>`;
     output += `<p>Lines: ${stateLines.length}</p>`;
     
     //if no state diagram exists, return a message to the user instead.
-    if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0)) {
+    if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0) && (stateSuper.length == 0)) {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
     }
     
@@ -6486,6 +6547,18 @@ function generateContextProperties()
                     }
                 }
             }
+            else if (element.kind == 'UMLSuperState') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     
 
@@ -6740,6 +6813,16 @@ function generateContextProperties()
                 }
                 else {
                     str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                }
+            });
+            str += `</select>`;
+            str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
+            Object.keys(SDLineType).forEach(type => {
+                if (contextLine[0].innerType.localeCompare(type, undefined, { sensitivity: 'base' }) === 0) {
+                    str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
+                }
+                else {
+                    str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
                 }
             });
             str += `</select>`;
@@ -7409,11 +7492,16 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     if (fromElement.id === toElement.id && !(fromElement.kind === 'SDState' || toElement.kind === 'SDState')) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
-      }
-
+    }
+    
     // Prevent a line to be drawn between elements of different types.
     if (fromElement.type != toElement.type) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
+        return;
+    }
+    //checks if a line is drawn to UMLInitialState.
+    if (toElement.kind == "UMLInitialState") {
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
     }
 
@@ -7566,6 +7654,11 @@ function preProcessLine(line) {
             line.endIcon = '';
         } else {
             line.endIcon = 'ARROW';
+        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
+            line.innerType = SDLineType.STRAIGHT;
+        }
+        else {
+            line.innerType = SDLineType.SEGMENT;
         }
     }
 }
@@ -7788,7 +7881,7 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
-        if (felem.type == 'SD' && elemsAreClose) {
+        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
@@ -7802,6 +7895,7 @@ function drawLine(line, targetGhost = false)
             str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
             str += `fill = none stroke = '${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
+        //Line creation when adding icons
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
                 if (line.ctype == 'TB') {
@@ -8778,7 +8872,7 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height/8) * zoomfact); //determines the corner radius for the SD states.
+    var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8812,8 +8906,25 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == "UMLEntity") { 
-        elemAttri = element.attributes.length;
-        elemFunc = element.functions.length;
+        const maxCharactersPerLine = Math.floor((boxw / texth)*1.75);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.attributes.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        const funcText = element.functions.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;
+        elemFunc = funcText.length;
 
         // Removes the previouse value in UMLHeight for the element
         for (var i = 0; i < UMLHeight.length; i++) {
@@ -8862,7 +8973,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8888,7 +8999,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemFunc/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemFunc; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.functions[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${funcText[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -8942,9 +9053,24 @@ function drawElement(element, ghosted = false)
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                             <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
                             <g style="fill:${element.fill}" transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)">
-                                <circle cx="14.5" cy="14.5" r="7.5"/>
+                                <circle cx="14.5" cy="14.5" r="5.5"/>
                             </g>
                         </svg>
+                </div>`;
+    }
+    else if (element.kind == 'UMLSuperState') {
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        str += `<div id="${element.id}" 
+                    class="element uml-Super"
+                    style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     onmousedown='ddown(event);' 
+                     onmouseenter='mouseEnter();' 
+                     onmouseleave='mouseLeave();'>
+                    <svg width="100%" height="100%">
+                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
+                    <rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
+                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${boxh/30}px">${element.name}</text>
+                    </svg>
                 </div>`;
     }
 
@@ -9104,8 +9230,20 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == "IEEntity") { 
-        elemAttri = element.attributes.length;
-        //elemFunc = element.functions.length;
+        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.attributes.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;
 
         // Removes the previouse value in IEHeight for the element
         for (var i = 0; i < IEHeight.length; i++) {
@@ -9154,7 +9292,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${element.attributes[i]}</text>`;
+                str += `<text class='text' x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
