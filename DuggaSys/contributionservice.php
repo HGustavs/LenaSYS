@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 // Include basic application services!
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
-include_once "../Shared/databse.php";
+include_once "../Shared/database.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
