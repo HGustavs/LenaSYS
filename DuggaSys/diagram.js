@@ -3579,8 +3579,11 @@ function entityIsOverlapping(id, x, y)
                   compY2 = data[i].y + SDHeight[j].height;
                 }
               }
-
-              if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
+              //if its overlapping with a super state, just break since that is allowed.
+              if (data[i].kind == "UMLSuperState") {
+                break;
+              }
+              else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
                 break;
