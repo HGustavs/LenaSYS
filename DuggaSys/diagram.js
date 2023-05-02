@@ -7750,6 +7750,11 @@ function drawLine(line, targetGhost = false)
             const endY = fy - 15 * zoomfact;
             const cornerX = fx + length;
             const cornerY = fy - length;
+            
+            line.type = 'SD';
+            if (targetGhost) {
+                line.endIcon = "ARROW";
+            }
 
             str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
