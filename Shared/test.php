@@ -140,7 +140,6 @@ function callServiceTest($service, $data, $debug, $prettyPrint){
 
     $curlResponseJSON = json_decode($curlResponse, true);
 
-
     if ($prettyPrint) {
         echo "<h4> Test 3 (callService): {$callServiceTestResult} </h4>";
         echo "<strong>service: </strong>{$service}";
@@ -155,7 +154,7 @@ function callServiceTest($service, $data, $debug, $prettyPrint){
         // If debug true send back detailed info
         if ($debug == true) {
             return array(
-                'Test 3 (callService):' => $curlResponse,
+                'Test 3 (callService):' => $curlResponseJSON,
                 'service' => $service,
                 'data' => $sendServiceData,
             );
