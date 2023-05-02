@@ -75,12 +75,12 @@
 			print_r($error);
 			echo $errorvar;
 		} 
-		getCommitSqlite($cid); //testing !!!!!!! don't forget to remove!
+		//refreshGithubRepo($cid); //testing !!!!!!! don't forget to remove!
 	}
 
 	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
 
-	function getCommitSqlite($cid){
+	function refreshGithubRepo($cid){
 		// Get old commit from Sqlite 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');

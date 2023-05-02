@@ -200,9 +200,9 @@
 							// Refresh button for Github repo in nav
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton'>";
-            	echo "<a id='refreshBTN' title='Refresh Github repo' value='Refresh' href='#'>";
-             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' src='../Shared/icons/refresh.svg'>";
-							echo "</a>";
+            	echo "<span id='refreshBTN' title='Refresh Github repo' value='Refresh' href='#'>";
+             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' onclick='refreshGithubRepo(".$_SESSION['courseid'].");' src='../Shared/icons/refresh.svg'>";
+							echo "</span>";
 							echo "</div>";
 							echo "</td>";
 
