@@ -7406,12 +7406,10 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     
-   // if (fromElement.kind !== 'SDState' && toElement.kind !== 'SDState' && fromElement.id === toElement.id) {
-   //     displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element type`);
-   //     return;
-   // } else {
-   //     return;
-   // }
+    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDState' || toElement.kind === 'SDState')) {
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
+        return;
+      }
 
     // Prevent a line to be drawn between elements of different types.
     if (fromElement.type != toElement.type) {
