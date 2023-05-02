@@ -1923,7 +1923,7 @@ function ddown(event)
                 input.focus();
                 input.setSelectionRange(0, input.value.length); // Select the whole text.
             }
-            document.getElementById('optmarker').innerHTML = "&#9660;Options";
+            document.getElementById('optmarker').innerHTML = "&#9650;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }   
