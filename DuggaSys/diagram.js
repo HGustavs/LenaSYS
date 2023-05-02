@@ -1130,7 +1130,7 @@ var defaults = {
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
     SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML-Initial-State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
 
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
@@ -7481,7 +7481,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     // Prevent a line to be drawn between elements of different types.
-    if (fromElement.type != toElement.type || fromElement.kind == 'SDState' != toElement.kind == 'UML-Initial-State') {
+    if (fromElement.type != toElement.type || fromElement.kind == "SDState" != toElement.kind == "UMLInitialState") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
     }
