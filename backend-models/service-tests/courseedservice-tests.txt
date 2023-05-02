@@ -1,0 +1,199 @@
+
+courseedservice.php
+
+---------------------------------------------------------------------------------------------------------------------
+- New Course (line 79)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $userid
+    $coursecode
+    $coursename
+    $courseGitURL
+    $description
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- New Vers (line 116)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $cid
+    $coursecode
+    $versid
+    $versname
+    $coursename
+    $coursenamealt
+    $motd
+    $startdate
+    $enddate
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update vers (line 152)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $courseid
+    $coursecode
+    $versid
+    $versname
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update course (line 173)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $courseid
+    $versid
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Insert vers (line 181)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $cid
+    $coursecode
+    $versid
+    $versname
+    $coursename
+    $coursenamealt
+    $motd
+    $startdate
+    $enddate
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update course (line 456)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $cid
+    $coursename
+    $visibility
+    $coursecode
+    $courseGitURL
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Insert settings (line 488)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $motd
+    $readonly
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
