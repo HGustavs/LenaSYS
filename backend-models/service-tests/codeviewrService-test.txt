@@ -7,16 +7,18 @@ Prepare data  Line 71
 { (checklogin = true) 
 && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) == true} give $writeAccess="w";, else $writeAccess="s";
 
+Select * from codeexample where exampleid=9013
+
 send{
-$exampleCount=1;
-	$exampleId=9030; 
+	$exampleCount=1;
+	$exampleId=9013; 
 	$exampleName=New Code;
 	$courseID = 1885
 	$cversion= 1337;
 	$beforeId= [];
 	$afterId= [];
 	$public=0;
-	$sectionName=New Code9030;
+	$sectionName=New Code9013;
 	$playlink= NULL;
 }
 SETTEMPL  Line 96-159
@@ -141,6 +143,7 @@ SectionTitle: TestSecTitle	  		Title: TestTitle
 Before: New Code9028:New Code 		After: New Code9030:New Code 
 PLay Link: 					Important words: TestWord
 
+Expected output:
 {
   "opt": "EDITEXAMPLE",
   "before": [
@@ -203,7 +206,7 @@ Does this even work? Broken feature. Useless until fixed
 DELEXAMPLE Line 294
 —---------------------------------------------------------------------------------
 
-
+Expected output:
 {"deleted":true,"debug":"NONE!"}
 
 
