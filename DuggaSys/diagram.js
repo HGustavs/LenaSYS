@@ -7753,9 +7753,9 @@ function drawLine(line, targetGhost = false)
 
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${startX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}-1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset + length}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset + length}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset + length}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset + length}' x2='${endX + x1Offset}' y2='${endY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset + 20}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
         }
     }
 
