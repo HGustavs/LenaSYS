@@ -7406,11 +7406,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     
-    if (fromElement.kind === 'SD' == toElement.kind === 'SD' && fromElement.id === toElement.id) {
-        // If both elements are of type 'SD', skip error message
-        return;
-    } else if (fromElement.kind === toElement.kind && fromElement.id === toElement.id) {
-        // If both elements are of the same kind and have the same ID, show error message
+    if (fromElement.id == toElement.id && fromElement.kind == toElement.kind && fromElement.kind !== 'SD') {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
