@@ -836,8 +836,8 @@ button{
 }
 
 select{
-    background-color: var(--color-background-codeviewer-nav);
-    color: var(--color-text-light);
+    background-color: var(--color-background);
+    color: var(--color-text-list);
     margin-right: 10px;
     border-radius: 5px;
 }
