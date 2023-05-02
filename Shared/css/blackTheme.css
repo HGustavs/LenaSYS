@@ -843,10 +843,11 @@ select{
 }
 
 input{
-    background-color: var(--color-background-codeviewer-nav);
-    color: var(--color-text-light);
-    color-scheme: dark; /*For date picker */
-    border: 2px solid #121212;
+    border-radius: 2px;
+    border: 2px solid var(--color-border-2);
+    border-radius: 4px;
+    font-size: 16px;
+    padding-left: 5px;
 }
 
 /* Style for "Contribution GithHub Table START */
