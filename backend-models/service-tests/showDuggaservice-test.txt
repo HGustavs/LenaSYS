@@ -7,10 +7,11 @@ Get active users
 ***
 Pre-req: -
 ***
-$pre-values {
-                “hnf3j58s”
-                5
-            }
+$pre-values =
+{   
+    “hnf3j58s”
+    5
+};
 
 Pre-query: INSERT INTO groupdugga(hash,active_users)  VALUES ($pre-values[0], $pre-values[1]);
 
@@ -133,39 +134,48 @@ pre-req: !isSuperUser($userid) &&			isset($_SESSION["submission-$courseid-$cours
 isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"] == TRUE
 ***
 Pre-querys:
-$preValuesCourse = {	
-                        9999
-                        1
-                    };
+$preValuesCourse = 
+{	
+    9999
+    1
+};
 
-INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+SQL-query: INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
 
-$pre-values = {
-                “ghj1jfg2”,
-                “dsa4cxz5”,
-                13,
-                9999,
-                5019
-            }
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
 
-INSERT INTO userAnswer (hash, password, variant, cid, moment) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3], $pre-values[4])
+//Save this value since it has to be used in moment for the next part.
+
+$pre-values = 
+{
+    “ghj1jfg2”,
+    “dsa4cxz5”,
+    13,
+    9999,
+    "VALUE FROM PREVIOUS QUERY"//this is an INT, no quotationmarks.
+}
+
+SQL-query: INSERT INTO userAnswer (hash, password, variant, cid, moment) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3], $pre-values[4])
 
 //Get the selected user by hash
 SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=$hash;
@@ -189,9 +199,9 @@ This is the expected output for the micro service.
 * Remove inserted row from DB, using aid
 ***
 
-	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
-			DELETE FROM listentries WHERE cid = 9999;
-			DELETE FROM course WHERE cid = 9999;
+	SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+			    DELETE FROM listentries WHERE cid = 9999;
+			    DELETE FROM course WHERE cid = 9999;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
@@ -207,40 +217,49 @@ isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0
 Pre-req variables
 ***
 Pre-querys:
-$preValuesCourse = {	9999
-			1
+$preValuesCourse = 
+{	
+    9999,
+	1
 };
 
 INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+
+//Save this value since it has to be used in moment for the next part.
 
 $pre-values =
 {
     9999,
     “dfg4zxc5”,
     “asdfasdf”,
-    5019
+    "VALUE FROM PREVIOUS QUERY"//this is an INT, no quotationmarks.
 };
 SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
 
-* Get newly created data
-SELECT * WHERE hash=pre-values[1];
+* Get newly created data, make sure the new insert was added.
+SQL-query: SELECT * WHERE hash=pre-values[1];
 
 ***
 * Update information on userAnswer
@@ -264,9 +283,9 @@ This is the expected output for the micro service.
 * Remove inserted row from DB, using aid
 ***
 
-	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
-    DELETE FROM listentries WHERE cid = 9999;
-	DELETE FROM course WHERE cid = 9999;
+	SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+                DELETE FROM listentries WHERE cid = 9999;
+	            DELETE FROM course WHERE cid = 9999;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
@@ -278,28 +297,37 @@ Pre-req: !isset($grade) || !$grade > 1
 ***
 
 Pre-querys:
-$preValuesCourse = {	9999
-			1
+$preValuesCourse = 
+{	
+    9999,
+	1
 };
 
 INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+
+//Save this value since it has to be used in moment for the next part.
 
 ***
 * send parameters input to showDuggaservice.php
@@ -310,7 +338,7 @@ send
 	$cid = 9999
 	$coursevers = 52432
 	$duggaid = 1
-	$moment = 5019
+	$moment = "SAVED VALUE FROM PREVIOUS QUERY"//this value is an INT, so no quotation marks.
 	$variant = 3
     $hash = “ghj1ghj2”
     $haspwd = “asddasdd”
@@ -333,9 +361,9 @@ This is the expected output for the micro service.
 * Remove inserted row from DB, using hash
 ***
 
-	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
-    DELETE FROM listentries WHERE cid = 9999;
-	DELETE FROM course WHERE cid = 9999;
+	SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+                DELETE FROM listentries WHERE cid = 9999;
+	            DELETE FROM course WHERE cid = 9999;
 
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
@@ -348,37 +376,44 @@ Pre-req: isSuperUser = TRUE
 ***
 
 Pre-querys:
-$preValuesCourse = {	9999
-			1
+$preValuesCourse = 
+{	
+    9999,
+	1
 };
 
 INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
 
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+//Save this value since it has to be used in moment for the next part.
 
 $pre-values =
 {
     9999,
     “dfg4zxc5”,
     “asdfasdf”,
-    5019
+    "SAVED VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
 };
 SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
 
@@ -400,9 +435,9 @@ This is the expected output for the micro service.
 * Remove inserted rows from DB
 ***
 
-SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
-DELETE FROM listentries WHERE cid = 9999;
-DELETE FROM course WHERE cid = 9999;
+SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+            DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
 —------------------------------------------------------------------------------------------------------------------
 
 —------------------------------------------------------------------------------------------------------------------
@@ -416,37 +451,46 @@ Pre-req: isSuperUser = TRUE
 ***
 Pre-query:
 
-$preValuesCourse = {	9999
-			1
+$preValuesCourse = 
+{	
+    9999,
+    1
 };
 
 INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
 
-SELECT * FROM userAnswer WHERE hash = “xxxxxxxx”// This should return nothing, otherwise, change hash to something where previous query returns nothing.
+SELECT * FROM userAnswer WHERE hash = “xxxxxxxx”// This should return nothing, otherwise, change hash to something where previous query returns nothing. This is to ensure that the pre-req rows == NULL is matched.
+
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+
+//Save this value since it has to be used in moment for the next part.
 
 ***
 * send parameters input to showDuggaservice.php
 ***
 send
 {
-	$moment = 5019
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
 }
 
 
@@ -461,8 +505,8 @@ This is the expected output for the micro service.
 * Remove inserted rows from DB
 ***
 
-SQL-query:DELETE FROM listentries WHERE cid = 9999;
-DELETE FROM course WHERE cid = 9999;
+SQL-query:  DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
 TEST #9 - 345 - 351
@@ -475,35 +519,44 @@ Pre-req: isSuperUser = TRUE
 
 Pre-query:
 
-$preValuesCourse = {	9999
-			1
+$preValuesCourse = 
+{	
+    9999
+    1
 };
 
 INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+
+//Save this value since it has to be used in moment for the next part.
 
 ***
 * send parameters input to showDuggaservice.php
 ***
 send
 {
-	$moment = 5019
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
 }
 
 
@@ -517,8 +570,8 @@ This is the expected output for the micro service.
 * Remove inserted rows from DB
 ***
 
-SQL-query: DELETE FROM listentries WHERE cid = 9999;
-DELETE FROM course WHERE cid = 9999;
+SQL-query:  DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
 —------------------------------------------------------------------------------------------------------------------
 —------------------------------------------------------------------------------------------------------------------
 TEST #10 - 374 - 402
@@ -536,28 +589,36 @@ $preValuesCourse = {	9999
 
 INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
 
-$pre-values = {
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+
+//Save this value since it has to be used in moment for the next part.
+
+$pre-values = 
+{
 	$cid = 9999
 	$coursevers = 52432
 	$duggaid = 1
-	$moment = 5019
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
 	$variant = 3
     $hash = “ghj1ghj2”
     $haspwd = “asddasdd”
@@ -585,9 +646,9 @@ This is the expected output for the micro service.
 * Remove inserted row from DB, using hash
 ***
 
-	SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
-    DELETE FROM listentries WHERE cid = 9999;
-	DELETE FROM course WHERE cid = 9999;
+	SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+                DELETE FROM listentries WHERE cid = 9999;
+	            DELETE FROM course WHERE cid = 9999;
 
 
 —------------------------------------------------------------------------------------------------------------------
@@ -607,28 +668,36 @@ $preValuesCourse = {	9999
 
 INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
 
-$preValuesListentries = {   9999, 
-                            "Inserttobedeleted",
-                            "UNK",
-                            4,
-                            12,
-                            2,
-                            1,
-                            1337,
-                            5019,
-                            1,
-                            1,
-                            0, 
-                            "UNK" }; 
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
 
-SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
-            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9], $preValuesListentries[10],$preValuesListentries[11],$preValuesListentries[12]);
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
 
-$pre-values = {
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+
+//Save this value since it has to be used in moment for the next part.
+
+$pre-values = 
+{
 	$cid = 9999
 	$coursevers = 52432
 	$duggaid = 1
-	$moment = 5019
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
 	$variant = 3
     $hash = “ghj1ghj2”
     $haspwd = “UNK”
@@ -655,9 +724,9 @@ Gather service output
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 This is the expected output for the micro service.
 
-SQL-query: DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
-DELETE FROM listentries WHERE cid = 9999;
-DELETE FROM course WHERE cid = 9999;
+SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+            DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
 
 ***
 *NOTE: This test might have better testing solutions, since the query is very complex.
