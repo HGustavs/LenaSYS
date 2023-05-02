@@ -836,7 +836,7 @@ button{
 }
 
 select{
-    background-color: var(--color-background);
+    background-color: var(--color-background-light-surface);
     color: var(--color-text-list);
     margin-right: 10px;
     border-radius: 5px;
