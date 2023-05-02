@@ -1817,6 +1817,7 @@ function mdown(event)
     
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
+                    document.getElementById('optmarker').innerHTML = "&#9650;Options";
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
             }
