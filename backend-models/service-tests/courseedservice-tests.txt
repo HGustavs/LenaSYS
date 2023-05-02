@@ -2,7 +2,7 @@
 courseedservice.php
 
 ---------------------------------------------------------------------------------------------------------------------
-- New Course (line 79)
+- Insert into Course (line 79)
 ---------------------------------------------------------------------------------------------------------------------
 
 *********
@@ -16,6 +16,7 @@ courseedservice.php
 *********
 send
 {
+    $opt = "NEW";
     $userid
     $coursecode
     $coursename
@@ -30,7 +31,7 @@ Save the values of the echoed array as a JSON (at the end of the file. echo json
 this is the expected output for the micro service.
 
 ---------------------------------------------------------------------------------------------------------------------
-- New Vers (line 116)
+- Insert into Vers (line 116)
 ---------------------------------------------------------------------------------------------------------------------
 
 *********
@@ -44,6 +45,7 @@ this is the expected output for the micro service.
 *********
 send
 {
+    $opt = "NEWVRS";
     $cid
     $coursecode
     $versid
@@ -53,6 +55,32 @@ send
     $motd
     $startdate
     $enddate
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update course (line 138)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+&& $makeactive = "3"
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $cid
+    $versid
 }
 
 *********
@@ -76,6 +104,7 @@ this is the expected output for the micro service.
 *********
 send
 {
+    $opt = "UPDATEVRS";
     $courseid
     $coursecode
     $versid
@@ -103,6 +132,7 @@ this is the expected output for the micro service.
 *********
 send
 {
+    $opt = "CHGVERS";
     $courseid
     $versid
 }
@@ -114,7 +144,7 @@ Save the values of the echoed array as a JSON (at the end of the file. echo json
 this is the expected output for the micro service.
 
 ---------------------------------------------------------------------------------------------------------------------
-- Insert vers (line 181)
+- Insert into vers (line 181)
 ---------------------------------------------------------------------------------------------------------------------
 
 *********
@@ -128,6 +158,7 @@ this is the expected output for the micro service.
 *********
 send
 {
+    $opt = "CPYVRS";
     $cid
     $coursecode
     $versid
@@ -146,6 +177,33 @@ Save the values of the echoed array as a JSON (at the end of the file. echo json
 this is the expected output for the micro service.
 
 ---------------------------------------------------------------------------------------------------------------------
+- Update course (line 433)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+&& $makeactive = "3"
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $cid
+    $versid
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+
+---------------------------------------------------------------------------------------------------------------------
 - Update course (line 456)
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -160,6 +218,7 @@ this is the expected output for the micro service.
 *********
 send
 {
+    $opt = "UPDATE";
     $cid
     $coursename
     $visibility
@@ -188,6 +247,7 @@ this is the expected output for the micro service.
 *********
 send
 {
+    $opt = "SETTINGS";
     $motd
     $readonly
 }
