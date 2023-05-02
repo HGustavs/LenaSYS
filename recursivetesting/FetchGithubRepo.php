@@ -4,8 +4,6 @@ include_once "../Shared/basic.php";
 session_start();
 pdoConnect(); // Connect to database and start session
 
-echo $courseId=getOP('courseid');
-
 //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
 if(isset($_POST['action'])) 
 {
@@ -109,7 +107,8 @@ function bfs($url, $originalURL)
     global $pdoLite;
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
-    $cid = getCid($originalURL); // Get the cid based on the giturl from the input
+    //$cid = getCid($originalURL); // Get the cid based on the giturl from the input
+    $cid=getOPG('courseid');
 
     while (!empty($fifoQueue)) {
         $currentUrl = array_shift($fifoQueue);
