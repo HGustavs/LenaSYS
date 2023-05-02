@@ -903,7 +903,8 @@ const relationState = {
 const lineKind = {
     NORMAL: "Normal",
     DOUBLE: "Double",
-    DASHED: "Dashed"
+    DASHED: "Dashed",
+    RECURSIVE: "Recursive"
 };
 
 /**
@@ -2023,7 +2024,18 @@ function mouseMode_onMouseUp(event)
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }else{   
+                }else if (ghostElement !== null) { 
+                    // create a line from the element to itself
+                    addLine(context[0], context[0], "Recursive");
+                    clearContext();
+        
+                    // Bust the ghosts
+                    ghostElement = null;
+                    ghostLine = null;
+        
+                    showdata();
+                    updatepos(0,0);
+                } else{   
                     clearContext();
                     ghostElement = null;
                     ghostLine = null;
@@ -7476,10 +7488,12 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     }
 
-    if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
+    
+    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDState' || toElement.kind === 'SDState')) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
+    
     // Prevent a line to be drawn between elements of different types.
     if (fromElement.type != toElement.type) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
@@ -7636,7 +7650,11 @@ function preProcessLine(line) {
 
     //Sets the endIcon of the to-be-created line, if it an State entity
     if ((felem.type === 'SD') && (telem.type === 'SD')) {
-        line.endIcon = "ARROW";
+        if (line.kind === 'Recursive') {
+            line.endIcon = '';
+        } else {
+            line.endIcon = 'ARROW';
+        }
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
@@ -7702,8 +7720,8 @@ function drawLine(line, targetGhost = false)
         zoomfact
     );
 
-    // Collect coordinates
-    if (line.ctype == "BT"){
+   // Collect coordinates
+   if (line.ctype == "BT"){
         fy = felem.y2;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
@@ -7818,6 +7836,25 @@ function drawLine(line, targetGhost = false)
     } else if(telem.kind == "UMLRelation"){
         x2Offset = 0;
         y2Offset = 0;
+    }
+
+    // Create recursive line for SD entities
+    if ((felem.type == 'SD') || (telem.type == 'SD')){
+        if (line.kind == "Recursive"){
+            const length = 80 * zoomfact;
+            const startX = fx - 10 * zoomfact;
+            const startY = fy - 15 * zoomfact;
+            const endX = fx - 10 * zoomfact;
+            const endY = fy - 15 * zoomfact;
+            const cornerX = fx + length;
+            const cornerY = fy - length;
+
+            str += `<line id='${line.id}-line1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-line2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-line3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-line4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<polygon id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+        }
     }
 
     /* if (felem.type != 'ER' || telem.type != 'ER') {
