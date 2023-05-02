@@ -108,9 +108,11 @@
 
 			// Compare old commit in db with the new one from the url
 			if($latestCommit != $commit) {
-				print_r("The course should be updated!");
+				echo '<script>console.log("The course should be updated!"); </script>';
+				//print_r("The course should be updated!");
 			} else {
-				print_r("The course is already up to date!");
+				echo '<script>console.log("The course should be updated!"); </script>';
+				//print_r("The course is already up to date!");
 			}
 		}
 	}
