@@ -7766,9 +7766,9 @@ function drawLine(line, targetGhost = false)
     //gives the lines the correct type based on the from and to element.
     if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
-//        if (targetGhost) {
-//            line.endIcon = "ARROW";
-//        }
+        if (targetGhost) {
+            line.endIcon = "ARROW";
+        }
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
