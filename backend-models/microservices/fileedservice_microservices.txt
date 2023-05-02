@@ -5,6 +5,10 @@
 #####################
 
 
+-------------------------------------------------------------------------------
+Rows refered to in this file no longer correspond with fileedservice.php 
+-------------------------------------------------------------------------------
+
 
 From what I could gather this file is divided into two parts, editing the database in some way, and retrieving information for presentation. The obvious way is to make the different parts as separate micro-services. A further divide could be made so that the delete and edit functions become separate entities. Furthermore logging happens twice in the file, but I don't know how it works and haven't found a function for it in the system. I therefore have a hard time giving my view on whether or not it should become its own micro-service.
 

@@ -3,7 +3,13 @@
 
 Documentation
 
- *********************************************************************************
+*********************************************************************************
+
+Important!
+---------------------
+This file isn't currently used anywhere.
+However if used remember to include github references in at the comment "Github implementation"
+
 
 Execution Order
 ---------------------
@@ -72,6 +78,7 @@ if($ha){
         if ($kind==2) {
             $currcwd .= "/courses/global/".$fileName;
         }  else if($kind == 3) {
+            // Github implementation are needed
             $currcwd .= "/courses/".$cid."/".$fileName;
         } else if($kind == 4) {
             $currcwd .= "/courses/".$cid."/".$vers."/".$fileName;
