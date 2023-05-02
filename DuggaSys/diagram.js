@@ -4080,14 +4080,7 @@ const stateLinesLabels=[];
 
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-        if(i<stateLinesLabels.length)
-        {
-        output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name} ${stateLinesLabels[i]}"</p>`;
-            }
-        else
-        {
         output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" </p>`;
-        }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
                 queue.push(connections[i]);
@@ -4097,6 +4090,9 @@ const stateLinesLabels=[];
 
     // Adds additional information in the view.
     for(var i=0; i<stateLinesLabels.length; i++)
+    {
+    output+=`<p>${stateLinesLabels[i]}</p>`;
+    }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>Super States: ${stateSuper.length}</p>`;
