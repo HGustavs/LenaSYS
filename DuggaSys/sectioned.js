@@ -468,7 +468,7 @@ function refreshGithubRepo(courseid)
 		 	dataCheck = false;
 		}
 	});
-  console.log("ajax done");
+  console.log("ajax done " + courseid);
 	return dataCheck;
 }
 
