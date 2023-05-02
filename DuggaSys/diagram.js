@@ -7485,8 +7485,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
     }
-    if (fromElement.kind == "SDState" == toElement.kind == "UMLInitialState") {
-        displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}- to: ${toElement.kind}`);
+    if (toElement.kind == "UMLInitialState") {
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
     }
 
