@@ -8352,17 +8352,20 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}-1' class='lineColor' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Recursive"){
-            const turnLength = 50;
-            const turnOffset = 5;
-            const startX = fx - turnLength - turnOffset;
-            const endX = fx - turnOffset;
-            const startY = fy + turnLength;
-            const endY = fy + turnLength;
-            const endLineX = fx - turnLength - turnOffset; // Modify end point X value here
+            const length = 50;
+            const startX = fx - length;
+            const startY = fy + length;
+            const endX = fx - length;
+            const endY = fy + length;
+            const cornerX = fx + length;
+            const cornerY = fy - length;
+
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${startX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-turn' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-back' class='lineColor' x1='${endX + x1Offset}' y1='${endY + y1Offset}' x2='${endLineX + x1Offset}' y2='${fy + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-end' class='lineColor' x1='${tx + x2Offset}' y1='${ty + y2Offset}' x2='${endLineX + x1Offset}' y2='${fy + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-end' class='lineColor' x1='${tx + x2Offset}' y1='${ty + y2Offset}' x2='${fx + x1Offset}' y2='${fy + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
 
         // If the line got cardinality
