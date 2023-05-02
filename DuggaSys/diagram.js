@@ -4033,7 +4033,7 @@ function generateStateDiagramInfo()
     const stateLines = [];
     const queue = [];
     let output = "";
-
+const stateLinesLabels=[];
     // Picks out the lines of type "State Diagram" and place it in its local array.
     for (let i=0; i<lines.length; i++)
     {
@@ -4069,10 +4069,10 @@ function generateStateDiagramInfo()
     while (queue.length > 0) {
         let head = queue.shift();
         const connections = [];
-
-        // Finds all entities connected to the current "head".
+        // Finds all entities connected to the current "head" and adds line labels to a list.
         for (let i = 0; i < stateLines.length; i++) {
             if (stateLines[i].fromID == head[ENTITY].id) {
+                stateLinesLabels.push(stateLines[i].label);
                 for (let j = 0; j < stateElements.length; j++) {
                     if (stateLines[i].toID == stateElements[j][ENTITY].id) {
                         connections.push(stateElements[j]);
@@ -4093,7 +4093,7 @@ function generateStateDiagramInfo()
 
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-            output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+        output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" </p>`;
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
                 queue.push(connections[i]);
@@ -4102,6 +4102,10 @@ function generateStateDiagramInfo()
     }
 
     // Adds additional information in the view.
+    for(var i=0; i<stateLinesLabels.length; i++)
+    {
+    output+=`<p>${stateLinesLabels[i]}</p>`;
+    }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>Super States: ${stateSuper.length}</p>`;
@@ -4112,7 +4116,6 @@ function generateStateDiagramInfo()
     if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0) && (stateSuper.length == 0)) {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
     }
-    
     return output;
 }
 /**
