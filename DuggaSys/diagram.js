@@ -8352,10 +8352,16 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}-1' class='lineColor' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Recursive"){
-            const radius = 20;
-            const cx = fx - radius; // the x-coordinate of the center of the loop
-            const cy = fy + radius; // the y-coordinate of the center of the loop
-            str += `<path id='${line.id}' class='lineColor' d='M ${fx + x1Offset},${fy + y1Offset}A ${radius},${radius} 0 0,1 ${cx + x1Offset},${cy + y1Offset}A ${radius},${radius} 0 0,1 ${fx + x1Offset},${fy + y1Offset}L ${tx + x2Offset},${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}' fill='none' />`;
+            const turnLength = 20;
+            const turnOffset = 5;
+            const startX = fx - turnLength - turnOffset;
+            const endX = fx - turnOffset;
+            const startY = fy + turnLength;
+            const endY = fy + turnLength;
+            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${startX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-turn' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-back' class='lineColor' x1='${endX + x1Offset}' y1='${endY + y1Offset}' x2='${fx + x1Offset}' y2='${fy + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}-end' class='lineColor' x1='${tx + x2Offset}' y1='${ty + y2Offset}' x2='${fx + x1Offset}' y2='${fy + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
 
         // If the line got cardinality
