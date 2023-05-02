@@ -608,6 +608,7 @@
     height: 27px;
     width: 27px;
     float: left;
+    border: 1px solid transparent;
 }
 .diagramZoomIcons:hover {
     border: solid 1px var(--color-primary-light);
