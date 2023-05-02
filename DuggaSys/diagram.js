@@ -2478,7 +2478,7 @@ function mmoving(event)
 
         case pointerStates.CLICKED_ELEMENT:
             if(mouseMode != mouseModes.EDGE_CREATION){
-                console.log("Moving object")
+
                 var prevTargetPos = {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
