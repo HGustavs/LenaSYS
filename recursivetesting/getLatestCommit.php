@@ -80,6 +80,8 @@
 
 	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
 
+	// TODO !!!!! Change the name of the connection in navheader.php when changing the name of the file!!!!!
+
 	function refreshGithubRepo($cid){
 		// Get old commit from Sqlite 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');

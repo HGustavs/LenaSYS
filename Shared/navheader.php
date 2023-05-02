@@ -11,6 +11,7 @@
 
 			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
 			include_once "../Shared/basic.php";
+			include_once "../recursiveTesting/getLatestCommit.php";
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if (isset($_GET['courseid']))
