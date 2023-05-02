@@ -512,14 +512,20 @@ if($gradesys=="UNK") $gradesys=0;
 							}
 						}
 						if(!$exists) {
-							$link = null;//TODO what is link????
-							$kind = null;//TODO find what kind it should be!
-							$visible = null;//TODO find how to make it visible!
-							$uid = 0;//TODO how do i find the creator? how does anyone find their creator?
-							$comment = null;//TODO do i have a comment on this one?
-							$gradesys = null;//TODO what even is gradesys?
-							$highscoremode = null;//TODO why highscore and what does a highscoremode even do?
-							$groupkind = null;//TODO what kind can a group have?
+							$link = "UNK";
+							$kind = 2;
+							$visible = 1;
+							$uid = 1;
+							$comment = null;
+							$gradesys = null;
+							$highscoremode = 0;
+							$groupkind = null;
+
+							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
+							$query->bindParam(":cid", $courseid);
+							$query->execute();
+							$e = $query->fetchAll();
+							$coursevers = $e[0]['activeversion'];
 
 							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 							$query->bindParam(":cid", $courseid);
@@ -527,6 +533,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->execute();
 							$e = $query->fetchAll();
 							$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
+
 							//create codeexample
 							$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 							$query->bindParam(":cid", $courseid);
@@ -534,6 +541,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->bindParam(":sname", $sectionname);
 							$query->bindParam(":cversion", $coursevers);
 							$query->execute();
+
 							//add the codeexample to listentries
 							$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
 									   						  		  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
