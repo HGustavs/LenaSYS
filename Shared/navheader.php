@@ -11,7 +11,6 @@
 
 			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
 			include_once "../Shared/basic.php";
-			require_once "../recursivetesting/getLatestCommit.php"; // TODO: Change this when changing name of the file!
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if (isset($_GET['courseid']))
