@@ -2,7 +2,7 @@
 courseedservice.php
 
 ---------------------------------------------------------------------------------------------------------------------
-- Insert into Course (line 79)
+- Insert into course (line 79)
 ---------------------------------------------------------------------------------------------------------------------
 
 *********
@@ -17,11 +17,10 @@ courseedservice.php
 send
 {
     $opt = "NEW";
-    $userid
-    $coursecode
-    $coursename
-    $courseGitURL
-    $description
+    $userid = "UNK"; or $userid = !NULL;
+    $coursecode = "G1337";
+    $coursename = "Testing-Course";
+    $courseGitURL = NULL; // There are no values in the database
 }
 
 *********
@@ -31,7 +30,7 @@ Save the values of the echoed array as a JSON (at the end of the file. echo json
 this is the expected output for the micro service.
 
 ---------------------------------------------------------------------------------------------------------------------
-- Insert into Vers (line 116)
+- Insert into vers (line 116)
 ---------------------------------------------------------------------------------------------------------------------
 
 *********
@@ -46,15 +45,15 @@ this is the expected output for the micro service.
 send
 {
     $opt = "NEWVRS";
-    $cid
-    $coursecode
-    $versid
-    $versname
-    $coursename
-    $coursenamealt
-    $motd
-    $startdate
-    $enddate
+    $cid = 1885;
+    $coursecode = "G1337";
+    $versid = 1337;
+    $versname = NULL; // There are no value in the database
+    $coursename = "Testing-course";
+    $coursenamealt = "Course for testing codeviewer";
+    $motd = "Code examples shows both templateid and boxid!";
+    $startdate = "2020-05-01 00:00:00";
+    $enddate = "2020-06-30 00:00:00";
 }
 
 *********
@@ -79,8 +78,8 @@ this is the expected output for the micro service.
 *********
 send
 {
-    $cid
-    $versid
+    $cid = 1885;
+    $versid = 1337;
 }
 
 *********
@@ -105,10 +104,10 @@ this is the expected output for the micro service.
 send
 {
     $opt = "UPDATEVRS";
-    $courseid
-    $coursecode
-    $versid
-    $versname
+    $courseid = 1885;
+    $coursecode = "G1337";
+    $versid = 1337;
+    $versname = NULL; // There are no value in the database
 }
 
 *********
@@ -133,8 +132,8 @@ this is the expected output for the micro service.
 send
 {
     $opt = "CHGVERS";
-    $courseid
-    $versid
+    $courseid = 1885;
+    $versid = 1337;
 }
 
 *********
@@ -159,15 +158,15 @@ this is the expected output for the micro service.
 send
 {
     $opt = "CPYVRS";
-    $cid
-    $coursecode
-    $versid
-    $versname
-    $coursename
-    $coursenamealt
-    $motd
-    $startdate
-    $enddate
+    $cid = 1885;
+    $coursecode = "G1337";
+    $versid = 1337;
+    $versname = NULL; // There are no value in the database
+    $coursename = "Testing-course";
+    $coursenamealt = "Course for testing codeviewer";
+    $motd = "Code examples shows both templateid and boxid!";
+    $startdate = "2020-05-01 00:00:00";
+    $enddate = "2020-06-30 00:00:00";
 }
 
 *********
@@ -192,8 +191,8 @@ this is the expected output for the micro service.
 *********
 send
 {
-    $cid
-    $versid
+    $cid = 1885;
+    $versid = 1337;
 }
 
 *********
@@ -219,11 +218,11 @@ this is the expected output for the micro service.
 send
 {
     $opt = "UPDATE";
-    $cid
-    $coursename
-    $visibility
-    $coursecode
-    $courseGitURL
+    $cid = 1885;
+    $coursename = "Testing-Course";
+    $visibility = 1;
+    $coursecode = "G1337";
+    $courseGitURL = NULL; // There are no value in the database
 }
 
 *********
@@ -248,8 +247,8 @@ this is the expected output for the micro service.
 send
 {
     $opt = "SETTINGS";
-    $motd
-    $readonly
+    $motd = NULL; // There are no value in the database
+    $readonly = NULL; // There are no value in the database
 }
 
 *********
