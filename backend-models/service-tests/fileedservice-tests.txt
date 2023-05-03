@@ -87,7 +87,7 @@ $query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
 $this->assertEquals($expectedPath, $actualPath);
 
 *********
-* Expected output:
+* Sent input:
 *********
 
 If successful: no output should be displayed.
