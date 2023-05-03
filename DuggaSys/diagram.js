@@ -2169,7 +2169,6 @@ function mouseLeave(){
 function checkDeleteBtn(){
     if (deleteBtnX != 0) {
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-            //if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
             }
@@ -2404,7 +2403,7 @@ function mouseMode_onMouseMove(event)
     }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
-            mouseOverSelection(event.clientX, event.clientY);
+            mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
