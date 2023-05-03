@@ -3092,7 +3092,6 @@ function updateSelectedLine(selectedLine)
  */
 function updateSelection(ctxelement)
 {
-    console.log(ctxelement);
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null) {
         // The element is not already selected
