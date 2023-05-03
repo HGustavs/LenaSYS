@@ -25,6 +25,10 @@
 		{
 			getCourseID($_POST['githubURL']);
 		}
+		else if($_POST['action'] == 'refreshGithubRepo') 
+		{
+			refreshGithubRepo($_POST['cid']);
+		}
 	};
 
 	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit ----------------------------------------------
