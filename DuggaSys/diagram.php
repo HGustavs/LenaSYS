@@ -349,7 +349,9 @@
                          onmousedown="holdPlacementButtonDown(1)"> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         <span class="toolTipText"><b>ER relation</b><br>
-                            <p>Add a ER relation to the diagram</p><br>
+                            <p>Add a ER relation to the diagram</p>
+                            <p>Represents how entities are associated with each other.</p>
+                            <br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton1" class="placementTypeIcon togglePlacementTypeButton">
@@ -361,19 +363,23 @@
                             <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
                                 <span class="placementTypeToolTipText"><b>ER relation</b><br>
-                                    <p>Change to ER relation</p>
+                                    <p>Represents how entities are associated with each other.</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML Inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
                                     <p>Change to UML inheritance</p>
+                                    <p>A relation between a superclass and subclasses.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance</p>
+                                    <p>A relation between two or more entities.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
                         </div>
@@ -387,7 +393,10 @@
                          onmousedown="holdPlacementButtonDown(5)">
                         <img src="../Shared/icons/diagram_inheritance.svg"alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
-                            <p>Add an UML inheritance to the diagram</p><br>
+                            <p>Add an UML inheritance to the diagram</p>
+                            <p>A relation between a superclass and subclasses.</p>
+                            <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                            <br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
@@ -400,18 +409,22 @@
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation</p>
+                                    <p>Represents how entities are associated with each other.</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
-                                    <p>Change to UML inheritance</p>
+                                    <p>A relation between a superclass and subclasses.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance</p>
+                                    <p>A relation between two or more entities.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
                         </div>
@@ -425,7 +438,10 @@
                          onmousedown="holdPlacementButtonDown(7)">
                         <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
-                            <p>Add an IE inheritance to the diagram</p><br>
+                            <p>Add an IE inheritance to the diagram</p>
+                            <p>A relation between two or more entities.</p>
+                            <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                            <br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton7" class="placementTypeIcon togglePlacementTypeButton">
@@ -438,18 +454,22 @@
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation</p>
+                                    <p>Represents how entities are associated with each other.</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
                                     <p>Change to UML inheritance</p>
+                                    <p>A relation between a superclass and subclasses.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
-                                    <p>Change to IE inheritance</p>
+                                    <p>A relation between two or more entities.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
                         </div>
