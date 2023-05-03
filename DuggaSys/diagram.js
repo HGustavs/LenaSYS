@@ -1779,12 +1779,12 @@ function mdown(event)
 {
     mouseButtonDown = true;
 
-        // Mouse pressed over delete button for multiple elements
-        if (event.button == 0) {
-            if (context.length > 0 || contextLine.length > 0) {
-               hasPressedDelete = checkDeleteBtn();
-            }
+    // Mouse pressed over delete button for multiple elements
+    if (event.button == 0) {
+        if (context.length > 0 || contextLine.length > 0) {
+            hasPressedDelete = checkDeleteBtn();
         }
+    }
 
     // Prevent middle mouse panning when moving an object
     if(event.button == 1) {
@@ -1809,9 +1809,11 @@ function mdown(event)
     if(event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active){
+    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
+
         if(determinedLines){
             if (determinedLines.id.length == 6) {
                pointerState=pointerStates.CLICKED_LINE;
@@ -1822,7 +1824,7 @@ function mdown(event)
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
             }
-            else if(determinedLines.id.length > 6){
+            else if(determinedLines.id.length > 6) {
                 targetLabel = lineLabelList[findIndex(lineLabelList, determinedLines.id)];
                 startX = event.clientX;
                 startY = event.clientY;
@@ -1841,6 +1843,7 @@ function mdown(event)
                     sscrolly = scrolly;
                     startX = event.clientX;
                     startY = event.clientY;
+
                     // If pressed down in selection box
                     if (context.length > 0) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
@@ -1866,6 +1869,7 @@ function mdown(event)
                         }
                         break;
                     }
+
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if(context.length > 0){
@@ -1886,7 +1890,6 @@ function mdown(event)
                 default:
                     break;
             }
-
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
