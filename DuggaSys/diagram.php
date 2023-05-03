@@ -140,7 +140,7 @@
                             <p>Add an ER entity to the diagram</p>
                             <p>Each entity represents an object which is a representation of concepts or data.</p>
                             <p>The entity only holds the name of the object and if it depends on another object.</p>
-                                    <br>
+                            <br>
                             <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton0" class="placementTypeIcon togglePlacementTypeButton">
@@ -190,7 +190,9 @@
                          onmousedown="holdPlacementButtonDown(4)">
                         <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         <span class="toolTipText"><b>UML class</b><br>
-                            <p>Add an UML class to the diagram</p><br>
+                            <p>Add an UML class to the diagram</p>
+                            <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
+                            <br>
                             <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton4" class="placementTypeIcon togglePlacementTypeButton">
@@ -240,7 +242,10 @@
                          onmousedown="holdPlacementButtonDown(6)">
                         <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         <span class="toolTipText"><b>IE entity</b><br>
-                            <p>Add an IE entity to the diagram</p><br>
+                            <p>Add an IE entity to the diagram</p>
+                            <p>Each entity represents an object along with its attributes.</p>
+                            <p>Each entity is represented by a table with a field that shows attributes.</p>
+                            <br>
                             <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton6" class="placementTypeIcon togglePlacementTypeButton">
@@ -290,7 +295,10 @@
                         onmousedown='holdPlacementButtonDown(8);'>
                         <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
-                            <p>Add state diagram state to the diagram</p><br>
+                            <p>Add state diagram state to the diagram</p>
+                            <p>A state diagram state is a representation of a status a process can have.</p>
+                            <p>Each state represents a unique status that a process can have.</p>
+                            <br>
                             <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton8" class="placementTypeIcon togglePlacementTypeButton">
