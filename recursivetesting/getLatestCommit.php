@@ -5,8 +5,6 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
-	// --------------------- Fetch CID from MySQL with Github URL -------------------------------
-
 	// Include basic application services!
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
@@ -15,10 +13,16 @@
 	pdoConnect();
 	session_start();
 
-	getCourseID("https://github.com/HGustavs/Webbprogrammering-Examples"); // Dummy Code to see if everything works
+	global $pdo;
+
+	getCourseID("https://github.com/c21sebar/test"); // Dummy Code to see if everything works
+
+	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit ----------------------------------------------
+	// --------------------- This only happens when creating a new course --------------------------------------------------------------
 
 	function getCourseID($githubURL) {
 
+		echo "<h2> Outputs for creating a new course </h2>";
 		echo "<p>Original URL: ".$githubURL."</p>";
 		// translates the url to the same structure as in mysql
 		// the "/" needs to be "&#47;" for the query to work
@@ -31,6 +35,7 @@
 		$query->execute();
 
 		// printing the result
+		$cid = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			echo "<p>Course ID: ".$row['cid']."</p>";
 			$cid = $row['cid'];
@@ -38,23 +43,77 @@
 			// TODO: Limit this to only one result
 		}
 
-		// Get the latest commit from the URL, then print it
+		// Get the latest commit from the URL
 		$latestCommit = getCommit($githubURL);
 		print_r($latestCommit);
 
-		// The commit doesn't always work, try to get it up to 10 times	
-		for($counter = 0; $counter < 10; $counter++) {
-			if($latestCommit == "") {
-				$latestCommit = getCommit($githubURL);
-				print_r($latestCommit); // TODO: This is where we could store the value in the db, or similar
-			} else {
-				break;
-			}
+		// Check if not null, else add it to Sqlite db
+		if($cid != null && $latestCommit != "") {
+			insertIntoSQLite($githubURL, $cid, $latestCommit);
+		} else if ($latestCommit == "") {
+			print_r("Latest commit not valid");
+		} else {
+			print_r("No matches in database!");
 		}
 	}
 
-	// --------------------- Get Latest Commit Function -----------------------------------------
+	// --------------------- Insert into Sqlite db when new course is created ----------------------------------------------------------
 
+	// Create a new row if it doesn't exist
+	function insertIntoSQLite($url, $cid, $commit) {
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		// Remove "or replace" later when everything works like it should
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $url);
+		$query->bindParam(':commits', $commit);
+		$query->execute();
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating file entries" . $error[2];
+			$errorvar = $error[2];
+			print_r($error);
+			echo $errorvar;
+		} 
+		getCommitSqlite($cid); //testing !!!!!!! don't forget to remove!
+	}
+
+	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
+
+	function getCommitSqlite($cid){
+		// Get old commit from Sqlite 
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+
+		echo "<h2> Outputs for fetching data when updating a course </h2>";
+
+		$commmit = "";
+		$url = "";
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
+			echo "<p>URL from select: ".$row['repoURL']."</p>";
+			$commit = $row['lastCommit'];
+			$url = $row['repoURL'];
+		}
+
+		if($commit == "" || $url == "") {
+			print_r("Error! Couldn't get url and commit from SQLite db");
+		} else {
+			// Get the latest commit from the URL, then print it
+			$latestCommit = getCommit($url);
+
+			// Compare old commit in db with the new one from the url
+			if($latestCommit != $commit) {
+				print_r("The course should be updated!");
+			} else {
+				print_r("The course is already up to date!");
+			}
+		}
+	}
+	
+	// --------------------- Get Latest Commit Function from URL------------------------------------------------------------------------
 
 	function getCommit($url) {
 
@@ -67,27 +126,23 @@
 		$dom->loadHTML($html);
 		libxml_use_internal_errors(false);
 
-		/* TODO: This regex could be improved to take the explicit name of the user and repo,
-		* for example "/HGustavs/LenaSYS/commit/..."
-		* instead of just taking "/.../.../commit/...". */
-		$regex = "/^(.*?)\/commit\//";
-		
-		$links = $dom->getElementsByTagName('a');
-
 		$href = "";
-		foreach ($links as $link) {
-			$value = $link->getAttribute("href");
-			if(preg_match($regex, $value)) {
-				$href = $value; // Takes the first matching value and stores it in an array
-				break; //exits the loop since only the first match is necessary
+		$divs = $dom->getElementsByTagName('a');
+		foreach ($divs as $div) {		
+			if($div->getAttribute('class')=='d-none js-permalink-shortcut'){
+				$value = $div->getAttribute("href");
+				$href = $value;
 			}
 		}
+	
+		// Regex to only keep the commit numbers, instead of the entire URL
+		$regex = "/^(.*?)\/tree\//";
 
 		if($href != "") {
 			$latestCommit = preg_replace($regex, "", $href);
 			return $latestCommit;
 		} else {
-			//print_r("No matches in database!");
+			print_r("No matches in database!");
 		}
 	}
 ?>

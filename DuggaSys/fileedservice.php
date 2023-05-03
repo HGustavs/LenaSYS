@@ -123,7 +123,6 @@ if (checklogin() && $hasAccess) {
 				if ($kind == 2) {
 					$currcwd .= "/courses/global/" . $filename;
 				} else if ($kind == 3) {
-                    $debug = "PATH: ". $path;
                     if ($path == null)
                         $currcwd .= "/courses/" . $cid . "/" . $filename;
                     else 
@@ -154,7 +153,10 @@ if (checklogin() && $hasAccess) {
             $description="Global"." ".$filename;
             logUserEvent($userid, $username, EventTypes::EditFile, $description);
         } else if ($kind == 3) {
-            $currcwd .= "/courses/" . $cid . "/" . $filename;
+            if ($path == null)
+                $currcwd .= "/courses/" . $cid . "/" . $filename;
+            else 
+                $currcwd .= "/courses/" . $cid . "/Github/" . $path;
 
             // Logging for course local files
             $description="CourseLocal"." ".$filename;
@@ -218,18 +220,19 @@ if (checklogin() && $hasAccess) {
     $query = $pdo->prepare("SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) ORDER BY kind,filename;");
     $query->bindParam(':cid', $cid);
     $query->bindParam(':vers', $coursevers);
-
+    
     if (!$query->execute()) {
         $error = $query->errorInfo();
         $debug = "Error reading files " . $error[2];
     }
-
+    
     foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
         // En till foreach om man vill hämta flera objekt i en cell och skicka med till rendercell
-
+        
         //takes result from query and stores it in local vars
         $filekind = $row['kind'];
         $filename = $row['filename'];
+        $path = $row['path'];
         $splitname = explode(".", $filename);
         $extension = $splitname[count($splitname) - 1];
         $splitname = array_slice($splitname, 0, count($splitname) - 1);
@@ -247,7 +250,10 @@ if (checklogin() && $hasAccess) {
             $filekindname = "Global";
         } else if ($filekind == 3) {
             // Course Local
-            $filePath = "../courses/" . $cid . "/" . $filename;
+            if ($path == null)
+                $filePath = "../courses/" . $cid . "/" . $filename;
+            else 
+                $filePath = "../courses/" . $cid . "/Github/" . $path;
             $filekindname = "Course local";
         } else if ($filekind == 4) {
             // Version Local

@@ -647,7 +647,7 @@ function elementIsValid(element) {
 			//This prevents it from being impossible to save course code without changing it
 			if(element.value !== element.dataset.origincode) {
 				if(activeCodes.includes(element.value)) {
-					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
+					messageElement.firstChild.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				}
 			}
