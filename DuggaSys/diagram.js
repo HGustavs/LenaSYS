@@ -9357,8 +9357,30 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- Start Sequnece functionality
     //sequence life line
     else if (element.kind == 'sequenceLifeLine') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;transform: rotate(90deg);`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
         //div to encapsulate sequence actor
-        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //lifeline is a horizontal line since the entire encapsulating div gets rotated to reuse the width nodes.
+        str += `<path class="text" 
+        d="M${(boxw/2)+linew},${linew}
+        h${boxw}
+        "
+        stroke-width='${linew}'
+        stroke='${element.stroke}'
+        fill='transparent'
+        />`;
+        str += `</svg>`;
+        //str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for stickman.
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
@@ -9380,28 +9402,9 @@ function drawElement(element, ghosted = false)
         //str += `<line x1="${boxw/2}" y1="${boxh-(boxh/4)}" x2="${(boxw/2)-(boxw/8)}" y2="${boxh-(boxh/5)}" stroke='${element.stroke}' stroke-width='${linew}'/>`;
         //m-${(boxw/8)},-${boxh/3}
         str += `</svg>`;
-        //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;transform: rotate(90deg);`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //lifeline is a horizontal line since the entire encapsulating div gets rotated to reuse the width nodes.
-        str += `<path class="text" 
-            d="M${(boxw/2)+linew},${linew}
-            h${boxw}
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='transparent'
-        />`;
-        str += `</div>`;
+        
+        
+        //str += `</div>`;
         
     }
     //=============================================== <-- End of Sequnece functionality
