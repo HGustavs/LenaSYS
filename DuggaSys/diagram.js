@@ -9370,10 +9370,9 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         //div to encapsulate sequence actor
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        //lifeline is a horizontal line since the entire encapsulating div gets rotated to reuse the width nodes.
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${linew}
-        h${boxw}
+        v${boxh}
         "
         stroke-width='${linew}'
         stroke='${element.stroke}'
