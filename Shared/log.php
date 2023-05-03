@@ -13,6 +13,40 @@
 <html>
 <head>
 
+<?php
+session_start();
+
+try {
+    $log_db = new PDO('sqlite:../../log/loglena6.db');
+} catch (PDOException $e) {
+    echo "Failed to connect to the database";
+    throw $e;
+}
+
+function get_sort_link($column_name, $display_name) {
+    $order = $_SESSION['log_order'] ?? 'timestamp';
+    $sort = $_SESSION['log_sort'] ?? 'DESC';
+    if ($order == $column_name) {
+        $new_sort = $sort == 'ASC' ? 'DESC' : 'ASC';
+    } else {
+        $new_sort = 'ASC';
+    }
+    $url = "log.php?name={$_POST['name']}&order=$column_name&sort=$new_sort";
+    return "<a href=\"$url\">$display_name</a>";
+}
+
+if (isset($_GET['order'])) {
+    $_SESSION['log_order'] = $_GET['order'];
+}
+if (isset($_GET['sort'])) {
+    $_SESSION['log_sort'] = $_GET['sort'];
+}
+
+$order = $_SESSION['log_order'] ?? 'timestamp';
+$sort = $_SESSION['log_sort'] ?? 'DESC';
+
+?>
+
     <style>
         table, th, td {
         border:1px solid black;
@@ -41,16 +75,10 @@
     </style>
 
    <script type="text/javascript" src="logSearch.js"></script>
+
+
 </head>
     <body>
-        <?php
-            try {
-	            $log_db = new PDO('sqlite:../../log/loglena6.db');
-            } catch (PDOException $e) {
-	            echo "Failed to connect to the database";
-	            throw $e;
-            }
-        ?>
         
         <!----------------------------------------------------------------------------------->  
         <!------Creates a dropdown with all tables in the loglena database------------------->
@@ -76,29 +104,15 @@
                 }
             echo '</select>';
 
+            // Set to default button
+    echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
+
+
+
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
 //---------------------------------------------------------------------------------------------------
 
-
-            // Set to default button
-            echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
-            
-            // Code used to sort tables.
-            // Default values are time in descending order.
-            if(isset($_GET['order'])){
-                $order = $_GET['order'];
-            }
-            else{
-                $order = 'timestamp';
-            }
-            if(isset($_GET['sort'])){
-                $sort = $_GET['sort'];
-            }
-            else{
-                $sort = 'DESC';
-            }
-            
             // Gathers information from database table logEntries
             if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
                 $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
@@ -242,7 +256,7 @@
             // Gathers information from database table serviceLogEntries
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
 
-                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY '.$order.' '.$sort.';');
+                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY CAST(timestamp AS datetime) '.$sort.';');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
                 $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
                 echo"

@@ -6,12 +6,11 @@ function searchTable() {
     tr = table.getElementsByTagName("tr");
     for (i = 1; i < tr.length; i++) { // Start loop from 1 to exclude header row
         for (j = 0; j < tr[i].cells.length; j++) {
-            td = tr[i].cells[j];
+            td = tr[i].getElementsByTagName("td")[0];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
-                    break;
                 } else {
                     tr[i].style.display = "none";
                 }
