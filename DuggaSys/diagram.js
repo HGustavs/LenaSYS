@@ -2404,6 +2404,7 @@ function mouseMode_onMouseMove(event)
     }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
+            mouseOverSelection(event.clientX, event.clientY);
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
