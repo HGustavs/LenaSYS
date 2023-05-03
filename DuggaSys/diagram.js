@@ -1779,12 +1779,12 @@ function mdown(event)
 {
     mouseButtonDown = true;
 
-        // Mouse pressed over delete button for multiple elements
-        if (event.button == 0) {
-            if (context.length > 0 || contextLine.length > 0) {
-               hasPressedDelete = checkDeleteBtn();
-            }
+    // Mouse pressed over delete button for multiple elements
+    if (event.button == 0) {
+        if (context.length > 0 || contextLine.length > 0) {
+            hasPressedDelete = checkDeleteBtn();
         }
+    }
 
     // Prevent middle mouse panning when moving an object
     if(event.button == 1) {
@@ -1809,20 +1809,25 @@ function mdown(event)
     if(event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active){
+    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
+
+        // If a line was clicked, determine if the label or line was clicked.
         if(determinedLines){
-            if (determinedLines.id.length == 6) {
-               pointerState=pointerStates.CLICKED_LINE;
+            
+            if (determinedLines.id.length == 6) { // LINE
+                pointerState = pointerStates.CLICKED_LINE;
     
+                // If double click, open option pane
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
                     document.getElementById('optmarker').innerHTML = "&#9650;Options";
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
             }
-            else if(determinedLines.id.length > 6){
+            else if(determinedLines.id.length > 6) { // LABEL
                 targetLabel = lineLabelList[findIndex(lineLabelList, determinedLines.id)];
                 startX = event.clientX;
                 startY = event.clientY;
@@ -1832,7 +1837,7 @@ function mdown(event)
         }
     }
 
-    // React to mouse down on container
+    // If no line, label or delete button was clicked, react to mouse down on container
     if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL && !hasPressedDelete) {
         if (event.target.id == "container") {
             switch (mouseMode) {
@@ -1841,6 +1846,7 @@ function mdown(event)
                     sscrolly = scrolly;
                     startX = event.clientX;
                     startY = event.clientY;
+
                     // If pressed down in selection box
                     if (context.length > 0) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
@@ -1860,12 +1866,14 @@ function mdown(event)
                     else {
                         pointerState = pointerStates.CLICKED_CONTAINER;
                         cursorStyle.cursor = "grabbing";
+
                         if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                             wasDblClicked = true;
                             toggleOptionsPane();
                         }
                         break;
                     }
+
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if(context.length > 0){
@@ -1875,10 +1883,10 @@ function mdown(event)
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
                             targetElementDiv = document.getElementById(targetElement.id);
-                        }else{
+                        } else {
                             boxSelect_Start(event.clientX, event.clientY);
                         }
-                    }else {
+                    } else {
                         boxSelect_Start(event.clientX, event.clientY);
                     }
                     break;
@@ -1886,7 +1894,7 @@ function mdown(event)
                 default:
                     break;
             }
-
+        // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
