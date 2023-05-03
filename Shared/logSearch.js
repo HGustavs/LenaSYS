@@ -33,41 +33,41 @@ function filterTable() {
     xmlhttp.send();
 }
 
-
-function sortTable(colIndex, dataType = 'string') {
-    const table = document.getElementsByTagName("table")[0];
-    const rows = Array.from(table.rows).slice(1); // exclude header row
-    const sortFn = getSortFunction(dataType);
-  
-    rows.sort((rowA, rowB) => {
-      const cellA = rowA.cells[colIndex].innerText;
-      const cellB = rowB.cells[colIndex].innerText;
-      return sortFn(cellA, cellB);
-    });
-  
-    // remove all rows
-    while (table.rows.length > 0) {
-      table.deleteRow(0);
-    }
-  
-    // add sorted rows to table
-    const header = table.createTHead();
-    const newRow = header.insertRow();
-    for (let i = 0; i < rows[0].cells.length; i++) {
-      const newHeader = newRow.insertCell();
-      newHeader.innerHTML = rows[0].cells[i].innerHTML;
-    }
-    rows.forEach(row => table.tBodies[0].appendChild(row));
-  }
-  
-  function getSortFunction(dataType) {
-    switch (dataType) {
-      case 'number':
-        return (a, b) => Number(a) - Number(b);
-      case 'date':
-        return (a, b) => Date.parse(a) - Date.parse(b);
-      default:
-        return (a, b) => a.localeCompare(b);
+function sortTable(columnIndex) {
+    var table, rows, switching, i, x, y, shouldSwitch, ascending;
+    table = document.getElementsByTagName("table")[0];
+    switching = true;
+    ascending = true; // Default sort order is ascending
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("td")[columnIndex];
+        y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+        if (ascending) {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        } else {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+      } else {
+        // If no switching has been done and the sort order is ascending,
+        // switch to descending and start again
+        if (ascending) {
+          ascending = false;
+          switching = true;
+        }
+      }
     }
   }
   

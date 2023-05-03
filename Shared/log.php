@@ -18,6 +18,26 @@
         border:1px solid black;
         border-collapse: collapse;
     }
+
+    #set_to_default_button{
+        display: block;
+        margin-top: 2vh;
+        margin-bottom: 2vh;
+    }
+    th{
+        background-color: #614875;
+    }
+    th a{
+        color: white;
+        text-decoration: none;
+    }
+    table tr:nth-child(even){
+        background-color: #f2f2f2;
+    }
+
+    table tr:hover {
+        background-color: #ddd;
+    }
     </style>
 </head>
     <body>
@@ -29,6 +49,8 @@
 	            throw $e;
             }
         ?>
+        
+
         <input type="text" id="searchInput" placeholder="Search...">
         <button type="button" onclick="searchTable()">Search</button>
 
@@ -50,55 +72,28 @@
             echo '</select>';
 
             // Gathers information from database table serviceLogEntries
-            ?>
-            <?php
-            if(isset($_POST['name']) && $_POST['name'] == 'serviceLogEntries'){
-                // Get the sort column and direction
-                $sort_col = isset($_GET['sort_col']) ? $_GET['sort_col'] : 'timestamp';
-                $sort_dir = isset($_GET['sort_dir']) ? $_GET['sort_dir'] : 'desc';
-                
-                // Get the search keyword
-                $search_keyword = isset($_POST['search_keyword']) ? $_POST['search_keyword'] : '';
-                
-                // Build the query to fetch serviceLogEntries data
-                $sql = 'SELECT * FROM serviceLogEntries';
-                if($search_keyword){
-                    $sql .= ' WHERE eventType LIKE :search_keyword 
-                              OR service LIKE :search_keyword 
-                              OR userAgent LIKE :search_keyword 
-                              OR operatingSystem LIKE :search_keyword 
-                              OR info LIKE :search_keyword 
-                              OR referer LIKE :search_keyword 
-                              OR IP LIKE :search_keyword 
-                              OR browser LIKE :search_keyword';
-                }
-                $sql .= ' ORDER BY '.$sort_col.' '.$sort_dir;
-                
-                // Prepare and execute the query
-                $stmt = $log_db->prepare($sql);
-                if($search_keyword){
-                    $stmt->bindValue(':search_keyword', '%'.$search_keyword.'%', PDO::PARAM_STR);
-                }
-                $stmt->execute();
-                $serviceLogEntriesResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
 
-                // Display the serviceLogEntries table
-                
-                echo '<table>';
-                echo '<thead><tr>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">id</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">uuid</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">eventType</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">service</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">userid</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">timestamp</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">userAgent</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">operatingSystem</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">info</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">referer</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">IP</a></th>';
-                echo '<th><a href="?sort_col=id&sort_dir='.($sort_col == 'id' ? ($sort_dir == 'asc' ? 'desc' : 'asc') : 'asc').'">browser</a></th>';
-   
+                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries');
+                $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
+                ?>
+                <table border='1'>
+                <tr>
+                    <th><a href="#" onclick="sortTable(0)">id</a></th>
+                    <th><a href="#" onclick="sortTable(1)">uuid</a></th>
+                    <th><a href="#" onclick="sortTable(2)">eventType</a></th>
+                    <th><a href="#" onclick="sortTable(3)">service</a></th>
+                    <th><a href="#" onclick="sortTable(4)">userid</a></th>
+                    <th><a href="#" onclick="sortTable(5)">timestamp</a></th>
+                    <th><a href="#" onclick="sortTable(6)">userAgent</a></th>
+                    <th><a href="#" onclick="sortTable(7)">operatingSystem</a></th>
+                    <th><a href="#" onclick="sortTable(8)">info</a></th>
+                    <th><a href="#" onclick="sortTable(9)">referer</a></th>
+                    <th><a href="#" onclick="sortTable(10)">IP</a></th>
+                    <th><a href="#" onclick="sortTable(11)">browser</a></th>
+                </tr>
+
+                <?php
                 foreach($serviceLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
@@ -116,7 +111,7 @@
                 </table>
                 ";
             }
-        ?>
-           <script type="text/javascript" src="logSearch.js"></script>
+        ?>    
+        <script src="logSearch.php"></script>
     </body>
 </html>
