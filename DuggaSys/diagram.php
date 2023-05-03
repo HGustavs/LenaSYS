@@ -169,6 +169,7 @@
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state ttttt</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
+                                    <p>Each state represents a unique status that a process can have.</p>
                                 </span>
                             </div>
                         </div>
@@ -214,6 +215,7 @@
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state tttt</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
+                                    <p>Each state represents a unique status that a process can have.</p>
                                 </span>
                             </div>
                         </div>
@@ -259,6 +261,7 @@
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state ttttt</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
+                                    <p>Each state represents a unique status that a process can have.</p>
                                 </span>
                             </div>
                         </div>
