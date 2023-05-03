@@ -83,7 +83,7 @@ function downloadToWebServer($cid, $item)
     file_put_contents($path, $fileContents);    
 }
     
-function bfs($url) 
+function bfs($url, $opt) 
 {
     $visited = array();
     $fifoQueue = array();
@@ -122,9 +122,14 @@ function bfs($url)
                 foreach ($json as $item) {
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
-                        insertToFileLink($cid, $item);
-                        insertToMetaData($cid, $item);
-                        downloadToWebserver($cid, $item);                   
+                        if($opt == "REFRESH") {
+                            insertToMetaData($cid, $item);
+                        }
+                        else if($opt == "DOWNLOAD") {
+                            insertToFileLink($cid, $item);
+                            insertToMetaData($cid, $item);
+                            downloadToWebserver($cid, $item);  
+                        }                 
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {
