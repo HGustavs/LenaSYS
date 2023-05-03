@@ -1,3 +1,7 @@
+var currentSortColumnIndex = -1;
+var currentSortAscending = true;
+
+
 function sortTable(columnIndex) {
     var table, rows, switching, i, x, y, shouldSwitch, ascending;
   
