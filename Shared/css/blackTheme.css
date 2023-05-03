@@ -1214,6 +1214,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   
  .textinput {
     color:white;
+    background-color: black;
 }
 
  #emakeactive {
@@ -1242,7 +1243,6 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
 #modt {
-  background-color: #000!important;
   color: #fff;
 }
 /*/ END /*/
