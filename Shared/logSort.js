@@ -5,22 +5,31 @@ function sortTable(columnIndex) {
     switching = true;
   
     // Determine the new sorting direction
-    ascending = (currentSortColumnIndex === columnIndex) ? !currentSortAscending : true;
+    if (columnIndex === currentSortColumnIndex) {
+      if (currentSortAscending) {
+        ascending = false;
+      } else {
+        ascending = true;
+      }
+      currentSortAscending = ascending;
+    } else {
+      ascending = true;
+      currentSortAscending = true;
+      currentSortColumnIndex = columnIndex;
+    }
   
-    // Set the current sorting column
-    currentSortColumnIndex = columnIndex;
-    currentSortAscending = ascending;
-  
-    // Remove the sorting classes from all other columns
-    for (i = 0; i < table.rows[0].cells.length; i++) {
-      if (i !== columnIndex) {
+    // Remove the sorting classes from all columns if table is not sorted
+    if (currentSortColumnIndex === -1) {
+      for (i = 0; i < table.rows[0].cells.length; i++) {
         table.rows[0].cells[i].classList.remove("sorted-ascending");
         table.rows[0].cells[i].classList.remove("sorted-descending");
       }
     }
   
     // Set the sorting class for the clicked column
-    table.rows[0].cells[columnIndex].classList.add(ascending ? "sorted-ascending" : "sorted-descending");
+    if (currentSortColumnIndex !== -1) {
+      table.rows[0].cells[columnIndex].classList.add(ascending ? "sorted-ascending" : "sorted-descending");
+    }
   
     // Loop through all rows except the first one (header)
     while (switching) {
@@ -39,8 +48,9 @@ function sortTable(columnIndex) {
           break;
         }
       }
+  
       if (shouldSwitch) {
-        // Swap the two rows
+        // Switch the rows and set the switching flag to true
         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
         switching = true;
       }
