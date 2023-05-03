@@ -9380,6 +9380,7 @@ function drawElement(element, ghosted = false)
                 v${boxh/6}
                 m-${(boxw/8)},0
                 h${boxw/4}
+                m${(boxw/8)},0
                 v${boxh/3}
             "
             stroke-width='${linew}'
