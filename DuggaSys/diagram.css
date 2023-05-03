@@ -119,8 +119,13 @@
     box-shadow: 6px 6px 10px #888;
 }
 
-#diagramTypeDropdown{
+#diagramTypeDropdown, #diagramLoad{
     display: none;
+}
+
+#diagramTypeDropdown{
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .hide {

@@ -4125,10 +4125,15 @@ const stateLinesLabels=[];
 function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
-    if(window.getComputedStyle(dropdown).display==="none")
-    dropdown.style.display="block";
-    else
-    dropdown.style.display="none";
+    const load=document.getElementById("diagramLoad");
+    if(window.getComputedStyle(dropdown).display==="none"){
+        load.style.display="block";
+        dropdown.style.display="block";
+    }
+    else{
+        load.style.display="none";
+        dropdown.style.display="none";
+    }
 }
 
 /**

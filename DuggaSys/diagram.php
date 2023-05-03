@@ -681,7 +681,7 @@
                         <option  value="JSON/UMLDiagramMockup.json">UML diagrams</option>
                         <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
                     </select>
-                    <button onclick="loadMockupDiagram();">Load</button>
+                    <button class="saveButton" id="diagramLoad" onclick="loadMockupDiagram();">Load</button>
                 </div>
 
                 <div id="a4Options" style="display:flex;">
