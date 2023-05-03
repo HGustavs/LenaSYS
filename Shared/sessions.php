@@ -57,13 +57,19 @@ function addlogintry(){ // A function that will record the amount of tries when 
 //------------------------------------------------------------------------------------------------
 
 function checklogin()
-{
+{   
       // If neither session nor post return not logged in
       if(array_key_exists('loginname', $_SESSION)){
         return true;
       } else if(failedLoginCount($_SERVER['REMOTE_ADDR']) < 100 && array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
         return login($_COOKIE['username'], $_COOKIE['password'], false);
-      } else {
+      } 
+
+      // Test API uses POST
+      else if(failedLoginCount($_SERVER['REMOTE_ADDR']) < 100 && array_key_exists('username', $_POST) && array_key_exists('password', $_POST)) {
+        return login($_POST['username'], $_POST['password'], false);
+      }
+      else {
         return false;
       }
 }
