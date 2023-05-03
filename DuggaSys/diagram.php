@@ -681,7 +681,7 @@
                         <option  value="JSON/UMLDiagramMockup.json">UML diagrams</option>
                         <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
                     </select>
-                    <button onclick="loadMockupDiagram();">Load</button>
+                    <button id="diagramLoad" onclick="loadMockupDiagram();">Load</button>
                 </div>
 
                 <div id="a4Options" style="display:flex;">
@@ -697,7 +697,7 @@
             <fieldset class='options-fieldset options-section'>
                 <legend>Import</legend>
                 <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
-                <!--<button class="saveButton" onclick="loadDiagram();">Load</button>!-->
+                <button class="saveButton" onclick="loadDiagram();">Load</button>
             </fieldset>
         </div>
       <!-- 
