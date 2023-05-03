@@ -7506,7 +7506,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     if (toElement.kind == "UMLInitialState") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
-    }else if(fromElement =="UMLFinalState") {
+    }else if(fromElement.kind == "UMLFinalState") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}`);
         return; 
     }
