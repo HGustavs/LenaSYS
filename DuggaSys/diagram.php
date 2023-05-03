@@ -304,8 +304,10 @@
                             </div>
                             <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
-                                <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
+                                <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state</p>
+                                    <p>A state diagram state is a representation of a status a process can have.</p>
+                                    <p>Each state represents a unique status that a process can have.</p>
                                 </span>
                             </div>
                         </div>
