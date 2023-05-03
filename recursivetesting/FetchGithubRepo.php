@@ -22,7 +22,7 @@ function getGitHubURL($url)
     $repository = $urlParts[4];
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
     $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    bfs($translatedURL);
+    bfs($translatedURL, "REFRESH");
 }
 
 function insertToFileLink($cid, $item) 
