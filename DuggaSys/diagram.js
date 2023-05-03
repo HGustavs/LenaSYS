@@ -9359,7 +9359,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceLifeLine') {
         //div to encapsulate sequence lifeline
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9372,8 +9372,6 @@ function drawElement(element, ghosted = false)
         str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for stickman.
-        //str += `<rect width="${boxw}px" height="${boxh}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width="2" />`;
-        //str += `<path class="text" d="M${(boxw/2)+linew},${(linew)}"/>`;
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text" 
             d="M${(boxw/2)+linew},${(boxh/4)+linew}
