@@ -793,8 +793,9 @@ const elementTypes = {
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
-
     UMLSuperState:11,
+
+    sequenceLifeLine:12, //sequence functionality
 
 };
 
@@ -817,6 +818,8 @@ const elementTypesNames = {
     UMLFinalState: "UMLFinalState",
 
     UMLSuperState: "UMLSuperState",
+
+    sequenceLifeLine: "sequenceLifeLine",
 
 }
 
@@ -1133,8 +1136,9 @@ var defaults = {
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
+    sequenceLifeLine: {name: "Life Line", kind: "sequenceLifeLine", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "sequence" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -9347,7 +9351,27 @@ function drawElement(element, ghosted = false)
         //end of svg
         str += `</svg>`;
         
-    }    
+    }
+    //sequence life line
+    else if (element.kind == 'sequenceLifeLine') {
+        //div to encapuslate sequence life line
+        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
+       
+        if(context.includes(element)){
+            str += `z-index: 1;`;
+        }
+        
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+
+        str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);stroke-width:${linew};'>`;
+        str += `<rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />`;
+        str += `</svg>`;
+        
+    }
     //=============================================== <-- End of IE functionality
 
     //=============================================== <-- Start ER functionality
