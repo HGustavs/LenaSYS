@@ -3098,7 +3098,7 @@ function updateSelectedLine(selectedLine)
  * @description Updates the current selection of elements depending on what buttons are down. Context array may have the new element added or removed from the context array, have the context array replaced with only the new element or simply have the array emptied.
  * @param {Object} ctxelement Element that has was clicked or null. A null value will DESELECT all elements, emptying the entire context array.
  */
-function updateSelection(ctxelement) // TODO : Default null value since we use it for deselection?
+function updateSelection(ctxelement)
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null) {
