@@ -8,6 +8,7 @@
 	// Include basic application services!
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
+	include_once "../recursivetesting/FetchGithubRepo.php";
 
 	// Connect to database and start session
 	pdoConnect();
@@ -114,6 +115,8 @@
 				
 				//print_r("The course should be updated!");
 				echo '<script>console.log("The course should be updated!"); </script>';
+				bfs($url, "REFRESH");
+				echo '<script>console.log(' .$url. '); </script>';
 			} else {
 				//print_r("The course is already up to date!");
 				echo '<script>console.log("The course is already up to date!"); </script>';
