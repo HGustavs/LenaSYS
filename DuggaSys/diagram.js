@@ -4127,7 +4127,7 @@ function toggleDiagramDropdown()
     const dropdown=document.getElementById("diagramTypeDropdown");
     const load=document.getElementById("diagramLoad");
     if(window.getComputedStyle(dropdown).display==="none"){
-        load.style.display="block";
+        load.style.display="inline-block";
         dropdown.style.display="block";
     }
     else{
