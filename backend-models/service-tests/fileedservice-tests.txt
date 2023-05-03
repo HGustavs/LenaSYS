@@ -42,6 +42,12 @@ if ($result === true) {
     echo "Error deleting file: " . $result;
 }
 
+*********
+* Expected output:
+*********
+
+true
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 Test retrieving a file path (line 218)
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -78,6 +84,12 @@ $query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
 
 $this->assertEquals($expectedPath, $actualPath);
 
+*********
+* Expected output:
+*********
+
+If successful: no output should be displayed.
+If failed: An error message should pop up.
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 Test logging service events (line 17)
@@ -106,3 +118,10 @@ logServiceEvent($log_uuid, $event_type, $script_name, $user_id, $info);
 $expected_log = "[$log_uuid] [ServiceServerStart] [fileedservice.php] [1] DELFILE 123 2023-00-00 1 test.txt 2";
 $logged_message = file_get_contents("path/to/log/test.txt");
 assert($expected_log == $logged_message, "Failed.");
+
+*********
+* Expected output:
+*********
+
+If successful: no output should be displayed.
+If failed: An error message should pop up.
