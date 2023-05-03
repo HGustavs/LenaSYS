@@ -494,21 +494,71 @@ if($gradesys=="UNK") $gradesys=0;
 					}
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
-
-
 				} else if(strcmp($opt,"CreGitEx")===0) {
-					$query = $pdo->prepare("SELECT ? FROM codeexample WHERE cid=:cid;");
+					$query = $pdo->prepare("SELECT runlink FROM codeexample WHERE cid=:cid;");
 					$query->bindParam(":cid", $courseid);
 					$query->execute();
-					foreach($query->fetchAll() as $row) {
-						$row['exampleid'];
-					}
 
-					$file = file("../../courses/".$courseid."");
-					$count = 0;
+					$file = file("../../courses/".$courseid."/indexing.txt");
+
 					foreach($file as $line) {
-						$count += 1;
-						echo str_pad($count, 2, 0, STR_PAD_LEFT).". ".$line;
+						$exampleName = $line;//filter out to only be the example name
+						$sectionName = $line;//filter out to only be the section name
+						$runlink = $line;//filter out to only be the runlink
+						$exists = false;
+						foreach($query->fetchAll() as $row) {
+							if($row['runlink'] == $runlink) {
+								$exists = true;
+							}
+						}
+						if(!$exists) {
+							$link = "UNK";
+							$kind = 2;
+							$visible = 1;
+							$uid = 1;
+							$comment = null;
+							$gradesys = null;
+							$highscoremode = 0;
+							$groupkind = null;
+
+							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
+							$query->bindParam(":cid", $courseid);
+							$query->execute();
+							$e = $query->fetchAll();
+							$coursevers = $e[0]['activeversion'];
+
+							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
+							$query->bindParam(":cid", $courseid);
+							$query->bindParam(":entryname", $moment);
+							$query->execute();
+							$e = $query->fetchAll();
+							$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
+
+							//create codeexample
+							$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+							$query->bindParam(":cid", $courseid);
+							$query->bindParam(":ename", $examplename);
+							$query->bindParam(":sname", $sectionname);
+							$query->bindParam(":cversion", $coursevers);
+							$query->execute();
+
+							//add the codeexample to listentries
+							$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+									   						  		  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+							$query->bindParam(":cid", $courseid);
+							$query->bindParam(":cvs", $coursevers);
+							$query->bindParam(":entryname", $examplename);
+							$query->bindParam(":link", $link);
+							$query->bindParam(":kind", $kind);
+							$query->bindParam(":pos", $pos);
+							$query->bindParam(":visible", $visible);
+							$query->bindParam(":usrid", $uid);
+							$query->bindParam(":comment", $comment);
+							$query->bindParam(":gradesys", $gradesys);
+							$query->bindParam(":highscoremode", $highscoremode);
+							$query->bindParam(":groupkind", $groupkind);
+							$query->execute();
+						}
 					}
 				}
 			}
