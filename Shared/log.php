@@ -18,26 +18,6 @@
         border:1px solid black;
         border-collapse: collapse;
     }
-
-    #set_to_default_button{
-        display: block;
-        margin-top: 2vh;
-        margin-bottom: 2vh;
-    }
-    th{
-        background-color: #614875;
-    }
-    th a{
-        color: white;
-        text-decoration: none;
-    }
-    table tr:nth-child(even){
-        background-color: #f2f2f2;
-    }
-
-    table tr:hover {
-        background-color: #ddd;
-    }
     </style>
 </head>
     <body>
@@ -49,11 +29,6 @@
 	            throw $e;
             }
         ?>
-        
-        <!----------------------------------------------------------------------------------->  
-        <!------Creates a dropdown with all tables in the loglena database------------------->
-        <!----------------------------------------------------------------------------------->
-
         <input type="text" id="searchInput" placeholder="Search...">
         <button type="button" onclick="searchTable()">Search</button>
 
@@ -73,11 +48,6 @@
                     echo"<p>".$row['name']."</p>";
                 }
             echo '</select>';
-
-//---------------------------------------------------------------------------------------------------
-// Present data  <-- Presents the information from each db table 
-//---------------------------------------------------------------------------------------------------
-            
 
             // Gathers information from database table serviceLogEntries
             ?>
