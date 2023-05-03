@@ -9372,10 +9372,11 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${linew}
-        v${boxh}
+        v${boxh*3}
         "
         stroke-width='${linew}'
         stroke='${element.stroke}'
+        stroke-dasharray='10,10'
         fill='transparent'
         />`;
         //str += `</svg>`;
