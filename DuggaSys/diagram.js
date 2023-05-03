@@ -9371,7 +9371,7 @@ function drawElement(element, ghosted = false)
         //div to encapsulate sequence actor
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path class="text" 
-        d="M${(boxw/2)+linew},${linew}
+        d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
         v${boxh*3}
         "
         stroke-width='${linew}'
