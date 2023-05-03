@@ -440,6 +440,7 @@
                     <span class="toolTipText"><b>UML initial state</b><br>
                         <p>Creates an initial state for UML.</p><br>
                         <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                        <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding: "<"</p>
                     </span>
                 </div>
                 <!-- UML Final state selection -->
