@@ -9382,12 +9382,13 @@ function drawElement(element, ghosted = false)
                 h${boxw/4}
                 m-${(boxw/8)},0
                 v${boxh/3}
+                l${(boxw/2)-(boxw/8)},${boxh-(boxh/5)}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='${element.fill}'
         />`;
-        str += `<line x1="${boxw/2}" y1="${boxh-(boxh/4)}" x2="${(boxw/2)-(boxw/8)}" y2="${boxh-(boxh/5)}" stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        //str += `<line x1="${boxw/2}" y1="${boxh-(boxh/4)}" x2="${(boxw/2)-(boxw/8)}" y2="${boxh-(boxh/5)}" stroke='${element.stroke}' stroke-width='${linew}'/>`;
         //m-${(boxw/8)},-${boxh/3}
         str += `</svg>`;
         str += `</div>`;
