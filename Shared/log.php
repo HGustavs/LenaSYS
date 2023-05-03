@@ -13,40 +13,6 @@
 <html>
 <head>
 
-<?php
-session_start();
-
-try {
-    $log_db = new PDO('sqlite:../../log/loglena6.db');
-} catch (PDOException $e) {
-    echo "Failed to connect to the database";
-    throw $e;
-}
-
-function get_sort_link($column_name, $display_name) {
-    $order = $_SESSION['log_order'] ?? 'timestamp';
-    $sort = $_SESSION['log_sort'] ?? 'DESC';
-    if ($order == $column_name) {
-        $new_sort = $sort == 'ASC' ? 'DESC' : 'ASC';
-    } else {
-        $new_sort = 'ASC';
-    }
-    $url = "log.php?name={$_POST['name']}&order=$column_name&sort=$new_sort";
-    return "<a href=\"$url\">$display_name</a>";
-}
-
-if (isset($_GET['order'])) {
-    $_SESSION['log_order'] = $_GET['order'];
-}
-if (isset($_GET['sort'])) {
-    $_SESSION['log_sort'] = $_GET['sort'];
-}
-
-$order = $_SESSION['log_order'] ?? 'timestamp';
-$sort = $_SESSION['log_sort'] ?? 'DESC';
-
-?>
-
     <style>
         table, th, td {
         border:1px solid black;
@@ -75,10 +41,16 @@ $sort = $_SESSION['log_sort'] ?? 'DESC';
     </style>
 
    <script type="text/javascript" src="logSearch.js"></script>
-
-
 </head>
     <body>
+        <?php
+            try {
+	            $log_db = new PDO('sqlite:../../log/loglena6.db');
+            } catch (PDOException $e) {
+	            echo "Failed to connect to the database";
+	            throw $e;
+            }
+        ?>
         
         <!----------------------------------------------------------------------------------->  
         <!------Creates a dropdown with all tables in the loglena database------------------->
@@ -104,215 +76,36 @@ $sort = $_SESSION['log_sort'] ?? 'DESC';
                 }
             echo '</select>';
 
-            // Set to default button
-    echo "<a href='log.php?order=timestamp&&sort=DESC' id='set_to_default_button'>Set to default(timestamp, descending order)</a>";
-
-
-
 //---------------------------------------------------------------------------------------------------
 // Present data  <-- Presents the information from each db table 
 //---------------------------------------------------------------------------------------------------
-
-            // Gathers information from database table logEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='logEntries')){
-                $logEntriesSql = $log_db->query('SELECT * FROM logEntries ORDER BY '.$order.' '.$sort.';');
-                $logEntriesResults = $logEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                echo"
-                <table border='1'>
-                    <tr>
-                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
-                        <th><a href='log.php?order=eventype&&sort=$sort'>eventype</a></th>
-                        <th><a href='log.php?order=description&&sort=$sort'>description</a></th>
-                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
-                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
-                    </tr>
-                ";
-                foreach($logEntriesResults as $rows) {
-                    echo"<tr>";
-                    foreach($rows as $row) {
-                        if ($rows['timestamp'] == $row) {
-                            // Convert timestamp to a date format
-                            $timestamp = date('Y-m-d H:i:s', $row/1000);
-                            echo"<td>".$timestamp."</td>";
-                        } else {
-                            echo"<td>".$row."</td>";
-                        }
-                    }
-                    echo"</tr>";
-                }
-                echo"
-                </table>
-                ";
-            }
             
-            // Gathers information from database table exampleLoadLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='exampleLoadLogEntries')){
-                $exampleLoadLogEntriesSql = $log_db->query('SELECT * FROM exampleLoadLogEntries ORDER BY '.$order.' '.$sort.';');
-                $exampleLoadLogEntriesResults = $exampleLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                echo"
-                <table border='1'>
-                    <tr>
-                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
-                        <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
-                        <th><a href='log.php?order=courseid&&sort=$sort'>courseid</a></th>
-                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
-                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
-                        <th><a href='log.php?order=exampleid&&sort=$sort'>exampleid</a></th>
-                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
-                    </tr>
-                ";
-                foreach($exampleLoadLogEntriesResults as $rows) {
-                    echo"<tr>";
-                    foreach($rows as $row) {
-                        if ($rows['timestamp'] == $row) {
-                            // Convert timestamp to a date format
-                            $timestamp = date('Y-m-d H:i:s', $row/1000);
-                            echo"<td>".$timestamp."</td>";
-                        } else {
-                            echo"<td>".$row."</td>";
-                        }
-                    }
-                    echo"</tr>";
-                }
-                echo"
-                </table>
-                ";
-            }
-
-            // Gathers information from database table userHistory
-            if((isset($_POST['name'])) && ($_POST['name']=='userHistory')){
-
-                $userHistorySql = $log_db->query('SELECT * FROM userHistory ORDER BY '.$order.' '.$sort.';');
-                $userHistoryResults = $userHistorySql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                echo"
-                <table border='1'>
-                    <tr>
-                        <th><a href='log.php?order=refer&&sort=$sort'>refer</a></th>
-                        <th><a href='log.php?order=userid&&sort=$sort'>userid</a></th>
-                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
-                        <th><a href='log.php?order=IP&&sort=$sort'>IP</a></th>
-                        <th><a href='log.php?order=URLParams&&sort=$sort'>URLParams</a></th>
-                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
-                    </tr>
-                ";
-                foreach($userHistoryResults as $rows) {
-                    echo"<tr>";
-                    foreach($rows as $row) {
-                        if ($rows['timestamp'] == $row) {
-                            // Convert timestamp to a date format
-                            $timestamp = date('Y-m-d H:i:s', $row/1000);
-                            echo"<td>".$timestamp."</td>";
-                        } else {
-                            echo"<td>".$row."</td>";
-                        }
-                    }
-                    echo"</tr>";
-                }
-                echo"
-                </table>
-                ";
-            }
-
-            // Gathers information from database table userLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='userLogEntries')){
-
-                $userLogEntriesSql = $log_db->query('SELECT * FROM userLogEntries ORDER BY '.$order.' '.$sort.';');
-                $userLogEntriesResults = $userLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                echo"
-                <table border='1'>
-                    <tr>
-                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
-                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
-                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
-                        <th><a href='log.php?order=eventType&&sort=$sort'>eventType</a></th>
-                        <th><a href='log.php?order=description&&sort=$sort'>description</a></th>
-                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
-                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
-                        <th><a href='log.php?order=remoteAddress&&sort=$sort'>remoteAddress</a></th>
-                    </tr>
-                ";
-                foreach($userLogEntriesResults as $rows) {
-                    echo"<tr>";
-                    foreach($rows as $row) {
-                        if ($rows['timestamp'] == $row) {
-                            // Convert timestamp to a date format
-                            $timestamp = date('Y-m-d H:i:s', $row/1000);
-                            echo"<td>".$timestamp."</td>";
-                        } else {
-                            echo"<td>".$row."</td>";
-                        }
-                    }
-                    echo"</tr>";
-                }
-                echo"
-                </table>
-                ";
-            }
 
             // Gathers information from database table serviceLogEntries
+            ?>
+            <?php
             if((isset($_POST['name'])) && ($_POST['name']=='serviceLogEntries')){
 
-                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries ORDER BY CAST(timestamp AS datetime) '.$sort.';');
+                $serviceLogEntriesSql = $log_db->query('SELECT * FROM serviceLogEntries');
                 $serviceLogEntriesResults = $serviceLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                echo"
+                ?>
                 <table border='1'>
                     <tr>
-                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
-                        <th><a href='log.php?order=uuid&&sort=$sort'>uuid</a></th>
-                        <th><a href='log.php?order=eventType&&sort=$sort'>eventType</a></th>
-                        <th><a href='log.php?order=service&&sort=$sort'>service</a></th>
-                        <th><a href='log.php?order=userid&&sort=$sort'>userid</a></th>
-                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
-                        <th><a href='log.php?order=userAgent&&sort=$sort'>userAgent</a></th>
-                        <th><a href='log.php?order=operatingSystem&&sort=$sort'>operatingSystem</a></th>
-                        <th><a href='log.php?order=info&&sort=$sort'>info</a></th>
-                        <th><a href='log.php?order=referer&&sort=$sort'>referer</a></th>
-                        <th><a href='log.php?order=IP&&sort=$sort'>IP</a></th>
-                        <th><a href='log.php?order=browser&&sort=$sort'>browser</a></th>
+                        <th><a href="#" onclick="sortTable(0)">id</a></th>
+                        <th><a href="#" onclick="sortTable(1)">uuid</a></th>
+                        <th><a href="#" onclick="sortTable(2)">eventType</a></th>
+                        <th><a href="#" onclick="sortTable(3)">service</a></th>
+                        <th><a href="#" onclick="sortTable(4)">userid</a></th>
+                        <th><a href="#" onclick="sortTable(5)">timestamp</a></th>
+                        <th><a href="#" onclick="sortTable(6)">userAgent</a></th>
+                        <th><a href="#" onclick="sortTable(7)">operatingSystem</a></th>
+                        <th><a href="#" onclick="sortTable(8)">info</a></th>
+                        <th><a href="#" onclick="sortTable(9)">referer</a></th>
+                        <th><a href="#" onclick="sortTable(10)">IP</a></th>
+                        <th><a href="#" onclick="sortTable(11)">browser</a></th>
                     </tr>
-                ";
+                <?php
                 foreach($serviceLogEntriesResults as $rows) {
-                    echo"<tr>";
-                    foreach($rows as $row) {
-                        if ($rows['timestamp'] == $row) {
-                            // Convert timestamp to a date format
-                            $timestamp = date('Y-m-d H:i:s', $row/1000);
-                            echo"<td>".$timestamp."</td>";
-                        } else {
-                            echo"<td>".$row."</td>";
-                        }
-                    }
-                    echo"</tr>";
-                }
-                echo"
-                </table>
-                ";
-            }
-
-            // Gathers information from database table duggaLoadLogEntries
-            if((isset($_POST['name'])) && ($_POST['name']=='duggaLoadLogEntries')){
-                $duggaLoadLogEntriesSql = $log_db->query('SELECT * FROM duggaLoadLogEntries ORDER BY '.$order.' '.$sort.';');
-                $duggaLoadLogEntriesResults = $duggaLoadLogEntriesSql->fetchAll(PDO::FETCH_ASSOC);
-                $sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-                echo"
-                <table border='1'>
-                    <tr>
-                        <th><a href='log.php?order=id&&sort=$sort'>id</a></th>
-                        <th><a href='log.php?order=type&&sort=$sort'>type</a></th>
-                        <th><a href='log.php?order=cid&&sort=$sort'>cid</a></th>
-                        <th><a href='log.php?order=uid&&sort=$sort'>uid</a></th>
-                        <th><a href='log.php?order=username&&sort=$sort'>username</a></th>
-                        <th><a href='log.php?order=vers&&sort=$sort'>vers</a></th>
-                        <th><a href='log.php?order=quizid&&sort=$sort'>quizid</a></th>
-                        <th><a href='log.php?order=timestamp&&sort=$sort'>timestamp</a></th>
-                    </tr>
-                ";
-                foreach($duggaLoadLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
                         if ($rows['timestamp'] == $row) {
