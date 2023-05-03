@@ -23,7 +23,7 @@
 | Shall | Teacher shall be able to update codeexample |
 | While | While the teacher has access to the course |
 | When | When codeexample exists |
-| Where | Where the user has access (writeaccess = w || issuperuser) |
+| Where | Where the user has access (writeaccess = w or issuperuser) |
 | If Then | If file does not exist Then provide error |
 
 | FN No: | FR3 |
