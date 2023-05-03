@@ -1,5 +1,4 @@
 sectionedservice.php
-////////////CHANGETHIS
 
 ----------------------------------
 getGroupsTest() line 100:
@@ -53,7 +52,7 @@ AND $ha || $studentTeacher IS TRUE
 send
 {
 $opt = "DEL"
-$sectid != null ////////////CHANGETHIS
+$lid = "5020"
 }
 
 
@@ -93,7 +92,7 @@ AND $ha || $studentTeacher IS TRUE
 send
 {
 opt = "DELETED"
-sectid != null //////////////////////CHANGETHIS
+lid = "5020"
 }
 
 
@@ -129,24 +128,23 @@ AND $ha || $studentTeacher IS TRUE
  Sent input
 *****************
 
-send /////////////CHANGETHIS
+send
 {
 $opt = "NEW"
-$courseid != null
-$coursevers != null
-$sectname != null
-$sname != null
-$gradesys != null
-$tabs != null
-$userid != null
-$sectname != null
-$link != null
-$kind != null
-$comments != null
-$visibility != null
-$highscoremode != null
-$pos != null
-}
+$courseid = 1885
+$coursevers = 1337
+$sectname = "New group9019"
+$sname = "examplename"
+$gradesys = 0
+$tabs = null
+$userid = 2
+$link = null
+$kind = 7
+$comments = "Top"
+$visibility = 1
+$highscoremode = 0
+$pos = 5
+}	
 
 
 You also need to gather all codeexamples to compare if any new.
@@ -187,8 +185,8 @@ AND $ha || $studentTeacher IS TRUE
 send 
 {
 $opt = "RECORDER"
-$order != 0
-$armin[] != null /////////////CHANGETHIS
+$order = 0 
+$armin[] = 1 //Can be 0-2
 }
 
 You also need to gather all listentries to compare if any updated.
@@ -223,27 +221,23 @@ AND $ha || $studentTeacher IS TRUE
  Sent input
 *****************
 
-send /////////////CHANGETHIS
+send
 {
 $opt = "UPDATE"
-$courseid != 0
-$coursevers != 0
-$sectid != 0
-$sectname != null
-$sname != null
-$sectid != 0
-$sectname != null
-$comments != null
-$highscoremode != null
-$feedbackenabled != null
-$feedbackquestion != null
-$moment != null
-$kind != null
-$link != null
-$visibility != 0
+$courseid = 1885
+$coursevers = 1337
+$sectid = 1
+$sectname = "New group9019"
+$sname = "examplename"
+$comments = "Top"
+$highscoremode = 0
+$feedbackenabled = 0
+$feedbackquestion = null
+$moment = null
+$kind = 7
+$link = null
+$visibility = 1
 }
-
-/////////////////////////
 
 You also need to gather all listentries to compare if any updated.
 SQL Query: "SELECT * FROM listentries" save into beforeUpdatedL
@@ -279,15 +273,13 @@ AND $ha || $studentTeacher IS TRUE
  Sent input
 *****************
 
-send /////////////CHANGETHIS
+send
 {
 $opt = "UPDATEDEADLINE"
-$deadline != 0
-$relativedeadline != 0
-$link != 0
+$deadline = "2025-01-01 00:00:00"
+$relativedeadline = NULL 
+$link = 9020
 }
-
-/////////////////////////
 
 You also need to gather all quizzes to compare if any updated.
 SQL Query: "SELECT deadline, relativedeadline FROM quiz" save into beforeUpdated
@@ -317,11 +309,11 @@ AND $ha || $studentTeacher IS TRUE
  Sent input
 *****************
 
-send /////////////CHANGETHIS
+send
 {
 $opt = "UPDATETABS"
-$sectid != 0
-$tabs != 0
+$sectid = 9999
+$tabs = 0
 }
 
 You also need to gather all listentries to compare if any updated.
@@ -353,10 +345,10 @@ AND $ha || $studentTeacher IS TRUE
  Sent input
 *****************
 
-send /////////////CHANGETHIS
+send
 {
 $opt = "UPDATEVRS"
-$courseid != 0
+$courseid = 1885
 $coursecode != 0
 $versid != 0
 $motd != 0
