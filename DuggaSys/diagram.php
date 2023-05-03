@@ -643,7 +643,9 @@
             <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck()">
                 <img src="../Shared/icons/diagram_errorCheck.svg" alt="Toggle error check"/>
                 <span class="toolTipText"><b>Toggle error check</b><br>
-                    <p>Click to toggle error checking on/off</p><br>
+                    <p>Click to toggle error checking on/off</p>
+                    <p>Highlights errors inside a diagram.</p>
+                    <br>
                     <p id="tooltip-TOGGLE_ERROR_CHECK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
