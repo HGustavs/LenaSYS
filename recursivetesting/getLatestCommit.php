@@ -75,12 +75,12 @@
 			print_r($error);
 			echo $errorvar;
 		} 
-		getCommitSqlite($cid); //testing !!!!!!! don't forget to remove!
+		//refreshGithubRepo($cid); //testing !!!!!!! don't forget to remove!
 	}
 
 	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
 
-	function getCommitSqlite($cid){
+	function refreshGithubRepo($cid){
 		// Get old commit from Sqlite 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
@@ -106,9 +106,17 @@
 
 			// Compare old commit in db with the new one from the url
 			if($latestCommit != $commit) {
-				print_r("The course should be updated!");
+				// Update the SQLite DB with the new commit
+				$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':latestCommit', $latestCommit);
+				$query->execute();
+				
+				//print_r("The course should be updated!");
+				echo '<script>console.log("The course should be updated!"); </script>';
 			} else {
-				print_r("The course is already up to date!");
+				//print_r("The course is already up to date!");
+				echo '<script>console.log("The course is already up to date!"); </script>';
 			}
 		}
 	}
