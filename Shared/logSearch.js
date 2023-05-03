@@ -33,33 +33,39 @@ function filterTable() {
     xmlhttp.send();
 }
 
-function sortTable(colIndex) {
-    var table = document.getElementsByTagName("table")[0];
-    var rows = Array.prototype.slice.call(table.rows, 1); // Convert NodeList to array and exclude header row
-    var ascending = true;
-    rows.sort(function(a, b) {
-        var aValue = a.cells[colIndex].textContent || a.cells[colIndex].innerText;
-        var bValue = b.cells[colIndex].textContent || b.cells[colIndex].innerText;
-        if (colIndex === 5) { // Special case for timestamp column
-            aValue = new Date(aValue).getTime();
-            bValue = new Date(bValue).getTime();
-        } else if (!isNaN(parseFloat(aValue)) && isFinite(aValue) && !isNaN(parseFloat(bValue)) && isFinite(bValue)) { // Numeric sort for other columns
-            aValue = parseFloat(aValue);
-            bValue = parseFloat(bValue);
-        } else { // Alphabetic sort for other columns
-            aValue = aValue.toLowerCase();
-            bValue = bValue.toLowerCase();
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable");
+    switching = true;
+    dir = "desc";
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
         }
-        if (aValue > bValue) {
-            return ascending ? 1 : -1;
-        } else if (aValue < bValue) {
-            return ascending ? -1 : 1;
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount ++;
         } else {
-            return 0;
+            if (switchcount == 0 && dir == "desc") {
+                dir = "asc";
+                switching = true;
+            }
         }
-    });
-    ascending = !ascending; // Reverse sort order for next click
-    rows.forEach(function(row) {
-        table.appendChild(row);
-    });
+    }
 }
