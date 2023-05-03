@@ -630,5 +630,4 @@
 
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
-    z-index: 100;
 }
