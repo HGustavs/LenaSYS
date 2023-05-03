@@ -92,7 +92,7 @@
 				$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 			}
 		}else if($fname!="UNK"){
-			$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and (vers is null OR vers=:vers) and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+			$query = $pdo->prepare("SELECT filename,path,kind from fileLink WHERE (cid=:cid or isGlobal='1') and (vers is null OR vers=:vers) and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fname', $fname);
 			$query->bindParam(':vers', $coursevers);
@@ -100,6 +100,7 @@
 			if($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$filekind=$row['kind'];
 				$filename = $row['filename'];
+				$path = $row['path'];
 		
 				if($filekind==1){
 					// Link
@@ -112,7 +113,10 @@
 						$file = "../courses/global/".$filename;
 					}else if($filekind==3){
 						// Course Local
-						$file = "../courses/".$cid."/".$filename;
+						if ($path == null)
+							$file = "../courses/" . $cid . "/" . $filename;
+						else 
+							$file = "../courses/" . $cid . "/Github/" . $path;
 					}else if($filekind==4){
 						// Local
 						$file = "../courses/".$cid."/".$coursevers."/".$filename;

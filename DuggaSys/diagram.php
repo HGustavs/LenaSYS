@@ -165,7 +165,7 @@
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                                <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
+                                <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state</p>
                                 </span>
@@ -209,7 +209,7 @@
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                                <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
+                                <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state</p>
                                 </span>
@@ -253,7 +253,7 @@
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                                <img src="../Shared/icons/diagram_IE_entity.svg" alt="State diagram state"/>
+                                <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state</p>
                                 </span>
@@ -297,7 +297,7 @@
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
-                                <img class="SDState-rounded" src="../Shared/icons/diagram_IE_entity.svg" alt="Statediagram state"/>
+                                <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
                                 <span class="placementTypeToolTipText"><b>Statediagram state</b><br>
                                     <p>Change to state diagram state</p>
                                 </span>
@@ -337,7 +337,7 @@
                             </div>
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
-                                <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance</p>
                                 </span>
                             </div>
@@ -375,7 +375,7 @@
                             </div>
                             <div class="IEButton placementTypeBoxIcons " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
-                                <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance</p>
                                 </span>
                             </div>
@@ -413,7 +413,7 @@
                             </div>
                             <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
-                                <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance</p>
                                 </span>
                             </div>

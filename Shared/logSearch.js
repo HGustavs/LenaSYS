@@ -4,7 +4,7 @@ function searchTable() {
     filter = input.value.toUpperCase();
     table = document.getElementsByTagName("table")[0];
     tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
+    for (i = 1; i < tr.length; i++) { // Start loop from 1 to exclude header row
         for (j = 0; j < tr[i].cells.length; j++) {
             td = tr[i].cells[j];
             if (td) {

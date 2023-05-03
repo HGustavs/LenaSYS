@@ -117,9 +117,13 @@
                 foreach($logEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo"
-                            <td>".$row."</td>
-                        ";
+                        if ($rows['timestamp'] == $row) {
+                            // Convert timestamp to a date format
+                            $timestamp = date('Y-m-d H:i:s', $row/1000);
+                            echo"<td>".$timestamp."</td>";
+                        } else {
+                            echo"<td>".$row."</td>";
+                        }
                     }
                     echo"</tr>";
                 }
@@ -148,9 +152,13 @@
                 foreach($exampleLoadLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo"
-                            <td>".$row."</td>
-                        ";
+                        if ($rows['timestamp'] == $row) {
+                            // Convert timestamp to a date format
+                            $timestamp = date('Y-m-d H:i:s', $row/1000);
+                            echo"<td>".$timestamp."</td>";
+                        } else {
+                            echo"<td>".$row."</td>";
+                        }
                     }
                     echo"</tr>";
                 }
@@ -179,9 +187,13 @@
                 foreach($userHistoryResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo"
-                            <td>".$row."</td>
-                        ";
+                        if ($rows['timestamp'] == $row) {
+                            // Convert timestamp to a date format
+                            $timestamp = date('Y-m-d H:i:s', $row/1000);
+                            echo"<td>".$timestamp."</td>";
+                        } else {
+                            echo"<td>".$row."</td>";
+                        }
                     }
                     echo"</tr>";
                 }
@@ -212,9 +224,13 @@
                 foreach($userLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo"
-                            <td>".$row."</td>
-                        ";
+                        if ($rows['timestamp'] == $row) {
+                            // Convert timestamp to a date format
+                            $timestamp = date('Y-m-d H:i:s', $row/1000);
+                            echo"<td>".$timestamp."</td>";
+                        } else {
+                            echo"<td>".$row."</td>";
+                        }
                     }
                     echo"</tr>";
                 }
@@ -249,9 +265,13 @@
                 foreach($serviceLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo"
-                            <td>".$row."</td>
-                        ";
+                        if ($rows['timestamp'] == $row) {
+                            // Convert timestamp to a date format
+                            $timestamp = date('Y-m-d H:i:s', $row/1000);
+                            echo"<td>".$timestamp."</td>";
+                        } else {
+                            echo"<td>".$row."</td>";
+                        }
                     }
                     echo"</tr>";
                 }
@@ -281,9 +301,13 @@
                 foreach($duggaLoadLogEntriesResults as $rows) {
                     echo"<tr>";
                     foreach($rows as $row) {
-                        echo"
-                            <td>".$row."</td>
-                        ";
+                        if ($rows['timestamp'] == $row) {
+                            // Convert timestamp to a date format
+                            $timestamp = date('Y-m-d H:i:s', $row/1000);
+                            echo"<td>".$timestamp."</td>";
+                        } else {
+                            echo"<td>".$row."</td>";
+                        }
                     }
                     echo"</tr>";
                 }

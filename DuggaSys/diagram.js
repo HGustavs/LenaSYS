@@ -903,7 +903,8 @@ const relationState = {
 const lineKind = {
     NORMAL: "Normal",
     DOUBLE: "Double",
-    DASHED: "Dashed"
+    DASHED: "Dashed",
+    RECURSIVE: "Recursive"
 };
 
 /**
@@ -1817,6 +1818,7 @@ function mdown(event)
     
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
+                    document.getElementById('optmarker').innerHTML = "&#9650;Options";
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
             }
@@ -1923,7 +1925,7 @@ function ddown(event)
                 input.focus();
                 input.setSelectionRange(0, input.value.length); // Select the whole text.
             }
-            document.getElementById('optmarker').innerHTML = "&#x203A;Options";
+            document.getElementById('optmarker').innerHTML = "&#9650;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }   
@@ -2022,7 +2024,18 @@ function mouseMode_onMouseUp(event)
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }else{   
+                }else if (ghostElement !== null) { 
+                    // create a line from the element to itself
+                    addLine(context[0], context[0], "Recursive");
+                    clearContext();
+        
+                    // Bust the ghosts
+                    ghostElement = null;
+                    ghostLine = null;
+        
+                    showdata();
+                    updatepos(0,0);
+                } else{   
                     clearContext();
                     ghostElement = null;
                     ghostLine = null;
@@ -2478,7 +2491,7 @@ function mmoving(event)
 
         case pointerStates.CLICKED_ELEMENT:
             if(mouseMode != mouseModes.EDGE_CREATION){
-                console.log("Moving object")
+
                 var prevTargetPos = {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
@@ -3579,8 +3592,11 @@ function entityIsOverlapping(id, x, y)
                   compY2 = data[i].y + SDHeight[j].height;
                 }
               }
-
-              if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
+              //if its overlapping with a super state, just break since that is allowed.
+              if (data[i].kind == "UMLSuperState") {
+                break;
+              }
+              else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
                 break;
@@ -4017,7 +4033,7 @@ function generateStateDiagramInfo()
     const stateLines = [];
     const queue = [];
     let output = "";
-
+const stateLinesLabels=[];
     // Picks out the lines of type "State Diagram" and place it in its local array.
     for (let i=0; i<lines.length; i++)
     {
@@ -4053,10 +4069,10 @@ function generateStateDiagramInfo()
     while (queue.length > 0) {
         let head = queue.shift();
         const connections = [];
-
-        // Finds all entities connected to the current "head".
+        // Finds all entities connected to the current "head" and adds line labels to a list.
         for (let i = 0; i < stateLines.length; i++) {
             if (stateLines[i].fromID == head[ENTITY].id) {
+                stateLinesLabels.push(stateLines[i].label);
                 for (let j = 0; j < stateElements.length; j++) {
                     if (stateLines[i].toID == stateElements[j][ENTITY].id) {
                         connections.push(stateElements[j]);
@@ -4077,7 +4093,7 @@ function generateStateDiagramInfo()
 
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-            output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+        output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" </p>`;
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
                 queue.push(connections[i]);
@@ -4086,6 +4102,10 @@ function generateStateDiagramInfo()
     }
 
     // Adds additional information in the view.
+    for(var i=0; i<stateLinesLabels.length; i++)
+    {
+    output+=`<p>${stateLinesLabels[i]}</p>`;
+    }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>Super States: ${stateSuper.length}</p>`;
@@ -4096,7 +4116,6 @@ function generateStateDiagramInfo()
     if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0) && (stateSuper.length == 0)) {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
     }
-    
     return output;
 }
 /**
@@ -7472,14 +7491,20 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement = tempElement;
     }
 
-    if (fromElement.kind == toElement.kind && fromElement.id == toElement.id) {
+    
+    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDState' || toElement.kind === 'SDState')) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
-
+    
     // Prevent a line to be drawn between elements of different types.
     if (fromElement.type != toElement.type) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
+        return;
+    }
+    //checks if a line is drawn to UMLInitialState.
+    if (toElement.kind == "UMLInitialState") {
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
     }
 
@@ -7628,7 +7653,11 @@ function preProcessLine(line) {
 
     //Sets the endIcon of the to-be-created line, if it an State entity
     if ((felem.type === 'SD') && (telem.type === 'SD')) {
-        line.endIcon = "ARROW";
+        if (line.kind === 'Recursive') {
+            line.endIcon = '';
+        } else {
+            line.endIcon = 'ARROW';
+        }
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
@@ -7694,8 +7723,8 @@ function drawLine(line, targetGhost = false)
         zoomfact
     );
 
-    // Collect coordinates
-    if (line.ctype == "BT"){
+   // Collect coordinates
+   if (line.ctype == "BT"){
         fy = felem.y2;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
@@ -7810,6 +7839,25 @@ function drawLine(line, targetGhost = false)
     } else if(telem.kind == "UMLRelation"){
         x2Offset = 0;
         y2Offset = 0;
+    }
+
+    // Create recursive line for SD entities
+    if ((felem.type == 'SD') || (telem.type == 'SD')){
+        if (line.kind == "Recursive"){
+            const length = 80 * zoomfact;
+            const startX = fx - 10 * zoomfact;
+            const startY = fy - 15 * zoomfact;
+            const endX = fx - 10 * zoomfact;
+            const endY = fy - 15 * zoomfact;
+            const cornerX = fx + length;
+            const cornerY = fy - length;
+
+            str += `<line id='${line.id}-line1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-line2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-line3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-line4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<polygon id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+        }
     }
 
     /* if (felem.type != 'ER' || telem.type != 'ER') {
@@ -9007,9 +9055,9 @@ function drawElement(element, ghosted = false)
                              xmlns="http://www.w3.org/2000/svg"
                              xml:space="preserve"
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                            <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                            <g style="fill:${element.fill}" transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)">
-                                <circle cx="14.5" cy="14.5" r="5.5"/>
+                            <g>
+                                <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
+                                <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/>
                             </g>
                         </svg>
                 </div>`;

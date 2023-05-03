@@ -3,7 +3,13 @@
 
 Documentation
 
- *********************************************************************************
+*********************************************************************************
+
+Important!
+---------------------
+This file isn't currently used anywhere.
+However if used remember to include github references in at the comment "Github implementation"
+
 
 Execution Order
 ---------------------
@@ -40,7 +46,7 @@ if(isset($_SESSION['uid'])){
 $log_uuid = getOP('log_uuid');
 
 $filo=print_r($_FILES,true);
-$info=$cid." ".$vers." ".$kind." ".$fileName." ".$error." ".$filo;
+$info="cid: ".$cid." vers: ".$vers." kind: ".$kind." fileName: ".$fileName." error: ".$error." filo: ".$filo;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve_preview.php",$userid,$info);
 
 //  Handle files! One by one  -- if all is ok add file name to database
@@ -72,6 +78,7 @@ if($ha){
         if ($kind==2) {
             $currcwd .= "/courses/global/".$fileName;
         }  else if($kind == 3) {
+            // Github implementation are needed
             $currcwd .= "/courses/".$cid."/".$fileName;
         } else if($kind == 4) {
             $currcwd .= "/courses/".$cid."/".$vers."/".$fileName;

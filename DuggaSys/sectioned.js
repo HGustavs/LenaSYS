@@ -1568,6 +1568,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='moment'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
+          str +=  " onclick='refreshMoment("+item['lid']+")'";
           str += ">";
           str += "</td>";
         }
@@ -2958,8 +2959,9 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 
 //Creates all examples from github that doesnt exists yet
 function createExamples() {//TODO HERE
-  cid = 0;
-  AJAXService("CreGitEx", {courseid : cid});
+  cid = querystring['courseid'];
+  cversid = document.getElementById("cversid").value
+  AJAXService("CreGitEx", {courseid : cid, coursevers : cversid});
 }
 
 // ------ Validates all versionnames ------
@@ -3524,6 +3526,20 @@ function validateForm(formid) {
 async function refreshCodeExample(exampleid) {
   console.log("Should try to refresh a code example (check if re-fetching from external github repo is necessary)");
   AJAXService("REFGIT", {exampleid : exampleid});
+}
+
+//------------------------------------------------------------------------------
+// This method is used to find all code examples under a certain moment and runs the 
+// refreshCodeExample method to try to update their code example
+//------------------------------------------------------------------------------
+function refreshMoment(momentID){
+  //Iterate all entries in the sectionlist of the course
+  retdata.entries.map(sectionListEntry => {
+    //If current entry is within chosen moment and is a codeexample, try to refresh it
+    if(sectionListEntry.moment == momentID && sectionListEntry.kind == 2){
+      refreshCodeExample(sectionListEntry.link);
+    }
+  });
 }
 
 //------------------------------------------------------------------------------
