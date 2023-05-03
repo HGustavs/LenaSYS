@@ -39,6 +39,7 @@
         background-color: #ddd;
     }
     </style>
+     <script type="text/javascript" src="logSearch.js"></script>
 </head>
     <body>
         <?php
@@ -112,6 +113,6 @@
                 ";
             }
         ?>    
-        <script src="logSearch.php"></script>
+        <!-- <script src="logSearch.php"></script> -->
     </body>
 </html>
