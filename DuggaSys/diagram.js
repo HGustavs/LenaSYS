@@ -9354,22 +9354,23 @@ function drawElement(element, ghosted = false)
     }
     //sequence life line
     else if (element.kind == 'sequenceLifeLine') {
-        //div to encapuslate sequence life line
-        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
-       
-        if(context.includes(element)){
+        //div to encapsulate sequence lifeline
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+
+        if (context.includes(element)) {
             str += `z-index: 1;`;
         }
-        
         if (ghosted) {
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
-
-        str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);stroke-width:${linew};'>`;
-        str += `<rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />`;
+        //div to encapuslate sequence lifeline stickman
+        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        str += `<rect width="${boxw}px" height="${boxh}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />`;
         str += `</svg>`;
+        str += `</div>`;
         
     }
     //=============================================== <-- End of IE functionality
