@@ -1779,7 +1779,7 @@ function mdown(event)
     mouseButtonDown = true;
 
         // Mouse pressed over delete button for multiple elements
-        if (event.button == 0 && mouseMode != mouseModes.EDGE_CREATION) {
+        if (event.button == 0) {
             if (context.length > 0 || contextLine.length > 0) {
                hasPressedDelete = checkDeleteBtn();
             }
@@ -1906,7 +1906,7 @@ function mdown(event)
 function ddown(event)
 {
     // Mouse pressed over delete button for a single line over a element
-    if (event.button == 0 && (contextLine.length > 0 || context.length > 0) && mouseMode != mouseModes.EDGE_CREATION) {
+    if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
         hasPressedDelete = checkDeleteBtn();
     }
     
@@ -2169,7 +2169,7 @@ function mouseLeave(){
 function checkDeleteBtn(){
     if (deleteBtnX != 0) {
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
+            //if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
             }
