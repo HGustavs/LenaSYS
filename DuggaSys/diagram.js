@@ -9373,8 +9373,8 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for stickman.
         //str += `<rect width="${boxw}px" height="${boxh}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width="2" />`;
-        str += `<path class="text" d="M${(boxw/2)+linew},${(linew)}"/>`;
-        str += `<circle cx="0" cy="0" r="${boxw/8}px" fill="red" stroke='${element.stroke}' stroke-width="2"/>`;
+        //str += `<path class="text" d="M${(boxw/2)+linew},${(linew)}"/>`;
+        str += `<circle cx="${(boxw/2)+linew}" cy="${(linew)}" r="${boxw/8}px" fill="red" stroke='${element.stroke}' stroke-width="2"/>`;
         str += `</svg>`;
         str += `</div>`;
         
