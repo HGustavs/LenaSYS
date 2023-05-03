@@ -84,7 +84,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 		$debug="NONE!";
 
-		$info=$opt." ".$courseid." ".$coursevers." ".$coursename;
+		$info="opt: ".$opt." courseid: ".$courseid." coursevers: ".$coursevers." coursename: ".$coursename;
 		$log_uuid = getOP('log_uuid');
 		 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "sectionedservice.php",$userid,$info);
 

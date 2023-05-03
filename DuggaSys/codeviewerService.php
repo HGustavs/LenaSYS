@@ -54,7 +54,7 @@
 	$log_timestamp = getOP('log_timestamp');
 
 	$log_uuid = getOP('log_uuid');
-	$info=$opt." ".$courseId." ".$courseVersion." ".$exampleName." ".$sectionName." ".$exampleId;
+	$info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
 	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
 
 	// Checks and sets user rights
