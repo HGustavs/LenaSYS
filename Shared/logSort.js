@@ -6,8 +6,10 @@ function sortTable(columnIndex) {
     ascending = !table.rows[0].cells[columnIndex].classList.contains("sorted-descending");
     // Remove the sorting classes from all other columns
     for (i = 0; i < table.rows[0].cells.length; i++) {
-      table.rows[0].cells[i].classList.remove("sorted-ascending");
-      table.rows[0].cells[i].classList.remove("sorted-descending");
+      if (i !== columnIndex) {
+        table.rows[0].cells[i].classList.remove("sorted-ascending");
+        table.rows[0].cells[i].classList.remove("sorted-descending");
+      }
     }
     // Set the sorting class for the clicked column
     table.rows[0].cells[columnIndex].classList.add(ascending ? "sorted-ascending" : "sorted-descending");
@@ -33,3 +35,4 @@ function sortTable(columnIndex) {
       }
     }
   }
+  
