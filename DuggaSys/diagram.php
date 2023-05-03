@@ -506,7 +506,7 @@
                     <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p>
-                        <p>The final state represent where a process ends</p>
+                        <p>The final state represent where a process ends.</p>
                         <br>
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
@@ -527,7 +527,7 @@
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                     <span class="toolTipText"><b>UML super state</b><br>
                         <p>Creates a super state.</p>
-                        <p>A state that can conatins substates</p>
+                        <p>A state that can conatins substates.</p>
                         <br>
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
