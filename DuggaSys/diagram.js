@@ -9378,6 +9378,8 @@ function drawElement(element, ghosted = false)
         str += `<path class="text" 
             d="M${(boxw/2)+linew},${(boxw/4)+linew}
                 v${boxh/2}
+                m-${(boxw/8)},-${(boxh/1.5)}
+                h${boxw/4}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
