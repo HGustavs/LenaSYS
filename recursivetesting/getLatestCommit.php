@@ -18,6 +18,15 @@
 
 	//getCourseID("https://github.com/c21sebar/test"); // Dummy Code to see if everything works
 
+	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
+	if(isset($_POST['action'])) 
+	{
+		if($_POST['action'] == 'getCourseID') 
+		{
+			getCourseID($_POST['githubURL']);
+		}
+	};
+
 	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit ----------------------------------------------
 	// --------------------- This only happens when creating a new course --------------------------------------------------------------
 
