@@ -9352,6 +9352,9 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
         
     }
+    
+    //=============================================== <-- End of IE functionality
+    //=============================================== <-- Start Sequnece functionality
     //sequence life line
     else if (element.kind == 'sequenceLifeLine') {
         //div to encapsulate sequence lifeline
@@ -9368,13 +9371,15 @@ function drawElement(element, ghosted = false)
         //div to encapuslate sequence lifeline stickman
         str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect width="${boxw}px" height="${boxh}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />`;
+        //svg for stickman.
+        //str += `<rect width="${boxw}px" height="${boxh}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width="2" />`;
+        str += `<path class="text" d="M${(boxw/2)+linew},${(linew)}"/>`;
+        str += `<circle r="${boxw/8}px" fill="transparent" stroke='${element.stroke}' stroke-width="2"/>`;
         str += `</svg>`;
         str += `</div>`;
         
     }
-    //=============================================== <-- End of IE functionality
-
+    //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
     //ER element
     else {
