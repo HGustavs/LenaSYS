@@ -697,7 +697,7 @@
             <fieldset class='options-fieldset options-section'>
                 <legend>Import</legend>
                 <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
-                <button class="saveButton" onclick="loadDiagram();">Load</button>
+                <!--<button class="saveButton" onclick="loadDiagram();">Load</button>!-->
             </fieldset>
         </div>
       <!-- 
