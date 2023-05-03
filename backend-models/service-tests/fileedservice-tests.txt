@@ -43,10 +43,12 @@ if ($result === true) {
 }
 
 *********
-* Expected output:
+Service output
 *********
 
-true
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 Test retrieving a file path (line 218)
