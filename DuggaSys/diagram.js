@@ -1602,7 +1602,7 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
+            if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
             if (context.length > 0) {
                 removeElements(context);
             } else if (contextLine.length > 0) {
@@ -1780,7 +1780,7 @@ function mdown(event)
     mouseButtonDown = true;
 
         // Mouse pressed over delete button for multiple elements
-        if (event.button == 0 && mouseMode != mouseModes.EDGE_CREATION) {
+        if (event.button == 0) {
             if (context.length > 0 || contextLine.length > 0) {
                hasPressedDelete = checkDeleteBtn();
             }
@@ -1908,7 +1908,7 @@ function mdown(event)
 function ddown(event)
 {
     // Mouse pressed over delete button for a single line over a element
-    if (event.button == 0 && (contextLine.length > 0 || context.length > 0) && mouseMode != mouseModes.EDGE_CREATION) {
+    if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
         hasPressedDelete = checkDeleteBtn();
     }
     
@@ -2182,7 +2182,6 @@ function mouseLeave(){
 function checkDeleteBtn(){
     if (deleteBtnX != 0) {
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
             }
@@ -2417,6 +2416,7 @@ function mouseMode_onMouseMove(event)
     }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
+            mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -11559,7 +11559,7 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    if ((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) {
+    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 & contextLine.length != 0){
         var lowX;
         var highX;
         var lineLowX;
