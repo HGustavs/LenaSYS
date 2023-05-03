@@ -1646,7 +1646,7 @@ document.addEventListener('keyup', function (e)
         //Temp for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
@@ -1654,7 +1654,7 @@ document.addEventListener('keyup', function (e)
         //Temp for IE entity
         if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
             setElementPlacementType(elementTypes.IEEntity)
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
@@ -1663,22 +1663,22 @@ document.addEventListener('keyup', function (e)
         //Temp for SD entity
         if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
             setElementPlacementType(elementTypes.SDEntity)
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
         if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
             setElementPlacementType(elementTypes.UMLInitialState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if (isKeybindValid(e, keybinds.STATE_FINAL)) {
             setElementPlacementType(elementTypes.UMLFinalState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         if (isKeybindValid(e, keybinds.STATE_SUPER)) {
             setElementPlacementType(elementTypes.UMLSuperState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
 
