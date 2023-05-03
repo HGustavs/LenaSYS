@@ -43,7 +43,7 @@ if ($result === true) {
 }
 
 *********
-Service output
+Service output:
 *********
 
 ** Gather service output *
@@ -122,8 +122,9 @@ $logged_message = file_get_contents("path/to/log/test.txt");
 assert($expected_log == $logged_message, "Failed.");
 
 *********
-* Expected output:
+Service output:
 *********
 
-If successful: no output should be displayed.
-If failed: An error message should pop up.
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
