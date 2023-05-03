@@ -49,6 +49,7 @@ function updateCourse()
 			localStorage.setItem('courseid', courseid);
 			localStorage.setItem('updateCourseName', true);
 			alert("Course " + coursename + " updated with new GitHub-link!"); 
+			fetchLatestCommit(courseGitURL);
 		}
 		//Else: get error message from the fetchGitHubRepo function.
 
