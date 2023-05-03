@@ -9377,14 +9377,16 @@ function drawElement(element, ghosted = false)
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text" 
             d="M${(boxw/2)+linew},${(boxw/4)+linew}
-                v${boxh/2}
-                m-${(boxw/8)},-${boxh/3}
+                v${boxh/6}
+                m-${(boxw/8)},0
                 h${boxw/4}
+                v${boxh/3}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='${element.fill}'
         />`;
+        //m-${(boxw/8)},-${boxh/3}
         str += `</svg>`;
         str += `</div>`;
         
