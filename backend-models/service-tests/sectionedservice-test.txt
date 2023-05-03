@@ -1,4 +1,5 @@
 sectionedservice.php
+////////////CHANGETHIS
 
 ----------------------------------
 getGroupsTest() line 100:
@@ -10,7 +11,10 @@ getGroupsTest() line 100:
 
 (checklogin) IS TRUE
 
-//// PRE-REQ Values /////
+
+*****************
+ Sent input
+*****************
 
 send
 {
@@ -19,25 +23,16 @@ $courseid = "1"
 $coursevers = "45656"
 }
 
-/////////////////////////
-
-
-*****************
- Compare results
-*****************
-
-If $debug is empty then successfully gathered all groups
 
 *****************
  Service output
 *****************
 
-This service gather groups and if the groups change (unclear in code)
-this will affect:
+** Gather service output *      
+Save the values of the echoed array as a JSON 
+(at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
-"groups",
-"grpmembershp",
-"grplst"
 
 ----------------------------------
 deleteTest() line 181:
@@ -50,15 +45,17 @@ deleteTest() line 181:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+
+*****************
+ Sent input
+*****************
 
 send
 {
 $opt = "DEL"
-$sectid != null
+$sectid != null ////////////CHANGETHIS
 }
 
-/////////////////////////
 
 You also need to gather all listentries to compare if deleted.
 SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" save into beforeDeleted
@@ -70,18 +67,13 @@ SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries"
 SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterDeleted
 
 *****************
- Compare results
-*****************
-
-If beforeDeleted(count) > afterDeleted(count): passed
-If beforeDeleted(count) < afterDeleted(count): failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-"codeexamples"
+** Gather service output *      
+Save the values of the echoed array as a JSON 
+(at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 deletedTest() line 197:
@@ -94,15 +86,16 @@ deletedTest() line 197:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
 send
 {
 opt = "DELETED"
-sectid != null
+sectid != null //////////////////////CHANGETHIS
 }
 
-/////////////////////////
 
 You also need to gather all listentries to compare if deleted.
 SQL Query: "SELECT visible FROM listentries WHERE lid=:lid" or "SELECT visible FROM listentries" save into beforeMarkedDeleted
@@ -114,18 +107,12 @@ SQL Query: "SELECT visible FROM listentries WHERE lid=:lid" or "SELECT visible F
 SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterMarkedDeleted
 
 *****************
- Compare results
-*****************
-
-If any visible has been updated to "3": passed
-If non visible has been updated to "3": failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-Not able to identify output for listentries
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 newCodeExampleTest() line 210:
@@ -138,9 +125,11 @@ newCodeExampleTest() line 210:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send /////////////CHANGETHIS
 {
 $opt = "NEW"
 $courseid != null
@@ -159,7 +148,6 @@ $highscoremode != null
 $pos != null
 }
 
-/////////////////////////
 
 You also need to gather all codeexamples to compare if any new.
 SQL Query: "SELECT * FROM codeexample" save into beforeNew
@@ -174,18 +162,12 @@ SQL Query: "SELECT * FROM codeexample" save into afterNewC
 SQL Query: "SELECT * FROM listentries" save into afterNewL
 
 *****************
- Compare results
-*****************
-
-If any new table to codeexample and listentries: passed
-If non new table to codeexample and listentries: failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-"codeexamples"
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 newRecorderTest() line 275:
@@ -198,16 +180,16 @@ newRecorderTest() line 275:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send 
 {
 $opt = "RECORDER"
 $order != 0
-$armin[] != null
+$armin[] != null /////////////CHANGETHIS
 }
-
-/////////////////////////
 
 You also need to gather all listentries to compare if any updated.
 SQL Query: "SELECT pos,moment FROM listentries" save into beforeUpdated
@@ -219,18 +201,12 @@ SQL Query: "SELECT pos,moment FROM listentries" save into beforeUpdated
 SQL Query: "SELECT pos,moment FROM listentries" save into afterUpdated
 
 *****************
- Compare results
-*****************
-
-If pos and moment has been updated: passed
-If non has been updated: failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-Not able to identify output for listentries
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 updateTest() line 291:
@@ -243,9 +219,11 @@ updateTest() line 291:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send /////////////CHANGETHIS
 {
 $opt = "UPDATE"
 $courseid != 0
@@ -283,18 +261,12 @@ SQL Query: "SELECT * FROM listentries" save into afterNewL
 SQL Query: "SELECT * FROM list" save into afterNewList
 
 *****************
- Compare results
-*****************
-
-If any new table to codeexample and list, and updated listentries: passed
-If non new table: failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-"codeexample"
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 updateDeadlineTest() line 371:
@@ -303,9 +275,11 @@ updateDeadlineTest() line 371:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send /////////////CHANGETHIS
 {
 $opt = "UPDATEDEADLINE"
 $deadline != 0
@@ -325,18 +299,12 @@ SQL Query: "SELECT deadline, relativedeadline FROM quiz" save into beforeUpdated
 SQL Query: "SELECT deadline, relativedeadline FROM codeexample" save into afterUpdated
 
 *****************
- Compare results
-*****************
-
-If deadline, relativedeadline has been updated: passed
-If deadline, relativedeadline not updated (same as beforeUpdated): failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-"codeexample"
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 updateTabsTest() line 381:
@@ -345,16 +313,16 @@ updateTabsTest() line 381:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send /////////////CHANGETHIS
 {
 $opt = "UPDATETABS"
 $sectid != 0
 $tabs != 0
 }
-
-/////////////////////////
 
 You also need to gather all listentries to compare if any updated.
 SQL Query: "SELECT gradesystem FROM listentries" save into beforeUpdated
@@ -365,19 +333,14 @@ SQL Query: "SELECT gradesystem FROM listentries" save into beforeUpdated
 
 SQL Query: "SELECT gradesystem FROM listentries" save into afterUpdated
 
-*****************
- Compare results
-*****************
-
-If gradesystem has been updated: passed
-If gradesystem not updated (same as beforeUpdated): failed
-If $debug not empty: failed
 
 *****************
  Service output
 *****************
 
-Not able to identify output for listentries
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 updateVersTest() line 390:
@@ -386,9 +349,11 @@ updateVersTest() line 390:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send /////////////CHANGETHIS
 {
 $opt = "UPDATEVRS"
 $courseid != 0
@@ -398,7 +363,6 @@ $motd != 0
 $versname != 0
 }
 
-/////////////////////////
 
 You also need to gather all vers to compare if any updated.
 SQL Query: "SELECT * FROM vers" save into beforeUpdatedV
@@ -412,20 +376,14 @@ SQL Query: "SELECT activeversion FROM course" save into beforeUpdatedC
 SQL Query: "SELECT activeversion FROM course" save into afterUpdatedC
 SQL Query: "SELECT * FROM vers" save into afterUpdatedV
 
-*****************
- Compare results
-*****************
-
-If activeversion has been updated: passed
-If any variable in vers has been updated: passed
-If no table updated: failed
-If $debug not empty: failed
 
 *****************
  Service output
 *****************
 
-"coursevers"
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 changeVersTest() line 434:
@@ -434,7 +392,9 @@ changeVersTest() line 434:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
 send
 {
@@ -442,8 +402,6 @@ opt = "CHGVERS"
 courseid != 0
 versid != 0
 }
-
-/////////////////////////
 
 You also need to gather all courses to compare if any updated.
 SQL Query: "SELECT activeversion FROM course" save into beforeUpdated
@@ -455,18 +413,12 @@ SQL Query: "SELECT activeversion FROM course" save into beforeUpdated
 SQL Query: "SELECT activeversion FROM course" save into afterUpdated
 
 *****************
- Compare results
-*****************
-
-If activeversion has been updated: passed
-If activeversion has not been updated: failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-"coursevers"
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 hiddenTest() line 434:
@@ -475,16 +427,16 @@ hiddenTest() line 434:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send /////////////CHANGETHIS
 {
 * opt = "HIDDEN"
 * sectid != 0
 * visible != 0
 }
-
-/////////////////////////
 
 You also need to gather all listentries to compare if any updated.
 SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
@@ -496,18 +448,12 @@ SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
 SQL Query: "SELECT visible FROM listentries" save into afterUpdated
 
 *****************
- Compare results
-*****************
-
-If visible has been updated: passed
-If visible has not been updated: failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-Not able to identify output for listentries
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
 
 ----------------------------------
 publicTest() line 434:
@@ -516,16 +462,16 @@ publicTest() line 434:
 (checklogin) IS TRUE
 AND $ha || $studentTeacher IS TRUE
 
-//// PRE-REQ Values /////
+*****************
+ Sent input
+*****************
 
-send
+send /////////////CHANGETHIS
 {
 opt = "PUBLIC"
 sectid != 0
 visible != 0
 }
-
-/////////////////////////
 
 You also need to gather all listentries to compare if any updated.
 SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
@@ -537,15 +483,9 @@ SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
 SQL Query: "SELECT visible FROM listentries" save into afterUpdated
 
 *****************
- Compare results
-*****************
-
-If visible has been updated: passed
-If visible has not been updated: failed
-If $debug not empty: failed
-
-*****************
  Service output
 *****************
 
-Not able to identify output for listentries
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
