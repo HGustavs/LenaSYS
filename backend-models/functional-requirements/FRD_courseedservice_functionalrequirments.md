@@ -12,15 +12,16 @@
  
  | FN No: | Test Proposal: |
  | --- | --- |
- | FR1 |  |
- | FR2 |  |
- | FR3 |  |
- | FR4 |  |
- | FR5 |  |
- | FR6 |  |
- | FR7 |  |
- | FR8 |  |
- | FR9 |  |
+ | FR1 | Log in on superuser -> press + -> fill in information according to the formats displayed. -> create. See if all steps work properly. This should send opt=NEW |
+ | FR2 | Log in on superuser -> go to course -> press + -> fill in information according to the formats displayed. -> create. See if all steps work properly. This should send opt=NEWVRS |
+ | FR3 | Log in on superuser -> go to course -> press edit(cogwheel) -> fill in information according to the formats displayed -> Save. See if all steps work properly. This should send opt=UPDATEVRS |
+ | FR4 | Log in on superuser -> go to course -> press dropdown -> Change course version. See if all steps work properly. This should send opt=CHGVRS |
+ | FR5 | Log in on superuser -> go to course -> press + -> fill in information according to the formats displayed. -> Copy content from selected course in dropdown menu -> create. See if all steps work properly. This should send opt=CPYVRS |
+ | FR6 | Log in on superuser -> press cogwheel on any course -> Change name and or visibility. This should send opt=UPDATE |
+ | FR7 | Log in on superuser -> press cogwheel at top "course organization system" -> set message of the day. This should send opt=SETTINGS |
+ | FR8 | Log in on superuser -> press cogwheel at top "course organization system" -> set to read only in checkbox. This should send opt=SETTINGS |
+ | FR9 | Log in on any type of user and see if they can display course information. This might be considered non-functional. |
+ | NOTE: | FR1-FR8 Can also be tested for other users to make sure only super users can access these features. |
 
  | FN No: | F1 |
  | --- | --- |
