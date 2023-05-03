@@ -478,7 +478,9 @@
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                     <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Add an ER attribute to the diagram</p><br>
+                        <p>Add an ER attribute to the diagram</p>
+                        <p>Each attribute represents diffrent characteristics of an entity</p>
+                        <br>
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -493,7 +495,9 @@
                 <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                     <span class="toolTipText"><b>UML initial state</b><br>
-                        <p>Creates an initial state for UML.</p><br>
+                        <p>Creates an initial state for UML.</p>
+                        <p>The initial state represent the start of a process.</p>
+                        <br>
                         <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -501,7 +505,9 @@
                 <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                     <span class="toolTipText"><b>UML final state</b><br>
-                        <p>Creates a final state for UML.</p><br>
+                        <p>Creates a final state for UML.</p>
+                        <p>The final state represent where a process ends</p>
+                        <br>
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -509,7 +515,10 @@
                 <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                     <span class="toolTipText"><b>Sequence lifeline</b><br>
-                        <p>Creates a lifeline for a sequnece diagram</p><br>
+                        <p>Creates a lifeline for a sequnece diagram</p>
+                        <p>Represents the passage of time.</p>
+                        <p>Shows events that occur to an object during the process.</p>
+                        <br>
                         <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -517,7 +526,9 @@
                 <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                     <span class="toolTipText"><b>UML super state</b><br>
-                        <p>Creates a super state.</p><br>
+                        <p>Creates a super state.</p>
+                        <p>A state that can conatins substates</p>
+                        <br>
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -525,7 +536,10 @@
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
-                        <p>Creates a sequence object.</p><br>
+                        <p>Creates a sequence object.</p>
+                        <p>Represents a class or object.</p>
+                        <p>Used to show how an object will behave.</p>
+                        <br>
                         <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                         </span>
                 </div>
@@ -533,7 +547,9 @@
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
-                        <p>Creates an activation box.</p><br>
+                        <p>Creates an activation box.</p>
+                        <p>Represents the time needed for an object to complete a task.</p>
+                        <br>
                         <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
