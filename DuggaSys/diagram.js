@@ -3328,6 +3328,7 @@ function screenToDiagramCoordinates(mouseX,mouseY)
  * @depricated TODO : Needs to be updated
  * @see screenToDiagramCoordinates() For converting the other way.
  */
+/** 
 function diagramToScreenPosition(coordX, coordY)
 {
     console.warn("diagramToScreenPosition() is depricated. It should be updated to use new screenToDiagramCoordinates() algorithm reversed.");
@@ -3335,7 +3336,7 @@ function diagramToScreenPosition(coordX, coordY)
         Math.round((coordX + scrollx) / zoomfact + 0),
         Math.round((coordY + scrolly) / zoomfact + 0)
     );
-}
+}*/
 
 /**
  * @description Test weither an enum object contains a certain property value.
