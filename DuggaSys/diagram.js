@@ -2575,15 +2575,15 @@ function mmoving(event)
                 const heightChange = -(tmp - elementData.height);
 
                 // Fetch original y-position
-                tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates((startY - deltaY), 0).y;
+                /* tmp = elementData.y;
+                elementData.y = screenToDiagramCoordinates((startY - deltaY), 0).y; */
 
                 // Deduct the new position, giving us the total change
-                const yChange = -(tmp - elementData.y);
+                /* const yChange = -(tmp - elementData.y); */
                 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], yChange, 0, heightChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
-                console.log(heightChange + "" + yChange);
+                console.log(heightChange);
             }
 
             document.getElementById(context[0].id).remove();
