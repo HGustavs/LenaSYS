@@ -11774,11 +11774,6 @@ function updateCSSForAllElements()
                         }
                     }
                 }
-                else if (element.kind == "UMLInitialState" || element.kind =="UMLFinalState") {
-                    if(fillColor.style.fill == `${"#000000"}`) {
-                        fillColor.style.fill = `${"#FFFFFF"}`;
-                    }
-                }
                 // Update IEEntity
                 else if(element.kind == "IEEntity"){
                     for (let index = 0; index < 2; index++) {
