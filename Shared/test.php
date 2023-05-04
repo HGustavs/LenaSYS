@@ -8,20 +8,27 @@
 include_once "../Shared/test.php";
 
 $testData = array(
-    'expected-output' => 'test',
+    'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
     'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
     'service-data' => serialize(array( // Data that service needs to execute function
         'opt' => 'NEW',
         'username' => 'usr',
         'password' => 'pass',
     )),
+    'filter-output' => serialize(array( // Filter what output to use in assert test
+    'debug',
+    'motd'
+    )),
 );
 
-testHandler($testData, false); // 2nd argument true = prettyprint (HTML) false = raw JSON, no debug mode is avalible when using prettyprint
+testHandler($testData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 */
 
 function testHandler($testData, $prettyPrint){
+
+    //Output filter
+    $filter = unserialize($testData['filter-output']);
 
     // Test 1 login
     $serviceData = unserialize($testData['service-data']);
@@ -29,15 +36,15 @@ function testHandler($testData, $prettyPrint){
     $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
     // Test 2 callService
-    $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $prettyPrint));
+    $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $prettyPrint));
     $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
-    $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['result']['motd'];
+    $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['result'];
 
     // Test 3 assertEqual
     $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
     $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
 
-    echo json_encode($TestsReturnJSON, true);
+    if(!($prettyPrint)){echo json_encode($TestsReturnJSON, true);}
 
 }
 
@@ -55,24 +62,22 @@ function loginTest($user, $pwd, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 2 (login): {$loginTestResult} </h4>";
+        echo "<h4> Test 1 (login): {$loginTestResult} </h4>";
         echo "<strong>username: </strong>{$user}";
         echo "<br>";
         echo "<strong>password: </strong>{$pwd}";
         echo "<br>";
         echo "<br>";
     }
-    else{
-        return array(
-                'result:' => $loginTestResult,
-                'username' => $user,
-                'password' => $pwd
-            );
-    }
+    return array(
+        'result:' => $loginTestResult,
+        'username' => $user,
+        'password' => $pwd
+    );
 }
 
 // Test 2: call service test
-function callServiceTest($service, $data, $prettyPrint){
+function callServiceTest($service, $data, $filter, $prettyPrint){
 
     // Make POST request to service
     $curl = curl_init($service);
@@ -83,6 +88,22 @@ function callServiceTest($service, $data, $prettyPrint){
 
     curl_close($curl);
 
+    $curlResponseJSON = json_decode($curlResponse, true);
+
+    // Only include JSON same as filter
+    foreach($filter as $option){
+        if ($option == "none") {
+            $curlResponseJSONFiltered = $curlResponseJSON;
+        }
+        else{
+            foreach($curlResponseJSON as $key => $value){
+                if (in_array($key, $filter)) {
+                    $curlResponseJSONFiltered[$key] = $value;
+                }
+            }
+        }
+    }
+
     if ($curl) {
         $callServiceTestResult = "passed";
     }
@@ -90,29 +111,28 @@ function callServiceTest($service, $data, $prettyPrint){
         $callServiceTestResult = "failed";
     }
 
-    $curlResponseJSON = json_decode($curlResponse, true);
-
     if ($prettyPrint) {
-        echo "<h4> Test 3 (callService): {$callServiceTestResult} </h4>";
+        echo "<h4> Test 2 (callService): {$callServiceTestResult} </h4>";
         echo "<strong>service: </strong>{$service}";
         echo "<br>";
-        echo "<strong>data: </strong>{$sendServiceData}";
+        echo "<strong>sent data: </strong>".json_encode(unserialize($data),true);
         echo "<br>";
-        echo "<strong>debug: </strong>{$curlResponseJSON['debug']}";
+        echo "<strong>result: </strong>".json_encode($curlResponseJSONFiltered, true);
         echo "<br>";
         echo "<br>";
     }
-    else{
-        return array(
-            'result' => $curlResponseJSON,
-            'service' => $service,
-            'data' => $sendServiceData,
-        );
-    }
+    return array(
+        'result' => $curlResponseJSONFiltered,
+        'service' => $service,
+        'data' => unserialize($data),
+    );
 }
 
 // Test 3: assert equal test
 function assertEqualTest($value1, $value2, $prettyPrint){
+
+    // Expected value is JSON
+    $value1 = json_decode($value1, true);
 
     if (($value1 != null) && ($value2 != null)){
         $equalTest = ($value1 == $value2);
@@ -128,21 +148,18 @@ function assertEqualTest($value1, $value2, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 1 (assertEqual): {$equalTestResult} </h4>";
-        echo "<strong>value1: </strong>{$value1}";
+        echo "<h4> Test 3 (assertEqual): {$equalTestResult} </h4>";
+        echo "<strong>value1: </strong>".json_encode($value1, true);
         echo "<br>";
-        echo "<strong>value2: </strong>{$value2}";
+        echo "<strong>value2: </strong>".json_encode($value2, true);
         echo "<br>";
         echo "<br>";
     }
-    else{
-        return array(
-            'result' => $equalTestResult,
-            'value1' => $value1,
-            'value2' => $value2
-        );
-    }
-
+    return array(
+        'result' => $equalTestResult,
+        'value1' => $value1,
+        'value2' => $value2
+    );
 }
 
 ?>
