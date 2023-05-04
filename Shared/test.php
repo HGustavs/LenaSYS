@@ -8,17 +8,16 @@
 include_once "../Shared/test.php";
 
 $testData = array(
-    'value1' => 'test',
-    'value2' => 'test',
+    'expected-output' => 'test',
     'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
-    'serviceData' => serialize(array( // Data that service needs to execute function
+    'service-data' => serialize(array( // Data that service needs to execute function
         'opt' => 'NEW',
         'username' => 'usr',
         'password' => 'pass',
     )),
-    'test1Debug' => false, // If true more information of test will be displayed
-    'test2Debug' => true,
-    'test3Debug' => true,
+    'test-1-debug' => false, // If true more information of test will be displayed
+    'test-2-debug' => true,
+    'test-3-debug' => true,
 );
 
 testHandler($testData, false); // 2nd argument true = prettyprint (HTML) false = raw JSON, no debug mode is avalible when using prettyprint
@@ -27,61 +26,25 @@ testHandler($testData, false); // 2nd argument true = prettyprint (HTML) false =
 
 function testHandler($testData, $prettyPrint){
 
-    // Test 1 assertEqual
-    echo json_encode(assertEqualTest($testData['value1'], $testData['value2'], $testData['test1Debug'], $prettyPrint));
+    // Test 1 login
+    $serviceData = unserialize($testData['service-data']);
+    $test1Response = json_encode(loginTest($serviceData['username'], $serviceData['password'], $testData['test-1-debug'], $prettyPrint));
+    $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
-    // Test 2 login
-    $serviceData = unserialize($testData['serviceData']);
-    echo json_encode(loginTest($serviceData['username'], $serviceData['password'], $testData['test2Debug'], $prettyPrint));
+    // Test 2 callService
+    $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $testData['test-2-debug'], $prettyPrint));
+    $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
+    $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['result']['motd'];
 
-    // Test 3 callService
-    echo json_encode(callServiceTest($testData['service'], $testData['serviceData'], $testData['test3Debug'], $prettyPrint));
+    // Test 3 assertEqual
+    $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $testData['test-3-debug'], $prettyPrint));
+    $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
 
-}
-
-// Test 1: assert equal test
-function assertEqualTest($value1, $value2, $debug, $prettyPrint){
-
-    if (($value1 != null) && ($value2 != null)){
-        $equalTest = assert($value1, $value2);
-        if ($equalTest){
-            $equalTestResult = "passed";
-        }
-        else{
-            $equalTestResult = "failed";
-        }
-    }
-    else{
-        $equalTestResult = "failed with error: no valid values to compare";
-    }
-
-    if ($prettyPrint) {
-        echo "<h4> Test 1 (assertEqual): {$equalTestResult} </h4>";
-        echo "<strong>value1: </strong>{$value1}";
-        echo "<br>";
-        echo "<strong>value2: </strong>{$value2}";
-        echo "<br>";
-        echo "<br>";
-    }
-    else{
-        // If debug true send back detailed info
-        if ($debug == true) {
-            return array(
-                'Test 1 (assertEqual):' => $equalTestResult,
-                'value1' => $value1,
-                'value2' => $value2
-            );
-        }
-        else{
-            return array(
-                'Test 1 (assertEqual):' => $equalTestResult,
-            );
-        }
-    }
+    echo json_encode($TestsReturnJSON, true);
 
 }
 
-// Test 2: login test
+// Test 1: login test
 function loginTest($user, $pwd, $debug, $prettyPrint){
 
     // Session includes login functionality
@@ -106,20 +69,20 @@ function loginTest($user, $pwd, $debug, $prettyPrint){
         // If debug true send back detailed info
         if ($debug == true) {
             return array(
-                'Test 2 (login):' => $loginTestResult,
+                'result:' => $loginTestResult,
                 'username' => $user,
                 'password' => $pwd
             );
         }
         else{
             return array(
-                'Test 2 (login):' => $loginTestResult,
+                'result' => $loginTestResult,
             );
         }
     }
 }
 
-// Test 3: call service test
+// Test 2: call service test
 function callServiceTest($service, $data, $debug, $prettyPrint){
 
     // Make POST request to service
@@ -154,18 +117,60 @@ function callServiceTest($service, $data, $debug, $prettyPrint){
         // If debug true send back detailed info
         if ($debug == true) {
             return array(
-                'Test 3 (callService):' => $curlResponseJSON,
+                'result' => $curlResponseJSON,
                 'service' => $service,
                 'data' => $sendServiceData,
             );
         }
         else{
             return array(
-                'Test 3 (callService):' => $callServiceTestResult,
+                'result' => $callServiceTestResult,
                 'debug' => $curlResponseJSON['debug']
             );
         }
     }
+}
+
+// Test 3: assert equal test
+function assertEqualTest($value1, $value2, $debug, $prettyPrint){
+
+    if (($value1 != null) && ($value2 != null)){
+        $equalTest = ($value1 == $value2);
+        if ($equalTest){
+            $equalTestResult = "passed";
+        }
+        else{
+            $equalTestResult = "failed";
+        }
+    }
+    else{
+        $equalTestResult = "failed with error: no valid values to compare";
+    }
+
+    if ($prettyPrint) {
+        echo "<h4> Test 1 (assertEqual): {$equalTestResult} </h4>";
+        echo "<strong>value1: </strong>{$value1}";
+        echo "<br>";
+        echo "<strong>value2: </strong>{$value2}";
+        echo "<br>";
+        echo "<br>";
+    }
+    else{
+        // If debug true send back detailed info
+        if ($debug == true) {
+            return array(
+                'result' => $equalTestResult,
+                'value1' => $value1,
+                'value2' => $value2
+            );
+        }
+        else{
+            return array(
+                'result' => $equalTestResult,
+            );
+        }
+    }
+
 }
 
 ?>
