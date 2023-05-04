@@ -91,7 +91,7 @@
                 }
             }			
         }
-
+        //does nothing, this code gets and old diagram that was used which is not in use anymore was used before for onSetup().
        /*  function getVariantParam()
         {
             return DiagramResponse.variant;
