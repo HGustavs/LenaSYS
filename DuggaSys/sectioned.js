@@ -27,20 +27,14 @@ var updatedLidsection;
 var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
-var selecteditem = '';
 
 
 function IsLoggedIn(bool){
   bool ? isLoggedIn = true : isLoggedIn = false ;
 }
 
-function setSelectedItem(item) {
-  if (item instanceof HTMLElement) {
-    selecteditem = item.id;
-    console.log(item);
-  } else {
-    console.error("setSelectedItem called with an invalid item:", item);
-  }
+function setUpdatedTitle(item) {
+
 }
 
 
@@ -750,6 +744,8 @@ async function createFABItem(kind, itemtitle, comment) {
     console.log(numberOfItems + " " + itemtitle + "(s) created");
     numberOfItems = 1; // Reset number of items to create
   }
+  console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
+  console.log(selectItem);
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
