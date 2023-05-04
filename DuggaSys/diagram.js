@@ -2565,7 +2565,7 @@ function mmoving(event)
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
-            else if (!startNodeRight && (startHeight + (deltaY / zoomfact)) > minHeight) {
+            else if (!startNodeRight && startNodeDown && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight + (deltaY / zoomfact));
