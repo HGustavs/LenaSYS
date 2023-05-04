@@ -9376,7 +9376,7 @@ function drawElement(element, ghosted = false)
         "
         stroke-width='${linew}'
         stroke='${element.stroke}'
-        stroke-dasharray='${linew*2},${linew*2}'
+        stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
         //str += `</svg>`;
