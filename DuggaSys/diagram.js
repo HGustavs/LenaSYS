@@ -7674,7 +7674,7 @@ function preProcessLine(line) {
         } else {
             line.endIcon = 'ARROW';
         }
-        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact) && line.innerType != SDLineType.SEGMENT) {
+        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
