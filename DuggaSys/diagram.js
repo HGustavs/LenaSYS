@@ -1898,7 +1898,8 @@ function mdown(event)
             startWidth = data[findIndex(data, context[0].id)].width;
             startHeight = data[findIndex(data, context[0].id)].height;
 
-            startNodeRight = !event.target.classList.contains("mr");
+            //startNodeRight = !event.target.classList.contains("mr");
+            startNodeRight = event.target.classList.contains("ml"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
             startNodeDown = event.target.classList.contains("md");
 
             startX = event.clientX;
