@@ -591,6 +591,9 @@
 							echo "<script>console.error('No directories found');</script>";
 						} else {
 							echo "<script>console.log('Directories fetched');</script>";
+							foreach ($rows as $row) {
+								echo "<option value=''>" . $row['fileName'] . "</option>";
+							}
 						}
                     }catch(PDOException $e) {
                         return '<p>Error: ' . $e->getMessage() . '</p>';
