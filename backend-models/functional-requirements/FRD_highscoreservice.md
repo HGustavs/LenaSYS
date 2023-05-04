@@ -4,8 +4,7 @@
 
 | FN No. | Test Proposal: |
 | --------- | ----------- |
-| FR1 | Create tests for more than one course. Supply these test with userAnsweres with some having a passing grade and others not.  
-| FR1 | Have two separate users accessing their different scores |
+| FR1 | Create tests for more than one course. Supply these test with userAnsweres with some having a passing grade and others not. Have two separate users accessing their different scores on the created tests |
 
 | FN No: | FR1 |
 | --------- | ----------- |
