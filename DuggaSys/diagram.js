@@ -9369,6 +9369,7 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh*5}'>`;
+        //svg for the life line
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
         V${boxh*5}
@@ -9390,9 +9391,9 @@ function drawElement(element, ghosted = false)
                 h${boxw/2}
                 m-${(boxw/4)},0
                 v${boxh/3}
-                l${boxw/2},${boxh-(boxh/8)}
-                m${(boxw/2)*-1},${(boxh-(boxh/8))*-1}
-                l${(boxw/2)*-1},${boxh-(boxh/8)}
+                l${boxw/2},${boxh-(boxh/6)}
+                m${(boxw/2)*-1},${(boxh-(boxh/6))*-1}
+                l${(boxw/2)*-1},${boxh-(boxh/6)}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
