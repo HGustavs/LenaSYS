@@ -969,7 +969,9 @@ var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
 var hasRecursion = false;
 var startWidth;
+var startHeight;
 var startNodeRight = false;
+var startNodeDown = false;
 var cursorStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
@@ -1897,6 +1899,7 @@ function mdown(event)
             startHeight = data[findIndex(data, context[0].id)].height;
 
             startNodeRight = !event.target.classList.contains("mr");
+            startNodeDown = event.target.classList.contains("md");
 
             startX = event.clientX;
             startY = event.clientY;
