@@ -204,6 +204,18 @@ $js = array(
                         <label for="dummyEmptyFile-sort" name="sortDummyFile" style='white-space:nowrap'>Dummy files</label>
                     </div>
                 </div>
+                 <div style='white-space:nowrap'>
+                    <div class="manualSortTab" tabIndex="0">
+                        <input type="radio" id="manual-sort" name="sortKind" value="Manual" onclick="filterFilesByKind('Manual');count=0;"/>
+                        <label for="manual-sort" name="sortManual" style='white-space:nowrap'>Manual</label>
+                    </div>
+                </div>
+                 <div style='white-space:nowrap'>
+                    <div class="githubSortTab" tabIndex="0">
+                        <input type="radio" id="github-sort" name="sortKind" value="Github" onclick="filterFilesByKind('Github');count=0;"/>
+                        <label for="github-sort" name="sortGithub" style='white-space:nowrap'>Github</label>
+                    </div>
+                </div>
             </div>
         </div>
 		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
