@@ -520,7 +520,7 @@ if($gradesys=="UNK") $gradesys=0;
 																		VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":cvs", $coursevers);
-								$query->bindParam(":entryname", $folder);
+								$query->bindParam(":entryname", $item);
 								$query->bindParam(":link", "UNK");
 								$query->bindParam(":kind", 4);
 								$query->bindParam(":pos", $pos);
