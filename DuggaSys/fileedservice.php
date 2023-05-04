@@ -284,7 +284,7 @@ if (checklogin() && $hasAccess) {
             'extension' => $extension,
             'kind' => "$filekind",
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
-            'type' => $path,
+            'type' => $row['path'],
             'uploaddate' => $row['uploaddate'],
             'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension, 'showeditor' => $showEditor]),
             'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan])
