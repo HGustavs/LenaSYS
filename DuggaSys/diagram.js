@@ -7676,6 +7676,7 @@ function preProcessLine(line) {
         }
 
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
+            console.log("test: line was reset due to being to close");
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
