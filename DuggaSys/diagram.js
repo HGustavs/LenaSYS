@@ -7849,8 +7849,8 @@ function drawLine(line, targetGhost = false)
             const startY = fy - 15 * zoomfact;
             const endX = fx - 10 * zoomfact;
             const endY = fy - 15 * zoomfact;
-            const cornerX = fx + length + 10;
-            const cornerY = fy - length - 10;
+            const cornerX = fx + length + 20;
+            const cornerY = fy - length ;
 
             str += `<line id='${line.id}-line1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}-line2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
