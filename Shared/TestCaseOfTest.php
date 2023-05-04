@@ -14,4 +14,6 @@
         'test2Debug' => true,
         'test3Debug' => true,
     );
+    
+    testHandler($testData, false); // 2nd argument true = prettyprint (HTML) false = raw JSON, no debug mode is avalible when using prettyprint
 ?>
