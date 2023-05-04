@@ -7676,20 +7676,14 @@ function preProcessLine(line) {
         }
 
 
-        if (line.innerType === 'Segment') { 
-            line.innerType = SDLineType.SEGMENT;
-        }
-        else (line.innerType === 'Straight') {
-            line.innerType = SDLineType.STRAIGHT;
-        }
-        /** 
-        else if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
+       
+        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
             line.innerType = SDLineType.SEGMENT;
         }
-        */
+        
         
     }
 }
