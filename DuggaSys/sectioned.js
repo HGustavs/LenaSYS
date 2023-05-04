@@ -562,7 +562,7 @@ function confirmBox(operation, item = null) {
     $("#gitHubBox").css("display", "flex");
   }
   else if (operation == "saveGitHubBox") {
-    changeMomentName(selecteditem);
+    changeMomentName();
   }
 
   //ändra 
