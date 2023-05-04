@@ -2537,7 +2537,7 @@ function mmoving(event)
             const minHeight = 20; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
 
-            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+            if (startNodeRight && !startNodeDown && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth - (deltaX / zoomfact));
@@ -2548,7 +2548,7 @@ function mmoving(event)
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
-            } else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth) {
+            } else if (!startNodeRight && !startNodeDown && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
