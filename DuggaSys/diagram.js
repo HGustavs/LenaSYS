@@ -6854,7 +6854,7 @@ function generateContextProperties()
             Object.keys(SDLineType).forEach(type => {
                 if (contextLine[0].innerType != undefined) {
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                    if (contextLine[0].innerType == Type) {
+                    if (contextLine[0].innerType == type) {
                         str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
