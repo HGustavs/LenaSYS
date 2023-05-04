@@ -92,10 +92,10 @@
             }			
         }
 
-        function getVariantParam()
+       /*  function getVariantParam()
         {
             return DiagramResponse.variant;
-        }
+        } */
 
 
     </script>

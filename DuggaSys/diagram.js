@@ -12356,7 +12356,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 }
 
-function fetchDiagramFileContentOnLoad()
+/* function fetchDiagramFileContentOnLoad()
 {
     let temp = getVariantParam();
     var fullParam = temp[0];
@@ -12377,7 +12377,7 @@ function fetchDiagramFileContentOnLoad()
         // Failed to load content
         console.error("No content to load")
     }
-}
+} */
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
@@ -12461,7 +12461,7 @@ function resetDiagram(){
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
     localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
-    fetchDiagramFileContentOnLoad();
+    //fetchDiagramFileContentOnLoad();
 }
 /**
  *
