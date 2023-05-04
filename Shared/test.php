@@ -15,7 +15,7 @@ $testData = array(
         'username' => 'usr',
         'password' => 'pass',
     )),
-    'filter-output' => serialize(array( // Filter what output to use in assert test
+    'filter-output' => serialize(array( // Filter what output to use in assert test use none to use all output data
     'debug',
     'motd'
     )),
