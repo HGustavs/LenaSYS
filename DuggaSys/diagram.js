@@ -7844,7 +7844,7 @@ function drawLine(line, targetGhost = false)
     // Create recursive line for SD entities
     if ((felem.type == 'SD') || (telem.type == 'SD')){
         if (line.kind == "Recursive"){
-            const length = 90 * zoomfact;
+            const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
             const startY = fy - 15 * zoomfact;
             const endX = fx - 10 * zoomfact;
@@ -7854,7 +7854,7 @@ function drawLine(line, targetGhost = false)
 
             str += `<line id='${line.id}-line1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}-line2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}-line3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset + 10}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset + 10}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}-line4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polygon id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
         }
