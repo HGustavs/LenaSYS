@@ -7846,9 +7846,9 @@ function drawLine(line, targetGhost = false)
         if (line.kind == "Recursive"){
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
-            const startY = fy - 15 * zoomfact;
-            const endX = fx - 20 * zoomfact;
-            const endY = fy - 15 * zoomfact;
+            const startY = fy - 10 * zoomfact;
+            const endX = fx - 25 * zoomfact;
+            const endY = fy - 10 * zoomfact;
             const cornerX = fx + length;
             const cornerY = fy - length;
 
