@@ -89,7 +89,7 @@
 			print_r($error);
 			echo $errorvar;
 		} else {
-			bfs($url, $cid, "DOWNLOAD");
+			bfs($url, $cid, "REFRESH");
 		}
 		//refreshGithubRepo($cid); //testing !!!!!!! don't forget to remove!
 	}
