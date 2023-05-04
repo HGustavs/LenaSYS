@@ -9359,7 +9359,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceLifeLine') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh*5}px;transform:rotate(90deg);`;
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh*5}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9372,7 +9372,7 @@ function drawElement(element, ghosted = false)
         //svg for the life line
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
-        V${boxh*5}
+        V${boxw*5}
         "
         stroke-width='${linew}'
         stroke='${element.stroke}'
@@ -9383,17 +9383,17 @@ function drawElement(element, ghosted = false)
         //str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for stickman.
-        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxh/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxh/8)+linew}" r="${boxh/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text" 
             d="M${(boxw/2)+linew},${(boxh/4)+linew}
                 v${boxh/6}
-                m-${(boxw/4)},0
-                h${boxw/2}
-                m-${(boxw/4)},0
+                m-${(boxh/4)},0
+                h${boxh/2}
+                m-${(boxh/4)},0
                 v${boxh/3}
-                l${boxw/4},${boxh/4}
-                m${(boxw/4)*-1},${(boxh/4)*-1}
-                l${(boxw/4)*-1},${boxh/4}
+                l${boxh/4},${boxh/4}
+                m${(boxh/4)*-1},${(boxh/4)*-1}
+                l${(boxh/4)*-1},${boxh/4}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
