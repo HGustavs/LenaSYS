@@ -213,7 +213,6 @@ $files = array();
 $lfiles = array();
 $gfiles = array();
 $access = False;
-$pathString = "Github";
 
 // Fetches information from the filelink table in the database, binds column result into vars and loops through each fetched result, building a new cell for each index.
 if (checklogin() && $hasAccess) {  
@@ -280,18 +279,12 @@ if (checklogin() && $hasAccess) {
             $showTrashcan = true;
         }
 
-        if($path == null){
-            $pathString = "Manual";
-        } else {
-            $pathString = "Github";
-        }
-
         $entry = array(
             'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname, 'extension' => $extension, 'filePath' => $filePath]),
             'extension' => $extension,
             'kind' => "$filekind",
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
-            'type' => "$pathString",
+            'type' => $row['path'],
             'uploaddate' => $row['uploaddate'],
             'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension, 'showeditor' => $showEditor]),
             'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan])
