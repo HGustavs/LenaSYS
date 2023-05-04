@@ -571,7 +571,7 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='momentName' placeholder='Change the name of moment' value=''/></div>
+			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='momentName' placeholder='Insert new name' value=''/></div>
 
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Directory' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
