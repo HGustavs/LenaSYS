@@ -751,7 +751,7 @@
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                         <option value="JSON/EMPTYDiagramMockup.json">Empty board</option>
                         <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
-                        <option  value="JSON/UMLDiagramMockup.json">UML diagrams</option>
+                        <option value="JSON/UMLDiagramMockup.json">UML diagrams</option>
                         <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
                     </select>
                     <button class="saveButton" id="diagramLoad" onclick="loadMockupDiagram();">Load</button>

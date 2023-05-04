@@ -12220,9 +12220,15 @@ function exportWithoutHistory()
  * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
 function loadMockupDiagram(path){
-    
-    let fileType = document.getElementById("diagramTypeDropdown").value;
-    path = fileType;
+
+    // "resetDiagram()" calls this method with "EMPTYDiagram" as parameter
+
+    // The path is not set yet if we do it from the dropdown as the function
+    // is called without a parameter.
+    if(!path){
+        let fileType = document.getElementById("diagramTypeDropdown").value;
+        path = fileType;
+    }
     //make sure its not null first
     if (path != null) {
         //via fetch API, request the json file 
@@ -12434,15 +12440,21 @@ function resetDiagramAlert(){
  * @description Cleares the diagram.
  */
 function resetDiagram(){
+    
     // Goto the beginning of the diagram
+        // NOTE: stateMachine should be StateMachine, but this had no effect
+        // on functionality.
+    /*
     stateMachine.gotoInitialState();
 
     // Remove the previous history
     stateMachine.currentHistoryIndex = -1;
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
-    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
+    */
+    loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 /**
  *
