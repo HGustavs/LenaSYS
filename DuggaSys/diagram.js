@@ -7675,11 +7675,6 @@ function preProcessLine(line) {
             line.endIcon = 'ARROW';
         }
 
-        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
-            line.innerType = SDLineType.SEGMENT;
-        }
-        else {
-            line.innerType = SDLineType.STRAIGHT;
         /** 
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
