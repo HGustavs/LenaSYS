@@ -500,7 +500,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->execute();
 
 					$file = file("../../courses/$courseid/indexing.txt");
-					$scan = scandir("../../courses/".$courseid);
+					$scan = scandir("../../courses/$courseid");
 					$query2 = $pdo->prepare("SELECT entryname FROM listentries WHERE cid=:cid AND kind=:kind;");
 					$query2->bindParam(":cid", $courseid);
 					$query2->bindParam(":kind", 4);
