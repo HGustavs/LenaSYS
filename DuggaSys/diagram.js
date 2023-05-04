@@ -7478,7 +7478,7 @@ function sortElementAssociations(element)
  */
 
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
-
+    
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
      if (toElement.kind == "EREntity"){
         var tempElement = toElement;
@@ -12338,8 +12338,8 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
-
-function fetchDiagramFileContentOnLoad()
+//code has no functionallity execpt for when the hard coded diagram was used. looks like it reloaeded the diagram and got the file. Diagram in onSetup()
+/* function fetchDiagramFileContentOnLoad()
 {
     let temp = getVariantParam();
     var fullParam = temp[0];
@@ -12360,7 +12360,7 @@ function fetchDiagramFileContentOnLoad()
         // Failed to load content
         console.error("No content to load")
     }
-}
+} */
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
@@ -12444,7 +12444,7 @@ function resetDiagram(){
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
     localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
-    fetchDiagramFileContentOnLoad();
+    //fetchDiagramFileContentOnLoad();
 }
 /**
  *
