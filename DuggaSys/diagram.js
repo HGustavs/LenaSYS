@@ -7675,14 +7675,14 @@ function preProcessLine(line) {
             line.endIcon = 'ARROW';
         }
 
-        /** 
+       
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
             line.innerType = SDLineType.SEGMENT;
         }
-        */
+        
     }
 }
 //#endregion =====================================================================================
