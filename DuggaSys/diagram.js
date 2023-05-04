@@ -1381,6 +1381,7 @@ stateMachine = new StateMachine(data, lines);
  */
 function getData()
 { 
+    console.log(getVariantParam());
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
     // onSetup();
