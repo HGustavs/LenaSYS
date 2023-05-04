@@ -7844,7 +7844,7 @@ function drawLine(line, targetGhost = false)
     // Create recursive line for SD entities
     if ((felem.type == 'SD') || (telem.type == 'SD')){
         if (line.kind == "Recursive"){
-            const length = 80 * zoomfact;
+            const length = 90 * zoomfact;
             const startX = fx - 10 * zoomfact;
             const startY = fy - 15 * zoomfact;
             const endX = fx - 10 * zoomfact;
