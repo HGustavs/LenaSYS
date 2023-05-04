@@ -967,7 +967,7 @@ var deleteBtnSize = 0;
 var hasRecursion = false;
 var startWidth;
 var startNodeRight = false;
-var cursorStyle;
+var containerStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
@@ -1392,7 +1392,7 @@ function getData()
     updateGridSize();
     showdata();
     drawRulerBars(scrollx,scrolly);
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
@@ -1855,7 +1855,7 @@ function mdown(event)
                             targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
-                            cursorStyle.cursor = "grabbing";
+                            containerStyle.cursor = "grabbing";
                             if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                                 wasDblClicked = true;
                                 document.getElementById("options-pane").className = "hide-options-pane";
@@ -1865,7 +1865,7 @@ function mdown(event)
                     }
                     else {
                         pointerState = pointerStates.CLICKED_CONTAINER;
-                        cursorStyle.cursor = "grabbing";
+                        containerStyle.cursor = "grabbing";
 
                         if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                             wasDblClicked = true;
@@ -2089,7 +2089,7 @@ function mouseMode_onMouseUp(event)
 function mup(event)
 {
     if(!mouseOverLine && !mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
     mouseButtonDown = false;
     targetElement = null;
@@ -2170,7 +2170,7 @@ function mup(event)
 function mouseEnter(){
     if(!mouseButtonDown){
         mouseOverElement = true;
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     }
 }
 
@@ -2179,7 +2179,7 @@ function mouseEnter(){
  */
 function mouseLeave(){
     mouseOverElement = false;
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
 }
 /**
 
@@ -2211,20 +2211,20 @@ function mouseOverSelection(mouseX, mouseY){
     if(context.length > 0 || contextLine.length > 0){
         // If there is a selection box and mouse position is inside it.
         if (mouseX > selectionBoxLowX && mouseX < selectionBoxHighX && mouseY > selectionBoxLowY && mouseY < selectionBoxHighY){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // If mouse position is over the delete button.
         else if (mouseX > deleteBtnX && mouseX < (deleteBtnX + deleteBtnSize) && mouseY > deleteBtnY && mouseY < (deleteBtnY + deleteBtnSize)){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // Not inside selection box, nor over an element or line.
         else if(!mouseOverElement && !mouseOverLine){
-            setCursorStyles(mouseMode);
+            setContainerStyles(mouseMode);
         }
     }
     // There is no selection box, and mouse position is not over any element or line.
     else if(!mouseOverElement && !mouseOverLine){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
 }
 
@@ -2418,9 +2418,9 @@ function mouseMode_onMouseMove(event)
 
     // Change cursor style if mouse pointer is over a line.
     if(mouseOverLine && !mouseButtonDown){
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     } else if(!mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
@@ -3628,7 +3628,7 @@ function setMouseMode(mode)
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
         mouseMode = mode;
-        setCursorStyles(mode);
+        setContainerStyles(mode);
         onMouseModeEnabled();
     } else {
         // Not implemented exception
@@ -3638,26 +3638,24 @@ function setMouseMode(mode)
 
 /**
  * @description Changes the current visual cursor style for the user.
- * @param {Number} cursorMode CursorStyle value. This will be translated into appropriate cursor style.
+ * @param {Number} cursorMode containerStyle value. This will be translated into appropriate container style.
  */
-function setCursorStyles(cursorMode = mouseModes.POINTER)
+function setContainerStyles(cursorMode = mouseModes.POINTER)
 {
-    // TODO : Create new string enum for all cursor styles? This would result in us not needing to use any form of branching and still get correct result.
-    // TODO : Should have better name. This is the CONTAINER and not a CURSORSTYLE!
-    cursorStyle = document.getElementById("container").style;
+    containerStyle = document.getElementById("container").style;
 
     switch(cursorMode) {
         case mouseModes.POINTER:
-            cursorStyle.cursor = "grab";
+            containerStyle.cursor = "grab";
             break;
         case mouseModes.BOX_SELECTION:
-            cursorStyle.cursor = "crosshair";
+            containerStyle.cursor = "crosshair";
             break;
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         case mouseModes.EDGE_CREATION:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         default:
             break;
