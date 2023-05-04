@@ -9412,7 +9412,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the life line
         str += `<path class="text" 
-        d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
+        d="M${(boxw/2)+linew},${((boxw/4)*3)+linew}
         V${boxh}
         "
         stroke-width='${linew}'
@@ -9424,17 +9424,17 @@ function drawElement(element, ghosted = false)
         //str += `<div style='width: ${boxw}; height: ${boxh};'>`;
         //str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for stickman.
-        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxh/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text" 
-            d="M${(boxw/2)+linew},${(boxh/4)+linew}
-                v${boxh/6}
+            d="M${(boxw/2)+linew},${(boxw/4)+linew}
+                v${boxw/6}
                 m-${(boxw/4)},0
                 h${boxw/2}
                 m-${(boxw/4)},0
-                v${boxh/3}
-                l${boxw/4},${boxh/4}
-                m${(boxw/4)*-1},${(boxh/4)*-1}
-                l${(boxw/4)*-1},${boxh/4}
+                v${boxw/3}
+                l${boxw/4},${boxw/4}
+                m${(boxw/4)*-1},${(boxw/4)*-1}
+                l${(boxw/4)*-1},${boxw/4}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
