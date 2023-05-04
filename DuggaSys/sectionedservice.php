@@ -499,37 +499,39 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(":cid", $courseid);
 					$query->execute();
 
-					$file = file("../../courses/".$courseid."/indexing.txt");
-					$folders = array();//get all the maps from the current directory ("../../courses/".$courseid."/")
+					$file = file("../../courses/$courseid/indexing.txt");
+					$scan = scandir("../../courses/".$courseid);
 					$query2 = $pdo->prepare("SELECT entryname FROM listentries WHERE cid=:cid AND kind=:kind;");
 					$query2->bindParam(":cid", $courseid);
 					$query2->bindParam(":kind", 4);
 					$query2->execute();
 					$moments = $query2->fetchAll();
 					
-					foreach($folders as $folder) {
-						$exists = false;
-						foreach($moments->fetchAll() as $row) {
-							if($folder == $row["entryname"]) {
-								$exists = true;
+					foreach($scan as $item) {
+						if(is_dir("../../courses/$courseid/indexing.txt/$item")) {
+							$exists = false;
+							foreach($moments->fetchAll() as $row) {
+								if($item == $row["entryname"]) {
+									$exists = true;
+								}
 							}
-						}
-						if(!$exists) {
-							$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
-									   						  		  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
-							$query->bindParam(":cid", $courseid);
-							$query->bindParam(":cvs", $coursevers);
-							$query->bindParam(":entryname", $folder);
-							$query->bindParam(":link", "UNK");
-							$query->bindParam(":kind", 4);
-							$query->bindParam(":pos", $pos);
-							$query->bindParam(":visible", 1);
-							$query->bindParam(":usrid", 1);
-							$query->bindParam(":comment", null);
-							$query->bindParam(":gradesys", null);
-							$query->bindParam(":highscoremode", 0);
-							$query->bindParam(":groupkind", null);
-							$query->execute();
+							if(!$exists) {
+								$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+																		VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":cvs", $coursevers);
+								$query->bindParam(":entryname", $folder);
+								$query->bindParam(":link", "UNK");
+								$query->bindParam(":kind", 4);
+								$query->bindParam(":pos", $pos);
+								$query->bindParam(":visible", 1);
+								$query->bindParam(":usrid", 1);
+								$query->bindParam(":comment", null);
+								$query->bindParam(":gradesys", null);
+								$query->bindParam(":highscoremode", 0);
+								$query->bindParam(":groupkind", null);
+								$query->execute();
+							}
 						}
 					}
 
