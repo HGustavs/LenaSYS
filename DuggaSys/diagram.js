@@ -9359,7 +9359,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceLifeLine') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh*5}px;`;
+        style='left:0px; top:0px;width:${boxh}px;height:${boxw*5}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9368,7 +9368,7 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh*5}'>`;
+        str += `<svg width='${boxh}' height='${boxw*5}'>`;
         //svg for the life line
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
