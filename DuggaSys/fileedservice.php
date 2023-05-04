@@ -220,7 +220,6 @@ if (checklogin() && $hasAccess) {
     $query = $pdo->prepare("SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) ORDER BY kind,filename;");
     $query->bindParam(':cid', $cid);
     $query->bindParam(':vers', $coursevers);
-    echo "<script>console.log($filepath);</script>";
     
     if (!$query->execute()) {
         $error = $query->errorInfo();
