@@ -763,7 +763,7 @@ const keybinds = {
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
-        STATE_FINAL: { key: "<" , ctrl: true },
+        STATE_FINAL: { key: "f" , ctrl: false },
         STATE_SUPER: { key: ">" , ctrl: false },
 };
 
