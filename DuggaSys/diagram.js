@@ -9368,11 +9368,10 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
-        //div to encapsulate sequence actor
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
-        v${boxh*3}
+        V${boxh}
         "
         stroke-width='${linew}'
         stroke='${element.stroke}'
