@@ -128,7 +128,7 @@
 				
 				//print_r("The course should be updated!");
 				echo '<script>console.log("The course should be updated!"); </script>';
-				bfs($url, "REFRESH");
+				bfs($url, $cid, "REFRESH");
 				echo '<script>console.log(' .$url. '); </script>';
 			} else {
 				//print_r("The course is already up to date!");
