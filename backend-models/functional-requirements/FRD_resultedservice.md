@@ -5,8 +5,8 @@
 
 | FN No| Test Prosoal: |
 | ------------- | ------------- |
-| FR1| Login as different teachers/super-users and see if all can access the information |
-| FR2| Try to filter the student results |
+| FR1| Login as different teachers/super-users and see if all can access the information thats in the database. The data should also be displayed in the payload/preview of resultedservice.php |
+| FR2| Try to filter the student results and compare the result with the datebase results to check that the correct data is shown |
 
 | FN No: | FR1|
 | ------------- | ------------- |
