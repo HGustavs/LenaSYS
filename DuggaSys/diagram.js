@@ -2566,24 +2566,17 @@ function mmoving(event)
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
                 
-            } else if (!startNodeRight && startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
+            } 
+            //vertical resizing 
+            else if (!startNodeRight && startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight - (deltaY / zoomfact));
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
-
-                // Fetch original y-position
-                /* tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates((startY - deltaY), 0).y; */
-
-                // Deduct the new position, giving us the total change
-                /* const yChange = -(tmp - elementData.y); */
                 
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
-
-                console.log(heightChange);
             }
 
             document.getElementById(context[0].id).remove();
@@ -8704,7 +8697,7 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    //sequence lifeline gets a new node, for vertical resizing
+    //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
     if (element.kind == "sequenceLifeLine") {
         nodes += "<span id='md' class='node md'></span>";
     }
@@ -8712,10 +8705,8 @@ function addNodes(element)
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    //sequence lifeline gets a special node, for vertical resizing of the lifeline
     if (element.kind == "sequenceLifeLine") {
         var mdNode = document.getElementById("md");
-
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
         mdNode.style.height = nodeSize+"px";
@@ -9396,7 +9387,7 @@ function drawElement(element, ghosted = false)
     
     //=============================================== <-- End of IE functionality
     //=============================================== <-- Start Sequnece functionality
-    //sequence life line
+    //sequence life line and actor 
     else if (element.kind == 'sequenceLifeLine') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
@@ -9420,9 +9411,6 @@ function drawElement(element, ghosted = false)
         stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
-        //str += `</svg>`;
-        //str += `<div style='width: ${boxw}; height: ${boxh};'>`;
-        //str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for stickman.
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text" 
@@ -9440,13 +9428,7 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='transparent'
         />`;
-        //str += `<line x1="${boxw/2}" y1="${boxh-(boxh/4)}" x2="${(boxw/2)-(boxw/8)}" y2="${boxh-(boxh/5)}" stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        //m-${(boxw/8)},-${boxh/3}
-        str += `</svg>`;
-        
-        
-        //str += `</div>`;
-        
+        str += `</svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
