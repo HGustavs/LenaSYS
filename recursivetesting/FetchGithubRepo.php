@@ -94,7 +94,7 @@ function bfs($url, $opt)
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
     // TODO link the course with cid, should not be hardcoded 
-    $cid = 1; // 1 för webbprogramering 
+    // $cid = 1; // 1 för webbprogramering 
     
     while (!empty($fifoQueue)) {
         $currentUrl = array_shift($fifoQueue);
