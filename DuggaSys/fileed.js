@@ -84,10 +84,11 @@ function returnedFile(data) {
         extension: "Extension",
         kind: "Kind",
         filesize: "Size",
+        type: "Type",
         uploaddate: "Upload date",
         editor: ""
     }
-    var colOrderPre = ["filename", "extension", "kind", "filesize", "uploaddate", "editor"];
+    var colOrderPre = ["filename", "extension", "kind", "filesize", "type", "uploaddate", "editor"];
 
     if (data['studentteacher'] || data['supervisor']) {
         document.getElementById('fabButton').style.display = "none";
