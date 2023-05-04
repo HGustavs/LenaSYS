@@ -349,10 +349,10 @@ send
 {
 $opt = "UPDATEVRS"
 $courseid = 1885
-$coursecode != 0
-$versid != 0
-$motd != 0
-$versname != 0
+$coursecode = "G420"
+$versid = 99999
+$motd = "Test"
+$versname = "HT25"
 }
 
 
@@ -391,8 +391,8 @@ AND $ha || $studentTeacher IS TRUE
 send
 {
 opt = "CHGVERS"
-courseid != 0
-versid != 0
+courseid = "G420"
+versid = 99999
 }
 
 You also need to gather all courses to compare if any updated.
@@ -423,11 +423,11 @@ AND $ha || $studentTeacher IS TRUE
  Sent input
 *****************
 
-send /////////////CHANGETHIS
+send
 {
 * opt = "HIDDEN"
-* sectid != 0
-* visible != 0
+* sectid = 9999
+* visible = 0
 }
 
 You also need to gather all listentries to compare if any updated.
@@ -448,7 +448,7 @@ Save the values of the echoed array as a JSON (at the end of the file. echo json
 this is the expected output for the micro service.
 
 ----------------------------------
-publicTest() line 434:
+publicTest() line 453:
 ----------------------------------
 
 (checklogin) IS TRUE
@@ -458,11 +458,11 @@ AND $ha || $studentTeacher IS TRUE
  Sent input
 *****************
 
-send /////////////CHANGETHIS
+send
 {
 opt = "PUBLIC"
-sectid != 0
-visible != 0
+sectid = 9999
+visible = 1
 }
 
 You also need to gather all listentries to compare if any updated.
