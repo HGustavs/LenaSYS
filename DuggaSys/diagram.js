@@ -3025,7 +3025,7 @@ function changeLineProperties()
         if (line.innerType != lineType.value) {
             lineType.value = lineType.value.trim();
             line.innerType = lineType.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: lineType.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { innerType: lineType.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // Start label, near side
         if (line.startLabel != startLabel.value) {
