@@ -1,0 +1,258 @@
+
+courseedservice.php
+
+---------------------------------------------------------------------------------------------------------------------
+- Insert into course (line 79)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $opt = "NEW";
+    $userid = "UNK"; or $userid = !NULL;
+    $coursecode = "G1337";
+    $coursename = "Testing-Course";
+    $courseGitURL = NULL; // There are no values in the database
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Insert into vers (line 116)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $opt = "NEWVRS";
+    $cid = 1885;
+    $coursecode = "G1337";
+    $versid = 1337;
+    $versname = NULL; // There are no value in the database
+    $coursename = "Testing-course";
+    $coursenamealt = "Course for testing codeviewer";
+    $motd = "Code examples shows both templateid and boxid!";
+    $startdate = "2020-05-01 00:00:00";
+    $enddate = "2020-06-30 00:00:00";
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update course (line 138)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+&& $makeactive = "3"
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $cid = 1885;
+    $versid = 1337;
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update vers (line 152)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $opt = "UPDATEVRS";
+    $courseid = 1885;
+    $coursecode = "G1337";
+    $versid = 1337;
+    $versname = NULL; // There are no value in the database
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update course (line 173)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $opt = "CHGVERS";
+    $courseid = 1885;
+    $versid = 1337;
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Insert into vers (line 181)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $opt = "CPYVRS";
+    $cid = 1885;
+    $coursecode = "G1337";
+    $versid = 1337;
+    $versname = NULL; // There are no value in the database
+    $coursename = "Testing-course";
+    $coursenamealt = "Course for testing codeviewer";
+    $motd = "Code examples shows both templateid and boxid!";
+    $startdate = "2020-05-01 00:00:00";
+    $enddate = "2020-06-30 00:00:00";
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Update course (line 433)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+&& $makeactive = "3"
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $cid = 1885;
+    $versid = 1337;
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+
+---------------------------------------------------------------------------------------------------------------------
+- Update course (line 456)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $opt = "UPDATE";
+    $cid = 1885;
+    $coursename = "Testing-Course";
+    $visibility = 1;
+    $coursecode = "G1337";
+    $courseGitURL = NULL; // There are no value in the database
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+---------------------------------------------------------------------------------------------------------------------
+- Insert settings (line 488)
+---------------------------------------------------------------------------------------------------------------------
+
+*********
+* pre-req:
+********* 
+
+{(checklogin) && ($ha)} IS TRUE
+
+*********
+* send parameters inputs to courseedservice.php 
+*********
+send
+{
+    $opt = "SETTINGS";
+    $motd = NULL; // There are no value in the database
+    $readonly = NULL; // There are no value in the database
+}
+
+*********
+* Gather service output:
+*********
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
