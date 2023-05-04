@@ -506,6 +506,7 @@ function showSaveButton() {
 }
 
 function changeMomentName(selecteditem) {
+  console.log("changeMomentName called with:", selecteditem);
   const momentName = document.getElementById('momentName').value;
   const selected = selecteditem.split("_");
 
@@ -515,11 +516,17 @@ function changeMomentName(selecteditem) {
 
     if (momentObj) {
       momentObj.children[1].innerText = momentName;
+      console.log("Moment name updated:", momentName);
+    } else {
+      console.error("Moment object not found:", "I" + momentId);
     }
+  } else {
+    console.error("Selected item ID format not recognized:", selecteditem);
   }
 
   confirmBox("closeConfirmBox");
 }
+
 
 
 
