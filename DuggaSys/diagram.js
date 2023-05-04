@@ -7496,7 +7496,7 @@ function sortElementAssociations(element)
  */
 
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
-    console.log(getVariantParam());
+    
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
      if (toElement.kind == "EREntity"){
         var tempElement = toElement;
