@@ -265,7 +265,7 @@ $sql3 = '
     downloadURL VARCHAR(255), 
     fileSHA VARCHAR(255), 
     filePath VARCHAR(255),
-	templateID INTEGER,
+	templateID INTEGER, 
 		PRIMARY KEY (cid, fileName)
 	);
 '; 
