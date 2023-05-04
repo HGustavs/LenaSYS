@@ -573,7 +573,7 @@
 			</div>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 
-			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> 
+			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Change the name of moment' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
                 <?php
                     try{
