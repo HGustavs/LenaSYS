@@ -478,8 +478,8 @@
                 <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                     <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Add an ER attribute to the diagram</p>
-                        <p>Each attribute represents diffrent characteristics of an entity</p>
+                        <p>Add a ER attribute to the diagram</p>
+                        <p>Each attribute represents different characteristics of an entity.</p>
                         <br>
                         <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                     </span>
@@ -496,7 +496,7 @@
                     <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                     <span class="toolTipText"><b>UML initial state</b><br>
                         <p>Creates an initial state for UML.</p>
-                        <p>The initial state represent the start of a process.</p>
+                        <p>The initial state represents the start of a process.</p>
                         <br>
                         <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                     </span>
@@ -506,7 +506,7 @@
                     <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                     <span class="toolTipText"><b>UML final state</b><br>
                         <p>Creates a final state for UML.</p>
-                        <p>The final state represent where a process ends.</p>
+                        <p>The final state represents where a process ends.</p>
                         <br>
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
@@ -527,7 +527,7 @@
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                     <span class="toolTipText"><b>UML super state</b><br>
                         <p>Creates a super state.</p>
-                        <p>A state that can conatins substates.</p>
+                        <p>A state that can conatin substates.</p>
                         <br>
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
@@ -548,7 +548,7 @@
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
                         <p>Creates an activation box.</p>
-                        <p>Represents the time needed for an object to complete a task.</p>
+                        <p>Represents that an object is active during an interaction, with the length indication the duration.</p>
                         <br>
                         <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                     </span>
