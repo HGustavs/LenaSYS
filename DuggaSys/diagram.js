@@ -9068,8 +9068,8 @@ function drawElement(element, ghosted = false)
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%">
-                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
-                    <rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
+                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke='${element.stroke}' stroke-width="2" rx="20"/>
+                    <rect width="${boxw/2}px" height="${boxh/6}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width="2" />   
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${boxh/30}px">${element.name}</text>
                     </svg>
                 </div>`;
