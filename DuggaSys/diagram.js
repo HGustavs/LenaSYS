@@ -2546,7 +2546,7 @@ function mmoving(event)
                 const widthChange = -(tmp - elementData.width);
                 
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                StateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (!startNodeRight && !startNodeDown && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
@@ -2563,9 +2563,9 @@ function mmoving(event)
                 // Deduct the new position, giving us the total change
                 const xChange = -(tmp - elementData.x);
                 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-            }
-            else if (!startNodeRight && startNodeDown && (startHeight + (deltaY / zoomfact)) > minHeight) {
+                StateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+
+            } else if (!startNodeRight && startNodeDown && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight + (deltaY / zoomfact));
@@ -2580,7 +2580,7 @@ function mmoving(event)
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
                 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], yChange, 0, heightChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                StateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], yChange, 0, heightChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
 
                 console.log(heightChange + "" + yChange);
             }
