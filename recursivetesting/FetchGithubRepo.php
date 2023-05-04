@@ -85,6 +85,8 @@ function downloadToWebServer($cid, $item)
     
 function bfs($url, $opt) 
 {
+    $cid = getOPG('courseid');
+    echo "<script>console.log('.$cid.');</script>";
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
