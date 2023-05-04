@@ -7676,10 +7676,10 @@ function preProcessLine(line) {
         }
 
 
-        if (line.innerType === 'Segment') {
+        if (line.innerType === SDLineType.SEGMENT) {
             line.innerType = SDLineType.SEGMENT;
         }
-        if (line.innerType === 'Straight') {
+        if (line.innerType === SDLineType.STRAIGHT) {
             line.innerType = SDLineType.STRAIGHT;
         }
         /* 
