@@ -1,3 +1,9 @@
+//////////////////////////////////////////
+//
+// log.php searching functionality
+//
+//////////////////////////////////////////
+
 function searchTable() {
     var input, filter, table, tr, td, i, j, txtValue;
     input = document.getElementById("searchInput");
@@ -32,6 +38,12 @@ function filterTable() {
     xmlhttp.open("GET", "log.php?table=" + table + "&filter=" + filter, true);
     xmlhttp.send();
 }
+
+//////////////////////////////////////////
+//
+// log.php sorting functionality
+//
+//////////////////////////////////////////
 
 var currentSortColumnIndex = -1;
 var currentSortAscending = true;
