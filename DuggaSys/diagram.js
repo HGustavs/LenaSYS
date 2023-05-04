@@ -7676,7 +7676,7 @@ function preProcessLine(line) {
         }
 
 
-       
+        line.innerType = SDLineType.SEGMENT;
 
         /** 
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
