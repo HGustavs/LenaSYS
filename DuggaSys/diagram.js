@@ -1138,7 +1138,7 @@ var defaults = {
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    sequenceLifeLine: {name: "Life Line", kind: "sequenceLifeLine", fill: "#FFFFFF", stroke: "#000000", width: 60, height: 60, type: "sequence" } // UML Super State.
+    sequenceLifeLine: {name: "Life Line", kind: "sequenceLifeLine", fill: "#FFFFFF", stroke: "#000000", width: 50, height: 200, type: "sequence" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
