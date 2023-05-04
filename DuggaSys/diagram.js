@@ -3023,7 +3023,8 @@ function changeLineProperties()
     // SD line
     if (line.type == 'SD') {
         if (line.innerType != lineType.value) {
-            line.innerType = lineType.value.trim();
+            lineType.value = lineType.value.trim();
+            line.innerType = lineType.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: lineType.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // Start label, near side
