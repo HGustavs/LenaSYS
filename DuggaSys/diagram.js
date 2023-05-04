@@ -1894,6 +1894,7 @@ function mdown(event)
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
+            startHeight = data[findIndex(data, context[0].id)].height;
 
             startNodeRight = !event.target.classList.contains("mr");
 
@@ -2530,6 +2531,9 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
+            const minHeight = 20; // Declare the minimal height of an object
+            deltaY = startY - event.clientY;
+
             if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
@@ -2557,6 +2561,23 @@ function mmoving(event)
                 const xChange = -(tmp - elementData.x);
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+            }
+            else if (!startNodeRight && (startHeight + (deltaY / zoomfact)) > minHeight) {
+                // Fetch original height
+                var tmp = elementData.height;
+                elementData.height = (startHeight + (deltaY / zoomfact));
+
+                // Deduct the new height, giving us the total change
+                const heightChange = -(tmp - elementData.height);
+
+                // Fetch original y-position
+                tmp = elementData.y;
+                elementData.y = screenToDiagramCoordinates((startY - deltaY), 0).y;
+
+                // Deduct the new position, giving us the total change
+                const yChange = -(tmp - elementData.y);
+                
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], yChange, 0, heightChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
 
             document.getElementById(context[0].id).remove();
