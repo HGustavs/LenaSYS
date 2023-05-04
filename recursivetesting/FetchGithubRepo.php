@@ -85,6 +85,7 @@ function downloadToWebServer($cid, $item)
     
 function bfs($url, $cid, $opt) 
 {
+    $url = getGitHubURL($url);
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
