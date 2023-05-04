@@ -566,17 +566,18 @@
 
 	<!-- github moments box  -->
 	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-			<div class='loginBoxheader'>
-					<h3>Github Moment</h3>
-					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
-			</div>
-			<div id='inputwrapper-name' class='inputwrapper'>
-					<span>Name:</span>
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+        <div class='loginBoxheader'>
+            <h3>Github Moment</h3>
+            <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+        </div>
+        <div id='inputwrapper-name' class='inputwrapper'>
+            <span>Name:</span>
 
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" style="margin-right:10px;"/>
+            <input onkeyup="quickValidateForm('gitHubBox', 'saveBtn');" onchange="validateSectName('githubMomentName')" placeholder='Enter section name' type='text' class='textinput' id='githubMomentName' value='sectionname' maxlength="64" style="margin-right:10px;"/>
 
-				</div>
+        </div>
+
 
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Directory' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
