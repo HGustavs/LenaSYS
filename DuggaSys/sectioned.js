@@ -493,6 +493,23 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
+function changeMomentName() {
+  const momentName = document.getElementById('momentName').value;
+  const selected = selecteditem.split("_");
+
+  if (selected.length > 1) {
+    const momentId = parseInt(selected[1]);
+    const momentObj = document.getElementById("I" + momentId);
+
+    if (momentObj) {
+      momentObj.children[1].innerText = momentName;
+    }
+  }
+
+  confirmBox("closeConfirmBox");
+}
+
+
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
@@ -519,16 +536,19 @@ function confirmBox(operation, item = null) {
   }else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
-  }else if (operation == "openGitHubBox") {
-    console.log("testworkornah2?");
+  }
+  // Responsible for opening github moment
+  else if (operation == "openGitHubBox") {
     $("#gitHubBox").css("display", "flex");
   }
+  else if (operation == "saveGitHubBox") {
+    changeMomentName();
+  }
+
   //ändra 
   else if (operation == "openGitHubTemplate") {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
-
-
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
