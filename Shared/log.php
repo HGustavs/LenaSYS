@@ -293,5 +293,6 @@
             }
         ?>
         <script type="text/javascript" src="log.js"></script>
+        <script type="text/javascript" src="logSort.js"></script>
     </body>
 </html>
