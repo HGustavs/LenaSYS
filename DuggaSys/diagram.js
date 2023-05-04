@@ -6831,6 +6831,7 @@ function generateContextProperties()
                     str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
                 }
             });
+            /*
             str += `</select>`;
             str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
             Object.keys(SDLineType).forEach(type => {
@@ -6844,6 +6845,7 @@ function generateContextProperties()
                 }
             });
             str += `</select>`;
+            */
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
