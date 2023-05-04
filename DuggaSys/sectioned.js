@@ -37,6 +37,7 @@ function IsLoggedIn(bool){
 function setSelectedItem(item) {
   if (item instanceof HTMLElement) {
     selecteditem = item.id;
+    console.log(item);
   } else {
     console.error("setSelectedItem called with an invalid item:", item);
   }
