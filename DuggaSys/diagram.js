@@ -7675,21 +7675,13 @@ function preProcessLine(line) {
             line.endIcon = 'ARROW';
         }
 
-
-        if (line.innerType === SDLineType.SEGMENT) {
-            line.innerType = SDLineType.SEGMENT;
-        }
-        if (line.innerType === SDLineType.STRAIGHT) {
-            line.innerType = SDLineType.STRAIGHT;
-        }
-        /* 
-        else if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
+        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
             line.innerType = SDLineType.SEGMENT;
         }
-        */
+        
         
     }
 }
