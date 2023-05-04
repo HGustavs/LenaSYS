@@ -2582,7 +2582,7 @@ function mmoving(event)
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], yChange, 0, heightChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
 
-                console.log(yChange);
+                console.log(heightChange + "" + yChange);
             }
 
             document.getElementById(context[0].id).remove();
