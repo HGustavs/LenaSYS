@@ -35,7 +35,9 @@ $query->bindParam(':fid', $fid);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
     $path = $row['path'];
-} 
+} else {
+    $path = "Lokal";
+}
 
 $debug = "NONE!";
 $studentTeacher = false;
@@ -284,7 +286,7 @@ if (checklogin() && $hasAccess) {
             'extension' => $extension,
             'kind' => "$filekind",
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
-            'type' => $row['path'],
+            'type' => $path,
             'uploaddate' => $row['uploaddate'],
             'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension, 'showeditor' => $showEditor]),
             'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan])
