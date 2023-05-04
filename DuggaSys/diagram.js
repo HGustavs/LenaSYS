@@ -2569,7 +2569,7 @@ function mmoving(event)
             } else if (!startNodeRight && startNodeDown && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
-                elementData.height = (startHeight + (deltaY / zoomfact));
+                elementData.height = (startHeight - (deltaY / zoomfact));
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
