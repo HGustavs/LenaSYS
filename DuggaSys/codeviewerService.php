@@ -285,7 +285,7 @@
 
 				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;");
 				$query->bindParam(':boxtitle', $boxTitle);
-				$query->bindParam(':exampleid', $exampleId);
+				$query->bindValue(':exampleid', $exampleId);
 				$query->bindParam(':boxid', $boxId);
 				$query->execute();
 
