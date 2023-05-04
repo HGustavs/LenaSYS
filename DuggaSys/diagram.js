@@ -2535,7 +2535,7 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = 20; // Declare the minimal height of an object
+            const minHeight = 100; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
 
             if (startNodeRight && !startNodeDown && (startWidth - (deltaX / zoomfact)) > minWidth) {
@@ -2566,7 +2566,7 @@ function mmoving(event)
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
                 
-            } else if (!startNodeRight && startNodeDown && (startHeight + (deltaY / zoomfact)) > minHeight) {
+            } else if (!startNodeRight && startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight - (deltaY / zoomfact));
