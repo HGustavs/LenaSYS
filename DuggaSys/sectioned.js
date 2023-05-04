@@ -33,11 +33,6 @@ function IsLoggedIn(bool){
   bool ? isLoggedIn = true : isLoggedIn = false ;
 }
 
-function setUpdatedTitle(item) {
-
-}
-
-
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -741,6 +736,8 @@ async function createFABItem(kind, itemtitle, comment) {
   }
   console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
   console.log(selectItem);
+  console.log("newItem function:", newItem.toString());
+
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
