@@ -527,7 +527,7 @@
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                     <span class="toolTipText"><b>UML super state</b><br>
                         <p>Creates a super state.</p>
-                        <p>A state that can conatin substates.</p>
+                        <p>A state that can contain substates.</p>
                         <br>
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
@@ -548,7 +548,7 @@
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
                         <p>Creates an activation box.</p>
-                        <p>Represents that an object is active during an interaction, with the length indication the duration.</p>
+                        <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                         <br>
                         <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                     </span>
