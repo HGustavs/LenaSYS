@@ -27,10 +27,22 @@ var updatedLidsection;
 var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
+let selecteditem = '';
+
 
 function IsLoggedIn(bool){
   bool ? isLoggedIn = true : isLoggedIn = false ;
 }
+
+function setSelectedItem(item) {
+  if (item instanceof HTMLElement) {
+    selecteditem = item.id;
+  } else {
+    console.error("setSelectedItem called with an invalid item:", item);
+  }
+}
+
+
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -493,7 +505,7 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-function changeMomentName() {
+function changeMomentName(selecteditem) {
   const momentName = document.getElementById('momentName').value;
   const selected = selecteditem.split("_");
 
@@ -508,6 +520,7 @@ function changeMomentName() {
 
   confirmBox("closeConfirmBox");
 }
+
 
 
 
@@ -542,7 +555,7 @@ function confirmBox(operation, item = null) {
     $("#gitHubBox").css("display", "flex");
   }
   else if (operation == "saveGitHubBox") {
-    changeMomentName();
+    changeMomentName(selecteditem);
   }
 
   //ändra 
