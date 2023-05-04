@@ -12223,8 +12223,14 @@ function exportWithoutHistory()
  */
 function loadMockupDiagram(path){
     
-    let fileType = document.getElementById("diagramTypeDropdown").value;
-    path = fileType;
+    // If the value for the dropdown is not set we may assume that the
+    // reset button was pressed
+    if (!document.getElementById("diagramTypeDropdown").value){
+        path = "JSON/EMPTYDiagramMockup.json";
+    } else{
+        let fileType = document.getElementById("diagramTypeDropdown").value;
+        path = fileType;
+    }
     //make sure its not null first
     if (path != null) {
         //via fetch API, request the json file 
@@ -12436,15 +12442,20 @@ function resetDiagramAlert(){
  * @description Cleares the diagram.
  */
 function resetDiagram(){
+    
     // Goto the beginning of the diagram
+        // NOTE: stateMachine should be StateMachine, but this had no effect
+        // on functionality.
     stateMachine.gotoInitialState();
 
     // Remove the previous history
     stateMachine.currentHistoryIndex = -1;
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
-    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
+    
+    loadMockupDiagram()
 }
 /**
  *
