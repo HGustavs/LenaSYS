@@ -6848,22 +6848,22 @@ function generateContextProperties()
                     str += `<option value='${SDLineType[type]}'>${SDLineType[type]}</option>`;
                 }
             });
-            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
+            str += `<label style="display: block">Icons:</label> <select id='lineType' onchange="changeLineProperties()">`;
             str += `<option value=''>None</option>`;
             //iterate through all the icons assicoated with SD, and add them to the drop down as options
-            Object.keys(SDLineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined) {
+            Object.keys(SDLineType).forEach(type => {
+                if (contextLine[0].innerType != undefined) {
                     //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                    if (contextLine[0].startIcon == icon) {
-                        str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
+                    if (contextLine[0].innerType == Type) {
+                        str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
                     else {
-                        str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                        str += `<option value='${SDLineType[type]}'>${SDLineType[type]}</option>`;
                     }
                 }
                 else {
-                    str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                    str += `<option value='${SDLineType[type]}'>${SDLineType[type]}</option>`;
                 }
             });
             /*
