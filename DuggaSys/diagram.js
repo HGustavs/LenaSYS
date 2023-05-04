@@ -8690,7 +8690,7 @@ function addNodes(element)
         mdNode.style.height = nodeSize+"px";
         mdNode.style.height = nodeSize+"px";
         mdNode.style.left = "calc(50% - "+(nodeSize/2)+"px)";
-        mdNode.style.top = "50%";
+        mdNode.style.top = "100%";
     }
     //else its the normal left and right nodes
     else {
