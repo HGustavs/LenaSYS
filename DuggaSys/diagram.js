@@ -9368,7 +9368,7 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
+        str += `<svg width='${boxw}' height='${boxh*5}'>`;
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
         V${boxh*5}
