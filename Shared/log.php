@@ -292,7 +292,6 @@
                 ";
             }
         ?>
-        <script type="text/javascript" src="logSort.js"></script>
-        <script type="text/javascript" src="logSearch.js"></script>
+        <script type="text/javascript" src="log.js"></script>
     </body>
 </html>
