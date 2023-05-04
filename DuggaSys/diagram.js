@@ -11775,8 +11775,8 @@ function updateCSSForAllElements()
                     }
                 }
                 else if (element.kind == "UMLInitialState" || element.kind =="UMLFinalState") {
-                    if(fillColor.style.fill == `${"#000000"}`) {
-                        fillColor.style.fill = `${"#FFFFFF"}`;
+                    if(fillColor.style.fill == "#000000") {
+                        fillColor.style.fill = "#FFFFFF";
                     }
                 }
                 // Update IEEntity
