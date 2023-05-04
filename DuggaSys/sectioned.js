@@ -500,27 +500,24 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-function changeMomentName(selecteditem) {
-  console.log("changeMomentName called with:", selecteditem);
+function changeMomentName(kind, itemTitle) {
+  console.log("changeMomentName called with kind:", kind, "itemTitle:", itemTitle);
   const momentName = document.getElementById('momentName').value;
-  const selected = selecteditem.split("_");
+  
+  
+  const itemSelector = "[data-kind='" + kind + "'][data-title='" + itemTitle + "']";
+  const momentObj = document.querySelector(itemSelector);
 
-  if (selected.length > 1) {
-    const momentId = parseInt(selected[1]);
-    const momentObj = document.getElementById("I" + momentId);
-
-    if (momentObj) {
-      momentObj.children[1].innerText = momentName;
-      console.log("Moment name updated:", momentName);
-    } else {
-      console.error("Moment object not found:", "I" + momentId);
-    }
+  if (momentObj) {
+    momentObj.children[1].innerText = momentName;
+    console.log("Moment name updated:", momentName);
   } else {
-    console.error("Selected item ID format not recognized:", selecteditem);
+    console.error("Moment object not found for kind:", kind, "itemTitle:", itemTitle);
   }
 
   confirmBox("closeConfirmBox");
 }
+
 
 
 
