@@ -8675,14 +8675,18 @@ function addNodes(element)
 {
     var elementDiv = document.getElementById(element.id)
     var nodes = "";
-    //sequence lifeline has only one node, for vertical resizing
+    nodes += "<span id='mr' class='node mr'></span>";
+    nodes += "<span id='ml' class='node ml'></span>";
+    //sequence lifeline gets a new node, for vertical resizing
     if (element.kind == "sequenceLifeLine") {
         nodes += "<span id='md' class='node md'></span>";
-        elementDiv.innerHTML += nodes;
-         // This is the standard node size
-        const defaultNodeSize = 8;
-    
-        var nodeSize = defaultNodeSize*zoomfact;
+    }
+    elementDiv.innerHTML += nodes;
+    // This is the standard node size
+    const defaultNodeSize = 8;
+    var nodeSize = defaultNodeSize*zoomfact;
+    //sequence lifeline gets a special node, for vertical resizing of the lifeline
+    if (element.kind == "sequenceLifeLine") {
         var mdNode = document.getElementById("md");
 
         mdNode.style.width = nodeSize+"px";
@@ -8692,25 +8696,15 @@ function addNodes(element)
         mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
         mdNode.style.top = "100%";
     }
-    //else its the normal left and right nodes
-    else {
-        nodes += "<span id='mr' class='node mr'></span>";
-        nodes += "<span id='ml' class='node ml'></span>";
-        elementDiv.innerHTML += nodes;
-    
-        // This is the standard node size
-        const defaultNodeSize = 8;
-    
-        var nodeSize = defaultNodeSize*zoomfact;
-        var mrNode = document.getElementById("mr");
-        var mlNode = document.getElementById("ml");
-        mrNode.style.width = nodeSize+"px";
-        mlNode.style.width = nodeSize+"px";
-        mrNode.style.height = nodeSize+"px";
-        mlNode.style.height = nodeSize+"px";
-        mrNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
-        mlNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
-    }
+    var nodeSize = defaultNodeSize*zoomfact;
+    var mrNode = document.getElementById("mr");
+    var mlNode = document.getElementById("ml");
+    mrNode.style.width = nodeSize+"px";
+    mlNode.style.width = nodeSize+"px";
+    mrNode.style.height = nodeSize+"px";
+    mlNode.style.height = nodeSize+"px";
+    mrNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
+    mlNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
 }
 /**
  * @description Remove all elements with the class "node"
