@@ -3293,7 +3293,6 @@ function clearContextLine()
  * @param {Number} mouseX Pixel position in the x-axis.
  * @param {Number} mouseY Pixel position in the y-axis.
  * @returns {Point} Point containing the calculated coordinates.
- * @see diagramToScreenPosition() For converting the other way.
  */
 function screenToDiagramCoordinates(mouseX,mouseY)
 {
@@ -3317,23 +3316,6 @@ function screenToDiagramCoordinates(mouseX,mouseY)
 
     return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
                     Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
-    );
-}
-
-/**
- * @description Converts a coordinate on the canvas into a pixel position on the screen.
- * @param {Number} coordX Coordinate position in the x-axis.
- * @param {Number} coordY Coordinate position in the y-axis.
- * @returns {Point} Point containing the calculated screen position.
- * @depricated TODO : Needs to be updated
- * @see screenToDiagramCoordinates() For converting the other way.
- */
-function diagramToScreenPosition(coordX, coordY)
-{
-    console.warn("diagramToScreenPosition() is depricated. It should be updated to use new screenToDiagramCoordinates() algorithm reversed.");
-    return new Point(
-        Math.round((coordX + scrollx) / zoomfact + 0),
-        Math.round((coordY + scrolly) / zoomfact + 0)
     );
 }
 
