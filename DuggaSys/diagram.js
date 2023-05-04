@@ -9371,7 +9371,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path class="text" 
         d="M${(boxw/2)+linew},${((boxh/4)*3)+linew}
-        V${boxh}
+        V${boxh*5}
         "
         stroke-width='${linew}'
         stroke='${element.stroke}'
