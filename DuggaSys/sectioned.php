@@ -571,7 +571,12 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='momentName' placeholder='Insert new name' value=''/></div>
+			<div id='inputwrapper-name' class='inputwrapper'>
+					<span>Name:</span>
+
+					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" style="margin-right:10px;"/>
+
+				</div>
 
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Directory' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
