@@ -38,7 +38,7 @@ function testHandler($testData, $prettyPrint){
     // Test 2 callService
     $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $prettyPrint));
     $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
-    $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['result'];
+    $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
     // Test 3 assertEqual
     $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
@@ -70,7 +70,7 @@ function loginTest($user, $pwd, $prettyPrint){
         echo "<br>";
     }
     return array(
-        'result:' => $loginTestResult,
+        'result' => $loginTestResult,
         'username' => $user,
         'password' => $pwd
     );
@@ -122,7 +122,8 @@ function callServiceTest($service, $data, $filter, $prettyPrint){
         echo "<br>";
     }
     return array(
-        'result' => $curlResponseJSONFiltered,
+        'result' => $callServiceTestResult,
+        'respons' => $curlResponseJSONFiltered,
         'service' => $service,
         'data' => unserialize($data),
     );
