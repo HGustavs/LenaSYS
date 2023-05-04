@@ -27,7 +27,7 @@ var updatedLidsection;
 var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
-let selecteditem = '';
+var selecteditem = '';
 
 
 function IsLoggedIn(bool){
