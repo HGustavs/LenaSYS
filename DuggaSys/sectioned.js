@@ -504,7 +504,6 @@ function changeMomentName(kind, itemTitle) {
   console.log("changeMomentName called with kind:", kind, "itemTitle:", itemTitle);
   const momentName = document.getElementById('momentName').value;
   
-  
   const itemSelector = "[data-kind='" + kind + "'][data-title='" + itemTitle + "']";
   const momentObj = document.querySelector(itemSelector);
 
@@ -517,7 +516,6 @@ function changeMomentName(kind, itemTitle) {
 
   confirmBox("closeConfirmBox");
 }
-
 
 
 
