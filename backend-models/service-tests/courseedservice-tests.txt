@@ -17,10 +17,10 @@ courseedservice.php
 send
 {
     $opt = "NEW";
-    $userid = "UNK"; or $userid = !NULL;
-    $coursecode = "G1337";
+    $userid = 1;
+    $coursecode = "G1338";
     $coursename = "Testing-Course";
-    $courseGitURL = NULL; // There are no values in the database
+    $courseGitURL = "TestGitURL";
 }
 
 *********
@@ -28,6 +28,12 @@ send
 *********
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
+
+*********
+* Remove inserted row in db
+*********
+
+SQL-query: DELETE FROM course WHERE coursecode = "G1338";
 
 ---------------------------------------------------------------------------------------------------------------------
 - Insert into vers (line 116)
@@ -39,16 +45,26 @@ this is the expected output for the micro service.
 
 {(checklogin) && ($ha)} IS TRUE
 
+Pre-querys:
+$preValuesCourse =
+{	
+    9999,
+	1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+//add a course so we know it exists in the database before adding the vers
+
 *********
-* send parameters inputs to courseedservice.php 
+* send parameters inputs to courseedservice.php
 *********
 send
 {
     $opt = "NEWVRS";
-    $cid = 1885;
-    $coursecode = "G1337";
-    $versid = 1337;
-    $versname = NULL; // There are no value in the database
+    $cid = 9999;
+    $coursecode = "G1338";
+    $versid = 1338;
+    $versname = "HT15";
     $coursename = "Testing-course";
     $coursenamealt = "Course for testing codeviewer";
     $motd = "Code examples shows both templateid and boxid!";
@@ -61,6 +77,14 @@ send
 *********
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
+
+*********
+* Remove inserted row in db
+*********
+
+SQL-query: 	DELETE FROM vers WHERE cid = 9999;
+		    DELETE FROM course WHERE cid = 9999;
+
 
 ---------------------------------------------------------------------------------------------------------------------
 - Update course (line 138)
@@ -73,12 +97,23 @@ this is the expected output for the micro service.
 {(checklogin) && ($ha)} IS TRUE
 && $makeactive = "3"
 
+Pre-query:
+
+$preValuesCourse =
+{	
+    9999,
+	1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+//add a course so we know it exists in the database before updating its vers.
+
 *********
 * send parameters inputs to courseedservice.php 
 *********
 send
 {
-    $cid = 1885;
+    $cid = 9999;
     $versid = 1337;
 }
 
@@ -87,6 +122,12 @@ send
 *********
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
+
+*********
+* Remove inserted row in db
+*********
+
+SQL-query: 	DELETE FROM course WHERE cid = 9999;
 
 ---------------------------------------------------------------------------------------------------------------------
 - Update vers (line 152)
@@ -98,16 +139,39 @@ this is the expected output for the micro service.
 
 {(checklogin) && ($ha)} IS TRUE
 
+Pre-querys:
+$preValuesCourse =
+{	
+    9999,
+	1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+//make sure there is an active course with set cid.
+
+$preValuesVers =
+{	
+    9999,
+	12345678,
+    "testVersName",
+    "testCourseCode",
+    "testCourseName",
+    "testCourseNameAlt"
+};
+
+INSERT INTO vers(cid, vers, versname, coursecode, coursename, coursenamealt, startdate, enddate, motd) VALUES ($preValuesVers[0], $preValuesVers[1], $preValuesVers[2], $preValuesVers[3], $preValuesVers[4], $preValuesVers[5]);
+//make sure we have a vers that we can test the update on.
+
 *********
 * send parameters inputs to courseedservice.php 
 *********
 send
 {
     $opt = "UPDATEVRS";
-    $courseid = 1885;
-    $coursecode = "G1337";
-    $versid = 1337;
-    $versname = NULL; // There are no value in the database
+    $courseid = 9999;
+    $coursecode = "testCourseCode";
+    $versid = 12345678;
+    $versname = “updateTest”;
 }
 
 *********
@@ -115,6 +179,13 @@ send
 *********
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
+
+*********
+* Remove inserted row in db
+*********
+
+SQL-query: 	DELETE FROM vers WHERE cid = 9999;
+		    DELETE FROM course WHERE cid = 9999;
 
 ---------------------------------------------------------------------------------------------------------------------
 - Update course (line 173)
@@ -126,14 +197,24 @@ this is the expected output for the micro service.
 
 {(checklogin) && ($ha)} IS TRUE
 
+Pre-querys:
+$preValuesCourse =
+{	
+    9999,
+	1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+//make sure there is an active course with set cid.
+
 *********
 * send parameters inputs to courseedservice.php 
 *********
 send
 {
     $opt = "CHGVERS";
-    $courseid = 1885;
-    $versid = 1337;
+    $courseid = 9999;
+    $versid = “1337”;
 }
 
 *********
@@ -142,15 +223,51 @@ send
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
 
+*********
+* Remove inserted row in db
+*********
+
+SQL-query:	DELETE FROM course WHERE cid = 9999;
+
 ---------------------------------------------------------------------------------------------------------------------
 - Insert into vers (line 181)
 ---------------------------------------------------------------------------------------------------------------------
+
+NOTE: Unclear about this test since it wants to copy a course, however inserting the same row twice makes it an error hence, the “send” has a different value for versid.
 
 *********
 * pre-req:
 ********* 
 
 {(checklogin) && ($ha)} IS TRUE
+$allOperationsSucceeded = true;
+
+
+Pre-querys:
+$preValuesCourse =
+{	
+    9999,
+	1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+//make sure there is an active course with set cid.
+
+$preValuesVers =
+{	
+    9999,
+	12345678,
+    “testVersName”,
+    “testCourseCode”,
+    “testCourseName”,
+    “testCourseNameAlt”
+    "2020-05-01 00:00:00",
+    "2020-06-30 00:00:00",
+    “testMotd”
+};
+
+INSERT INTO vers(cid, vers, versname, coursecode, coursename, coursenamealt, startdate, enddate, motd) VALUES ($preValuesVers[0], $preValuesVers[1], $preValuesVers[2], $preValuesVers[3], $preValuesVers[4], $preValuesVers[5], $preValuesVers[6], $preValuesVers[7], $preValuesVers[8]);
+//make sure we have a vers.
 
 *********
 * send parameters inputs to courseedservice.php 
@@ -158,13 +275,13 @@ this is the expected output for the micro service.
 send
 {
     $opt = "CPYVRS";
-    $cid = 1885;
-    $coursecode = "G1337";
-    $versid = 1337;
-    $versname = NULL; // There are no value in the database
-    $coursename = "Testing-course";
-    $coursenamealt = "Course for testing codeviewer";
-    $motd = "Code examples shows both templateid and boxid!";
+    $cid = 9999;
+    $coursecode = "testCourseCode";
+    $versid = 12345679;
+    $versname = “testVersName”
+    $coursename = "testCourseName";
+    $coursenamealt = "testCourseNameAlt";
+    $motd = "testMotd";
     $startdate = "2020-05-01 00:00:00";
     $enddate = "2020-06-30 00:00:00";
 }
@@ -174,6 +291,13 @@ send
 *********
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
+
+*********
+* Remove inserted row in db
+*********
+
+SQL-query: 	DELETE FROM vers WHERE cid = 9999;
+		    DELETE FROM course WHERE cid = 9999;
 
 ---------------------------------------------------------------------------------------------------------------------
 - Update course (line 433)
@@ -186,14 +310,25 @@ this is the expected output for the micro service.
 {(checklogin) && ($ha)} IS TRUE
 && $makeactive = "3"
 
+Pre-querys:
+$preValuesCourse =
+{	
+    9999,
+	1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+//make sure there is an active course with set cid.
+
 *********
 * send parameters inputs to courseedservice.php 
 *********
 send
 {
-    $cid = 1885;
+    $cid = 9999;
     $versid = 1337;
 }
+
 
 *********
 * Gather service output:
@@ -201,6 +336,11 @@ send
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
 
+*********
+* Remove inserted row in db
+*********
+
+SQL-query:	DELETE FROM course WHERE cid = 9999;
 
 ---------------------------------------------------------------------------------------------------------------------
 - Update course (line 456)
@@ -212,17 +352,27 @@ this is the expected output for the micro service.
 
 {(checklogin) && ($ha)} IS TRUE
 
+Pre-query:
+$preValuesCourse =
+{	
+    9999,
+	1
+};
+
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+//make sure there is an active course with set cid.
+
 *********
 * send parameters inputs to courseedservice.php 
 *********
 send
 {
     $opt = "UPDATE";
-    $cid = 1885;
+    $cid = 9999;
     $coursename = "Testing-Course";
     $visibility = 1;
-    $coursecode = "G1337";
-    $courseGitURL = NULL; // There are no value in the database
+    $coursecode = "G9999";
+    $courseGitURL = NULL;
 }
 
 *********
@@ -230,6 +380,12 @@ send
 *********
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
+
+*********
+* Remove inserted row in db
+*********
+
+SQL-query:	DELETE FROM course WHERE cid = 9999;
 
 ---------------------------------------------------------------------------------------------------------------------
 - Insert settings (line 488)
@@ -247,8 +403,8 @@ this is the expected output for the micro service.
 send
 {
     $opt = "SETTINGS";
-    $motd = NULL; // There are no value in the database
-    $readonly = NULL; // There are no value in the database
+    $motd = “Test”;
+    $readonly = 0;
 }
 
 *********
@@ -256,3 +412,9 @@ send
 *********
 Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
 this is the expected output for the micro service.
+
+*********
+* Remove inserted row in db
+*********
+
+SQL-query:	DELETE FROM settings ORDER BY sid DESC LIMIT 1;
