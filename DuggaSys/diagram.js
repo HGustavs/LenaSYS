@@ -6831,7 +6831,7 @@ function generateContextProperties()
                     str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
                 }
             });
-            str += `</select><select id='lineType' onchange="changeLineProperties()">`;
+            str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
             str += `<option value=''>None</option>`;
             Object.keys(SDLineIcons).forEach(icon => {
                 if (contextLine[0].endIcon != undefined) {
