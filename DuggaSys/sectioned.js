@@ -525,7 +525,6 @@ function confirmBox(operation, item = null) {
   }
   //ändra 
   else if (operation == "openGitHubTemplate") {
-    console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
 
 
