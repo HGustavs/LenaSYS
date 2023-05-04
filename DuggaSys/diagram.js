@@ -795,7 +795,7 @@ const elementTypes = {
     UMLFinalState: 10,
     UMLSuperState:11,
 
-    sequenceLifeLine:12, //sequence functionality
+    sequenceActor:12, //sequence functionality
 
 };
 
@@ -819,7 +819,7 @@ const elementTypesNames = {
 
     UMLSuperState: "UMLSuperState",
 
-    sequenceLifeLine: "sequenceLifeLine",
+    sequenceActor: "sequenceActor",
 
 }
 
@@ -1140,7 +1140,7 @@ var defaults = {
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    sequenceLifeLine: {name: "Life Line", kind: "sequenceLifeLine", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
+    sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -8698,14 +8698,14 @@ function addNodes(element)
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
     //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-    if (element.kind == "sequenceLifeLine") {
+    if (element.kind == "sequenceActor") {
         nodes += "<span id='md' class='node md'></span>";
     }
     elementDiv.innerHTML += nodes;
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if (element.kind == "sequenceLifeLine") {
+    if (element.kind == "sequenceActor") {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
@@ -9387,8 +9387,8 @@ function drawElement(element, ghosted = false)
     
     //=============================================== <-- End of IE functionality
     //=============================================== <-- Start Sequnece functionality
-    //sequence life line and actor 
-    else if (element.kind == 'sequenceLifeLine') {
+    //sequence actor and its life line 
+    else if (element.kind == 'sequenceActor') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
@@ -9411,7 +9411,7 @@ function drawElement(element, ghosted = false)
         stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
-        //svg for stickman.
+        //svg for actor.
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text" 
             d="M${(boxw/2)+linew},${(boxw/4)+linew}
