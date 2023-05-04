@@ -9391,9 +9391,9 @@ function drawElement(element, ghosted = false)
                 h${boxw/2}
                 m-${(boxw/4)},0
                 v${boxh/3}
-                l${boxw/2},${boxh-(boxh/6)}
-                m${(boxw/2)*-1},${(boxh-(boxh/6))*-1}
-                l${(boxw/2)*-1},${boxh-(boxh/6)}
+                l${boxw/2},${boxh-(boxh/4)}
+                m${(boxw/2)*-1},${(boxh-(boxh/4))*-1}
+                l${(boxw/2)*-1},${boxh-(boxh/4)}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
