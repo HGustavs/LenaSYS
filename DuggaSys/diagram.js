@@ -6836,11 +6836,9 @@ function generateContextProperties()
             str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
             Object.keys(SDLineType).forEach(type => {
                 if (contextLine[0].innerType.localeCompare(type, undefined, { sensitivity: 'base' }) === 0) {
-                    console.log("base line");
                     str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
                 }
                 else {
-                    console.log("mod line");
                     str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
                 }
             });
