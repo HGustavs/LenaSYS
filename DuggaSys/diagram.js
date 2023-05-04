@@ -763,7 +763,7 @@ const keybinds = {
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
-        STATE_FINAL: { key: "<" , ctrl: true },
+        STATE_FINAL: { key: "f" , ctrl: false },
         STATE_SUPER: { key: ">" , ctrl: false },
 };
 
@@ -972,7 +972,7 @@ var startWidth;
 var startHeight;
 var startNodeRight = false;
 var startNodeDown = false;
-var cursorStyle;
+var containerStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
@@ -1398,7 +1398,7 @@ function getData()
     updateGridSize();
     showdata();
     drawRulerBars(scrollx,scrolly);
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
@@ -1608,7 +1608,7 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
+            if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
             if (context.length > 0) {
                 removeElements(context);
             } else if (contextLine.length > 0) {
@@ -1652,7 +1652,7 @@ document.addEventListener('keyup', function (e)
         //Temp for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
@@ -1660,7 +1660,7 @@ document.addEventListener('keyup', function (e)
         //Temp for IE entity
         if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
             setElementPlacementType(elementTypes.IEEntity)
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
@@ -1669,22 +1669,22 @@ document.addEventListener('keyup', function (e)
         //Temp for SD entity
         if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
             setElementPlacementType(elementTypes.SDEntity)
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
         if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
             setElementPlacementType(elementTypes.UMLInitialState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if (isKeybindValid(e, keybinds.STATE_FINAL)) {
             setElementPlacementType(elementTypes.UMLFinalState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         if (isKeybindValid(e, keybinds.STATE_SUPER)) {
             setElementPlacementType(elementTypes.UMLSuperState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
 
@@ -1785,12 +1785,12 @@ function mdown(event)
 {
     mouseButtonDown = true;
 
-        // Mouse pressed over delete button for multiple elements
-        if (event.button == 0 && mouseMode != mouseModes.EDGE_CREATION) {
-            if (context.length > 0 || contextLine.length > 0) {
-               hasPressedDelete = checkDeleteBtn();
-            }
+    // Mouse pressed over delete button for multiple elements
+    if (event.button == 0) {
+        if (context.length > 0 || contextLine.length > 0) {
+            hasPressedDelete = checkDeleteBtn();
         }
+    }
 
     // Prevent middle mouse panning when moving an object
     if(event.button == 1) {
@@ -1815,20 +1815,25 @@ function mdown(event)
     if(event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active){
+    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
+
+        // If a line was clicked, determine if the label or line was clicked.
         if(determinedLines){
-            if (determinedLines.id.length == 6) {
-               pointerState=pointerStates.CLICKED_LINE;
+            
+            if (determinedLines.id.length == 6) { // LINE
+                pointerState = pointerStates.CLICKED_LINE;
     
+                // If double click, open option pane
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
                     document.getElementById('optmarker').innerHTML = "&#9650;Options";
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
             }
-            else if(determinedLines.id.length > 6){
+            else if(determinedLines.id.length > 6) { // LABEL
                 targetLabel = lineLabelList[findIndex(lineLabelList, determinedLines.id)];
                 startX = event.clientX;
                 startY = event.clientY;
@@ -1838,7 +1843,7 @@ function mdown(event)
         }
     }
 
-    // React to mouse down on container
+    // If no line, label or delete button was clicked, react to mouse down on container
     if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL && !hasPressedDelete) {
         if (event.target.id == "container") {
             switch (mouseMode) {
@@ -1847,6 +1852,7 @@ function mdown(event)
                     sscrolly = scrolly;
                     startX = event.clientX;
                     startY = event.clientY;
+
                     // If pressed down in selection box
                     if (context.length > 0) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
@@ -1855,7 +1861,7 @@ function mdown(event)
                             targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
-                            cursorStyle.cursor = "grabbing";
+                            containerStyle.cursor = "grabbing";
                             if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                                 wasDblClicked = true;
                                 document.getElementById("options-pane").className = "hide-options-pane";
@@ -1865,13 +1871,15 @@ function mdown(event)
                     }
                     else {
                         pointerState = pointerStates.CLICKED_CONTAINER;
-                        cursorStyle.cursor = "grabbing";
+                        containerStyle.cursor = "grabbing";
+
                         if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                             wasDblClicked = true;
                             toggleOptionsPane();
                         }
                         break;
                     }
+
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if(context.length > 0){
@@ -1881,10 +1889,10 @@ function mdown(event)
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
                             targetElementDiv = document.getElementById(targetElement.id);
-                        }else{
+                        } else {
                             boxSelect_Start(event.clientX, event.clientY);
                         }
-                    }else {
+                    } else {
                         boxSelect_Start(event.clientX, event.clientY);
                     }
                     break;
@@ -1892,7 +1900,7 @@ function mdown(event)
                 default:
                     break;
             }
-
+        // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
@@ -1917,7 +1925,7 @@ function mdown(event)
 function ddown(event)
 {
     // Mouse pressed over delete button for a single line over a element
-    if (event.button == 0 && (contextLine.length > 0 || context.length > 0) && mouseMode != mouseModes.EDGE_CREATION) {
+    if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
         hasPressedDelete = checkDeleteBtn();
     }
     
@@ -2090,7 +2098,7 @@ function mouseMode_onMouseUp(event)
 function mup(event)
 {
     if(!mouseOverLine && !mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
     mouseButtonDown = false;
     targetElement = null;
@@ -2171,7 +2179,7 @@ function mup(event)
 function mouseEnter(){
     if(!mouseButtonDown){
         mouseOverElement = true;
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     }
 }
 
@@ -2180,7 +2188,7 @@ function mouseEnter(){
  */
 function mouseLeave(){
     mouseOverElement = false;
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
 }
 /**
 
@@ -2191,7 +2199,6 @@ function mouseLeave(){
 function checkDeleteBtn(){
     if (deleteBtnX != 0) {
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
             }
@@ -2213,20 +2220,20 @@ function mouseOverSelection(mouseX, mouseY){
     if(context.length > 0 || contextLine.length > 0){
         // If there is a selection box and mouse position is inside it.
         if (mouseX > selectionBoxLowX && mouseX < selectionBoxHighX && mouseY > selectionBoxLowY && mouseY < selectionBoxHighY){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // If mouse position is over the delete button.
         else if (mouseX > deleteBtnX && mouseX < (deleteBtnX + deleteBtnSize) && mouseY > deleteBtnY && mouseY < (deleteBtnY + deleteBtnSize)){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // Not inside selection box, nor over an element or line.
         else if(!mouseOverElement && !mouseOverLine){
-            setCursorStyles(mouseMode);
+            setContainerStyles(mouseMode);
         }
     }
     // There is no selection box, and mouse position is not over any element or line.
     else if(!mouseOverElement && !mouseOverLine){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
 }
 
@@ -2420,12 +2427,13 @@ function mouseMode_onMouseMove(event)
 
     // Change cursor style if mouse pointer is over a line.
     if(mouseOverLine && !mouseButtonDown){
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     } else if(!mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
+            mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -3114,7 +3122,7 @@ function updateSelectedLine(selectedLine)
  * @description Updates the current selection of elements depending on what buttons are down. Context array may have the new element added or removed from the context array, have the context array replaced with only the new element or simply have the array emptied.
  * @param {Object} ctxelement Element that has was clicked or null. A null value will DESELECT all elements, emptying the entire context array.
  */
-function updateSelection(ctxelement) // TODO : Default null value since we use it for deselection?
+function updateSelection(ctxelement)
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null) {
@@ -3309,7 +3317,6 @@ function clearContextLine()
  * @param {Number} mouseX Pixel position in the x-axis.
  * @param {Number} mouseY Pixel position in the y-axis.
  * @returns {Point} Point containing the calculated coordinates.
- * @see diagramToScreenPosition() For converting the other way.
  */
 function screenToDiagramCoordinates(mouseX,mouseY)
 {
@@ -3333,23 +3340,6 @@ function screenToDiagramCoordinates(mouseX,mouseY)
 
     return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
                     Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
-    );
-}
-
-/**
- * @description Converts a coordinate on the canvas into a pixel position on the screen.
- * @param {Number} coordX Coordinate position in the x-axis.
- * @param {Number} coordY Coordinate position in the y-axis.
- * @returns {Point} Point containing the calculated screen position.
- * @depricated TODO : Needs to be updated
- * @see screenToDiagramCoordinates() For converting the other way.
- */
-function diagramToScreenPosition(coordX, coordY)
-{
-    console.warn("diagramToScreenPosition() is depricated. It should be updated to use new screenToDiagramCoordinates() algorithm reversed.");
-    return new Point(
-        Math.round((coordX + scrollx) / zoomfact + 0),
-        Math.round((coordY + scrolly) / zoomfact + 0)
     );
 }
 
@@ -3644,7 +3634,7 @@ function setMouseMode(mode)
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
         mouseMode = mode;
-        setCursorStyles(mode);
+        setContainerStyles(mode);
         onMouseModeEnabled();
     } else {
         // Not implemented exception
@@ -3654,26 +3644,24 @@ function setMouseMode(mode)
 
 /**
  * @description Changes the current visual cursor style for the user.
- * @param {Number} cursorMode CursorStyle value. This will be translated into appropriate cursor style.
+ * @param {Number} cursorMode containerStyle value. This will be translated into appropriate container style.
  */
-function setCursorStyles(cursorMode = mouseModes.POINTER)
+function setContainerStyles(cursorMode = mouseModes.POINTER)
 {
-    // TODO : Create new string enum for all cursor styles? This would result in us not needing to use any form of branching and still get correct result.
-    // TODO : Should have better name. This is the CONTAINER and not a CURSORSTYLE!
-    cursorStyle = document.getElementById("container").style;
+    containerStyle = document.getElementById("container").style;
 
     switch(cursorMode) {
         case mouseModes.POINTER:
-            cursorStyle.cursor = "grab";
+            containerStyle.cursor = "grab";
             break;
         case mouseModes.BOX_SELECTION:
-            cursorStyle.cursor = "crosshair";
+            containerStyle.cursor = "crosshair";
             break;
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         case mouseModes.EDGE_CREATION:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         default:
             break;
@@ -4149,10 +4137,15 @@ const stateLinesLabels=[];
 function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
-    if(window.getComputedStyle(dropdown).display==="none")
-    dropdown.style.display="block";
-    else
-    dropdown.style.display="none";
+    const load=document.getElementById("diagramLoad");
+    if(window.getComputedStyle(dropdown).display==="none"){
+        load.style.display="block";
+        dropdown.style.display="block";
+    }
+    else{
+        load.style.display="none";
+        dropdown.style.display="none";
+    }
 }
 
 /**
@@ -7507,7 +7500,7 @@ function sortElementAssociations(element)
  */
 
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
-
+    
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
      if (toElement.kind == "EREntity"){
         var tempElement = toElement;
@@ -7530,6 +7523,9 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     if (toElement.kind == "UMLInitialState") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
+    }else if(fromElement.kind == "UMLFinalState") {
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}`);
+        return; 
     }
 
     // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
@@ -7870,19 +7866,20 @@ function drawLine(line, targetGhost = false)
         if (line.kind == "Recursive"){
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
-            const startY = fy - 15 * zoomfact;
-            const endX = fx - 10 * zoomfact;
+            const startY = fy - 10 * zoomfact;
+            const endX = fx - 25 * zoomfact;
             const endY = fy - 15 * zoomfact;
             const cornerX = fx + length;
             const cornerY = fy - length;
-
-            str += `<line id='${line.id}-line1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<polygon id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+            
+            str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
         }
     }
+    
 
     /* if (felem.type != 'ER' || telem.type != 'ER') {
         line.type = 'UML';
@@ -11640,7 +11637,7 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    if ((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) {
+    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 & contextLine.length != 0){
         var lowX;
         var highX;
         var lineLowX;
@@ -12304,9 +12301,15 @@ function exportWithoutHistory()
  * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
 function loadMockupDiagram(path){
-    
-    let fileType = document.getElementById("diagramTypeDropdown").value;
-    path = fileType;
+
+    // "resetDiagram()" calls this method with "EMPTYDiagram" as parameter
+
+    // The path is not set yet if we do it from the dropdown as the function
+    // is called without a parameter.
+    if(!path){
+        let fileType = document.getElementById("diagramTypeDropdown").value;
+        path = fileType;
+    }
     //make sure its not null first
     if (path != null) {
         //via fetch API, request the json file 
@@ -12420,8 +12423,8 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
-
-function fetchDiagramFileContentOnLoad()
+//code has no functionallity execpt for when the hard coded diagram was used. looks like it reloaeded the diagram and got the file. Diagram in onSetup()
+/* function fetchDiagramFileContentOnLoad()
 {
     let temp = getVariantParam();
     var fullParam = temp[0];
@@ -12442,7 +12445,7 @@ function fetchDiagramFileContentOnLoad()
         // Failed to load content
         console.error("No content to load")
     }
-}
+} */
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
@@ -12518,15 +12521,21 @@ function resetDiagramAlert(){
  * @description Cleares the diagram.
  */
 function resetDiagram(){
+    
     // Goto the beginning of the diagram
+        // NOTE: stateMachine should be StateMachine, but this had no effect
+        // on functionality.
+    /*
     stateMachine.gotoInitialState();
 
     // Remove the previous history
     stateMachine.currentHistoryIndex = -1;
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
-    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
-    fetchDiagramFileContentOnLoad();
+    //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    //fetchDiagramFileContentOnLoad();
+    */
+    loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 /**
  *
