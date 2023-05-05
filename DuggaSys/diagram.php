@@ -420,7 +420,21 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
+                    <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                    <span class="toolTipText"><b>Attribute</b><br>
+                        <p>Add an ER attribute to the diagram</p><br>
+                        <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
+                    <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
+                    <span class="toolTipText"><b>Line</b><br>
+                        <p>Make a line between elements</p><br>
+                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div> <!--state elements start--><!--Initial state button-->
                     <div id="elementPlacement9"
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(9); setMouseMode(2);'
@@ -437,7 +451,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut"><!--Initial state -->
                         <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
@@ -445,7 +459,7 @@
                                     <p>Creates an initial state for UML.</p>
                                     <p>The initial state represents the start of a process.</p>
                                 </span>
-                            </div>
+                            </div><!--Final state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
@@ -453,7 +467,7 @@
                                     <p>Creates a final state for UML.</p>
                                     <p>The final state represents where a process ends.</p>
                                 </span>
-                            </div>
+                            </div><!--Super state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
@@ -465,7 +479,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div><!--Final state button-->
                     <div id="elementPlacement10"
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(10); setMouseMode(2);'
@@ -482,7 +496,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut"><!--Initial state -->
                         <div id="togglePlacementTypeBox10" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
@@ -491,14 +505,14 @@
                                     <p>Creates an initial state for UML.</p>
                                     <p>The initial state represents the start of a process.</p>
                                 </span>
-                            </div>
+                            </div><!--Final state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Creates a final state for UML.</p>
                                     <p>The final state represents where a process ends.</p>
                                 </span>
-                            </div>
+                            </div><!--Super state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
@@ -510,8 +524,8 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
-                <div>
-                    <div id="elementPlacement11"
+                <div><!--Super state button-->
+                    <div id="elementPlacement11" 
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(11); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
@@ -527,7 +541,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut"><!--Initial state -->
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
@@ -536,7 +550,7 @@
                                     <p>Creates an initial state for UML.</p>
                                     <p>The initial state represents the start of a process.</p>
                                 </span>
-                            </div>
+                            </div><!--Final state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
@@ -544,7 +558,7 @@
                                     <p>Creates a final state for UML.</p>
                                     <p>The final state represents where a process ends.</p>
                                 </span>
-                            </div>
+                            </div><!--Super state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
@@ -554,21 +568,7 @@
                             </div>                           
                         </div>
                     </div>
-                </div>
-                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                    <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Add an ER attribute to the diagram</p><br>
-                        <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>
-                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
-                    <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
-                    <span class="toolTipText"><b>Line</b><br>
-                        <p>Make a line between elements</p><br>
-                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>
+                </div><!--<-- UML functionality end -->
                  <!--Sequence diagram lifeline | for now is bound to uml final state -->
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
@@ -593,7 +593,6 @@
                         <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <!--<-- UML functionality end -->
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
