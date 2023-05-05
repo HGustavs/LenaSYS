@@ -57,7 +57,16 @@
                     echo "const did = '21';";
                 }
             ?>
-
+                $.ajax({
+                async: false,
+                method: "GET",
+                url: `diagramservice.php?courseid=${courseId}&did=${did}`,
+            }).done((res) => {
+                console.log(res)
+                response = res;
+            }).error((req, status, err) => {
+                console.error(err);
+            });
             
             
             return response;
@@ -81,7 +90,7 @@
                 console.error(error);
             }
         }
-        console.log(getCourseId);
+        console.log(fetchDiagram);
         console.log(getCourseId);
         console.log(getCourseId);
 
