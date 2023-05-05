@@ -44,37 +44,47 @@ function search(key)
         // Fetch variant parameters from server
         var DiagramResponse;
         
-        function fetchDiagram() {
+      function fetchDiagram() {
             var response;
 
+            // <<<<<<< g1-2023-v5-#13735
             let cid=search("courseid");
-const folder=search("folder");
-let did=search("did");
-const id=search("id");
-if(cid=="UNK"&&folder!=null)
-cid=folder;
-else
-cid=1894;
-if(did=="UNK"&&id!=null)
-did=id;
-else
-did=21;
+            const folder=search("folder");
+            let did=search("did");
+            const id=search("id");
+            if(cid=="UNK"&&folder!=null)
+                cid=folder;
+            else
+                cid=1894;
+            if(did=="UNK"&&id!=null)
+                did=id;
+            else
+                did=21;
 
-            $.ajax({
-                async: false,
-                method: "GET",
-                url: `diagramservice.php?courseid=${cid}&did=${did}`,
-            }).done((res) => {
-                console.log(res)
-                response = res;
-            }).error((req, status, err) => {
-                console.error(err);
-            });
-            
+            response = getCourseId(cid, did);
+
             return response;
         }
-        
 
+        function getCourseId (courseId, did) {
+            try {
+                let response;
+                $.ajax({
+                    async: false,
+                    method: "GET",
+                    url: `diagramservice.php?courseid=${courseId}&did=${did}`,
+                    //>>>>>>> g1-2023-v5
+                }).done((res) => {
+                    console.log(res)
+                    response = res;
+                })
+
+                return response;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
         /**
          * @description get the contents of a instruction file
          * @param fileName the name of the file t.ex. test.html
@@ -96,7 +106,7 @@ did=21;
     </script>
 </head>
 <body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
-
+        
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">
 
