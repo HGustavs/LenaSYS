@@ -1401,7 +1401,7 @@ function getData()
     // SHOULD BE CHANGED LATER
     togglePlacementType(0,0)
     togglePlacementType(11,0)
-    togglePlacementType(1,1)
+    
 }
 //<-- UML functionality start
 /**
