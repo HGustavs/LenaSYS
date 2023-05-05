@@ -9413,7 +9413,8 @@ function drawElement(element, ghosted = false)
         fill='transparent'
         />`;
         //svg for actor.
-        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        str += `<g fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}>`;
+        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px"'/>`;
         str += `<path class="text" 
             d="M${(boxw/2)+linew},${(boxw/4)+linew}
                 v${boxw/6}
@@ -9425,11 +9426,8 @@ function drawElement(element, ghosted = false)
                 m${(boxw/4)*-1},${(boxw/4)*-1}
                 l${(boxw/4)*-1},${boxw/4}
             "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='transparent'
-        />`;
-        str += `</svg>`;  
+            fill='transparent'/>`;
+        str += `</g></svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
