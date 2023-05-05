@@ -11802,6 +11802,16 @@ function updateCSSForAllElements()
                         }
                     }
                 }
+                else if (element.kind == "UMLInitialState" || element.kind == "UMLFinalState" ) {
+                    for (let index = 0; index < 2; index++) {
+                        fillColor = elementDiv.children[index].children[0].children[0];
+                        if (fillColor.style.fill == `${"#000000"}`) {
+                            fillColor.style.fill = `${"#FFFFFF"}`;
+                        } else {
+                            fillColor.style.fill = `${element.fill}`;
+                        }
+                    }
+                }
                 // Update Elements with double borders.
                 else if(element.state == "weak" || element.state == "multiple") {
                     for (let index = 0; index < 2; index++) {
