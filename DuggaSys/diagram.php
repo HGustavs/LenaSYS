@@ -576,12 +576,12 @@
                             <br>
                             <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
-                        <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                        <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
                     <div id="diagramPopOut">  
-                        <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                        <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
