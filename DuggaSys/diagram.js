@@ -1136,8 +1136,8 @@ var defaults = {
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
     SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
     sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
@@ -4258,6 +4258,7 @@ function toggleDarkmode()
     toggleBorderOfElements();
 
 }
+
 
 /**
  * @description When diagram page is loaded, check if preferred theme is stored in local storage.
@@ -9065,6 +9066,7 @@ function drawElement(element, ghosted = false)
     }
     else if (element.kind == 'UMLInitialState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
                      style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
@@ -9076,14 +9078,21 @@ function drawElement(element, ghosted = false)
                              xmlns="http://www.w3.org/2000/svg" 
                              xml:space="preserve"
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                            <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
+                            <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
                                 <circle cx="16.5" cy="12.5" r="10.5"/>
                             </g>
                         </svg>
                 </div>`;
+                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
+                    element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
+                }
+
     }
     else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
                      style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
@@ -9101,6 +9110,12 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
+                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
+                    element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
+                }
+
     }
     else if (element.kind == 'UMLSuperState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
