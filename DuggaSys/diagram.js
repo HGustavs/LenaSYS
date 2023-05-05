@@ -4215,16 +4215,10 @@ function toggleDarkmode()
 	if(storedTheme) stylesheet.href = storedTheme;
 
     if(stylesheet.href.includes('blackTheme')){
-        if(element.kind == "UMLInitialState" || element.kind == "UMLFinalState" && element.fill == `${"#FFFFFF"}`) {
-            element.fill ==  `${"#000000"}`;
-        }
         // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     } else if(stylesheet.href.includes('style')) {
-        if(element.kind == "UMLInitialState" || element.kind == "UMLFinalState" && element.fill == `${"#000000"}`) {
-            element.fill ==  `${"#FFFFFF"}`;
-        }
         // if it's light -> go dark
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
