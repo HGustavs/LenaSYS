@@ -1402,8 +1402,6 @@ function getData()
     
     // ER
     togglePlacementType(0,0)
-    // Sequence
-    togglePlacementType(11,1)
     // Inheritance
     togglePlacementType(1,1)
 }
