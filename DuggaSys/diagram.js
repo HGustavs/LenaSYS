@@ -1399,9 +1399,9 @@ function getData()
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
-    togglePlacementType(0,0)
-    togglePlacementType(11,0)
     
+    togglePlacementType(11,0)
+    togglePlacementType(1,1)
 }
 //<-- UML functionality start
 /**
