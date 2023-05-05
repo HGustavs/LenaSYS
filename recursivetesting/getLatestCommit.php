@@ -103,13 +103,9 @@
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
-		echo "<h2> Outputs for fetching data when updating a course </h2>";
-
 		$commmit = "";
 		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
-			echo "<p>URL from select: ".$row['repoURL']."</p>";
 			$commit = $row['lastCommit'];
 			$url = $row['repoURL'];
 		}
@@ -128,15 +124,11 @@
 				$query->bindParam(':latestCommit', $latestCommit);
 				$query->execute();
 
-				echo '<script>console.log("The course should be updated!"); </script>';
 				bfs($url, $cid, "REFRESH");
-				echo '<script>console.log(' .$url. '); </script>';
-				//echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(true);</script>';
-				print "funkar";
+				//echo '<script>console.log(' .$url. '); </script>';
+				print "The course has been updated!";
 			} else {
-				echo '<script>console.log("The course is already up to date!"); </script>';
-				//echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(false);</script>';
-				print "funkar2";
+				print "The course is already up to date!";
 			}
 		}
 	}
