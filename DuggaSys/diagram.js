@@ -6598,8 +6598,10 @@ function generateContextProperties()
                             break;
                     }
                 }
+                str += `<div>`
                 str += `<input type="radio" id="sequenceActor" name="sequencePicker" value="actor" checked><label for="sequenceActor">Actor</label>`
                 str += `<input type="radio" id="sequenceObject" name="sequencePicker" value="object"><label for="sequenceObject">Object</label>`
+                str += `</div>`
             }
         }
     
