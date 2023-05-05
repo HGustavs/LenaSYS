@@ -6594,15 +6594,18 @@ function generateContextProperties()
                             str += `<div style='color:white'>Name</div>`;
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
+                        case 'actorOrObject':
+                            //radio buttons for choosing object  or actor. This just hides them via css via the function toggleBetweenActorAndObject.
+                            str += `<div>`
+                            str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor"><label for="sequenceActorRadio">Actor</label>`
+                            str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object"><label for="sequenceObjectRadio">Object</label>`
+                            str += `</div>`
+                            break;
                         default:
                             break;
                     }
                 }
-                //radio buttons for choosing object  or actor. This just hides them via css via the function toggleBetweenActorAndObject.
-                str += `<div>`
-                str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" checked onfocus=''><label for="sequenceActorRadio">Actor</label>`
-                str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus=''><label for="sequenceObjectRadio">Object</label>`
-                str += `</div>`
+                
             } 
         }
     
