@@ -30,17 +30,24 @@
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
     <script src="diagram.js"></script>
-    <script type="module">
-            import search from "./modules/search.module.js";
-</script>
-    <script type="module">
-            
+    <script>
+           /**
+ * @description returns the value of a query string sent in a URL.
+ * @param a key of type string.
+ * @returns a string containing the value 
+ */
+function search(key)
+{
+    const parameters=new URLSearchParams(window.location.search);
+    return parameters.get(key);
+} 
         // Fetch variant parameters from server
         var DiagramResponse;
         
         function fetchDiagram() {
             var response;
-let cid=search("courseid");
+
+            let cid=search("courseid");
 const folder=search("folder");
 let did=search("did");
 const id=search("id");
