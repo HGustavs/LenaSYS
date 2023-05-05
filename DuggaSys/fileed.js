@@ -380,7 +380,7 @@ function renderCell(col, celldata, cellid) {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     } else if (col == "type") {
         console.log("tja har har type");
-        console.log((obj.filePath).toString());
+        console.log();
     }
     return str;
 }
