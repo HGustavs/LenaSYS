@@ -380,7 +380,9 @@ function renderCell(col, celldata, cellid) {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     } else if (col == "type") {
         if(celldata !== null) {
-            console.log(celldata);
+            str = "<span>" + "Github" + "</span>";
+        } else {
+            str += "<span>" + "Manual" + "</span>";
         }
     }
     return str;
