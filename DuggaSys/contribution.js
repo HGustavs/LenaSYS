@@ -1930,6 +1930,7 @@ function showMoreContribContent(id,status){
 //Loads or Create a default localStorage if localStorage doesn't exists. Used onload.
 function loadContribFormLocalStorage(){
   var user = localStorage.getItem('GitHubUser')
+  console.log(user);
   if(localStorage.getItem('contribToggleArr') == null){
     localStorage.setItem('contribToggleArr', JSON.stringify(createDefault())); 
   }
