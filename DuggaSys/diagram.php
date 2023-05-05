@@ -62,7 +62,7 @@
             
             return response;
         }
-        function getCourseId (courseId, did) {
+        function getCourseId () {
             try {
                 let response;
                 $.ajax({
@@ -81,9 +81,9 @@
                 console.error(error);
             }
         }
-        console.log(getCourseId(1894, 0));
-        console.log(getCourseId(2, 10));
-        console.log(getCourseId(9, 10));
+        console.log(getCourseId);
+        console.log(getCourseId);
+        console.log(getCourseId);
 
         /**
          * @description get the contents of a instruction file
