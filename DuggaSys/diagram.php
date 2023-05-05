@@ -497,21 +497,6 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div>
-                    <div id="elementPlacement0"
-                         class="ERButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(0); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(0)"><!--<-- UML functionality -->
-                        <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
-                        <span class="toolTipText"><b>ER entity</b><br>
-                            <p>Add an ER entity to the diagram</p><br>
-                            <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
-                        </span>
-                        <div id="togglePlacementTypeButton0" class="placementTypeIcon togglePlacementTypeButton">
-                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
-                        </div>
-                    </div>    
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
