@@ -450,7 +450,7 @@
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>-->
-                 Sequence diagram lifeline | for now is bound to uml final state 
+                 <!--Sequence diagram lifeline | for now is bound to uml final state -->
                 <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                     <span class="toolTipText"><b>Sequence lifeline</b><br>
