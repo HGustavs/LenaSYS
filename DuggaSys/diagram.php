@@ -60,7 +60,7 @@
                 $.ajax({
                 async: false,
                 method: "GET",
-                url: `diagramservice.php?courseid=${courseId}&did=${did}`,
+                url: `diagramservice.php?courseid=${courseid}&did=${did}`,
             }).done((res) => {
                 console.log(res)
                 response = res;
