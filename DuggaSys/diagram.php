@@ -617,7 +617,7 @@
                         </div>
                     </div>
                     <div id="diagramPopOut">  
-                        <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                        <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <div class="diagramIcons toolbarMode" onclick='togglePlacementType(13,1); setElementPlacementType(11); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
