@@ -6015,11 +6015,11 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement10").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton10").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
-        /*document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); //IE inheritance start
+        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); //IE inheritance start
         document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end*/
+        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
     }
     
     // Unhide the currently selected placement type
