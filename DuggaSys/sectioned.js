@@ -472,6 +472,14 @@ function refreshGithubRepo(courseid)
 	return dataCheck;
 }
 
+function courseUpdateAlerts(hasUpdated) {
+  if(hasUpdated) {
+    alert("The course has been updated!");
+  } else {
+    alert("The course is already up to date!");
+  }
+}
+
 //----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog
 //----------------------------------------------------------------------------------

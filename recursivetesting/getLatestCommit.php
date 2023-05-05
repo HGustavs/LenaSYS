@@ -127,14 +127,14 @@
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':latestCommit', $latestCommit);
 				$query->execute();
-				
-				//print_r("The course should be updated!");
+
 				echo '<script>console.log("The course should be updated!"); </script>';
 				bfs($url, $cid, "REFRESH");
 				echo '<script>console.log(' .$url. '); </script>';
+				echo '<script src="../DuggaSYS/Sectioned.js">courseUpdateAlerts(true);</script>';
 			} else {
-				//print_r("The course is already up to date!");
 				echo '<script>console.log("The course is already up to date!"); </script>';
+				echo '<script src="../DuggaSYS/Sectioned.js">courseUpdateAlerts(false);</script>';
 			}
 		}
 	}
