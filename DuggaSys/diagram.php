@@ -519,6 +519,7 @@
                             </div>                           
                         </div>
                     </div>
+                </div>
                 <div>
                     <div id="elementPlacement10"
                          class="SDButton diagramIcons toolbarMode"
@@ -555,7 +556,8 @@
                                 </span>
                             </div>                           
                         </div>
-                    </div><!--<-- UML functionality end -->
+                    </div>
+                </div><!--<-- UML functionality end -->
                 <div>
                     <div id="elementPlacement11"
                          class="SDButton diagramIcons toolbarMode"
@@ -594,8 +596,6 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
-                </div>
-                </div>
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
