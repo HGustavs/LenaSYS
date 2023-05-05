@@ -380,10 +380,10 @@ function renderCell(col, celldata, cellid) {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     } else if (col == "type") {
         console.log("tja har har type");
-        if(obj.filePath !== null) {
-            console.log("inte null");
+        if(obj.filePath.includes("GitHub")) {
+            console.log("inte github");
         } else {
-            console.log("är null");
+            console.log("är github");
         }
     }
     return str;
