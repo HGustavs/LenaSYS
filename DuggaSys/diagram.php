@@ -531,7 +531,7 @@
                     </div>
                     <div id="diagramPopOut">  
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(11); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
                                     <p>Creates an activation box.</p>
@@ -540,7 +540,7 @@
                                     <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(5,1); setElementPlacementType(1); setMouseMode(2);'>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(5,1); setElementPlacementType(11); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                                 <span class="toolTipText"><b>Sequence Object</b><br>
                                     <p>Creates a sequence object.</p>
