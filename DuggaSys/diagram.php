@@ -25,7 +25,9 @@
         <!-- To enable dark mode, these 2 files were added. -->
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	<script src="darkmodeToggle.js"></script>
-
+<script type="module">
+    import search from "./modules/search.module.js";
+    </script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
@@ -91,13 +93,6 @@
                 }
             }			
         }
-        //does nothing, this code gets and old diagram that was used which is not in use anymore was used before for onSetup().
-       /*  function getVariantParam()
-        {
-            return DiagramResponse.variant;
-        } */
-
-
     </script>
 </head>
 <body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
@@ -512,7 +507,7 @@
                     </span>
                 </div>
                 <!-- Sequence diagram lifeline | for now is bound to uml final state -->
-                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(12); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                     <span class="toolTipText"><b>Sequence lifeline</b><br>
                         <p>Creates a lifeline for a sequnece diagram</p>
@@ -751,7 +746,7 @@
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                         <option value="JSON/EMPTYDiagramMockup.json">Empty board</option>
                         <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
-                        <option  value="JSON/UMLDiagramMockup.json">UML diagrams</option>
+                        <option value="JSON/UMLDiagramMockup.json">UML diagrams</option>
                         <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
                     </select>
                     <button class="saveButton" id="diagramLoad" onclick="loadMockupDiagram();">Load</button>
@@ -773,32 +768,6 @@
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
             </fieldset>
         </div>
-      <!-- 
-        <div id="zoom-container">
-            <div class="diagramZoomIcons" onclick='zoomin();'>
-                <img src="../Shared/icons/diagram_zoomin.svg" alt="Zoom in"/>
-                <span class="zoomToolTipText"><b>Zoom IN</b><br>
-                    <p>Zoom in on viewed area</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick='zoomout();'>
-                <img src="../Shared/icons/diagram_zoomout.svg" alt="Zoom out"/>
-                <span class="zoomToolTipText"><b>Zoom OUT</b><br>
-                    <p>Zoom out on viewed area</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/diagram_zoomratio1to1.svg" alt="Zoom reset"/>
-                <span class="zoomToolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to 1x</p><br>
-                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-        </div>
-   -->
-
     </div>
     </div>
     <!-- Replay-mode -->
