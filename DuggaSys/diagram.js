@@ -9023,6 +9023,7 @@ function drawElement(element, ghosted = false)
     }
     else if (element.kind == 'UMLInitialState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
                      style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
@@ -9039,6 +9040,12 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
+                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
+                    element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
+                }
+
     }
     else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
