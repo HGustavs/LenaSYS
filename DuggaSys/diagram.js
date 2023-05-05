@@ -8936,6 +8936,8 @@ function drawElement(element, ghosted = false)
     var hboxh = Math.round(element.height * zoomfact * 0.5);
     var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
+    var sequenceActorDisplay = "block"; // used for switching between actor and object in sequence diagram.
+    var sequenceObjectDisplay = "none";
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8943,7 +8945,7 @@ function drawElement(element, ghosted = false)
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
-
+    
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
@@ -9435,7 +9437,7 @@ function drawElement(element, ghosted = false)
         fill='transparent'
         />`;
         //svg for actor.
-        str += `<g id="sequenceActor">`
+        str += `<g id="sequenceActor" style=display:'${sequenceActorDisplay}'>`
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text"
             d="M${(boxw/2)+linew},${(boxw/4)+linew}
@@ -9455,7 +9457,7 @@ function drawElement(element, ghosted = false)
         str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</g>`;
         //svg for object.
-        str += `<g id="sequenceObject">`;
+        str += `<g id="sequenceObject" style=display:'${sequenceObjectDisplay}'>`;
         str += `<rect class='text'
             x='${linew}'
             y='${linew}'
@@ -12144,6 +12146,7 @@ function toggleBetweenActorAndObject(type){
     if (type == "actor") {
         /* document.getElementById("sequenceObject").classList.add("hidden");
         document.getElementById("sequenceActor").classList.remove("hidden"); */
+
     } else if (type == "object") {
         /* document.getElementById("sequenceActor").classList.add("hidden");
         document.getElementById("sequenceObject").classList.remove("hidden"); */
