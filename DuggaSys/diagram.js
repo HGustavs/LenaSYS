@@ -1014,7 +1014,7 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000"];
+const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
@@ -4114,9 +4114,13 @@ const stateLinesLabels=[];
     }
 
     // Adds additional information in the view.
+    output+=`<p>Line labels:</p>`;
     for(var i=0; i<stateLinesLabels.length; i++)
     {
-    output+=`<p>${stateLinesLabels[i]}</p>`;
+        if(stateLinesLabels[i]==undefined)
+        output+=`<p>Unlabeled</p>`;
+        else
+        output+=`<p>${stateLinesLabels[i]}</p>`;
     }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
