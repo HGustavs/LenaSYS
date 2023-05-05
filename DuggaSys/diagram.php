@@ -521,17 +521,17 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement4"
+                    <div id="elementPlacement10"
                          class="UMLButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(4); setMouseMode(2);'
+                         onclick='setElementPlacementType(10); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(4)">
-                        <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
-                        <span class="toolTipText"><b>UML class</b><br>
+                         onmousedown="holdPlacementButtonDown(10)">
+                        <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
+                        <span class="toolTipText"><b>UML final state</b><br>
                             <p>Add an UML class to the diagram</p><br>
-                            <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                         </span>
-                        <div id="togglePlacementTypeButton4" class="placementTypeIcon togglePlacementTypeButton">
+                        <div id="togglePlacementTypeButton10" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
@@ -559,17 +559,17 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                 <div>
-                    <div id="elementPlacement6"
+                    <div id="elementPlacement11"
                          class="IEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(6); setMouseMode(2);'
+                         onclick='setElementPlacementType(11); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(6)">
-                        <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
-                        <span class="toolTipText"><b>IE entity</b><br>
+                         onmousedown="holdPlacementButtonDown(11)">
+                        <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
+                        <span class="toolTipText"><b>UML super state</b><br>
                             <p>Add an IE entity to the diagram</p><br>
-                            <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                         </span>
-                        <div id="togglePlacementTypeButton6" class="placementTypeIcon togglePlacementTypeButton">
+                        <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
