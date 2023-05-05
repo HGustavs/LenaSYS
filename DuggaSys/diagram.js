@@ -9447,6 +9447,7 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='transparent'
         />`;
+        str += `<text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</g>`;
         //svg for object.
         str += `<g>`;
@@ -9460,6 +9461,7 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='${element.fill}' 
         />`;
+        str += `<text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</g>`;
         str += `</svg>`;  
     }
