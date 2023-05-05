@@ -12142,11 +12142,11 @@ function toggleBorderOfElements() {
  */
 function toggleBetweenActorAndObject(type){
     if (type == "actor") {
-        document.getElementById("sequenceObject").classList.add("hidden");
-        document.getElementById("sequenceActor").classList.remove("hidden");
+        /* document.getElementById("sequenceObject").classList.add("hidden");
+        document.getElementById("sequenceActor").classList.remove("hidden"); */
     } else if (type == "object") {
-        document.getElementById("sequenceActor").classList.add("hidden");
-        document.getElementById("sequenceObject").classList.remove("hidden");
+        /* document.getElementById("sequenceActor").classList.add("hidden");
+        document.getElementById("sequenceObject").classList.remove("hidden"); */
     }
 }
 /**

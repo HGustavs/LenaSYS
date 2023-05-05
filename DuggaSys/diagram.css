@@ -641,7 +641,3 @@
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
-
-.hidden{
-    display: none;
-}
