@@ -566,7 +566,7 @@ class StateMachine
 
         // If there is only an key that is ID in the state, delete those objects
         // TODO: Change the delete key to "del" OR "delete"
-        if (keys.length == 2 && keys[0] == "id") {
+        if (keys.length == 2 && keys[0] == "delete") {
             var elementsToRemove = [];
             var linesToRemove = [];
 
@@ -600,14 +600,14 @@ class StateMachine
             if (object){
                 // For every key, apply the changes
                 keys.forEach(key => {
-                    if (key == "id" || key == "time") return; // Ignore this keys.
+                    if (key == "delete" || key == "time") return; // Ignore this keys.
                         object[key] = state[key];
                 });
             }else { // If no object was found - create one
 
                 var temp = {};
                 Object.keys(state).forEach(key => {
-                    if (key == "id") temp.id = state.id[i];
+                    if (key == "delete") temp.id = state.id[i];
                     else temp[key] = state[key];
                 });
 
