@@ -12146,13 +12146,11 @@ function toggleBetweenActorAndObject(type){
     if (type == "actor") {
         sequenceActorDisplay = "block";
         sequenceObjectDisplay = "none";
-        console.log("actor showing");
-
     } else if (type == "object") {
         sequenceActorDisplay = "none";
         sequenceObjectDisplay = "block";
-        console.log("object showing");
     }
+    showdata()
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
