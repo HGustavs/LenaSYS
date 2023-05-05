@@ -381,6 +381,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "type") {
         console.log(obj.path);
         console.log(obj.filename);
+        console.log(celldata);
     }
     return str;
 }
