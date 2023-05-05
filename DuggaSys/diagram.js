@@ -1400,8 +1400,11 @@ function getData()
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
     
+    // ER
     togglePlacementType(0,0)
+    // Sequence
     togglePlacementType(11,1)
+    // Inheritance
     togglePlacementType(1,1)
 }
 //<-- UML functionality start
