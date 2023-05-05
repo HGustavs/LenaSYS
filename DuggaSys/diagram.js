@@ -6004,7 +6004,7 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
-        
+        /*
         // SE start
         document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); 
         document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
@@ -6023,6 +6023,7 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement13").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton13").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox"); // SE end
+        */
     }
     
     // Unhide the currently selected placement type
