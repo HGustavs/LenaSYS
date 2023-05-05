@@ -793,8 +793,9 @@ const elementTypes = {
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
-
     UMLSuperState:11,
+
+    sequenceActor:12, //sequence functionality
 
 };
 
@@ -817,6 +818,8 @@ const elementTypesNames = {
     UMLFinalState: "UMLFinalState",
 
     UMLSuperState: "UMLSuperState",
+
+    sequenceActor: "sequenceActor",
 
 }
 
@@ -966,7 +969,9 @@ var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
 var hasRecursion = false;
 var startWidth;
+var startHeight;
 var startNodeRight = false;
+var startNodeDown = false;
 var containerStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
@@ -1131,10 +1136,11 @@ var defaults = {
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
     SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
+    sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1898,8 +1904,11 @@ function mdown(event)
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
+            startHeight = data[findIndex(data, context[0].id)].height;
 
-            startNodeRight = !event.target.classList.contains("mr");
+            //startNodeRight = !event.target.classList.contains("mr");
+            startNodeRight = event.target.classList.contains("ml"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
+            startNodeDown = event.target.classList.contains("md");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -2534,7 +2543,10 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+            const minHeight = 150; // Declare the minimal height of an object
+            deltaY = startY - event.clientY;
+
+            if (startNodeRight && !startNodeDown && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth - (deltaX / zoomfact));
@@ -2545,7 +2557,7 @@ function mmoving(event)
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
-            } else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth) {
+            } else if (!startNodeRight && !startNodeDown && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
@@ -2561,6 +2573,18 @@ function mmoving(event)
                 const xChange = -(tmp - elementData.x);
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                
+            } 
+            //vertical resizing 
+            else if (!startNodeRight && startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                // Fetch original height
+                var tmp = elementData.height;
+                elementData.height = (startHeight - (deltaY / zoomfact));
+
+                // Deduct the new height, giving us the total change
+                const heightChange = -(tmp - elementData.height);
+                
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             }
 
             document.getElementById(context[0].id).remove();
@@ -8674,11 +8698,23 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
+    //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
+    if (element.kind == "sequenceActor") {
+        nodes += "<span id='md' class='node md'></span>";
+    }
     elementDiv.innerHTML += nodes;
-
     // This is the standard node size
     const defaultNodeSize = 8;
-
+    var nodeSize = defaultNodeSize*zoomfact;
+    if (element.kind == "sequenceActor") {
+        var mdNode = document.getElementById("md");
+        mdNode.style.width = nodeSize+"px";
+        mdNode.style.width = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
+        mdNode.style.top = "100%";
+    }
     var nodeSize = defaultNodeSize*zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
@@ -9348,9 +9384,54 @@ function drawElement(element, ghosted = false)
         //end of svg
         str += `</svg>`;
         
-    }    
+    }
+    
     //=============================================== <-- End of IE functionality
+    //=============================================== <-- Start Sequnece functionality
+    //sequence actor and its life line 
+    else if (element.kind == 'sequenceActor') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
 
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the life line
+        str += `<path class="text" 
+        d="M${(boxw/2)+linew},${((boxw/4)*3)+linew}
+        V${boxh}
+        "
+        stroke-width='${linew}'
+        stroke='${element.stroke}'
+        stroke-dasharray='${linew*3},${linew*3}'
+        fill='transparent'
+        />`;
+        //svg for actor.
+        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        str += `<path class="text" 
+            d="M${(boxw/2)+linew},${(boxw/4)+linew}
+                v${boxw/6}
+                m-${(boxw/4)},0
+                h${boxw/2}
+                m-${(boxw/4)},0
+                v${boxw/3}
+                l${boxw/4},${boxw/4}
+                m${(boxw/4)*-1},${(boxw/4)*-1}
+                l${(boxw/4)*-1},${boxw/4}
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='transparent'
+        />`;
+        str += `</svg>`;  
+    }
+    //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
     //ER element
     else {
