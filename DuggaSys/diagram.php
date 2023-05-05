@@ -467,7 +467,7 @@
                     </span>
                 </div>-->
                 <!-- Sequence diagram object selection -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
                         <p>Creates a sequence object.</p><br>
@@ -475,7 +475,7 @@
                         </span>
                 </div> 
                 <!-- Sequence activation selection -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
+                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
                         <p>Creates an activation box.</p><br>
