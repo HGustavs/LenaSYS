@@ -1,10 +1,6 @@
-function search()
+function search(key)
 {
-    const parameters=new Proxy(new URLSearchParams(window.location.search), 
-    {
-        get: (searchParameters, prop)=>searchParameters.get(prop),
-    });
-    let result=parameters.get;
-    return result;
+    const parameters=new URLSearchParams(window.location.search);
+    return parameters.get(key);
 }
 export default search;
