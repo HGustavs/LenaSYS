@@ -6596,11 +6596,12 @@ function generateContextProperties()
                             break;
                         case 'actororobject':
                             console.log("actorOrObject case triggered" + element[property]);
-                            //radio buttons for choosing object  or actor.
+                            //radio buttons for choosing object  or actor via toggleActorOrbject
                             str += `<div>`
                             /* str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" onfocus='${element[property]}="actor"'><label for="sequenceActorRadio">Actor</label>`
                             str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='${element[property]}="object"'><label for="sequenceObjectRadio">Object</label>` */
-                            str += `<button onclick="${element[property]}='object';console.log(${element[property]});">Object</button>`
+                            str += `<button onclick="toggleActorOrbject(${element[property]},'actor')">Actor</button>`
+                            str += `<button onclick="toggleActorOrbject(${element[property]},'object')">Object</button>`
                             str += `</div>`
                             console.log("actorOrObject case exiting" + element[property]);
                             break;
@@ -12146,6 +12147,14 @@ function toggleBorderOfElements() {
             }
         }
     }
+}
+/**
+ * @description toggles the svg for sequence actor/object to be actor or object respecively
+ * @param element Which element this should affect.
+ * @param type to what type it should switch. actor or object.
+ */
+function toggleActorOrbject(element, type){
+    element["actorOrObject"] = type;
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
