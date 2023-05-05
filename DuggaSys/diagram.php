@@ -420,44 +420,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                    <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Add an ER attribute to the diagram</p><br>
-                        <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>
-                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
-                    <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
-                    <span class="toolTipText"><b>Line</b><br>
-                        <p>Make a line between elements</p><br>
-                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>
-                 <!--Sequence diagram lifeline | for now is bound to uml final state -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                    <span class="toolTipText"><b>Sequence lifeline</b><br>
-                        <p>Creates a lifeline for a sequnece diagram</p><br>
-                        <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>              
-                <!-- Sequence diagram object selection -->
-                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
-                    <span class="toolTipText"><b>Sequence Object</b><br>
-                        <p>Creates a sequence object.</p><br>
-                        <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
-                        </span>
-                </div> 
-                <!-- Sequence activation selection -->
-                <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
-                    <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                    <span class="toolTipText"><b>Sequence activation</b><br>
-                        <p>Creates an activation box.</p><br>
-                        <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>
                 <div>
                     <div id="elementPlacement9"
                          class="SDButton diagramIcons toolbarMode"
@@ -592,7 +554,46 @@
                             </div>                           
                         </div>
                     </div>
-                </div><!--<-- UML functionality end -->
+                </div>
+                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
+                    <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                    <span class="toolTipText"><b>Attribute</b><br>
+                        <p>Add an ER attribute to the diagram</p><br>
+                        <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
+                    <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
+                    <span class="toolTipText"><b>Line</b><br>
+                        <p>Make a line between elements</p><br>
+                        <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                 <!--Sequence diagram lifeline | for now is bound to uml final state -->
+                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                    <span class="toolTipText"><b>Sequence lifeline</b><br>
+                        <p>Creates a lifeline for a sequnece diagram</p><br>
+                        <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>              
+                <!-- Sequence diagram object selection -->
+                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                    <span class="toolTipText"><b>Sequence Object</b><br>
+                        <p>Creates a sequence object.</p><br>
+                        <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                        </span>
+                </div> 
+                <!-- Sequence activation selection -->
+                <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
+                    <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                    <span class="toolTipText"><b>Sequence activation</b><br>
+                        <p>Creates an activation box.</p><br>
+                        <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
+                <!--<-- UML functionality end -->
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
