@@ -1494,10 +1494,10 @@ function showDiagramTypes(){
     // SE buttons
     if (diagramType.SE) {
         document.getElementById("elementPlacement11").onmousedown = function () {
-            holdPlacementButtonDown(0);
+            holdPlacementButtonDown(11);
         };
         document.getElementById("elementPlacement12").onmousedown = function () {
-            holdPlacementButtonDown(1);
+            holdPlacementButtonDown(12);
         };
 
         if (firstShown) {
