@@ -531,24 +531,24 @@
                     </div>
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
-                            <div class="SEButton placementTypeBoxIcons" onclick='togglePlacementType(11,2); setElementPlacementType(11); setMouseMode(2);'>
-                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                            <span class="toolTipText"><b>Sequence lifeline</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
-                                <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
-                            </div>
                             <div class="SEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,2); setElementPlacementType(11); setMouseMode(2);'>
-                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                            <span class="toolTipText"><b>Sequence activation</b><br>
-                                <p>Creates an activation box.</p>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
-                                <br>
-                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                                <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                                <span class="toolTipText"><b>Sequence lifeline</b><br>
+                                    <p>Creates a lifeline for a sequnece diagram</p>
+                                    <p>Represents the passage of time.</p>
+                                    <p>Shows events that occur to an object during the process.</p>
+                                    <br>
+                                    <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                            <div class="SEButton placementTypeBoxIcons" onclick='togglePlacementType(11,2); setElementPlacementType(11); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                                <span class="toolTipText"><b>Sequence activation</b><br>
+                                    <p>Creates an activation box.</p>
+                                    <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
                             <div class="SEButton placementTypeBoxIcons" onclick='togglePlacementType(11,2); setElementPlacementType(11); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
@@ -636,7 +636,7 @@
                     </div>
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
-                            <div class="SEButton placementTypeBoxIcons" onclick='togglePlacementType(13,2); setElementPlacementType(11); setMouseMode(2);'>
+                            <div class="SEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,2); setElementPlacementType(11); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                             <span class="toolTipText"><b>Sequence Object</b><br>
                                 <p>Creates a sequence object.</p>
@@ -646,7 +646,7 @@
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
-                            <div class="SEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,2); setElementPlacementType(11); setMouseMode(2);'>
+                            <div class="SEButton placementTypeBoxIcons" onclick='togglePlacementType(13,2); setElementPlacementType(11); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                             <span class="toolTipText"><b>Sequence activation</b><br>
                                 <p>Creates an activation box.</p>
