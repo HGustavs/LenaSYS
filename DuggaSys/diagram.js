@@ -1488,6 +1488,23 @@ function showDiagramTypes(){
             button.classList.add("hiddenPlacementType");
         });
     }
+
+    // SD buttons
+    if (diagramType.UML) {
+        document.getElementById("elementPlacement11").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else {
+        Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
 }
 //<-- UML functionality end
 //#endregion ===================================================================================
