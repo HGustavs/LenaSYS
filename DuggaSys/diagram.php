@@ -514,7 +514,7 @@
                 <div>
                     <div id="elementPlacement11" 
                         class="diagramIcons toolbarMode" 
-                        onclick='setElementPlacementType(11); setMouseMode(2);' 
+                        onclick='setElementPlacementType(0); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown="holdPlacementButtonDown(11)">
                         <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
@@ -531,7 +531,7 @@
                     </div>
                     <div id="diagramPopOut">  
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(11); setMouseMode(2);'>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
                                     <p>Creates an activation box.</p>
@@ -540,7 +540,7 @@
                                     <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(5,1); setElementPlacementType(11); setMouseMode(2);'>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(5,1); setElementPlacementType(4); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                                 <span class="toolTipText"><b>Sequence Object</b><br>
                                     <p>Creates a sequence object.</p>
@@ -553,7 +553,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- -----------------------LIFETIME CODE END --------------------------!-->
+
                 <!-- UML Super state selection -->
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(12); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
@@ -564,9 +564,6 @@
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <!-- Sequence diagram object selection -->
-                
-                <!-- Sequence activation selection -->
                 
         </fieldset>
         <!-- <fieldset>
