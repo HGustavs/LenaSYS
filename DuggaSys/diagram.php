@@ -40,7 +40,6 @@
         
         function fetchDiagram() {
             var response;
-            
 let cid=search("courseid");
 const folder=search("folder");
 let did=search("did");
