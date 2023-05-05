@@ -249,7 +249,7 @@ SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,d
 ```
 
 ### Save qid. 	
-this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
+this value is to be saved to variable __$id__, it will be used as ID when we identify and delete the data from the database.
     
     SQL-query: SELECT MAX(id) FROM quiz;    
 
@@ -295,8 +295,13 @@ this value is to be saved to variable $id, it will be used as ID when we identif
         readonly:
     }
 
-ALL THE INSERTS WILL HAVE TO BE DELETED.
-That means that if the test failed, then this test needs to go in and delete the inserts we made manualy.
+
+---
+## Reset database 
+---
+
+__ALL THE INSERTS WILL HAVE TO BE DELETED.__
+That means that if the test failed, then this test needs to go in and delete the inserts we made __manualy__.
 
 
 
@@ -342,16 +347,16 @@ SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,d
 ```
 
 
-Get the id for the created quiz. this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
+Get the id for the created quiz. this value is to be saved to variable __$id__, it will be used as ID when we identify and delete the data from the database.
     
     SQL-query: SELECT MAX(id) FROM quiz;      
     
-*****
-* Add a new variant
-* send parameters inputs to duggaedservice.php 
-*****
+---
+## Add a new variant, send parameters inputs to duggaedservice.php 
+---
 
-send
+### send
+```
 {
     $opt = "ADDVARI";
     $qid = $quizID;
@@ -360,26 +365,55 @@ send
     $param = "{"type":"md","filelink":"md","gType":"","diagram_File":"Empty canvas","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}";
     $answer = "Bara Text";
 }
-  
-*****
-* Gather service output 
-*****
+```
 
-    Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-    this is the expected output for the micro service.  
+---
+## Gather service output
+--- 
 
-*****
-* remove inserted row from DB, using qid 
-*****
+#### Output    
+    {
+        LastCourseCreated[]
+        entries([           // 2D-array
+            cid:
+            coursename:
+            coursecode:
+            visibility:
+            activeversion:
+            activeedversion:
+            registered:
+        ]);
+        versions([          // 2D-array
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        ]);
+        debug:
+        writeaccess:
+        motd:
+        readonly:
+    }
+
+---
+## Reset database 
+---
+
+remove inserted row from DB, using __$id__ 
+
 
     SQL-query: DELETE FROM quiz WHERE quizID = $id 
 
 
 
 
--------------------------------------------------------------------------------------------------------------------------
-- Update a variant (line 123):
--------------------------------------------------------------------------------------------------------------------------
+========================
+---
+## Update a variant (line 123):
+========================
+---
 
 *****
 * pre-req:
