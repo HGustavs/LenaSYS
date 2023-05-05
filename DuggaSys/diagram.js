@@ -12144,12 +12144,12 @@ function toggleBorderOfElements() {
  */
 function toggleBetweenActorAndObject(type){
     if (type == "actor") {
-        /* document.getElementById("sequenceObject").classList.add("hidden");
-        document.getElementById("sequenceActor").classList.remove("hidden"); */
+        sequenceActorDisplay = "block";
+        sequenceObjectDisplay = "none";
 
     } else if (type == "object") {
-        /* document.getElementById("sequenceActor").classList.add("hidden");
-        document.getElementById("sequenceObject").classList.remove("hidden"); */
+        sequenceActorDisplay = "none";
+        sequenceObjectDisplay = "block";
     }
 }
 /**
