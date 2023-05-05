@@ -1492,13 +1492,17 @@ function showDiagramTypes(){
     }
 
     // SE buttons
-    if (diagramType.UML) {
+    if (diagramType.SE) {
         document.getElementById("elementPlacement11").onmousedown = function () {
             holdPlacementButtonDown(0);
+        };
+        document.getElementById("elementPlacement12").onmousedown = function () {
+            holdPlacementButtonDown(1);
         };
 
         if (firstShown) {
             document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");
+            document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
         }
         firstShown = true;
     }

@@ -641,7 +641,7 @@
                 </div>
                 
                 <!-- UML Super state selection -->
-                <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick='setElementPlacementType(14); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                     <span class="toolTipText"><b>UML super state</b><br>
                         <p>Creates a super state.</p>
