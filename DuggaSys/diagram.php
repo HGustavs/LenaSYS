@@ -557,7 +557,7 @@
                             </div>                           
                         </div>
                     </div>
-                </div><!--<-- UML functionality end -->
+                </div><!--<-- UML functionality end 
                 <div>
                     <div id="elementPlacement11"
                          class="SDButton diagramIcons toolbarMode"
@@ -574,7 +574,7 @@
                         </div>
                     </div>
                     <div id="diagramPopOut">
-                        <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
+                        <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
@@ -595,7 +595,7 @@
                             </div>                           
                         </div>
                     </div>
-                </div><!--<-- UML functionality end -->
+                </div>--><!--<-- UML functionality end -->
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
