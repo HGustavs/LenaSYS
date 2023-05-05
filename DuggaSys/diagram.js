@@ -1065,7 +1065,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false,IE:false,SD:false};
+var diagramType = {ER:false,UML:false,IE:false,SD:false,SE:false};
 
 //Grid Settings
 var settings = {
@@ -1400,10 +1400,9 @@ function getData()
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
     
-    // ER
     togglePlacementType(0,0)
-    // Inheritance
     togglePlacementType(1,1)
+    togglePlacementType(11,2)
 }
 //<-- UML functionality start
 /**
@@ -1488,6 +1487,23 @@ function showDiagramTypes(){
     }
     else {
         Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
+
+    // SE buttons
+    if (diagramType.UML) {
+        document.getElementById("elementPlacement11").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else {
+        Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
     }
@@ -5972,14 +5988,6 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement8").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton8").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");// SD state end
-
-        // Lifeline start
-        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");
-        // Lifeline end
     }
     else if(type==1){
         document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");// ER relation start
@@ -5997,6 +6005,25 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
+    }
+    else if (type==2){
+        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");// Lifetime start
+        document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");// Lifetime end
+        /*
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// Object start
+        document.getElementById("elementPlacement8").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement8").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton8").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");// Object end
+        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// Activation start
+        document.getElementById("elementPlacement8").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement8").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton8").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");// Activation end
+        */
     }
     
     // Unhide the currently selected placement type
