@@ -513,7 +513,7 @@
                 </div>
                 <!-- -----------------------LIFETIME CODE --------------------------!-->
                 <div>
-                    <div id="elementPlacement13" 
+                    <div id="elementPlacement11" 
                         class="diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
