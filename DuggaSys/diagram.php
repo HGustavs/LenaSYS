@@ -38,32 +38,22 @@
         
         function fetchDiagram() {
             var response;
-const cid=search("cid");
-
-            <?php 
-                if (isset($cid) && $cid != "UNK") {
-                    echo "const courseid = '$cid';";
-                } else if (isset($_GET["folder"])) {
-                    $folder = $_GET["folder"];
-                    echo "const courseid = '$folder';";
-                } else {
-                    echo "const courseid = '1894';";
-                }
-
-                if (isset($quizid) && $quizid != "UNK") {
-                    echo "const did = '$quizid';";
-                } else if (isset($_GET["id"])) {
-                    $id = $_GET["id"];
-                    echo "const did = '$id';";
-                } else {
-                    echo "const did = '21';";
-                }
-            ?>
-
+let cid=search("courseid");
+const folder=search("folder");
+let did=search("did");
+const id=search("id");
+if(cid=="UNK"&&folder!=null)
+cid=folder;
+else
+cid=1894;
+if(did=="UNK"&&id!=null)
+did=id;
+else
+did=21;
             $.ajax({
                 async: false,
                 method: "GET",
-                url: `diagramservice.php?courseid=${courseid}&did=${did}`,
+                url: `diagramservice.php?courseid=${cid}&did=${did}`,
             }).done((res) => {
                 console.log(res)
                 response = res;
