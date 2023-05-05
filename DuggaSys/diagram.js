@@ -6598,10 +6598,10 @@ function generateContextProperties()
                             break;
                     }
                 }
-                //radio buttons for choosing object  or actor. This just hides them via css.
+                //radio buttons for choosing object  or actor. This just hides them via css via the function toggleBetweenActorAndObject.
                 str += `<div>`
-                str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" checked onfocus='document.getElementById("sequenceActor").classList.add("hiddenPlacementType")'><label for="sequenceActorRadio">Actor</label>`
-                str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='document.getElementById("sequenceObject").classList.add("hiddenPlacementType")'><label for="sequenceObjectRadio">Object</label>`
+                str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" checked onfocus='toggleBetweenActorAndObject("actor")'><label for="sequenceActorRadio">Actor</label>`
+                str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='toggleBetweenActorAndObject("object")'><label for="sequenceObjectRadio">Object</label>`
                 str += `</div>`
             } 
         }
@@ -12134,6 +12134,19 @@ function toggleBorderOfElements() {
                 }
             }
         }
+    }
+}
+/**
+ * @description adds a class that sets display to none to the svg group containing the actor or object respecively. Also removes it from the other one.
+ * @param type this is for choosing between the two. "actor" or "object" are the only allowed params. 
+ */
+function toggleBetweenActorAndObject(type){
+    if (type == "actor") {
+        document.getElementById("sequenceObject").classList.add("hiddenPlacementType");
+        document.getElementById("sequenceActor").classList.remove("hiddenPlacementType");
+    } else if (type == "object") {
+        document.getElementById("sequenceActor").classList.add("hiddenPlacementType");
+        document.getElementById("sequenceObject").classList.remove("hiddenPlacementType");
     }
 }
 /**
