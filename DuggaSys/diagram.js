@@ -986,8 +986,6 @@ var selectionBoxHighX;
 var selectionBoxLowY;
 var selectionBoxHighY;
 var lastClickedElement = null;
-var sequenceActorDisplay = "block"; // only used for switching between actor and object in sequence diagram.
-var sequenceObjectDisplay = "none";
 
 var hasPressedDelete = false;
 var mouseOverElement = false;
@@ -6602,8 +6600,8 @@ function generateContextProperties()
                 }
                 //radio buttons for choosing object  or actor. This just hides them via css via the function toggleBetweenActorAndObject.
                 str += `<div>`
-                str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" checked onfocus='toggleBetweenActorAndObject("actor")'><label for="sequenceActorRadio">Actor</label>`
-                str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='toggleBetweenActorAndObject("object")'><label for="sequenceObjectRadio">Object</label>`
+                str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" checked onfocus=''><label for="sequenceActorRadio">Actor</label>`
+                str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus=''><label for="sequenceObjectRadio">Object</label>`
                 str += `</div>`
             } 
         }
@@ -12137,20 +12135,6 @@ function toggleBorderOfElements() {
             }
         }
     }
-}
-/**
- * @description adds a class that sets display to none to the svg group containing the actor or object respecively. Also removes it from the other one.
- * @param type this is for choosing between the two. "actor" or "object" are the only allowed params. 
- */
-function toggleBetweenActorAndObject(type){
-    if (type == "actor") {
-        sequenceActorDisplay = "block";
-        sequenceObjectDisplay = "none";
-    } else if (type == "object") {
-        sequenceActorDisplay = "none";
-        sequenceObjectDisplay = "block";
-    }
-    showdata()
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
