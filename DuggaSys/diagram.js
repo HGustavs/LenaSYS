@@ -793,9 +793,10 @@ const elementTypes = {
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
-    UMLSuperState:11,
+    UMLSuperState: 11,
 
-    sequenceActor:12, //sequence functionality
+    sequenceActor: 12, //sequence functionality
+    sequenceActivation: 13
 
 };
 
@@ -820,7 +821,7 @@ const elementTypesNames = {
     UMLSuperState: "UMLSuperState",
 
     sequenceActor: "sequenceActor",
-
+    sequenceActivation: "sequenceActivation"
 }
 
 /**
@@ -1140,7 +1141,8 @@ var defaults = {
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
+    sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" }, // UML Super State.
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 50, height: 300, type: "sequence" } // Sequence Activation.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -9447,6 +9449,24 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='transparent'
         />`;
+        str += `</svg>`;  
+    }
+    // Sequence activation 
+    else if (element.kind == 'sequenceActivation') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the activation rect
+        str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
         str += `</svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
