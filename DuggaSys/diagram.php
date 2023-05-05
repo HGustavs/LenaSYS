@@ -76,7 +76,7 @@
 
             return response;
             } catch (error) {
-                error.getMessage();
+                error.message;
             }
         }
         console.log(getCourseId(1894, 0));
