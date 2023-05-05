@@ -3047,8 +3047,9 @@ function changeLineProperties()
     // SD line
     if (line.type == 'SD') {
         if (line.innerType != lineType.value) {
-            line.innerType = lineType.value.trim();
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            lineType.value = lineType.value.trim();
+            line.innerType = lineType.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { innerType: lineType.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // Start label, near side
         if (line.startLabel != startLabel.value) {
@@ -6849,7 +6850,7 @@ function generateContextProperties()
                     str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
                 }
             });
-            str += `</select>`;
+            str += `</select>`; 
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
@@ -7681,12 +7682,15 @@ function preProcessLine(line) {
         } else {
             line.endIcon = 'ARROW';
         }
+
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
             line.innerType = SDLineType.SEGMENT;
         }
+        
+        
     }
 }
 //#endregion =====================================================================================
