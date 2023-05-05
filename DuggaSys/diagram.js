@@ -1925,7 +1925,7 @@ function ddown(event)
 
         wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
         
-        var element = data[findIndex(data, event.currentTarget.id)];
+        const element = data[findIndex(data, event.currentTarget.id)];
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
             event.preventDefault(); // Needed in order for focus() to work properly 
             var input = document.getElementById("elementProperty_name");
@@ -1959,7 +1959,7 @@ if(!hasPressedDelete){
 
         case mouseModes.EDGE_CREATION:
             if(event.button == 2) return;
-            var element = data[findIndex(data, event.currentTarget.id)];
+            const element = data[findIndex(data, event.currentTarget.id)];
             // If element not in context, update selection on down click
             if (element != null && !context.includes(element)){
                 pointerState = pointerStates.CLICKED_ELEMENT;
@@ -3519,7 +3519,7 @@ function entityIsOverlapping(id, x, y)
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
     if(foundIndex > -1){
-        var element = data[foundIndex];
+        const element = data[foundIndex];
         let targetX;
         let targetY;
         var elementHeight = element.height;
@@ -4323,7 +4323,7 @@ function toggleReplay()
  */
 function toggleKeybindList()
 {
-    var element = document.getElementById("markdownKeybinds");
+    const element = document.getElementById("markdownKeybinds");
     if (element.style.display == "block") {
         element.style.display = "none";
     }
@@ -6345,7 +6345,7 @@ function generateContextProperties()
           }
 
           //Get selected element
-          var element = context[0];
+          const element = context[0];
 
           //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
           //TODO: Find a way to do this dynamically as new diagram types are added
@@ -7076,7 +7076,7 @@ function setTimerToMessage(element, time = 5000)
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
     var timer = setInterval( function(){
-        var element = document.getElementById(settings.misc.errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
+        const element = document.getElementById(settings.misc.errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
         settings.misc.errorMsgMap[timer].percent -= 1;
         element.lastElementChild.style.width = `calc(${settings.misc.errorMsgMap[timer].percent - 1}% - 10px)`;
 
@@ -12127,7 +12127,7 @@ function centerCamera()
 function downloadFile(filename, dataObj)
 {
     // Create a "a"-element
-    var element = document.createElement('a');
+    const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
     element.setAttribute('download', filename + ".json");
 
