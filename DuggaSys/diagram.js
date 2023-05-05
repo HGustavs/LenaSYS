@@ -9434,40 +9434,45 @@ function drawElement(element, ghosted = false)
         stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
-        //svg for actor.
-        str += `<g>`
-        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        str += `<path class="text"
-            d="M${(boxw/2)+linew},${(boxw/4)+linew}
-                v${boxw/6}
-                m-${(boxw/4)},0
-                h${boxw/2}
-                m-${(boxw/4)},0
-                v${boxw/3}
-                l${boxw/4},${boxw/4}
-                m${(boxw/4)*-1},${(boxw/4)*-1}
-                l${(boxw/4)*-1},${boxw/4}
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='transparent'
-        />`;
-        str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</g>`;
-        //svg for object.
-        str += `<g>`;
-        str += `<rect class='text'
-            x='${linew}'
-            y='${linew}'
-            width='${boxw - (linew * 2)}'
-            height='${(boxw/2) - linew}'
-            rx='${sequenceCornerRadius}'
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}' 
-        />`;
-        str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</g>`;
+        //actor or object is determined via the radio buttons in the context menu. the default is actor.
+        if (element.actorOrObject == "actor") {
+            //svg for actor.
+            str += `<g>`
+            str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+            str += `<path class="text"
+                d="M${(boxw/2)+linew},${(boxw/4)+linew}
+                    v${boxw/6}
+                    m-${(boxw/4)},0
+                    h${boxw/2}
+                    m-${(boxw/4)},0
+                    v${boxw/3}
+                    l${boxw/4},${boxw/4}
+                    m${(boxw/4)*-1},${(boxw/4)*-1}
+                    l${(boxw/4)*-1},${boxw/4}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='transparent'
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;
+        }
+        else if (element.actorOrObject == "object") {
+            //svg for object.
+            str += `<g>`;
+            str += `<rect class='text'
+                x='${linew}'
+                y='${linew}'
+                width='${boxw - (linew * 2)}'
+                height='${(boxw/2) - linew}'
+                rx='${sequenceCornerRadius}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}' 
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;   
+        }
         str += `</svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
