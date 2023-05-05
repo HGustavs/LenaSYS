@@ -76,7 +76,6 @@
                 console.error(error);
             }
         }
-        console.log(getCourseId(1894, 21));
         /**
          * @description get the contents of a instruction file
          * @param fileName the name of the file t.ex. test.html
