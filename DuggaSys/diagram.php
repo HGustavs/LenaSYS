@@ -514,7 +514,7 @@
                 <!-- -----------------------LIFETIME CODE --------------------------!-->
                 <div>
                     <div id="elementPlacement11" 
-                        class="ERButton diagramIcons toolbarMode" 
+                        class="diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown="holdPlacementButtonDown(11)">
@@ -532,7 +532,7 @@
                     </div>
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
-                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,0); setElementPlacementType(11); setMouseMode(2);'>
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,0); setElementPlacementType(11); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
