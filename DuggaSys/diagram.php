@@ -567,7 +567,7 @@
                         class="diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
-                        onmousedown="holdPlacementButtonDown(7)">
+                        onmousedown="holdPlacementButtonDown(11)">
                         <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
                             <p>Creates a lifeline for a sequnece diagram</p>
@@ -582,7 +582,7 @@
                     </div>
                     <div id="diagramPopOut">  
                         <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                            <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
                                     <p>Creates an activation box.</p>
@@ -591,7 +591,7 @@
                                     <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
-                            <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(13); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                                 <span class="toolTipText"><b>Sequence Object</b><br>
                                     <p>Creates a sequence object.</p>
