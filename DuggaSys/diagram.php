@@ -466,7 +466,7 @@
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>-->
-                 Sequence diagram object selection 
+                <!-- Sequence diagram object selection -->
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
