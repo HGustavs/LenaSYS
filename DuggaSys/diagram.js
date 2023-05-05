@@ -6004,7 +6004,7 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
     }
-    else if (type == 2) {
+    else if (type == 9) {
         document.getElementById("elementPlacement9").classList.add("hiddenPlacementType");// ER relation start
         document.getElementById("elementPlacement9").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement9").children.item(1).classList.remove("hiddenToolTiptext");
