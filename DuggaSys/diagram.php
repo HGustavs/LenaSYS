@@ -576,6 +576,9 @@
                             <br>
                             <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
+                        <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
                     </div>
                     <div id="diagramPopOut">  
                         <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
