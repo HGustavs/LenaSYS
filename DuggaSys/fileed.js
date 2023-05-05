@@ -379,12 +379,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     } else if (col == "type") {
-        console.log("tja har har type");
-        if((obj.filePath).includes("GitHub")) {
-            console.log("inte github");
-        } else {
-            console.log("är github");
-        }
+        console.log(typeof obj.filePath);
     }
     return str;
 }
