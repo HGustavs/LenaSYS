@@ -514,7 +514,7 @@
                 <!-- -----------------------LIFETIME CODE --------------------------!-->
                 <div>
                     <div id="elementPlacement11" 
-                        class="diagramIcons toolbarMode" 
+                        class="ERButton diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown="holdPlacementButtonDown(11)">
@@ -530,25 +530,36 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut">  
-                        <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                                <span class="toolTipText"><b>Sequence activation</b><br>
-                                    <p>Creates an activation box.</p>
-                                    <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
-                                    <br>
-                                    <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                    <div id="diagramPopOut">
+                        <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
+                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,0); setElementPlacementType(11); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
+                                <span class="placementTypeToolTipText"><b>ER entity</b><br>
+                                    <p>Each entity represents an object which is a representation of concepts or data.</p>
+                                    <p>The entity only holds the name of the object and if it depends on another object.</p>
                                 </span>
                             </div>
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(5,1); setElementPlacementType(1); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
-                                <span class="toolTipText"><b>Sequence Object</b><br>
-                                    <p>Creates a sequence object.</p>
-                                    <p>Represents a class or object.</p>
-                                    <p>Used to show how an object will behave.</p>
-                                    <br>
-                                    <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(11,0); setElementPlacementType(11); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
+                                <span class="placementTypeToolTipText"><b>UML class</b><br>
+                                    <p>Change to UML class</p>
+                                    <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(11,0); setElementPlacementType(11); setMouseMode(2);' >
+                                <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
+                                <span class="placementTypeToolTipText"><b>IE entity</b><br>
+                                    <p>Change to IE entity</p>
+                                    <p>Each entity represents an object along with its attributes.</p>
+                                    <p>Each entity is represented by a table with a field that shows attributes.</p>
+                                </span>
+                            </div>
+                            <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(11,0); setElementPlacementType(11); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                                <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
+                                <span class="placementTypeToolTipText"><b>State diagram state</b><br>
+                                    <p>Change to state diagram state</p>
+                                    <p>A state diagram state is a representation of a status a process can have.</p>
+                                    <p>Each state represents a unique status that a process can have.</p>
                                 </span>
                             </div>
                         </div>
