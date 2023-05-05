@@ -72,7 +72,9 @@
             }).done((res) => {
                 console.log(res)
                 response = res;
-            })
+            }).error((req, status, err) => {
+                console.error(err);
+            });
 
             return response;
             } catch (error) {
