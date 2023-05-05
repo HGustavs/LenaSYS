@@ -9435,7 +9435,7 @@ function drawElement(element, ghosted = false)
         fill='transparent'
         />`;
         //svg for actor.
-        str += `<g id="sequenceActor" style=display:${sequenceActorDisplay}>`
+        str += `<g>`
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text"
             d="M${(boxw/2)+linew},${(boxw/4)+linew}
@@ -9455,7 +9455,7 @@ function drawElement(element, ghosted = false)
         str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</g>`;
         //svg for object.
-        str += `<g id="sequenceObject" style=display:${sequenceObjectDisplay}>`;
+        str += `<g>`;
         str += `<rect class='text'
             x='${linew}'
             y='${linew}'
