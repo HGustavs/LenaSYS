@@ -1,0 +1,483 @@
+sectionedservice.php
+
+----------------------------------
+getGroupsTest() line 100:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+
+
+*****************
+ Sent input
+*****************
+
+send
+{
+$opt = "GRP"
+$courseid = "1"
+$coursevers = "45656"
+}
+
+
+*****************
+ Service output
+*****************
+
+** Gather service output *      
+Save the values of the echoed array as a JSON 
+(at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+
+----------------------------------
+deleteTest() line 181:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+
+*****************
+ Sent input
+*****************
+
+send
+{
+$opt = "DEL"
+$lid = "5020"
+}
+
+
+You also need to gather all listentries to compare if deleted.
+SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" save into beforeDeleted
+
+**************************
+ Get deleted listentries
+**************************
+
+SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterDeleted
+
+*****************
+ Service output
+*****************
+
+** Gather service output *      
+Save the values of the echoed array as a JSON 
+(at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+deletedTest() line 197:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+opt = "DELETED"
+lid = "5020"
+}
+
+
+You also need to gather all listentries to compare if deleted.
+SQL Query: "SELECT visible FROM listentries WHERE lid=:lid" or "SELECT visible FROM listentries" save into beforeMarkedDeleted
+
+**************************
+ Get deleted listentries
+**************************
+
+SQL Query: "SELECT FROM listentries WHERE lid=:lid" or "SELECT FROM listentries" (depends on which was used earlier) save into afterMarkedDeleted
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+newCodeExampleTest() line 210:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+$opt = "NEW"
+$courseid = 1885
+$coursevers = 1337
+$sectname = "New group9019"
+$sname = "examplename"
+$gradesys = 0
+$tabs = null
+$userid = 2
+$link = null
+$kind = 7
+$comments = "Top"
+$visibility = 1
+$highscoremode = 0
+$pos = 5
+}	
+
+
+You also need to gather all codeexamples to compare if any new.
+SQL Query: "SELECT * FROM codeexample" save into beforeNew
+You also need to fetch all listentries with:
+"SELECT * FROM listentries"
+
+***************************************
+ Get new code examples and listentries
+***************************************
+
+SQL Query: "SELECT * FROM codeexample" save into afterNewC
+SQL Query: "SELECT * FROM listentries" save into afterNewL
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+newRecorderTest() line 275:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send 
+{
+$opt = "RECORDER"
+$order = 0 
+$armin[] = 1 //Can be 0-2
+}
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT pos,moment FROM listentries" save into beforeUpdated
+
+*************************
+ Get updated listentries
+*************************
+
+SQL Query: "SELECT pos,moment FROM listentries" save into afterUpdated
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+updateTest() line 291:
+----------------------------------
+
+*********
+ Pre-req
+*********
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+$opt = "UPDATE"
+$courseid = 1885
+$coursevers = 1337
+$sectid = 1
+$sectname = "New group9019"
+$sname = "examplename"
+$comments = "Top"
+$highscoremode = 0
+$feedbackenabled = 0
+$feedbackquestion = null
+$moment = null
+$kind = 7
+$link = null
+$visibility = 1
+}
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT * FROM listentries" save into beforeUpdatedL
+You also new all code examples
+SQL Query: "SELECT * FROM codeexample" save into beforeUpdatedC
+And lastly the list table for the specific course
+SQL Query: "SELECT * FROM list" save into beforeUpdatedList
+
+*******************************************
+ Get updated code examples and listentries
+*******************************************
+
+SQL Query: "SELECT * FROM codeexample" save into afterNewC
+SQL Query: "SELECT * FROM listentries" save into afterNewL
+SQL Query: "SELECT * FROM list" save into afterNewList
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+updateDeadlineTest() line 371:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+$opt = "UPDATEDEADLINE"
+$deadline = "2025-01-01 00:00:00"
+$relativedeadline = NULL 
+$link = 9020
+}
+
+You also need to gather all quizzes to compare if any updated.
+SQL Query: "SELECT deadline, relativedeadline FROM quiz" save into beforeUpdated
+
+*******************************************
+ Get updated deadlines
+*******************************************
+
+SQL Query: "SELECT deadline, relativedeadline FROM codeexample" save into afterUpdated
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+updateTabsTest() line 381:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+$opt = "UPDATETABS"
+$sectid = 9999
+$tabs = 0
+}
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT gradesystem FROM listentries" save into beforeUpdated
+
+*******************************************
+ Get updated listentries
+*******************************************
+
+SQL Query: "SELECT gradesystem FROM listentries" save into afterUpdated
+
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+updateVersTest() line 390:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+$opt = "UPDATEVRS"
+$courseid = 1885
+$coursecode = "G420"
+$versid = 99999
+$motd = "Test"
+$versname = "HT25"
+}
+
+
+You also need to gather all vers to compare if any updated.
+SQL Query: "SELECT * FROM vers" save into beforeUpdatedV
+And also course.
+SQL Query: "SELECT activeversion FROM course" save into beforeUpdatedC
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT activeversion FROM course" save into afterUpdatedC
+SQL Query: "SELECT * FROM vers" save into afterUpdatedV
+
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+changeVersTest() line 434:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+opt = "CHGVERS"
+courseid = "G420"
+versid = 99999
+}
+
+You also need to gather all courses to compare if any updated.
+SQL Query: "SELECT activeversion FROM course" save into beforeUpdated
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT activeversion FROM course" save into afterUpdated
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+hiddenTest() line 434:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+* opt = "HIDDEN"
+* sectid = 9999
+* visible = 0
+}
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT visible FROM listentries" save into afterUpdated
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+
+----------------------------------
+publicTest() line 453:
+----------------------------------
+
+(checklogin) IS TRUE
+AND $ha || $studentTeacher IS TRUE
+
+*****************
+ Sent input
+*****************
+
+send
+{
+opt = "PUBLIC"
+sectid = 9999
+visible = 1
+}
+
+You also need to gather all listentries to compare if any updated.
+SQL Query: "SELECT visible FROM listentries" save into beforeUpdated
+
+*******************************************
+ Get updated vers and course
+*******************************************
+
+SQL Query: "SELECT visible FROM listentries" save into afterUpdated
+
+*****************
+ Service output
+*****************
+
+** Gather service output *
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
