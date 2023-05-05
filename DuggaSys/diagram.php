@@ -58,20 +58,30 @@
                 }
             ?>
 
-            $.ajax({
+            
+            
+            return response;
+        }
+        function getCourseId (courseId, did) {
+            try {
+                let response;
+                $.ajax({
                 async: false,
                 method: "GET",
                 url: `diagramservice.php?courseid=${courseid}&did=${did}`,
             }).done((res) => {
                 console.log(res)
                 response = res;
-            }).error((req, status, err) => {
-                console.error(err);
-            });
-            
+            })
+
             return response;
+            } catch (error) {
+                error->getMessage();
+            }
         }
-        
+        console.log(getCourseId(1894, 0));
+        console.log(getCourseId(2, 10));
+        console.log(getCourseId(9, 10));
 
         /**
          * @description get the contents of a instruction file
@@ -101,7 +111,7 @@
     </script>
 </head>
 <body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
-
+        
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">
 
