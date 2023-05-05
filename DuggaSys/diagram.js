@@ -12146,10 +12146,12 @@ function toggleBetweenActorAndObject(type){
     if (type == "actor") {
         sequenceActorDisplay = "block";
         sequenceObjectDisplay = "none";
+        console.log("actor showing");
 
     } else if (type == "object") {
         sequenceActorDisplay = "none";
         sequenceObjectDisplay = "block";
+        console.log("object showing");
     }
 }
 /**
