@@ -484,7 +484,7 @@
                 </div>
                 <div>
                     <div id="elementPlacement9"
-                         class="diagramIcons toolbarMode"
+                         class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(9); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
                          onmousedown="holdPlacementButtonDown(9)"><!--<-- UML functionality -->
@@ -522,7 +522,7 @@
                 </div>
                 <div>
                     <div id="elementPlacement10"
-                         class="UMLButton diagramIcons toolbarMode"
+                         class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(10); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
                          onmousedown="holdPlacementButtonDown(10)">
@@ -560,7 +560,7 @@
                 </div><!--<-- UML functionality end -->
                 <div>
                     <div id="elementPlacement11"
-                         class="IEButton diagramIcons toolbarMode"
+                         class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(11); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
                          onmousedown="holdPlacementButtonDown(11)">
