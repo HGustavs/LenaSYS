@@ -6602,6 +6602,7 @@ function generateContextProperties()
                             str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='${element[property]}="object"'><label for="sequenceObjectRadio">Object</label>` */
                             str += `<button onclick="${element[property]}='object';console.log(${element[property]});">Object</button>`
                             str += `</div>`
+                            console.log("actorOrObject case exiting" + element[property]);
                             break;
                         default:
                             break;
