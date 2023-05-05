@@ -564,7 +564,7 @@
                 <!-- -----------------------LIFETIME CODE --------------------------!-->
                 <div>
                     <div id="elementPlacement11" 
-                        class="diagramIcons toolbarMode" 
+                        class="SEButtons toolbarMode" 
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown="holdPlacementButtonDown(11)">
@@ -576,13 +576,13 @@
                             <br>
                             <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
-                        <div id="togglePlacementTypeButton5" class="placementTypeIcon togglePlacementTypeButton">
+                        <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
                     <div id="diagramPopOut">  
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                            <div class="SEButtons placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
                                     <p>Creates an activation box.</p>
