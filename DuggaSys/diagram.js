@@ -4211,19 +4211,19 @@ function toggleDarkmode()
 {
     const stylesheet = document.getElementById("themeBlack");
     const storedTheme = localStorage.getItem('diagramTheme');
-    const finalState = document.getElementById("finalState");
+
 	if(storedTheme) stylesheet.href = storedTheme;
 
     if(stylesheet.href.includes('blackTheme')){
-        if(finalState.style.fill == `${"#FFFFFF"}`) {
-            finalState.style.fill ==  `${"#000000"}`;
+        if(element.kind == "UMLInitialState" || element.kind == "UMLFinalState" && element.fill == `${"#FFFFFF"}`) {
+            element.fill ==  `${"#000000"}`;
         }
         // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     } else if(stylesheet.href.includes('style')) {
-        if(finalState.style.fill == `${"#000000"}`) {
-            finalState.style.fill == `${"#FFFFFF"}`;
+        if(element.kind == "UMLInitialState" || element.kind == "UMLFinalState" && element.fill == `${"#000000"}`) {
+            element.fill ==  `${"#FFFFFF"}`;
         }
         // if it's light -> go dark
         stylesheet.href = "../Shared/css/blackTheme.css";
@@ -9053,7 +9053,7 @@ function drawElement(element, ghosted = false)
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
-                        <svg width="100%" height="100%" id="finalState"
+                        <svg width="100%" height="100%"
                              viewBox="0 0 24 24"
                              xmlns="http://www.w3.org/2000/svg"
                              xml:space="preserve"
