@@ -4,7 +4,11 @@
 ##Prepare data  Line 71
 **********
 
+///////////////// :3
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9012,2,5,1,2,'undefined', 2, 0, null);
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9012', NULL, NULL, NULL, 1338, 0, 1, 0);
 
+/////////////////
 ###pre-req:
 ```
 { (checklogin = true) &&
@@ -26,7 +30,7 @@ mySQL to check that correct values are sent
 Select * from codeexample where exampleid=9013
 ```
 
-###Values:
+###Send:
 ```
 send{
 	$exampleCount=1;
@@ -42,12 +46,32 @@ send{
 }
 
 ```
-
+###Service output
+```
+output{
+  
+}
+```
 
 ***
 ##SETTEMPL  Line 96
 ***
+###pre-req:
+```
+{ (checklogin = true) &&
+(hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) ==
+true give $writeAccess="w";, else $writeAccess="s";
+```
+```
 
+```
+
+
+###Login:
+```
+Username: 2
+Password: Kong
+```
 ###Values
 ```
 Send{
@@ -92,117 +116,6 @@ output{
   "courseversion":
 }
 ```
-
-
-
-Log in as toddler, testing-course, create new code example, choose template, fill in values as below:
-Template 3
-Kind: Code 		File:HTML-TEST1.html	Wordlist:JS
-Kind: Preview 		File: HTML-TEST1.html	Wordlist:
-Kind: Document 	File:				Wordlist: Plain Text
-Assert and decide if the json-string is the same. 
-
-//Gör om!!
-Expected output:
-{
-  "opt": "SETTEMPL",
-  "templateid": "3",
-  "box": [
-    [
-      "1",
-      "CODE",
-      "<!DOCTYPE html>\n<html>\n<body>\n<h1>My First Heading</h1>\n<p>Uppdate<p>\n<p>My first paragraph.</p>\n\n</body>\n</html>\n",
-      "1",
-      "Title",
-      "HTML-TEST1.html",
-      "9",
-      "../courses/global/HTML-TEST1.html",
-      "2"
-    ],
-    [
-      "3",
-      "DOCUMENT",
-      "File:  not found.",
-      "4",
-      "Title",
-      "",
-      "9",
-      "../courses/global/HTML-TEST1.html",
-      "2"
-    ]
-  ],
-  "wordlists": [
-    ["1","JS"],
-    ["2", "PHP"],
-    ["3", "HTML"],
-    ["4", "Plain Text"],
-    ["5", "Java"],
-    ["6", "SR"],
-    ["7", "SQL"]
-  ],
-  "debug": "NONE!",
-  "courseid": "1885",
-  "courseversion": "1337"
-}
-
-
-
-
-perform update:
-********************
-###Update templateid:
-********************
-Templateid have eleven ids[0,1,2,3,4,5,6,7,8,9,10], need to do test for each to check that they all work
-
-//Prints out so we know starting value
-SELECT exampleid, templateid FROM codeexample;
-
-//Update, test if templates work
-UPDATE codeexample SET templateid = (Number you wanna test) where exampleid = (exampleId of testsubject);
-
-//Prints out so we can see if update was successful
-SELECT exampleid, templateid FROM codeexample;
-
-create boxes:
-There are a total of five box ids[1,2,3,4,5] they are connected to specific template numbers.
-Boxcount 1 = templateNumber 10
-Boxcount 2 = templateNumber 1, 2
-Boxcount 3 = templateNumber 3, 4, 8
-Boxcount 4 = templateNumber 5, 6, 7
-Boxcount 5 = templateNumber 9
-
-Forces box to have content html1
-SELECT * FROM box WHERE boxid = 5 AND exampleid = 9022;
-
-Does Not display? Have they made it in another database that displays it?
-insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values ('1885', 'testG2-v3-00000000', 'New code 9023', NULL, NULL, NULL, '1337', '0', '1', '0');
-
-
-Update and insert file in to box:
-Insert:
-exampleid must be a pre existence value from codeexample, it is a foreignkey
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid,fontsize) VALUES (5, 9025, "testestest", "code", "[viktig=1]", "TESTtest.html", 4, 9);
-
-Inserted values{
-	boxid
-	exampleid
-	boxtitle
-	boxcontent
-	settings
-	filename
-	wordlistid
-	fontsize
-}
-
-Update:
-Make exampleid same as insert example
-UPDATE box SET boxcontent = "DOCUMENT", filename = "updateTEST", wordlistid = 3 WHERE boxid = 5 AND exampleid = 9025;
-
-Updated values{
-	boxcontent
-filename
-wordlisti
-}
 
 
 ##EDITEXAMPLE Line 160
