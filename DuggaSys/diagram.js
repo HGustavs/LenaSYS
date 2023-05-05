@@ -7464,11 +7464,10 @@ function determineLine(line, targetGhost = false)
 function sortElementAssociations(element)
 {
     // Only sort if size of list is >= 2
-    // TODO : Replace variable names a and b
-    if (element.top.length > 1) element.top.sort(function (a, b) { return sortvectors(a, b, element.top, element.id, 2) });
-    if (element.bottom.length > 1) element.bottom.sort(function (a, b) { return sortvectors(a, b, element.bottom, element.id, 3) });
-    if (element.left.length > 1) element.left.sort(function (a, b) { return sortvectors(a, b, element.left, element.id, 0) });
-    if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
+    if (element.top.length > 1) element.top.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.top, element.id, 2) });
+    if (element.bottom.length > 1) element.bottom.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.bottom, element.id, 3) });
+    if (element.left.length > 1) element.left.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.left, element.id, 0) });
+    if (element.right.length > 1) element.right.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.right, element.id, 1) });
 }
 
 /**
