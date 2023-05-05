@@ -6012,12 +6012,12 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");// Lifetime end
+        document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");// Object start
+        document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton12").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox");// Object end
         /*
-        document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// Object start
-        document.getElementById("elementPlacement8").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement8").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton8").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");// Object end
         document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");// Activation start
         document.getElementById("elementPlacement8").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement8").children.item(1).classList.remove("hiddenToolTiptext");
