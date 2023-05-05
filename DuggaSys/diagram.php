@@ -434,22 +434,6 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <!-- UML Initial state selection 
-                <div id="elementPlacement9" class="diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
-                    <span class="toolTipText"><b>UML initial state</b><br>
-                        <p>Creates an initial state for UML.</p><br>
-                        <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>-->
-                <!-- UML Final state selection 
-                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
-                    <span class="toolTipText"><b>UML final state</b><br>
-                        <p>Creates a final state for UML.</p><br>
-                        <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>-->
                  <!--Sequence diagram lifeline | for now is bound to uml final state -->
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
@@ -457,15 +441,7 @@
                         <p>Creates a lifeline for a sequnece diagram</p><br>
                         <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>
-                <!-- UML Super state selection 
-                <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                    <span class="toolTipText"><b>UML super state</b><br>
-                        <p>Creates a super state.</p><br>
-                        <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>-->
+                </div>              
                 <!-- Sequence diagram object selection -->
                 <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
@@ -490,7 +466,9 @@
                          onmousedown="holdPlacementButtonDown(9)"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                         <span class="toolTipText"><b>UML initial state</b><br>
-                            <p>Creates an initial state for UML.</p><br>
+                            <p>Creates an initial state for UML.</p>
+                            <p>The initial state represents the start of a process.</p>
+                            <br>
                             <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton9" class="placementTypeIcon togglePlacementTypeButton">
@@ -502,19 +480,24 @@
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
-                                    <p>Change to UML initial state</p>
+                                    <p>Creates an initial state for UML.</p>
+                                    <p>The initial state represents the start of a process.</p>
                                 </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Change to UML final state</p>
+                                    <p>Creates a final state for UML.</p>
+                                    <p>The final state represents where a process ends.</p>
                                 </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>Change to UML super state</p>
+                                    <p>Creates a super state.</p>
+                                    <p>A state that can contain substates.</p>
                                 </span>
                             </div>                           
                         </div>
@@ -528,7 +511,9 @@
                          onmousedown="holdPlacementButtonDown(10)">
                         <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                         <span class="toolTipText"><b>UML final state</b><br>
-                            <p>Add an UML class to the diagram</p><br>
+                            <p>Creates a final state for UML.</p>
+                            <p>The final state represents where a process ends.</p>
+                            <br>
                             <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton10" class="placementTypeIcon togglePlacementTypeButton">
@@ -541,18 +526,23 @@
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Change to UML initial state</p>
+                                    <p>Creates an initial state for UML.</p>
+                                    <p>The initial state represents the start of a process.</p>
                                 </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
-                                    <p>Change to UML final state</p>
+                                    <p>Creates a final state for UML.</p>
+                                    <p>The final state represents where a process ends.</p>
                                 </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>Change to UML super state</p>
+                                    <p>Creates a super state.</p>
+                                    <p>A state that can contain substates.</p>
                                 </span>
                             </div>                           
                         </div>
@@ -566,7 +556,9 @@
                          onmousedown="holdPlacementButtonDown(11)">
                         <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                         <span class="toolTipText"><b>UML super state</b><br>
-                            <p>Add an IE entity to the diagram</p><br>
+                            <p>Creates a super state.</p>
+                            <p>A state that can contain substates.</p>
+                            <br>
                             <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
@@ -579,18 +571,23 @@
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Change to UML initial state</p>
+                                    <p>Creates an initial state for UML.</p>
+                                    <p>The initial state represents the start of a process.</p>
                                 </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Change to UML final state</p>
+                                    <p>Creates a final state for UML.</p>
+                                    <p>The final state represents where a process ends.</p>
                                 </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Change to UML super state</p>
+                                    <p>Creates a super state.</p>
+                                    <p>A state that can contain substates.</p>
                                 </span>
                             </div>                           
                         </div>
