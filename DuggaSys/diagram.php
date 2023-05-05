@@ -603,13 +603,13 @@
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown="holdPlacementButtonDown(11)">
-                        <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                        <span class="toolTipText"><b>Sequence lifeline</b><br>
-                            <p>Creates a lifeline for a sequnece diagram</p>
-                            <p>Represents the passage of time.</p>
-                            <p>Shows events that occur to an object during the process.</p>
+                        <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                        <span class="toolTipText"><b>Sequence Object</b><br>
+                            <p>Creates a sequence object.</p>
+                            <p>Represents a class or object.</p>
+                            <p>Used to show how an object will behave.</p>
                             <br>
-                            <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton13" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -627,13 +627,13 @@
                             </span>
                             </div>
                             <div class="SEButton placementTypeBoxIcons" onclick='togglePlacementType(11,2); setElementPlacementType(11); setMouseMode(2);'>
-                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
-                            <span class="toolTipText"><b>Sequence Object</b><br>
-                                <p>Creates a sequence object.</p>
-                                <p>Represents a class or object.</p>
-                                <p>Used to show how an object will behave.</p>
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="toolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                         </div>
