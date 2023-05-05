@@ -1065,7 +1065,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false,IE:false,SD:false};
+var diagramType = {ER:false,UML:false,IE:false,SD:false,SE:false};
 
 //Grid Settings
 var settings = {
@@ -1490,9 +1490,9 @@ function showDiagramTypes(){
     }
 
     // SD buttons
-    if (diagramType.UML) {
+    if (diagramType.SE) {
         document.getElementById("elementPlacement11").onmousedown = function () {
-            holdPlacementButtonDown(0);
+            holdPlacementButtonDown(11);
         };
 
         if (firstShown) {
