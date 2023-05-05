@@ -6598,8 +6598,8 @@ function generateContextProperties()
                             console.log("actorOrObject case triggered" + element[property]);
                             //radio buttons for choosing object  or actor. This just hides them via css via the function toggleBetweenActorAndObject.
                             str += `<div>`
-                            str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor"><label for="sequenceActorRadio">Actor</label>`
-                            str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object"><label for="sequenceObjectRadio">Object</label>`
+                            str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" onfocus='element[property]="actor"'><label for="sequenceActorRadio">Actor</label>`
+                            str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='element[property]="object"'><label for="sequenceObjectRadio">Object</label>`
                             str += `</div>`
                             break;
                         default:
