@@ -9426,7 +9426,7 @@ function drawElement(element, ghosted = false)
                 m${(boxw/4)*-1},${(boxw/4)*-1}
                 l${(boxw/4)*-1},${boxw/4}
             "
-            fill='transparent'/>`;
+            />`;
         str += `</g></svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
