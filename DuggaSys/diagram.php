@@ -592,7 +592,7 @@
                                 <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
-                            <div class="SEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,2); setElementPlacementType(12); setMouseMode(2);'>
+                            <div class="SEButton placementTypeBoxIcons" onclick='togglePlacementType(11,2); setElementPlacementType(12); setMouseMode(2);'>
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                             <span class="toolTipText"><b>Sequence lifeline</b><br>
                                 <p>Creates a lifeline for a sequnece diagram</p>
