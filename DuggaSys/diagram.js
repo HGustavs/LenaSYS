@@ -9040,6 +9040,7 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
+                console.log(theme);
     }
     else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
@@ -9061,7 +9062,7 @@ function drawElement(element, ghosted = false)
                         </svg>
                 </div>`;
                 console.log(theme);
-                
+
     }
     else if (element.kind == 'UMLSuperState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
