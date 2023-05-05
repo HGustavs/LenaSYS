@@ -251,8 +251,13 @@
     cursor: col-resize;
 }
 .node.md {
-    /* top: calc(50% - 4px);
-    right: 0; */
+    right: calc(50% - 4px);
+    bottom: 0; 
+    cursor: row-resize;
+}
+
+.node.mu {
+    right: calc(50% - 4px);
     cursor: row-resize;
 }
 

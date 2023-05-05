@@ -8706,6 +8706,11 @@ function addNodes(element)
     if (element.kind == "sequenceActor") {
         nodes += "<span id='md' class='node md'></span>";
     }
+
+    if (element.kind == "UMLSuperState") {
+        nodes += "<span id='md' class='node md'></span>";
+        nodes += "<span id='mu' class='node mu'></span>";
+    }
     elementDiv.innerHTML += nodes;
     // This is the standard node size
     const defaultNodeSize = 8;
@@ -8719,6 +8724,19 @@ function addNodes(element)
         mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
         mdNode.style.top = "100%";
     }
+
+    if (element.kind == "UMLSuperState"){
+        var mdNode = document.getElementById("md");
+        var muNode = document.getElementById("mu");
+        mdNode.style.width = nodeSize+"px";
+        muNode.style.width = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        muNode.style.height = nodeSize+"px";
+        mdNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
+        muNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
+    }
+    
+    if (element.kind == "")
     var nodeSize = defaultNodeSize*zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
