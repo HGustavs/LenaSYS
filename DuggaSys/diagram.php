@@ -32,12 +32,15 @@
     <script src="diagram.js"></script>
     <script type="module">
             import search from "./modules/search.module.js";
-
+</script>
+    <script type="module">
+            
         // Fetch variant parameters from server
         var DiagramResponse;
         
         function fetchDiagram() {
             var response;
+            
 let cid=search("courseid");
 const folder=search("folder");
 let did=search("did");
@@ -50,6 +53,7 @@ if(did=="UNK"&&id!=null)
 did=id;
 else
 did=21;
+
             $.ajax({
                 async: false,
                 method: "GET",
