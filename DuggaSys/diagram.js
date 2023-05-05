@@ -4230,6 +4230,7 @@ function toggleDarkmode()
 
 }
 
+
 /**
  * @description When diagram page is loaded, check if preferred theme is stored in local storage.
  */
@@ -9022,6 +9023,7 @@ function drawElement(element, ghosted = false)
     }
     else if (element.kind == 'UMLInitialState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
                      style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
@@ -9032,7 +9034,7 @@ function drawElement(element, ghosted = false)
                              viewBox="0 0 24 24"
                              xmlns="http://www.w3.org/2000/svg" 
                              xml:space="preserve"
-                             style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                             style="fill:${(element.fill === '#000000' && theme.href.includes('blackTheme')) ? '#ffffff' : element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                             <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
                                 <circle class='state' cx="16.5" cy="12.5" r="10.5"/>
                             </g>
@@ -9051,7 +9053,7 @@ function drawElement(element, ghosted = false)
                              viewBox="0 0 24 24"
                              xmlns="http://www.w3.org/2000/svg"
                              xml:space="preserve"
-                             style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                             style="fill:${(element.fill === '#000000' && theme.href.includes('blackTheme')) ? '#ffffff' : element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                             <g>
                                 <path  class='state' d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
                                 <circle class='state' transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/>
@@ -11799,16 +11801,6 @@ function updateCSSForAllElements()
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
-                        }
-                    }
-                }
-                else if (element.kind == "UMLInitialState" || element.kind == "UMLFinalState" ) {
-                    for (let index = 0; index < 2; index++) {
-                        fillColor = elementDiv.children[index].children[0].children[0];
-                        if (fillColor.style.fill == `${"#000000"}`) {
-                            fillColor.style.fill = `${"#FFFFFF"}`;
-                        } else {
-                            fillColor.style.fill = `${element.fill}`;
                         }
                     }
                 }
