@@ -131,10 +131,12 @@
 				echo '<script>console.log("The course should be updated!"); </script>';
 				bfs($url, $cid, "REFRESH");
 				echo '<script>console.log(' .$url. '); </script>';
-				echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(true);</script>';
+				//echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(true);</script>';
+				courseUpdateAlerts(true);
 			} else {
 				echo '<script>console.log("The course is already up to date!"); </script>';
-				echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(false);</script>';
+				//echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(false);</script>';
+				courseUpdateAlerts(false);
 			}
 		}
 	}
