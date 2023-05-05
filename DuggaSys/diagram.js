@@ -1065,7 +1065,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false,IE:false,SD:false,SE:false};
+var diagramType = {ER:false,UML:false,IE:false,SD:false};
 
 //Grid Settings
 var settings = {
@@ -1485,23 +1485,6 @@ function showDiagramTypes(){
     }
     else {
         Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-    }
-
-    // SD buttons
-    if (diagramType.SE) {
-        document.getElementById("elementPlacement11").onmousedown = function () {
-            holdPlacementButtonDown(11);
-        };
-
-        if (firstShown) {
-            document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");
-        }
-        firstShown = true;
-    }
-    else {
-        Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
     }
