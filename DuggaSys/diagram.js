@@ -6004,6 +6004,23 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
     }
+    else if (type == 9) {
+        document.getElementById("elementPlacement9").classList.add("hiddenPlacementType");// ER relation start
+        document.getElementById("elementPlacement9").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement9").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton9").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox9").classList.remove("activeTogglePlacementTypeBox");// ER relation end
+        document.getElementById("elementPlacement10").classList.add("hiddenPlacementType"); // UML inheritance start
+        document.getElementById("elementPlacement10").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement10").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton10").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
+        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); //IE inheritance start
+        document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
+    }
     
     // Unhide the currently selected placement type
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
