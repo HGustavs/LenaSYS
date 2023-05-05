@@ -987,7 +987,7 @@ var selectionBoxLowY;
 var selectionBoxHighY;
 var lastClickedElement = null;
 var sequenceActorDisplay = "block"; // only used for switching between actor and object in sequence diagram.
-var sequenceObjectDisplay = "hidden";
+var sequenceObjectDisplay = "none";
 
 var hasPressedDelete = false;
 var mouseOverElement = false;
