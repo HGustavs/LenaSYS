@@ -12153,7 +12153,7 @@ function toggleBorderOfElements() {
  * @param type to what type it should switch. actor or object.
  * @param element Which element this should affect.
  */
-function toggleActorOrbject(element, type){
+function toggleActorOrbject(type, element){
     element["actorOrObject"] = type;
 }
 /**
