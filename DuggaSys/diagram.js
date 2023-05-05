@@ -9447,7 +9447,7 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='transparent'
         />`;
-        str += `<text class='text' x='${xAnchor}' y='${(boxw/4)*3}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</g>`;
         //svg for object.
         str += `<g>`;
