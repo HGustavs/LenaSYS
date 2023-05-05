@@ -1,23 +1,286 @@
-Name the file filename-tests.txt (e.g duggaedservice-tests, do NOT include .php here) \
-Include the name of the file to be tested at the first line (e.g duggaedservice.php). \ 
+#codeviewerService
 
-For each test, write the values needed to get to that line of code and then how to decide if the test has passed or not. Name the tests in a describing manner. \
-Give a short description of the test, and how it will test. \
+**********
+##Prepare data  Line 71
+**********
 
-E.g \
 
-saveDuggaNewTest (line 57): \
-  #Test to see ensure that saving a new dugga works. First make an SQL query for the dugga/quiz, create the dugga and then make the same query. \
-  #The test passes if the database has added the new dugga. \
+###pre-req:
+```
+{ (checklogin = true) &&
+(hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) ==
+true give $writeAccess="w";, else $writeAccess="s";
+```
 
-  * pre-req: {checklogin = true && hasAccess = true, ... etc...} \
-  * SQL query to find the current number of quizes !!!WRITE THE QUERY WITH VALUES HERE!!! \
-  * Send values to duggaedservice.php !!!WRITE THE PARAMETERS TO BE SENT, NAMED ACCORDING TO THE VARIABLES IN THE FILE!!! \
-  * - send { $var1 = value1, $var2 = value2 ... }
-  * SQL query, same as above  \
-  * Compare results, if a new quiz has been added (amount of quizes has increased by one), test has passed \
-  * Clean up database !!!! VERY IMPORTANT !!!!
 
-test2:
+###Login:
+```
+Username: 2
+Password: Kong
+```
 
-  etc....
+
+mySQL to check that correct values are sent
+
+```
+Select * from codeexample where exampleid=9013
+```
+
+###Values:
+```
+send{
+	$exampleCount=1;
+	$exampleId=9013; 
+	$exampleName=New Code;
+	$courseID = 1885
+	$cversion= 1337;
+	$beforeId= [];
+	$afterId= [];
+	$public=0;
+	$sectionName=New Code9013;
+	$playlink= NULL;
+}
+
+```
+
+
+***
+##SETTEMPL  Line 96
+***
+
+###Values
+```
+Send{
+  $opt = "SETTEMPL";
+  $templateNumber = 10;
+  $exampleId = 9013;
+  $courseId = 1885;
+  $courseVersion = 1337;
+  $i = 1;
+  $kind = CODE
+  $file = HTML-TEST1.html
+  $wordlist = 1
+}
+
+```
+
+###Service output
+```
+output{
+  "opt":
+  "before":([0,1,2,3,4])       //The Array represent the amount of values 
+                               //0,1,4 = exempleID. 2 = sectionname. 3 = Filename
+  "after":([0,1,2,3,4])        //Array, same as "before"
+  "templateid":
+  "stylesheet":
+  "numbox":
+  "box":([0,1,2,3,4,5,6,7,8])
+  "improws":[]      //Array
+  "impwords":[0]     //Array
+  "directory":[0,1]    //Array
+  "examplename":
+  "sectionname":
+  "playlink":
+  "exampleno":
+  "words":[0,1,2]        //Array
+  "wordlists":[0,1]    //Array
+  "writeaccess":
+  "debug":
+  "beforeafter":[0,1,2,3,4]  //Array, same as "before"
+  "public":
+  "courseid":
+  "courseversion":
+}
+```
+
+
+
+Log in as toddler, testing-course, create new code example, choose template, fill in values as below:
+Template 3
+Kind: Code 		File:HTML-TEST1.html	Wordlist:JS
+Kind: Preview 		File: HTML-TEST1.html	Wordlist:
+Kind: Document 	File:				Wordlist: Plain Text
+Assert and decide if the json-string is the same. 
+
+//Gör om!!
+Expected output:
+{
+  "opt": "SETTEMPL",
+  "templateid": "3",
+  "box": [
+    [
+      "1",
+      "CODE",
+      "<!DOCTYPE html>\n<html>\n<body>\n<h1>My First Heading</h1>\n<p>Uppdate<p>\n<p>My first paragraph.</p>\n\n</body>\n</html>\n",
+      "1",
+      "Title",
+      "HTML-TEST1.html",
+      "9",
+      "../courses/global/HTML-TEST1.html",
+      "2"
+    ],
+    [
+      "3",
+      "DOCUMENT",
+      "File:  not found.",
+      "4",
+      "Title",
+      "",
+      "9",
+      "../courses/global/HTML-TEST1.html",
+      "2"
+    ]
+  ],
+  "wordlists": [
+    ["1","JS"],
+    ["2", "PHP"],
+    ["3", "HTML"],
+    ["4", "Plain Text"],
+    ["5", "Java"],
+    ["6", "SR"],
+    ["7", "SQL"]
+  ],
+  "debug": "NONE!",
+  "courseid": "1885",
+  "courseversion": "1337"
+}
+
+
+
+
+perform update:
+********************
+###Update templateid:
+********************
+Templateid have eleven ids[0,1,2,3,4,5,6,7,8,9,10], need to do test for each to check that they all work
+
+//Prints out so we know starting value
+SELECT exampleid, templateid FROM codeexample;
+
+//Update, test if templates work
+UPDATE codeexample SET templateid = (Number you wanna test) where exampleid = (exampleId of testsubject);
+
+//Prints out so we can see if update was successful
+SELECT exampleid, templateid FROM codeexample;
+
+create boxes:
+There are a total of five box ids[1,2,3,4,5] they are connected to specific template numbers.
+Boxcount 1 = templateNumber 10
+Boxcount 2 = templateNumber 1, 2
+Boxcount 3 = templateNumber 3, 4, 8
+Boxcount 4 = templateNumber 5, 6, 7
+Boxcount 5 = templateNumber 9
+
+Forces box to have content html1
+SELECT * FROM box WHERE boxid = 5 AND exampleid = 9022;
+
+Does Not display? Have they made it in another database that displays it?
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values ('1885', 'testG2-v3-00000000', 'New code 9023', NULL, NULL, NULL, '1337', '0', '1', '0');
+
+
+Update and insert file in to box:
+Insert:
+exampleid must be a pre existence value from codeexample, it is a foreignkey
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid,fontsize) VALUES (5, 9025, "testestest", "code", "[viktig=1]", "TESTtest.html", 4, 9);
+
+Inserted values{
+	boxid
+	exampleid
+	boxtitle
+	boxcontent
+	settings
+	filename
+	wordlistid
+	fontsize
+}
+
+Update:
+Make exampleid same as insert example
+UPDATE box SET boxcontent = "DOCUMENT", filename = "updateTEST", wordlistid = 3 WHERE boxid = 5 AND exampleid = 9025;
+
+Updated values{
+	boxcontent
+filename
+wordlisti
+}
+
+
+##EDITEXAMPLE Line 160
+—-------------------------------------------------------------
+Log in as toddler, testing-course, create new code example, choose template, example settings, fill in values as below:
+SectionTitle: TestSecTitle	  		Title: TestTitle
+Before: New Code9028:New Code 		After: New Code9030:New Code 
+PLay Link: 					Important words: TestWord
+
+Expected output:
+{
+  "opt": "EDITEXAMPLE",
+  "before": [
+    [ "9028", "New Code9028", "New Code", null, null ]
+  ],
+  "after": [
+    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
+    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
+    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
+    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
+    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ]
+  ],
+  "impwords": [
+    "TestWord"
+  ],
+  "examplename": "TestTitle",
+  "sectionname": "TestSecTitle",
+  "playlink": null,
+  "debug": "NONE!",
+  "courseid": "1885",
+  "courseversion": "1337"
+}
+
+
+
+
+
+
+
+
+##EDITCONTENT Line 234
+—-------------------------------------------------------------
+Title: Title	Kind: Code
+Worldist: JS	File:HTML-TEST1-html
+Font size: 9px
+Title: Title EditContentTestTitle	Kind: Document
+Worldist: Plain Text	File: Greger.txt
+Font size: 11 px
+
+{
+  "opt": "EDITCONTENT",
+  "wordlists": [
+    [ "1", "JS" ],
+    [ "2", "PHP" ],
+    [ "3", "HTML" ],
+    [ "4", "Plain Text" ],
+    [ "5", "Java" ],
+    [ "6",’ "SR" ],
+    [ "7", "SQL" ]
+  ],
+}
+
+
+
+
+##EDITTITLE line 281
+—---------------------------------------------------------------------------------
+FIXED, Do new test
+
+##DELEXAMPLE Line 294
+—-------------------------------------------------------------
+
+Expected output:
+{"deleted":true,"debug":"NONE!"}
+
+
+
+		
+		
+
+
