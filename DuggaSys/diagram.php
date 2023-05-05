@@ -514,7 +514,7 @@
                 <div>
                     <!-- setElementPlacementType currently set to 11 for all buttons, this needs to be changed !-->
                     <div id="elementPlacement11" 
-                        class="diagramIcons toolbarMode" 
+                        class="ERButton diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
                         onmouseup='holdPlacementButtonUp();'
                         onmousedown="holdPlacementButtonDown(11)">
@@ -532,7 +532,7 @@
                     </div>
                     <div id="diagramPopOut">  
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(11,1); setElementPlacementType(11); setMouseMode(2);'>
+                            <div class="ERButton diagramIcons toolbarMode" onclick='togglePlacementType(11,1); setElementPlacementType(11); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
                                     <p>Creates an activation box.</p>
