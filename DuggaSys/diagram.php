@@ -56,22 +56,10 @@
                 } else {
                     echo "const did = '21';";
                 }
-            ?>
-                $.ajax({
-                async: false,
-                method: "GET",
-                url: `diagramservice.php?courseid=${courseid}&did=${did}`,
-            }).done((res) => {
-                console.log(res)
-                response = res;
-            }).error((req, status, err) => {
-                console.error(err);
-            });
-            
-            
+            ?>           
             return response;
         }
-        function getCourseId () {
+        function getCourseId (courseId, did) {
             try {
                 let response;
                 $.ajax({
@@ -81,19 +69,14 @@
             }).done((res) => {
                 console.log(res)
                 response = res;
-            }).error((req, status, err) => {
-                console.error(err);
-            });
+            })
 
             return response;
             } catch (error) {
                 console.error(error);
             }
         }
-        console.log(fetchDiagram);
-        console.log(getCourseId);
-        console.log(getCourseId);
-
+        console.log(getCourseId(1894, 21));
         /**
          * @description get the contents of a instruction file
          * @param fileName the name of the file t.ex. test.html
