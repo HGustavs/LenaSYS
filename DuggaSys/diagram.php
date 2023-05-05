@@ -512,18 +512,101 @@
                     </span>
                 </div>
                 <!-- Sequence diagram lifeline | for now is bound to uml final state -->
-                <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                    <span class="toolTipText"><b>Sequence lifeline</b><br>
-                        <p>Creates a lifeline for a sequnece diagram</p>
-                        <p>Represents the passage of time.</p>
-                        <p>Shows events that occur to an object during the process.</p>
-                        <br>
-                        <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
-                    </span>
+                <!-- -----------------------COPY PASTED CODE --------------------------!-->
+                <!--
+                <div>
+                    <div id="elementPlacement11"
+                         class="IEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(7); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(7)">
+                        <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
+                        <span class="toolTipText"><b>IE inheritance</b><br>
+                            <p>Add an IE inheritance to the diagram</p>
+                            <p>A relation between two or more entities.</p>
+                            <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                            <br>
+                            <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton7" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>  
+                    <div id="diagramPopOut">  
+                        <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
+                                <span class="placementTypeToolTipText"><b>ER Relation</b><br>
+                                    <p>Change to ER relation</p>
+                                    <p>Represents how entities are associated with each other.</p>
+                                </span>
+                            </div>
+                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
+                                <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                    <p>Change to UML inheritance</p>
+                                    <p>A relation between a superclass and subclasses.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
+                                <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
+                                    <p>A relation between two or more entities.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                !-->
+                <!-- -----------------------COPY PASTED CODE END --------------------------!-->
+                <!-- -----------------------LIFETIME CODE --------------------------!-->
+                <div>
+                    <div id="elementPlacement11" 
+                        class="diagramIcons toolbarMode" 
+                        onclick='setElementPlacementType(10); setMouseMode(2);' 
+                        onmouseup='holdPlacementButtonUp();'
+                        onmousedown="holdPlacementButtonDown(7)">
+                        <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                        <span class="toolTipText"><b>Sequence lifeline</b><br>
+                            <p>Creates a lifeline for a sequnece diagram</p>
+                            <p>Represents the passage of time.</p>
+                            <p>Shows events that occur to an object during the process.</p>
+                            <br>
+                            <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                        </span>
+                    </div>
+                    <div id="diagramPopOut">  
+                        <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
+                                <span class="placementTypeToolTipText"><b>ER Relation</b><br>
+                                    <p>Change to ER relation</p>
+                                    <p>Represents how entities are associated with each other.</p>
+                                </span>
+                            </div>
+                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
+                                <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                    <p>Change to UML inheritance</p>
+                                    <p>A relation between a superclass and subclasses.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
+                                <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
+                                    <p>A relation between two or more entities.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- -----------------------LIFETIME CODE END --------------------------!-->
                 <!-- UML Super state selection -->
-                <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                     <span class="toolTipText"><b>UML super state</b><br>
                         <p>Creates a super state.</p>
@@ -533,7 +616,7 @@
                     </span>
                 </div>
                 <!-- Sequence diagram object selection -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
                         <p>Creates a sequence object.</p>
@@ -544,7 +627,7 @@
                         </span>
                 </div>
                 <!-- Sequence activation selection -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
+                <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
                         <p>Creates an activation box.</p>
