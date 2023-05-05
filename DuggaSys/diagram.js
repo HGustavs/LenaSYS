@@ -9062,6 +9062,8 @@ function drawElement(element, ghosted = false)
                 </div>`;
                 if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
                     element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
                 }
 
     }
