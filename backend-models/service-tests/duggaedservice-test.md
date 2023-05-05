@@ -49,7 +49,8 @@ password: Kong
 
 
 ### Get newly creaded Assignment ID
-    // save to variable $id this value will identify the last assignment that was created (it has the highest ID number) 
+save to variable __$id__ this value will identify the last assignment that was created (it has the highest ID number) 
+    
     SQL-query: SELECT MAX(id) FROM quiz;    
 
 ---
@@ -133,7 +134,7 @@ SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,d
             VALUES ($pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10], $pre-Values[11] );
 ```
 
-finally get the created Assignments id, save it in $pre-Values[0].
+finally get the created Assignments _id_, save it in __$pre-Values[0]__.
 
 
     SQL-Query: SELECT MAX(id) FROM quiz; 
@@ -201,7 +202,7 @@ password: Kong
 ## Reset database 
 ---
 
-remove inserted row from DB, using qid 
+remove inserted row from DB, using __$pre-Values[0]__ 
 
     SQL-query: DELETE FROM quiz WHERE id = $pre-Values[0]; 
 
@@ -294,25 +295,33 @@ this value is to be saved to variable $id, it will be used as ID when we identif
         readonly:
     }
 
-// ALL THE INSERTS WILL HAVE TO BE DELETED.
-// That means that if the test failed, then this test needs to go in and delete the inserts we made
+ALL THE INSERTS WILL HAVE TO BE DELETED.
+That means that if the test failed, then this test needs to go in and delete the inserts we made manualy.
 
 
------------------------------------------------------------------------------------------------------------------------------------------
-Add Variant (contents of quiz) (line 110):
------------------------------------------------------------------------------------------------------------------------------------------
-*****
-* pre-req:
-*****
 
-    { (checklogin) IS TRUE && 
-    (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')) } IS TRUE
+=================================
+---
+## Add Variant (contents of quiz) (line 110):
+=================================
+---
 
 
-///////
-/ pre-req variables
-//////
+---
+## Prerequisite
+---
 
+
+### pre-req:
+ 
+```
+(checklogin) IS TRUE && 
+(hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess $userid, $cid, 'st') IS TRUE
+```
+
+
+### pre-req data
+```
 $pre-Values = { 1885, 
                 0,
                 1,
@@ -326,15 +335,16 @@ $pre-Values = { 1885,
                 "{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}", 
                 0 }; 
 
-
+```
+```
 SQL-query:  INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
             VALUES ($pre-Values[0], $pre-Values[1], $pre-Values[2], $pre-Values[3], $pre-Values[4], $pre-Values[5], $pre-Values[6], $pre-Values[7], $pre-Values[8], $pre-Values[9], $pre-Values[10] );
+```
 
-*****
-* Get the id for the created quiz.
-*****
 
-    SQL-query: SELECT MAX(id) FROM quiz;     // this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
+Get the id for the created quiz. this value is to be saved to variable $id, it will be used as ID when we identify and delete the data from the database.
+    
+    SQL-query: SELECT MAX(id) FROM quiz;      
     
 *****
 * Add a new variant
