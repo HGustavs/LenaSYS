@@ -10,10 +10,6 @@
 	include_once "../Shared/sessions.php";
 	include_once "../recursivetesting/FetchGithubRepo.php";
 
-	// Connect to database and start session
-	pdoConnect();
-	session_start();
-
 	global $pdo;
 
 	//getCourseID("https://github.com/c21sebar/test"); // Dummy Code to see if everything works
@@ -35,6 +31,10 @@
 	// --------------------- This only happens when creating a new course --------------------------------------------------------------
 
 	function getCourseID($githubURL) {
+		// Connect to database and start session
+		pdoConnect();
+		session_start();
+
 
 		echo "<h2> Outputs for creating a new course </h2>";
 		echo "<p>Original URL: ".$githubURL."</p>";
