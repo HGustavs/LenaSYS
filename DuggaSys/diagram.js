@@ -6598,11 +6598,12 @@ function generateContextProperties()
                             break;
                     }
                 }
+                //radio buttons for choosing object  or actor. This just hides them via css.
                 str += `<div>`
-                str += `<input type="radio" id="sequenceActor" name="sequencePicker" value="actor" checked><label for="sequenceActor">Actor</label>`
-                str += `<input type="radio" id="sequenceObject" name="sequencePicker" value="object"><label for="sequenceObject">Object</label>`
+                str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" checked onfocus='document.getElementById("sequenceActor").classList.add("hiddenPlacementType")'><label for="sequenceActorRadio">Actor</label>`
+                str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='document.getElementById("sequenceObject").classList.add("hiddenPlacementType")'><label for="sequenceObjectRadio">Object</label>`
                 str += `</div>`
-            }
+            } 
         }
     
 
@@ -9434,7 +9435,7 @@ function drawElement(element, ghosted = false)
         fill='transparent'
         />`;
         //svg for actor.
-        str += `<g>`
+        str += `<g id="sequenceActor">`
         str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
         str += `<path class="text"
             d="M${(boxw/2)+linew},${(boxw/4)+linew}
@@ -9454,7 +9455,7 @@ function drawElement(element, ghosted = false)
         str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</g>`;
         //svg for object.
-        str += `<g>`;
+        str += `<g id="sequenceObject">`;
         str += `<rect class='text'
             x='${linew}'
             y='${linew}'
