@@ -6584,6 +6584,22 @@ function generateContextProperties()
                 }
             }
         }
+        //Selected sequence type
+        else if (element.type == 'sequence') {
+            //if sequenceActorAndObject kind
+            if (element.kind == 'sequenceActorAndObject') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
     
 
 
