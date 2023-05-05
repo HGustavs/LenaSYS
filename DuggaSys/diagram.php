@@ -512,7 +512,7 @@
                     </span>
                 </div>
                 <div>
-                    <!-- setElementPlacementType currently set to 11 for all buttons, this needs to be changed !-->
+                    <!-- (LIFELINE-> ACTIVATION -> OBJECT) setElementPlacementType currently set to 11 for all buttons, this needs to be changed !-->
                     <div id="elementPlacement11" 
                         class="diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(11); setMouseMode(2);' 
@@ -532,7 +532,7 @@
                     </div>
                     <div id="diagramPopOut">  
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
-                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(10,1); setElementPlacementType(11); setMouseMode(2);'>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(11,1); setElementPlacementType(11); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="toolTipText"><b>Sequence activation</b><br>
                                     <p>Creates an activation box.</p>
@@ -549,6 +549,92 @@
                                     <p>Used to show how an object will behave.</p>
                                     <br>
                                     <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <!-- (ACTIVATION-> LIFELINE -> OBJECT) setElementPlacementType currently set to 11 for all buttons, this needs to be changed !-->
+                    <div id="elementPlacement12" 
+                        class="diagramIcons toolbarMode" 
+                        onclick='setElementPlacementType(11); setMouseMode(2);' 
+                        onmouseup='holdPlacementButtonUp();'
+                        onmousedown="holdPlacementButtonDown(12)">
+                        <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                        <span class="toolTipText"><b>Sequence activation</b><br>
+                            <p>Creates an activation box.</p>
+                            <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                            <br>
+                            <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>
+                    <div id="diagramPopOut">  
+                        <div id="togglePlacementTypeBox12" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(12,1); setElementPlacementType(11); setMouseMode(2);'>
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="toolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
+                                <br>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(12,1); setElementPlacementType(11); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                                <span class="toolTipText"><b>Sequence Object</b><br>
+                                    <p>Creates a sequence object.</p>
+                                    <p>Represents a class or object.</p>
+                                    <p>Used to show how an object will behave.</p>
+                                    <br>
+                                    <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <!-- (OBJECT -> LIFELINE-> ACTIVATION ) setElementPlacementType currently set to 11 for all buttons, this needs to be changed !-->
+                    <div id="elementPlacement13" 
+                        class="diagramIcons toolbarMode" 
+                        onclick='setElementPlacementType(11); setMouseMode(2);' 
+                        onmouseup='holdPlacementButtonUp();'
+                        onmousedown="holdPlacementButtonDown(13)">
+                        <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                        <span class="toolTipText"><b>Sequence Object</b><br>
+                            <p>Creates a sequence object.</p>
+                            <p>Represents a class or object.</p>
+                            <p>Used to show how an object will behave.</p>
+                            <br>
+                            <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>
+                    <div id="diagramPopOut">  
+                        <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(13,1); setElementPlacementType(11); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                                <span class="toolTipText"><b>Sequence activation</b><br>
+                                    <p>Creates an activation box.</p>
+                                    <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                            <div class="diagramIcons toolbarMode" onclick='togglePlacementType(13,1); setElementPlacementType(11); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                                <span class="toolTipText"><b>Sequence lifeline</b><br>
+                                    <p>Creates a lifeline for a sequnece diagram</p>
+                                    <p>Represents the passage of time.</p>
+                                    <p>Shows events that occur to an object during the process.</p>
+                                    <br>
+                                    <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>

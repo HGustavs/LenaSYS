@@ -5972,7 +5972,7 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");// SE start
         document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton111").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");// SE end
     }
     else if(type==1){
