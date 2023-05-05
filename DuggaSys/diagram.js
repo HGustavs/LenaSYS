@@ -1401,7 +1401,7 @@ function getData()
     // SHOULD BE CHANGED LATER
     togglePlacementType(0,0)
     togglePlacementType(1,1)
-    togglePlacementType(9,9)
+    togglePlacementType(2,2)
 }
 //<-- UML functionality start
 /**
@@ -6004,7 +6004,7 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
     }
-    else if (type == 9) {
+    else if (type == 2) {
         document.getElementById("elementPlacement9").classList.add("hiddenPlacementType");// ER relation start
         document.getElementById("elementPlacement9").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement9").children.item(1).classList.remove("hiddenToolTiptext");
