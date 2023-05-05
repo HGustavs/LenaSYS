@@ -450,14 +450,14 @@
                         <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>-->
-                <!-- Sequence diagram lifeline | for now is bound to uml final state 
+                 Sequence diagram lifeline | for now is bound to uml final state 
                 <div id="elementPlacement10" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                     <span class="toolTipText"><b>Sequence lifeline</b><br>
                         <p>Creates a lifeline for a sequnece diagram</p><br>
                         <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>-->
+                </div>
                 <!-- UML Super state selection 
                 <div id="elementPlacement11" class="diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
@@ -466,14 +466,14 @@
                         <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>-->
-                <!-- Sequence diagram object selection 
+                 Sequence diagram object selection 
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
                         <p>Creates a sequence object.</p><br>
                         <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                         </span>
-                </div> -->
+                </div> 
                 <!-- Sequence activation selection -->
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
