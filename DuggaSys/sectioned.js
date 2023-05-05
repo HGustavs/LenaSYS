@@ -449,8 +449,9 @@ function refreshGithubRepo(courseid)
 		url: "../recursivetesting/getLatestCommit.php",
 		type: "POST",
 		data: {'cid':courseid, 'action':'refreshGithubRepo'},
-		success: function() { 
+		success: function(data) { 
 			//Returns true if the data and JSON is correct
+      alert(data);
 			dataCheck = true;
 		},
 		error: function(data){
@@ -472,13 +473,13 @@ function refreshGithubRepo(courseid)
 	return dataCheck;
 }
 
-function courseUpdateAlerts(hasUpdated) {
-  if(hasUpdated) {
-    alert("The course has been updated!");
-  } else {
-    alert("The course is already up to date!");
-  }
-}
+// function courseUpdateAlerts(hasUpdated) {
+//   if(hasUpdated) {
+//     alert("The course has been updated!");
+//   } else {
+//     alert("The course is already up to date!");
+//   }
+// }
 
 //----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog

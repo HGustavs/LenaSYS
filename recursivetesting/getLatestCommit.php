@@ -132,11 +132,11 @@
 				bfs($url, $cid, "REFRESH");
 				echo '<script>console.log(' .$url. '); </script>';
 				//echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(true);</script>';
-				courseUpdateAlerts(true);
+				print "funkar";
 			} else {
 				echo '<script>console.log("The course is already up to date!"); </script>';
 				//echo '<script src="../DuggaSys/sectioned.js">courseUpdateAlerts(false);</script>';
-				courseUpdateAlerts(false);
+				print "funkar2";
 			}
 		}
 	}
