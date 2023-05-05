@@ -379,9 +379,9 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     } else if (col == "type") {
-        console.log(obj.path);
-        console.log(obj.filename);
-        console.log(celldata);
+        if(celldata !== null) {
+            console.log(celldata);
+        }
     }
     return str;
 }
