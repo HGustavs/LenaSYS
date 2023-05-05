@@ -93,7 +93,7 @@ class StateChange {
             /**
              * If the key is not blacklisted, set to the new value
              */
-            if (key == "id") return; // Ignore this keys.
+            if (key == "delete") return; // Ignore this keys.
                 this[key] = changes[key];
         });
 
@@ -564,12 +564,13 @@ class StateMachine
         // Get all keys from the state.
         var keys = Object.keys(state);
 
+        console.log(keys);
         // If there is only an key that is ID in the state, delete those objects
         // TODO: Change the delete key to "del" OR "delete"
         if (keys.length == 2 && keys[0] == "delete") {
             var elementsToRemove = [];
             var linesToRemove = [];
-
+            console.log("tjo");
             // If the id is not an array, make it into an array
             if (!Array.isArray(state.id)) state.id = [state.id];
 
