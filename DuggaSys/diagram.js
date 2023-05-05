@@ -6590,10 +6590,6 @@ function generateContextProperties()
             if (element.kind == 'sequenceActorAndObject') {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
-                        case 'name':
-                            str += `<div style='color:white'>Name</div>`;
-                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                            break;
                         case 'actorOrObject':
                             console.log("actorOrObject case triggered");
                             //radio buttons for choosing object  or actor. This just hides them via css via the function toggleBetweenActorAndObject.
@@ -6601,6 +6597,10 @@ function generateContextProperties()
                             str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor"><label for="sequenceActorRadio">Actor</label>`
                             str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object"><label for="sequenceObjectRadio">Object</label>`
                             str += `</div>`
+                            break;
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
                         default:
                             break;
