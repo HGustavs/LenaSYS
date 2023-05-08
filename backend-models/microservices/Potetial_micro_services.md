@@ -119,13 +119,26 @@ Gathers information from the table __codeexample__.
 - exampleId : exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public
 ---
 
-### updateCodeexample --MIGHT ONLY BE USED HERE-- if so add it to settingCodeexampleTemplate
+### updateCodeexample 
 
 Updates values in the table __codeexample__. Columns that are updated: 
+__SETTEMPL__
 - templateno
 - exampleid
 - cid
 - cvers
+
+__EDITEXAMPLE__
+- runlink
+- examplename
+- sectionname
+
+__EDITEXAMPLE: beforeid!__
+- beforeid
+
+__EDITEXAMPLE: afterid!__
+- afterid
+
 ---
 
 ### selectFromBox           --MIGHT ONLY BE USED HERE-- if so add it to settingCodeexampleTemplate
