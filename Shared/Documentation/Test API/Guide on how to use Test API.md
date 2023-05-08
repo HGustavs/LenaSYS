@@ -21,7 +21,7 @@ The test API aims to be as easy as possible. In figure 2 you can find an example
 
 - **filter-option:** This decides what JSON output to use in the comparison test that will be performed later. This should be the same as the expected output if used. And it is also the displayed repones from the test. If none is used as the only value in the array all output data from the service will be used.  
 
-```
+```php
 /*
 ----------------------------------------------------------
     Example on how to run this test from another file:
