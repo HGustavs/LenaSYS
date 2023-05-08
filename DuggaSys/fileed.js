@@ -535,13 +535,13 @@ function sortFiles(asc){
             console.log('The x is:' + x);
             console.log('The y is:' + y);
 
-           if(asc == true){
+           if(asc == true && y){
            	 if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
                 shouldSwitch = true;
                 break;
              }
 
-           }else if(asc == false){
+           }else if(asc == false && y){
            	  if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()){
                 shouldSwitch = true;
                 break;
