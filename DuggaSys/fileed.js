@@ -668,7 +668,7 @@ function compare(a, b) {
 				var tempB = a;
 		}
 	
-    if (col == "filename") {
+    if (col == "filename" || col == "type") {
         tempA = JSON.parse(tempA);
         tempB = JSON.parse(tempB);
         tempA = tempA.shortfilename.toUpperCase();
@@ -690,13 +690,7 @@ function compare(a, b) {
 		}else if(col=="editor"||col=="trashcan"){
 				tempA=-1;
 				tempB=-1;
-		} else if (col=="type") {
-            console.log("hej");
-        tempA = JSON.parse(tempA);
-        tempB = JSON.parse(tempB);
-        tempA = tempA.shortfilename.toUpperCase();
-        tempB = tempB.shortfilename.toUpperCase();
-        }
+		}
 
     if (tempA > tempB) {
         return 1;
