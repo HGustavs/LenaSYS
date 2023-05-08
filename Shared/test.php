@@ -9,6 +9,7 @@ include_once "../Shared/test.php";
 
 $testData = array(
     'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+    'name' => 'create course test',
     'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
     'service-data' => serialize(array( // Data that service needs to execute function
         'opt' => 'NEW',
@@ -30,6 +31,10 @@ function testHandler($testData, $prettyPrint){
     //Output filter
     $filter = unserialize($testData['filter-output']);
 
+    if ($prettyPrint) {
+        echo "<h2>{$testData['name']} </h2>";
+    }
+
     // Test 1 login
     $serviceData = unserialize($testData['service-data']);
     $test1Response = json_encode(loginTest($serviceData['username'], $serviceData['password'], $prettyPrint));
@@ -43,8 +48,9 @@ function testHandler($testData, $prettyPrint){
     // Test 3 assertEqual
     $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
     $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
+    $TestsReturnJSONFinal[$testData['name']] = $TestsReturnJSON;
 
-    if(!($prettyPrint)){echo json_encode($TestsReturnJSON, true);}
+    if(!($prettyPrint)){echo json_encode($TestsReturnJSONFinal, true);}
 
 }
 
