@@ -33,9 +33,36 @@ send
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON 
-(at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using hash
@@ -220,10 +247,37 @@ send
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
-
 ## Remove inserted row from DB, using aid
 
 ```
@@ -310,8 +364,36 @@ send
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using aid
@@ -395,8 +477,36 @@ SQL-query: SELECT hash FROM useranswer WHERE hash = $hash
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using aid
@@ -483,8 +593,36 @@ SQL-query: SELECT hash FROM useranswer WHERE hash = $hash
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using aid
@@ -560,8 +698,36 @@ send
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using aid
@@ -635,8 +801,36 @@ send
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using aid
@@ -721,8 +915,36 @@ send
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using aid
@@ -810,8 +1032,36 @@ send
 ### Gather service output
 
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
-this is the expected output for the micro service.
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
 ```
 
 ## Remove inserted row from DB, using aid
