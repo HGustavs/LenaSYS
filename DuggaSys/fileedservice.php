@@ -78,7 +78,7 @@ if (checklogin() && $hasAccess) {
         if($countFileID > 0){ //redo to == 0 when testing shows this if-statement works
             //Delete file on file-id
             $debug =" *** This file is linked with fileID and should NOT be deleted ***";
-            echo "<script> console.log('Testing if-statement');</script>";
+
         }
         else{
             //Continue as before with looking at box table on the filename.
