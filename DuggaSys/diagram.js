@@ -1141,7 +1141,7 @@ var defaults = {
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
     sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" }, // UML Super State.
-    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 50, height: 300, type: "sequence" } // Sequence Activation.
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" } // Sequence Activation.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
