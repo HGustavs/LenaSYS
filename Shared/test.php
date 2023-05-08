@@ -5,46 +5,80 @@
     Example on how to run this test from another file:
 ----------------------------------------------------------
 
-include_once "../Shared/test.php";
+<?php
 
-$testData = array(
-    'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
-    'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
-    'service-data' => serialize(array( // Data that service needs to execute function
-        'opt' => 'NEW',
-        'username' => 'usr',
-        'password' => 'pass',
-    )),
-    'filter-output' => serialize(array( // Filter what output to use in assert test use none to use all output data
-    'debug',
-    'motd'
-    )),
+include "../Shared/test.php";
+
+$testsData = array(
+    'create course test' => array(
+        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
+        'service-data' => serialize(array( // Data that service needs to execute function
+            'opt' => 'NEW',
+            'username' => 'usr',
+            'password' => 'pass',
+            'coursecode' => 'IT466G',
+            'coursename' => 'TestCourseFromAPI4',
+            'uid' => '101'
+        )),
+        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+            'debug',
+            'readonly'
+        )),
+    ),
+    'create course test 2' => array(
+        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
+        'service-data' => serialize(array( // Data that service needs to execute function
+            'opt' => 'NEW',
+            'username' => 'usr',
+            'password' => 'pass',
+            'coursecode' => 'IT466G',
+            'coursename' => 'TestCourseFromAPI5',
+            'uid' => '101'
+        )),
+        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+            'none'
+        )),
+    ),
 );
 
-testHandler($testData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
+testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 */
 
-function testHandler($testData, $prettyPrint){
+function testHandler($testsData, $prettyPrint){
 
-    //Output filter
-    $filter = unserialize($testData['filter-output']);
+    foreach($testsData as $testData){
+        $name = key($testsData);
+        //Output filter
+        $filter = unserialize($testData['filter-output']);
 
-    // Test 1 login
-    $serviceData = unserialize($testData['service-data']);
-    $test1Response = json_encode(loginTest($serviceData['username'], $serviceData['password'], $prettyPrint));
-    $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
+        if ($prettyPrint) {
+            echo "<h2>{$testData['name']} </h2>";
+        }
 
-    // Test 2 callService
-    $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $prettyPrint));
-    $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
-    $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
+        // Test 1 login
+        $serviceData = unserialize($testData['service-data']);
+        $test1Response = json_encode(loginTest($serviceData['username'], $serviceData['password'], $prettyPrint));
+        $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
-    // Test 3 assertEqual
-    $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
-    $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
+        // Test 2 callService
+        $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $prettyPrint));
+        $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
+        $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
-    if(!($prettyPrint)){echo json_encode($TestsReturnJSON, true);}
+        // Test 3 assertEqual
+        $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
+        $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
+        $TestsReturnJSONWithName[$name] = $TestsReturnJSON;
+
+        next($testsData);
+    }
+
+    $TestsReturnJSONFinal = $TestsReturnJSONWithName;
+
+    if(!($prettyPrint)){echo json_encode($TestsReturnJSONFinal, true);}
 
 }
 
@@ -130,13 +164,13 @@ function callServiceTest($service, $data, $filter, $prettyPrint){
 }
 
 // Test 3: assert equal test
-function assertEqualTest($value1, $value2, $prettyPrint){
+function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     // Expected value is JSON
-    $value1 = json_decode($value1, true);
+    $valueExpected = json_decode($valueExpected, true);
 
-    if (($value1 != null) && ($value2 != null)){
-        $equalTest = ($value1 == $value2);
+    if (($valueExpected != null) && ($valueOuput != null)){
+        $equalTest = ($valueExpected == $valueOuput);
         if ($equalTest){
             $equalTestResult = "passed";
         }
@@ -150,16 +184,16 @@ function assertEqualTest($value1, $value2, $prettyPrint){
 
     if ($prettyPrint) {
         echo "<h4> Test 3 (assertEqual): {$equalTestResult} </h4>";
-        echo "<strong>value1: </strong>".json_encode($value1, true);
+        echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
         echo "<br>";
-        echo "<strong>value2: </strong>".json_encode($value2, true);
+        echo "<strong>value output: </strong>".json_encode($valueOuput, true);
         echo "<br>";
         echo "<br>";
     }
     return array(
         'result' => $equalTestResult,
-        'value1' => $value1,
-        'value2' => $value2
+        'value-expected' => $valueExpected,
+        'value-output' => $valueOuput
     );
 }
 
