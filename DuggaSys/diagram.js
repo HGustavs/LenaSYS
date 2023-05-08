@@ -789,7 +789,7 @@ const elementTypes = {
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
 
-    SDState: 8,////SD(State diagram) functionality
+    SDEntity: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
     UMLSuperState:11,
@@ -811,7 +811,7 @@ const elementTypesNames = {
     IEEntity: "IEEntity",
     IERelation: "IERelation",
 
-    SDState: "SDEntity",
+    SDEntity: "SDEntity",
 
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState",
@@ -1133,7 +1133,7 @@ var defaults = {
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
-    SDState: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
+    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
@@ -1159,9 +1159,9 @@ var allAttrToEntityRelations = [];
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
 /* draws the State diagram on LOAD.
-function debugDrawSDState() {
+function debugDrawSDEntity() {
     const EMPLOYEE_ID = makeRandomID();
-    const demoState = { name: "STATE", x: 100, y: 200, width: 200, height: 50, kind: "SDState", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['do: func']};
+    const demoState = { name: "STATE", x: 100, y: 200, width: 200, height: 50, kind: "SDEntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['do: func']};
     addObjectToData(demoState, false);
     console.log(demoState.name);
 }
@@ -1389,7 +1389,7 @@ function getData()
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
     // onSetup();
-    //debugDrawSDState(); // <-- debugfunc to show an sd entity
+    //debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
     updateGridPos();
@@ -2896,7 +2896,7 @@ function changeState()
 
     else if(element.type=='SD') {
 
-        if (element.kind != 'IEEntity') {
+        if (element.kind != 'SDEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -4080,7 +4080,7 @@ const stateLinesLabels=[];
     // Picks out the entities related to State Diagrams and place them in their local arrays.
     for (let i=0; i<data.length; i++)
     {
-        if (data[i].kind == elementTypesNames.SDState) {
+        if (data[i].kind == elementTypesNames.SDEntity) {
             stateElements.push([data[i], false]);
         }
         else if (data[i].kind == elementTypesNames.UMLInitialState) {
@@ -6572,7 +6572,7 @@ function generateContextProperties()
         }
         //Selected SD type
         else if (element.type == 'SD') {
-            //if SDState kind
+            //if SDEntity kind
             if (element.kind == 'SDEntity') {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -9155,7 +9155,7 @@ function drawElement(element, ghosted = false)
                 </div>`;
     }
 
-    // Check if element is SDState
+    // Check if element is SDEntity
     else if (element.kind == "SDEntity") {
 
         const maxCharactersPerLine = Math.floor(boxw / texth);
@@ -11913,7 +11913,7 @@ function updateCSSForAllElements()
                         }
                     }
                 }
-                // Update SDState
+                // Update SDEntity
                 else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
@@ -12009,7 +12009,7 @@ function updateCSSForAllElements()
                         fontContrast();
                     }
                 }
-                // Update SDState
+                // Update SDEntity
                 else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
