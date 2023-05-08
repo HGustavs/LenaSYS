@@ -2819,14 +2819,6 @@ function changeState()
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
 
-    // OLD CODE
-
-    /*if ((newType !== undefined && oldType != newType && elementHasLines(element)) || 
-    (newType !== undefined &&  oldType == 'UML' && newType != 'UML'  && elementHasLines(element) == false) || 
-    (newType !== undefined &&  oldType == 'IE' && newType != 'IE'  && elementHasLines(element) == false)) {*/
-
-    // Should only change if not same type and no lines
-
     // TODO: elementHasLines() seems to not work for UML elements, this needs to be fixed/investigated!!
     if ((newType !== undefined && oldType != newType && elementHasLines(element))){
         displayMessage("error", `
