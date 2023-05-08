@@ -1133,7 +1133,7 @@ var defaults = {
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
     IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
-    SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
+    SDState: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
@@ -2896,7 +2896,7 @@ function changeState()
 
     else if(element.type=='SD') {
 
-        if (element.kind != 'SDState') {
+        if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -6573,7 +6573,7 @@ function generateContextProperties()
         //Selected SD type
         else if (element.type == 'SD') {
             //if SDState kind
-            if (element.kind == 'SDState') {
+            if (element.kind == 'SDEntity') {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -7536,7 +7536,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     
-    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDState' || toElement.kind === 'SDState')) {
+    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDEntity' || toElement.kind === 'SDEntity')) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -9156,7 +9156,7 @@ function drawElement(element, ghosted = false)
     }
 
     // Check if element is SDState
-    else if (element.kind == "SDState") {
+    else if (element.kind == "SDEntity") {
 
         const maxCharactersPerLine = Math.floor(boxw / texth);
 
@@ -11914,7 +11914,7 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update SDState
-                else if (element.kind == "SDState") {
+                else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12010,7 +12010,7 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update SDState
-                else if (element.kind == "SDState") {
+                else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
