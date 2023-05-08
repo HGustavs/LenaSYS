@@ -5188,7 +5188,8 @@ ul.hamburgerList button.menuButton {
 .fileLink-uploaddate,
 .fileLink-filesize,
 .fileLink-kind,
-.fileLink-extension {
+.fileLink-extension,
+.fileLink-type {
   text-align: center;
 }
 
