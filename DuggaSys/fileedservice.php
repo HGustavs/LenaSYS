@@ -65,20 +65,27 @@ if (checklogin() && $hasAccess) {
         $countFileID =0;
        
         //Count if file is used in box, checks first on file id
+        //SELECT COUNT(*) countFileID, box.fileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;
         $queryCountFileID = 'SELECT COUNT(*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
         $queryFileID = $pdo->prepare($queryCountFileID);
         $queryFileID->bindParam(':fid', $fid);
         if (!$queryFileID->execute()) {
 			$error = $queryFileID->errorInfo();
 			$debug = "Error getting file list " . $error[2];
-		}
-		$resultFileID = $queryFileID->fetch(PDO::FETCH_OBJ);
-		$countFileID = $resultFileID->countFileID;
-        // If selected file has fileID in box, if it doesnt its and old file and is linked with filename
-        if($countFileID > 0){ //redo to == 0 when testing shows this if-statement works
-            //Delete file on file-id
-            $debug =" *** This file is linked with fileID and should NOT be deleted ***";
+		} else {
+            $resultFileID = $queryFileID->fetch(PDO::FETCH_OBJ);
+            $countFileID = $resultFileID->countFileID;
+            $fileID = $resultFileID->fileID;
+        }
+        // If selected file has fileID in box do not delete
+        if($countFileID > 0){ 
+            //Outputs to the alert that the file isn't deleted.
+            $debug =" *** This file is used in a box and linked with fileID and is NOT deleted ***";
 
+        }
+        //Delete file on file-id if it is not used in box and it has a fileID
+        else if ($countFileID == 0 && $fileID != null){
+            //Delete file based on fileID
         }
         else{
             //Continue as before with looking at box table on the filename.
