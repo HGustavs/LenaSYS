@@ -691,10 +691,11 @@ function compare(a, b) {
 				tempA=-1;
 				tempB=-1;
 		} else if(col=="type") {
-            tempA = tempA;
-            tempB = tempB;
-            console.log(tempA);
-            console.log(tempB);
+            if(tempA.path !== null && tempB.path == null) {
+                console.log("tempA är inte null");
+            } else {
+                console.log("tempA är null");
+            }
         }
 
     if (tempA > tempB) {
