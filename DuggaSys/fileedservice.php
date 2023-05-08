@@ -69,7 +69,7 @@ if (checklogin() && $hasAccess) {
         //$queryCountFileID = 'SELECT COUNT(*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
 		
 		//counts how many files have the same name in fileLink based on the selected file
-		$queryCountFileID = 'SELECT COUNT(*) counted FROM fileLink WHERE fileLink.filename= (SELECT filename FROM fileLink WHERE fileLink.fileid=:fid );';
+		$queryCountFileID = 'SELECT COUNT(*) countFiles FROM fileLink WHERE fileLink.filename= (SELECT filename FROM fileLink WHERE fileLink.fileid=:fid );';
         $queryFileID = $pdo->prepare($queryCountFileID);
         $queryFileID->bindParam(':fid', $fid);
         if (!$queryFileID->execute()) {
