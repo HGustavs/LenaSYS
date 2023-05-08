@@ -811,7 +811,7 @@ const elementTypesNames = {
     IEEntity: "IEEntity",
     IERelation: "IERelation",
 
-    SDState: "SDState",
+    SDState: "SDEntity",
 
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState",
