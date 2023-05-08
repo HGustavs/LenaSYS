@@ -2828,7 +2828,7 @@ function changeState()
 
     // Should only change if not same type and no lines
 
-    if ((newType == undefined || elementHasLines(element))){
+    if ((newType == undefined || oldType == newType || elementHasLines(element))){
 
         oldType == newType ? 
         displayMessage("error", `
