@@ -690,7 +690,9 @@ function compare(a, b) {
 		}else if(col=="editor"||col=="trashcan"){
 				tempA=-1;
 				tempB=-1;
-		}
+		} else if (col=="type") {
+            console.log("hej");
+        }
 
     if (tempA > tempB) {
         return 1;
