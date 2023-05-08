@@ -182,13 +182,6 @@ if($gradesys=="UNK") $gradesys=0;
 			if($ha || $studentTeacher) {
 				// The code for modification using sessions
 				if(strcmp($opt,"DEL")===0) {
-
-					$q = $pdo->prepare("SELECT entryname FROM listentries where lid=:lid");
-					$q->bindParam(':lid', $sectid);
-					$q->execute();
-					$e = $q->fetchAll();
-					$name = $e[0]['entryname'];
-
 					$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
 					$query->bindParam(':lid', $sectid);
 
@@ -198,15 +191,6 @@ if($gradesys=="UNK") $gradesys=0;
 						} else {
 							$debug = "The item could not be deleted.";
 						}
-					} else {
-						class githubDB extends SQLite3 {
-							function __construct() {
-								$this->open("../../githubMetadata/metadata2.db");
-							}
-						}
-						$gdb = new githubDB();
-						$gdb->query("DELETE FROM gitFiles WHERE cid=".$cid." AND fileName=".$name.";");
-						$gdb->close();
 					}
 				}
 				//This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
