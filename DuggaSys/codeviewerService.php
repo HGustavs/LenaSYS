@@ -286,7 +286,7 @@
 				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;");
 				$query->bindParam(':boxtitle', $boxTitle);
 				$query->bindValue(':exampleid', $exampleId);
-				$query->bindParam(':boxid', $boxId);
+				$query->bindValue(':boxid', $boxId);
 				$query->execute()
 
 				echo json_encode(array('title' => $boxTitle, 'id' => $boxId));
