@@ -11943,16 +11943,6 @@ function updateCSSForAllElements()
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
-                    } else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
@@ -12023,16 +12013,6 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
-                        }
-                    } else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
                         }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
