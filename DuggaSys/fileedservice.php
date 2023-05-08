@@ -75,11 +75,11 @@ if (checklogin() && $hasAccess) {
         if (!$queryFileID->execute()) {
 			$error = $queryFileID->errorInfo();
 			$debug = "Error getting file list " . $error[2];
-		} else {
-            $resultCount = $queryFileID->fetch(PDO::FETCH_OBJ);
-            $countFiles = $resultCount->countFiles;
-           // $fileID = $resultFileID->fileID;
-        }
+		}
+        $resultCount = $queryFileID->fetch(PDO::FETCH_OBJ);
+        $countFiles = $resultCount->countFiles;
+        //$fileID = $resultFileID->fileID;
+        
         // If selected file exist more than 0 times display how many times
         if($countFiles > 0){ 
             //Outputs to the alert that the file isn't deleted.
