@@ -61,8 +61,19 @@ if ($result === true) {
 ## Gather service output
 --- 
 
+#### Output
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);) this is the expected output for the micro service.
+    {
+        "entries":[],
+        "debug":"NONE!",
+        "gfiles":[],
+        "lfiles":[],
+        "access":false,
+        "studentteacher":false,
+        "superuser":true,
+        "waccess":false,
+        "supervisor":false
+    }
 ```
 
 =============================
@@ -164,6 +175,17 @@ assert($expected_log == $logged_message, "Failed.");
 ## Gather service output
 --- 
 
+#### Output
 ```
-Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);) this is the expected output for the micro service.
+    {
+        "entries":[],
+        "debug":"NONE!",
+        "gfiles":[],
+        "lfiles":[],
+        "access":false,
+        "studentteacher":false,
+        "superuser":true,
+        "waccess":false,
+        "supervisor":false
+    }
 ```
