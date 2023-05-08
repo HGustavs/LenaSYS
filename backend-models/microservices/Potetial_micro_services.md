@@ -59,9 +59,20 @@ Updates values in the table __user__ in the database, columns that are updated.
 updates the column _"password"_ should be conducted in a seperat method/function. 
 
 ---
+
+### addUserToCourse
+
+Performes an insert into the table __user_course__. Parameters needed:
+- uid
+- cid
+- coursevers : This parameter is used for vers, avers and bvers
+
+
+
+---
 ### updateUserCourse 
 
-Update values in the table __user_chorse__, columns that are updated.
+Update values in the table __user_course__, columns that are updated.
 - examiner
 - vers
 - access
@@ -81,3 +92,8 @@ Parameters added:
 - hpProgress
 ---
 
+### selectFromClass
+Gathers information from the table __class__.
+
+#### different querys paramaters and retrived information 
+- className : class 
