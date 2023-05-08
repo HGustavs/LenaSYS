@@ -794,7 +794,7 @@ const elementTypes = {
     UMLFinalState: 10,
     UMLSuperState:11,
 
-    sequenceActor:12, //sequence functionality
+    sequenceActorAndObject:12, //sequence functionality
 
 };
 
@@ -818,7 +818,7 @@ const elementTypesNames = {
 
     UMLSuperState: "UMLSuperState",
 
-    sequenceActor: "sequenceActor",
+    sequenceActorAndObject: "sequenceActorAndObject",
 
 }
 
@@ -1139,7 +1139,7 @@ var defaults = {
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
+    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" } // sequence actor and object
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -6585,6 +6585,30 @@ function generateContextProperties()
                 }
             }
         }
+        //Selected sequence type
+        else if (element.type == 'sequence') {
+            //if sequenceActorAndObject kind
+            if (element.kind == 'sequenceActorAndObject') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'actororobject':
+                            //buttons for choosing object or actor via toggleActorOrbject
+                            str += `<div>`
+                            str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
+                            str += `<button onclick='toggleActorOrbject("object");'>Object</button>`
+                            str += `</div>`
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                
+            } 
+        }
     
 
 
@@ -8699,14 +8723,14 @@ function addNodes(element)
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
     //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-    if (element.kind == "sequenceActor") {
+    if (element.kind == "sequenceActorAndObject") {
         nodes += "<span id='md' class='node md'></span>";
     }
     elementDiv.innerHTML += nodes;
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if (element.kind == "sequenceActor") {
+    if (element.kind == "sequenceActorAndObject") {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
@@ -8914,6 +8938,7 @@ function drawElement(element, ghosted = false)
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
     var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
+    var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8921,7 +8946,7 @@ function drawElement(element, ghosted = false)
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
-
+    
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
@@ -9402,8 +9427,8 @@ function drawElement(element, ghosted = false)
     
     //=============================================== <-- End of IE functionality
     //=============================================== <-- Start Sequnece functionality
-    //sequence actor and its life line 
-    else if (element.kind == 'sequenceActor') {
+    //sequence actor and its life line and also the object since they can be switched via options pane.
+    else if (element.kind == 'sequenceActorAndObject') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
@@ -9418,7 +9443,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the life line
         str += `<path class="text" 
-        d="M${(boxw/2)+linew},${((boxw/4)*3)+linew}
+        d="M${(boxw/2)+linew},${(boxw/4)+linew}
         V${boxh}
         "
         stroke-width='${linew}'
@@ -9426,23 +9451,45 @@ function drawElement(element, ghosted = false)
         stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
-        //svg for actor.
-        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        str += `<path class="text" 
-            d="M${(boxw/2)+linew},${(boxw/4)+linew}
-                v${boxw/6}
-                m-${(boxw/4)},0
-                h${boxw/2}
-                m-${(boxw/4)},0
-                v${boxw/3}
-                l${boxw/4},${boxw/4}
-                m${(boxw/4)*-1},${(boxw/4)*-1}
-                l${(boxw/4)*-1},${boxw/4}
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='transparent'
-        />`;
+        //actor or object is determined via the radio buttons in the context menu. the default is actor.
+        if (element.actorOrObject == "actor") {
+            //svg for actor.
+            str += `<g>`
+            str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+            str += `<path class="text"
+                d="M${(boxw/2)+linew},${(boxw/4)+linew}
+                    v${boxw/6}
+                    m-${(boxw/4)},0
+                    h${boxw/2}
+                    m-${(boxw/4)},0
+                    v${boxw/3}
+                    l${boxw/4},${boxw/4}
+                    m${(boxw/4)*-1},${(boxw/4)*-1}
+                    l${(boxw/4)*-1},${boxw/4}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='transparent'
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;
+        }
+        else if (element.actorOrObject == "object") {
+            //svg for object.
+            str += `<g>`;
+            str += `<rect class='text'
+                x='${linew}'
+                y='${linew}'
+                width='${boxw - (linew * 2)}'
+                height='${(boxw/2) - linew}'
+                rx='${sequenceCornerRadius}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}' 
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;   
+        }
         str += `</svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
@@ -12090,6 +12137,26 @@ function toggleBorderOfElements() {
             }
         }
     }
+}
+/**
+ * @description toggles the sequence actor/object selected to the type specified in the parameter: actor or object.
+ * @param type the type that youd like to switch to, actor or object.
+ */
+function toggleActorOrbject(type){
+    for (let i = 0; i < context.length; i++) {
+        if (context[i].actorOrObject != null) {
+            if (type=="object") {
+                context[i].actorOrObject = "object";
+            }
+            else if (type=="actor") {
+                context[i].actorOrObject = "actor";
+            }
+            else {
+                console.error(type + " is an unexpected parameter for toggleActorOrbject. This can only support actor or object.");
+            }
+        }
+    }
+    showdata();
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
