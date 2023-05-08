@@ -503,16 +503,16 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <!--
-                    <div id="diagramPopOut"><!--Initial state 
-                        <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start
+                    
+                    <div id="diagramPopOut"><!--Initial state -->
+                        <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Creates an initial state for UML.</p>
                                     <p>The initial state represents the start of a process.</p>
                                 </span>
-                            </div><!--Final state 
+                            </div><!--Final state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
@@ -520,7 +520,7 @@
                                     <p>Creates a final state for UML.</p>
                                     <p>The final state represents where a process ends.</p>
                                 </span>
-                            </div><!--Super state 
+                            </div><!--Super state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
@@ -531,7 +531,7 @@
                             </div>                           
                         </div>
                     </div>
-                </div>-->
+                </div>
                 <div><!--Final state button-->
                     <div id="elementPlacement10"
                          class="SDButton diagramIcons toolbarMode"
