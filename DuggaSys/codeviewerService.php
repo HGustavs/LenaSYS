@@ -279,7 +279,7 @@
 					}
 				}
 			}else if(strcmp('EDITTITLE',$opt)===0) {
-				$exampleid = $_POST['exampleid'];
+				/*$exampleid = $_POST['exampleid'];
 				$boxId = $_POST['boxid'];
 				$boxTitle = $_POST['boxtitle'];
 
@@ -287,6 +287,26 @@
 				$query->bindParam(':boxtitle', $boxTitle);
 				$query->bindValue(':exampleid', $exampleId);
 				$query->bindValue(':boxid', $boxId);
+				$query->execute();*/
+
+				$exampleId = $_POST['exampleid'];
+				$boxId = $_POST['boxid'];
+				$boxTitle = $_POST['boxtitle'];
+				$boxContent = $_POST['boxcontent'];
+				$wordlist = $_POST['wordlist'];
+				$filename = $_POST['filename'];
+				$fontsize = $_POST['fontsize'];
+				$addedRows = $_POST['addedRows'];
+				$removedRows = $_POST['removedRows'];
+
+				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");
+				$query->bindParam(':boxtitle', $boxTitle);
+				$query->bindParam(':boxcontent', $boxContent);
+				$query->bindParam(':wordlist', $wordlist);
+				$query->bindParam(':filename', $filename);
+				$query->bindParam(':fontsize', $fontsize);
+				$query->bindParam(':boxid', $boxId);
+				$query->bindParam(':exampleid', $exampleId);
 				$query->execute();
 
 				echo json_encode(array('title' => $boxTitle, 'id' => $boxId));
