@@ -523,10 +523,10 @@ function sortFiles(asc){
     while(switching){
         switching = false;
         rows = $("#fileLink table tr");
-        for(i = 1; i < rows.length - 1; i++){
+        for(i = 1; i < (rows.length - 1); i++){
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[3];
-            y = rows[i + 1].getElementsByTagName("TD")[3];
+            y = rows[i + 1] ? rows[i + 1].getElementsByTagName("TD")[3] : null;
 
            if(asc == true){
            	 if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
@@ -1005,4 +1005,3 @@ document.addEventListener('keydown', function(e) {
 });
 
 
-  
