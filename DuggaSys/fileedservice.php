@@ -62,7 +62,7 @@ if (checklogin() && $hasAccess) {
     // Old system uses filename to count if file is in use in a box, added functionaluty for Github/new files to count on fileID, keeping old system to have legacy compatibility
     if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		$counted = 0;
-        $queryCountFileID =0;
+        $countFileID =0;
        
         //Count if file is used in box, checks first on file id
         $queryCountFileID = 'SELECT COUNT(*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
@@ -73,9 +73,9 @@ if (checklogin() && $hasAccess) {
 			$debug = "Error getting file list " . $error[2];
 		}
 		$resultFileID = $queryFileID->fetch(PDO::FETCH_OBJ);
-		$counted = $resultFileID->counted;
+		$countFileID = $resultFileID->countFileID;
         // If selected file has fileID in box, if it doesnt its and old file and is linked with filename
-        if($queryCountFileID > 0){ //redo to == 0 when testing shows this if-statement works
+        if($countFileID > 0){ //redo to == 0 when testing shows this if-statement works
             //Delete file on file-id
             $debug =" *** This file is linked with fileID and should NOT be deleted ***";
             echo "<script> console.log('Testing if-statement');</script>";
