@@ -1582,7 +1582,6 @@ document.addEventListener('keydown', function (e)
                     saveProperties(); 
                     propField.blur();
                 }
-                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
         }
     }
@@ -2907,6 +2906,8 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
+    generateContextProperties();
+    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
 }
 
@@ -6607,7 +6608,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
