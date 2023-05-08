@@ -5792,11 +5792,11 @@ function toggleErrorCheck(){
     errorActive = !errorActive;
     if (errorActive) {
         document.getElementById("errorCheckToggle").classList.add("active");
-        displayMessage(messageTypes.SUCCESS, 'Error Check tool is on.');
+        //displayMessage(messageTypes.SUCCESS, 'Error Check tool is on.');
     }  
     else{
         document.getElementById("errorCheckToggle").classList.remove("active");
-        displayMessage(messageTypes.SUCCESS, 'Error Check tool is off.');
+        //displayMessage(messageTypes.SUCCESS, 'Error Check tool is off.');
     }
     showdata();
 }
@@ -5812,9 +5812,11 @@ function hideErrorCheck(show){
                 toggleErrorCheck();                   
             }
         });
+        displayMessage(messageTypes.SUCCESS, 'Error Check tool is on.');
     }
     else{
         document.getElementById("errorCheckField").style.display = "none";
+        displayMessage(messageTypes.SUCCESS, 'Error Check tool is off.');
     }
 }
 function setA4SizeFactor(e){
