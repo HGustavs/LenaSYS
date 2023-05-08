@@ -692,10 +692,12 @@ function compare(a, b) {
 				tempB=-1;
 		} else if(col=="type") {
             if(tempA !== null) {
-            console.log(tempA);
+                tempA = 1;
+                tempB = 0;
             }
             if(tempB !== null) {
-            console.log(tempB);
+                tempA = 0;
+                tempB = 1;
             }
 /*             if(tempA.path !== null && tempB.path == null) {
                 console.log("tempA är inte null");
