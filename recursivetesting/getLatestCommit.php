@@ -91,7 +91,6 @@
 		} else {
 			bfs($url, $cid, "REFRESH");
 		}
-		//refreshGithubRepo($cid); //testing !!!!!!! don't forget to remove!
 	}
 
 	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
