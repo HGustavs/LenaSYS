@@ -8586,7 +8586,7 @@ function drawLine(line, targetGhost = false)
         str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
     }
 
-    if (line.label && line.label != ""){
+    if (line.label && line.label != "" && line.type !== "IE"){
         //Get width of label's text through canvas 
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
