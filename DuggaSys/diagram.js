@@ -2241,10 +2241,9 @@ function mouseOverSelection(mouseX, mouseY){
  * @description Retrieves lines from svgbacklayer. If none is found return empty array
  */
 function getLinesFromBackLayer() {
-    var allLines = Array.from(document.getElementById("svgbacklayer").children);
+    var allLines = document.getElementById("svgbacklayer").children;
     return allLines.map(line => line.id);
 }
-
 /**
  * @description Calculates if any line is present on x/y position in pixels.
  * 
