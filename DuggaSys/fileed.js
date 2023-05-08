@@ -691,13 +691,15 @@ function compare(a, b) {
 				tempA=-1;
 				tempB=-1;
 		} else if(col=="type") {
+            console.log(tempA);
+            console.log(tempB);
             tempA = JSON.parse(tempA);
             tempB = JSON.parse(tempB);
-            if(tempA.path !== null && tempB.path == null) {
+/*             if(tempA.path !== null && tempB.path == null) {
                 console.log("tempA är inte null");
             } else {
                 console.log("tempA är null");
-            }
+            } */
         }
 
     if (tempA > tempB) {
