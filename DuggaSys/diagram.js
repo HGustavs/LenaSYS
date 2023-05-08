@@ -763,7 +763,7 @@ const keybinds = {
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
-        STATE_FINAL: { key: "<" , ctrl: true },
+        STATE_FINAL: { key: "f" , ctrl: false },
         STATE_SUPER: { key: ">" , ctrl: false },
 };
 
@@ -793,8 +793,9 @@ const elementTypes = {
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
-
     UMLSuperState:11,
+
+    sequenceActor:12, //sequence functionality
 
 };
 
@@ -817,6 +818,8 @@ const elementTypesNames = {
     UMLFinalState: "UMLFinalState",
 
     UMLSuperState: "UMLSuperState",
+
+    sequenceActor: "sequenceActor",
 
 }
 
@@ -966,8 +969,10 @@ var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
 var hasRecursion = false;
 var startWidth;
+var startHeight;
 var startNodeRight = false;
-var cursorStyle;
+var startNodeDown = false;
+var containerStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
@@ -1009,7 +1014,7 @@ const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
 const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000"];
+const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
@@ -1131,10 +1136,11 @@ var defaults = {
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
     SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
+    sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1392,7 +1398,7 @@ function getData()
     updateGridSize();
     showdata();
     drawRulerBars(scrollx,scrolly);
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
@@ -1856,7 +1862,7 @@ function mdown(event)
                             targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
-                            cursorStyle.cursor = "grabbing";
+                            containerStyle.cursor = "grabbing";
                             if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                                 wasDblClicked = true;
                                 document.getElementById("options-pane").className = "hide-options-pane";
@@ -1866,7 +1872,7 @@ function mdown(event)
                     }
                     else {
                         pointerState = pointerStates.CLICKED_CONTAINER;
-                        cursorStyle.cursor = "grabbing";
+                        containerStyle.cursor = "grabbing";
 
                         if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                             wasDblClicked = true;
@@ -1899,8 +1905,11 @@ function mdown(event)
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
+            startHeight = data[findIndex(data, context[0].id)].height;
 
-            startNodeRight = !event.target.classList.contains("mr");
+            //startNodeRight = !event.target.classList.contains("mr");
+            startNodeRight = event.target.classList.contains("ml"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
+            startNodeDown = event.target.classList.contains("md");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -1926,7 +1935,7 @@ function ddown(event)
 
         wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
         
-        var element = data[findIndex(data, event.currentTarget.id)];
+        const element = data[findIndex(data, event.currentTarget.id)];
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
             event.preventDefault(); // Needed in order for focus() to work properly 
             var input = document.getElementById("elementProperty_name");
@@ -1960,7 +1969,7 @@ if(!hasPressedDelete){
 
         case mouseModes.EDGE_CREATION:
             if(event.button == 2) return;
-            var element = data[findIndex(data, event.currentTarget.id)];
+            const element = data[findIndex(data, event.currentTarget.id)];
             // If element not in context, update selection on down click
             if (element != null && !context.includes(element)){
                 pointerState = pointerStates.CLICKED_ELEMENT;
@@ -2090,7 +2099,7 @@ function mouseMode_onMouseUp(event)
 function mup(event)
 {
     if(!mouseOverLine && !mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
     mouseButtonDown = false;
     targetElement = null;
@@ -2171,7 +2180,7 @@ function mup(event)
 function mouseEnter(){
     if(!mouseButtonDown){
         mouseOverElement = true;
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     }
 }
 
@@ -2180,7 +2189,7 @@ function mouseEnter(){
  */
 function mouseLeave(){
     mouseOverElement = false;
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
 }
 /**
 
@@ -2212,20 +2221,20 @@ function mouseOverSelection(mouseX, mouseY){
     if(context.length > 0 || contextLine.length > 0){
         // If there is a selection box and mouse position is inside it.
         if (mouseX > selectionBoxLowX && mouseX < selectionBoxHighX && mouseY > selectionBoxLowY && mouseY < selectionBoxHighY){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // If mouse position is over the delete button.
         else if (mouseX > deleteBtnX && mouseX < (deleteBtnX + deleteBtnSize) && mouseY > deleteBtnY && mouseY < (deleteBtnY + deleteBtnSize)){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // Not inside selection box, nor over an element or line.
         else if(!mouseOverElement && !mouseOverLine){
-            setCursorStyles(mouseMode);
+            setContainerStyles(mouseMode);
         }
     }
     // There is no selection box, and mouse position is not over any element or line.
     else if(!mouseOverElement && !mouseOverLine){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
 }
 
@@ -2419,9 +2428,9 @@ function mouseMode_onMouseMove(event)
 
     // Change cursor style if mouse pointer is over a line.
     if(mouseOverLine && !mouseButtonDown){
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     } else if(!mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
@@ -2535,7 +2544,10 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+            const minHeight = 150; // Declare the minimal height of an object
+            deltaY = startY - event.clientY;
+
+            if (startNodeRight && !startNodeDown && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth - (deltaX / zoomfact));
@@ -2546,7 +2558,7 @@ function mmoving(event)
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
-            } else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth) {
+            } else if (!startNodeRight && !startNodeDown && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
@@ -2562,6 +2574,18 @@ function mmoving(event)
                 const xChange = -(tmp - elementData.x);
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                
+            } 
+            //vertical resizing 
+            else if (!startNodeRight && startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                // Fetch original height
+                var tmp = elementData.height;
+                elementData.height = (startHeight - (deltaY / zoomfact));
+
+                // Deduct the new height, giving us the total change
+                const heightChange = -(tmp - elementData.height);
+                
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             }
 
             document.getElementById(context[0].id).remove();
@@ -3024,8 +3048,9 @@ function changeLineProperties()
     // SD line
     if (line.type == 'SD') {
         if (line.innerType != lineType.value) {
-            line.innerType = lineType.value.trim();
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            lineType.value = lineType.value.trim();
+            line.innerType = lineType.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { innerType: lineType.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // Start label, near side
         if (line.startLabel != startLabel.value) {
@@ -3294,7 +3319,6 @@ function clearContextLine()
  * @param {Number} mouseX Pixel position in the x-axis.
  * @param {Number} mouseY Pixel position in the y-axis.
  * @returns {Point} Point containing the calculated coordinates.
- * @see diagramToScreenPosition() For converting the other way.
  */
 function screenToDiagramCoordinates(mouseX,mouseY)
 {
@@ -3318,23 +3342,6 @@ function screenToDiagramCoordinates(mouseX,mouseY)
 
     return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
                     Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
-    );
-}
-
-/**
- * @description Converts a coordinate on the canvas into a pixel position on the screen.
- * @param {Number} coordX Coordinate position in the x-axis.
- * @param {Number} coordY Coordinate position in the y-axis.
- * @returns {Point} Point containing the calculated screen position.
- * @depricated TODO : Needs to be updated
- * @see screenToDiagramCoordinates() For converting the other way.
- */
-function diagramToScreenPosition(coordX, coordY)
-{
-    console.warn("diagramToScreenPosition() is depricated. It should be updated to use new screenToDiagramCoordinates() algorithm reversed.");
-    return new Point(
-        Math.round((coordX + scrollx) / zoomfact + 0),
-        Math.round((coordY + scrolly) / zoomfact + 0)
     );
 }
 
@@ -3538,7 +3545,7 @@ function entityIsOverlapping(id, x, y)
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
     if(foundIndex > -1){
-        var element = data[foundIndex];
+        const element = data[foundIndex];
         let targetX;
         let targetY;
         var elementHeight = element.height;
@@ -3629,7 +3636,7 @@ function setMouseMode(mode)
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
         mouseMode = mode;
-        setCursorStyles(mode);
+        setContainerStyles(mode);
         onMouseModeEnabled();
     } else {
         // Not implemented exception
@@ -3639,26 +3646,24 @@ function setMouseMode(mode)
 
 /**
  * @description Changes the current visual cursor style for the user.
- * @param {Number} cursorMode CursorStyle value. This will be translated into appropriate cursor style.
+ * @param {Number} cursorMode containerStyle value. This will be translated into appropriate container style.
  */
-function setCursorStyles(cursorMode = mouseModes.POINTER)
+function setContainerStyles(cursorMode = mouseModes.POINTER)
 {
-    // TODO : Create new string enum for all cursor styles? This would result in us not needing to use any form of branching and still get correct result.
-    // TODO : Should have better name. This is the CONTAINER and not a CURSORSTYLE!
-    cursorStyle = document.getElementById("container").style;
+    containerStyle = document.getElementById("container").style;
 
     switch(cursorMode) {
         case mouseModes.POINTER:
-            cursorStyle.cursor = "grab";
+            containerStyle.cursor = "grab";
             break;
         case mouseModes.BOX_SELECTION:
-            cursorStyle.cursor = "crosshair";
+            containerStyle.cursor = "crosshair";
             break;
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         case mouseModes.EDGE_CREATION:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         default:
             break;
@@ -4111,9 +4116,13 @@ const stateLinesLabels=[];
     }
 
     // Adds additional information in the view.
+    output+=`<p>Line labels:</p>`;
     for(var i=0; i<stateLinesLabels.length; i++)
     {
-    output+=`<p>${stateLinesLabels[i]}</p>`;
+        if(stateLinesLabels[i]==undefined)
+        output+=`<p>Unlabeled</p>`;
+        else
+        output+=`<p>${stateLinesLabels[i]}</p>`;
     }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
@@ -4251,6 +4260,7 @@ function toggleDarkmode()
 
 }
 
+
 /**
  * @description When diagram page is loaded, check if preferred theme is stored in local storage.
  */
@@ -4340,7 +4350,7 @@ function toggleReplay()
  */
 function toggleKeybindList()
 {
-    var element = document.getElementById("markdownKeybinds");
+    const element = document.getElementById("markdownKeybinds");
     if (element.style.display == "block") {
         element.style.display = "none";
     }
@@ -6379,7 +6389,7 @@ function generateContextProperties()
           }
 
           //Get selected element
-          var element = context[0];
+          const element = context[0];
 
           //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
           //TODO: Find a way to do this dynamically as new diagram types are added
@@ -6859,7 +6869,7 @@ function generateContextProperties()
                     str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
                 }
             });
-            str += `</select>`;
+            str += `</select>`; 
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
@@ -7110,7 +7120,7 @@ function setTimerToMessage(element, time = 5000)
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
     var timer = setInterval( function(){
-        var element = document.getElementById(settings.misc.errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
+        const element = document.getElementById(settings.misc.errorMsgMap[timer].id); 
         settings.misc.errorMsgMap[timer].percent -= 1;
         element.lastElementChild.style.width = `calc(${settings.misc.errorMsgMap[timer].percent - 1}% - 10px)`;
 
@@ -7498,11 +7508,10 @@ function determineLine(line, targetGhost = false)
 function sortElementAssociations(element)
 {
     // Only sort if size of list is >= 2
-    // TODO : Replace variable names a and b
-    if (element.top.length > 1) element.top.sort(function (a, b) { return sortvectors(a, b, element.top, element.id, 2) });
-    if (element.bottom.length > 1) element.bottom.sort(function (a, b) { return sortvectors(a, b, element.bottom, element.id, 3) });
-    if (element.left.length > 1) element.left.sort(function (a, b) { return sortvectors(a, b, element.left, element.id, 0) });
-    if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
+    if (element.top.length > 1) element.top.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.top, element.id, 2) });
+    if (element.bottom.length > 1) element.bottom.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.bottom, element.id, 3) });
+    if (element.left.length > 1) element.left.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.left, element.id, 0) });
+    if (element.right.length > 1) element.right.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.right, element.id, 1) });
 }
 
 /**
@@ -7514,7 +7523,7 @@ function sortElementAssociations(element)
  */
 
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
-
+    
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
      if (toElement.kind == "EREntity"){
         var tempElement = toElement;
@@ -7692,12 +7701,15 @@ function preProcessLine(line) {
         } else {
             line.endIcon = 'ARROW';
         }
+
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
             line.innerType = SDLineType.SEGMENT;
         }
+        
+        
     }
 }
 //#endregion =====================================================================================
@@ -7880,19 +7892,20 @@ function drawLine(line, targetGhost = false)
         if (line.kind == "Recursive"){
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
-            const startY = fy - 15 * zoomfact;
-            const endX = fx - 10 * zoomfact;
+            const startY = fy - 10 * zoomfact;
+            const endX = fx - 25 * zoomfact;
             const endY = fy - 15 * zoomfact;
             const cornerX = fx + length;
             const cornerY = fy - length;
-
-            str += `<line id='${line.id}-line1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<polygon id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+            
+            str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
         }
     }
+    
 
     /* if (felem.type != 'ER' || telem.type != 'ER') {
         line.type = 'UML';
@@ -8707,11 +8720,23 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
+    //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
+    if (element.kind == "sequenceActor") {
+        nodes += "<span id='md' class='node md'></span>";
+    }
     elementDiv.innerHTML += nodes;
-
     // This is the standard node size
     const defaultNodeSize = 8;
-
+    var nodeSize = defaultNodeSize*zoomfact;
+    if (element.kind == "sequenceActor") {
+        var mdNode = document.getElementById("md");
+        mdNode.style.width = nodeSize+"px";
+        mdNode.style.width = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
+        mdNode.style.top = "100%";
+    }
     var nodeSize = defaultNodeSize*zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
@@ -9059,6 +9084,7 @@ function drawElement(element, ghosted = false)
     }
     else if (element.kind == 'UMLInitialState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
                      style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
@@ -9070,14 +9096,21 @@ function drawElement(element, ghosted = false)
                              xmlns="http://www.w3.org/2000/svg" 
                              xml:space="preserve"
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                            <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
+                            <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
                                 <circle cx="16.5" cy="12.5" r="10.5"/>
                             </g>
                         </svg>
                 </div>`;
+                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
+                    element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
+                }
+
     }
     else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
                      style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
@@ -9095,6 +9128,12 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
+                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
+                    element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
+                }
+
     }
     else if (element.kind == 'UMLSuperState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
@@ -9381,9 +9420,54 @@ function drawElement(element, ghosted = false)
         //end of svg
         str += `</svg>`;
         
-    }    
+    }
+    
     //=============================================== <-- End of IE functionality
+    //=============================================== <-- Start Sequnece functionality
+    //sequence actor and its life line 
+    else if (element.kind == 'sequenceActor') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
 
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the life line
+        str += `<path class="text" 
+        d="M${(boxw/2)+linew},${((boxw/4)*3)+linew}
+        V${boxh}
+        "
+        stroke-width='${linew}'
+        stroke='${element.stroke}'
+        stroke-dasharray='${linew*3},${linew*3}'
+        fill='transparent'
+        />`;
+        //svg for actor.
+        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        str += `<path class="text" 
+            d="M${(boxw/2)+linew},${(boxw/4)+linew}
+                v${boxw/6}
+                m-${(boxw/4)},0
+                h${boxw/2}
+                m-${(boxw/4)},0
+                v${boxw/3}
+                l${boxw/4},${boxw/4}
+                m${(boxw/4)*-1},${(boxw/4)*-1}
+                l${(boxw/4)*-1},${boxw/4}
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='transparent'
+        />`;
+        str += `</svg>`;  
+    }
+    //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
     //ER element
     else {
@@ -12160,7 +12244,7 @@ function centerCamera()
 function downloadFile(filename, dataObj)
 {
     // Create a "a"-element
-    var element = document.createElement('a');
+    const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
     element.setAttribute('download', filename + ".json");
 
@@ -12257,9 +12341,15 @@ function exportWithoutHistory()
  * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
 function loadMockupDiagram(path){
-    
-    let fileType = document.getElementById("diagramTypeDropdown").value;
-    path = fileType;
+
+    // "resetDiagram()" calls this method with "EMPTYDiagram" as parameter
+
+    // The path is not set yet if we do it from the dropdown as the function
+    // is called without a parameter.
+    if(!path){
+        let fileType = document.getElementById("diagramTypeDropdown").value;
+        path = fileType;
+    }
     //make sure its not null first
     if (path != null) {
         //via fetch API, request the json file 
@@ -12373,8 +12463,8 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
-
-function fetchDiagramFileContentOnLoad()
+//code has no functionallity execpt for when the hard coded diagram was used. looks like it reloaeded the diagram and got the file. Diagram in onSetup()
+/* function fetchDiagramFileContentOnLoad()
 {
     let temp = getVariantParam();
     var fullParam = temp[0];
@@ -12395,7 +12485,7 @@ function fetchDiagramFileContentOnLoad()
         // Failed to load content
         console.error("No content to load")
     }
-}
+} */
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
@@ -12471,15 +12561,21 @@ function resetDiagramAlert(){
  * @description Cleares the diagram.
  */
 function resetDiagram(){
+    
     // Goto the beginning of the diagram
+        // NOTE: stateMachine should be StateMachine, but this had no effect
+        // on functionality.
+    /*
     stateMachine.gotoInitialState();
 
     // Remove the previous history
     stateMachine.currentHistoryIndex = -1;
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
-    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
-    fetchDiagramFileContentOnLoad();
+    //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    //fetchDiagramFileContentOnLoad();
+    */
+    loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 /**
  *
