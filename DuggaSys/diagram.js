@@ -7900,6 +7900,9 @@ function drawLine(line, targetGhost = false)
             line.endIcon = "ARROW";
         }
     }
+    else if ((felem.type == "IE") || (telem.type == 'IE')) {
+        line.type = "IE"
+    }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
     }
