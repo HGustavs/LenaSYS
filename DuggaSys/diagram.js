@@ -2827,7 +2827,7 @@ function changeState()
 
     // Should only change if not same type and no lines
 
-    if ((newType == undefined && oldType != newType || elementHasLines(element))){
+    if ((newType == undefined && oldType != newType && elementHasLines(element))){
         displayMessage("error", `
         Can't change type from \"${oldType}\" to \"${newType}\" as
         different diagrams should not be able to connect to each other.`
