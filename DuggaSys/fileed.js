@@ -692,6 +692,10 @@ function compare(a, b) {
 				tempB=-1;
 		} else if (col=="type") {
             console.log("hej");
+        tempA = JSON.parse(tempA);
+        tempB = JSON.parse(tempB);
+        tempA = tempA.shortfilename.toUpperCase();
+        tempB = tempB.shortfilename.toUpperCase();
         }
 
     if (tempA > tempB) {
