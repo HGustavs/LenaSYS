@@ -6600,8 +6600,8 @@ function generateContextProperties()
                             str += `<div>`
                             /* str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" onfocus='${element[property]}="actor"'><label for="sequenceActorRadio">Actor</label>`
                             str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='${element[property]}="object"'><label for="sequenceObjectRadio">Object</label>` */
-                            str += `<button onclick='toggleActorOrbject("actor")'>Actor</button>`
-                            str += `<button onclick='toggleActorOrbject("object")'>Object</button>`
+                            str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
+                            str += `<button onclick='toggleActorOrbject("object");'>Object</button>`
                             str += `</div>`
                             console.log("actorOrObject case exiting" + element[property]);
                             break;
@@ -12155,10 +12155,10 @@ function toggleBorderOfElements() {
 function toggleActorOrbject(type){
     for (let i = 0; i < context.length; i++) {
         if (context[i].actorOrObject != null) {
-            if (type="object") {
+            if (type=="object") {
                 context[i].actorOrObject = "object";
             }
-            else if (type="actor") {
+            else if (type=="actor") {
                 context[i].actorOrObject = "actor";
             }
             else {
