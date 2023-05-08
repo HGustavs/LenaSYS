@@ -11946,17 +11946,7 @@ function updateCSSForAllElements()
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
-                    }/*  else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }
-                    } */ else{
+                    } else{
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if(element.state == "weakKey") {
@@ -12027,17 +12017,7 @@ function updateCSSForAllElements()
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
-                    } /* else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }
-                    } */ else{
+                    } else{
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if(element.state == "weakKey") {
