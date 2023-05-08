@@ -221,9 +221,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			<div id='feedbackbox'>
 				<span id='feedbackquestion'></span>
 					<div id="ratingbox">
-						<!--<label for='r1'>1<br />
+						<label for='r1'>1<br />
 							<input type='radio' id='r1' value='1' name="rating">
-						</label>-->
+						</label>
 						<label for='r2'>2<br />
 							<input type='radio' id='r2' value='2' name="rating">
 						</label>
