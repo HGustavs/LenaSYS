@@ -526,7 +526,11 @@ function sortFiles(asc){
         for(i = 1; i < rows.length - 1; i++){
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[3];
-            y = rows[i + 1].getElementsByTagName("TD")[3];
+            if(rows[i+1]) {
+                y = rows[i + 1].getElementsByTagName("TD")[3];
+            } else {
+                y = null;
+            }
             console.log(i);
             console.log('The x is:' + x);
             console.log('The y is:' + y);
