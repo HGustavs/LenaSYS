@@ -2,7 +2,7 @@
 
 The test API makes it possible to test multiple services in a monolithic or a microservice and compare the result of the execution to determine if a microservice is working like the monolithic service or not, alternatively compare the result to an expected output. And it can also be used to automate a service execution without manually doing the actions required. 
 
-![test-api-overview](test-api-overview.png)
+![test-api-overview](overview Test API.png)
 
 **Figure 1**  Overview of the processes performed by the Test API 
 
