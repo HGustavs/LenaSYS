@@ -2255,7 +2255,7 @@ function determineLineSelect(mouseX, mouseY)
 {
     // This func is used when determining which line is clicked on.
     
-    var allLines = getLinesFromBackLayer;
+    var allLines = getLinesFromBackLayer();
     var bLayerLineIDs = []
 
     var cMouse_XY = {
