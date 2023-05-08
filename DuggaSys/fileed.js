@@ -527,6 +527,9 @@ function sortFiles(asc){
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[3];
             y = rows[i + 1].getElementsByTagName("TD")[3];
+            console.log(rows.length -1);
+            console.log('The x is:' + x);
+            console.log('The y is:' + y);
 
            if(asc == true){
            	 if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
