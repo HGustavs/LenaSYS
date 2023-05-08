@@ -2819,13 +2819,19 @@ function changeState()
     const element =  context[0],
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
-    /* If the element has a new type and got lines, then it can't change type. */
-    if ((newType !== undefined && oldType != newType && elementHasLines(element)) || 
+
+    // OLD CODE
+
+    /*if ((newType !== undefined && oldType != newType && elementHasLines(element)) || 
     (newType !== undefined &&  oldType == 'UML' && newType != 'UML'  && elementHasLines(element) == false) || 
-    (newType !== undefined &&  oldType == 'IE' && newType != 'IE'  && elementHasLines(element) == false)) {
+    (newType !== undefined &&  oldType == 'IE' && newType != 'IE'  && elementHasLines(element) == false)) {*/
+
+    // Should only change if not same type and no lines
+
+    if ((newType !== undefined && oldType != newType && elementHasLines(element) == false)){
         displayMessage("error", `
             Can't change type from \"${oldType}\" to \"${newType}\" as
-            these types should not be able to connect with each other.`
+            different diagrams should not be able to connect to each other.`
         );
         return;
     }
