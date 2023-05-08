@@ -72,13 +72,14 @@ if (checklogin() && $hasAccess) {
 		}
 		$resultFileID = $queryFileID->fetch(PDO::FETCH_OBJ);
 		$counted = $resultFileID->counted;
-        //om vald fil har file-id i box, om inte så är de en gammal fil och är länkad med filnamn 
+        // If selected file has fileID in box, if it doesnt its and old file and is linked with filename
         if($queryCountFileID > 0){
             //Delete file on file-id
             $debug ="This file is linked with fileID and should be deleted";
         }
         else{
-            //allt nedan precis som de var innan
+            //Continue as before with looking at boxtable on the filename.
+
         }
 		//Check if file is in use
 		$querystring0 = 'SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
