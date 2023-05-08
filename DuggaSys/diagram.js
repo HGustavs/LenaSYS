@@ -7655,14 +7655,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  */
 function isClose(fromX, toX, fromY, toY, zoom = 1) {
     const concideredNearValue = 600 * zoom,
-          deltaX = toX - fromX,
-          deltaY = toY - fromY;
+          deltaX = Math.abs(toX - fromX),
+          deltaY = Math.abs(toY - fromY);
 
-    if (deltaX < concideredNearValue && deltaY < concideredNearValue) {
-        return true;
-    } else {
-        return false;
-    }
+    // Returns true if deltaX and deltaY is within considered near value, otherwise false
+    return deltaX < concideredNearValue && deltaY < concideredNearValue
 }
 
 /**
