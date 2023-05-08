@@ -2598,8 +2598,9 @@ function mmoving(event)
                 const heightChange = -(tmp - elementData.height);
 
                 // Fetch original y-position
+                // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
                 tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY)).y;
+                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
 
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
@@ -9166,9 +9167,10 @@ function drawElement(element, ghosted = false)
                     <svg width="100%" height="100%">
                     <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
                     <rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
-                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${boxh/30}px">${element.name}</text>
+                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
+
     }
 
     // Check if element is SDState
