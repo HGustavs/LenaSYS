@@ -2828,7 +2828,6 @@ function changeState()
     // Should only change if not same type and no lines
 
     if ((newType == undefined || oldType == newType || elementHasLines(element))){
-
         oldType == newType ? 
         displayMessage("error", `
             Can't change to \"${oldType}\" as this type is already selected.`
@@ -2838,14 +2837,6 @@ function changeState()
             Can't change type from \"${oldType}\" to \"${newType}\" as
             different diagrams should not be able to connect to each other.`
         )
-
-        if (elementHasLines(element)){
-            displayMessage("error", `
-            Can't change type from \"${oldType}\" to \"${newType}\" as
-            different diagrams should not be able to connect to each other.`
-        )
-        }
-
         return;
     }
 
