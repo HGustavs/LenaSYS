@@ -8928,7 +8928,7 @@ function drawRulerBars(X,Y)
  */
 function drawElement(element, ghosted = false)
 {
-    let ghostPreview = ghostLine ? 0.2 : 0.4;
+    let ghostPreview = ghostLine ? 0 : 0.4;
     var str = "";
 
     // Compute size variables
