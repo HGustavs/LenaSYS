@@ -691,12 +691,17 @@ function compare(a, b) {
 				tempA=-1;
 				tempB=-1;
 		} else if(col=="type") {
-            if(tempA !== null) {
+            if(tempA == null && tempB == null)  {
+                tempA = 0;
+                tempB = 0;
+            } else if (tempA !== null && tempB == null) {
                 tempA = 1;
                 tempB = 0;
-            }
-            if(tempB !== null) {
+            } else if (tempA == null && tempB !== null) {
                 tempA = 0;
+                tempB = 1;
+            } else {
+                tempA = 1;
                 tempB = 1;
             }
 /*             if(tempA.path !== null && tempB.path == null) {
