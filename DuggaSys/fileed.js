@@ -691,8 +691,10 @@ function compare(a, b) {
 				tempA=-1;
 				tempB=-1;
 		} else if(col=="type") {
-            tempA = JSON.parse(tempA);
-            tempB = JSON.parse(tempB);
+            tempA = tempA;
+            tempB = tempB;
+            console.log(tempA);
+            console.log(tempB);
         }
 
     if (tempA > tempB) {
