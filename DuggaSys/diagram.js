@@ -2838,6 +2838,14 @@ function changeState()
             Can't change type from \"${oldType}\" to \"${newType}\" as
             different diagrams should not be able to connect to each other.`
         )
+
+        if (elementHasLines(element)){
+            displayMessage("error", `
+            Can't change type from \"${oldType}\" to \"${newType}\" as
+            different diagrams should not be able to connect to each other.`
+        )
+        }
+
         return;
     }
 
