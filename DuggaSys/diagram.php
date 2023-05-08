@@ -58,23 +58,26 @@
                 } else {
                     echo "const did = '21';";
                 }
-            ?>
-
-            $.ajax({
+            ?>           
+            return response;
+        }
+        function getCourseId (courseId, did) {
+            try {
+                let response;
+                $.ajax({
                 async: false,
                 method: "GET",
-                url: `diagramservice.php?courseid=${courseid}&did=${did}`,
+                url: `diagramservice.php?courseid=${courseId}&did=${did}`,
             }).done((res) => {
                 console.log(res)
                 response = res;
-            }).error((req, status, err) => {
-                console.error(err);
-            });
-            
-            return response;
-        }
-        
+            })
 
+            return response;
+            } catch (error) {
+                console.error(error);
+            }
+        }
         /**
          * @description get the contents of a instruction file
          * @param fileName the name of the file t.ex. test.html
@@ -96,7 +99,7 @@
     </script>
 </head>
 <body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
-
+        
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">
 
