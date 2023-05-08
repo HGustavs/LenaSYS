@@ -6600,8 +6600,8 @@ function generateContextProperties()
                             str += `<div>`
                             /* str += `<input type="radio" id="sequenceActorRadio" name="sequencePicker" value="actor" onfocus='${element[property]}="actor"'><label for="sequenceActorRadio">Actor</label>`
                             str += `<input type="radio" id="sequenceObjectRadio" name="sequencePicker" value="object" onfocus='${element[property]}="object"'><label for="sequenceObjectRadio">Object</label>` */
-                            str += `<button onclick='${element["actorOrObject"]}="object";showdata();console.log("actorOrObject button click" + ${element[property]})'>Object</button>`
-                            str += `<button onclick=''>Object</button>`
+                            str += `<button onclick='toggleActorOrbject("actor")'>Actor</button>`
+                            str += `<button onclick='toggleActorOrbject("object")'>Object</button>`
                             str += `</div>`
                             console.log("actorOrObject case exiting" + element[property]);
                             break;
@@ -12144,6 +12144,25 @@ function toggleBorderOfElements() {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
                 }
+            }
+        }
+    }
+}
+/**
+ * @description toggles the sequence actor/object selected to the type specified in the parameter: actor or object.
+ * @param type the type that youd like to switch to, actor or object.
+ */
+function toggleActorOrbject(type){
+    for (let i = 0; i < context.length; i++) {
+        if (context[i].actorOrObject != null) {
+            if (type="object") {
+                context[i].actorOrObject = "object";
+            }
+            else if (type="actor") {
+                context[i].actorOrObject = "actor";
+            }
+            else {
+                console.error(type + " is an unexpected parameter for toggleActorOrbject. This can only support actor or object.");
             }
         }
     }
