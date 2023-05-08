@@ -8928,6 +8928,7 @@ function drawRulerBars(X,Y)
  */
 function drawElement(element, ghosted = false)
 {
+    let ghostPreview = ghostLine ? 0 : 0.2;
     var str = "";
 
     // Compute size variables
@@ -9014,7 +9015,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 1 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9086,7 +9087,7 @@ function drawElement(element, ghosted = false)
 
     }
     else if (element.kind == 'UMLInitialState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
@@ -9112,7 +9113,7 @@ function drawElement(element, ghosted = false)
 
     }
     else if (element.kind == 'UMLFinalState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
@@ -9139,7 +9140,7 @@ function drawElement(element, ghosted = false)
 
     }
     else if (element.kind == 'UMLSuperState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
@@ -9194,7 +9195,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9286,7 +9287,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9347,7 +9348,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9401,7 +9402,7 @@ function drawElement(element, ghosted = false)
         }
         
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
       
@@ -9437,7 +9438,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
@@ -9510,7 +9511,7 @@ function drawElement(element, ghosted = false)
         if (ghosted) {
             str += `
                 pointer-events: none;
-                opacity: ${ghostLine ? 0 : 0.0};
+                opacity: ${ghostPreview};
             `;
         }
         str += `'>`;
