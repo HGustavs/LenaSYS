@@ -6595,7 +6595,6 @@ function generateContextProperties()
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
                         case 'actororobject':
-                            console.log("actorOrObject case triggered" + element[property]);
                             //buttons for choosing object or actor via toggleActorOrbject
                             str += `<div>`
                             str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
