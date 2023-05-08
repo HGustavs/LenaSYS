@@ -668,7 +668,7 @@ function compare(a, b) {
 				var tempB = a;
 		}
 	
-    if (col == "filename" || col == "type") {
+    if (col == "filename") {
         tempA = JSON.parse(tempA);
         tempB = JSON.parse(tempB);
         tempA = tempA.shortfilename.toUpperCase();
