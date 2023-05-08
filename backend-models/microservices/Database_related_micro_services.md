@@ -14,17 +14,19 @@
 - improw
 - listentries
 
+ <br>
+  <br>
+   <br>
+    <br>
+
+
 
 ---
-
-
-
-
-
 ---
 ## ==user==
 ---
 ---
+<br>
 
 ### insertIntoTableUser --only used by addUser--
 Performes inserts into the table __user__, Parameters used: 
@@ -37,6 +39,7 @@ Performes inserts into the table __user__, Parameters used:
 - className
 
 ---
+<br>
 
 ### updateTableUser 
 
@@ -54,20 +57,20 @@ Updates values in the table __user__ in the database, columns that are updated.
 #### password
 - password 
 
+ <br>
+  <br>
+   <br>
+    <br>
+
+
+
+
 ---
-
-
-
-
-
-
-
-
-
 ---
 ## ==user_course==
 ---
 ---
+<br>
 
 ### insertIntoTableUserCourese  --only used by addClass--
 
@@ -76,7 +79,7 @@ Performes an insert into the table __user_course__. Parameters needed:
 - cid
 - coursevers : This parameter is used for vers, avers and bvers
 ---
-
+<br>
 
 ### updateTableUserCourse --only used by UpdateUserAndUsercourse--
 
@@ -89,21 +92,22 @@ Update values in the table __user_course__, columns that are updated.
 - access
 #### updateUserCourse: group
 - group
+
+
+ <br>
+  <br>
+   <br>
+    <br>
+
+
+
+
 --- 
-
-
-
-
-
-
-
-
-
-
 ---
 ## ==class==
 ---
 ---
+<br>
 
 ### insertIntoTableClass --only used by addClass--
 Creates new class. Makes inserts into the table __class__.
@@ -117,35 +121,41 @@ Parameters added:
 - tempo
 - hpProgress
 
+<br>
 ---
+<br>
 
 ### selectFromClass 
 Gathers information from the table __class__. parameters used 
 #### different querys paramaters and retrived information 
 - className : class 
 
+
+ <br>
+  <br>
+   <br>
+    <br>
+
+
+
+
 ---
-
-
-
-
-
-
-
-
 ---
 ## ==codeexample==
 ---
 ---
-
+<br>
 
 ### selectFromCodeexample
 Gathers information from the table __codeexample__.
 
 #### different querys paramaters and retrived information
 - exampleId : exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public
----
 
+<br>
+
+---
+<br>
 
 
 ### deleteFromCodeexample --only used by deliteExample--
@@ -153,20 +163,26 @@ Gathers information from the table __codeexample__.
 Removes row from table __codeexample__. Parameters needed:
 - exampleid
 
----
+<br>
 
+---
+<br>
 
 
 
 ### updateCodeexample 
 
 Updates values in the table __codeexample__. Columns that are updated: 
+<br>
+
 #### settingCodeexampleTemplate
 __SETTEMPL__
 - templateno
 - exampleid
 - cid
 - cvers
+
+<br>
 
 #### editCodeExample
 __EDITEXAMPLE__
@@ -181,30 +197,34 @@ __EDITEXAMPLE: afterid!__
 - afterid
 
 
+ <br>
+  <br>
+   <br>
+    <br>
+
+
+
+
+
+
+
 ---
-
-
-
-
-
-
-
-
-
-
-
-
 ---
 ## ==box==
 ---
 ---
+<br>
 
 ### selectFromBox           --MIGHT ONLY BE USED HERE-- if so add it to settingCodeexampleTemplate
 Gathers information from the table __box__.
 
 #### different querys paramaters and retrived information 
 - boxid AND exampleid : * 
+<br>
+
 ---
+
+<br>
 
 ### insertIntoTableBox             --MIGHT ONLY BE USED HERE-- if so add it to settingCodeexampleTemplate
 Performes an insert into the table __box__. Parameters needed:
@@ -212,13 +232,20 @@ pre-set values are inserted in the original service.
 - boxtitle: Title
 - settings: [viktig=1]
 - fontsize: 9
+<br>
+
 ---
+
+<br>
 
 ### deleteFromTableBox -- only used by deliteExample--
 Removes row from table __box__. Parameters needed:
 - exampleid
 
+<br>
+
 ---
+<br>
 
 ### updateTableBox 
 Updates values in the table __box__. Columns that are updated: 
@@ -228,6 +255,8 @@ Updates values in the table __box__. Columns that are updated:
 - filename
 - wordlistid
 
+<br>
+
 #### EDITCONTENT
 - boxtitle
 - boxcontent
@@ -235,24 +264,27 @@ Updates values in the table __box__. Columns that are updated:
 - fontsize
 - wordlistid
 
+<br>
+
 #### editCodeBoxTitle
 - boxtitle
 
+
+
+<br>
+ <br>
+  <br>
+   <br>
+
+
+
+
 ---
-
-
-
-
-
-
-
-
 ---
 ## ==impwordlist==
 ---
-
 ---
-
+<br>
 
 
 ### insertIntoImpwordlist --only used by settingCodeexampleTemplate-- 
@@ -263,9 +295,11 @@ Performes an insert into the table __impwordlist__. Parameters needed:
 - word
 - uid
 
+<br>
+
 ---
 
-
+<br>
 
 
 ### deleteFromTableImpwordlist
@@ -277,24 +311,27 @@ Removes row from table __impwordlist__. Parameters needed:
 
 #### deliteExample
 - exampleid
+
+
+<br>
+ <br>
+  <br>
+   <br>
+
+
+
+
+
+
+
+
 ---
-
-
-
-
-
-
-
-
-
-
-
-
 ---
 ## ==improw==
 ---
-
 ---
+<br>
+
 ### deleteFromTableImprow
 Removes row from table __improw__. Parameters needed:
 
@@ -307,9 +344,11 @@ Removes row from table __improw__. Parameters needed:
 #### deliteExample
 - exampleid
 
+<br>
+
 --- 
 
-
+<br>
 
 ### insertIntoImprow --only used by settingCodeexampleTemplate-- 
 Performes an insert into the table __impwordlist__. Parameters needed:
@@ -321,26 +360,32 @@ Performes an insert into the table __impwordlist__. Parameters needed:
 - iend
 - uid
 
+
+
+
+
+
+<br>
+ <br>
+  <br>
+   <br>
+
+
+
 ---
-
-
-
-
-
-
-
-
-
-
 ---
 ## ==listentries==
 ---
 ---
-
+<br>
 
 ### deliteFromListentries  --only used by deliteExample--
 Removes row from table __impwordlist__. Parameters needed:
 #### deliteExample
 - lid
 
+<br>
+
 ---
+
+<br>
