@@ -62,32 +62,29 @@ if (checklogin() && $hasAccess) {
     // Old system uses filename to count if file is in use in a box, added functionaluty for Github/new files to count on fileID, keeping old system to have legacy compatibility
     if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		$counted = 0;
-        $countFileID =0;
+        $countFiles =0;
        
-        //Count if file is used in box, checks first on file id
-        //SELECT COUNT(*) countFileID, box.fileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;
-        $queryCountFileID = 'SELECT COUNT(*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+        //Count if file is used in box, checks on file id
+        //$queryCountFileID = 'SELECT COUNT(*) countFileID, box.fileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+        //$queryCountFileID = 'SELECT COUNT(*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+		
+		//counts how many files have the same name in fileLink based on the selected file
+		$queryCountFileID = 'SELECT COUNT(*) counted FROM fileLink WHERE fileLink.filename= (SELECT filename FROM fileLink WHERE fileLink.fileid=:fid );';
         $queryFileID = $pdo->prepare($queryCountFileID);
         $queryFileID->bindParam(':fid', $fid);
         if (!$queryFileID->execute()) {
 			$error = $queryFileID->errorInfo();
 			$debug = "Error getting file list " . $error[2];
 		} else {
-            $resultFileID = $queryFileID->fetch(PDO::FETCH_OBJ);
-            $countFileID = $resultFileID->countFileID;
-            $fileID = $resultFileID->fileID;
+            $resultCount = $queryFileID->fetch(PDO::FETCH_OBJ);
+            $countFiles = $resultCount->countFiles;
+           // $fileID = $resultFileID->fileID;
         }
-        // If selected file has fileID in box do not delete
-        if($countFileID > 0){ 
+        // If selected file exist more than 0 times display how many times
+        if($countFiles > 0){ 
             //Outputs to the alert that the file isn't deleted.
-            $debug =" *** This file is used in a box and linked with fileID and is NOT deleted ***";
-
-        }
-        //Delete file on file-id if it is not used in box and it has a fileID
-        else if ($countFileID == 0 && $fileID != null){
-            //Delete file based on fileID
-        }
-        else{
+            $debug =" *** There are ".$countFiles." with this name ***";
+        } else{
             //Continue as before with looking at box table on the filename.
             //Check if file is in use
             $querystring0 = 'SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
