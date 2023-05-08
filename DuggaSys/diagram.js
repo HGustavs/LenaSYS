@@ -2238,19 +2238,39 @@ function mouseOverSelection(mouseX, mouseY){
 }
 
 /**
- * @description Calculates if any line is present on x/y position in pixels.
+ * @description Retrieves lines from svgbacklayer. If none is found return empty array
+ */
+function bLayerLines()
+{
+    var allLines = document.getElementById("svgbacklayer").children;
+    var getSvgLines = [];
 
+    if (allLines === undefined || allLines.length == 0)
+    { 
+        for (var i = 0; i < allLines.length; i++)
+        {
+            getSvgLines[i] = allLines[i].id;
+        } 
+    }
+    else
+    {
+        getSvgLines = [];
+    }
+    return getSvgLines;
+}
+
+/**
+ * @description Calculates if any line is present on x/y position in pixels.
+ * 
  * @param {Number} mouseX
  * @param {Number} mouseY
  */
 function determineLineSelect(mouseX, mouseY)
 {
     // This func is used when determining which line is clicked on.
-
-    // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
     
-    var allLines = document.getElementById("svgbacklayer").children;
-    var bLayerLineIDs = []; // Used to only store the IDs. Needed since we later need a value copy of the ID and not the ref.
+    var allLines = bLayerLines;
+    var bLayerLineIDs = []
 
     var cMouse_XY = {
         x: mouseX, 
