@@ -2827,6 +2827,7 @@ function changeState()
 
     // Should only change if not same type and no lines
 
+    // TODO: elementHasLines() seems to not work for UML elements, this needs to be fixed/investigated!!
     if ((newType !== undefined && oldType != newType && elementHasLines(element))){
         displayMessage("error", `
         Can't change type from \"${oldType}\" to \"${newType}\" as
