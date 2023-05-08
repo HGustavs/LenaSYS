@@ -492,6 +492,9 @@ function filterFilesByKind(kind){
 
     }if(kind == "Link"){
         $( "td:contains('Link')" ).parents("tr").show();
+    }if(kind == "Manual"){
+        $( "td:contains('Manual')" ).parents("tr").show();
+
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
