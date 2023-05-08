@@ -526,7 +526,7 @@ function sortFiles(asc){
         for(i = 1; i < rows.length - 1; i++){
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[3];
-            y = rows[i + 1] ? rows[i + 1].getElementsByTagName("TD")[3] : null;
+            y = rows[i + 1].getElementsByTagName("TD")[3];
 
            if(asc == true){
            	 if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
