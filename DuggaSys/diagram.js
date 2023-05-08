@@ -2240,23 +2240,9 @@ function mouseOverSelection(mouseX, mouseY){
 /**
  * @description Retrieves lines from svgbacklayer. If none is found return empty array
  */
-function getLinesFromBackLayer()
-{
+function getLinesFromBackLayer() {
     var allLines = document.getElementById("svgbacklayer").children;
-    var getSvgLines = [];
-
-    if (allLines === undefined || allLines.length == 0)
-    { 
-        for (var i = 0; i < allLines.length; i++)
-        {
-            getSvgLines[i] = allLines[i].id;
-        } 
-    }
-    else
-    {
-        getSvgLines = [];
-    }
-    return getSvgLines;
+    return allLines.map(line => line.id);
 }
 
 /**
