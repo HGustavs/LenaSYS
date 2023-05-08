@@ -889,11 +889,11 @@ input{
     filter: invert(1) ; 
 }
 */
-/* Style for "Date Picker" START:    
-::-webkit-calendar-picker-indicator:hover {
+/* Style for "Date Picker" START: */    
+::-webkit-calendar-picker-indicator {
     filter: invert(1) ; 
 }
-*/
+
 /* Style for Dugga "HTML CSS Dugga" */
 #input-col{
     background-color: #212121;
