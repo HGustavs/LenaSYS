@@ -522,12 +522,12 @@ function sortFiles(asc){
 
     while(switching){
         switching = false;
-        rows = $("#fileLink table tr").get();
+        rows = $("#fileLink table tr");
         for(i = 1; i < rows.length - 1; i++){
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[3];
             y = rows[i + 1].getElementsByTagName("TD")[3];
-            console.log(rows.length -1);
+            console.log(i);
             console.log('The x is:' + x);
             console.log('The y is:' + y);
 
