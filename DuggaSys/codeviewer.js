@@ -449,7 +449,7 @@ function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
 
 	retData['box'][data.id - 1][4] = data.title;
-	var boxWrapper = document.querySelector('#boxtitle2' + data.id + 'wrapper');
+	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
 	titleSpan.innerHTML = data.title;
 	fillBurger();
