@@ -785,3 +785,5 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
+/* Associated with issue #13793 */
+ALTER TABLE box ADD COLUMN fileID INTEGER(11);
