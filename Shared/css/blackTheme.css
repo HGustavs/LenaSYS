@@ -1002,7 +1002,11 @@ input{
     -moz-appearance: none;
     vertical-align: text-top;
     color: white;
-  }
+}
+
+.course-dropdown > option {
+	background-color: #212121;
+}
 
 #motdArea {
     background-color: var(--color-accent);
