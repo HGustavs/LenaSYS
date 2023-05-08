@@ -1071,6 +1071,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 #tabElement {
     filter: invert(0.8);
+    cursor: pointer;
 }
 
 .code #NewTabLink {
