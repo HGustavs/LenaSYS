@@ -2240,7 +2240,7 @@ function mouseOverSelection(mouseX, mouseY){
 /**
  * @description Retrieves lines from svgbacklayer. If none is found return empty array
  */
-function bLayerLines()
+function getLinesFromBackLayer()
 {
     var allLines = document.getElementById("svgbacklayer").children;
     var getSvgLines = [];
@@ -2269,7 +2269,7 @@ function determineLineSelect(mouseX, mouseY)
 {
     // This func is used when determining which line is clicked on.
     
-    var allLines = bLayerLines;
+    var allLines = getLinesFromBackLayer.map();
     var bLayerLineIDs = []
 
     var cMouse_XY = {
