@@ -884,12 +884,7 @@ input{
 }
 /* END */
 
-/* Style for "Date Picker" START:    
-::-webkit-calendar-picker-indicator:hover {
-    filter: invert(1) ; 
-}
-*/
-/* Style for "Date Picker" START: */    
+/* Style for "Date Picker" START:    */
 ::-webkit-calendar-picker-indicator {
     filter: invert(1) ; 
 }
