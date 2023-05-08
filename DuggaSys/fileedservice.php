@@ -59,9 +59,27 @@ if (hasAccess($userid, $cid, 'st')) {
 //------------------------------------------------------------------------------------------------
 if (checklogin() && $hasAccess) {
     if ($kind == 2 && isSuperUser($_SESSION['uid'] == false)) return;
-
+    // Old system uses filename to count if file is in use in a box, added functionaluty for Github/new files to count on fileID, keeping old system to have legacy compatibility
     if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		$counted = 0;
+        //Count if file is used in box, checks first on file id
+        $queryCountFileID = 'SELECT COUNT (*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+        $queryFileID = $pdo->prepare($queryCountFileID);
+        $queryFileID->bindParam(':fid', $fid);
+        if (!$queryFileID->execute()) {
+			$error = $queryFileID->errorInfo();
+			$debug = "Error getting file list " . $error[2];
+		}
+		$resultFileID = $queryFileID->fetch(PDO::FETCH_OBJ);
+		$counted = $resultFileID->counted;
+        //om vald fil har file-id i box, om inte så är de en gammal fil och är länkad med filnamn 
+        if($queryCountFileID > 0){
+            //Delete file on file-id
+            $debug ="This file is linked with fileID and should be deleted";
+        }
+        else{
+            //allt nedan precis som de var innan
+        }
 		//Check if file is in use
 		$querystring0 = 'SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
 		$query0 = $pdo->prepare($querystring0);
