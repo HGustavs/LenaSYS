@@ -522,7 +522,7 @@ function sortFiles(asc){
 
     while(switching){
         switching = false;
-        rows = $("#fileLink table tr");
+        rows = $("#fileLink table tr").get();
         for(i = 1; i < rows.length - 1; i++){
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[3];
