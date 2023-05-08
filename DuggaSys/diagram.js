@@ -2896,7 +2896,7 @@ function changeState()
 
     else if(element.type=='SD') {
 
-        if (element.kind != 'IEEntity') {
+        if (element.kind != 'SDState') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
