@@ -2895,14 +2895,12 @@ function changeState()
     }
 
     else if(element.type=='SD') {
-        // State diagrams don't have properties, so this feels unneccessary (?)
-        /*
+
         if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-        */
 
         //Check if type has been changed
         if (oldType != newType) {
