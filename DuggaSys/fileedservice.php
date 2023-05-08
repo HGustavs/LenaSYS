@@ -65,7 +65,7 @@ if (checklogin() && $hasAccess) {
        
        
         //Count if file is used in box, checks first on file id
-        $queryCountFileID = 'SELECT COUNT (*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+        $queryCountFileID = 'SELECT COUNT(*) countFileID FROM fileLink, box WHERE box.fileID = fileLink.fileid AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
         $queryFileID = $pdo->prepare($queryCountFileID);
         $queryFileID->bindParam(':fid', $fid);
         if (!$queryFileID->execute()) {
