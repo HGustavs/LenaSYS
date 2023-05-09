@@ -59,7 +59,8 @@ include_once ".../test4";
 
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         
-        
+        <input type="checkbox" name="sort_passed" value="passed_value">
+        <input type="checkbox" name="sort_failed" value="failed_value">
         <?php    
             $test = json_decode($_GET["name"]);
 
