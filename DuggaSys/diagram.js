@@ -9471,7 +9471,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<rect class='text' x='${xAnchor-(textWidth/2)}' y='${boxw-(textheight/2)}' width='${textWidth}' height='${textheight}' fill='${element.fill}' />`;
+            //str += `<rect class='text' x='${xAnchor-(textWidth/2)}' y='${boxw-(textheight/2)}' width='${textWidth}' height='${textheight}' fill='${element.fill}' />`;
             str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${element.stroke}'>${element.name}</text>`;
             str += `</g>`;
         }
@@ -12112,7 +12112,7 @@ function toggleBorderOfElements() {
     
         if(cssUrl == 'blackTheme.css'){
             //iterate through all the elements that have the class 'text'.
-            for (let i = 0; i < allTexts.length; i++) {
+            /* for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 //assign their current stroke color to a variable.
               let strokeColor = text.getAttribute('stroke');
@@ -12123,11 +12123,15 @@ function toggleBorderOfElements() {
                     strokeColor = '#ffffff';
                     text.setAttribute('stroke', strokeColor);
                 }
+            } */
+            for (let i = 0; i < data.length; i++) {
+                data[i].stroke[0] = '#ffffff';
+                
             }
         }
         //if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
         else{
-            for (let i = 0; i < allTexts.length; i++) {
+            /* for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
                 let fillColor = text.getAttribute('fill');
@@ -12135,6 +12139,10 @@ function toggleBorderOfElements() {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
                 }
+            } */
+            for (let i = 0; i < data.length; i++) {
+                data[i].stroke[0] = '#383737';
+                
             }
         }
     }
