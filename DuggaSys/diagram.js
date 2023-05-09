@@ -9472,7 +9472,10 @@ function drawElement(element, ghosted = false)
                 fill='transparent'
             />`;
             //str += `<rect class='text' x='${xAnchor-(textWidth/2)}' y='${boxw-(textheight/2)}' width='${textWidth}' height='${textheight}' fill='${element.fill}' />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${element.stroke}'>${element.name}</text>`;
+            var actorFontColor;
+            if (isDarkTheme()) actorFontColor = '#FFFFFF';
+            else actorFontColor = '#383737';
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
