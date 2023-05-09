@@ -5904,7 +5904,8 @@ function toggleRuler()
     if(settings.ruler.isRulerActive){
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
-        rulerToggleButton.style.backgroundColor = "#2E1A40";
+        rulerToggleButton.style.backgroundColor = 'transparent';
+        rulerToggleButton.style.backgroundColor = 'transparent';
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
