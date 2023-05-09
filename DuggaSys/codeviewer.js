@@ -963,14 +963,15 @@ function editImpRows(editType)
 
 function updateContent(file, content, boxnumber) 
 {
+	console.log("entering updateContent: ",file, content, boxnumber)
 	// Check if there is a box number
 	// Only true if function is called by drag and drop
 	if(boxnumber) {
 		var box = retData['box'][boxnumber - 1];;
-		console.log(box);
+		console.log("ifboxnum: ",box, boxnumber);
 	} else {
 		var box = retData['box'][openBoxID - 1];
-		console.log(box);
+		console.log("elseboxnum: ",box, openBoxID);
 	}
 	
 	var useBoxContent = true;
@@ -979,6 +980,7 @@ function updateContent(file, content, boxnumber)
 	if (!box) {
 		useBoxContent = false;
 		box = retData['box'][retData['box'].length - 1];
+		console.log("!box: ", box);
 	}
 
 	// Check if a drag and drop instance is created
@@ -991,6 +993,7 @@ function updateContent(file, content, boxnumber)
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
 	if (useBoxContent) {
+		console.log("Enter update statement");
 		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
 				if(file == null)
@@ -1006,6 +1009,7 @@ function updateContent(file, content, boxnumber)
 				var boxid = box[0];
 
 				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
+				console.log("Ajax: ", exampleid, boxid, boxtitle, boxcontent);
 
 				addedRows = [];
 				removedRows = [];
@@ -1016,9 +1020,12 @@ function updateContent(file, content, boxnumber)
 			setTimeout("location.reload()", 100000); //CHANGETHIS BACK TO 500 WHEN DONE 
 		}
 	} else {
+		console.log("failed")
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
+			console.log(boxtitle2);
 			try {
 				AJAXService("EDITTITLE", {exampleid: querystring['exampleid'], courseid: querystring['courseid'], boxid: box[0], boxtitle: document.querySelector("#boxtitle").textContent}, "BOXTITLE");
+				console.log("try catch");
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
