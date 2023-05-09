@@ -501,6 +501,7 @@ function handleFiles(files, boxnumber) {
 
 			// Lastly, apply the new file to that of the code viewer
 			updateContent(file.name, boxcontent, boxnumber);
+			console.log(updateContent);
 		}, { once: true });
     };
 }
@@ -966,8 +967,10 @@ function updateContent(file, content, boxnumber)
 	// Only true if function is called by drag and drop
 	if(boxnumber) {
 		var box = retData['box'][boxnumber - 1];;
+		console.log(box);
 	} else {
 		var box = retData['box'][openBoxID - 1];
+		console.log(box);
 	}
 	
 	var useBoxContent = true;
