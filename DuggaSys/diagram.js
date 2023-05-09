@@ -9471,7 +9471,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //str += `<rect class='text' x='${xAnchor-(textWidth/2)}' y='${boxw-(textheight/2)}' width='${textWidth}' height='${textheight}' fill='${element.fill}' />`;
+            //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though.
             var actorFontColor;
             if (isDarkTheme()) actorFontColor = '#FFFFFF';
             else actorFontColor = '#383737';
