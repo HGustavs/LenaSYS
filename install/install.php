@@ -9,8 +9,6 @@
 <body>
   <!-- Config Section -->
   <?php
-    session_start();
-    // include '../Shared/basic.php';
     // Saving away old execution time setting and setting new to 120 (default is 30).
     // this is done in order to avoid a php timeout, especially on windows where Database
     // query time also affects php executiion time. This will not work when php is running
@@ -737,13 +735,20 @@
     // Function that deletes a file from the local machine
     //---------------------------------------------------------------------------------------------------
     function deleteMetadataDB(){
-      $metadata_db = '../../githubMetadata/metadata'.$_SESSION["metadataDBVersion"].'.db';
+      //Find all files ending with .db inside the directory
+      $dir = '../../githubMetaData';
+      $metadata_db_files = preg_grep( '~\.db$~',scandir($dir));
 
-      if(file_exists($metadata_db)){
-        unlink($metadata_db);
-        echo "<span id='successText' />Successfully removed the file: {$metadata_db}.</span><br>";
-      } else {
-        echo "<span id='failText' />File with name {$metadata_db} could not be deleted</span><br>";
+      //Iterate and delete above files in the same directory
+      foreach ($metadata_db_files as $key => $file) {
+        //Assemble correct path to the file
+        $file_to_delete = $dir . '/' . $file;
+        if(file_exists($file_to_delete)){
+          unlink($file_to_delete);
+          echo "<span id='successText' />Successfully removed the file: {$file_to_delete}.</span><br>";
+        } else {
+          echo "<span id='failText' />File with name {$file_to_delete} could not be deleted</span><br>";
+        }
       }
     }
 
