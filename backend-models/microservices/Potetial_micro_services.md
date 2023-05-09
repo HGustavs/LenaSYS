@@ -3,7 +3,7 @@
 This document primaraly focuses on the services provided by the service-files, that does not mean that a complementary document wont be needed for functions that gather information, but we start with this.
 
 ---
-## LIST OF FILES
+# LIST OF ORIGINAL FILES FILES
 ---
 - accessedservice __==finished==__
 - codeviewerService __==finished==__
@@ -12,8 +12,8 @@ This document primaraly focuses on the services provided by the service-files, t
 - courseedservice  __==finished==__
 - diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
 - duggaedservice __==finished==__
-- fileedservice __WORK IN PROGRESS__
-- highscoreservice
+- fileedservice __==finished==__
+- highscoreservice __WORK IN PROGRESS__
 - sectionedservice
 - profileservice 
 - resultedservice
@@ -22,13 +22,18 @@ This document primaraly focuses on the services provided by the service-files, t
 
 ---
 ---
-## Potentaial services 
+# Potentaial services 
 ---
 ---
-<br>
 <br>
 
 ---
+## --------- _Misc services used in multiple of the original services_ -------------
+---
+
+
+<br>
+
 ### logging
 Uses a function in basic.php. 
 
@@ -39,10 +44,16 @@ Uses a function in basic.php.
 
 <br>
 
+
 ### getUid
 Uses service __selectFromUser__ to _get_ information it requires from __user__.
 
 
+<br>
+
+---
+
+<br>
 
 
 ### isSuperUser
@@ -53,7 +64,13 @@ Returns superuser status of user
 @return true false. True if superuser false if not
 ```
 
+
+<br>
+
 ---
+
+<br>
+
 
 ### hasAccess
 
@@ -67,9 +84,14 @@ Check if a specified user ID has the requested access on a specified course
 @param string $access_type A single letter denoting read or write access (r and w respectively)
 @return bool Returns true if the user has the requested access on the course and false if they don't.
 ```
+
+
+
+<br>
+
 ---
 
-
+<br>
 
 
 
@@ -82,6 +104,13 @@ Checks currents sessions user ID and sets it to a variable.
 ---
 
 
+<br>
+
+---
+## ----- _accessedservice_ -----------------------------------------------------
+---
+
+<br>
 
 
 
@@ -105,36 +134,55 @@ Uses service __updateTableUser__ to update one of these columns in the table __u
 - access
 - group
 
+
+<br>
+
 ---
 
-
-
-
+<br>
 
 
 ### addClass
 Uses service __insertIntoClass__ to makes _inserts_ into the table __class__.
 
+
+<br>
+
 ---
 
+<br>
 
 
 ### changeUserPassword
 Uses service __updateTableUser__ to _update_ the column "_password_" in the table __user__. 
 
+
+<br>
+
 ---
 
+<br>
 
 
 ### addUser
 Uses service __selectFromClass__ to _get_ information it requires from __class__.
-Uses service __insertIntoTableUserCourese__ to _insert_ into the table __user__.
+Uses service __insertIntoTableclass__ to _insert_ into the table __class__.
+<br>
 
+Uses service __insertIntoTableUser__ to _insert_ into the table __user__.
+Uses service __insertIntoTableUserCourse__ to _insert_ into the table __user_course__.
+
+
+<br>
+<br>
+<br>
+
+---
+## ------- _codeviewerService_ ----------------------------------------------
 ---
 
 
-
-
+<br>
 
 
 ### settingCodeexampleTemplate
@@ -145,11 +193,12 @@ The number of boxes created depends on on the value of _templateNumber_.
 The contents of all boxes are gatherd with the service __selectFromBox__.
 Depending on if a box with the set id exists or not an insert into the table __box__, using service __insertIntoTableBox__, or an update, using __updateTableBox__, is performed. 
 
+
+<br>
+
 ---
 
-
-
-
+<br>
 
 
 ### editCodeExample
@@ -162,14 +211,12 @@ This service uses __updateCodeexample__ to update values in table __codeexample_
 
 Aswell as __insertIntoImpwordlist__ or __deliteFromImpwordlist__ to add or remove a row in table __impwordlist__.
 
+
+<br>
+
 ---
 
-
-
-
-
-
-
+<br>
 
 
 ### editContentOfCodeExample
@@ -183,17 +230,26 @@ Uses the services __updateTableBox__ to change the content of these columns:
 Aswell as __insertIntoImprow__ or __deleteFromTableImpwordlist__ to add or remove a row in table __improw__.
 
 
-
+<br>
 
 ---
+
+<br>
+
+
 ### editBoxTitle
 Uses service __updateTableBox__ to change value of column: 
 - boxtitle
 
 
-
+<br>
 
 ---
+
+<br>
+
+
+
 ### deliteExample
 Uses service __deleteFromTableBox__ to delete a row from the table __Box__.
 Uses service __deleteFromTableImprow__ to delete a row from the tabe __improw__.
@@ -201,16 +257,33 @@ Uses service __deleteFromTableImpwordlist__ to delete a row from the tabe __impw
 Uses service __deliteFromCodeexample__ to delete a row from the tabe __Codeexample__.
 Uses service __deliteFromListentries__ to delete a row from the tabe __listentries__.
 
----
+
 <br>
+<br>
+<br>
+
+---
+## ----- _courseedservice_ -------------------------------------------------
+---
+
+<br>
+
+---
+
+<br>
+
 
 ### createNewCourse
 Uses service __insertIntoCourse__ to makes _inserts_ into the table __course__.
 Uses service __selectFromCourse__ to _get_ information it requires from __course__.
 
+
+<br>
+
 ---
 
 <br>
+
 
 ### createNewCourseVerion
 Uses service __insertIntoVers__ to makes _inserts_ into the table __Vers__.
@@ -307,7 +380,25 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 - coursecode
 - courseGitURL
 
-Uses service __insertIntoTableSettings__ to makes _inserts_ into the table __improw__.
+
+<br>
+
+---
+
+<br>
+
+
+### createMOTD
+Uses service __insertIntoTableSettings__ to makes _inserts_ into the table __settings__.
+
+
+<br>
+
+
+---
+
+
+<br>
 
 
 ### deleteCourseMaterial
@@ -320,10 +411,13 @@ Uses service __deliteFromTableCourse__ to delete a row from the table __course__
 
 
 <br>
+<br>
+<br>
 
 
 ---
-
+# ----- _fileedservice_ -----------------------------------------------------------
+---
 
 <br>
 
@@ -419,3 +513,11 @@ This service contains two seperat instanses of the above mentiond code, placed i
 ---
 
 <br>
+
+### updataFileLink
+Uses the services __updateTableFileLink__ to change the content of these columns:
+- filesize
+There exist tree different versions of this update, with different _WHERE_ cases.
+__WHERE__ kind __AND__ filename;
+__WHERE__ cid __AND__ kind __AND__ filename;
+__WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;

@@ -29,9 +29,7 @@
 
 
 ---
----
-## ==user==
----
+## --------------------------------------------- ==user== ---------------------------------------------
 ---
 <br>
 
@@ -48,14 +46,17 @@ Gathers information from the table __user__. parameters used
 ### insertIntoTableUser --only used by addUser--
 Performes inserts into the table __user__, Parameters used: 
 - username
-- saveemail
+- email
 - firstname
 - lastname
 - ssn
-- rnd  (uses the function standardPasswordHash to create a random password)
-- className
+- password  (uses the function standardPasswordHash to create a random password)
+- class
+
+<br>
 
 ---
+
 <br>
 
 ### updateTableUser 
@@ -75,19 +76,20 @@ Updates values in the table __user__ in the database, columns that are updated.
 #### changeUserPassword
 - password 
 
+<br>
  <br>
   <br>
    <br>
-    <br>
 
 
 
 
 ---
+
+## ------------------------------------- ==user_course== ----------------------------------------
 ---
-## ==user_course==
----
----
+
+
 <br>
 
 ### insertIntoTableUserCourese  --only used by addClass--
@@ -96,7 +98,11 @@ Performes an insert into the table __user_course__. Parameters needed:
 - uid
 - cid
 - coursevers : This parameter is used for vers, avers and bvers
+
+<br>
+
 ---
+
 <br>
 
 ### updateTableUserCourse --only used by UpdateUserAndUsercourse--
@@ -121,26 +127,22 @@ Update values in the table __user_course__, columns that are updated.
 
 
 --- 
----
-## ==class==
----
+## ---------------------------------------------- ==class== -----------------------------------------
 ---
 <br>
 
 ### insertIntoTableClass --only used by addClass--
-Creates new class. Makes inserts into the table __class__.
-Parameters added: 
+Creates new class. Makes inserts into the table __class__. Parameters added: 
+
+#### addClass
 - class
 - responsible
-- classname
-- regcode
-- classcode
-- hp
-- tempo
-- hpProgress
+
 
 <br>
+
 ---
+
 <br>
 
 ### selectFromClass 
@@ -158,9 +160,7 @@ Gathers information from the table __class__. parameters used
 
 
 ---
----
-## ==codeexample==
----
+## --------------------------------- ==codeexample== ---------------------------------------------
 ---
 <br>
 
@@ -170,11 +170,10 @@ Gathers information from the table __codeexample__.
 #### different querys paramaters and retrived information
 - exampleId : exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public
 - cid AND cversion : *
+
 <br>
 
 ---
-
-
 
 <br>
 
@@ -189,7 +188,7 @@ Performes an insert into the table __codeexample__. Parameters needed:
 
 ---
 
-
+<br>
 
 
 ### deleteFromTableCodeexample 
@@ -207,8 +206,8 @@ AND codeexample.cid = course.cid
 <br>
 
 ---
-<br>
 
+<br>
 
 
 ### updateCodeexample 
@@ -257,9 +256,7 @@ __afterid__
 
 
 ---
----
-## ==box==
----
+## ----------------------------------------- ==box== --------------------------------------------------
 ---
 <br>
 
@@ -269,6 +266,11 @@ Gathers information from the table __box__.
 #### different querys paramaters and retrived information 
 - boxid AND exampleid : *
 - exampleid : * 
+
+<br>
+
+---
+
 <br>
 
 #### deleteFileLink
@@ -298,8 +300,6 @@ pre-set values are inserted in the original service.
 
 <br>
 
-
-
 ---
 
 <br>
@@ -311,6 +311,7 @@ Removes row from table __box__. Parameters needed:
 <br>
 
 ---
+
 <br>
 
 ### updateTableBox 
@@ -346,9 +347,7 @@ Updates values in the table __box__. Columns that are updated:
 
 
 ---
----
-## ==impwordlist==
----
+## --------------------------------------- ==impwordlist== --------------------------------------
 ---
 <br>
 
@@ -358,9 +357,11 @@ Gathers information from the table __impwordlist__.
 
 #### different querys paramaters and retrived information 
 - exampleid : * 
+
 <br>
 
 ---
+
 <br>
 
 ### insertIntoImpwordlist  
@@ -378,10 +379,11 @@ Performes an insert into the table __impwordlist__. Parameters needed:
 - wordid:       and this value  
 - exampleid: gives the new copy a new exampleid value (not the same used in the search).
 
+<br>
+
 ---
 
 <br>
-
 
 ### deleteFromTableImpwordlist
 Removes row from table __impwordlist__. Parameters needed:
@@ -407,9 +409,7 @@ Removes row from table __impwordlist__. Parameters needed:
 
 
 ---
----
-## ==improw==
----
+## --------------------------------- ==improw== ------------------------------------------------
 ---
 
 
@@ -421,6 +421,7 @@ Gathers information from the table __improw__.
 
 #### different querys paramaters and retrived information 
 - exampleid : * 
+
 <br>
 
 ---
@@ -446,9 +447,10 @@ Performes an insert into the table __improw__. Parameters needed:
 - boxid:        this value.
 - boxid: gives the new copy a new boxid value (not the same used in the search).
 
-
+<br>
 
 ---
+
 <br>
 
 ### deleteFromTableImprow
@@ -467,8 +469,6 @@ Removes row from table __improw__. Parameters needed:
 
 --- 
 
-
-
 <br>
 
 
@@ -482,9 +482,7 @@ Removes row from table __improw__. Parameters needed:
 
 
 ---
----
-## ==listentries==
----
+## -------------------------------------- ==listentries== --------------------------------------------
 ---
 <br>
 
@@ -563,7 +561,7 @@ Updates values in the table __listentries__. Columns that are updated:
 
 
 ---
-## ==course== 
+## --------------------------------------------- ==course== -----------------------------------------
 ---
 <br>
 <br>
@@ -574,13 +572,13 @@ Gathers information from the table __course__.
 
 #### different querys paramaters and retrived information 
 - no parameters : cid (orderd by cid, in DESC order, limeted to 1) 
+
 <br>
 
 ---
 
+<br>
 
-
----
 ### insertIntoCourse --only used by createNewCourse-- 
 Performes an insert into the table __course__. Parameters needed:
 
@@ -665,9 +663,8 @@ __visibility__
 
 
 ---
-## ==vers==
+## ----------------------------------------- ==vers== -----------------------------------------
 ---
-<br>
 <br>
 
 
@@ -702,11 +699,9 @@ AND vers.cid = course.cid
 
 <br>
 
-
 ---
+
 <br>
-
-
 
 ### updateTableCourse  -- used by updateCourseversion--
 Updates values in the table __vers__. Columns that are updated: 
@@ -731,7 +726,7 @@ Updates values in the table __vers__. Columns that are updated:
 
 
 ---
-## ==quiz==
+## ----------------------------------------- ==quiz== -------------------------------------------
 ---
 
 <br>
@@ -826,7 +821,7 @@ AND quiz.cid = course.cid
 
 
 ---
-## ==variant==
+## ------------------------------------ ==variant== ----------------------------------------------------
 ---
 
 <br>
@@ -907,30 +902,31 @@ Removes row from table __variant__. Parameters needed:
 
 
 ---
-## ==settings==
+## ------------------------------------------- ==settings== -----------------------------------
 ---
 
 
 <br>
 
-### insertIntoTableSettings  --only used by updateCourse-- 
+### insertIntoTableSettings  --only used by createMOTD-- 
 Performes an insert into the table __settings__. Parameters needed:
 
-#### updateCourse
+#### createMOTD
 - mot 
 - readonly
 
 <br>
----
-
-
-
-
-
-
 
 ---
-## ==userAnswar==
+
+<br>
+
+
+
+
+
+---
+## --------------------------------------- ==userAnswar== -------------------------------------
 ---
 
 
@@ -942,8 +938,11 @@ Removes row from table __userAnswar__. Parameters needed:
 #### deliteExample
 - variant
 
+<br>
+
 ---
 
+<br>
 
 <br>
  <br> 
@@ -955,8 +954,9 @@ Removes row from table __userAnswar__. Parameters needed:
 
 
 ---
-## ==fileLink==
+## ----------------------------------- ==fileLink== -----------------------------------------------
 ---
+<br>
 
 ### selectFromFileLink   
 Gathers information from the table __fileLink__.
@@ -973,6 +973,25 @@ Count rows where these conditions hold.
 ---
 
 <br>
+
+
+### updateTableFileLink  -- used by updataFileLink--
+Updates values in the table __fileLink__. Columns that are updated: 
+
+#### updataFileLink: 
+There exist thee different versions of this update with the same column update, but with different _WHERE_ cases.
+__WHERE__ kind __AND__ filename;
+__WHERE__ cid __AND__ kind __AND__ filename;
+__WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
+- filesize
+
+
+<br>
+
+---
+
+<br>
+
 
 ### deliteFromTableFileLink  -- ONLY USED BY deleteFile-- 
 Removes row from table __fileLink__. Parameters needed:
