@@ -451,6 +451,7 @@ function returnedTitle(data) {
 	retData['box'][data.id - 1][4] = data.title;
 	console.log("retdata: ", retData);
 	console.log("Data id: ", data.id);
+	console.log("Data title: ", data.title);
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	console.log(boxWrapper);
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
