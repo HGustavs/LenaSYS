@@ -338,20 +338,6 @@ function validateForm() {
 }
 
 //----------------------------------------------------------------------------
-// fetchFilePath <- Function to check if specific object has filePath
-//----------------------------------------------------------------------------
-function checkFilePath(fileid, data) {
-    for (let i = 0; i < data.length; i++) {
-        let obj = JSON.parse(data[i]);
-        if(obj.fileid === fileid && obj.filePath !== null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
-//----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
 function renderCell(col, celldata, cellid) {
