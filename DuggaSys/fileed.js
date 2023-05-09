@@ -359,11 +359,11 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
-
+        console.log(obj);
     }
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            if(checkFilePath(obj.fileid, obj)) {
+            if(checkFilePath(obj.fileid, data)) {
                 console.log("true"); 
             } else {
                 console.log("false");
