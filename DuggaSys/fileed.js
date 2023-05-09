@@ -346,8 +346,6 @@ function renderCell(col, celldata, cellid) {
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
     }
-    console.log(celldata);
-    console.log(obj.filePath);
     console.log(obj);
     if (col == "trashcan") {
         if (obj.showtrashcan) {
