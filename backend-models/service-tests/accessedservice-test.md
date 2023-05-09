@@ -465,8 +465,8 @@ $cid = VALUE FROM PREVIOUS QUERY;
 }
 ```
 ### val == “None” 
+### send
 ```
-send
 {
     $opt = ”UPDATE”;
 	$prop = “examiner”;
