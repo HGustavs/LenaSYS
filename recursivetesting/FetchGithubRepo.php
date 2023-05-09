@@ -5,13 +5,13 @@ session_start();
 pdoConnect(); // Connect to database and start session
 
 //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-if(isset($_POST['action'])) 
+/* if(isset($_POST['action'])) 
 {
     if($_POST['action'] == 'getNewCourseGitHub') 
     {
        getGitHubURL($_POST['githubURL']);
     }
-};
+}; */
 
 function getGitHubURL($url)
 {
@@ -22,7 +22,8 @@ function getGitHubURL($url)
     $repository = $urlParts[4];
     // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
     $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/contents/';
-    bfs($translatedURL);
+    // bfs($translatedURL, "REFRESH");
+    return $translatedURL;
 }
 
 function insertToFileLink($cid, $item) 
@@ -83,17 +84,14 @@ function downloadToWebServer($cid, $item)
     file_put_contents($path, $fileContents);    
 }
     
-function bfs($url) 
+function bfs($url, $cid, $opt) 
 {
+    $url = getGitHubURL($url);
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
     global $pdoLite;
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-
-    // TODO link the course with cid, should not be hardcoded 
-    $cid = 1; // 1 för webbprogramering 
-    
     while (!empty($fifoQueue)) {
         $currentUrl = array_shift($fifoQueue);
         // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
@@ -122,9 +120,14 @@ function bfs($url)
                 foreach ($json as $item) {
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
-                        insertToFileLink($cid, $item);
-                        insertToMetaData($cid, $item);
-                        downloadToWebserver($cid, $item);                   
+                        if($opt == "REFRESH") {
+                            insertToMetaData($cid, $item);
+                        }
+                        else if($opt == "DOWNLOAD") {
+                            insertToFileLink($cid, $item);
+                            insertToMetaData($cid, $item);
+                            downloadToWebserver($cid, $item);  
+                        }                 
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {

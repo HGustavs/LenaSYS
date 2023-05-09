@@ -49,6 +49,7 @@ function updateCourse()
 			localStorage.setItem('courseid', courseid);
 			localStorage.setItem('updateCourseName', true);
 			alert("Course " + coursename + " updated with new GitHub-link!"); 
+			fetchLatestCommit(courseGitURL);
 		}
 		//Else: get error message from the fetchGitHubRepo function.
 
@@ -105,6 +106,7 @@ function createNewCourse()
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 			alert("New course, " + coursename + " added with GitHub-link!");
+			fetchLatestCommit(courseGitURL);
 		}
 		//Else: get error message from the fetchGitHubRepo function.
 
@@ -128,6 +130,38 @@ function fetchGitHubRepo(gitHubURL)
 		url: "../recursivetesting/FetchGithubRepo.php",
 		type: "POST",
 		data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
+		success: function() { 
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch(data.status){
+				case 422:
+					alert(data.responseJSON.message + "\nDid not create/update course");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not create/update course");
+					break;
+				default:
+					alert("Something went wrong...");
+			}
+		 	dataCheck = false;
+		}
+	});
+	return dataCheck;
+}
+
+//Send valid GitHub-URL to PHP-script which gets and saves the latest commit in the sqllite db
+function fetchLatestCommit(gitHubURL) 
+{
+	//Used to return success(true) or error(false) to the calling function
+	var dataCheck;
+	$.ajax({
+		async: false,
+		url: "../recursivetesting/getLatestCommit.php",
+		type: "POST",
+		data: {'githubURL':gitHubURL, 'action':'getCourseID'},
 		success: function() { 
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
