@@ -5,13 +5,13 @@ This document primaraly focuses on the services provided by the service-files, t
 ---
 ## LIST OF FILES
 ---
-- accessedservice __#finished#__
-- codeviewerService __#finished#__
+- accessedservice __==finished==__
+- codeviewerService __==finished==__
 - contributedservice : _there is no documentation for this file_ __dont know is needed__
 - contribution_loginbox_service : __dont know is needed__
-- courseedservice : __No document found manual research needed__  
-- diagramservice
-- duggaedservice
+- courseedservice  __==finished==__
+- diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
+- duggaedservice __WORK IN PROGRESS__
 - fileedservice
 - highscoreservice
 - sectionedservice
@@ -311,5 +311,28 @@ Uses service __deliteFromTableCourse__ to delete a row from the table __course__
 
 
 
+<br>
 
 
+---
+
+
+<br>
+
+
+### createOrUpdateDugga
+Uses service __insertIntoTableQuiz__ to makes _inserts_ into the table __quiz__. 
+Uses the services __updateTableQuiz__ to change the content of these columns:
+- coursename
+- visibility
+- coursecode
+- courseGitURL
+- qname
+- autograde
+- gradesystem
+- quizFile (template)
+- qstart (start date)
+- deadline
+- qrelease (release date)
+- jsondeadline
+- group

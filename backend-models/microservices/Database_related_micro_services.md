@@ -742,12 +742,27 @@ Gathers information from the table __quiz__.
 
 <br>
 
-### insertIntoQuiz  --only used by copyCourseVersion-- 
+### insertIntoQuiz  
 Performes an insert into the table __quiz__. Parameters needed:
 
 #### copyCourseVersion
 - id:   Copys all values from a table row where id has this value. 
 - vers: gives the new copy a new vers value.
+<br>
+
+#### createOrUpdateDugga
+- cid
+- creator  (this is the user id)
+- vers 
+- qname
+- autograde
+- gradesystem
+- quizFile (this is the template used)
+- jsondeadline
+- group
+- qrelease (the release date)
+- deadline
+- qstart (start date)
 
 <br>
 
@@ -755,7 +770,25 @@ Performes an insert into the table __quiz__. Parameters needed:
 
 <br>
 
+### updateTableQuiz  -- used by createOrUpdateDugga--
+Updates values in the table __quiz__. Columns that are updated: 
 
+#### createOrUpdateDugga
+- qname
+- autograde
+- gradesystem
+- quizFile (template)
+- qstart (start date)
+- deadline
+- qrelease (release date)
+- jsondeadline
+- group
+
+<br>
+
+---
+
+<br>
 
 ### deliteFromQuiz  --USED ONLY BY deleteCourseMaterial--
 Removes row from table __quiz__. Parameters needed:
