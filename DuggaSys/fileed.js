@@ -342,7 +342,6 @@ function validateForm() {
 //----------------------------------------------------------------------------
 function renderCell(col, celldata, cellid) {
     var str = "";
-    let isGithub = false;
 
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
