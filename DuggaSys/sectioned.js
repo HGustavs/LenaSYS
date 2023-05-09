@@ -1662,14 +1662,13 @@ function returnedSection(data) {
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
           str += "</td>";
         }
-        console.log(itemKind);
         // Testing implementation
         if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
           // str += "onclick='refreshCodeExample("+item['link']+")'"
-          str += "onclick='console.log(\'test');'"
+          str += "onclick='console.log(\'test\');'"
           str += "</td>";
         }
 
