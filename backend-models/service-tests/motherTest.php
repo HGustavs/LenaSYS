@@ -76,8 +76,14 @@ echo "
     <th>test5</th>
 </tr>
 ";
+echo "<table border='1'>"
 
-echo "</table>";
+
+echo "
+<tr>
+    <td>Test Status</td>
+</tr>
+";
 
 
             ?>
