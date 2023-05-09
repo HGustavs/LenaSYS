@@ -81,7 +81,7 @@ echo "
 
 echo "
 <tr>
-    <td>Test Status</td>
+    
 </tr>
 ";
 
