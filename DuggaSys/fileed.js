@@ -348,6 +348,7 @@ function renderCell(col, celldata, cellid) {
     }
     if (col == "trashcan") {
         if (obj.showtrashcan) {
+            console.log(celldata);
             if(celldata.includes("Github")) {
                 str = "<span class='iconBox'> 🐙 </span>";
             } else {
