@@ -1239,4 +1239,9 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   background-color: #000!important;
   color: #fff;
 }
+
+.date-interval-selector, #searchbar, #highlight-entry {
+    background-color: #212121;
+    color: white;
+}
 /*/ END /*/
