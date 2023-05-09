@@ -9561,7 +9561,7 @@ function drawElement(element, ghosted = false)
         stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
-        //actor or object is determined via the radio buttons in the context menu. the default is actor.
+        //actor or object is determined via the buttons in the context menu. the default is actor.
         if (element.actorOrObject == "actor") {
             //svg for actor.
             str += `<g>`
@@ -9581,7 +9581,11 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though.
+            var actorFontColor;
+            if (isDarkTheme()) actorFontColor = '#FFFFFF';
+            else actorFontColor = '#383737';
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
