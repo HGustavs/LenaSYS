@@ -7910,8 +7910,8 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
-            str += `<rect width='${startX - endX + 10}' height='${startY - endY + 10}' x= '${endX - 5}' y='${endY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
+           // str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+            
         }
     }
     
