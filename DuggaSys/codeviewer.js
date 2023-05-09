@@ -1012,7 +1012,8 @@ function updateContent(file, content, boxnumber)
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
-			setTimeout("location.reload()", 500);
+			console.log("Sleep 10000ms")
+			setTimeout("location.reload()", 10000); //CHANGETHIS BACK TO 500 WHEN DONE 
 		}
 	} else {
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
