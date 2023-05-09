@@ -13,8 +13,8 @@ This document primaraly focuses on the services provided by the service-files, t
 - diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
 - duggaedservice __==finished==__
 - fileedservice __==finished==__
-- highscoreservice __WORK IN PROGRESS__
-- sectionedservice
+- highscoreservice __==finished==__
+- sectionedservice __WORK IN PROGRESS__
 - profileservice 
 - resultedservice
 - sectiondservice : __No document found manual research needed__  
@@ -521,3 +521,26 @@ There exist tree different versions of this update, with different _WHERE_ cases
 __WHERE__ kind __AND__ filename;
 __WHERE__ cid __AND__ kind __AND__ filename;
 __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
+
+<br>
+
+---
+## -------------------------------------- _highscoreservice_ --------------------------------
+---
+
+<br>
+
+### highscoreservice
+Return max ten passed scores.
+Uses service __selectFromTableScore__ to _get_ information it requires from __Score__ and __userAnswer__. 
+<br>
+
+Return score for a specific test.
+Uses service __selectFromTableScore__ to _get_ information it requires from __Score__ and __userAnswer__. 
+
+<br>
+
+---
+---
+
+<br>

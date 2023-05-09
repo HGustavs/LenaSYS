@@ -20,6 +20,7 @@
 - settings
 - userAnswer
 - fileLink
+- score
 
  <br>
   <br>
@@ -37,10 +38,7 @@
 Gathers information from the table __user__. parameters used 
 #### different querys paramaters and retrived information 
 - uid : username 
-
-
-
-
+<br>
 
 
 ### insertIntoTableUser --only used by addUser--
@@ -926,14 +924,27 @@ Performes an insert into the table __settings__. Parameters needed:
 
 
 ---
-## --------------------------------------- ==userAnswar== -------------------------------------
+## --------------------------------------- ==userAnswer== -------------------------------------
 ---
 
 
 <br>
 
+### selectFromUserAnswer --USED ONLY BY highscoreservice--
+Gathers information from the table __userAnswer__. parameters used 
+#### different querys paramaters and retrived information 
+
+#### highscoreservice
+__Return 10 Highest Scores__
+The query specified below selects only scores associated with users that have returned a dugga with a passing grade
+
+__SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.grade > 1 __AND__ userAnswer.quiz = _quiz_ __AND__ userAnswer.moment = _moment_ __ORDER BY__ score __ASC LIMIT__ 10;
+- quiz
+- moment
+
+
 ### deliteFromTableUserAswar  -- ONLY USED BY deleteDuggaVariant-- 
-Removes row from table __userAnswar__. Parameters needed:
+Removes row from table __userAnswer__. Parameters needed:
 
 #### deliteExample
 - variant
@@ -998,3 +1009,35 @@ Removes row from table __fileLink__. Parameters needed:
 
 #### deliteExample
 - fileid
+
+
+
+
+
+
+<br>
+
+---
+## -------------------------- ==score== -------------------------------------------------------
+---
+
+<br>
+<br>
+
+
+### selectFromTableScore   
+Gathers information from the table __Score__.
+
+#### highscoreservice
+__Return 10 Highest Scores__
+The query specified below selects only scores associated with users that have returned a dugga with a passing grade
+
+__SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.grade > 1 __AND__ userAnswer.quiz = _quiz_ __AND__ userAnswer.moment = _moment_ __ORDER BY__ score __ASC LIMIT__ 10;
+- quiz
+- moment
+<br>
+
+__Return specific score__
+__SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.quiz = _quiz_ __AND__ userAnswer.moment = _moment_ __LIMIT__ 1;
+- quiz
+- moment
