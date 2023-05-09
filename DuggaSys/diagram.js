@@ -792,10 +792,11 @@ const elementTypes = {
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
-    UMLSuperState:11,
+    UMLSuperState: 11,
 
     sequenceActorAndObject:12, //sequence functionality
-
+    sequenceActivation: 13
+    
 };
 
 /**
@@ -819,6 +820,7 @@ const elementTypesNames = {
     UMLSuperState: "UMLSuperState",
 
     sequenceActorAndObject: "sequenceActorAndObject",
+    sequenceActivation: "sequenceActivation",
 
 }
 
@@ -1139,7 +1141,9 @@ var defaults = {
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" } // sequence actor and object
+    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" } // Sequence Activation.
+
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -3612,6 +3616,10 @@ function entityIsOverlapping(id, x, y)
               }
               //if its overlapping with a super state, just break since that is allowed.
               if (data[i].kind == "UMLSuperState") {
+                break;
+              }
+              //if its overlapping with a sequence actor, just break since that is allowed.
+              if (data[i].kind == "sequenceActor") {
                 break;
               }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
@@ -9496,6 +9504,24 @@ function drawElement(element, ghosted = false)
             str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `</g>`;   
         }
+        str += `</svg>`;  
+    }
+    // Sequence activation 
+    else if (element.kind == 'sequenceActivation') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the activation rect
+        str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
         str += `</svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
