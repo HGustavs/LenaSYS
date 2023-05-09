@@ -47,7 +47,6 @@ function search(key)
       function fetchDiagram() {
             var response;
 
-            // <<<<<<< g1-2023-v5-#13735
             let cid=search("courseid");
             const folder=search("folder");
             let did=search("did");
