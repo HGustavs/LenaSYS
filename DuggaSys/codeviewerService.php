@@ -279,7 +279,7 @@
 					}
 				}
 			}else if(strcmp('EDITTITLE',$opt)===0) {
-				$exampleid = $_POST['exampleid'];
+				/*$exampleid = $_POST['exampleid'];
 				$boxId = $_POST['boxid'];
 				$boxTitle = $_POST['boxtitle'];
 
@@ -290,7 +290,53 @@
 				$query->execute();
 
 				echo json_encode(array('title' => $boxTitle, 'id' => $boxId));
-				return;
+				return;*/
+				$exampleId = $_POST['exampleid'];
+				$boxId = $_POST['boxid'];
+				$boxTitle = $_POST['boxtitle'];
+				$boxContent = $_POST['boxcontent'];
+				$wordlist = $_POST['wordlist'];
+				$filename = $_POST['filename'];
+				$fontsize = $_POST['fontsize'];
+				$addedRows = $_POST['addedRows'];
+				$removedRows = $_POST['removedRows'];
+
+				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");
+				$query->bindParam(':boxtitle', $boxTitle);
+				$query->bindParam(':boxcontent', $boxContent);
+				$query->bindParam(':wordlist', $wordlist);
+				$query->bindParam(':filename', $filename);
+				$query->bindParam(':fontsize', $fontsize);
+				$query->bindParam(':boxid', $boxId);
+				$query->bindParam(':exampleid', $exampleId);
+				$query->execute();
+
+				if (isset($_POST['addedRows'])) {
+					preg_match_all("/\[(.*?)\]/", $addedRows, $matches, PREG_PATTERN_ORDER);
+					foreach ($matches[1] as $match) {
+						$row = explode(",", $match);
+						$query = $pdo->prepare("INSERT INTO improw(boxid,exampleid,istart,iend,uid) VALUES (:boxid,:exampleid,:istart,:iend,:uid);");
+						$query->bindValue(':boxid', $boxId);
+						$query->bindValue(':exampleid', $exampleId);
+						$query->bindValue(':istart', $row[1]);
+						$query->bindValue(':iend', $row[2]);
+						$query->bindValue(':uid', $_SESSION['uid']);
+						$query->execute();
+					}
+				}
+
+				if (isset($_POST['removedRows'])) {
+					preg_match_all("/\[(.*?)\]/", $removedRows, $matches, PREG_PATTERN_ORDER);
+					foreach ($matches[1] as $match) {
+						$row = explode(",", $match);
+						$query = $pdo->prepare("DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exampleid=:exampleid;");
+						$query->bindValue(':boxid', $boxId);
+						$query->bindValue(':exampleid', $exampleId);
+						$query->bindValue(':istart', $row[1]);
+						$query->bindValue(':iend', $row[2]);
+						$query->execute();
+					}
+				}
 			} else if (strcmp('DELEXAMPLE', $opt) === 0) {
 
 				$query1 = $pdo->prepare("DELETE FROM box WHERE exampleid=:exampleid;");
