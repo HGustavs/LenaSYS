@@ -663,6 +663,14 @@ function search(key)
                         <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                 <!-- Sequence diagram option loop selection -->
+                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                    <span class="toolTipText"><b>Sequence Object</b><br>
+                        <p>Creates a option loop or alternative.</p><br>
+                        <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                        </span>
+                </div>
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
