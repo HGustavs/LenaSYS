@@ -86,9 +86,18 @@ $isFileSubmitted="UNK";
 $debug="NONE!";	
 
 if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment != "UNK"){
-	$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
-	$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-	$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
+	if((isset($_POST["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+		isset($_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
+		isset($_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"]))) {
+		$hash=$_POST["submission-$courseid-$coursevers-$duggaid-$moment"];
+		$hashpwd=$_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+		$variant=$_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+	}
+	else{
+		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+		$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+	}
 }else{
 	$debug="Could not find the requested dugga!";
 }
@@ -241,6 +250,17 @@ function processDuggaFiles()
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
+if(checklogin()){
+	if(isset($_SESSION['uid'])){
+		$userid=$_SESSION['uid'];
+		$loginname=$_SESSION['loginname'];
+		$lastname=$_SESSION['lastname'];
+		$firstname=$_SESSION['firstname'];
+	}else{
+		$userid="student";		
+	} 	
+}
+
 if(isSuperUser($userid)){
 	$isTeacher=1;
 }else{
@@ -360,14 +380,14 @@ if(isSuperUser($userid)){
 					$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
 					$variant="UNK";
 					$answer="UNK";
-					$variantanswer="UNK";
+					$variantanswer="UNK1";
 					$param=html_entity_decode('{}');
 				}
 			} else {
 				$debug="[Superuser] Could not load dugga! Incorrect hash/password! $hash";
 				$variant="UNK";
 				$answer="UNK";
-				$variantanswer="UNK";
+				$variantanswer="UNK2";
 				$param=html_entity_decode('{}');
 			}
 		}else{
@@ -380,7 +400,7 @@ if(isSuperUser($userid)){
 				foreach($query->fetchAll() as $row){
 					$variant=$row['vid'];
 					$answer=$row['useranswer'];
-					$variantanswer="UNK";
+					$variantanswer="UNK3";
 					$param=html_entity_decode($row['param']);
 					$newcourseid=$row['cid'];
 					$newcoursevers=$row['vers'];
@@ -396,13 +416,13 @@ if(isSuperUser($userid)){
 					$debug="[Guest] Could not load dugga! Incorrect hash/password submitted! $hash/$hashpwd";
 					$variant="UNK";
 					$answer="UNK";
-					$variantanswer="UNK";
+					$variantanswer="UNK4";
 					$param=html_entity_decode('{}');
 				}
 			}else{
-				if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+				if(	(isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
 					isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
-					isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"])){
+					isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"]))){
 			
 					$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
 					$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
@@ -420,7 +440,7 @@ if(isSuperUser($userid)){
 						$duggatitle=$row['dugga_title'];
 						$variant=$row['vid'];
 						$answer=$row['useranswer'];
-						$variantanswer="UNK";
+						$variantanswer="UNK5";
 						$param=html_entity_decode($row['param']);
 					}
 			
@@ -430,17 +450,54 @@ if(isSuperUser($userid)){
 						$debug="[Guest] Missing hash/password/variant! Not found in db.";
 						$variant="UNK";
 						$answer="UNK";
-						$variantanswer="UNK";
+						$variantanswer="UNK6";
 						$param=html_entity_decode('{}');
 						unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
 						unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
 						unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"]);	
 					}
-				}else{
+				}else if (isset($_POST["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+						isset($_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
+						isset($_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"])){
+					
+						$tmphash=$_POST["submission-$courseid-$coursevers-$duggaid-$moment"];
+						$tmphashpwd=$_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+						$tmpvariant=$_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+
+						$sql="SELECT quiz.*, variant.variantanswer, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param,l.entryname AS dugga_title FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd LEFT JOIN (select cid,link,entryname from listentries) as l ON l.cid=l.cid AND l.link=quiz.id WHERE quiz.id=:did AND vid=:variant AND l.cid=:cid LIMIT 1;";
+						$query = $pdo->prepare($sql);
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':did', $duggaid);
+						$query->bindParam(':variant', $tmpvariant);
+						$query->bindParam(':hash', $tmphash);
+						$query->bindParam(':hashpwd', $tmphashpwd);	
+						$query->execute();
+						foreach($query->fetchAll() as $row){
+							$duggatitle=$row['dugga_title'];
+							$variant=$row['vid'];
+							$answer=$row['useranswer'];
+							$variantanswer=html_entity_decode($row['variantanswer']);
+							$param=html_entity_decode($row['param']);
+						}
+				
+						if(isset($param)){
+							processDuggaFiles();
+						}else{
+							$debug="[Guest] Missing hash/password/variant! Not found in db.";
+							$variant="UNK";
+							$answer="UNK";
+							$variantanswer="UNK8";
+							$param=html_entity_decode('{}');
+							unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
+							unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
+							unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"]);	
+						}
+				}
+				else{
 					$debug="[Guest] Missing hash/password/variant!";
 					$variant="UNK";
 					$answer="UNK";
-					$variantanswer="UNK";
+					$variantanswer="UNK9";
 					$param=html_entity_decode('{}');
 					unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
 					unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
