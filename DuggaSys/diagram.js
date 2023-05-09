@@ -2042,16 +2042,18 @@ function mouseMode_onMouseUp(event)
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                 } else if (ghostElement !== null) { 
 
+                    data.splice(data.length - 1, 1)
+
+                    // create a line from the element to itself
+                    addLine(context[0], context[0], "Recursive");                  
+                    clearContext();
+
                     // Bust the ghosts
                     ghostElement = null;
                     ghostLine = null;
 
                     showdata();
                     updatepos(0, 0);
-
-                    // create a line from the element to itself
-                    addLine(context[0], context[0], "Recursive");                  
-                    clearContext();
         
                     
                 } else{   
