@@ -1669,7 +1669,8 @@ function returnedSection(data) {
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
-          str += " onclick='refreshCodeExample("+item['link']+")'"
+          // str += "onclick='refreshCodeExample("+item['link']+")'"
+          str += "onclick='console.log('test');";
           str += "</td>";
         }
 
