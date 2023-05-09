@@ -2,7 +2,7 @@
 <head>
 <style>
 
-    
+
         table, th, td {
         border:1px solid black;
         border-collapse: collapse;
@@ -35,9 +35,36 @@ include_once ".../test1";
 include_once ".../test2";
 include_once ".../test3";
 include_once ".../test4";
-
-pdoConnect();
 */
+//pdoConnect();
+?>
+
+
+        <!----------------------------------------------------------------------------------->  
+        <!------Creates a dropdown with all tables in the loglena database------------------->
+        <!-----------------------------------------------------------------------------------> 
+        
+        <input type="text" id="searchInput" placeholder="Search...">
+        <button type="button" onclick="searchTable()">Search</button>
+
+        <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
+        
+        
+        <?php    
+            $test = json_decode($_GET["name"]);
+
+            
+            echo 'Choose table: ';
+            echo '<select onchange="this.form.submit()" name="name" >';
+                foreach($test as $row){
+                    echo '<option value="'.$row['name'].'"';
+                        if(isset($_POST['name'])){
+                            if($_POST['name']==$row['name']) echo " selected ";
+                        }
+                    echo '>'.$row['name'].'</option>';
+                    echo"<p>".$row['name']."</p>";
+                }
+            echo '</select>';
 
 echo "
 <table border='1'>
