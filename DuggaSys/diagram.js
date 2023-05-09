@@ -789,7 +789,7 @@ const elementTypes = {
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
 
-    SDState: 8,////SD(State diagram) functionality
+    SDEntity: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
     UMLSuperState: 11,
@@ -812,7 +812,7 @@ const elementTypesNames = {
     IEEntity: "IEEntity",
     IERelation: "IERelation",
 
-    SDState: "SDState",
+    SDEntity: "SDEntity",
 
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState",
@@ -1135,9 +1135,9 @@ var defaults = {
 
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
-    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
+    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
-    SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
+    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'] }, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
@@ -1165,9 +1165,9 @@ var allAttrToEntityRelations = [];
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
 /* draws the State diagram on LOAD.
-function debugDrawSDState() {
+function debugDrawSDEntity() {
     const EMPLOYEE_ID = makeRandomID();
-    const demoState = { name: "STATE", x: 100, y: 200, width: 200, height: 50, kind: "SDState", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['do: func']};
+    const demoState = { name: "STATE", x: 100, y: 200, width: 200, height: 50, kind: "SDEntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['do: func']};
     addObjectToData(demoState, false);
     console.log(demoState.name);
 }
@@ -1395,7 +1395,7 @@ function getData()
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
     // onSetup();
-    //debugDrawSDState(); // <-- debugfunc to show an sd entity
+    //debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
     updateGridPos();
@@ -1589,7 +1589,6 @@ document.addEventListener('keydown', function (e)
                     saveProperties(); 
                     propField.blur();
                 }
-                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
         }
     }
@@ -2843,7 +2842,7 @@ function getElementLines(element) {
 function elementHasLines(element) {
     return (getElementLines(element).length > 0);
 }
-/**
+/** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
  */
@@ -2852,21 +2851,24 @@ function changeState()
     const element =  context[0],
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
-    /* If the element has a new type and got lines, then it can't change type. */
-    if ((newType !== undefined && oldType != newType && elementHasLines(element)) || 
-    (newType !== undefined &&  oldType == 'UML' && newType != 'UML'  && elementHasLines(element) == false) || 
-    (newType !== undefined &&  oldType == 'IE' && newType != 'IE'  && elementHasLines(element) == false)) {
+
+    // If we are changing types and the element has lines, we should not change
+    if ((elementHasLines(element))){
         displayMessage("error", `
-            Can't change type from \"${oldType}\" to \"${newType}\" as
-            these types should not be able to connect with each other.`
-        );
+        Can't change type from \"${oldType}\" to \"${newType}\" as
+        different diagrams should not be able to connect to each other.`
+        )
+        return;
+    // If we are changing to the same type, (simply pressed save without changes), do nothing.
+    } else if (oldType == newType){
         return;
     }
 
-    if (element.type == 'ER') {
-
+    else if (element.type == 'ER') {
+        
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
+
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
@@ -2928,6 +2930,24 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
+
+    else if(element.type=='SD') {
+
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    }
+    generateContextProperties();
+    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
 }
 
@@ -4094,7 +4114,7 @@ const stateLinesLabels=[];
     // Picks out the entities related to State Diagrams and place them in their local arrays.
     for (let i=0; i<data.length; i++)
     {
-        if (data[i].kind == elementTypesNames.SDState) {
+        if (data[i].kind == elementTypesNames.SDEntity) {
             stateElements.push([data[i], false]);
         }
         else if (data[i].kind == elementTypesNames.UMLInitialState) {
@@ -6605,8 +6625,8 @@ function generateContextProperties()
         }
         //Selected SD type
         else if (element.type == 'SD') {
-            //if SDState kind
-            if (element.kind == 'SDState') {
+            //if SDEntity kind
+            if (element.kind == 'SDEntity') {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -6675,7 +6695,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -7593,7 +7613,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     
-    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDState' || toElement.kind === 'SDState')) {
+    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDEntity' || toElement.kind === 'SDEntity')) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -9235,8 +9255,8 @@ function drawElement(element, ghosted = false)
 
     }
 
-    // Check if element is SDState
-    else if (element.kind == "SDState") {
+    // Check if element is SDEntity
+    else if (element.kind == "SDEntity") {
 
         const maxCharactersPerLine = Math.floor(boxw / texth);
 
@@ -12033,8 +12053,8 @@ function updateCSSForAllElements()
                         }
                     }
                 }
-                // Update SDState
-                else if (element.kind == "SDState") {
+                // Update SDEntity
+                else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12119,8 +12139,8 @@ function updateCSSForAllElements()
                         fontContrast();
                     }
                 }
-                // Update SDState
-                else if (element.kind == "SDState") {
+                // Update SDEntity
+                else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
