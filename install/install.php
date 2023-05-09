@@ -9,7 +9,8 @@
 <body>
   <!-- Config Section -->
   <?php
-    include '../Shared/basic.php';
+    session_start();
+    // include '../Shared/basic.php';
     // Saving away old execution time setting and setting new to 120 (default is 30).
     // this is done in order to avoid a php timeout, especially on windows where Database
     // query time also affects php executiion time. This will not work when php is running
@@ -451,8 +452,7 @@
           }
 
           #Delete metadata_db if it exists
-          $metadata_db = '../../githubMetadata/metadata'.$metadataDbVersion.'.db';
-          deleteLocalFile($metadata_db);
+          deleteMetadataDB();
 
           # Create new database
           try {
@@ -736,12 +736,14 @@
     //---------------------------------------------------------------------------------------------------
     // Function that deletes a file from the local machine
     //---------------------------------------------------------------------------------------------------
-    function deleteLocalFile($file){
-      if(file_exists($file)){
-        unlink($file);
-        echo "<span id='successText' />Successfully removed the file: {$file}.</span><br>";
+    function deleteMetadataDB(){
+      $metadata_db = '../../githubMetadata/metadata'.$_SESSION["metadataDBVersion"].'.db';
+
+      if(file_exists($metadata_db)){
+        unlink($metadata_db);
+        echo "<span id='successText' />Successfully removed the file: {$metadata_db}.</span><br>";
       } else {
-        echo "<span id='failText' />File with name {$file} could not be deleted</span><br>";
+        echo "<span id='failText' />File with name {$metadata_db} could not be deleted</span><br>";
       }
     }
 
