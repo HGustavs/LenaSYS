@@ -1668,7 +1668,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
-                  id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+                  class='section' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
           // str += "onclick='refreshCodeExample("+item['link']+")'"
           str += "onclick='console.log(\'test');'"
           str += "</td>";
