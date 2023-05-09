@@ -363,8 +363,12 @@ function renderCell(col, celldata, cellid) {
     if (col == "trashcan") {
         if (obj.showtrashcan) {
             console.log(obj.filePath);
-            str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
-            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+            if(obj.filePath == null) {
+                str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
+                str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+            } else {
+                str = "<span class='iconBox'><img alt='octo-pus icon' tabindex='0' id='dorf' title='Github file' class='trashcanIcon trashcanTab'> 🐙 </span>";
+            }
         }
     } else if (col == "filename") {
         if (obj.kind == "Link") {
