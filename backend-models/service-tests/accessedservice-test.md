@@ -464,16 +464,17 @@ pre-query: 	INSERT INTO user_course (uid, cid, access) VALUES (pre-values2[0], p
 $cid = VALUE FROM PREVIOUS QUERY;
 }
 ```
-### if(val == “None”)
+### val == “None” 
 ```
 send
 {
-$opt = ”UPDATE”;
+    $opt = ”UPDATE”;
 	$prop = “examiner”;
 	$val = “None”;
 	$uid = 2;
-$cid = VALUE FROM PREVIOUS QUERY;
+    $cid = VALUE FROM PREVIOUS QUERY;
 }
+```
 
 --- 
 ## Gather service output
