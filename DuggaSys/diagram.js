@@ -4229,7 +4229,7 @@ function toggleGrid()
     // Toggle active grid + color change of button to clarify if button is pressed or not
     if (grid.style.display == "block") {
         grid.style.display = "none";
-        gridButton.style.backgroundColor ="#B387D6";
+        gridButton.style.backgroundColor ="#B589DA";
      } else {
         grid.style.display = "block";
         gridButton.style.backgroundColor ="#2E1A40";
@@ -5881,11 +5881,11 @@ function toggleSnapToGrid()
     // Color change of button to clarify if button is pressed or not
     if(settings.grid.snapToGrid)
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#362049";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#2E1A40";
     }
     else
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#B589DA";
     }
 }
 
@@ -5904,11 +5904,11 @@ function toggleRuler()
     if(settings.ruler.isRulerActive){
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
-        rulerToggleButton.style.backgroundColor = "#614875";
+        rulerToggleButton.style.backgroundColor = "#2E1A40";
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
-        rulerToggleButton.style.backgroundColor = "#362049";
+        rulerToggleButton.style.backgroundColor = "#B589DA";
 
     }
   
