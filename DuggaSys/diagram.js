@@ -2835,6 +2835,7 @@ function changeState()
 
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
+
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
@@ -2877,11 +2878,12 @@ function changeState()
     }
     else if(element.type=='IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
+        /*
         if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
+        }*/
 
         //Check if type has been changed
         if (oldType != newType) {
