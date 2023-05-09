@@ -1611,19 +1611,30 @@ function returnedSection(data) {
         }
 
         // Refresh button
-        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
+       /*if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
           str += " onclick='refreshCodeExample("+item['link']+")'"
           str += "</td>";
-        }
+        }*/
 
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
           str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback'
           onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
+          str += "</td>";
+        }
+
+        // Testing implementation
+        if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+          // The string below was part of the original refresh button on each code-example that i simply moved and modified, keeping this here in case it's relevant for future issue to handle back-end.
+          // str += "onclick='refreshCodeExample("+item['link']+")'"
+          str += "onclick='console.log(\"RefreshButton Clicked!\");'"
           str += "</td>";
         }
         // Tab example button
@@ -1699,8 +1710,6 @@ function returnedSection(data) {
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
           str += "</td>";
         }
-
-
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
