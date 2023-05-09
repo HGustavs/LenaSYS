@@ -548,7 +548,7 @@ function search(key)
                         </span>
                 </div>
                 <!-- Sequence activation selection -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
+                <div id="elementPlacement13" class="diagramIcons toolbarMode"onclick='setElementPlacementType(13); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> 
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
                         <p>Creates an activation box.</p>
