@@ -1667,6 +1667,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+          // The string below was part of the original refresh button on each code-example that i simply moved and modified, keeping this here in case it's relevant for future issue to handle back-end.
           // str += "onclick='refreshCodeExample("+item['link']+")'"
           str += "onclick='console.log(\"RefreshButton Clicked!\");'"
           str += "</td>";
