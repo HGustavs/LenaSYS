@@ -14,7 +14,7 @@
         margin-bottom: 2vh;
     }*/
     th{
-        background-color: #614875;
+        background-color: #800080;
     }
     th a{
         color: white;
@@ -29,7 +29,7 @@
     }
 
     #passth {
-        background-color: #800080;
+        background-color: #614875;
     }
     </style>
 <?php
