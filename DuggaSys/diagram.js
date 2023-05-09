@@ -2053,7 +2053,7 @@ function mouseMode_onMouseUp(event)
                     showdata();
                     updatepos(0, 0);
 
-                    data.splice(data.length - 1, 1)
+                    data.splice(data.length - 1, 0)
                     
                 } else{   
                     clearContext();
