@@ -199,3 +199,35 @@ Uses service __deliteFromListentries__ to delete a row from the tabe __listentri
 ### createNewCourse
 Uses service __insertIntoCourse__ to makes _inserts_ into the table __course__.
 Uses service __selectFromCourse__ to _get_ information it requires from __course__.
+
+---
+
+<br>
+
+### createNewCourseVerion
+Uses service __insertIntoVers__ to makes _inserts_ into the table __Vers__.
+Uses the services __updateTableCourse__ to change the content of these columns:
+- vers
+
+<br>
+
+---
+
+<br>
+
+### updateCourseVersion
+Uses the services __updateTableVers__ to change the content of these columns:
+- versname
+
+Uses the services __updateTableCourse__ to change the content of these columns:
+- activeversion
+
+<br>
+
+---
+
+<br>
+
+### changeActiveCourseVersion
+Uses the services __updateTableCourse__ to change the content of these columns:
+- activeversion

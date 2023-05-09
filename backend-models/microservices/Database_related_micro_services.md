@@ -13,6 +13,8 @@
 - impwordlist
 - improw
 - listentries
+- course
+- vers
 
  <br>
   <br>
@@ -423,7 +425,7 @@ Removes row from table __impwordlist__. Parameters needed:
 Gathers information from the table __course__.
 
 #### different querys paramaters and retrived information 
-- boxid AND exampleid : * 
+- no parameters : cid (orderd by cid, in DESC order, limeted to 1) 
 <br>
 
 ---
@@ -443,3 +445,80 @@ Performes an insert into the table __course__. Parameters needed:
 <br>
 
 ---
+
+<br>
+
+### updateTableCourse 
+Updates values in the table __Course__. Columns that are updated: 
+
+#### createNewVersionOfCourse
+- vers
+
+#### updateCourseversion
+#### changeActiveCourseVersion
+ 
+- activeversion
+
+<br>
+
+---
+
+<br>
+
+<br>
+ <br>
+  <br> 
+   <br>
+
+
+
+
+
+
+
+
+
+---
+## ==vers==
+---
+<br>
+<br>
+
+
+### insertIntoVers --only used by createNewVersionOfCourse-- 
+Performes an insert into the table __vers__. Parameters needed:
+
+#### createNewVersionOfCourse
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- motd
+- startdate
+- enddate
+
+<br>
+
+
+
+
+
+
+---
+<br>
+
+
+
+### updateTableCourse  -- used by updateCourseversion--
+Updates values in the table __vers__. Columns that are updated: 
+
+#### updateCourseversion
+- versname
+
+
+<br>
+
+---
+
