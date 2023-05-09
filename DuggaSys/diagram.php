@@ -25,56 +25,65 @@
         <!-- To enable dark mode, these 2 files were added. -->
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	<script src="darkmodeToggle.js"></script>
-<script type="module">
-    import search from "./modules/search.module.js";
-    </script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
     <script src="diagram.js"></script>
     <script>
+           /**
+ * @description returns the value of a query string sent in a URL.
+ * @param a key of type string.
+ * @returns a string containing the value 
+ */
+function search(key)
+{
+    const parameters=new URLSearchParams(window.location.search);
+    return parameters.get(key);
+} 
         // Fetch variant parameters from server
         var DiagramResponse;
         
-        function fetchDiagram() {
+      function fetchDiagram() {
             var response;
 
-            <?php 
-                if (isset($cid) && $cid != "UNK") {
-                    echo "const courseid = '$cid';";
-                } else if (isset($_GET["folder"])) {
-                    $folder = $_GET["folder"];
-                    echo "const courseid = '$folder';";
-                } else {
-                    echo "const courseid = '1894';";
-                }
+            let cid=search("courseid");
+            const folder=search("folder");
+            let did=search("did");
+            const id=search("id");
+            if(cid=="UNK"&&folder!=null)
+                cid=folder;
+            else
+                cid=1894;
+            if(did=="UNK"&&id!=null)
+                did=id;
+            else
+                did=21;
 
-                if (isset($quizid) && $quizid != "UNK") {
-                    echo "const did = '$quizid';";
-                } else if (isset($_GET["id"])) {
-                    $id = $_GET["id"];
-                    echo "const did = '$id';";
-                } else {
-                    echo "const did = '21';";
-                }
-            ?>
+            response = getCourseId(cid, did);
 
-            $.ajax({
-                async: false,
-                method: "GET",
-                url: `diagramservice.php?courseid=${courseid}&did=${did}`,
-            }).done((res) => {
-                console.log(res)
-                response = res;
-            }).error((req, status, err) => {
-                console.error(err);
-            });
-            
             return response;
         }
-        
 
+        function getCourseId (courseId, did) {
+            try {
+                let response;
+                $.ajax({
+                    async: false,
+                    method: "GET",
+                    url: `diagramservice.php?courseid=${courseId}&did=${did}`,
+                    //>>>>>>> g1-2023-v5
+                }).done((res) => {
+                    console.log(res)
+                    response = res;
+                })
+
+                return response;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
         /**
          * @description get the contents of a instruction file
          * @param fileName the name of the file t.ex. test.html
@@ -96,7 +105,7 @@
     </script>
 </head>
 <body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
-
+        
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">
 
@@ -645,7 +654,7 @@
                         </span>
                 </div> 
                 <!-- Sequence activation selection -->
-                <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick=""> <!--add function to place activation box later-->
+                <div id="elementPlacement13" class="diagramIcons toolbarMode"onclick='setElementPlacementType(13); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> 
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
                         <p>Creates an activation box.</p>

@@ -565,7 +565,6 @@ class StateMachine
         var keys = Object.keys(state);
 
         // If there is only an key that is ID in the state, delete those objects
-        // TODO: Change the delete key to "del" OR "delete"
         if (keys.length == 2 && keys[0] == "id") {
             var elementsToRemove = [];
             var linesToRemove = [];
@@ -793,10 +792,11 @@ const elementTypes = {
     SDState: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
-    UMLSuperState:11,
+    UMLSuperState: 11,
 
-    sequenceActor:12, //sequence functionality
-
+    sequenceActorAndObject:12, //sequence functionality
+    sequenceActivation: 13
+    
 };
 
 /**
@@ -819,7 +819,8 @@ const elementTypesNames = {
 
     UMLSuperState: "UMLSuperState",
 
-    sequenceActor: "sequenceActor",
+    sequenceActorAndObject: "sequenceActorAndObject",
+    sequenceActivation: "sequenceActivation",
 
 }
 
@@ -970,8 +971,10 @@ var deleteBtnSize = 0;
 var hasRecursion = false;
 var startWidth;
 var startHeight;
+var startNodeLeft = false;
 var startNodeRight = false;
 var startNodeDown = false;
+var startNodeUp = false;
 var containerStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
@@ -1140,7 +1143,9 @@ var defaults = {
     UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    sequenceActor: {name: "Actor", kind: "sequenceActor", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence" } // UML Super State.
+    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" } // Sequence Activation.
+
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1908,8 +1913,10 @@ function mdown(event)
             startHeight = data[findIndex(data, context[0].id)].height;
 
             //startNodeRight = !event.target.classList.contains("mr");
-            startNodeRight = event.target.classList.contains("ml"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
+            startNodeLeft = event.target.classList.contains("ml")
+            startNodeRight = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
             startNodeDown = event.target.classList.contains("md");
+            startNodeUp = event.target.classList.contains("mu");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -2042,17 +2049,19 @@ function mouseMode_onMouseUp(event)
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }else if (ghostElement !== null) { 
+                } else if (ghostElement !== null) { 
+
                     // create a line from the element to itself
-                    addLine(context[0], context[0], "Recursive");
-                    clearContext();
-        
+                    addLine(context[0], context[0], "Recursive");                  
+                    clearContext();             
+
                     // Bust the ghosts
                     ghostElement = null;
                     ghostLine = null;
-        
+
                     showdata();
-                    updatepos(0,0);
+                    updatepos(0, 0);
+                    
                 } else{   
                     clearContext();
                     ghostElement = null;
@@ -2239,19 +2248,23 @@ function mouseOverSelection(mouseX, mouseY){
 }
 
 /**
+ * @description Retrieves lines from svgbacklayer. If none is found return empty array
+ */
+function getLinesFromBackLayer() {
+    return Array.from(document.getElementById("svgbacklayer").children);
+}
+/**
  * @description Calculates if any line is present on x/y position in pixels.
-
+ * 
  * @param {Number} mouseX
  * @param {Number} mouseY
  */
 function determineLineSelect(mouseX, mouseY)
 {
     // This func is used when determining which line is clicked on.
-
-    // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
     
-    var allLines = document.getElementById("svgbacklayer").children;
-    var bLayerLineIDs = []; // Used to only store the IDs. Needed since we later need a value copy of the ID and not the ref.
+    var allLines = getLinesFromBackLayer();
+    var bLayerLineIDs = []
 
     var cMouse_XY = {
         x: mouseX, 
@@ -2546,19 +2559,9 @@ function mmoving(event)
 
             const minHeight = 150; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
-
-            if (startNodeRight && !startNodeDown && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth - (deltaX / zoomfact));
-
-                // Remove the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-                
-                // Right node will never change the position of the element. We pass 0 as x and y movement.
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
-
-            } else if (!startNodeRight && !startNodeDown && (startWidth + (deltaX / zoomfact)) > minWidth) {
+            
+            // Functionality for the four different nodes
+            if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
@@ -2574,10 +2577,19 @@ function mmoving(event)
                 const xChange = -(tmp - elementData.x);
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+
+            } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                // Fetch original width
+                var tmp = elementData.width;
+                elementData.width = (startWidth - (deltaX / zoomfact));
+
+                // Remove the new width, giving us the total change
+                const widthChange = -(tmp - elementData.width);
                 
-            } 
-            //vertical resizing 
-            else if (!startNodeRight && startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                // Right node will never change the position of the element. We pass 0 as x and y movement.
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+
+            } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight - (deltaY / zoomfact));
@@ -2586,6 +2598,25 @@ function mmoving(event)
                 const heightChange = -(tmp - elementData.height);
                 
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+
+            } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
+
+                // Fetch original height
+                var tmp = elementData.height;
+                elementData.height = (startHeight + (deltaY / zoomfact));
+
+                // Deduct the new height, giving us the total change
+                const heightChange = -(tmp - elementData.height);
+
+                // Fetch original y-position
+                // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
+                tmp = elementData.y;
+                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+
+                // Deduct the new position, giving us the total change
+                const yChange = -(tmp - elementData.y);
+
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
 
             document.getElementById(context[0].id).remove();
@@ -3612,6 +3643,10 @@ function entityIsOverlapping(id, x, y)
               if (data[i].kind == "UMLSuperState") {
                 break;
               }
+              //if its overlapping with a sequence actor, just break since that is allowed.
+              if (data[i].kind == "sequenceActor") {
+                break;
+              }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
@@ -4019,14 +4054,14 @@ function boxSelect_Draw(str)
         var nodeX = boxCoords.n2
         var nodeY = boxCoords.n3;
         var nodeXY = boxCoords.n4;
+        var strokeWidth = 2;
 
         // Draw lines between all neighbours
-        // TODO : NO MAGIC NUMBERS!
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${2}' />`;
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${2}' />`;
+        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
 
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${2}' />`;
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${2}' />`;
+        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
     }
     
     return str;
@@ -5816,9 +5851,11 @@ function toggleErrorCheck(){
     errorActive = !errorActive;
     if (errorActive) {
         document.getElementById("errorCheckToggle").classList.add("active");
+        displayMessage(messageTypes.SUCCESS, 'Error Check tool is on.');
     }  
     else{
         document.getElementById("errorCheckToggle").classList.remove("active");
+        displayMessage(messageTypes.SUCCESS, 'Error Check tool is off.');
     }
     showdata();
 }
@@ -6603,6 +6640,30 @@ function generateContextProperties()
                     }
                 }
             }
+        }
+        //Selected sequence type
+        else if (element.type == 'sequence') {
+            //if sequenceActorAndObject kind
+            if (element.kind == 'sequenceActorAndObject') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'actororobject':
+                            //buttons for choosing object or actor via toggleActorOrbject
+                            str += `<div>`
+                            str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
+                            str += `<button onclick='toggleActorOrbject("object");'>Object</button>`
+                            str += `</div>`
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                
+            } 
         }
     
 
@@ -7674,14 +7735,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  */
 function isClose(fromX, toX, fromY, toY, zoom = 1) {
     const concideredNearValue = 600 * zoom,
-          deltaX = toX - fromX,
-          deltaY = toY - fromY;
+          deltaX = Math.abs(toX - fromX),
+          deltaY = Math.abs(toY - fromY);
 
-    if (deltaX < concideredNearValue && deltaY < concideredNearValue) {
-        return true;
-    } else {
-        return false;
-    }
+    // Returns true if deltaX and deltaY is within considered near value, otherwise false
+    return deltaX < concideredNearValue && deltaY < concideredNearValue
 }
 
 /**
@@ -7886,27 +7944,6 @@ function drawLine(line, targetGhost = false)
         x2Offset = 0;
         y2Offset = 0;
     }
-
-    // Create recursive line for SD entities
-    if ((felem.type == 'SD') || (telem.type == 'SD')){
-        if (line.kind == "Recursive"){
-            const length = 80 * zoomfact;
-            const startX = fx - 10 * zoomfact;
-            const startY = fy - 10 * zoomfact;
-            const endX = fx - 25 * zoomfact;
-            const endY = fy - 15 * zoomfact;
-            const cornerX = fx + length;
-            const cornerY = fy - length;
-            
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
-        }
-    }
-    
-
     /* if (felem.type != 'ER' || telem.type != 'ER') {
         line.type = 'UML';
     } else {
@@ -7933,7 +7970,27 @@ function drawLine(line, targetGhost = false)
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
         if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            if (line.kind == "Recursive") {
+                const length = 80 * zoomfact;
+                const startX = fx - 10 * zoomfact;
+                const startY = fy - 10 * zoomfact;
+                const endX = fx - 25 * zoomfact;
+                const endY = fy - 15 * zoomfact;
+                const cornerX = fx + length;
+                const cornerY = fy - length;
+
+                
+                str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset - 17 * zoomfact}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+
+            } else { 
+
+                str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            }
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
             str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' `;
@@ -8721,14 +8778,19 @@ function addNodes(element)
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
     //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-    if (element.kind == "sequenceActor") {
+    if (element.kind == "sequenceActorAndObject") {
         nodes += "<span id='md' class='node md'></span>";
+    }
+
+    if (element.kind == "UMLSuperState") {
+        nodes += "<span id='md' class='node md'></span>";
+        nodes += "<span id='mu' class='node mu'></span>";
     }
     elementDiv.innerHTML += nodes;
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if (element.kind == "sequenceActor") {
+    if (element.kind == "sequenceActorAndObject") {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
@@ -8737,6 +8799,19 @@ function addNodes(element)
         mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
         mdNode.style.top = "100%";
     }
+
+    if (element.kind == "UMLSuperState"){
+        var mdNode = document.getElementById("md");
+        var muNode = document.getElementById("mu");
+        mdNode.style.width = nodeSize+"px";
+        muNode.style.width = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        muNode.style.height = nodeSize+"px";
+        mdNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
+        muNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
+    }
+    
+    if (element.kind == "")
     var nodeSize = defaultNodeSize*zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
@@ -8936,6 +9011,7 @@ function drawElement(element, ghosted = false)
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
     var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
+    var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8943,7 +9019,7 @@ function drawElement(element, ghosted = false)
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
-
+    
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
@@ -9145,10 +9221,11 @@ function drawElement(element, ghosted = false)
                      onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%">
                     <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
-                    <rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
-                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${boxh/30}px">${element.name}</text>
+                    <rect width="${boxw/2}px" height="${80 * zoomfact}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
+                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
+
     }
 
     // Check if element is SDState
@@ -9424,8 +9501,8 @@ function drawElement(element, ghosted = false)
     
     //=============================================== <-- End of IE functionality
     //=============================================== <-- Start Sequnece functionality
-    //sequence actor and its life line 
-    else if (element.kind == 'sequenceActor') {
+    //sequence actor and its life line and also the object since they can be switched via options pane.
+    else if (element.kind == 'sequenceActorAndObject') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
@@ -9440,7 +9517,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the life line
         str += `<path class="text" 
-        d="M${(boxw/2)+linew},${((boxw/4)*3)+linew}
+        d="M${(boxw/2)+linew},${(boxw/4)+linew}
         V${boxh}
         "
         stroke-width='${linew}'
@@ -9448,23 +9525,63 @@ function drawElement(element, ghosted = false)
         stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
-        //svg for actor.
-        str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        str += `<path class="text" 
-            d="M${(boxw/2)+linew},${(boxw/4)+linew}
-                v${boxw/6}
-                m-${(boxw/4)},0
-                h${boxw/2}
-                m-${(boxw/4)},0
-                v${boxw/3}
-                l${boxw/4},${boxw/4}
-                m${(boxw/4)*-1},${(boxw/4)*-1}
-                l${(boxw/4)*-1},${boxw/4}
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='transparent'
-        />`;
+        //actor or object is determined via the radio buttons in the context menu. the default is actor.
+        if (element.actorOrObject == "actor") {
+            //svg for actor.
+            str += `<g>`
+            str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+            str += `<path class="text"
+                d="M${(boxw/2)+linew},${(boxw/4)+linew}
+                    v${boxw/6}
+                    m-${(boxw/4)},0
+                    h${boxw/2}
+                    m-${(boxw/4)},0
+                    v${boxw/3}
+                    l${boxw/4},${boxw/4}
+                    m${(boxw/4)*-1},${(boxw/4)*-1}
+                    l${(boxw/4)*-1},${boxw/4}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='transparent'
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;
+        }
+        else if (element.actorOrObject == "object") {
+            //svg for object.
+            str += `<g>`;
+            str += `<rect class='text'
+                x='${linew}'
+                y='${linew}'
+                width='${boxw - (linew * 2)}'
+                height='${(boxw/2) - linew}'
+                rx='${sequenceCornerRadius}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}' 
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;   
+        }
+        str += `</svg>`;  
+    }
+    // Sequence activation 
+    else if (element.kind == 'sequenceActivation') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the activation rect
+        str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
         str += `</svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
@@ -11778,7 +11895,7 @@ function drawSelectionBox(str)
         selectionBoxHighX = highX + 5;
         selectionBoxLowY = lowY - 5;
         selectionBoxHighY = highY + 5;
-
+        
         // Selection container of selected elements
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
 
@@ -11965,16 +12082,6 @@ function updateCSSForAllElements()
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
-                    } else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
@@ -12045,16 +12152,6 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
-                        }
-                    } else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
                         }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
@@ -12132,6 +12229,26 @@ function toggleBorderOfElements() {
             }
         }
     }
+}
+/**
+ * @description toggles the sequence actor/object selected to the type specified in the parameter: actor or object.
+ * @param type the type that youd like to switch to, actor or object.
+ */
+function toggleActorOrbject(type){
+    for (let i = 0; i < context.length; i++) {
+        if (context[i].actorOrObject != null) {
+            if (type=="object") {
+                context[i].actorOrObject = "object";
+            }
+            else if (type=="actor") {
+                context[i].actorOrObject = "actor";
+            }
+            else {
+                console.error(type + " is an unexpected parameter for toggleActorOrbject. This can only support actor or object.");
+            }
+        }
+    }
+    showdata();
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
