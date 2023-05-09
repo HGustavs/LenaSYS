@@ -9471,7 +9471,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<rect class='text' x='${xAnchor-(textWidth/2)}' y='${boxw-(textheight/2)}' width='${textWidth}' height='${12*zoomfact}' fill='${element.fill}' />`;
+            str += `<rect class='text' x='${xAnchor-(textWidth/2)}' y='${boxw-(textheight/2)}' width='${textWidth}' height='${textheight}' fill='${element.fill}' />`;
             str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${element.stroke}'>${element.name}</text>`;
             str += `</g>`;
         }
