@@ -342,18 +342,23 @@ function validateForm() {
 //----------------------------------------------------------------------------
 function renderCell(col, celldata, cellid) {
     var str = "";
+    let isGithub = false;
 
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
         if(obj.filePath == null) {
-            console.log("hej");
+            isGithub = false;
         } else {
-            console.log("nej");
+            isGithub = true;
         }
     }
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            let correctid = str.fileid;
+            if(isGithub == true) {
+                console.log(obj.fileName + " is a github file");
+            } else if (isGithub == false) {
+                console.log(obj.fileName + " is not a github file");
+            }
             //console.log(correctid);
             str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
             str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
