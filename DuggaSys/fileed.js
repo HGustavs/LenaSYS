@@ -361,12 +361,17 @@ function renderCell(col, celldata, cellid) {
         obj = JSON.parse(celldata);
         console.log(obj);
     }
+            if(checkFilePath(obj.fileid, obj)) {
+                console.log("test1 true"); 
+            } else {
+                console.log("test1 false");
+            }
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            if(checkFilePath(obj.fileid, data)) {
-                console.log("true"); 
+            if(checkFilePath(obj.fileid, obj)) {
+                console.log("test2 true"); 
             } else {
-                console.log("false");
+                console.log("test2 false");
             }
             //console.log(correctid);
             str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
