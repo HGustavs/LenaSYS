@@ -1,1 +1,1 @@
-Class diagrams describing services
+Class diagrams describing monolithic services
