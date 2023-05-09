@@ -345,7 +345,7 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
-        if(obj.filePath === null) {
+        if(obj.filePath == null) {
             console.log("hej");
         } else {
             console.log("nej");
