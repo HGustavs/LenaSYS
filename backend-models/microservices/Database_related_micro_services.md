@@ -19,6 +19,7 @@
 - variant
 - settings
 - userAnswer
+- fileLink
 
  <br>
   <br>
@@ -34,7 +35,7 @@
 ---
 <br>
 
-### selectFromUser --only used by logging--
+### selectFromUser 
 Gathers information from the table __user__. parameters used 
 #### different querys paramaters and retrived information 
 - uid : username 
@@ -268,6 +269,12 @@ Gathers information from the table __box__.
 #### different querys paramaters and retrived information 
 - boxid AND exampleid : *
 - exampleid : * 
+<br>
+
+#### deleteFileLink
+Count rows where these conditions hold.
+- __FROM__ fileLink, box __WHERE__ box.filename = fileLink.filename __AND__ (fileLink.kind = 2 __OR__ fileLink.kind = 3) __AND__ fileLink.fileid=:fid ;
+
 <br>
 
 ---
@@ -820,7 +827,7 @@ AND quiz.cid = course.cid
 
 ---
 ## ==variant==
---
+---
 
 <br>
 <br>
@@ -901,7 +908,7 @@ Removes row from table __variant__. Parameters needed:
 
 ---
 ## ==settings==
---
+---
 
 
 <br>
@@ -924,7 +931,7 @@ Performes an insert into the table __settings__. Parameters needed:
 
 ---
 ## ==userAnswar==
---
+---
 
 
 <br>
@@ -934,3 +941,41 @@ Removes row from table __userAnswar__. Parameters needed:
 
 #### deliteExample
 - variant
+
+---
+
+
+<br>
+ <br> 
+  <br>
+   <br>
+
+
+
+
+
+---
+## ==fileLink==
+---
+
+### selectFromFileLink   
+Gathers information from the table __fileLink__.
+
+#### different querys paramaters and retrived information 
+
+#### deleteFileLink
+Count rows where these conditions hold.
+- __FROM__ fileLink, box __WHERE__ box.filename = fileLink.filename __AND__ (fileLink.kind = 2 __OR__ fileLink.kind = 3) __AND__ fileLink.fileid=:fid ;
+
+
+<br>
+
+---
+
+<br>
+
+### deliteFromTableFileLink  -- ONLY USED BY deleteFile-- 
+Removes row from table __fileLink__. Parameters needed:
+
+#### deliteExample
+- fileid

@@ -8,11 +8,11 @@ This document primaraly focuses on the services provided by the service-files, t
 - accessedservice __==finished==__
 - codeviewerService __==finished==__
 - contributedservice : _there is no documentation for this file_ __dont know is needed__
-- contribution_loginbox_service : __dont know is needed__
+- contribution_loginbox_service : __dont know if needed__
 - courseedservice  __==finished==__
 - diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
-- duggaedservice __WORK IN PROGRESS__
-- fileedservice
+- duggaedservice __==finished==__
+- fileedservice __WORK IN PROGRESS__
 - highscoreservice
 - sectionedservice
 - profileservice 
@@ -32,9 +32,17 @@ This document primaraly focuses on the services provided by the service-files, t
 ### logging
 Uses a function in basic.php. 
 
+
+<br>
+
 ---
 
 <br>
+
+### getUid
+Uses service __selectFromUser__ to _get_ information it requires from __user__.
+
+
 
 
 ### isSuperUser
@@ -386,3 +394,28 @@ Uses the services __updateTableVariant__ to change the content of these columns:
 ### deleteDuggaVariant
 Uses service __deliteFromTableUserAnswer__ to delete a row from the table __userAnswer__.
 Uses service __deliteFromTableVariant__ to delete a row from the table __variant__.
+
+
+<br>
+
+---
+
+<br>
+
+
+### deleteFileLink
+Count rows where these conditions hold. This will indicate if the file is in used.
+
+- __FROM__ fileLink, box __WHERE__ box.filename = fileLink.filename __AND__ (fileLink.kind = 2 __OR__ fileLink.kind = 3) __AND__ fileLink.fileid=:fid ;
+<br>
+
+If not in use, then service __deliteFromTableFileLink__ is used to delete a row from the table __fileLink__.
+
+This service contains two seperat instanses of the above mentiond code, placed in an if and else statment. 
+
+
+<br>
+
+---
+
+<br>
