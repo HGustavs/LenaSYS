@@ -17,6 +17,7 @@
 - vers
 - quiz
 - variant
+- settings
 
  <br>
   <br>
@@ -189,10 +190,17 @@ Performes an insert into the table __codeexample__. Parameters needed:
 
 
 
-### deleteFromCodeexample --only used by deliteExample--
+### deleteFromTableCodeexample 
 
 Removes row from table __codeexample__. Parameters needed:
+
+#### deliteExample
 - exampleid
+<br>
+
+#### deleteCourseMaterial
+Where course.visibility = Delited
+AND codeexample.cid = course.cid
 
 <br>
 
@@ -499,10 +507,18 @@ Performes an insert into the table __listentries__. Parameters needed:
 
 <br>
 
-### deliteFromListentries  --only used by deliteExample--
+### deliteFromListentries 
 Removes row from table __impwordlist__. Parameters needed:
+
 #### deliteExample
 - lid
+<br>
+
+#### deleteCourseMaterial
+Where course.visibility = Delited
+AND listentries.cid = course.cid
+
+
 
 <br>
 
@@ -577,6 +593,7 @@ Updates values in the table __Course__. Columns that are updated:
 
 #### createNewCourseVersion
 - vers
+<br>
 
 #### updateCourseversion
 #### changeActiveCourseVersion
@@ -585,7 +602,44 @@ Updates values in the table __Course__. Columns that are updated:
 
 <br>
 
+#### copyCourseVersion
+- coursename
+- visibility
+- coursecode
+- courseGitURL
+
+<br>
+
 ---
+
+<br>
+
+
+
+### deliteFromCourse  --USED ONLY BY deleteCourseMaterial--
+Removes row from table __course__. Parameters needed:
+
+#### deleteCourseMaterial: 
+__codeexample__
+Where course.visibility = Delited
+AND codeexample.cid = course.cid
+<br>
+
+__listentries__
+course.visibility = Delited
+AND listentries.cid = course.cid
+
+__quiz__ 
+Where course.visibility = Delited
+AND quiz.cid = course.cid
+
+__vers__ 
+Where course.visibility = Delited
+AND vers.cid = course.cid
+
+__visibility__
+- visibility
+
 
 <br>
 
@@ -626,9 +680,19 @@ Performes an insert into the table __vers__. Parameters needed:
 
 <br>
 
+---
+
+<br>
 
 
+## deliteFromVers  --USED ONLY BY deleteCourseMaterial--
+Removes row from table __vers__. Parameters needed:
 
+#### deleteCourseMaterial: 
+Where course.visibility = Delited
+AND vers.cid = course.cid
+
+<br>
 
 
 ---
@@ -684,9 +748,25 @@ Performes an insert into the table __quiz__. Parameters needed:
 #### copyCourseVersion
 - id:   Copys all values from a table row where id has this value. 
 - vers: gives the new copy a new vers value.
+
 <br>
+
 ---
 
+<br>
+
+
+
+### deliteFromQuiz  --USED ONLY BY deleteCourseMaterial--
+Removes row from table __quiz__. Parameters needed:
+
+#### deleteCourseMaterial: 
+Where course.visibility = Delited
+AND quiz.cid = course.cid
+
+<br>
+
+--- 
 
 
 <br>
@@ -727,5 +807,39 @@ Performes an insert into the table __Variant__. Parameters needed:
 #### copyCourseVersion
 - vid:   Copys all values from a table row where id has this value. 
 - quizID: gives the new copy a new quizID value.
+<br>
+---
+
+
+
+
+
+<be>
+ <be>
+  <be>
+   <be>
+
+
+
+
+
+
+
+
+
+---
+## ==settings==
+--
+
+
+<br>
+
+### insertIntoTableSettings  --only used by updateCourse-- 
+Performes an insert into the table __settings__. Parameters needed:
+
+#### updateCourse
+- mot 
+- readonly
+
 <br>
 ---

@@ -283,3 +283,33 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 - activeversion
 
 
+<br>
+
+
+---
+
+
+<br>
+
+
+### updateCourse
+Uses the services __updateTableCourse__ to change the content of these columns:
+- coursename
+- visibility
+- coursecode
+- courseGitURL
+
+Uses service __insertIntoTableSettings__ to makes _inserts_ into the table __improw__.
+
+
+### deleteCourseMaterial
+Uses service __deliteFromCodexample__ to delete a row from the table __codeexample__.
+Uses service __deliteFromListentries__ to delete a row from the table __listentries__.
+Uses service __deliteFromQuiz__ to delete a row from the table __quiz__.
+Uses service __deliteFromVers__ to delete a row from the table __vers__.
+Uses service __deliteFromTableCourse__ to delete a row from the table __course__.
+
+
+
+
+
