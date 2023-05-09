@@ -1013,7 +1013,7 @@ function updateContent(file, content, boxnumber)
 				alert("Error when updating content: " + e.message);
 			}
 			console.log("Sleep 10000ms")
-			setTimeout("location.reload()", 10000); //CHANGETHIS BACK TO 500 WHEN DONE 
+			setTimeout("location.reload()", 100000); //CHANGETHIS BACK TO 500 WHEN DONE 
 		}
 	} else {
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
