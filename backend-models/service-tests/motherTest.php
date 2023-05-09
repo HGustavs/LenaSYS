@@ -74,6 +74,7 @@ echo "
     <th>test3</th>
     <th>test4</th>
     <th>test5</th>
+    <th>Pass/Fail</th>
 </tr>
 ";
 
