@@ -6976,15 +6976,20 @@ function generateToolTips()
 /**
  * @description Generates a markdown file with a list of keybinds from file diagramkeybinds.md for all keybinds that are available in the diagram.
  */
-function generateKeybindList()
+async function generateKeybindList()
 {
-    $.ajax({
-        method: "GET",
-        url: "diagramkeybinds.md",
-    }).done(function(file) {
-        document.getElementById("markdownKeybinds").innerHTML=parseMarkdown(file);
-    });
+try
+{
+    const response=await fetch("diagramkeybinds.md");
+    const file=await response.text();
+    document.getElementById("markdownKeybinds").innerHTML = parseMarkdown(file);
 }
+catch(error)
+{
+console.error(error);
+}
+    }
+
 /**
  * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
  * @param {Number} x Absolute x-position in pixels from the left of the inner window.
