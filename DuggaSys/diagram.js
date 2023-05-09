@@ -7988,8 +7988,15 @@ function drawLine(line, targetGhost = false)
                 str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
 
             } else { 
-
-                str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+                if ((fy > ty) && (line.ctype == "TB")) {
+                    y1Offset = 1;
+                    y2Offset = -7 + 3 / zoomfact;
+                }
+                else if ((fy < ty) && (line.ctype == "BT")) {
+                    y1Offset = -7 + 3 / zoomfact;
+                    y2Offset = 1;
+                }
+                str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset * zoomfact}' y1='${fy + y1Offset * zoomfact}' x2='${tx + x2Offset * zoomfact}' y2='${ty + y2Offset * zoomfact}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
             }
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
