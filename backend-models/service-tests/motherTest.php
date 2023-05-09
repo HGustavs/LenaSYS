@@ -84,7 +84,7 @@ echo "
     <th>test3</th>
     <th>test4</th>
     <th>test5</th>
-    <th id='passth'> <p id='passG'>Pass</p> <p id='failR'>/Fail</p> </th>
+    <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
 </tr>
 ";
 
