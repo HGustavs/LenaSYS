@@ -357,4 +357,32 @@ Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 
 <br>
 
-### addDuggaVariant
+
+### createDuggaVariant
+Uses service __insertIntoTablVariant__ to makes _inserts_ into the table __Variant__.
+
+
+<br>
+
+---
+
+<br>
+
+
+### updateDuggaVariant 
+Uses the services __updateTableVariant__ to change the content of these columns:
+- disabled
+- param
+- variantanswer
+
+
+<br>
+
+---
+
+<br>
+
+
+### deleteDuggaVariant
+Uses service __deliteFromTableUserAnswer__ to delete a row from the table __userAnswer__.
+Uses service __deliteFromTableVariant__ to delete a row from the table __variant__.

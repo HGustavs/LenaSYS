@@ -18,6 +18,7 @@
 - quiz
 - variant
 - settings
+- userAnswer
 
  <br>
   <br>
@@ -836,17 +837,53 @@ Gathers information from the table __variant__.
 
 <br>
 
-### insertIntoVariant  --only used by copyCourseVersion-- 
+### insertIntoVariant  
 Performes an insert into the table __Variant__. Parameters needed:
 
 #### copyCourseVersion
 - vid:   Copys all values from a table row where id has this value. 
 - quizID: gives the new copy a new quizID value.
 <br>
+
+#### createDuggaVariant
+- quizID
+- creator
+- disabled
+- param 
+- variantanswer
+
+
+
+<br>
+
 ---
 
+<br>
 
 
+### updateTableVariant  -- used by addDuggaVariant--
+Updates values in the table __quiz__. Columns that are updated: 
+
+#### addDuggaVariant
+- disabled
+- param
+- variantanswer
+
+
+<br>
+
+---
+
+<br>
+
+
+### deliteFromTableVariant  -- ONLY USED BY deleteDuggaVariant-- 
+Removes row from table __variant__. Parameters needed:
+
+#### deliteExample
+- vid
+
+<br>
 
 
 <be>
@@ -878,3 +915,22 @@ Performes an insert into the table __settings__. Parameters needed:
 
 <br>
 ---
+
+
+
+
+
+
+
+---
+## ==userAnswar==
+--
+
+
+<br>
+
+### deliteFromTableUserAswar  -- ONLY USED BY deleteDuggaVariant-- 
+Removes row from table __userAnswar__. Parameters needed:
+
+#### deliteExample
+- variant
