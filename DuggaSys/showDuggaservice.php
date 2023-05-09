@@ -380,14 +380,14 @@ if(isSuperUser($userid)){
 					$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
 					$variant="UNK";
 					$answer="UNK";
-					$variantanswer="UNK1";
+					$variantanswer="UNK";
 					$param=html_entity_decode('{}');
 				}
 			} else {
 				$debug="[Superuser] Could not load dugga! Incorrect hash/password! $hash";
 				$variant="UNK";
 				$answer="UNK";
-				$variantanswer="UNK2";
+				$variantanswer="UNK";
 				$param=html_entity_decode('{}');
 			}
 		}else{
@@ -400,7 +400,7 @@ if(isSuperUser($userid)){
 				foreach($query->fetchAll() as $row){
 					$variant=$row['vid'];
 					$answer=$row['useranswer'];
-					$variantanswer="UNK3";
+					$variantanswer="UNK";
 					$param=html_entity_decode($row['param']);
 					$newcourseid=$row['cid'];
 					$newcoursevers=$row['vers'];
@@ -416,7 +416,7 @@ if(isSuperUser($userid)){
 					$debug="[Guest] Could not load dugga! Incorrect hash/password submitted! $hash/$hashpwd";
 					$variant="UNK";
 					$answer="UNK";
-					$variantanswer="UNK4";
+					$variantanswer="UNK";
 					$param=html_entity_decode('{}');
 				}
 			}else{
@@ -440,7 +440,7 @@ if(isSuperUser($userid)){
 						$duggatitle=$row['dugga_title'];
 						$variant=$row['vid'];
 						$answer=$row['useranswer'];
-						$variantanswer="UNK5";
+						$variantanswer="UNK";
 						$param=html_entity_decode($row['param']);
 					}
 			
@@ -450,7 +450,7 @@ if(isSuperUser($userid)){
 						$debug="[Guest] Missing hash/password/variant! Not found in db.";
 						$variant="UNK";
 						$answer="UNK";
-						$variantanswer="UNK6";
+						$variantanswer="UNK";
 						$param=html_entity_decode('{}');
 						unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
 						unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
@@ -486,7 +486,7 @@ if(isSuperUser($userid)){
 							$debug="[Guest] Missing hash/password/variant! Not found in db.";
 							$variant="UNK";
 							$answer="UNK";
-							$variantanswer="UNK8";
+							$variantanswer="UNK";
 							$param=html_entity_decode('{}');
 							unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
 							unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
@@ -497,7 +497,7 @@ if(isSuperUser($userid)){
 					$debug="[Guest] Missing hash/password/variant!";
 					$variant="UNK";
 					$answer="UNK";
-					$variantanswer="UNK9";
+					$variantanswer="UNK";
 					$param=html_entity_decode('{}');
 					unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
 					unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
