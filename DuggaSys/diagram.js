@@ -2819,7 +2819,7 @@ function changeState()
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
 
-    // TODO: elementHasLines() seems to not work for UML elements, this needs to be fixed/investigated!!
+    // TODO: elementHasLines() seems to not work for UML, SD elements, this needs to be fixed/investigated!!
     if ((newType !== undefined && oldType != newType && elementHasLines(element))){
         displayMessage("error", `
         Can't change type from \"${oldType}\" to \"${newType}\" as
@@ -2916,7 +2916,6 @@ function changeState()
 
     }
 
-    generateContextProperties();
     displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
 }
@@ -6618,7 +6617,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();generateContextProperties();saveProperties();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
