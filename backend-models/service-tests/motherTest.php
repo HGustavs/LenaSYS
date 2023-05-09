@@ -27,6 +27,10 @@
     table tr:hover {
         background-color: #ddd;
     }
+
+    #passth {
+        background-color: #800080;
+    }
     </style>
 <?php
 
@@ -74,7 +78,7 @@ echo "
     <th>test3</th>
     <th>test4</th>
     <th>test5</th>
-    <th>Pass/Fail</th>
+    <th id='passth'>Pass/Fail</th>
 </tr>
 ";
 
