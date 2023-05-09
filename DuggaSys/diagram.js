@@ -9451,7 +9451,7 @@ function drawElement(element, ghosted = false)
         stroke-dasharray='${linew*3},${linew*3}'
         fill='transparent'
         />`;
-        //actor or object is determined via the radio buttons in the context menu. the default is actor.
+        //actor or object is determined via the buttons in the context menu. the default is actor.
         if (element.actorOrObject == "actor") {
             //svg for actor.
             str += `<g>`
@@ -9471,7 +9471,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `<rect class='text' x='${xAnchor}' y='${boxw}'><text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text></rect>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
