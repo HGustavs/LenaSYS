@@ -15,6 +15,8 @@
 - listentries
 - course
 - vers
+- quiz
+- variant
 
  <br>
   <br>
@@ -164,11 +166,27 @@ Gathers information from the table __codeexample__.
 
 #### different querys paramaters and retrived information
 - exampleId : exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public
+- cid AND cversion : *
+<br>
+
+---
+
+
+
+<br>
+
+### insertIntoTableCodeexample             --ONLY USED BY copyCourseVersion-- 
+Performes an insert into the table __codeexample__. Parameters needed:
+
+#### copyCourseVersion
+- exampleid:   Copys all values from a table row where id has this value. 
+- cversion: gives the new copy a new _cversion_ value.
 
 <br>
 
 ---
-<br>
+
+
 
 
 ### deleteFromCodeexample --only used by deliteExample--
@@ -197,7 +215,7 @@ __SETTEMPL__
 
 <br>
 
-#### editCodeExample
+#### editCodeExample:
 __EDITEXAMPLE__
 - runlink
 - examplename
@@ -209,6 +227,13 @@ __EDITEXAMPLE: beforeid!__
 __EDITEXAMPLE: afterid!__
 - afterid
 
+
+#### copyCourseVersion: 
+__beforeid__
+- befordeid
+
+__afterid__
+- afterid
 
  <br>
   <br>
@@ -228,24 +253,36 @@ __EDITEXAMPLE: afterid!__
 ---
 <br>
 
-### selectFromBox           --MIGHT ONLY BE USED HERE-- if so add it to settingCodeexampleTemplate
+### selectFromBox           
 Gathers information from the table __box__.
 
 #### different querys paramaters and retrived information 
-- boxid AND exampleid : * 
+- boxid AND exampleid : *
+- exampleid : * 
 <br>
 
 ---
 
 <br>
 
-### insertIntoTableBox             --MIGHT ONLY BE USED HERE-- if so add it to settingCodeexampleTemplate
+### insertIntoTableBox             
 Performes an insert into the table __box__. Parameters needed:
+
+#### settingCodeexampleTemplate
 pre-set values are inserted in the original service.
 - boxtitle: Title
 - settings: [viktig=1]
 - fontsize: 9
 <br>
+
+#### copyCourseVersion
+- boxid:        Copys all values from a table row where id has this
+- exampleid:    and this value.
+- exampleid:    gives the new copy a new quizID value. (this must be a differet value then exampleid used for the search.)
+
+<br>
+
+
 
 ---
 
@@ -300,15 +337,30 @@ Updates values in the table __box__. Columns that are updated:
 <br>
 
 
-### insertIntoImpwordlist --only used by settingCodeexampleTemplate-- 
+### selectFromImpwordlist           
+Gathers information from the table __impwordlist__.
+
+#### different querys paramaters and retrived information 
+- exampleid : * 
+<br>
+
+---
+<br>
+
+### insertIntoImpwordlist  
 Performes an insert into the table __impwordlist__. Parameters needed:
 
-#### EDITEXAMPLE
+#### settingCodeexampleTemplate
 - exampleid
 - word
 - uid
 
 <br>
+
+#### copyCourseVersion
+- exampleid:    Copys all values from a table row where id has this 
+- wordid:       and this value  
+- exampleid: gives the new copy a new exampleid value (not the same used in the search).
 
 ---
 
@@ -343,6 +395,44 @@ Removes row from table __impwordlist__. Parameters needed:
 ## ==improw==
 ---
 ---
+
+
+
+<br>
+
+### selectFromImprow           
+Gathers information from the table __improw__.
+
+#### different querys paramaters and retrived information 
+- exampleid : * 
+<br>
+
+---
+
+<br>
+
+
+
+### insertIntoImprow 
+Performes an insert into the table __improw__. Parameters needed:
+
+#### settingCodeexampleTemplate
+- boxid
+- exampleid
+- istart
+- iend
+- uid
+<br>
+
+#### copyCourseVersion
+- exampleid:    Copys all values from a table row where id has this  
+- impid:        this and 
+- boxid:        this value.
+- boxid: gives the new copy a new boxid value (not the same used in the search).
+
+
+
+---
 <br>
 
 ### deleteFromTableImprow
@@ -361,19 +451,9 @@ Removes row from table __improw__. Parameters needed:
 
 --- 
 
+
+
 <br>
-
-### insertIntoImprow --only used by settingCodeexampleTemplate-- 
-Performes an insert into the table __impwordlist__. Parameters needed:
-
-#### EDITEXAMPLE
-- boxid
-- exampleid
-- istart
-- iend
-- uid
-
-
 
 
 
@@ -392,6 +472,33 @@ Performes an insert into the table __impwordlist__. Parameters needed:
 ---
 <br>
 
+
+### selectFromlistentries  --only used by copyCourseVersion--
+Gathers information from the table __listentries__.
+
+#### different querys paramaters and retrived information 
+- vers : * 
+
+<br>
+
+---
+
+<br>
+
+### insertIntolistentries  --ONLY USED BY copyCourseVersion--
+Performes an insert into the table __listentries__. Parameters needed:
+
+
+#### copyCourseVersion
+- lid:    Copys all values from a table row where id has this value.  
+- vers: gives the new copy a new _vers_ value.
+
+<br>
+
+---
+
+<br>
+
 ### deliteFromListentries  --only used by deliteExample--
 Removes row from table __impwordlist__. Parameters needed:
 #### deliteExample
@@ -400,6 +507,23 @@ Removes row from table __impwordlist__. Parameters needed:
 <br>
 
 ---
+
+<br>
+
+### updateTableListentries --ONLY USED BY copyCourseVersion--
+
+Updates values in the table __listentries__. Columns that are updated: 
+<br>
+
+#### copyCourseVersion: moment
+- moment 
+#### copyCourseVersion: moment
+- link
+
+<br>
+
+
+
 
 <br>
  <br>
@@ -451,12 +575,12 @@ Performes an insert into the table __course__. Parameters needed:
 ### updateTableCourse 
 Updates values in the table __Course__. Columns that are updated: 
 
-#### createNewVersionOfCourse
+#### createNewCourseVersion
 - vers
 
 #### updateCourseversion
 #### changeActiveCourseVersion
- 
+#### copyCourseVersion 
 - activeversion
 
 <br>
@@ -485,10 +609,11 @@ Updates values in the table __Course__. Columns that are updated:
 <br>
 
 
-### insertIntoVers --only used by createNewVersionOfCourse-- 
+### insertIntoVers  
 Performes an insert into the table __vers__. Parameters needed:
 
 #### createNewVersionOfCourse
+#### copyCourseVersion
 - cid
 - coursecode
 - vers
@@ -522,3 +647,85 @@ Updates values in the table __vers__. Columns that are updated:
 
 ---
 
+
+
+
+
+
+<br>
+ <br>
+  <br>
+   <br>
+
+
+---
+## ==quiz==
+---
+
+<br>
+<br>
+
+
+### selectFromQuiz  --only used by copyCourseVersion--
+Gathers information from the table __quiz__.
+
+#### different querys paramaters and retrived information 
+- cid : *
+
+<br>
+
+---
+
+<br>
+
+### insertIntoQuiz  --only used by copyCourseVersion-- 
+Performes an insert into the table __quiz__. Parameters needed:
+
+#### copyCourseVersion
+- id:   Copys all values from a table row where id has this value. 
+- vers: gives the new copy a new vers value.
+<br>
+---
+
+
+
+<br>
+ <br>
+  <br>
+   <br>
+
+
+
+
+
+
+
+
+
+---
+## ==variant==
+--
+
+<br>
+<br>
+
+### selectFromVariant  --only used by copyCourseVersion-- 
+Gathers information from the table __variant__.
+
+#### different querys paramaters and retrived information 
+- quizID : *
+
+<br>
+
+---
+
+<br>
+
+### insertIntoVariant  --only used by copyCourseVersion-- 
+Performes an insert into the table __Variant__. Parameters needed:
+
+#### copyCourseVersion
+- vid:   Copys all values from a table row where id has this value. 
+- quizID: gives the new copy a new quizID value.
+<br>
+---

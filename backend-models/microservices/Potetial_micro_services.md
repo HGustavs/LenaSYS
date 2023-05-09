@@ -231,3 +231,55 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 ### changeActiveCourseVersion
 Uses the services __updateTableCourse__ to change the content of these columns:
 - activeversion
+
+<br>
+
+---
+
+<br>
+
+
+### copyCourseVersion
+Uses service __insertIntoVers__ to makes _inserts_ into the table __Vers__.
+<br>
+
+Uses service __selectFromQuiz__ to _get_ information it requires from __quiz__.
+Uses service __insertIntoQuiz__ to makes _inserts_ into the table __quiz__. (copys values from a row into a new insert, with new _vers_ number)
+<br>
+
+Uses service __selectFromVariant__ to _get_ information it requires from __variant__.
+Uses service __insertIntoVariant__ to makes _inserts_ into the table __variant__. (copys values from a row into a new insert, with new _quizID_ number)
+<br>
+
+Uses service __selectFromCodeexample__ to _get_ information it requires from __codeexample__.
+Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__. (copys values from a row into a new insert, with new _quizID_ number)
+<br>
+
+Uses service __selectFromBox__ to _get_ information it requires from __box__.
+Uses service __insertIntoTableBox__ to makes _inserts_ into the table __box__. (copys values from a row into a new insert, with new _exampleid_ number)
+<br>
+
+Uses service __selectFromImprow__ to _get_ information it requires from __improw__.
+Uses service __insertIntoTableImprow__ to makes _inserts_ into the table __improw__. (copys values from a row into a new insert, with new _exampleid_ number)
+<br>
+
+Uses service __selectFromImpwordlist__ to _get_ information it requires from __impwordlist__.
+Uses service __insertIntoTableImpwordlist__ to makes _inserts_ into the table __impwordlist__. (copys values from a row into a new insert, with new _exampleid_ number)
+<br>
+
+Uses the services __updateTableListentries__ to change the content of these columns:
+- moment
+
+Uses the services __updateTableListentries__ to change the content of these columns:
+- link
+
+Uses the services __updateTableCodeexample__ to change the content of these columns:
+- beforeid
+
+Uses the services __updateTableCodeexample__ to change the content of these columns:
+- afterid
+
+Uses the services __updateTableCourse__ to change the content of these columns:
+- activeversion
+
+
