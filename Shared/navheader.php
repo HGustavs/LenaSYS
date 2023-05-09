@@ -245,10 +245,10 @@
 							echo "<a class='burgerButtText' href='accessed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Change student access</a></div>";
 
 							// Refresh button for Github repo in hamburger menu
-							echo "<div id='refreshBurger'>";
-            	echo "<span id='refreshBTN' title='Refresh Github Repo' value='Refresh' href='#'>";
-							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' onclick='refreshGithubRepo(".$_SESSION['courseid'].");' src='../Shared/icons/refresh.svg'>";
-							echo "</span";
+							echo "<div id='refreshBurger 'onclick='refreshGithubRepo(".$_SESSION['courseid'].");'>";
+            	echo "<a id='refreshBTN' title='Refresh Github Repo' value='Refresh' href='#'>";
+							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' src='../Shared/icons/refresh.svg'>";
+							echo "</a";
 							echo "<a class='burgerButtText' href='#' >Refresh github repo</a></div>";
 					
 							//Adding home button to the teacher burger menu
