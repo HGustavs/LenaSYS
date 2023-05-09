@@ -7943,10 +7943,10 @@ function drawLine(line, targetGhost = false)
         if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
             if ((fy > ty) && (line.ctype == "TB")) {
                 y1Offset = 1;
-                y2Offset = -5 + 1 / zoomfact;
+                y2Offset = -7 + 3 / zoomfact;
             }
             else if ((fy < ty) && (line.ctype == "BT")) {
-                y1Offset = -5 + 1 / zoomfact;
+                y1Offset = -7 + 3 / zoomfact;
                 y2Offset = 1;
             }
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset * zoomfact}' y1='${fy + y1Offset * zoomfact}' x2='${tx + x2Offset * zoomfact}' y2='${ty + y2Offset * zoomfact}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
