@@ -338,6 +338,20 @@ function validateForm() {
 }
 
 //----------------------------------------------------------------------------
+// fetchFilePath <- Function to check if specific object has filePath
+//----------------------------------------------------------------------------
+function checkFilePath(fileid, data) {
+    for (let i = 0; i < data.length; i++) {
+        let obj = JSON.parse(data[i]);
+        if(obj.fileid === fileid && obj.filePath !== null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
 function renderCell(col, celldata, cellid) {
@@ -345,20 +359,14 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
-        console.log(obj.filePath);
-        console.log(obj);
-        if(obj.filePath == null) {
-            isGithub = false;
-        } else {
-            isGithub = true;
-        }
+
     }
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            if(isGithub == true) {
-                console.log(obj.filename + " is a github file");
-            } else if (isGithub == false) {
-                console.log(obj.filename + " is not a github file");
+            if(checkFilePath(obj.fileid, obj)) {
+                console.log("true"); 
+            } else {
+                console.log("false");
             }
             //console.log(correctid);
             str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
