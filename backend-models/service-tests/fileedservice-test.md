@@ -76,6 +76,125 @@ if ($result === true) {
     }
 ```
 
+====================
+---
+## Test to saving a file (line 144):
+===================
+---
+
+---
+## Prerequisite
+---
+
+### pre-req:
+ 
+```
+Pre-req: 
+checklogin()
+&&
+$hasAccess
+```
+
+---
+## pre-valuescourse:
+---
+
+```
+{
+    1,
+    "testcoursecode"    
+}
+```
+
+---
+## pre-query:
+---
+
+```
+INSERT INTO course(creator, coursecode) VALUES (pre-valuescourse[0], pre-valuescourse[1]);
+```
+
+---
+## pre-query:
+---
+
+```
+SELECT cid FROM course WHERE coursecode = "testcoursecode";
+```
+//save value from cid from previous query
+
+---
+## pre-valuesfilelink:
+---
+
+```
+{
+    "testfilename",
+    VALUE FROM PREVIOUS QUERY,
+    THIS CAN HAVE VALUE 2/3/4 DEPENDING ON TEST,
+    "testvers"   
+}
+```
+
+---
+## pre-query:
+---
+
+```
+INSERT INTO fileLink(filename, cid, kind, vers) VALUES(pre-valuesfilelink[0], pre-valuesfilelink[1], pre-valuesfilelink[2], pre-valuesfilelink[3]);
+```
+
+---
+## send parameters inputs to fileedservice.php 
+---
+
+### send
+```
+{
+    $opt = ”SAVEFILE”;
+    $filename = “testfilename”;
+    $filesize = “test”;
+    $kindid = 2/3/4 DEPENDING ON TEST;
+    $vers = "testvers";
+    $cid = VALUE FROM PREVIOUS QUERY
+} 
+```
+
+---
+## Service output:
+---
+
+## Gather service output
+---
+
+#### Output
+```
+    {
+        "entries":[],
+        "debug":"NONE!",
+        "gfiles":[],
+        "lfiles":[],
+        "access":false,
+        "studentteacher":false,
+        "superuser":true,
+        "waccess":false,
+        "supervisor":false
+    }
+```
+
+---
+## Remove inserted row from DB, using username
+---
+
+---
+## SQL-query:
+---
+
+```
+DELETE FROM fileLink ORDER BY fileid DESC LIMIT 1;
+DELETE FROM course  WHERE cid = SAVED VALUE FROM QUERY;
+```
+
 =============================
 ---
 ## Test retrieving a file path (line 218):
