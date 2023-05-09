@@ -336,3 +336,25 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 - qrelease (release date)
 - jsondeadline
 - group
+
+
+
+<br>
+
+---
+
+<br>
+
+
+### deleteDugga
+Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
+
+
+
+<br>
+
+---
+
+<br>
+
+### addDuggaVariant

@@ -790,14 +790,16 @@ Updates values in the table __quiz__. Columns that are updated:
 
 <br>
 
-### deliteFromQuiz  --USED ONLY BY deleteCourseMaterial--
+### deliteFromTableQuiz  
 Removes row from table __quiz__. Parameters needed:
 
 #### deleteCourseMaterial: 
 Where course.visibility = Delited
 AND quiz.cid = course.cid
-
 <br>
+
+#### deleteDugga
+- id 
 
 --- 
 
