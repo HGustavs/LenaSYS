@@ -7905,7 +7905,8 @@ function drawLine(line, targetGhost = false)
             const endY = fy - 15 * zoomfact;
             const cornerX = fx + length;
             const cornerY = fy - length;
-            
+
+            str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
@@ -11810,7 +11811,7 @@ function drawSelectionBox(str)
         selectionBoxHighX = highX + 5;
         selectionBoxLowY = lowY - 5;
         selectionBoxHighY = highY + 5;
-        /*
+        
         // Selection container of selected elements
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
 
@@ -11834,7 +11835,7 @@ function drawSelectionBox(str)
 
         //Delete button visual representation
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' class= "BlackthemeColor"/>`;
-        str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' class= "BlackthemeColor"/>`;*/
+        str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' class= "BlackthemeColor"/>`;
     }
     return str; 
 }
