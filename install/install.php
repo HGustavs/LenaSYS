@@ -449,6 +449,9 @@
             ob_flush();
           }
 
+          #Delete metadata_db if it exists
+          deleteMetadataDB();
+
           # Create new database
           try {
             $connection->query("CREATE DATABASE {$databaseName}");
@@ -727,6 +730,27 @@
       does not already exist. Will only make a new one (not write over).</span><br>";
       }
     } 
+
+    //---------------------------------------------------------------------------------------------------
+    // Function that deletes a file from the local machine
+    //---------------------------------------------------------------------------------------------------
+    function deleteMetadataDB(){
+      //Find all files ending with .db inside the directory
+      $dir = '../../githubMetadata';
+      $metadata_db_files = preg_grep( '~\.db$~',scandir($dir));
+
+      //Iterate and delete above files in the same directory
+      foreach ($metadata_db_files as $key => $file) {
+        //Assemble correct path to the file
+        $file_to_delete = $dir . '/' . $file;
+        if(file_exists($file_to_delete)){
+          unlink($file_to_delete);
+          echo "<span id='successText' />Successfully removed the file: {$file_to_delete}.</span><br>";
+        } else {
+          echo "<span id='failText' />File with name {$file_to_delete} could not be deleted</span><br>";
+        }
+      }
+    }
 
     //---------------------------------------------------------------------------------------------------
     // Function that deletes a user from database
