@@ -9471,7 +9471,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<rect class='text' x='${xAnchor}' y='${boxw}'><text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text></rect>`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
