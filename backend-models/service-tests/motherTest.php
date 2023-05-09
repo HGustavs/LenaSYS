@@ -31,6 +31,12 @@
     #passth {
         background-color: #614875;
     }
+    #passG{
+        background-color: green;
+    }
+    #failR{
+        background-color: red;
+    }
     </style>
 <?php
 
@@ -78,7 +84,7 @@ echo "
     <th>test3</th>
     <th>test4</th>
     <th>test5</th>
-    <th id='passth'>Pass/Fail</th>
+    <th id='passth'> <p id='passG'>Pass</p> <p id='failR'>/Fail</p> </th>
 </tr>
 ";
 
