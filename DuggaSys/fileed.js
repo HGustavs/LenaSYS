@@ -351,6 +351,7 @@ function renderCell(col, celldata, cellid) {
         if (obj.showtrashcan) {
             console.log(celldata);
             console.log(obj.filePath);
+            console.log(obj);
             str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
             str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
         }
