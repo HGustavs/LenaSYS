@@ -5,13 +5,13 @@ session_start();
 pdoConnect(); // Connect to database and start session
 
 //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-if(isset($_POST['action'])) 
+/* if(isset($_POST['action'])) 
 {
     if($_POST['action'] == 'getNewCourseGitHub') 
     {
        getGitHubURL($_POST['githubURL']);
     }
-};
+}; */
 
 function getGitHubURL($url)
 {
@@ -92,10 +92,6 @@ function bfs($url, $cid, $opt)
     array_push($fifoQueue, $url);
     global $pdoLite;
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-
-    // TODO link the course with cid, should not be hardcoded 
-    // $cid = 1; // 1 för webbprogramering 
-    
     while (!empty($fifoQueue)) {
         $currentUrl = array_shift($fifoQueue);
         // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
