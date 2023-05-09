@@ -7915,7 +7915,7 @@ function drawLine(line, targetGhost = false)
             str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
-            data.splice(data.length - 1, 0)
+            
         }
     }
     
@@ -7945,7 +7945,7 @@ function drawLine(line, targetGhost = false)
         var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
-        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null && line.kind != "Recursive") || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT && line.kind != "Recursive")) {
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
