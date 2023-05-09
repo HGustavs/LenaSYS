@@ -1662,7 +1662,7 @@ function returnedSection(data) {
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
           str += "</td>";
         }
-
+        console.log(itemKind);
         // Testing implementation
         if (itemKind === "section" && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
