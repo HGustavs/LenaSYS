@@ -3540,6 +3540,7 @@ span.arrow {
   -moz-appearance: none;
   vertical-align: text-top;
   color: black;
+  outline: none;
 }
 
 .deadlineInfo {
