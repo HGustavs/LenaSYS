@@ -1664,7 +1664,7 @@ function returnedSection(data) {
         }
 
         // Testing implementation
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === "section" && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
