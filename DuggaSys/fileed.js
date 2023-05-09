@@ -492,6 +492,12 @@ function filterFilesByKind(kind){
 
     }if(kind == "Link"){
         $( "td:contains('Link')" ).parents("tr").show();
+    }if(kind == "Manual"){
+        $( "td:contains('Manual')" ).parents("tr").show();
+
+    }if(kind == "Github"){
+        $( "td:contains('Github')" ).parents("tr").show();
+
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
@@ -517,18 +523,18 @@ function sortFiles(asc){
     while(switching){
         switching = false;
         rows = $("#fileLink table tr");
-        for(i = 1; i < (rows.length - 1); i++){
+        for(i = 1; i < rows.length - 1; i++){
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[3];
             y = rows[i + 1].getElementsByTagName("TD")[3];
 
-           if(asc == true){
+           if(asc == true && y){
            	 if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
                 shouldSwitch = true;
                 break;
              }
 
-           }else if(asc == false){
+           }else if(asc == false && y){
            	  if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()){
                 shouldSwitch = true;
                 break;
@@ -684,7 +690,26 @@ function compare(a, b) {
 		}else if(col=="editor"||col=="trashcan"){
 				tempA=-1;
 				tempB=-1;
-		}
+		} else if(col=="type") {
+            if(tempA == null && tempB == null)  {
+                tempA = 0;
+                tempB = 0;
+            } else if (tempA !== null && tempB == null) {
+                tempA = 1;
+                tempB = 0;
+            } else if (tempA == null && tempB !== null) {
+                tempA = 0;
+                tempB = 1;
+            } else {
+                tempA = 1;
+                tempB = 1;
+            }
+/*             if(tempA.path !== null && tempB.path == null) {
+                console.log("tempA är inte null");
+            } else {
+                console.log("tempA är null");
+            } */
+        }
 
     if (tempA > tempB) {
         return 1;
@@ -999,4 +1024,3 @@ document.addEventListener('keydown', function(e) {
 });
 
 
-  
