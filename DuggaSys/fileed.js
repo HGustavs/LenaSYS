@@ -362,7 +362,6 @@ function renderCell(col, celldata, cellid) {
     }
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            console.log(obj.filePath);
             if(obj.filePath.includes("Github")) {
                 str = "<span class='iconBox'> 🐙 </span>";
             } else {
@@ -386,6 +385,12 @@ function renderCell(col, celldata, cellid) {
         str += "<span>" + celldata + "</span>";
     } else if (col == "editor") {
         if(obj.showeditor){
+            if(obj.filePath.includes("Github")) {
+                str = "";
+            } else {
+                str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
+                str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+            }
         if (obj.extension == "md" || obj.extension == "txt" || obj.extension == "html") {
             str = "<span class='iconBox' ><img alt='edit file icon' tabindex='0' id='dorf'  title='Edit file' class='markdownIcon markdownIconeditFile' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
