@@ -346,6 +346,7 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
+        console.log(obj.filePath);
         if(obj.filePath == null) {
             isGithub = false;
         } else {
@@ -355,9 +356,9 @@ function renderCell(col, celldata, cellid) {
     if (col == "trashcan") {
         if (obj.showtrashcan) {
             if(isGithub == true) {
-                console.log(obj.fileName + " is a github file");
+                console.log(obj.filename + " is a github file");
             } else if (isGithub == false) {
-                console.log(obj.fileName + " is not a github file");
+                console.log(obj.filename + " is not a github file");
             }
             //console.log(correctid);
             str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
