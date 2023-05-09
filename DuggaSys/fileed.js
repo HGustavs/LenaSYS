@@ -346,6 +346,7 @@ function renderCell(col, celldata, cellid) {
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
         console.log(obj.filePath);
+        console.log(obj);
         if(obj.filePath == null) {
             isGithub = false;
         } else {
