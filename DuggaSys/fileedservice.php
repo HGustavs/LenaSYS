@@ -289,7 +289,7 @@ if (checklogin() && $hasAccess) {
             'type' => $path,
             'uploaddate' => $row['uploaddate'],
             'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension, 'showeditor' => $showEditor]),
-            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan])
+            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan, 'filePath' => $filePath]),
         );
 
         

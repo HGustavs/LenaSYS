@@ -359,21 +359,10 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
-        console.log(obj);
     }
-            if(checkFilePath(obj.fileid, obj)) {
-                console.log("test1 true"); 
-            } else {
-                console.log("test1 false");
-            }
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            if(checkFilePath(obj.fileid, obj)) {
-                console.log("test2 true"); 
-            } else {
-                console.log("test2 false");
-            }
-            //console.log(correctid);
+            console.log(obj.filePath);
             str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
             str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
         }
