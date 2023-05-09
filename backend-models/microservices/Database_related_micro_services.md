@@ -28,6 +28,16 @@
 ---
 <br>
 
+### selectFromUser --only used by logging--
+Gathers information from the table __user__. parameters used 
+#### different querys paramaters and retrived information 
+- uid : username 
+
+
+
+
+
+
 ### insertIntoTableUser --only used by addUser--
 Performes inserts into the table __user__, Parameters used: 
 - username
@@ -54,7 +64,8 @@ Updates values in the table __user__ in the database, columns that are updated.
 - username
 #### UpdateUserInformation: class
 - class
-#### password
+#### UpdateUserAndUsercourse: password
+#### changeUserPassword
 - password 
 
  <br>
@@ -389,3 +400,46 @@ Removes row from table __impwordlist__. Parameters needed:
 ---
 
 <br>
+ <br>
+  <br>
+   <br>
+
+
+
+
+
+
+
+
+
+---
+## ==course== 
+---
+<br>
+<br>
+
+
+### selectFromCourse  --only used by createNewCourse--
+Gathers information from the table __course__.
+
+#### different querys paramaters and retrived information 
+- boxid AND exampleid : * 
+<br>
+
+---
+
+
+
+---
+### insertIntoCourse --only used by createNewCourse-- 
+Performes an insert into the table __course__. Parameters needed:
+
+#### createNewCourse
+- usrid
+- coursecode
+- coursename
+- courseGitURL   
+
+<br>
+
+---

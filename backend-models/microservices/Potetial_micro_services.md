@@ -7,8 +7,8 @@ This document primaraly focuses on the services provided by the service-files, t
 ---
 - accessedservice __#finished#__
 - codeviewerService __#finished#__
-- contributedservice : _there is no documentation for this file_
-- contribution_loginbox_service
+- contributedservice : _there is no documentation for this file_ __dont know is needed__
+- contribution_loginbox_service : __dont know is needed__
 - courseedservice : __No document found manual research needed__  
 - diagramservice
 - duggaedservice
@@ -21,19 +21,31 @@ This document primaraly focuses on the services provided by the service-files, t
 - showDuggaservice
 
 ---
+---
 ## Potentaial services 
 ---
+---
+<br>
+<br>
 
-### setUserID
-
-Checks currents sessions user ID and sets it to a variable.  
-
-*writters personal comment, this might be to small to justify making a seperat service. 
+---
+### logging
+Uses a function in basic.php. 
 
 ---
 
+<br>
 
 
+### isSuperUser
+Uses a function in Session.php. 
+```
+Returns superuser status of user
+@param int $userId User ID of the user to look up
+@return true false. True if superuser false if not
+```
+
+---
 
 ### hasAccess
 
@@ -48,6 +60,23 @@ Check if a specified user ID has the requested access on a specified course
 @return bool Returns true if the user has the requested access on the course and false if they don't.
 ```
 ---
+
+
+
+
+
+### setUserID
+
+Checks currents sessions user ID and sets it to a variable.  
+
+*writters personal comment, this might be to small to justify making a seperat service. 
+
+---
+
+
+
+
+
 
 
 
@@ -163,3 +192,10 @@ Uses service __deleteFromTableImprow__ to delete a row from the tabe __improw__.
 Uses service __deleteFromTableImpwordlist__ to delete a row from the tabe __impwordlist__.
 Uses service __deliteFromCodeexample__ to delete a row from the tabe __Codeexample__.
 Uses service __deliteFromListentries__ to delete a row from the tabe __listentries__.
+
+---
+<br>
+
+### createNewCourse
+Uses service __insertIntoCourse__ to makes _inserts_ into the table __course__.
+Uses service __selectFromCourse__ to _get_ information it requires from __course__.
