@@ -346,10 +346,9 @@ function renderCell(col, celldata, cellid) {
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
         obj = JSON.parse(celldata);
     }
-    console.log(obj);
     if (col == "trashcan") {
         if (obj.showtrashcan) {
-            console.log(obj.showtrashcan.fileid);
+            console.log(fileid);
             str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
             str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
         }
