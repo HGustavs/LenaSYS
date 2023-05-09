@@ -2809,7 +2809,7 @@ function getElementLines(element) {
 function elementHasLines(element) {
     return (getElementLines(element).length > 0);
 }
-/** TODO: elementHasLines() seems to not work for UML, SD elements, this needs to be fixed/investigated!!
+/** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
  */
@@ -2820,7 +2820,7 @@ function changeState()
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
 
     // If we are changing types and the element has lines, we should not change
-    if ((newType !== undefined && oldType != newType && elementHasLines(element))){
+    if ((elementHasLines(element))){
         displayMessage("error", `
         Can't change type from \"${oldType}\" to \"${newType}\" as
         different diagrams should not be able to connect to each other.`
