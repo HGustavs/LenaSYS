@@ -2046,7 +2046,7 @@ function mouseMode_onMouseUp(event)
                     addLine(context[0], context[0], "Recursive");                  
                     clearContext();
 
-                    data.splice(data.length - 1, 1)
+                    data.splice(data.length - 1, 0)
 
                     // Bust the ghosts
                     ghostElement = null;
