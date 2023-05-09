@@ -349,7 +349,7 @@ function renderCell(col, celldata, cellid) {
     if (col == "trashcan") {
         if (obj.showtrashcan) {
             if(obj.filePath.includes("Github")) {
-                str = "<span class='iconBox'><img alt='github icon' tabindex='0' id='dorf' title='Github file' class='trashcanIcon trashcanTab' src='../Shared/icons/githubLink-icon.svg' ";
+                str = "<span class='iconBox'><img alt='github icon' tabindex='0' id='dorf' title='Github file' class='trashcanIcon trashcanTab' src='../Shared/icons/githubLink-icon.png' ";
             } else {
                 str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
                 str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
