@@ -445,7 +445,7 @@ function returned(data)
 	resetBoxes();
 }
 
-/*function returnedTitle(data) {
+function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
 	
 	retData['box'][data.id - 1][4] = data.title;
@@ -459,7 +459,7 @@ function returned(data)
 	console.log(titleSpan.innerHTML);
 
 	fillBurger();
-}*/
+}
 
 //------------------------
 // Drag and drop
