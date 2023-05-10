@@ -7467,11 +7467,6 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  // TODO : Use new POINT objects to reduce amount of arguments?
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
-    // TODO : Can be deleted?
-    // Display line test locations using svg lines
-    // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
-    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
-
     var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
     var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
     if (isNaN(x) || isNaN(y)) {
