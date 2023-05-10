@@ -9621,7 +9621,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the activation rect
-        str += `<rect rx='${sequenceCornerRadius}' width='${boxw - (linew * 2)}' height='${(boxw/2) - linew}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'" />`;
+        str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
         str += `</svg>`;  
     }
     //=============================================== <-- End of Sequnece functionality
