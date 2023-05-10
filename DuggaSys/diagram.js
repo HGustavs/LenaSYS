@@ -9627,6 +9627,44 @@ function drawElement(element, ghosted = false)
         str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
         str += `</svg>`;  
     }
+    // Sequence loop 
+    else if (element.kind == 'sequenceLoop') {
+        //div to encapsulate sequence loop 
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the loop rect
+        //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
+        str += `<rect class='text'
+                x='${linew}'
+                y='${linew}'
+                width='${boxw - linew}'
+                height='${boxh - linew}'
+                rx='${sequenceCornerRadius}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='none'
+            />`;
+        //svg for the small rect in corner
+        str += `<rect class='text'
+                x='${linew}'
+                y='${linew}'
+                width='${boxw/10}'
+                height='${boxh/10}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
+        str += `</svg>`;
+    }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
     //ER element
