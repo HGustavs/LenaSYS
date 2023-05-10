@@ -133,9 +133,75 @@ SELECT exampleid, templateid
 FROM codeexample;
 ```
 
-
-
+***
 ##EDITEXAMPLE Line 160
+***
+###pre-req:
+```
+{ (checklogin = true) &&
+(hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) ==
+true give $writeAccess="w";, else $writeAccess="s";
+```
+
+
+###Login:
+```
+Username: 2
+Password: Kong
+```
+###Values
+```
+Send{
+  $opt = "EDITEXAMPLE";
+  $playlink = Greger.txt;
+  $exampleName = Test New Code;
+  $sectionName = Test New Code9021;
+  $beforeId = 9020;
+  $afterId = 9022;
+  $courseId = 1885;
+  $courseVersion = 1337;
+}
+
+```
+
+###Service output
+```
+output{
+  "opt":
+  "before":([0,1,2,3,4])       //The Array represent the amount of values 
+                               //0,1,4 = exempleID. 2 = sectionname. 3 = Filename
+  "after":([0,1,2,3,4])        //Array, same as "before"
+  "templateid":
+  "stylesheet":
+  "numbox":
+  "box":([0,1,2,3,4,5,6,7,8])
+  "improws":[]      //Array
+  "impwords":[0]     //Array
+  "directory":[0,1]    //Array
+  "examplename":
+  "sectionname":
+  "playlink":
+  "exampleno":
+  "words":[0,1,2]        //Array
+  "wordlists":[0,1]    //Array
+  "writeaccess":
+  "debug":
+  "beforeafter":[0,1,2,3,4]  //Array, same as "before"
+  "public":
+  "courseid":
+  "courseversion":
+}
+```
+
+
+
+
+
+
+
+
+
+
 —-------------------------------------------------------------
 Log in as toddler, testing-course, create new code example, choose template, example settings, fill in values as below:
 SectionTitle: TestSecTitle	  		Title: TestTitle
