@@ -449,7 +449,7 @@ function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
 	console.log("enter returnedTitle: ", data);
 	retData['box'][data.id - 1][4] = data.title;
-	console.log("retdata, data.id, data.title: ", retdata, data.id, data.title);
+	console.log("retdata, data.id, data.title: ", retData, data.id, data.title);
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	console.log("Boxwrapper: ", boxWrapper);
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
