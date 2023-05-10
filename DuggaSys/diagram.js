@@ -2869,7 +2869,7 @@ function changeState()
                 element.type = newType;
                 console.log(element.type);
                 console.log(element.kind);
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }));
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
                 return;
             }
         }
@@ -2901,7 +2901,7 @@ function changeState()
                 element.type = newType;
                 console.log(element.type);
                 console.log(element.kind);
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }));
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
                 return;
             }
             var property = document.getElementById("propertySelect").value;
@@ -2929,7 +2929,7 @@ function changeState()
                 element.type = newType;
                 console.log(element.type);
                 console.log(element.kind);
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }));
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
                 return;
             }
             var property = document.getElementById("propertySelect").value;
