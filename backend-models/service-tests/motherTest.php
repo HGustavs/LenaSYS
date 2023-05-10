@@ -25,7 +25,7 @@
         text-decoration: none;
         font-size : 30px;
         position : relative;
-        left : 40px;
+        left : 80px;
     }
     table tr:nth-child(even){
         background-color: #f2f2f2;
