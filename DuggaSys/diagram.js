@@ -9048,7 +9048,7 @@ function drawElement(element, ghosted = false)
     var hboxh = Math.round(element.height * zoomfact * 0.5);
     var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
-    var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
+    var elemAttri = 8;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
     canvas = document.getElementById('canvasOverlay');
