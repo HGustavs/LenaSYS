@@ -11875,12 +11875,12 @@ function drawSelectionBox(str)
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
-                //if (contextLine[i].kind === lineKind.DOUBLE) {
-                //    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
-                //    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
-                //} else {
-                //    tempLines.push(document.getElementById(contextLine[i].id));
-                //}
+                if (contextLine[i].kind === lineKind.DOUBLE) {
+                    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
+                    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
+                } else {
+                    tempLines.push(document.getElementById(contextLine[i].id));
+                }
             }
             var tempX1, tempX2, tempY1, tempY2;
             var hasPoints = tempLines[0].getAttribute('points'); // Polyline
