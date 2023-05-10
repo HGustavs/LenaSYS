@@ -933,10 +933,10 @@ const lineCardinalitys = {
  */
  const IELineIcons = {//TODO: Replace with actual icons for the dropdown
     ZERO_MANY: "0-M",
-    ZERO_ONE: "0-1",
-    ONE: "1",
-    FORCEDONE: "1!",
-    ONE_MANY: "1-M",
+    ZERO_ONE: "ZERO_ONE",
+    ONE: "ONE",
+    FORCEDONE: "FORCEDONE",
+    ONE_MANY: "ONE_MANY",
     MANY: "M",
     WEAK: "Weak"
 };
@@ -6809,19 +6809,19 @@ function generateContextProperties()
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers ZERO_ONE not being equal to 0-1
-                    else if ((contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                    else if ((contextLine[0].startIcon.toUpperCase() == "ZERO_ONE") && (icon == "ZERO_ONE")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers ONE not being equal to 1
-                    else if ((contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                    else if ((contextLine[0].startIcon.toUpperCase() == "ONE") && (icon == "ONE")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers FORCEDONE not being equal to 1!
-                    else if ((contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                    else if ((contextLine[0].startIcon.toUpperCase() == "FORCEDONE") && (icon == "FORCEDONE")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers ONE_MANY not being equal to 1-M
-                    else if ((contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                    else if ((contextLine[0].startIcon.toUpperCase() == "ONE_MANY") && (icon == "ONE_MANY")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers MANY not being equal to M
@@ -6874,19 +6874,19 @@ function generateContextProperties()
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers ZERO_ONE not being equal to 0-1
-                    else if ((contextLine[0].endIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                    else if ((contextLine[0].endIcon.toUpperCase() == "ZERO_ONE") && (icon == "ZERO_ONE")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers ONE not being equal to 1
-                    else if ((contextLine[0].endIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                    else if ((contextLine[0].endIcon.toUpperCase() == "ONE") && (icon == "ONE")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers FORCEDONE not being equal to 1!
-                    else if ((contextLine[0].endIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                    else if ((contextLine[0].endIcon.toUpperCase() == "FORCEDONE") && (icon == "FORCEDONE")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers ONE_MANY not being equal to 1-M
-                    else if ((contextLine[0].endIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                    else if ((contextLine[0].endIcon.toUpperCase() == "ONE_MANY") && (icon == "ONE_MANY")) {
                         str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
                     }
                     //this covers MANY not being equal to M
