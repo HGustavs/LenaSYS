@@ -4308,8 +4308,6 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
-    
-    //toggleStrokeColorAllOfElements();
     showdata();
 }
 
@@ -12249,7 +12247,6 @@ function toggleStrokeColorAllOfElements() {
                     strokeColor = '#ffffff';
                     data[i].stroke[0] = strokeColor;
                 }
-                
             }
         }
         //else, if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
