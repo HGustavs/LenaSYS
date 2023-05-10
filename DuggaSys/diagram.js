@@ -4308,9 +4308,12 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
-    
-    toggleStrokeColorAllOfElements();
+
     showdata();
+
+    //toggleBorderOfElements();
+    toggleStrokeColorAllOfElements();
+
 }
 
 
