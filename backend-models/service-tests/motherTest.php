@@ -17,7 +17,7 @@
         background-color: #800080;
         font-size : 30px;
         padding : 30px;
-        left : 40px;
+        padding-left : 40px;
     }
     th a{
         color: white;
