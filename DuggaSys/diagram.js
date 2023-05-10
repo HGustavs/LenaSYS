@@ -9114,10 +9114,10 @@ function drawElement(element, ghosted = false)
             height : ((boxh + (boxh/2 + (boxh * elemAttri/2)) + (boxh/2 + (boxh * elemFunc/2))) / zoomfact)
         }
         UMLHeight.push(UMLEntityHeight);
-        /*
+        
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;*/
+        style='left:0px; top:0px;margin-top:${((boxw * 2))} width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
