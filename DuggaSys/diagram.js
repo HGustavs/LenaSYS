@@ -1125,7 +1125,7 @@ var ghostLine = null;
 /**
  * @description All default values for element types. These will be applied to new elements created via the construction function ONLY.
  * @see constructElementOfType() For creating new elements with default values.
- */
+ *//*
 var defaults = {
 
     EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'] },
@@ -1146,7 +1146,7 @@ var defaults = {
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" } // Sequence Activation.
 
-}
+}*/
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP       ================================
