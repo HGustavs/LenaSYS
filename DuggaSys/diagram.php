@@ -626,12 +626,12 @@
                          onclick='setElementPlacementType(13); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
                          onmousedown="holdPlacementButtonDown(13)">
-                        <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
-                        <span class="toolTipText"><b>UML initial state</b><br>
-                            <p>Creates an initial state for UML.</p>
-                            <p>The initial state represents the start of a process.</p>
+                         <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                        <span class="toolTipText"><b>Sequence activation</b><br>
+                            <p>Creates an activation box.</p>
+                            <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                             <br>
-                            <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton13" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -639,37 +639,42 @@
                     </div>    
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
-                                <span class="placementTypeToolTipText"><b>UML initial state</b><br>
-                                    <p>Creates an initial state for UML.</p>
-                                    <p>The initial state represents the start of a process.</p>
-                                </span>
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFETIME !-->
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="toolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
+                                <br>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
-                                <span class="placementTypeToolTipText"><b>UML final state</b><br>
-                                    <p>Change to UML final state</p>
-                                    <p>Creates a final state for UML.</p>
-                                    <p>The final state represents where a process ends.</p>
-                                </span>
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                            <span class="toolTipText"><b>Sequence activation</b><br>
+                                <p>Creates an activation box.</p>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                <br>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                            </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' >
-                                <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                                <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                </span>
-                            </div>         
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(15,12); setElementPlacementType(15); setMouseMode(2);' >
-                                <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                                <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                </span>
-                            </div>                        
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- OBJECT !-->
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                            <span class="toolTipText"><b>Sequence Object</b><br>
+                                <p>Creates a sequence object.</p>
+                                <p>Represents a class or object.</p>
+                                <p>Used to show how an object will behave.</p>
+                                <br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>        
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(15,12); setElementPlacementType(15); setMouseMode(2);' > <!-- LOOP !-->
+                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="toolTipText"><b>Sequence Condition</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>                         
                         </div>
                     </div>
                 </div> <!-- SEQUENCE ACTIVATION END -->
@@ -679,12 +684,13 @@
                          onclick='setElementPlacementType(14); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
                          onmousedown="holdPlacementButtonDown(14)">
-                        <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
-                        <span class="toolTipText"><b>UML initial state</b><br>
-                            <p>Creates an initial state for UML.</p>
-                            <p>The initial state represents the start of a process.</p>
+                         <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                        <span class="toolTipText"><b>Sequence Object</b><br>
+                            <p>Creates a sequence object.</p>
+                            <p>Represents a class or object.</p>
+                            <p>Used to show how an object will behave.</p>
                             <br>
-                            <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton14" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -692,37 +698,42 @@
                     </div>    
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
-                                <span class="placementTypeToolTipText"><b>UML initial state</b><br>
-                                    <p>Creates an initial state for UML.</p>
-                                    <p>The initial state represents the start of a process.</p>
-                                </span>
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFETIME !-->
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="toolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
+                                <br>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
-                                <span class="placementTypeToolTipText"><b>UML final state</b><br>
-                                    <p>Change to UML final state</p>
-                                    <p>Creates a final state for UML.</p>
-                                    <p>The final state represents where a process ends.</p>
-                                </span>
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                            <span class="toolTipText"><b>Sequence activation</b><br>
+                                <p>Creates an activation box.</p>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                <br>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                            </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' >
-                                <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                                <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                </span>
-                            </div>           
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(15,12); setElementPlacementType(15); setMouseMode(2);' >
-                                <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                                <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                </span>
-                            </div>                      
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- OBJECT !-->
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                            <span class="toolTipText"><b>Sequence Object</b><br>
+                                <p>Creates a sequence object.</p>
+                                <p>Represents a class or object.</p>
+                                <p>Used to show how an object will behave.</p>
+                                <br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>        
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(15,12); setElementPlacementType(15); setMouseMode(2);' > <!-- LOOP !-->
+                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="toolTipText"><b>Sequence Condition</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>                         
                         </div>
                     </div>
                 </div> <!-- SEQUENCE OBJECT END -->
@@ -732,50 +743,53 @@
                          onclick='setElementPlacementType(15); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
                          onmousedown="holdPlacementButtonDown(15)">
-                        <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
-                        <span class="toolTipText"><b>UML initial state</b><br>
-                            <p>Creates an initial state for UML.</p>
-                            <p>The initial state represents the start of a process.</p>
-                            <br>
-                            <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
-                        </span>
+                         <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="toolTipText"><b>Sequence Condition</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
                         <div id="togglePlacementTypeButton15" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox15" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
-                                <span class="placementTypeToolTipText"><b>UML initial state</b><br>
-                                    <p>Creates an initial state for UML.</p>
-                                    <p>The initial state represents the start of a process.</p>
-                                </span>
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFETIME !-->
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="toolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
+                                <br>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
-                                <span class="placementTypeToolTipText"><b>UML final state</b><br>
-                                    <p>Change to UML final state</p>
-                                    <p>Creates a final state for UML.</p>
-                                    <p>The final state represents where a process ends.</p>
-                                </span>
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                            <span class="toolTipText"><b>Sequence activation</b><br>
+                                <p>Creates an activation box.</p>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                <br>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                            </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' >
-                                <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                                <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                </span>
-                            </div>           
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(15,12); setElementPlacementType(15); setMouseMode(2);' >
-                                <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
-                                <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                </span>
-                            </div>                      
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- OBJECT !-->
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
+                            <span class="toolTipText"><b>Sequence Object</b><br>
+                                <p>Creates a sequence object.</p>
+                                <p>Represents a class or object.</p>
+                                <p>Used to show how an object will behave.</p>
+                                <br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>        
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(15,12); setElementPlacementType(15); setMouseMode(2);' > <!-- LOOP !-->
+                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="toolTipText"><b>Sequence Condition</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>                         
                         </div>
                     </div>
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
