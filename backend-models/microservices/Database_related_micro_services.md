@@ -860,11 +860,16 @@ Updates values in the table __quiz__. Columns that are updated:
 #### updateQuizDeadline
 - deadline
 - relativedeadline
-
 ```sql
 UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=:link
 ```
+<br>
 
+#### updateListentriesGradesystem
+- gradesystem
+```sql
+UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
+```
 <br>
 
 ---
