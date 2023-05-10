@@ -8770,7 +8770,7 @@ function drawLine(line, targetGhost = false)
     return str;
 }
 /**
- * 
+ * @description Calculates the coordinates of the point representing the base of the arrow, the point is @param size distance away and on the line between @param from and @param to .
  * @param {Point} from
  * @param {Point} to
  * @param {number} size
