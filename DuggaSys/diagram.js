@@ -9041,11 +9041,11 @@ function drawElement(element, ghosted = false)
 
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
-    var boxw  = Math.round(element.width * zoomfact);
-    var boxh  = Math.round(element.height * zoomfact);
+    var boxw = Math.round(element.width * zoomfact * 0.5);
+    var boxh = Math.round(element.height * zoomfact * 0.5);
     var texth = Math.round(zoomfact * textheight);
-    var hboxw = Math.round(element.width * zoomfact * 1);
-    var hboxh = Math.round(element.height * zoomfact * 1);
+    var hboxw = Math.round(element.width * zoomfact * 0.5);
+    var hboxh = Math.round(element.height * zoomfact * 0.5);
     var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
