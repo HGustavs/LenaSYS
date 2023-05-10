@@ -9763,9 +9763,7 @@ function updatepos(deltaX, deltaY)
     str = "";
     str = boxSelect_Draw(str);
     //str = selectionAllIndividualElements(str);
-    if (mouseButtonDown === false && context.length > 0 && context[0] && context[0].kind) {
-        str = drawSelectionBox(str);
-    }
+    if (mouseButtonDown == false) str = drawSelectionBox(str);
     
     document.getElementById("svgoverlay").innerHTML=str;
 
