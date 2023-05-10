@@ -16,6 +16,27 @@ else{
 }
 
 $dbName = DB_NAME . 'testingdb';
+
+$query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA NAME = :name');
+$query->bindParam(':name', $dbName);
+if(!$query->execute()) {
+	$error = $query->errorInfo();
+	echo "<h4> Error checking for database: ".$error[2]."</h4>";
+}
+else{
+	echo "<h3>Database exists already, resetting...</h3>";
+}
+
+$query = $pdo->('DROP DATABASE IF EXISTS :dbname');
+$query->bindParam(':dbname', $dbName);
+if(!$query->execute()) {
+	$error = $query->errorInfo();
+	echo "<h4> Error dropping database: ".$error[2]."</h4>";
+}
+else{
+	echo "<h2>Database reset</h2>";
+}
+
 $query = $pdo->prepare("CREATE DATABASE IF NOT EXISTS ".$dbName);
 
 if(!$query->execute()) {
