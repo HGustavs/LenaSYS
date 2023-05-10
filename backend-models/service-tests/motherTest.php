@@ -90,14 +90,17 @@ echo "
     <th>test5</th>
     <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
 </tr>
+</table>
 ";
 
 
 
 echo "
+<table border='1'>
 <tr>
-    <td><p style='font-size:30px;>&#9989;</p></td>
+    <td><p style='font-size:30px';>&#9989;</p></td>
 </tr>
+</table>
 ";
 
 
