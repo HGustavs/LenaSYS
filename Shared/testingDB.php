@@ -17,8 +17,7 @@ else{
 
 $dbName = DB_NAME . 'testingdb';
 
-$query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :name');
-$query->bindParam(':name', $dbName);
+$query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '.$dbName);
 if(!$query->execute()) {
 	$error = $query->errorInfo();
 	echo "<h4> Error checking for database: ".$error[2]."</h4>";
@@ -26,8 +25,7 @@ if(!$query->execute()) {
 else{
 	echo "<h3>Database exists already, resetting...</h3>";
 	
-	$query = $pdo->prepare('DROP DATABASE :dbname');
-	$query->bindParam(':dbname', $dbName);
+	$query = $pdo->prepare('DROP DATABASE '.$dbName);
 	if(!$query->execute()) {
 		$error = $query->errorInfo();
 		echo "<h4> Error dropping database: ".$error[2]."</h4>";
