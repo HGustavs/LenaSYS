@@ -560,7 +560,7 @@
                     </div>
                 </div><!--<-- UML functionality end -->
                  <!--Sequence diagram lifeline | for now is bound to uml final state -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(12); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                     <span class="toolTipText"><b>Sequence lifeline</b><br>
                         <p>Creates a lifeline for a sequnece diagram</p>
@@ -571,7 +571,7 @@
                     </span>
                 </div>              
                 <!-- Sequence diagram object selection -->
-                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
                         <p>Creates a sequence object.</p>
@@ -592,7 +592,7 @@
                     </span>
                 </div>
                  <!-- Sequence diagram option loop selection -->
-                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
                         <p>Creates a option loop or alternative.</p><br>
