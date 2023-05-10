@@ -96,7 +96,7 @@ echo "
 
 echo "
 <tr>
-    <td style='font-size:30px>&#9989;</td>
+    <td><p style='font-size:30px;>&#9989;</p></td>
 </tr>
 ";
 
