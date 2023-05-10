@@ -12227,12 +12227,9 @@ function updateCSSForAllElements()
  * @description toggles the stroke color of all elements to white or gray; depending on current theme and fill.
  */
 function toggleStrokeColorAllOfElements() {
-    //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
-    //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
-   let allTexts = document.getElementsByClassName('text');
     if (localStorage.getItem('diagramTheme') != null) {
         //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
-      let cssUrl = localStorage.getItem('diagramTheme');
+        let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
         if(cssUrl == 'blackTheme.css'){
@@ -12244,7 +12241,7 @@ function toggleStrokeColorAllOfElements() {
                 //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
                 //this is because we dont want the border to be white on a white element, this would be hard to see.
                 if (strokeColor == "#383737") {
-                    if (fillColor ==  "#ffffff" || fillColor ==  "#FFFFFF") {
+                    if (fillColor !=  "#ffffff" || fillColor !=  "#FFFFFF") {
                         strokeColor = "#ffffff";
                         data[i].stroke[0] = strokeColor;
                     }
