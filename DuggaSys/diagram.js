@@ -9504,7 +9504,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxw/3))}px; width:${boxw}px;height:${boxh/2}px;`;
+        style='left:0px; top:0px; margin-top:${((boxw/1.5))}px; width:${boxw}px;height:${boxh/2}px;`;
        
         if(context.includes(element)){
             str += `z-index: 1;`;
