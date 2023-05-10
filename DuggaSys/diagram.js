@@ -2863,12 +2863,13 @@ function changeState()
     } else if (oldType == newType){
         return;
     }
-
     else if (element.type == 'ER') {
         
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
-
+            if (newType == 'SD') {
+                console.log("test");
+            }
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
