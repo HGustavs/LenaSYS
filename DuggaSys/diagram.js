@@ -795,7 +795,8 @@ const elementTypes = {
     UMLSuperState: 11,
 
     sequenceActorAndObject:12, //sequence functionality
-    sequenceActivation: 13
+    sequenceActivation: 13,
+    sequenceLoop: 14
     
 };
 
@@ -821,6 +822,7 @@ const elementTypesNames = {
 
     sequenceActorAndObject: "sequenceActorAndObject",
     sequenceActivation: "sequenceActivation",
+    sequenceLoop: "sequenceLoop",
 
 }
 
@@ -1144,7 +1146,8 @@ var defaults = {
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
-    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" } // Sequence Activation.
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
+    sequenceLoop: {name: "Activation", kind: "sequenceLoop", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 400, type: "sequence" } // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
