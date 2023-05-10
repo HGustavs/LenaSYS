@@ -119,8 +119,13 @@
     box-shadow: 6px 6px 10px #888;
 }
 
-#diagramTypeDropdown{
+#diagramTypeDropdown, #diagramLoad{
     display: none;
+}
+
+#diagramTypeDropdown{
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .hide {
@@ -237,13 +242,23 @@
 }
 .node.mr {
     top: calc(50% - 4px);
-    left: 0;
+    right: 0;
     cursor: col-resize;
 }
 .node.ml {
     top: calc(50% - 4px);
-    right: 0;
+    left: 0;
     cursor: col-resize;
+}
+.node.md {
+    right: calc(50% - 4px);
+    bottom: 0; 
+    cursor: row-resize;
+}
+
+.node.mu {
+    right: calc(50% - 4px);
+    cursor: row-resize;
 }
 
 .underline{
@@ -625,8 +640,9 @@
     padding: 5px 0;
     pointer-events: none;
     position: absolute;
-    z-index: 2;
+    z-index: 20;
 }
+
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
