@@ -455,7 +455,7 @@ function returnedTitle(data) {
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
 	console.log("titleSpan: ", titleSpan);
 	titleSpan.innerHTML = data.title;
-	console.log("innerHTML: ", innerHTML);
+	console.log("innerHTML: ", titleSpan.innerHTML);
 	fillBurger();
 }
 
