@@ -7464,7 +7464,6 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
 
- // TODO : Use new POINT objects to reduce amount of arguments?
 //Checks if the lines intersect and if the possible intersection point is within edges
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
