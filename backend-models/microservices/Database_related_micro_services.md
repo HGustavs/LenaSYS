@@ -842,7 +842,7 @@ Performes an insert into the table __quiz__. Parameters needed:
 
 <br>
 
-### updateTableQuiz  -- used by createOrUpdateDugga--
+### updateTableQuiz  
 Updates values in the table __quiz__. Columns that are updated: 
 
 #### createOrUpdateDugga
@@ -855,6 +855,15 @@ Updates values in the table __quiz__. Columns that are updated:
 - qrelease (release date)
 - jsondeadline
 - group
+<br>
+
+#### updateQuizDeadline
+- deadline
+- relativedeadline
+
+```sql
+UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=:link
+```
 
 <br>
 

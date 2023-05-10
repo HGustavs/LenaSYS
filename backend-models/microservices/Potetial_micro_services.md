@@ -629,3 +629,24 @@ Uses the services __updateTableListentries__ to change the content of these colu
 - feedbackquestion
 
 Uses service __insertIntoTableList__ to makes _inserts_ into the table __list__.
+
+<br>
+
+---
+
+<br>
+
+### updateQuizDeadline
+Uses the services __updateTableQuiz__ to change the content of these columns:
+- deadline
+- relativedeadline
+
+<br>
+
+---
+
+<br>
+
+### updateListentriesGradesystem
+Uses the services __updateTableListentries__ to change the content of these columns:
+- gradesystem
