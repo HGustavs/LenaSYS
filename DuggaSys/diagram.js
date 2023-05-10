@@ -4312,6 +4312,7 @@ function toggleDarkmode()
     showdata();
 
     //toggleBorderOfElements();
+    toggleStrokeColorAllOfElements();
 
 }
 
@@ -12290,6 +12291,7 @@ function toggleStrokeColorAllOfElements() {
                 }
             }
         } */
+        showdata();
     }
 }
 /**
@@ -12349,8 +12351,6 @@ function showdata()
     }
     container.innerHTML = str;
     updatepos(null, null);
-
-    toggleStrokeColorAllOfElements();
 }
 
 //#region ================================ Camera Functions     ================================
