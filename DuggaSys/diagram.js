@@ -9646,7 +9646,7 @@ function drawElement(element, ghosted = false)
         str += `<path class="text"
                 d="M${linew},${linew}
                     h${(boxw-sequenceCornerRadius)-linew}
-                    a${sequenceCornerRadius},${sequenceCornerRadiusornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius}
+                    a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius}
                     v${(boxh-(sequenceCornerRadius*2))-linew}
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${(sequenceCornerRadius*-1)},${sequenceCornerRadius}
                     h${(boxw-sequenceCornerRadius)*-1}
