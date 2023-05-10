@@ -4311,7 +4311,7 @@ function toggleDarkmode()
 
     showdata();
 
-    //toggleBorderOfElements();
+    toggleBorderOfElements();
 
 }
 
@@ -12228,9 +12228,9 @@ function updateCSSForAllElements()
     }
 }
 /**
- * @description toggles the stroke color of all elements to white or gray; depending on current theme and fill.
+ * @description toggles the border of all elements to white or gray; depending on current theme and fill.
  */
-function toggleStrokeColorAllOfElements() {
+function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
    let allTexts = document.getElementsByClassName('text');
@@ -12350,7 +12350,7 @@ function showdata()
     container.innerHTML = str;
     updatepos(null, null);
 
-    toggleStrokeColorAllOfElements();
+    toggleBorderOfElements();
 }
 
 //#region ================================ Camera Functions     ================================
