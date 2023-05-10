@@ -1021,22 +1021,14 @@ const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
-/*
+
 const zoom1_25 = 0.36;
 const zoom1_5 = 0.555;
 const zoom2 = 0.75;
 const zoom4 = 0.9375;
 const zoom0_75 = -0.775;
 const zoom0_5 = -3;
-const zoom0_25 = -15.01;*/
-
-const zoom1_25 = 1;
-const zoom1_5 = 1;
-const zoom2 = 1;
-const zoom4 = 1;
-const zoom0_75 = 1;
-const zoom0_5 = 1;
-const zoom0_25 = 1;
+const zoom0_25 = -15.01;
 
 var errorActive = false;
 
