@@ -12243,7 +12243,7 @@ function toggleBorderOfElements() {
     
         if(cssUrl == 'blackTheme.css'){
             //iterate through all the elements that have the class 'text'.
-            /* for (let i = 0; i < allTexts.length; i++) {
+            for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 //assign their current stroke color to a variable.
               let strokeColor = text.getAttribute('stroke');
@@ -12254,31 +12254,10 @@ function toggleBorderOfElements() {
                     strokeColor = '#ffffff';
                     text.setAttribute('stroke', strokeColor);
                 }
-            } */
-            //iterate through data
-            for (let i = 0; i < data.length; i++) {
-                //assign their current stroke and fill color to a variable.
-                let strokeColor = data[i].stroke[0];
-                let fillColor = data[i].fill;
-                if (strokeColor == '#383737' && fillColor != '#ffffff') {
-                    strokeColor = '#ffffff';
-                    data[i].stroke[0] = strokeColor;
-                }
-                
             }
         }
         //if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
         else{
-            for (let i = 0; i < data.length; i++) {
-                let strokeColor = data[i].stroke[0];
-                let fillColor = data[i].fill;
-                if (strokeColor == '#ffffff' && fillColor != '#383737') {
-                    strokeColor = '#383737';
-                    data[i].stroke[0] = strokeColor;
-                }
-            }
-        }
-        /* else{
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
@@ -12288,7 +12267,7 @@ function toggleBorderOfElements() {
                     text.setAttribute('stroke', strokeColor);
                 }
             }
-        } */
+        }
     }
 }
 /**
