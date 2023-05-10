@@ -4,11 +4,7 @@
 ##Prepare data  Line 71
 **********
 
-///////////////// :3
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9012,2,5,1,2,'undefined', 2, 0, null);
-insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9012', NULL, NULL, NULL, 1338, 0, 1, 0);
 
-/////////////////
 ###pre-req:
 ```
 { (checklogin = true) &&
@@ -62,9 +58,6 @@ output{
 (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) ==
 true give $writeAccess="w";, else $writeAccess="s";
 ```
-```
-
-```
 
 
 ###Login:
@@ -116,6 +109,30 @@ output{
   "courseversion":
 }
 ```
+###Creation of new codeexemple that is visable
+```
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9012,2,5,1,2,'undefined', 2, 0, null);
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9012', NULL, NULL, NULL, 1338, 0, 1, 0);
+```
+**Prints out so we know starting value**
+```
+SELECT exampleid, templateid 
+FROM codeexample;
+```
+
+**Update, test if templates work**
+```
+UPDATE codeexample 
+SET templateid = (Number you wanna test) 
+WHERE exampleid = (exampleId of testsubject);
+```
+
+**Prints out so we can see if update was successful**
+```
+SELECT exampleid, templateid 
+FROM codeexample;
+```
+
 
 
 ##EDITEXAMPLE Line 160
