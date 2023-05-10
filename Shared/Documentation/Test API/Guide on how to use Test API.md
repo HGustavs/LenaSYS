@@ -13,7 +13,7 @@ The test API executes three different tests, the first one making sure that the 
 
 ### How to use it 
 
-The test API aims to be as easy as possible. In figure 2 you can find an example of the code and JSON needed to use the test API, this will be referred to in this guide. First you need to include the test.php file. And the last step in the code should be to call the testHandler() with the JSON data and the second parameter that decides how you want to view the results. The JSON data in $testsData is what controls the testing API. For every outer array you include in this JSON a test will be run for the service, in the example there are currently two tests: create course test and create course test 2.  
+The test API aims to be as easy as possible. In figure 2 you can find an example of the code and JSON needed to use the test API, this will be referred to in this guide. First you need to include the test.php file. And the last step in the code should be to call the testHandler() with the JSON data and the second parameter that decides how you want to view the results. The JSON data in $testsData is what controls the testing API. For every outer array you include in this JSON a test will be run for the service, in the example there are currently two tests: create course test and create course test 2. **OBS! All test files needs to be stored in folder DuggaSYS/tests otherwise it wont work.**
 
 - **expected-output:** Data to use in the comparison test. Compares this data to the service output. You will need to find this from the respons when manually do the actions required to execute a service.
 - **query-before-test:** If database query is needed before test (ex insert) insert query here.

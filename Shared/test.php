@@ -52,7 +52,7 @@ testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprin
 function doDBQuery($query){
     $result = "Error executing query";
     // DB credentials
-    include_once("../../coursesyspw.php");
+    include_once("../../../coursesyspw.php");
 
     // Connect to DB
     try {
@@ -143,7 +143,7 @@ function testHandler($testsData, $prettyPrint){
 function loginTest($user, $pwd, $prettyPrint){
 
     // Session includes login functionality
-    include_once "sessions.php";
+    include_once "../../Shared/sessions.php";
 
     if (login($user, $pwd, true)) {
         $loginTestResult = "passed";
