@@ -9629,14 +9629,24 @@ function drawElement(element, ghosted = false)
     //ER element
     else {
         // Create div & svg element
-       /* str += `
-                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+        if (element.kind == "EREntity") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
                             margin-top:${((boxw / 7.5))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
-                            font-size:${texth}px;`;*/
+                            font-size:${texth}px;`;
+        }
+        else {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            margin-top:${((boxw / 2))}px;;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
+        }
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
@@ -9650,14 +9660,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == "EREntity") {
-            str += `
-                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            margin-top:${((boxw / 7.5))}px;;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
+
             var weak = "";
 
             if(element.state == "weak") {
@@ -9714,15 +9717,7 @@ function drawElement(element, ghosted = false)
             }
             
         }
-        else if (element.kind == "ERRelation") {
-            str += `
-                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            margin-top:${((boxw / 2))}px;;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
+        else if (element.kind == "ERRelation") {         
 
             var numOfLetters = element.name.length;
             if (tooBig) {
