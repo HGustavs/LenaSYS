@@ -254,4 +254,6 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     );
 }
 
+
+// Version 1.1 (Increment when new change in code)
 ?>
