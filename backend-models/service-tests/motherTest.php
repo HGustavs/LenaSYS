@@ -15,12 +15,12 @@
     }*/
     th{
         background-color: #800080;
-        
+        font-size : 100px;
     }
     th a{
         color: white;
         text-decoration: none;
-        
+        font-size : 100px;
     }
     table tr:nth-child(even){
         background-color: #f2f2f2;
