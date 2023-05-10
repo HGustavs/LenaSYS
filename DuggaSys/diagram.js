@@ -2868,10 +2868,12 @@ function changeState()
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
             if (newType == 'SD') {
-                console.log("test");
+               element.kind.replace(oldTyoe, newType);
+               console.log(element.type);
+               console.log(element.kind);
             }
             //Check if type has been changed
-            if (oldType != newType) {
+            else if (oldType != newType) {
                 var newKind = element.kind;
                 newKind = newKind.replace(oldType, newType);
                 //Update element kind
