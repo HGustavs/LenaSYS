@@ -20,6 +20,7 @@
     th a{
         color: white;
         text-decoration: none;
+        font-style : 50px;
     }
     table tr:nth-child(even){
         background-color: #f2f2f2;
