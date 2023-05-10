@@ -73,8 +73,8 @@ include_once ".../test4";
         <?php    
             //$test = json_decode($_GET["name"]);
             $motherTest_json = file_get_contents('motherTestJSON.json');
-            $decoded_json = json_decode($motherTest_json, true);
-            echo $decoded_json->uid;
+            $decoded_json = json_decode($motherTest_json, false);
+            echo $decoded_json->coursename;
             
             echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" name="name" >';
