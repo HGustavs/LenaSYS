@@ -2556,7 +2556,7 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = 150; // Declare the minimal height of an object
+            const minHeight = 10; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
             
             // Functionality for the four different nodes
@@ -9304,7 +9304,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            //str += `pointer-events: none; opacity: ${ghostPreview};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9616,7 +9616,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
