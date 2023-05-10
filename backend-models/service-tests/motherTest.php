@@ -15,13 +15,13 @@
     }*/
     th{
         background-color: #800080;
-        font-size : 50px;
-        padding : 10px;
+        font-size : 30px;
+        padding : 15px;
     }
     th a{
         color: white;
         text-decoration: none;
-        font-size : 50px;
+        font-size : 30px;
     }
     table tr:nth-child(even){
         background-color: #f2f2f2;
