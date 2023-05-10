@@ -3,8 +3,11 @@ include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 pdoConnect();
+
 $dir = '../../testingdb';
 $file = 'testmodels.sql';
+
+// Create directory where sql model is to be stored
 if (!file_exists('../../testingdb')) {
 	mkdir('../../testingdb', 0777, true);
 
@@ -17,12 +20,14 @@ else{
 
 $dbName = DB_NAME . 'testingdb';
 
+// Check if database exists
 $query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '."'".$dbName."'");
 if(!$query->execute()) {
 	$error = $query->errorInfo();
 	echo "<h4> Error checking for database: ".$error[2]."</h4>";
 }
 else{
+	// drop database, removing all changes
 	echo "<h3>Database exists already, resetting...</h3>";
 	
 	$query = $pdo->prepare('DROP DATABASE '.$dbName);
@@ -35,7 +40,7 @@ else{
 	}
 }
 
-
+// create database
 $query = $pdo->prepare("CREATE DATABASE IF NOT EXISTS ".$dbName);
 
 if(!$query->execute()) {
@@ -46,7 +51,7 @@ else{
 	echo "<h4>Database: ".$dbName." created/already exists, no errors</h4>";
 }
 
-
+// add data to database
 if(file_exists($dir."/".$file))
 {
 	echo "<p>".$dir." exists </p>";
