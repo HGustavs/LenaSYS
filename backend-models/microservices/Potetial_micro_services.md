@@ -85,15 +85,11 @@ Check if a specified user ID has the requested access on a specified course
 @return bool Returns true if the user has the requested access on the course and false if they don't.
 ```
 
-
-
 <br>
 
 ---
 
 <br>
-
-
 
 ### setUserID
 
@@ -101,10 +97,21 @@ Checks currents sessions user ID and sets it to a variable.
 
 *writters personal comment, this might be to small to justify making a seperat service. 
 
+<br>
+
 ---
 
-
 <br>
+
+### setActiveCourseversion
+__USED BY__
+- updateCourseVersion__sectioned
+- changeActiveCourseVersion_courseed
+- updateCourseVersion_courseed
+- copyCourseVersion
+
+Uses the services __updateTableCourse__ to change the content of these columns:
+- activeversion
 
 ---
 ## ----- _accessedservice_ -----------------------------------------------------
@@ -296,11 +303,11 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 
 <br>
 
-### setActiveCourseVersion
+### updateCourseVersion_courseed
 Uses the services __updateTableVers__ to change the content of these columns:
 - versname
 
-Uses the services __updateTableCourse__ to change the content of these columns:
+Uses the services __setActiveCourseversion__ to change the content of these columns:
 - activeversion
 
 <br>
@@ -309,8 +316,8 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 
 <br>
 
-### changeActiveCourseVersion
-Uses the services __updateTableCourse__ to change the content of these columns:
+### changeActiveCourseVersion_courseed
+Uses the services __setActiveCourseversion__ to change the content of these columns:
 - activeversion
 
 <br>
@@ -360,7 +367,7 @@ Uses the services __updateTableCodeexample__ to change the content of these colu
 Uses the services __updateTableCodeexample__ to change the content of these columns:
 - afterid
 
-Uses the services __updateTableCourse__ to change the content of these columns:
+Uses the services __setActiveCourseVersion__ to change the content of these columns:
 - activeversion
 
 
@@ -651,13 +658,16 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 Uses the services __updateTableListentries__ to change the content of these columns:
 - gradesystem
 
+
+
 <br>
 
 ---
 
 <br>
 
-### updateCourseVersion
+
+### updateCourseVersion__sectioned
 Uses the services __updateTableVers__ to change the content of these columns:
 - motd
 
@@ -666,8 +676,13 @@ Uses the services __updateTableVers__ to change the content of these columns:
 - startdate
 - enddate
 
+Uses the services __setActiveCourseVersion__ to change the content of these columns:
+- activeversion
+
 <br>
 
 ---
 
 <br>
+
+### 
