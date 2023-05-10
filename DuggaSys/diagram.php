@@ -794,6 +794,7 @@
                     </div>
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
+                <!--
                 <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(12); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                     <span class="toolTipText"><b>Sequence lifeline</b><br>
@@ -804,7 +805,6 @@
                         <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>              
-                <!-- Sequence diagram object selection -->
                 <div id="elementPlacement14" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
@@ -815,7 +815,6 @@
                         <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div> 
-                <!-- Sequence activation selection -->
                 <div id="elementPlacement13" class="diagramIcons toolbarMode"onclick='setElementPlacementType(13); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> 
                     <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                     <span class="toolTipText"><b>Sequence activation</b><br>
@@ -825,7 +824,6 @@
                         <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                 <!-- Sequence diagram option loop selection -->
                 <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                     <span class="toolTipText"><b>Sequence Object</b><br>
@@ -833,6 +831,7 @@
                         <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                -->
         </fieldset>
         <!-- <fieldset>
             <legend>Zoom</legend>
