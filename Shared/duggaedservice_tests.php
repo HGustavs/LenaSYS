@@ -16,7 +16,7 @@ $testsData = array(
             'autograde' => '1',
             'gradesys' => '2',
             'template' => 'Quiz',
-            'jsondeadline' => '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';
+            'jsondeadline' => '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}',
             'release' => '2023-04-27 00:00:00',
             'deadline' => '2023-04-29 00:00:00',
             'qstart' => '2023-04-17',
@@ -27,6 +27,30 @@ $testsData = array(
             'debug',
             'readonly'
         )),
+    ),
+
+    'Update an assignment' => array(
+        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
+        'service-data' => serialize(array( // Data that service needs to execute function
+            'opt' = 'SAVDUGGA',
+            'qid' = 'NULL',
+            'name' = 'UpdatedAutomaticTest',
+            'autograde' = '1',
+            'gradesys' = '2',
+            'template' = 'group-assignment',
+            'jsondeadline' = '{&quot;deadline1&quot;:&quot;2023-04-30 0:0&quot;;&quot;comment1&quot;:&quot;&quot;;&quot;deadline2&quot;:&quot;&quot;;&quot;comment2&quot;:&quot;&quot;;&quot;deadline3&quot;:&quot;&quot;;&quot;comment3&quot;:&quot;&quot;}',
+            'groupAssignment' = '1', 
+            'release' = '2023-04-28 00:00:00',
+            'deadline' = '2023-04-30 00:00:00',
+            'qstart' = '2023-04-18',
+            'username' = '2',
+            'password' = 'Kong'
+            )),
+            'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+            'debug',
+            'readonly'
+            )),
     ),
     /*
     'create course test 2' => array(
