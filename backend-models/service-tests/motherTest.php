@@ -17,13 +17,15 @@
         background-color: #800080;
         font-size : 30px;
         padding : 30px;
-        position : absolute;
+        position : relative;
         left : 40px;
     }
     th a{
         color: white;
         text-decoration: none;
         font-size : 30px;
+        position : relative;
+        left : 40px;
     }
     table tr:nth-child(even){
         background-color: #f2f2f2;
