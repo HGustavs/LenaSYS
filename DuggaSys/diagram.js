@@ -8771,10 +8771,10 @@ function drawLine(line, targetGhost = false)
 }
 /**
  * @description Calculates the coordinates of the point representing the base of the arrow, the point is @param size distance away and on the line between @param from and @param to .
- * @param {Point} from
- * @param {Point} to
- * @param {number} size
- * @returns
+ * @param {Point} from The coordinates/Point where the line between two elements start.
+ * @param {Point} to The coordinates/Point where the line between two elements end.
+ * @param {number} size The size(height) of the arrow that is to be drawn.
+ * @returns The coordinates/Point where the arrow base is placed on the line.
  */
 function calculateArrowBase(from, to, size)
 {
@@ -8784,10 +8784,10 @@ function calculateArrowBase(from, to, size)
     return new Point(x, y);
 }
 /**
- * 
- * @param {Point} base
- * @param {Point} to
- * @param {boolean} clockwise
+ * @description Calculates the coordiates of the point representing one of the arrows corners
+ * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
+ * @param {Point} to The coordinates/Point where the line between @param base and the element end
+ * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
  */
 function rotateArrowPoint(base, to, clockwise) {
     if (clockwise) {
