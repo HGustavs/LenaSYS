@@ -9036,7 +9036,7 @@ function drawRulerBars(X,Y)
  */
 function drawElement(element, ghosted = false)
 {
-    let ghostPreview = ghostLine ? 5 : 0.4;
+    let ghostPreview = ghostLine ? 0 : 0.4;
     var str = "";
 
     // Compute size variables
@@ -9044,8 +9044,8 @@ function drawElement(element, ghosted = false)
     var boxw  = Math.round(element.width * zoomfact);
     var boxh  = Math.round(element.height * zoomfact);
     var texth = Math.round(zoomfact * textheight);
-    var hboxw = Math.round(element.width * zoomfact * 0.5);
-    var hboxh = Math.round(element.height * zoomfact * 0.5);
+    var hboxw = Math.round(element.width * zoomfact * 1);
+    var hboxh = Math.round(element.height * zoomfact * 1);
     var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
