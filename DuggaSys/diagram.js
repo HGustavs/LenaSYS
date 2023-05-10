@@ -11855,6 +11855,7 @@ function drawSelectionBox(str)
             lowY = context[0].y1;
             highY = context[0].y2;
             for (var i = 0; i < context.length; i++) {
+                console.log('context[' + i + '].kind:', context[i].kind);
                 x1 = context[i].x1;
                 x2 = context[i].x2;
                 y1 = context[i].y1;
@@ -11870,7 +11871,7 @@ function drawSelectionBox(str)
         console.log('highX:', highX);
         console.log('lowY:', lowY);
         console.log('highY:', highY);
-        
+
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
