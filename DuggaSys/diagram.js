@@ -9390,7 +9390,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:5px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxw /2))}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
