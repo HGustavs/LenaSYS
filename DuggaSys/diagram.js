@@ -2897,6 +2897,13 @@ function changeState()
     else if(element.type=='UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity') {
+            if (newType == 'SD') {
+                element.type = newType;
+                console.log(element.type);
+                console.log(element.kind);
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }));
+                return;
+            }
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -2918,6 +2925,13 @@ function changeState()
     else if(element.type=='IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'IEEntity') {
+            if (newType == 'SD') {
+                element.type = newType;
+                console.log(element.type);
+                console.log(element.kind);
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }));
+                return;
+            }
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
