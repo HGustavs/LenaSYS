@@ -12,6 +12,8 @@ include "../Shared/test.php";
 $testsData = array(
     'create course test' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'query-before-test' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
+        'query-after-test' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
@@ -47,10 +49,58 @@ testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprin
 
 */
 
+function doDBQuery($query){
+    $result = "Error executing query";
+    // DB credentials
+    include_once("../../coursesyspw.php");
+
+    // Connect to DB
+    try {
+        $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+        if(!defined("MYSQL_VERSION")) {
+            define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+        }
+    } catch (PDOException $e) {
+        $result = "Failed to get DB handle: " . $e->getMessage() . "</br>";
+        exit;
+    }
+
+    // DB query to execute
+    if ($query != null) {
+        $query = $pdo->prepare($query);
+
+        if(!$query->execute()) {
+            $error=$query->errorInfo();
+            $result = "Error updating entries".$error[2];
+        }
+        else{
+            $result = "Succesfully executed query";
+        }
+    }
+    return $result;
+}
+
 function testHandler($testsData, $prettyPrint){
 
+    $i = 0;
+
     foreach($testsData as $testData){
+
+        // Name of test
         $name = key($testsData);
+
+        if ($prettyPrint) {
+            if ($i > 0) {
+                echo "<hr>";
+            }
+            echo "<h2>{$name} </h2>";
+        }
+
+        // If query to execute before start
+        if ($testData['query-before-test'] != null) {
+            $TestsReturnJSON['query-before-test'] = doDBQuery($testData['query-before-test']);
+        }
+        
         //Output filter
         $filter = unserialize($testData['filter-output']);
 
@@ -71,9 +121,16 @@ function testHandler($testsData, $prettyPrint){
         // Test 3 assertEqual
         $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
         $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
+
+        // If query to execute after test
+        if ($testData['query-after-test'] != null) {
+            $TestsReturnJSON['query-after-test'] = doDBQuery($testData['query-after-test']);
+        }
+
         $TestsReturnJSONWithName[$name] = $TestsReturnJSON;
 
         next($testsData);
+        $i++;
     }
 
     $TestsReturnJSONFinal = $TestsReturnJSONWithName;
@@ -86,7 +143,7 @@ function testHandler($testsData, $prettyPrint){
 function loginTest($user, $pwd, $prettyPrint){
 
     // Session includes login functionality
-    include_once "../Shared/sessions.php";
+    include_once "sessions.php";
 
     if (login($user, $pwd, true)) {
         $loginTestResult = "passed";
@@ -96,7 +153,7 @@ function loginTest($user, $pwd, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 1 (login): {$loginTestResult} </h4>";
+        echo "<h3> Test 1 (login): {$loginTestResult} </h3>";
         echo "<strong>username: </strong>{$user}";
         echo "<br>";
         echo "<strong>password: </strong>{$pwd}";
@@ -146,7 +203,7 @@ function callServiceTest($service, $data, $filter, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 2 (callService): {$callServiceTestResult} </h4>";
+        echo "<h3> Test 2 (callService): {$callServiceTestResult} </h3>";
         echo "<strong>service: </strong>{$service}";
         echo "<br>";
         echo "<strong>sent data: </strong>".json_encode(unserialize($data),true);
@@ -183,7 +240,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 3 (assertEqual): {$equalTestResult} </h4>";
+        echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
         echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
         echo "<br>";
         echo "<strong>value output: </strong>".json_encode($valueOuput, true);
@@ -197,4 +254,6 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     );
 }
 
+
+// Version 1.1 (Increment when new change in code)
 ?>
