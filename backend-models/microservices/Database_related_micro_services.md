@@ -523,9 +523,10 @@ Performes an insert into the table __listentries__. Parameters needed:
 <br>
 
 ### deliteFromListentries 
-Removes row from table __impwordlist__. Parameters needed:
+Removes row from table __listentries__. Parameters needed:
 
 #### deliteExample
+#### deleteListentries
 - lid
 <br>
 
@@ -541,7 +542,7 @@ AND listentries.cid = course.cid
 
 <br>
 
-### updateTableListentries --ONLY USED BY copyCourseVersion--
+### updateTableListentries 
 
 Updates values in the table __listentries__. Columns that are updated: 
 <br>
@@ -550,7 +551,8 @@ Updates values in the table __listentries__. Columns that are updated:
 - moment 
 #### copyCourseVersion: moment
 - link
-
+#### hideListentries
+- visible = 3: __WHERE__ lid (this is a fixed value change)
 <br>
 
 

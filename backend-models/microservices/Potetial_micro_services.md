@@ -559,3 +559,31 @@ Uses service __selectFromTableGroup__ to _get_ information it requires from __gr
 ### getCourseGroupsAndMembers
 Gets groups and there members for a specific course  
 Uses service __selectFromTableScore__ to _get_ information it requires from __user__ and __user_course__. 
+
+<br>
+
+---
+
+<br>
+
+### deleteListentries
+listentries are duggas, headers, tests,  etc..  
+Uses service __deliteFromTableListentries__ to delete a row from the table __listentries__.
+
+<br>
+
+---
+
+<br>
+
+### hideListentries
+This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
+<br>
+Uses the services __updateTableListentries__ to change the content of these columns:
+- visible = 3
+
+<br>
+
+---
+
+<br>
