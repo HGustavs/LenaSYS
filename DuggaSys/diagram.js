@@ -12237,7 +12237,21 @@ function toggleStrokeColorAllOfElements() {
       let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
+    
         if(cssUrl == 'blackTheme.css'){
+            //iterate through all the elements that have the class 'text'.
+            /* for (let i = 0; i < allTexts.length; i++) {
+                let text = allTexts[i];
+                //assign their current stroke color to a variable.
+              let strokeColor = text.getAttribute('stroke');
+                let fillColor = text.getAttribute('fill');
+                //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
+                //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
+                if (strokeColor == '#383737' && fillColor != '#ffffff') {
+                    strokeColor = '#ffffff';
+                    text.setAttribute('stroke', strokeColor);
+                }
+            } */
             //iterate through data
             for (let i = 0; i < data.length; i++) {
                 //assign their current stroke and fill color to variables.
@@ -12263,6 +12277,18 @@ function toggleStrokeColorAllOfElements() {
                 }
             }
         }
+        /* else{
+            for (let i = 0; i < allTexts.length; i++) {
+                let text = allTexts[i];
+                let strokeColor = text.getAttribute('stroke');
+                let fillColor = text.getAttribute('fill');
+                if (strokeColor == '#ffffff' && fillColor != '#383737') {
+                    strokeColor = '#383737';
+                    text.setAttribute('stroke', strokeColor);
+                }
+            }
+        } */
+        //showdata();
     }
 }
 /**
