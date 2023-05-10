@@ -593,7 +593,7 @@ Updates values in the table __listentries__. Columns that are updated:
 - moment 
 #### copyCourseVersion: moment
 - link
-#### hideListentries
+#### removeListentries   (sets value to deleted, but does not remove from database)
 - visible = 3 (this is a fixed value change)
 #### reorderListentries
 - pos
@@ -610,6 +610,11 @@ Updates values in the table __listentries__. Columns that are updated:
 - groupKind
 - feedbackenabled
 - feedbackquestion
+#### setVisibleListentrie
+- visible (0 = Hidden, 1 = Public)
+```sql
+UPDATE listentries SET visible=:visible WHERE lid=:lid
+```
 
 <br>
 

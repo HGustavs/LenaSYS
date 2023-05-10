@@ -583,7 +583,7 @@ Uses service __deliteFromTableListentries__ to delete a row from the table __lis
 
 <br>
 
-### hideListentries
+### removeListentries (hides the entrie, no delete it)
 This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
 <br>
 
@@ -667,7 +667,7 @@ Uses the services __updateTableListentries__ to change the content of these colu
 <br>
 
 
-### updateCourseVersion__sectioned
+### updateCourseVersion_sectioned
 Uses the services __updateTableVers__ to change the content of these columns:
 - motd
 
@@ -685,4 +685,21 @@ Uses the services __setActiveCourseVersion__ to change the content of these colu
 
 <br>
 
-### 
+### changeActiveCourseVersion_sectioned    
+Uses the services __setActiveCourseVersion__ to change the content of these columns:
+- activeversion
+
+<br>
+
+---
+
+<br>
+
+### setVisibleListentrie
+These both do the same thing, i would sugest combining them and use if cases instead.
+#### changeVisibleHidden
+Uses the services __updateTableListentries__ to change the content of these columns:
+- visible
+#### changeVisiblePublic
+Uses the services __updateTableListentries__ to change the content of these columns:
+- visible
