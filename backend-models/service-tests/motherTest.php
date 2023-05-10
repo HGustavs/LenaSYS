@@ -100,6 +100,9 @@ echo "
 <tr>
     <td><p style='font-size:30px';>&#9989;</p></td>
 </tr>
+<tr>
+    <td><p style='font-size:30px';>&#10060;</p></td>
+</tr>
 </table>
 ";
 
