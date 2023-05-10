@@ -656,3 +656,18 @@ Uses the services __updateTableListentries__ to change the content of these colu
 ---
 
 <br>
+
+### updateCourseVersion
+Uses the services __updateTableVers__ to change the content of these columns:
+- motd
+
+Uses the services __updateTableVers__ to change the content of these columns:
+- versname
+- startdate
+- enddate
+
+<br>
+
+---
+
+<br>

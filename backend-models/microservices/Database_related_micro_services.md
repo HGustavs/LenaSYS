@@ -673,8 +673,11 @@ Updates values in the table __Course__. Columns that are updated:
 #### setActiveCourseVersion
 #### changeActiveCourseVersion
 #### copyCourseVersion 
+#### updateCourseVersion
 - activeversion
-
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid
+```
 <br>
 
 #### copyCourseVersion
@@ -688,8 +691,6 @@ Updates values in the table __Course__. Columns that are updated:
 ---
 
 <br>
-
-
 
 ### deliteFromCourse  --USED ONLY BY deleteCourseMaterial--
 Removes row from table __course__. Parameters needed:
@@ -772,13 +773,28 @@ AND vers.cid = course.cid
 
 <br>
 
-### updateTableCourse  -- used by setActiveCourseVersion--
+### updateTableCourse 
 Updates values in the table __vers__. Columns that are updated: 
 
 #### setActiveCourseVersion
 - versname
+<br>
 
+#### updateCourseVersion
+__MOTD__
+- motd
+```sql
+UPDATE vers SET motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;
+```
+<br>
 
+__Name, start/end date__
+- versname
+- startdate
+- enddate
+```sql
+UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;
+```
 <br>
 
 ---
