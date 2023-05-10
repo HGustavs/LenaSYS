@@ -35,6 +35,7 @@
     }
     #passG{
         background-color: green;
+        font-style : 100px;
     }
     #failR{
         background-color: red;
