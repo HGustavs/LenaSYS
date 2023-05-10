@@ -11864,9 +11864,9 @@ function drawSelectionBox(str)
             }
         }
         var tempLines = [];
-        if (contextLine.length > 0) {
+        if (contextLine && contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
-                if (contextLine[i].kind === lineKind.DOUBLE) {
+                if (contextLine[i].id && contextLine[i].kind === lineKind.DOUBLE) {
                     tempLines.push(document.getElementById(contextLine[i].id + "-1"));
                     tempLines.push(document.getElementById(contextLine[i].id + "-2"));
                 } else {
