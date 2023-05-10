@@ -1,11 +1,11 @@
 <?php
 
-include "../../Shared/test.php";
+include "../Shared/test.php";
 
 $testsData = array(
     'create course test' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/tests/duggaedservice_tests.php',
+        'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'GET',
             'cid' => '2',
@@ -14,7 +14,8 @@ $testsData = array(
             'password' => 'Kong'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            'none'
+            ''debug',
+            'readonly''
         )),
     ),
     /*
