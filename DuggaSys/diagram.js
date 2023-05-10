@@ -8465,7 +8465,8 @@ function drawLine(line, targetGhost = false)
                 break;
             case SDLineIcons.ARROW:
                 var iconSizeEnd = 20;
-             
+
+                // If the line is straight calculate the points required to draw the arrow at an angle.
                 if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
                     let from = new Point(fx + x1Offset * zoomfact, fy + x2Offset * zoomfact);  
@@ -8476,6 +8477,7 @@ function drawLine(line, targetGhost = false)
 
                     str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y},${right.x} ${right.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                // If the line is segmented draw the arrow on a 90 degree angle matching the line.
                 else {
                     if (line.ctype == 'BT') {
                         str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
