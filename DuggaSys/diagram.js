@@ -100,6 +100,32 @@ class StateChange {
     }
 }
 
+//defaults
+/**
+ * @description All default values for element types. These will be applied to new elements created via the construction function ONLY.
+ * @see constructElementOfType() For creating new elements with default values.
+ */
+class defaults {
+    
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'] },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal' },
+    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
+    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
+
+    UMLEntity: { name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
+    UMLRelation: { name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
+    IEEntity: { name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'] },     //<-- IE functionality
+    IERelation: { name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
+    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'] }, //<-- SD functionality
+
+    UMLInitialState: { name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLFinalState: { name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLSuperState: { name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
+
+    sequenceActorAndObject: { name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
+    sequenceActivation: { name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" } // Sequence Activation.
+
+}
 /**
  * @description Constructs state changes with appropriate values set for each situation. This factory will also map passed argument into correct properties in the valuesPassed object.
  */
