@@ -670,10 +670,7 @@ Updates values in the table __Course__. Columns that are updated:
 - vers
 <br>
 
-#### updateCourseVersion_courseed
-#### changeActiveCourseVersion_courseed
-#### copyCourseVersion 
-#### updateCourseVersion__sectioned
+#### setActiveCourseversion
 - activeversion
 ```sql
 UPDATE course SET activeversion=:vers WHERE cid=:cid
