@@ -45,7 +45,29 @@ send{
 ###Service output
 ```
 output{
-  
+  "opt":
+  "before":([0,1,2,3,4])       //The Array represent the amount of values 
+                               //0,1,4 = exempleID. 2 = sectionname. 3 = Filename
+  "after":([0,1,2,3,4])        //Array, same as "before"
+  "templateid":
+  "stylesheet":
+  "numbox":
+  "box":([0,1,2,3,4,5,6,7,8])
+  "improws":[]      //Array
+  "impwords":[0]     //Array
+  "directory":[0,1]    //Array
+  "examplename":
+  "sectionname":
+  "playlink":
+  "exampleno":
+  "words":[0,1,2]        //Array
+  "wordlists":[0,1]    //Array
+  "writeaccess":
+  "debug":
+  "beforeafter":[0,1,2,3,4]  //Array, same as "before"
+  "public":
+  "courseid":
+  "courseversion":
 }
 ```
 
@@ -149,15 +171,24 @@ true give $writeAccess="w";, else $writeAccess="s";
 Username: 2
 Password: Kong
 ```
+###MySQL Pre edit
+**Creation of new codeexemple that is visable**
+```
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
+```
+```
+Select * from codeexample where exampleid 9021; //The number you wanna test
+```
 ###Values
 ```
 Send{
   $opt = "EDITEXAMPLE";
-  $playlink = Greger.txt;
-  $exampleName = Test New Code;
-  $sectionName = Test New Code9021;
-  $beforeId = 9020;
-  $afterId = 9022;
+  $playlink = NULL;
+  $exampleName = New Code;
+  $sectionName = New Code9021;
+  $beforeId = NULL;
+  $afterId = NULL;
   $courseId = 1885;
   $courseVersion = 1337;
 }
@@ -193,53 +224,68 @@ output{
 }
 ```
 
+***
+##EDITCONTENT Line 234
+***
+###pre-req:
+```
+{ (checklogin = true) &&
+(hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) ==
+true give $writeAccess="w";, else $writeAccess="s";
+```
 
 
-
-
-
-
-
-
-
-—-------------------------------------------------------------
-Log in as toddler, testing-course, create new code example, choose template, example settings, fill in values as below:
-SectionTitle: TestSecTitle	  		Title: TestTitle
-Before: New Code9028:New Code 		After: New Code9030:New Code 
-PLay Link: 					Important words: TestWord
-
-Expected output:
-{
-  "opt": "EDITEXAMPLE",
-  "before": [
-    [ "9028", "New Code9028", "New Code", null, null ]
-  ],
-  "after": [
-    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
-    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
-    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
-    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ],
-    [ "9030", "TestSecTitle", "TestTitle", "9028", "9030" ]
-  ],
-  "impwords": [
-    "TestWord"
-  ],
-  "examplename": "TestTitle",
-  "sectionname": "TestSecTitle",
-  "playlink": null,
-  "debug": "NONE!",
-  "courseid": "1885",
-  "courseversion": "1337"
+###Login:
+```
+Username: 2
+Password: Kong
+```
+###MySQL Pre edit
+**Creation of new codeexemple that is visable**
+```
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
+/*
+MORE VALUES
+*/
+```
+###Values
+```
+Send{
+  
 }
 
+```
 
+###Service output
+```
+output{
+  "opt":
+  "before":([0,1,2,3,4])       //The Array represent the amount of values 
+                               //0,1,4 = exempleID. 2 = sectionname. 3 = Filename
+  "after":([0,1,2,3,4])        //Array, same as "before"
+  "templateid":
+  "stylesheet":
+  "numbox":
+  "box":([0,1,2,3,4,5,6,7,8])
+  "improws":[]      //Array
+  "impwords":[0]     //Array
+  "directory":[0,1]    //Array
+  "examplename":
+  "sectionname":
+  "playlink":
+  "exampleno":
+  "words":[0,1,2]        //Array
+  "wordlists":[0,1]    //Array
+  "writeaccess":
+  "debug":
+  "beforeafter":[0,1,2,3,4]  //Array, same as "before"
+  "public":
+  "courseid":
+  "courseversion":
+}
+```
 
-
-
-
-
-
-##EDITCONTENT Line 234
 —-------------------------------------------------------------
 Title: Title	Kind: Code
 Worldist: JS	File:HTML-TEST1-html
