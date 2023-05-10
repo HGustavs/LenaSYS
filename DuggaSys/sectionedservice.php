@@ -92,6 +92,7 @@ if($gradesys=="UNK") $gradesys=0;
 		// Services
 		//------------------------------------------------------------------------------------------------
 
+		
 		$isSuperUserVar=false;
 
 		$hasread=hasAccess($userid, $courseid, 'r');
@@ -99,7 +100,14 @@ if($gradesys=="UNK") $gradesys=0;
 		$haswrite=hasAccess($userid, $courseid, 'w');
 
 		if(checklogin()){
-
+			if(isset($_SESSION['uid'])){
+				$userid=$_SESSION['uid'];
+				$hasread=hasAccess($userid, $courseid, 'r');
+				$studentTeacher=hasAccess($userid, $courseid, 'st');
+				$haswrite=hasAccess($userid, $courseid, 'w');
+			}else{
+				$userid="guest";
+			}
 		    $stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
 
 		    if (!$stmt->execute()) {

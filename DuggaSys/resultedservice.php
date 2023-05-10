@@ -24,6 +24,15 @@ $duggaFilterOptions = array();
 $duggaName = "UNK";
 $subCourse = "UNK";
 
+if(checklogin())
+{
+	if(isset($_SESSION['uid'])){
+		$userid=$_SESSION['uid'];
+	}else{
+		$userid="student";		
+	} 
+}
+
 if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 	// Get data to display in table rows
 	$query = $pdo->prepare("SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers");
