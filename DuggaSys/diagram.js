@@ -7461,7 +7461,7 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  * @param {Number} y3 Position 3 
  * @param {Number} x4 Position 4 
  * @param {Number} y4 Position 4 
- * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
+ * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise returns x and y.
  */
 
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
