@@ -11834,8 +11834,6 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    console.log('context:', context);
-
     if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 & contextLine.length != 0){
         var lowX;
         var highX;
@@ -11855,7 +11853,6 @@ function drawSelectionBox(str)
             lowY = context[0].y1;
             highY = context[0].y2;
             for (var i = 0; i < context.length; i++) {
-                console.log('context[' + i + '].kind:', context[i].kind);
                 x1 = context[i].x1;
                 x2 = context[i].x2;
                 y1 = context[i].y1;
@@ -11867,14 +11864,10 @@ function drawSelectionBox(str)
             }
         }
 
-        console.log('lowX:', lowX);
-        console.log('highX:', highX);
-        console.log('lowY:', lowY);
-        console.log('highY:', highY);
-
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
+                console.log('context:', contextLine[i].kind);
                 if (contextLine[i].kind === lineKind.DOUBLE) {
                     tempLines.push(document.getElementById(contextLine[i].id + "-1"));
                     tempLines.push(document.getElementById(contextLine[i].id + "-2"));
