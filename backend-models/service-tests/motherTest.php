@@ -73,7 +73,7 @@ include_once ".../test4";
         <?php    
             //$test = json_decode($_GET["name"]);
             $motherTest_json = file_get_contents('motherTestJSON.json');
-            $decoded_json = json_decode($motherTest_json, false);
+            $decoded_json = json_decode($motherTest_json, true);
             echo $decoded_json->uid;
             
             echo 'Choose table: ';
