@@ -43,11 +43,23 @@ $ha == TRUE
 ### Output
 
 ```
-    LastCourseCreated:
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
+    motd:
+    readonly:
 
 ```
 
@@ -121,11 +133,23 @@ INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[
 ### Output
 
 ```
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ], 
     debug:
     writeaccess:
     motd:
+    readonly:
 
 ```
 
@@ -192,10 +216,23 @@ INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[
 ### Output
 
 ```
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
+    motd:
+    readonly:
 
 ```
 
@@ -279,10 +316,23 @@ INSERT INTO vers(cid, vers, versname, coursecode, coursename, coursenamealt, sta
 ### Output
 
 ```
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
+    motd:
+    readonly:
 
 ```
 
@@ -350,10 +400,23 @@ INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[
 ### Output
 
 ```
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
+    motd:
+    readonly:
 
 ```
 
@@ -450,11 +513,23 @@ INSERT INTO vers(cid, vers, versname, coursecode, coursename, coursenamealt, sta
 ### Output
 
 ```
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
     motd:
+    readonly:
 
 ```
 
@@ -521,10 +596,23 @@ INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[
 ### Output
 
 ```
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
+    motd:
+    readonly:
 
 ```
 
@@ -593,10 +681,23 @@ INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[
 ### Output
 
 ```
-    entries:
-    versions:
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
+    motd:
+    readonly:
 
 ```
 
@@ -650,6 +751,19 @@ $ha == TRUE
 ### Output
 
 ```
+    LastCourseCreated: [
+
+    ],
+    entries: [
+        {
+            cid:
+            coursecode:
+            vers:
+            versname:
+            coursename:
+            coursenamealt:
+        }
+    ],
     debug:
     writeaccess:
     motd:
