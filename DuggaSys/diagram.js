@@ -1016,19 +1016,27 @@ const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
-const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
+/*
 const zoom1_25 = 0.36;
 const zoom1_5 = 0.555;
 const zoom2 = 0.75;
 const zoom4 = 0.9375;
 const zoom0_75 = -0.775;
 const zoom0_5 = -3;
-const zoom0_25 = -15.01;
+const zoom0_25 = -15.01;*/
+
+const zoom1_25 = 1;
+const zoom1_5 = 1;
+const zoom2 = 1;
+const zoom4 = 1;
+const zoom0_75 = 1;
+const zoom0_5 = 1;
+const zoom0_25 = 1;
 
 var errorActive = false;
 
@@ -2556,7 +2564,7 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = 10; // Declare the minimal height of an object
+            const minHeight = 150; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
             
             // Functionality for the four different nodes
