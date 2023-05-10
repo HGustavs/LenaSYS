@@ -27,7 +27,7 @@ else{
 	echo "<h3>Database exists already, resetting...</h3>";
 }
 
-$query = $pdo->('DROP DATABASE IF EXISTS :dbname');
+$query = $pdo->prepare('DROP DATABASE IF EXISTS :dbname');
 $query->bindParam(':dbname', $dbName);
 if(!$query->execute()) {
 	$error = $query->errorInfo();
