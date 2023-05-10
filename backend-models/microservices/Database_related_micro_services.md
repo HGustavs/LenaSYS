@@ -22,6 +22,7 @@
 - fileLink
 - score
 - group
+- list
 
  <br>
   <br>
@@ -179,8 +180,10 @@ Gathers information from the table __codeexample__.
 #### different querys paramaters and retrived information
 - exampleId : exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public
 - cid AND cversion : *
-- no parameter : * __ORDER BY__ exampleid __DESC LIMIT__ 1
-
+- no parameter : * 
+```sql 
+ORDER BY exampleid DESC LIMIT 1
+```
 <br>
 
 ---
@@ -200,6 +203,14 @@ Performes an insert into the table __codeexample__. Parameters needed:
 - exampleid
 - sectionname
 - uid = 1
+- cversion
+<br>
+
+#### updateListentrie
+- cid
+- examplename
+- sectionname
+- uid = 1 (static value)
 - cversion
 
 <br>
@@ -505,11 +516,18 @@ Removes row from table __improw__. Parameters needed:
 <br>
 
 
-### selectFromlistentries  --only used by copyCourseVersion--
+### selectFromTablelistentries  
 Gathers information from the table __listentries__.
 
 #### different querys paramaters and retrived information 
 - vers : * 
+- vers __AND__ cid __AND__ lid : entryname
+
+These specific parameters are used in this query:
+
+```sql
+SELECT entryname FROM listentries WHERE vers=:cversion AND cid=:cid AND (kind=1 or kind=0 or kind=4) AND (pos < (SELECT pos FROM listentries WHERE lid=:lid)) ORDER BY pos DESC LIMIT 1;
+```
 
 <br>
 
@@ -526,7 +544,7 @@ Performes an insert into the table __listentries__. Parameters needed:
 - vers: gives the new copy a new _vers_ value.
 <br>
 
-#### createNewCodeexample
+#### createNewListentrie
 - cid
 - vers
 - entryname
@@ -576,7 +594,23 @@ Updates values in the table __listentries__. Columns that are updated:
 #### copyCourseVersion: moment
 - link
 #### hideListentries
-- visible = 3: __WHERE__ lid (this is a fixed value change)
+- visible = 3 (this is a fixed value change)
+#### reorderListentries
+- pos
+- moment
+#### updateListentrie
+- highscoremode
+- gradesystem
+- moment
+- entryname
+- kind
+- link
+- visible
+- comments
+- groupKind
+- feedbackenabled
+- feedbackquestion
+
 <br>
 
 
@@ -1079,6 +1113,14 @@ __SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.quiz =
 - quiz
 - moment
 
+
+
+
+
+
+
+
+
 <br>
 
 ---
@@ -1093,3 +1135,29 @@ Gathers information from the table __group__.
 
 #### different querys paramaters and retrived information 
 - no parameters : groupKind, groupVal
+
+
+
+
+
+
+
+
+
+<br>
+
+---
+## -------------------------- ==list== -------------------------------------------------------
+---
+
+<br>
+<br>
+
+### insertIntoTableList  --only used by updateListentrie-- 
+Performes an insert into the table __list__. Parameters needed:
+
+#### updateListentrie
+- listnr = 23415 (this is preset in the code)
+- lid
+- responsible =  Christina Sjogren (this is preset in the code)
+- cid

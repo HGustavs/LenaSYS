@@ -589,11 +589,43 @@ Uses the services __updateTableListentries__ to change the content of these colu
 
 <br>
 
-### createNewCodeexample
+### createNewListentrie
 Insert a new code example and update variables accordingly.
 Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__. 
 Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
 Uses service __insertIntoTableListentries__ to makes _inserts_ into the table __listentries__.
 
+<br>
 
+---
 
+<br>
+
+### reorderListentries
+Uses the services __updateTableListentries__ to change the content of these columns:
+- pos
+- moment
+
+<br>
+
+---
+
+<br>
+
+### updateListentrie
+Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
+Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
+Uses the services __updateTableListentries__ to change the content of these columns:
+- highscoremode
+- gradesystem
+- moment
+- entryname
+- kind
+- link
+- visible
+- comments
+- groupKind
+- feedbackenabled
+- feedbackquestion
+
+Uses service __insertIntoTableList__ to makes _inserts_ into the table __list__.
