@@ -2933,12 +2933,6 @@ function changeState()
 
     else if(element.type=='SD') {
 
-        if(element.kind != 'SDEntity') {
-            var property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-
         //Check if type has been changed
         if (oldType != newType) {
             var newKind = element.kind;
