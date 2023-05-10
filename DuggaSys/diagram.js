@@ -9056,7 +9056,7 @@ function drawElement(element, ghosted = false)
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
     
-    //since toggleStrokeColorAllOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
+    //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
     var nonFilledElementStrokeColor;
     if (isDarkTheme()) nonFilledElementStrokeColor = '#FFFFFF';
