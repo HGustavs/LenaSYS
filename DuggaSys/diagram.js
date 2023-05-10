@@ -2868,6 +2868,7 @@ function changeState()
             if (newType == 'SD') {
                 element.type = newType;
                 console.log(element.type);
+                console.log(element.kind);
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }));
                 return;
             }
