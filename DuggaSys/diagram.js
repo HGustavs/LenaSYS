@@ -12226,6 +12226,7 @@ function updateCSSForAllElements()
         //If more than one element is marked.
         return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
+    toggleBorderOfElements();
 }
 /**
  * @description toggles the border of all elements to white or gray; depending on current theme and fill.
@@ -12256,11 +12257,9 @@ function toggleBorderOfElements() {
             } */
             //iterate through data
             for (let i = 0; i < data.length; i++) {
-                //assign their current stroke and fill color to variables.
+                //assign their current stroke and fill color to a variable.
                 let strokeColor = data[i].stroke[0];
                 let fillColor = data[i].fill;
-                //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
-                //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
                 if (strokeColor == '#383737' && fillColor != '#ffffff') {
                     strokeColor = '#ffffff';
                     data[i].stroke[0] = strokeColor;
@@ -12268,7 +12267,7 @@ function toggleBorderOfElements() {
                 
             }
         }
-        //else, if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
+        //if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
         else{
             for (let i = 0; i < data.length; i++) {
                 let strokeColor = data[i].stroke[0];
@@ -12350,7 +12349,6 @@ function showdata()
     container.innerHTML = str;
     updatepos(null, null);
 
-    toggleBorderOfElements();
 }
 
 //#region ================================ Camera Functions     ================================
