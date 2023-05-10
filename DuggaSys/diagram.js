@@ -4309,7 +4309,7 @@ function toggleDarkmode()
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
     
-    toggleStrokeColorAllOfElements();
+    //toggleStrokeColorAllOfElements();
     showdata();
 }
 
@@ -12288,7 +12288,7 @@ function toggleStrokeColorAllOfElements() {
                 }
             }
         } */
-        showdata();
+        //showdata();
     }
 }
 /**
@@ -12330,6 +12330,7 @@ function isDarkTheme(){
  */
 function showdata()
 {
+    toggleStrokeColorAllOfElements();
     updateContainerBounds();
 
     var str = "";
