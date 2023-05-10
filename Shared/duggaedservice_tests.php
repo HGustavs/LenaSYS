@@ -3,14 +3,24 @@
 include "../Shared/test.php";
 
 $testsData = array(
-    'create course test' => array(
+    'Create an assignment' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
-            'opt' => 'GET',
-            'cid' => '2',
-            'coursevers' => '97732',
-            'username' => 'toddler',
+            'opt' => 'SAVDUGGA',
+            'qid' => 'UNK',
+            'cid' => '1885',
+            'userid' => '2',      // this is automatically added depending on what session is active (if any), we want the value to be 2
+            'coursevers' => '1337',
+            'qname' => 'TestQuiz',
+            'autograde' => '1',
+            'gradesys' => '2',
+            'template' => 'Quiz',
+            'jsondeadline' => '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}';
+            'release' => '2023-04-27 00:00:00',
+            'deadline' => '2023-04-29 00:00:00',
+            'qstart' => '2023-04-17',
+            'username' => '2',
             'password' => 'Kong'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
