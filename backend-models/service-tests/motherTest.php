@@ -15,6 +15,7 @@
     }*/
     th{
         background-color: #800080;
+        font-style : 50px;
     }
     th a{
         color: white;
@@ -80,31 +81,31 @@ include_once ".../test4";
                 }
             echo '</select>';
 
-echo "
-<table border='1'>
-<tr>
-    <th>test1</th>
-    <th>test2</th>
-    <th>test3</th>
-    <th>test4</th>
-    <th>test5</th>
-    <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
-</tr>
-</table>
-";
+                echo "
+                <table border='1'>
+                <tr>
+                    <th>test1</th>
+                    <th>test2</th>
+                    <th>test3</th>
+                    <th>test4</th>
+                    <th>test5</th>
+                    <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
+                </tr>
+                </table>
+                ";
 
 
 
-echo "
-<table border='1'>
-<tr>
-    <td><p style='font-size:30px';>&#9989;</p></td>
-</tr>
-<tr>
-    <td><p style='font-size:30px';>&#10060;</p></td>
-</tr>
-</table>
-";
+                        echo "
+                        <table border='1'>
+                        <tr>
+                            <td><p style='font-size:30px';>&#9989;</p></td>
+                        </tr>
+                        <tr>
+                            <td><p style='font-size:30px';>&#10060;</p></td>
+                        </tr>
+                        </table>
+                        ";
 
 
             ?>
