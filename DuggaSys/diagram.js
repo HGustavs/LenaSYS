@@ -12115,7 +12115,7 @@ function updateCSSForAllElements()
                                 disjointLine2Color.style.stroke = `${"#ffffff"}`;
                         }
                         // If UMLRelation is not marked.
-                    } else if(element.kind == "UMLRelation"){
+                    } /* else if(element.kind == "UMLRelation"){
                         if(element.state == "overlapping"){
                             fillColor.style.fill = `${"#000000"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
@@ -12131,7 +12131,7 @@ function updateCSSForAllElements()
                                 weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                             }
                         }
-                    }
+                    } */
                 }
             } else {
                 // Update UMLEntity
@@ -12186,7 +12186,7 @@ function updateCSSForAllElements()
                                 disjointLine2Color.style.stroke = `${"#ffffff"}`;
                         }
                         // If UMLRelation is not marked.
-                    } else if(element.kind == "UMLRelation"){
+                    } /* else if(element.kind == "UMLRelation"){
                         if(element.state == "overlapping"){
                             fillColor.style.fill = `${"#000000"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
@@ -12202,7 +12202,7 @@ function updateCSSForAllElements()
                                 weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                             }
                         }
-                    }
+                    } */
                 }
             }
         }
