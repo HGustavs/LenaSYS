@@ -18,14 +18,12 @@
         font-size : 30px;
         padding : 30px;
         position : relative;
-        left : 40px;
+        left : 80px;
     }
     th a{
         color: white;
         text-decoration: none;
         font-size : 30px;
-        position : relative;
-        left : 80px;
     }
     table tr:nth-child(even){
         background-color: #f2f2f2;
