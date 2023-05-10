@@ -12258,7 +12258,7 @@ function toggleStrokeColorAllOfElements() {
                 let strokeColor = data[i].stroke[0];
                 let fillColor = data[i].fill;
                 //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
-                //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
+                //this is because we dont want the border to be white on a white element, this would be hard to see.
                 if (strokeColor == '#383737' && fillColor != '#ffffff') {
                     strokeColor = '#ffffff';
                     data[i].stroke[0] = strokeColor;
