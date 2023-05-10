@@ -670,7 +670,7 @@ Updates values in the table __Course__. Columns that are updated:
 - vers
 <br>
 
-#### updateCourseversion
+#### setActiveCourseVersion
 #### changeActiveCourseVersion
 #### copyCourseVersion 
 - activeversion
@@ -772,10 +772,10 @@ AND vers.cid = course.cid
 
 <br>
 
-### updateTableCourse  -- used by updateCourseversion--
+### updateTableCourse  -- used by setActiveCourseVersion--
 Updates values in the table __vers__. Columns that are updated: 
 
-#### updateCourseversion
+#### setActiveCourseVersion
 - versname
 
 

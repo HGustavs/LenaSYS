@@ -296,7 +296,7 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 
 <br>
 
-### updateCourseVersion
+### setActiveCourseVersion
 Uses the services __updateTableVers__ to change the content of these columns:
 - versname
 
