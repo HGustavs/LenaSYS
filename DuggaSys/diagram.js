@@ -12238,11 +12238,14 @@ function toggleStrokeColorAllOfElements() {
             //iterate through data
             for (let i = 0; i < data.length; i++) {
                 //assign their current stroke and fill color to variables.
+                let strokeColor = data[i].stroke[0];
+                let fillColor = data[i].fill;
                 //if the element has a stroke which has the color #383737 or black and its fill isn't white: set it to white.
                 //this is because we dont want the border to be white on a white element, this would be hard to see.
-                if (data[i].stroke[0] == "#383737") {
-                    if (data[i].fill !=  "#ffffff" && data[i].fill !=  "#FFFFFF") {
-                        data[i].stroke[0] = "#ffffff";
+                if (strokeColor == "#383737") {
+                    if (fillColor !=  "#ffffff" && fillColor !=  "#FFFFFF") {
+                        strokeColor = "#ffffff";
+                        data[i].stroke[0] = strokeColor;
                     }
                 }
             }
@@ -12250,8 +12253,10 @@ function toggleStrokeColorAllOfElements() {
         //else, if the theme isnt darkmode and the stroke is white, make the stroke gray.
         else{
             for (let i = 0; i < data.length; i++) {
-                if (data[i].stroke[0] ==  "#ffffff" || data[i].stroke[0] ==  "#FFFFFF") {
-                    data[i].stroke[0] = "#383737";
+                let strokeColor = data[i].stroke[0];
+                if (strokeColor ==  "#ffffff" || strokeColor ==  "#FFFFFF") {
+                    strokeColor = "#383737";
+                    data[i].stroke[0] = strokeColor;
                 }
             }
         }
