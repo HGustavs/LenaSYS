@@ -17,7 +17,7 @@ else{
 
 $dbName = DB_NAME . 'testingdb';
 
-$query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA NAME = :name');
+$query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :name');
 $query->bindParam(':name', $dbName);
 if(!$query->execute()) {
 	$error = $query->errorInfo();
