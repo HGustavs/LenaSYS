@@ -6109,7 +6109,7 @@ function togglePlacementType(num,type){
 
     else if (type == 12) {
         document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");// ER relation start
-        document.getElementById("elementPlacement112").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton12").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox");// ER relation end
