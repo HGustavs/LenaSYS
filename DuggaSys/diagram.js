@@ -6047,7 +6047,7 @@ function togglePlacementTypeBox(num){
 /**
  * @description toggles which entity placement type is selected for the different types of diagrams.
  * @param {Number} num the number connected to the element selected.
- * @param {Number} type the type of element selected.
+ * @param {Number} type the type of element selected. (which pop-out we are referring to)
  */
 function togglePlacementType(num,type){
     if(type==0){
@@ -6108,26 +6108,30 @@ function togglePlacementType(num,type){
     }
 
     else if (type == 12) {
-        document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");// ER relation start
+        // Sequence lifetime
+        document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton12").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox");// ER relation end
-        document.getElementById("elementPlacement13").classList.add("hiddenPlacementType"); // UML inheritance start
+        document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox"); 
+        // Sequence activation
+        document.getElementById("elementPlacement13").classList.add("hiddenPlacementType"); 
         document.getElementById("elementPlacement13").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement13").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton13").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
-        document.getElementById("elementPlacement14").classList.add("hiddenPlacementType"); //IE inheritance start
+        document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");
+        // Sequence object
+        document.getElementById("elementPlacement14").classList.add("hiddenPlacementType"); 
         document.getElementById("elementPlacement14").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
-        document.getElementById("elementPlacement15").classList.add("hiddenPlacementType"); // UML inheritance start
+        document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox"); 
+        // Sequence condition/loop object
+        document.getElementById("elementPlacement15").classList.add("hiddenPlacementType"); 
         document.getElementById("elementPlacement15").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement15").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton15").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox15").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
+        document.getElementById("togglePlacementTypeBox15").classList.remove("activeTogglePlacementTypeBox");
     }
     
     // Unhide the currently selected placement type
