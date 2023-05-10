@@ -579,6 +579,7 @@ Uses service __deliteFromTableListentries__ to delete a row from the table __lis
 ### hideListentries
 This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
 <br>
+
 Uses the services __updateTableListentries__ to change the content of these columns:
 - visible = 3
 
@@ -587,3 +588,12 @@ Uses the services __updateTableListentries__ to change the content of these colu
 ---
 
 <br>
+
+### createNewCodeexample
+Insert a new code example and update variables accordingly.
+Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__. 
+Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
+Uses service __insertIntoTableListentries__ to makes _inserts_ into the table __listentries__.
+
+
+

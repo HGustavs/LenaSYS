@@ -173,12 +173,13 @@ Gathers information from the table __class__. parameters used
 ---
 <br>
 
-### selectFromCodeexample
+### selectFromTableCodeexample
 Gathers information from the table __codeexample__.
 
 #### different querys paramaters and retrived information
 - exampleId : exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public
 - cid AND cversion : *
+- no parameter : * __ORDER BY__ exampleid __DESC LIMIT__ 1
 
 <br>
 
@@ -186,12 +187,20 @@ Gathers information from the table __codeexample__.
 
 <br>
 
-### insertIntoTableCodeexample             --ONLY USED BY copyCourseVersion-- 
+### insertIntoTableCodeexample             
 Performes an insert into the table __codeexample__. Parameters needed:
 
 #### copyCourseVersion
 - exampleid:   Copys all values from a table row where id has this value. 
 - cversion: gives the new copy a new _cversion_ value.
+<br>
+
+#### createNewCodeexample
+- cid
+- exampleid
+- sectionname
+- uid = 1
+- cversion
 
 <br>
 
@@ -508,13 +517,28 @@ Gathers information from the table __listentries__.
 
 <br>
 
-### insertIntolistentries  --ONLY USED BY copyCourseVersion--
+### insertIntolistentries  
 Performes an insert into the table __listentries__. Parameters needed:
 
 
 #### copyCourseVersion
 - lid:    Copys all values from a table row where id has this value.  
 - vers: gives the new copy a new _vers_ value.
+<br>
+
+#### createNewCodeexample
+- cid
+- vers
+- entryname
+- link
+- kind
+- pos
+- visibility
+- creator 
+- comment
+- gradesys
+- highscoremode
+- groupKind
 
 <br>
 
