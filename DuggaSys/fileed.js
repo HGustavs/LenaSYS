@@ -507,7 +507,7 @@ function filterFilesByKind(kind){
         $("#fileLink table tr").show();
     }
     sortFilter.fileKind=kind;
-    //setBackgroundForOddEvenRows();
+    setBackgroundForOddEvenRows();
 
     //Recalculate the values in the first column that is simply a counter
     var counterElements = $(".fileLink___counter").filter(":visible");
@@ -516,10 +516,10 @@ function filterFilesByKind(kind){
         this.firstChild.innerHTML = ++i;
     });
 }
-/*function setBackgroundForOddEvenRows(){
-	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
-    $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
-}*/
+function setBackgroundForOddEvenRows(){
+	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-sectioned-table-hi)");
+    $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-sectioned-table-lo)");
+}
 //Sort files by alphabetical order after sorting by kind
 function sortFiles(asc){
     var rows, switching, i, x, y, shouldSwitch;
@@ -551,7 +551,7 @@ function sortFiles(asc){
         if(shouldSwitch){
             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
             switching = true;
-            //setBackgroundForOddEvenRows();
+            setBackgroundForOddEvenRows();
 
         }
     }
