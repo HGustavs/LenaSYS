@@ -7463,7 +7463,7 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  * @param {Number} y4 Position 4 
  * @returns False or An object with x/y coordinates.
  */
- // TODO : WHY does it return EITHER a boolean OR an object??????? Either this is a TRUE/FALSE function and return booleans OR it returns objects/null/undefined!
+
  // TODO : Use new POINT objects to reduce amount of arguments?
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
