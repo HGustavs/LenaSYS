@@ -79,7 +79,7 @@ include_once ".../test4";
                     echo"<p>".$row['name']."</p>";
                 }
             echo '</select>';
-
+/*
 echo "
 <table border='1'>
 <tr>
@@ -90,7 +90,7 @@ echo "
     <th>test5</th>
     <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
 </tr>
-";
+";*/
 
 
 
