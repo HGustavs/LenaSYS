@@ -12290,6 +12290,7 @@ function toggleStrokeColorAllOfElements() {
                 }
             }
         } */
+        showdata();
     }
 }
 /**
