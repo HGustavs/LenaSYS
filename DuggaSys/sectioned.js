@@ -437,7 +437,7 @@ function changedType(kind) {
 }
 
 //----------------------------------------------------------------------------------
-// refreshGithubRepo: ....
+// refreshGithubRepo: Send course id to function in gitcommitService.php
 //----------------------------------------------------------------------------------
 
 function refreshGithubRepo(courseid) 
@@ -446,12 +446,12 @@ function refreshGithubRepo(courseid)
 	var dataCheck;
 	$.ajax({
 		async: false,
-		url: "../recursivetesting/getLatestCommit.php",
+		url: "../DuggaSys/gitcommitService.php",
 		type: "POST",
 		data: {'cid':courseid, 'action':'refreshGithubRepo'},
 		success: function(data) { 
 			//Returns true if the data and JSON is correct
-      alert(data);
+      alert(data); // Shows if course is up to date or not
 			dataCheck = true;
 		},
 		error: function(data){
