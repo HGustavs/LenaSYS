@@ -67,7 +67,7 @@ include_once ".../test4";
         <input type="checkbox" name="sort_failed" value="failed_value">
         <label for='sort_failed'>Failed tests</label>
         <?php    
-            $test = json_decode($_GET["name"]);
+            //$test = json_decode($_GET["name"]);
 
             
             echo 'Choose table: ';
