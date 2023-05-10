@@ -1,4 +1,7 @@
-Name the file filename-tests.txt (e.g duggaedservice-tests, do NOT include .php here) \
+Documentation on how to conduct tests for service files
+
+**Guide on how to setup such file:**  
+Name the file filename-tests.md (e.g duggaedservice-tests, do NOT include .php here) \
 Include the name of the file to be tested at the first line (e.g duggaedservice.php). \ 
 
 For each test, write the values needed to get to that line of code and then how to decide if the test has passed or not. Name the tests in a describing manner. \
@@ -15,9 +18,11 @@ saveDuggaNewTest (line 57): \
   * Send values to duggaedservice.php !!!WRITE THE PARAMETERS TO BE SENT, NAMED ACCORDING TO THE VARIABLES IN THE FILE!!! \
   * - send { $var1 = value1, $var2 = value2 ... }
   * SQL query, same as above  \
-  * Compare results, if a new quiz has been added (amount of quizes has increased by one), test has passed \
+  * Relevant output in order to know if succeeded \
   * Clean up database !!!! VERY IMPORTANT !!!!
 
 test2:
 
   etc....
+  
+Look at duggaedservice.md to get a more complete example
