@@ -7461,17 +7461,20 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  * @param {Number} y3 Position 3 
  * @param {Number} x4 Position 4 
  * @param {Number} y4 Position 4 
- * @returns False or An object with x/y coordinates.
+ * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
 
  // TODO : Use new POINT objects to reduce amount of arguments?
+//Checks if the lines intersect and if the possible intersection point is within edges
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
-    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    if (isNaN(x) || isNaN(y)) {
+    var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
+    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
+    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
+    if (isNaN(x) || isNaN(y)) {//Check if lines don't intersect
         return false;
-    } else {
+    } else {//Check if intersection point is within edges
 
         if (x1 >= x2) {
             if (!(x2 <= x && x <= x1)) return false;
