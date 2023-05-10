@@ -8,19 +8,33 @@
 	// Include basic application services!
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
-
-	// Connect to database and start session
-	pdoConnect();
-	session_start();
+	include_once "../recursivetesting/FetchGithubRepo.php";
 
 	global $pdo;
 
-	getCourseID("https://github.com/c21sebar/test"); // Dummy Code to see if everything works
+	//getCourseID("https://github.com/c21sebar/test"); // Dummy Code to see if everything works
+
+	//Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
+	if(isset($_POST['action'])) 
+	{
+		if($_POST['action'] == 'getCourseID') 
+		{
+			getCourseID($_POST['githubURL']);
+		}
+		else if($_POST['action'] == 'refreshGithubRepo') 
+		{
+			refreshGithubRepo($_POST['cid']);
+		}
+	};
 
 	// --------------------- Fetch CID from MySQL with Github URL and fetch latest commit ----------------------------------------------
 	// --------------------- This only happens when creating a new course --------------------------------------------------------------
 
 	function getCourseID($githubURL) {
+		// Connect to database and start session
+		pdoConnect();
+		session_start();
+
 
 		echo "<h2> Outputs for creating a new course </h2>";
 		echo "<p>Original URL: ".$githubURL."</p>";
@@ -74,26 +88,23 @@
 			$errorvar = $error[2];
 			print_r($error);
 			echo $errorvar;
-		} 
-		getCommitSqlite($cid); //testing !!!!!!! don't forget to remove!
+		} else {
+			bfs($url, $cid, "REFRESH");
+		}
 	}
 
 	// --------------------- Update git repo in course ---------------------------------------------------------------------------------
 
-	function getCommitSqlite($cid){
+	function refreshGithubRepo($cid){
 		// Get old commit from Sqlite 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
-		echo "<h2> Outputs for fetching data when updating a course </h2>";
-
 		$commmit = "";
 		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			echo "<p>Commit from select: ".$row['lastCommit']."</p>";
-			echo "<p>URL from select: ".$row['repoURL']."</p>";
 			$commit = $row['lastCommit'];
 			$url = $row['repoURL'];
 		}
@@ -106,9 +117,17 @@
 
 			// Compare old commit in db with the new one from the url
 			if($latestCommit != $commit) {
-				print_r("The course should be updated!");
+				// Update the SQLite DB with the new commit
+				$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':latestCommit', $latestCommit);
+				$query->execute();
+
+				bfs($url, $cid, "REFRESH");
+				//echo '<script>console.log(' .$url. '); </script>';
+				print "The course has been updated!";
 			} else {
-				print_r("The course is already up to date!");
+				print "The course is already up to date!";
 			}
 		}
 	}
