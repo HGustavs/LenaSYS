@@ -2868,6 +2868,8 @@ function changeState()
             if (newType == 'SD') {
                 element.type = newType;
             }
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            return;
         }
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
