@@ -9058,9 +9058,9 @@ function drawElement(element, ghosted = false)
     
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
-    var nonFilledElementStrokeColor;
-    if (isDarkTheme()) nonFilledElementStrokeColor = '#FFFFFF';
-    else nonFilledElementStrokeColor = '#383737';
+    var nonFilledElementPartStrokeColor;
+    if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
+    else nonFilledElementPartStrokeColor = '#383737';
 
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
@@ -9262,7 +9262,7 @@ function drawElement(element, ghosted = false)
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%">
-                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke='${nonFilledElementStrokeColor}' stroke-width='${linew}' rx="20"/>
+                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
                     <rect width="${boxw/2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
@@ -9587,7 +9587,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementStrokeColor}'>${element.name}</text>`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
