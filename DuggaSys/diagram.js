@@ -8464,19 +8464,32 @@ function drawLine(line, targetGhost = false)
                 var iconSizeEnd=40;
                 break;
             case SDLineIcons.ARROW:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                var iconSizeEnd = 20;
+             
+                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
+                    let from = new Point(fx + x1Offset * zoomfact, fy + x2Offset * zoomfact);  
+
+                    let base = calculateArrowBase(from, to, iconSizeEnd / 2 * zoomfact);
+                    let right = rotateArrowPoint(base, to, true);
+                    let left = rotateArrowPoint(base, to, false);
+
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y},${right.x} ${right.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                else {
+                    if (line.ctype == 'BT') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if(line.ctype == 'TB'){
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'RL') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'LR') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
                 }
-                else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                var iconSizeEnd=20;
                 break;
             default:
                 var iconSizeEnd=0;
@@ -8755,6 +8768,38 @@ function drawLine(line, targetGhost = false)
     }
 
     return str;
+}
+/**
+ * 
+ * @param {Point} from
+ * @param {Point} to
+ * @param {number} size
+ * @returns
+ */
+function calculateArrowBase(from, to, size)
+{
+    let ratio = size / Math.sqrt(Math.pow(from.x - to.x, 2)  + Math.pow(from.y - to.y, 2));
+    let x = to.x + (from.x - to.x) * ratio;
+    let y = to.y + (from.y - to.y) * ratio;
+    return new Point(x, y);
+}
+/**
+ * 
+ * @param {Point} base
+ * @param {Point} to
+ * @param {boolean} clockwise
+ */
+function rotateArrowPoint(base, to, clockwise) {
+    if (clockwise) {
+        let point = new Point((to.y - base.y) / 2, -1 * (to.x - base.x) / 2);
+        point.add(base);
+        return point;
+    }
+    else {
+        let point = new Point(-1 * (to.y - base.y) / 2, (to.x - base.x) / 2);
+        point.add(base);
+        return point;
+    }
 }
 /**
  * @description Removes all existing lines and draw them again
