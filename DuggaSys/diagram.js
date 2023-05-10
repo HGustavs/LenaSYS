@@ -11834,6 +11834,8 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
+    console.log('context:', context);
+
     if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 & contextLine.length != 0){
         var lowX;
         var highX;
@@ -11863,6 +11865,12 @@ function drawSelectionBox(str)
                 if (y2 > highY) highY = y2;
             }
         }
+
+        console.log('lowX:', lowX);
+        console.log('highX:', highX);
+        console.log('lowY:', lowY);
+        console.log('highY:', highY);
+        
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
