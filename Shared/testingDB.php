@@ -32,7 +32,10 @@ if(file_exists($dir."/".$file))
 	echo "<p>".$dir." exists </p>";
 	echo "<p>Installing into: ".$dbName."</p>";
 	$ret = shell_exec('mysql --user='.DB_USER.' --password='.DB_PASSWORD.' '.$dbName.' < '.$dir."/".$file);
-	echo $ret;
+	echo "<h2>".$ret."</h2>";
+}
+else{
+	echo "<h3> File doesn't exist: ".$file."</h3>";
 }
 
 
