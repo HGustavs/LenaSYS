@@ -21,6 +21,7 @@
 - userAnswer
 - fileLink
 - score
+- group
 
  <br>
   <br>
@@ -87,6 +88,16 @@ Updates values in the table __user__ in the database, columns that are updated.
 ## ------------------------------------- ==user_course== ----------------------------------------
 ---
 
+### selectFromUserCourse --USED ONLY BY getCourseGroupsAndMembers--
+Gathers information from the table __user_course__. parameters used 
+#### different querys paramaters and retrived information 
+
+#### getCourseGroupsAndMembers
+- cid __AND__ vers  : user.uid, user.username, user.email, user_course.groups __FROM__ user, user_course
+
+<br>
+
+---
 
 <br>
 
@@ -1041,3 +1052,18 @@ __Return specific score__
 __SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.quiz = _quiz_ __AND__ userAnswer.moment = _moment_ __LIMIT__ 1;
 - quiz
 - moment
+
+<br>
+
+---
+## -------------------------- ==group== -------------------------------------------------------
+---
+
+<br>
+<br>
+
+### selectFromTableGroup  --only used by getGroupValues-- 
+Gathers information from the table __group__.
+
+#### different querys paramaters and retrived information 
+- no parameters : groupKind, groupVal

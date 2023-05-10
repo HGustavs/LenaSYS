@@ -541,6 +541,21 @@ Uses service __selectFromTableScore__ to _get_ information it requires from __Sc
 <br>
 
 ---
+## ------------------------------------ _sectionedservice_ -----------------------------
 ---
 
 <br>
+<br>
+
+### getGroupValues  
+Uses service __selectFromTableGroup__ to _get_ information it requires from __group__. 
+<br>
+
+---
+
+<br>
+
+
+### getCourseGroupsAndMembers
+Gets groups and there members for a specific course  
+Uses service __selectFromTableScore__ to _get_ information it requires from __user__ and __user_course__. 
