@@ -9633,7 +9633,7 @@ function drawElement(element, ghosted = false)
                     <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxw /2))}px;
+                            margin-top:${((boxw * -0.125))}px;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
