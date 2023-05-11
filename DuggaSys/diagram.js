@@ -9643,7 +9643,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the loop/alt rectangle
         //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
-            str += `<rect class='text'
+        str += `<rect class='text'
             x='${linew}'
             y='${linew}'
             width='${boxw-(linew*2)}'
@@ -9670,6 +9670,17 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />`;
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        //if (element.hasDashedLine) {
+            str += `<path class="text" 
+                d="M${(boxw-(linew*2))/2},${(boxh-(linew*2))/2}
+                H${linew}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                stroke-dasharray='${linew*3},${linew*3}'
+                fill='transparent'
+                />`;
+        //}
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
