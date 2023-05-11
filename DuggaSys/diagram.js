@@ -9665,7 +9665,7 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='none'
         />`;
-        str += `<text class='text' x='${((linw)+((boxw/10)-sequenceCornerRadius)/2)}' y='${((boxh/10) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `<text class='text' x='${((linew)+((boxw/10)-sequenceCornerRadius)/2)}' y='${((boxh/10) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
