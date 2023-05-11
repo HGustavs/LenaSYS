@@ -9633,12 +9633,21 @@ function drawElement(element, ghosted = false)
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxw * 7.5))}px;;
+                            margin-top:${((boxw / 7.5))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
         }
-        else {
+        else if (element.kind == "ERAttr") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            margin-top:${((boxw / 2))}px;;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
+        }
+        else if (element.kind == "ERRelation") {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
