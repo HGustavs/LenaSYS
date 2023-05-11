@@ -6694,10 +6694,9 @@ function generateContextProperties()
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
                         case 'numberofdashedlines':
-                            //a checkbox for checking if its dashed or not
-                            str += `<div>`
+                            str += `<div>Amount of Dashed lines, 0 for loop.`
                             //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
-                            str +=`<input id="numberOfDashedLines" type="number" value='${element[property]}'/>`
+                            str +=`<input id="inputNumberOfDashedLines" type="number" value='${element[property]}'/>`
                             str += `</div>`
                             break;
                         default:
@@ -12382,7 +12381,7 @@ function setSequenceDashedLines(){
     //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
     for (let i = 0; i < context.length; i++) {
         if (context[i].numberOfDashedLines != null) {
-            context[i].numberOfDashedLines = document.getElementById("numberOfDashedLines").value;
+            context[i].numberOfDashedLines = document.getElementById("inputNumberOfDashedLines").value;
         }
     }
     showdata();
