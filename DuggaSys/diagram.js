@@ -8475,7 +8475,7 @@ function drawLine(line, targetGhost = false)
                     let right = rotateArrowPoint(base, to, true);
                     let left = rotateArrowPoint(base, to, false);
 
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y},${right.x} ${right.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 // If the line is segmented draw the arrow on a 90 degree angle matching the line.
                 else {
