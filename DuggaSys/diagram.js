@@ -6680,6 +6680,87 @@ function generateContextProperties()
                     }
                 }
             }
+            //uml relation
+            else if (element.kind = 'UMLRelation') {
+                //ID MUST START WITH "elementProperty_"!!!!!
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='display:none;'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                  str += `<div style='color:white'>Inheritance</div>`;
+                  //Creates drop down for changing state of ER elements
+                  var value;
+                  var selected = context[0].state;
+                  if(selected == undefined) {
+                      selected = "disjoint"
+                  }
+
+                  if(element.kind=="UMLRelation") {
+                      value = Object.values(inheritanceState);
+                  }
+
+                  str += '<select id="propertySelect">';
+                  for (i = 0; i < value.length; i++) {
+                      if (selected != value[i]) {
+                          str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                      } else if(selected == value[i]) {
+                          str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                      }
+                  }
+                  str += '</select>'; 
+            }
+            //IE Relation
+            else if(element.kind = 'IERelation') {
+                //ID MUST START WITH "elementProperty_"!!!!!
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='display:none;'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                  str += `<div style='color:white'>Inheritance</div>`;
+                  //Creates drop down for changing state of IE elements
+                  var value;
+                  var selected = context[0].state;
+                  if(selected == undefined) {
+                      selected = "disjoint"
+                  }
+  
+                  if(element.kind=="IERelation") {
+                      value = Object.values(inheritanceStateIE);
+                  }
+                  str += '<select id="propertySelect">';
+                      for (i = 0; i < value.length; i++) {
+                          if (selected != value[i]) {
+                              str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                          } else if(selected == value[i]) {
+                              str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                          }
+                      }
+                  str += '</select>'; 
+            }
+            else if (element.kind = 'ERRelation') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }     
         }
         //Selected sequence type
         else if (element.type == 'sequence') {
