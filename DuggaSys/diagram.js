@@ -9140,7 +9140,7 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
         
         //div to encapuslate UML content
-        str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
+        //str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
