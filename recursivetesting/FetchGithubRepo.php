@@ -84,6 +84,7 @@ function downloadToWebServer($cid, $item)
     file_put_contents($path, $fileContents);    
 }
     
+//Retrieves the content of a repos index-file
 function getIndexFile($url) {
 	$url = $url . "/index.txt";
   // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
@@ -108,7 +109,7 @@ function getIndexFile($url) {
     $json = json_decode($data, true);
     if($json) {
       $array = file_get_contents($json['download_url']);
-			return explode("\n", $array);
+	    return explode("\n", $array);
     }
   }
 }
@@ -148,14 +149,11 @@ function bfs($url, $cid, $opt)
             // Loops through each item fetched in the JSON data
             if ($json) {
                 foreach ($json as $item) {
-									//if item is part of filestoDownload
-									print_r($filesToDownload);
-									if(in_array($item['name'], $filesToDownload)){
-										// Checks if the fetched item is of type 'file'
-										// print ($item['name']);
-										print("inside");
-
-										if ($item['type'] == 'file') {
+									if ($item['type'] == 'file') {
+										//if item is part of filestoDownload
+										if(in_array($item['name'], $filesToDownload)){
+											// Checks if the fetched item is of type 'file'
+											print($item['name'] . "\n");
 											if($opt == "REFRESH") {
 												insertToMetaData($cid, $item);
 											}
@@ -164,12 +162,12 @@ function bfs($url, $cid, $opt)
 												insertToMetaData($cid, $item);
 												downloadToWebserver($cid, $item);  
 											}                 
-											// Checks if the fetched item is of type 'dir'
-										} else if ($item['type'] == 'dir') {
-											if (!in_array($item['url'], $visited)) {
-												array_push($visited, $item['url']);
-												array_push($fifoQueue, $item['url']);
-											}
+										}
+										// Checks if the fetched item is of type 'dir'
+									} else if ($item['type'] == 'dir') {
+										if (!in_array($item['url'], $visited)) {
+											array_push($visited, $item['url']);
+											array_push($fifoQueue, $item['url']);
 										}
 									}
                 }
