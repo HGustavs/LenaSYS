@@ -739,6 +739,21 @@ __visibility__
 ---
 <br>
 
+### selectFromTableVers
+Gathers information from the table __vers__.
+
+#### different querys paramaters and retrived information 
+- cid : vers
+```sql
+SELECT vers FROM vers WHERE cid=:cid;
+```
+
+<br>
+
+---
+
+<br>
+
 
 ### insertIntoVers  
 Performes an insert into the table __vers__. Parameters needed:

@@ -696,10 +696,28 @@ Uses the services __setActiveCourseVersion__ to change the content of these colu
 <br>
 
 ### setVisibleListentrie
-These both do the same thing, i would sugest combining them and use if cases instead.
+These both do the same thing, i would sugest combining them and use if cases instead.e
 #### changeVisibleHidden
 Uses the services __updateTableListentries__ to change the content of these columns:
 - visible
 #### changeVisiblePublic
 Uses the services __updateTableListentries__ to change the content of these columns:
 - visible
+
+
+<br>
+
+---
+
+<br>
+
+### getCourseVersions
+Uses service __selectFromTableVers__ to _get_ information it requires from __vers__.
+
+<br>
+
+---
+
+<br>
+
+### 
