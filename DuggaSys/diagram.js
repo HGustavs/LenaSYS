@@ -9641,22 +9641,8 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the loop rectangle looking thing
+        //svg for the loop/alt rectangle
         //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
-        /* str += `<path 
-                d="M${linew},${linew}
-                    h${(boxw-sequenceCornerRadius)-(linew*2)}
-                    a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius}
-                    v${(boxh-(sequenceCornerRadius*2))-(linew*2)}
-                    a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${(sequenceCornerRadius*-1)},${sequenceCornerRadius}
-                    h${((boxw-(linew*2))-(sequenceCornerRadius*2))*-1}
-                    a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${(sequenceCornerRadius*-1)},${(sequenceCornerRadius*-1)}
-                    v${(boxh-sequenceCornerRadius-(linew*2))*-1}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='none'
-            />`; */
             str += `<rect class='text'
             x='${linew}'
             y='${linew}'
@@ -9668,15 +9654,6 @@ function drawElement(element, ghosted = false)
             rx='${sequenceCornerRadius/2}'
         />`;
         //svg for the small label in top left corner
-        /* str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw/10}'
-                height='${boxh/10}'
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`; */
         str += `<path 
             d="M${linew+sequenceCornerRadius},${linew}
                 h${(boxw/10)-sequenceCornerRadius}
