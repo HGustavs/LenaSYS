@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {name: "Alt", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", numberOfDashedLines: 1} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {name: "name", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", numberOfDashedLines: 1, altOrLoop: "Alt"} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -12383,9 +12383,9 @@ function setSequenceDashedLines(){
         if (context[i].numberOfDashedLines != null) {
             context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
             if (context[i].numberOfDashedLines == 0) {
-                context[i].name = "Loop";
+                context[i].altOrLoop = "Loop";
             } else {
-                context[i].name = "Alt";
+                context[i].altOrLoop = "Alt";
             }
         }
     }
