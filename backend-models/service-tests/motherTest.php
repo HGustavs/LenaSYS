@@ -80,14 +80,19 @@ include_once ".../test4";
             $test = json_decode($_GET['Test 1']);
             echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" Test="name" >';
-                foreach($test as $row){
-                    echo '<option value="'.$row['name'].'"';
+                /*foreach($test as $row){
+                    echo '<option value="'.$row['name'].'"';*/
+                    foreach($jsonDataObject->response->values as $option){
+                        echo '<option value=' . $option->Test1 . '>' . $option->Test2 . '>' . $option->Test3 .'</option>';
+                    }
+                
+                    /*echo '</select>';
                         if(isset($_POST['name'])){
                             if($_POST['name']==$row['name']) echo " selected ";
                         }
                     echo '>'.$row['name'].'</option>';
-                    echo"<p>".$row['name']."</p>";
-                }
+                    echo"<p>".$row['name']."</p>";*/
+                //}
             echo '</select>';
 
                 echo "
