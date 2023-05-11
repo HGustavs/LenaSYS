@@ -2851,7 +2851,7 @@ function changeState()
     const element =  context[0],
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
-
+        console.log(newType);
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
         displayMessage("error", `
