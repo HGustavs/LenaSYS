@@ -77,7 +77,7 @@ include_once ".../test4";
             
             
 
-            $test = json_decode($_GET["Test"]);
+            $test = json_decode($_GET["Test 1"]);
             echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" Test="name" >';
                 foreach($test as $row){
