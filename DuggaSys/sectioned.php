@@ -581,6 +581,8 @@
                         $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
                 
                         $query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
+												echo "<script>console.log('Debug Cid Objects: " . $cid . "' );</script>";
+												echo "<script>console.log('Debug Query Objects: " . $query . "' );</script>";
                         $query->bindParam(':cid', $cid);
                         $query->execute();
                         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
