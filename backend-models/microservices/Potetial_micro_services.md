@@ -720,4 +720,9 @@ Uses service __selectFromTableVers__ to _get_ information it requires from __ver
 
 <br>
 
-### 
+### getGitReference (this is a TEMP name, dont really know what the point of this "service" is yet )
+This service creates an array containing values from the column downloadeURL in the database found here "../../githubMetadata/metadata2.db"
+Uses service __selectFromTableBox__ to _get_ information it requires from __box__.
+Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
+Uses service __selectFromTableGitFiles__ to _get_ information it requires from __gitFiles__.
+

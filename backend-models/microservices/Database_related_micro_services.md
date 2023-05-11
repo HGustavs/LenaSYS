@@ -1,7 +1,7 @@
 # Database related micro services
 
 ---
-## LIST OF TABLES ACCESSED
+## LIST OF TABLES ACCESSED mySQL
 ---
 
 ---
@@ -29,6 +29,58 @@
    <br>
     <br>
 
+---
+## LIST OF TABLES ACCESSED SQLite
+---
+
+---
+- gitFiles
+
+ <br>
+  <br>
+   <br>
+    <br>
+
+
+
+=========================================================
+---
+## --------------------------------------------- ==_SQLite_== -----------------------------------------
+=========================================================
+---
+<br>
+<br>
+
+---
+## ------------------------------------------- ==gitFiles== --------------------------------------------
+---
+<br>
+
+### selectFromTablegitFiles 
+Gathers information from the table __gitFiles__. parameters used 
+#### different querys paramaters and retrived information 
+- cid __AND__ fileName : downloadURL 
+```sql
+SELECT downloadURL FROM gitFiles WHERE cid=".$cid." AND fileName=".$file.";
+```
+<br>
+
+---
+
+<br>
+
+ <br>
+  <br>
+   <br>
+    <br>
+    
+=========================================================
+---
+## --------------------------------------------- ==_mySQL_== -----------------------------------------
+=========================================================
+---
+<br>
+<br>
 
 
 ---
@@ -184,6 +236,11 @@ Gathers information from the table __codeexample__.
 ```sql 
 ORDER BY exampleid DESC LIMIT 1
 ```
+- exampleid: cid
+```sql 
+SELECT cid FROM codeexample WHERE exampleid=:exampleid;
+```
+
 <br>
 
 ---
@@ -295,6 +352,10 @@ Gathers information from the table __box__.
 #### different querys paramaters and retrived information 
 - boxid AND exampleid : *
 - exampleid : * 
+- exampleid : filename
+```sql
+SELECT filename FROM box WHERE exampleid=:exampleid;
+```
 
 <br>
 
