@@ -77,7 +77,7 @@ include_once ".../test4";
             echo $motherTest_json->coursename;
             
             echo 'Choose table: ';
-            echo '<select onchange="this.form.submit()" Test="name" >';
+            echo '<select onchange="this.form.submit()" name="name" >';
                 foreach($test as $row){
                     echo '<option value="'.$row['name'].'"';
                         if(isset($_POST['name'])){
