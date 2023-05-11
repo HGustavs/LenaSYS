@@ -9655,7 +9655,7 @@ function drawElement(element, ghosted = false)
         />`;
         //svg for the small label in top left corner
         str += `<path 
-            d="M${(linew+sequenceCornerRadius)+(boxw/10)},${linew}
+            d="M${(linew+sequenceCornerRadius)+(boxw/15)},${linew}
                 v${boxh/10}
                 l${((boxw/15))*-1},${(boxh/10)/2}
                 H${linew}
