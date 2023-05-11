@@ -9687,10 +9687,15 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />`;
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        
+        //the first line is outside of the loop since it has a absolute M instead of a relative m.
+        str += `<path class="text" 
+            d="M${boxw-linew},${(boxh-(linew*2))/(numberOfDashedLines+1)}
+            H${linew}`
         //loop through all the number of dashed lines requested and draw them out evenly spaced. No lines at the far top or bottom of the element.
         for (let i = 0; i < element.numberOfDashedLines; i++) {
-            str += `<path class="text" 
-                d="M${boxw-linew},${(boxh-(linew*2))/(i+1)}
+            str += `
+                m${boxw-linew},${(boxh-(linew*2))/(numberOfDashedLines+1)}
                 H${linew}
                 "
                 stroke-width='${linew}'
