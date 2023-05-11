@@ -83,7 +83,7 @@ include_once ".../test4";
                 /*foreach($test as $row){
                     echo '<option value="'.$row['name'].'"';*/
                     foreach($motherTest_json->Test1 as $option){
-                        echo '<option value=' . $option->Test 1 (Login) . '>' . $option->Test 2 (callService) . '>' . $option->Test 3 (assertEqual) .'</option>';
+                        echo '<option value=' . $option->Test 1 'Login' . '>' . $option->Test 2 'callService' . '>' . $option->Test 3 'assertEqual' .'</option>';
                     }
                 
                     /*echo '</select>';
