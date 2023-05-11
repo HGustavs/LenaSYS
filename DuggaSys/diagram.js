@@ -9645,13 +9645,13 @@ function drawElement(element, ghosted = false)
         //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
         str += `<path
                 d="M${linew},${linew}
-                    h${(boxw-sequenceCornerRadius)-linew}
+                    h${(boxw-sequenceCornerRadius)-(linew*2)}
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius}
-                    v${(boxh-(sequenceCornerRadius*2))-linew}
+                    v${(boxh-(sequenceCornerRadius*2))-(linew*2)}
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${(sequenceCornerRadius*-1)},${sequenceCornerRadius}
-                    h${((boxw-(linew))-(sequenceCornerRadius*2))*-1}
+                    h${((boxw-(linew*2))-(sequenceCornerRadius*2))*-1}
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${(sequenceCornerRadius*-1)},${(sequenceCornerRadius*-1)}
-                    v${(boxh-sequenceCornerRadius-(linew))*-1}
+                    v${(boxh-sequenceCornerRadius-(linew*2))*-1}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
