@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {name: "Activation", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", hasDashedLine: true} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {name: "Activation", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", numberOfDashedLines: 2} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -6693,10 +6693,11 @@ function generateContextProperties()
                             str += `<div style='color:white'>Name</div>`;
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
-                        case 'hasdashedline':
+                        case 'numberOfDashedLines':
                             //a checkbox for checking if its dashed or not
                             str += `<div>`
-                            str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
+                            //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
+                            console.log("dropdown goes here");
                             str += `</div>`
                             break;
                         default:
@@ -9686,7 +9687,7 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />`;
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        if (element.hasDashedLine) {
+        for (let i = 0; i < element.numberOfDashedLines; i++) {
             str += `<path class="text" 
                 d="M${boxw-linew},${(boxh-(linew*2))/2}
                 H${linew}
