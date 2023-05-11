@@ -144,8 +144,8 @@
 				$query->execute();
 
 				// Update metadata
-				bfs($url, $cid, "REFRESH");
-				print "The course has been updated!";
+				bfs($url, $cid, "DOWNLOAD");
+				print "The course has been updated, files have been downloaded!";
 			} else {
 				print "The course is already up to date!";
 			}
