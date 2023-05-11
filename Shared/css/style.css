@@ -54,6 +54,9 @@
 
   --box-shadow: rgba(0, 0, 0, 0.12);
   --box-shadow-2: rgba(0, 0, 0, 0.5);
+
+  --color-fileLink-table-1: #ccc;
+  --color-fileLink-table-2: #eae8eb;
 }
 
 /* --------------================################================-------------- *

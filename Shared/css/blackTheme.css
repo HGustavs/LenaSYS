@@ -52,6 +52,9 @@
         --color-fill: #fff;
         --color-stroke: #fff;
         --color-table: #212121;
+
+        --color-fileLink-table-1: #2d3133;
+        --color-fileLink-table-2: #242729;
     }
 
     #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
