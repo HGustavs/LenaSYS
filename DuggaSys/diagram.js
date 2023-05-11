@@ -12380,6 +12380,7 @@ function toggleDashedLine(){
             }
         }
     }
+    showdata();
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
