@@ -785,3 +785,4 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
+ALTER TABLE listentries ADD COLUMN githubmoment VARCHAR(255);
