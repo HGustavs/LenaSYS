@@ -4233,7 +4233,8 @@ function toggleGrid()
      } else {
         grid.style.display = "block";
         gridButton.style.backgroundColor ="transparent";
-        gridButton.style.border = "thick solid #2E1A40";
+        gridButton.style.border = "thin solid #614875";
+        gridButton.style.color = "#614875";
    }
 }
 
