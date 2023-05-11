@@ -9251,7 +9251,7 @@ function drawElement(element, ghosted = false)
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
-                    style="margin-top:${((boxh * -0.125))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                    style="margin-top:${((boxh * 0.125))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
