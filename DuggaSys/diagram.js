@@ -8780,6 +8780,16 @@ function drawLine(line, targetGhost = false)
  */
 function calculateArrowBase(from, to, size)
 {
+    /*
+        Since we know that the arrow is to be created on the line, we need a Point that is a set distance away from the element that is still on the line.
+        The set distance is the size, as it will be the height of the arrow.
+        Given two points we can find the distance of the line between them by calculating the hypotenuse.
+        Since we know the hypotenuse of the "small" triangle and all the lengths of the "large" triangle, we can calculate the cordinates of the "small" triangle since the triangles are "similar".
+        We start by calculating a ratio on the hypotenuse by taking the "small" hypotenuse divided by the "large" hypotenuse.
+        Then we apply this ratio on the other sides of the large triangle to get the distance in x and in y for the small triangle
+        Then we add these values to the end point to get the actual coordinates for the arrow base.
+    */
+
     let ratio = size / Math.sqrt(Math.pow(from.x - to.x, 2)  + Math.pow(from.y - to.y, 2));
     let x = to.x + (from.x - to.x) * ratio;
     let y = to.y + (from.y - to.y) * ratio;
@@ -8791,7 +8801,16 @@ function calculateArrowBase(from, to, size)
  * @param {Point} to The coordinates/Point where the line between @param base and the element end
  * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
  */
-function rotateArrowPoint(base, to, clockwise) {
+function rotateArrowPoint(base, to, clockwise)
+{
+    /*
+        To create the actual arrow we need the corners.
+        We need to rotate the point "to" around "base" by 90 or -90 degrees and divide the distance by 2 (as this decides how wide the triangle will be).
+        The rotation is done by applying the vector rotation math that states: 
+        Point(x,y) rotated 90 degrees clockwise = Point(y, -1 * x) or,
+        Point(x,y) rotated 90 degrees counter-clockwise = Point(-1 * y, x).
+        The "rotated" value can then be added to the base to get a corner.
+    */
     if (clockwise) {
         let point = new Point((to.y - base.y) / 2, -1 * (to.x - base.x) / 2);
         point.add(base);
