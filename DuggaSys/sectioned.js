@@ -3009,12 +3009,14 @@ function createExamples(dir) {//TODO HERE
   console.log("**** CID "+querystring['courseid']);
   console.log("**** DIR "+dir);
   cid = querystring['courseid'];
-  cversid = document.getElementById("test").value;
+  cversid = document.getElementById("cversid").value;
   codeExDir = dir;
   console.log("cid: "+ cid);
   console.log("cversid: "+ cversid);
   console.log("dir: "+ codeExDir);
-  //AJAXService("CreGitEx", {courseid : cid, coursevers : cversid, dirname : codeExDir});
+  cversid = 45656;
+  console.log("cversid: "+ cversid);
+  AJAXService("CreGitEx", {courseid : cid, coursevers : cversid, dirname : codeExDir});
 }
 
 // ------ Validates all versionnames ------
