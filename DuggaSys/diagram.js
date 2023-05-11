@@ -9660,7 +9660,7 @@ function drawElement(element, ghosted = false)
                 v${boxh/10}
                 l${((boxw/60))*-1},${(boxh/20)}
                 H${linew}
-                V${linew-sequenceCornerRadius}
+                V${linew-(sequenceCornerRadius/4)}
                 a${sequenceCornerRadius/4},${sequenceCornerRadius/4} 0 0 1 ${sequenceCornerRadius/4},${(sequenceCornerRadius/4)*-1}
                 z
             "
