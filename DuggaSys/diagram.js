@@ -2850,7 +2850,9 @@ function changeState()
 {
     const element =  context[0],
           oldType = element.type,
-          newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
+          newType = document.getElementById("typeSelect")?.value || undefined;
+          var oldRelation = element.state;
+          var newRelation = document.getElementById("propertySelect")?.value || undefined
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
         displayMessage("error", `
@@ -2859,9 +2861,9 @@ function changeState()
         )
         return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } /* else if (oldType == newType){
+    } else if (oldType == newType && oldRelation == newRelation){
         return;
-    } */
+    }
 
     else if (element.type == 'ER') {
         
