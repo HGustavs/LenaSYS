@@ -681,9 +681,9 @@
                 <div> <!-- SEQUENCE OBJECT START -->
                     <div id="elementPlacement14"
                          class="SEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(14); setMouseMode(2);'
+                         onclick='setElementPlacementType(12); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(14)">
+                         onmousedown="holdPlacementButtonDown(12)">
                          <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                         <span class="toolTipText"><b>Sequence Object</b><br>
                             <p>Creates a sequence object.</p>
@@ -717,7 +717,7 @@
                                 <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- OBJECT !-->
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(12); setMouseMode(2);' > <!-- OBJECT !-->
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
                             <span class="toolTipText"><b>Sequence Object</b><br>
                                 <p>Creates a sequence object.</p>
