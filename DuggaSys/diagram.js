@@ -8289,19 +8289,33 @@ function drawLine(line, targetGhost = false)
                 var iconSizeStart=40;
                 break;
             case SDLineIcons.ARROW:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                var iconSizeStart = 20;
+
+                // If the line is straight calculate the points required to draw the arrow at an angle.
+                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
+                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
+
+                    let base = calculateArrowBase(to, from, iconSizeStart / 2 * zoomfact);
+                    let right = rotateArrowPoint(base, from, true);
+                    let left = rotateArrowPoint(base, from, false);
+
+                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${from.x} ${from.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy - 5 * zoomfact},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                else {
+                    if (line.ctype == 'TB') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'BT') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy - 5 * zoomfact},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'LR') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'RL') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
                 }
-                else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                var iconSizeStart=40;
                 break;
             default:
                 var iconSizeStart=0;
@@ -8509,19 +8523,34 @@ function drawLine(line, targetGhost = false)
                 var iconSizeEnd=40;
                 break;
             case SDLineIcons.ARROW:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                var iconSizeEnd = 20;
+
+                // If the line is straight calculate the points required to draw the arrow at an angle.
+                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
+                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
+
+                    let base = calculateArrowBase(from, to, iconSizeEnd / 2 * zoomfact);
+                    let right = rotateArrowPoint(base, to, true);
+                    let left = rotateArrowPoint(base, to, false);
+
+                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                // If the line is segmented draw the arrow on a 90 degree angle matching the line.
+                else {
+                    if (line.ctype == 'BT') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if(line.ctype == 'TB'){
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'RL') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'LR') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
                 }
-                else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                var iconSizeEnd=20;
                 break;
             default:
                 var iconSizeEnd=0;
@@ -8800,6 +8829,57 @@ function drawLine(line, targetGhost = false)
     }
 
     return str;
+}
+/**
+ * @description Calculates the coordinates of the point representing the base of the arrow, the point is @param size distance away and on the line between @param from and @param to .
+ * @param {Point} from The coordinates/Point where the line between two elements start.
+ * @param {Point} to The coordinates/Point where the line between two elements end.
+ * @param {number} size The size(height) of the arrow that is to be drawn.
+ * @returns The coordinates/Point where the arrow base is placed on the line.
+ */
+function calculateArrowBase(from, to, size)
+{
+    /*
+        Since we know that the arrow is to be created on the line, we need a Point that is a set distance away from the element that is still on the line.
+        The set distance is the size, as it will be the height of the arrow.
+        Given two points we can find the distance of the line between them by calculating the hypotenuse.
+        Since we know the hypotenuse of the "small" triangle and all the lengths of the "large" triangle, we can calculate the cordinates of the "small" triangle since the triangles are "similar".
+        We start by calculating a ratio on the hypotenuse by taking the "small" hypotenuse divided by the "large" hypotenuse.
+        Then we apply this ratio on the other sides of the large triangle to get the distance in x and in y for the small triangle
+        Then we add these values to the end point to get the actual coordinates for the arrow base.
+    */
+
+    let ratio = size / Math.sqrt(Math.pow(from.x - to.x, 2) + Math.pow(from.y - to.y, 2));
+    let x = to.x + (from.x - to.x) * ratio;
+    let y = to.y + (from.y - to.y) * ratio;
+    return new Point(x, y);
+}
+/**
+ * @description Calculates the coordiates of the point representing one of the arrows corners
+ * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
+ * @param {Point} to The coordinates/Point where the line between @param base and the element end
+ * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
+ */
+function rotateArrowPoint(base, to, clockwise)
+{
+    /*
+        To create the actual arrow we need the corners.
+        We need to rotate the point "to" around "base" by 90 or -90 degrees and divide the distance by 2 (as this decides how wide the triangle will be).
+        The rotation is done by applying the vector rotation math that states: 
+        Point(x,y) rotated 90 degrees clockwise = Point(y, -1 * x) or,
+        Point(x,y) rotated 90 degrees counter-clockwise = Point(-1 * y, x).
+        The "rotated" value can then be added to the base to get a corner.
+    */
+    if (clockwise) {
+        let point = new Point((to.y - base.y) / 2, -1 * (to.x - base.x) / 2);
+        point.add(base);
+        return point;
+    }
+    else {
+        let point = new Point(-1 * (to.y - base.y) / 2, (to.x - base.x) / 2);
+        point.add(base);
+        return point;
+    }
 }
 /**
  * @description Removes all existing lines and draw them again
