@@ -9140,7 +9140,7 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
         
         //div to encapuslate UML content
-        //str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
+        str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
@@ -9298,7 +9298,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxw * -0.025))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
