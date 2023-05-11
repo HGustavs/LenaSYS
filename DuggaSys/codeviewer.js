@@ -968,7 +968,7 @@ function updateContent(file, content, boxnumber)
 		console.log("If boxnumber: ", boxnumber);
 	} else {
 		var box = retData['box'][openBoxID - 1];
-		console.log("Else boxnumber");
+		console.log("Else boxnumber ", openBoxID);
 	}
 	
 	var useBoxContent = true;
