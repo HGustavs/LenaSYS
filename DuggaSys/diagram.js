@@ -9652,6 +9652,7 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='none'
             rx='${sequenceCornerRadius/4}'
+            fill-opacity="0"
         />`;
         //svg for the small label in top left corner
         str += `<path 
