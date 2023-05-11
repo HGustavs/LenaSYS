@@ -6696,7 +6696,7 @@ function generateContextProperties()
                         case 'hasdashedline':
                             //a checkbox for checking if its dashed or not
                             str += `<div>`
-                            str += `<input type="checkbox" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
+                            str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
                             str += `</div>`
                             break;
                         default:
@@ -12365,6 +12365,21 @@ function toggleActorOrbject(type){
         }
     }
     showdata();
+}
+/**
+ * @description toggles the sequence loop/alt element's dashed line running through the middle on or off
+ */
+function toggleDashedLine(){
+    //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
+    for (let i = 0; i < context.length; i++) {
+        if (context[i].hasDashedLine != null) {
+            if (document.getElementById("dashedLineToggle").checked) {
+                context[i].hasDashedLine = true;
+            } else {
+                context[i].hasDashedLine = false;
+            }
+        }
+    }
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
