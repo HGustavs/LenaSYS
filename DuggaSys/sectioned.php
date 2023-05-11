@@ -576,7 +576,8 @@
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
                 <?php
-									$dirs = glob('../Courses/1/Github/*', GLOB_ONLYDIR);											
+									$dirs = glob('../Courses/1/Github/*', GLOB_ONLYDIR);
+									echo "<script>console.log('test');</script>";											
 											/*
                         $cid = getOPG('courseid');
                         $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
