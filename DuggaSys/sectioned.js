@@ -3007,6 +3007,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 function createExamples(dir) {//TODO HERE
   cid = querystring['courseid'];
   cversid = document.getElementById("cversid").value
+  console.log(cversid);
   codeExDir = dir;
   AJAXService("CreGitEx", {courseid : cid, coursevers : cversid, dirname : codeExDir});
 }
