@@ -125,11 +125,12 @@ function fetchGitHubRepo(gitHubURL)
 	regexURL = gitHubURL.replace(/.git$/, "");
 	//Used to return success(true) or error(false) to the calling function
 	var dataCheck;
+	//console.log("Inside fetchGithubRepo with Url: " + regexURL);
 	$.ajax({
 		async: false,
 		url: "../recursivetesting/FetchGithubRepo.php",
 		type: "POST",
-		data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
+		data: {'url':regexURL, 'action':'getIndexFile'},
 		success: function() { 
 			//Returns true if the data and JSON is correct
 			dataCheck = true;

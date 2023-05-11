@@ -5,13 +5,13 @@ session_start();
 pdoConnect(); // Connect to database and start session
 
 //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
-/* if(isset($_POST['action'])) 
+ if(isset($_POST['action'])) 
 {
-    if($_POST['action'] == 'getNewCourseGitHub') 
+    if($_POST['action'] == 'getIndexFile') 
     {
-       getGitHubURL($_POST['githubURL']);
+      getIndexFile($_POST['url']);
     }
-}; */
+};
 
 function getGitHubURL($url)
 {
@@ -84,6 +84,45 @@ function downloadToWebServer($cid, $item)
     file_put_contents($path, $fileContents);    
 }
     
+function getIndexFile($url) {
+  $url = getGitHubURL($url);
+  // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
+  $opts = [
+    'http' => [
+    'method' => 'GET',
+    'header' => [
+    'User-Agent: PHP',
+      // If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
+      // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
+      // To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
+      // Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
+      //'Authorization: Bearer '
+      ]
+    ]
+  ];
+  // Starts a stream with the required headers
+  $context = stream_context_create($opts);
+  // Fetches the data with the stream included
+  $data = @file_get_contents($indexFile, true, $context);
+  if($data) {
+    $json = json_decode($data, true);
+    if($json) {
+      print_r($json);
+      foreach($json as $file) {
+        print_r($file);
+        if($file == 'index.txt') {
+          $indexFile = $file;
+          print_r($indexFile);
+        }
+      }
+    }
+  }
+}
+
+function openIndexFile($file) {
+
+}
+
 function bfs($url, $cid, $opt) 
 {
     $url = getGitHubURL($url);
