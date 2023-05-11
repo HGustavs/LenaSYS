@@ -9688,14 +9688,15 @@ function drawElement(element, ghosted = false)
         />`;
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         
+
         //the first line is outside of the loop since it has a absolute M instead of a relative m.
         str += `<path class="text" 
-            d="M${boxw-linew},${(boxh-(linew*2))/(numberOfDashedLines+1)}
+            d="M${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
             H${linew}`
         //loop through the rest of the dashed lines using the first one as reference for the relative m.
         for (let i = 0; i < element.numberOfDashedLines; i++) {
             str += `
-                m${boxw-linew},${(boxh-(linew*2))/(numberOfDashedLines+1)}
+                m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
                 H${linew}`
         }
         //finally, close the path off with appropriate values.
