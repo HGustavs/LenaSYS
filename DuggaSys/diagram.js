@@ -9225,7 +9225,7 @@ function drawElement(element, ghosted = false)
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
