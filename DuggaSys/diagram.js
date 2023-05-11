@@ -9519,14 +9519,15 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
-        console.log("test");
+        
         if (element.state == 'overlapping') {
                 str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/> 
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
-                console.log("works");
+                console.log("overlapping");
         }
         // Disjoint IE-inheritance
         else {
+            console.log("disjoint");
             str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/>
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
                 <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" />
