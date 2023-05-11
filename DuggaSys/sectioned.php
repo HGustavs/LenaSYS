@@ -298,7 +298,7 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 					<p id="EndDialog1" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 				</div>
 
