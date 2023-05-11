@@ -9665,7 +9665,7 @@ function drawElement(element, ghosted = false)
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='none'
-            rx='${sequenceCornerRadius}'
+            rx='${sequenceCornerRadius/2}'
         />`;
         //svg for the small rect in corner
         str += `<rect class='text'
