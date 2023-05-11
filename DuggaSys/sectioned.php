@@ -577,7 +577,11 @@
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
                 <?php
 									$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-									echo "<script>console.log('test');</script>";											
+									echo "<script>console.log('test');</script>";
+									foreach ($dirs as $dir) {
+										$dirname = basename($dir);
+									echo "<script>console.log($dirname);</script>";
+									}											
 											/*
                         $cid = getOPG('courseid');
                         $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
