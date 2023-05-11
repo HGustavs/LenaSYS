@@ -9694,7 +9694,7 @@ function drawElement(element, ghosted = false)
             d="M${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
             H${linew}`
         //loop through the rest of the dashed lines using the first one as reference for the relative m.
-        for (let i = 0; i < element.numberOfDashedLines; i++) {
+        for (let i = 0; i < element.numberOfDashedLines-1; i++) {
             str += `
                 m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
                 H${linew}`
