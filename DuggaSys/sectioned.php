@@ -580,9 +580,7 @@
 									echo "<script>console.log('test');</script>";
 									foreach ($dirs as $dir) {
 										$dirname = basename($dir);
-										if(strpos($dirname, 'Examples')) {
-											echo "<option value='$dirname'>$dirname</option>";
-										}
+										echo "<option value='$dirname'>$dirname</option>";
 									}											
 											/*
                         $cid = getOPG('courseid');
