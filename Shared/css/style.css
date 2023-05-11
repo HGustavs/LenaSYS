@@ -3278,7 +3278,7 @@ div.submit-button:disabled {
   cursor: pointer;
 }
 
-#plorf, #dorf, #NewTabLink, #Sectionlist, #refreshIMG, .refreshBurgerIMG {
+#plorf, #dorf, #NewTabLink, #refreshIMG, .refreshBurgerIMG {
   display: block;
   margin: auto;
   /* Makes the icons purple */
