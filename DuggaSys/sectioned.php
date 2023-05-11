@@ -576,7 +576,8 @@
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
                 <?php
-                    try{
+									$dirs = glob('../Courses/1/Github/*', GLOB_ONLYDIR);											
+											/*
                         $cid = getOPG('courseid');
                         $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
                         $query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
@@ -588,7 +589,7 @@
                     }
                     foreach($rows as $row){
                     echo "<option value=''>" .$row['fileName']. "</option>";
-                    }
+										*/
                 ?>
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
