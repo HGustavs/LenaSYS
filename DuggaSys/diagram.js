@@ -6696,7 +6696,7 @@ function generateContextProperties()
                         case 'numberofdashedlines':
                             str += `<div>Amount of Dashed lines, 0 for loop.`
                             //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
-                            str +=`<input id="inputNumberOfDashedLines" type="number" value='${element[property]}'/>`
+                            str +=`<input id="inputNumberOfDashedLines" type="number" min="0" value='${element[property]}'/>`
                             str += `</div>`
                             break;
                         default:
