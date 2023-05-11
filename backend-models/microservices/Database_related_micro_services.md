@@ -24,6 +24,7 @@
 - group
 - list
 - userduggafeedback
+- groupdugga
 
  <br>
   <br>
@@ -1343,7 +1344,7 @@ Performes an insert into the table __list__. Parameters needed:
 <br>
 <br>
 
-### selectFromTableuserduggafeedback  --only used by getUserDuggaFeedback-- 
+### selectFromTableuserduggafeedback  
 Gathers information from the table __userduggafeedback__.
 
 #### different querys paramaters and retrived information 
@@ -1354,4 +1355,58 @@ SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 - lid __AND__ cid : avrage score
 ```sql
 SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid"
+```
+
+
+
+
+
+<br>
+
+---
+## -------------------------- ==groupdugga== -------------------------------------------------------
+---
+
+<br>
+<br>
+
+### selectFromTableGroupdugga 
+Gathers information from the table __groupdugga__.
+
+#### different querys paramaters and retrived information 
+- hash : active_users
+```sql
+SELECT active_users FROM groupdugga WHERE hash=:hash
+```
+
+<br>
+
+---
+
+<br>
+
+### insertIntoTableGroupdugga  --only used by updateActiveUsers-- 
+Performes an insert into the table __groupdugga__. Parameters needed:
+
+#### updateActiveUsers
+- hash 
+- active_users
+
+```sql
+INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);
+```
+
+<br>
+
+---
+
+<br>
+
+### updateTableGroupdugga  -- used by updateActiveUsers--
+Updates values in the table __groupdugga__. Columns that are updated: 
+
+#### updateActiveUsers
+- active_users
+```sql
+UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
 ```

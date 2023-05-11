@@ -16,9 +16,8 @@ This document primaraly focuses on the services provided by the service-files, t
 - highscoreservice __==finished==__
 - sectionedservice __==finished==__
 - profileservice __==finished==__
-- resultedservice __WORK IN PROGRESS__
-- sectiondservice : __No document found manual research needed__  
-- showDuggaservice
+- resultedservice __==finished==__
+- showDuggaservice __WORK IN PROGRESS__ 
 
 ---
 ---
@@ -822,5 +821,21 @@ Uses service __selectFromTableUserAnswar__ to _get_ information it requires from
 
 Uses service __selectFromTableListentries__ to _get_ information it requires from __Listentries__.
 
+<br>
+<br>
+<br>
 
+---
+## ------------------------------------ _showDuggaservice_ -----------------------------
+---
 
+<br>
+<br>
+
+### updateActiveUsers
+Collect active users
+Uses service __selectFromTableUserAnswar__ to _get_ information it requires from __userAnswer__.
+<br>
+
+Uses service __insertIntoTableGroupdugga__ to makes _inserts_ into the table __groupdugga__.
+Uses service __updateTableGroupdugga__ to _get_ information it requires from __groupdugga__.
