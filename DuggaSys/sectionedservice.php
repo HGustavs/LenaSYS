@@ -639,7 +639,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":cvs", $coursevers);
 								$query->bindParam(":entryname", $examplename);
-								$query->bindParam(":link", $link);
+								$query->bindParam(":link", $exampleid);// $link); 
 								$query->bindParam(":kind", $kind);
 								$query->bindParam(":pos", $pos);
 								$query->bindParam(":visible", $visible);
