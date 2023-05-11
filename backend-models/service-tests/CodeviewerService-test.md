@@ -244,19 +244,21 @@ Password: Kong
 **Creation of new codeexemple that is visable**
 ```
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
+
 INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
+
 select * from box where exampleid=(select max(exampleid) from box);
 ```
 ###Values
 ```
 Send{
-  $boxTitle
-  $boxContent
-  $wordlist
-  $filename
-  $fontsize
-  $boxId
-  $exampleId
+  $boxTitle = Title;
+  $boxContent = DOCUMENT;
+  $wordlist = 4;
+  $filename = ---===######===---;
+  $fontsize = 9;
+  $boxId = 1;
+  $exampleId 9023;
 }
 
 ```
@@ -290,21 +292,57 @@ output{
 }
 ```
 
-—-------------------------------------------------------------
-Title: Title	Kind: Code
-Worldist: JS	File:HTML-TEST1-html
-Font size: 9px
-Title: Title EditContentTestTitle	Kind: Document
-Worldist: Plain Text	File: Greger.txt
-Font size: 11 px
-
+***
 ##EDITTITLE line 281
-—---------------------------------------------------------------------------------
-NOT FIXED
-—---------------------------------------------------------------------------------
-
-##DELEXAMPLE Line 294
+***
 —-------------------------------------------------------------
+NOT FIXED
+—-------------------------------------------------------------
+
+***
+##DELEXAMPLE Line 294
+***
+
+
+###pre-req:
+```
+{ (checklogin = true) &&
+(hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) ==
+true give $writeAccess="w";, else $writeAccess="s";
+```
+
+
+###Login:
+```
+Username: 2
+Password: Kong
+```
+###MySQL Pre edit
+**Creation of new codeexemple that is visable**
+```
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
+```
+```
+Select * from codeexample where exampleid 9021; //The number you wanna test
+```
+###Values
+```
+Send{
+  $opt = "DELEXAMPLE";
+  $exampleId = 9023;
+}
+
+```
+
+###Service output
+```
+output{
+  "deleted":
+  "debug":
+}
+```
+
 
 Expected output:
 {"deleted":true,"debug":"NONE!"}
