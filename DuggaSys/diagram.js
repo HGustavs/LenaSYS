@@ -9672,7 +9672,7 @@ function drawElement(element, ghosted = false)
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //if (element.hasDashedLine) {
             str += `<path class="text" 
-                d="M${(boxw-(linew*2))/2},${(boxh-(linew*2))/2}
+                d="M${boxw-linew},${(boxh-(linew*2))/2}
                 H${linew}
                 "
                 stroke-width='${linew}'
