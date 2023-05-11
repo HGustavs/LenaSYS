@@ -565,6 +565,7 @@
 
 
 	<!-- github moments box  -->
+	<form method="POST" action="">
 	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
@@ -574,16 +575,16 @@
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
 
 			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> 
-                <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
-                <?php
-									$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-									echo "<script>console.log('test');</script>";
-									foreach ($dirs as $dir) {
-										$dirname = basename($dir);
-										if(strstr($dirname, 'Examples')) {
-											echo "<option value='$dirname'>$dirname</option>";
-										}
-									}											
+        <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
+        <?php
+					$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
+					echo "<script>console.log('test');</script>";
+					foreach ($dirs as $dir) {
+						$dirname = basename($dir);
+						if(strstr($dirname, 'Examples')) {
+							echo "<option value='$dirname'>$dirname</option>";
+						}
+					}											
 											/*
                         $cid = getOPG('courseid');
                         $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
@@ -597,12 +598,14 @@
                     foreach($rows as $row){
                     echo "<option value=''>" .$row['fileName']. "</option>";
 										*/
-                ?>
+        ?>
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
+			<input type="submit" value="Submit!">
 		</div>
 	</div>
+	</form>
 
 	<!-- github template  -->
 
