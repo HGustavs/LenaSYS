@@ -5,13 +5,13 @@ session_start();
 pdoConnect(); // Connect to database and start session
 
 //Get data from AJAX call in courseed.js and then runs the function getNewCourseGithub link
- if(isset($_POST['action'])) 
+/* if(isset($_POST['action'])) 
 {
-    if($_POST['action'] == 'getIndexFile') 
+    if($_POST['action'] == 'getNewCourseGitHub') 
     {
-      getIndexFile($_POST['url']);
+       getGitHubURL($_POST['githubURL']);
     }
-};
+}; */
 
 function getGitHubURL($url)
 {
@@ -85,7 +85,7 @@ function downloadToWebServer($cid, $item)
 }
     
 function getIndexFile($url) {
-  $url = getGitHubURL($url);
+	$url = $url . "/index.txt";
   // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
   $opts = [
     'http' => [
@@ -96,7 +96,7 @@ function getIndexFile($url) {
       // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
       // To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
       // Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
-      //'Authorization: Bearer '
+      //'Authorization: Bearer YOUR_GITHUB_API_KEY'
       ]
     ]
   ];
@@ -107,25 +107,16 @@ function getIndexFile($url) {
   if($data) {
     $json = json_decode($data, true);
     if($json) {
-      print_r($json);
-      foreach($json as $file) {
-        print_r($file);
-        if($file == 'index.txt') {
-          $indexFile = $file;
-          print_r($indexFile);
-        }
-      }
+      $array = file_get_contents($json['download_url']);
+			return explode("\n", $array);
     }
   }
-}
-
-function openIndexFile($file) {
-
 }
 
 function bfs($url, $cid, $opt) 
 {
     $url = getGitHubURL($url);
+    $filesToDownload = getIndexFile($url);
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
@@ -157,23 +148,30 @@ function bfs($url, $cid, $opt)
             // Loops through each item fetched in the JSON data
             if ($json) {
                 foreach ($json as $item) {
-                    // Checks if the fetched item is of type 'file'
-                    if ($item['type'] == 'file') {
-                        if($opt == "REFRESH") {
-                            insertToMetaData($cid, $item);
-                        }
-                        else if($opt == "DOWNLOAD") {
-                            insertToFileLink($cid, $item);
-                            insertToMetaData($cid, $item);
-                            downloadToWebserver($cid, $item);  
-                        }                 
-                        // Checks if the fetched item is of type 'dir'
-                    } else if ($item['type'] == 'dir') {
-                        if (!in_array($item['url'], $visited)) {
-                            array_push($visited, $item['url']);
-                            array_push($fifoQueue, $item['url']);
-                        }
-                    }
+									//if item is part of filestoDownload
+									print_r($filesToDownload);
+									if(in_array($item['name'], $filesToDownload)){
+										// Checks if the fetched item is of type 'file'
+										// print ($item['name']);
+										print("inside");
+
+										if ($item['type'] == 'file') {
+											if($opt == "REFRESH") {
+												insertToMetaData($cid, $item);
+											}
+											else if($opt == "DOWNLOAD") {
+												insertToFileLink($cid, $item);
+												insertToMetaData($cid, $item);
+												downloadToWebserver($cid, $item);  
+											}                 
+											// Checks if the fetched item is of type 'dir'
+										} else if ($item['type'] == 'dir') {
+											if (!in_array($item['url'], $visited)) {
+												array_push($visited, $item['url']);
+												array_push($fifoQueue, $item['url']);
+											}
+										}
+									}
                 }
             } else {
                 //422: Unprocessable entity
