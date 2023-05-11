@@ -78,44 +78,24 @@ include_once ".../test4";
             
 
             
-            /*echo 'Choose table: ';
+            echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" Test="name" >';
                 foreach($test as $row){
                     echo '<option value="'.$row['name'].'"';*/
                    
                 
-                   /* echo '</select>';
+                   echo '</select>';
                         if(isset($_POST['name'])){
                             if($_POST['name']==$row['name']) echo " selected ";
                         }
                     echo '>'.$row['name'].'</option>';
-                    echo"<p>".$row['name']."</p>";*/
-                //}
-            //echo '</select>';*/
+                    echo"<p>".$row['name']."</p>";
+                }
+            echo '</select>';
 
-            echo "<form method='post' action='motherTest.php'>";
-            echo "<select name='Test'>";
-            foreach ($arr as $Test) {
-                echo '<option value="'.$Test[1].'" >'.$Test[0].'</option>';
-            }
-            echo "<input type='submit' value='go!'>";
-            echo "</select>";
-            echo "</form>";
+      
           
-            // Get tillverkare or default
-            if(isset($_POST['tillverkare'])){
-                $intillverkare=$_POST['tillverkare'];    
-            }else{
-                $intillverkare="Sweden";
-            }
-        
-        
-             // Assign tillverkare variable - Sweden is default
-             if(isset($_POST['tillverkare'])){
-                $tillverkare=$_POST['tillverkare'];
-            }else{
-                $tillverkare="Sweden";
-            }
+            
 
 
                 echo "
