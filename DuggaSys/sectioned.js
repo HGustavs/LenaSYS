@@ -3009,7 +3009,7 @@ function createExamples(dir) {//TODO HERE
   console.log("**** CID "+querystring['courseid']);
   console.log("**** DIR "+dir);
   cid = querystring['courseid'];
-  cversid = document.getElementById("coursevers").value
+  cversid = document.getElementById("cversid").value
   codeExDir = dir;
   console.log("cid: "+ cid);
   console.log("cversid: "+ cversid);
