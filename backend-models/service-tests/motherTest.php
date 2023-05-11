@@ -73,11 +73,11 @@ include_once ".../test4";
         <?php    
             
             $motherTest_json = file_get_contents('motherTestJSON.json');
-            $decoded_json = json_decode($motherTest_json, true);
+            $decoded_json = json_decode($motherTest_json, false);
             
             
 
-            $test = json_decode($_GET['Test 1']);
+            
             /*echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" Test="name" >';
                 foreach($test as $row){
