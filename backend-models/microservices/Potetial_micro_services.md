@@ -15,8 +15,8 @@ This document primaraly focuses on the services provided by the service-files, t
 - fileedservice __==finished==__
 - highscoreservice __==finished==__
 - sectionedservice __==finished==__
-- profileservice __WORK IN PROGRESS__
-- resultedservice
+- profileservice __==finished==__
+- resultedservice __WORK IN PROGRESS__
 - sectiondservice : __No document found manual research needed__  
 - showDuggaservice
 
@@ -804,3 +804,23 @@ Uses service __selectFromTableUser__ to _get_ information it requires from __use
 
 #### updatePassword
 Uses service __updateUserPassword__ to _get_ information it requires from __user__.
+
+<br>
+<br>
+<br>
+
+---
+## ------------------------------------ _resultedservice_ -----------------------------
+---
+
+<br>
+<br>
+
+### getUserAnswar  (writers comment: this service is small enough as is)
+Uses service __selectFromTableUserAnswar__ to _get_ information it requires from __userAnswer__.
+
+
+Uses service __selectFromTableListentries__ to _get_ information it requires from __Listentries__.
+
+
+

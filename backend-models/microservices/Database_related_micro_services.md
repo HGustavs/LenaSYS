@@ -625,6 +625,11 @@ SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;
 ```sql
 SELECT * FROM listentries WHERE visible = '3'
 ```
+- cid __AND__ vers __AND__ kind=3 :  entryname, kind, lid, moment
+```sql
+SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:vers AND (kind=3)
+```
+
 <br>
 
 ---
@@ -1152,7 +1157,7 @@ Performes an insert into the table __settings__. Parameters needed:
 
 <br>
 
-### selectFromUserAnswer --USED ONLY BY highscoreservice--
+### selectFromUserAnswer
 Gathers information from the table __userAnswer__. parameters used 
 #### different querys paramaters and retrived information 
 
@@ -1164,6 +1169,17 @@ __SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.grade 
 - quiz
 - moment
 
+#### getUserAnswar
+- cid __AND__ vers : hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited
+```sql
+SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers
+```
+
+<br>
+
+---
+
+<br>
 
 ### deliteFromTableUserAswar  -- ONLY USED BY deleteDuggaVariant-- 
 Removes row from table __userAnswer__. Parameters needed:
