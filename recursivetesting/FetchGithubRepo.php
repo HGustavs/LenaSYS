@@ -131,6 +131,7 @@ function bfs($url, $cid, $opt)
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {
+                            insertToMetaData($cid, $item);
                             array_push($visited, $item['url']);
                             array_push($fifoQueue, $item['url']);
                         }

@@ -579,7 +579,6 @@
                     try{
                         $cid = getOPG('courseid');
                         $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-                
                         $query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
                         $query->bindParam(':cid', $cid);
                         $query->execute();
