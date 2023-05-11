@@ -145,7 +145,7 @@
 	function updateGithubRepo($repoURL, $cid) {
 		clearGitFiles($cid); // Clear the files before changing git repo
 		
-		$lastCommit = getCommit($url); // Get the latest commit from the new URL
+		$lastCommit = getCommit($repoURL); // Get the latest commit from the new URL
 	
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare("UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :cid"); 
@@ -160,7 +160,7 @@
 			print_r($error);
 			echo $errorvar;
 		} else {
-			bfs($url, $cid, "REFRESH");
+			bfs($repoURL, $cid, "REFRESH");
 		}
 	}
 
