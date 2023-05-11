@@ -9641,9 +9641,9 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the loop rectangle looking thing, its not just a rect with rx since only 3 out of 4 corners should be rounded. 
+        //svg for the loop rectangle looking thing
         //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
-        str += `<path class='text'
+        /* str += `<path 
                 d="M${linew},${linew}
                     h${(boxw-sequenceCornerRadius)-(linew*2)}
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius}
@@ -9656,7 +9656,17 @@ function drawElement(element, ghosted = false)
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='none'
-            />`;
+            />`; */
+            str += `<rect class='text'
+            x='${linew}'
+            y='${linew}'
+            width='${boxw}'
+            height='${boxh}'
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='none'
+            rx='${sequenceCornerRadius}'
+        />`;
         //svg for the small rect in corner
         str += `<rect class='text'
                 x='${linew}'
