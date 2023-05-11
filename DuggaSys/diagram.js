@@ -12382,7 +12382,7 @@ function setSequenceDashedLines(){
     for (let i = 0; i < context.length; i++) {
         if (context[i].numberOfDashedLines != null) {
             context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
-            if (numberOfDashedLines == 0) {
+            if (context[i].numberOfDashedLines == 0) {
                 context[i].name = "Loop";
             } else {
                 context[i].name = "Alt";
