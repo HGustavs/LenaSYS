@@ -9658,8 +9658,8 @@ function drawElement(element, ghosted = false)
                 fill='none'
             />`; */
             str += `<rect class='text'
-            x='${0}'
-            y='${0}'
+            x='${linew}'
+            y='${linew}'
             width='${boxw-(linew*2)}'
             height='${boxh-(linew*2)}'
             stroke-width='${linew}'
