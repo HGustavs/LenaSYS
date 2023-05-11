@@ -74,7 +74,7 @@ include_once ".../test4";
             
             $motherTest_json = file_get_contents('motherTestJSON.json');
             $decoded_json = json_decode($motherTest_json, true);
-            echo $motherTest_json['Test 1'];
+            
             
 
             $test = json_decode($_GET["Test"]);
@@ -116,7 +116,7 @@ include_once ".../test4";
                         </table>
                         ";
 
-                        print_r($motherTest_json);
+                        print_r($test);
 
             ?>
    </body>
