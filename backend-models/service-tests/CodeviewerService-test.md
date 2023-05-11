@@ -87,12 +87,34 @@ true give $writeAccess="w";, else $writeAccess="s";
 Username: 2
 Password: Kong
 ```
+###Creation of new codeexemple that is visable
+```
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9012', NULL, NULL, NULL, 1338, 0, 1, 0);
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9012,2,5,1,2,'undefined', 2, 0, null);
+```
+**Prints out so we know starting value**
+```
+SELECT exampleid, templateid 
+FROM codeexample;
+```
+
+**Update, test if templates work**
+```
+UPDATE codeexample 
+SET templateid = (Number you wanna test) 
+WHERE exampleid = (exampleId of testsubject);
+```
+
+**Prints out so we can see if update was successful**
+```
+select * from codeexample where exampleid = 9023;
+```
 ###Values
 ```
 Send{
   $opt = "SETTEMPL";
   $templateNumber = 10;
-  $exampleId = 9013;
+  $exampleId = 9023;
   $courseId = 1885;
   $courseVersion = 1337;
   $i = 1;
@@ -131,29 +153,7 @@ output{
   "courseversion":
 }
 ```
-###Creation of new codeexemple that is visable
-```
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9012,2,5,1,2,'undefined', 2, 0, null);
-insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9012', NULL, NULL, NULL, 1338, 0, 1, 0);
-```
-**Prints out so we know starting value**
-```
-SELECT exampleid, templateid 
-FROM codeexample;
-```
 
-**Update, test if templates work**
-```
-UPDATE codeexample 
-SET templateid = (Number you wanna test) 
-WHERE exampleid = (exampleId of testsubject);
-```
-
-**Prints out so we can see if update was successful**
-```
-SELECT exampleid, templateid 
-FROM codeexample;
-```
 
 ***
 ##EDITEXAMPLE Line 160
@@ -174,11 +174,11 @@ Password: Kong
 ###MySQL Pre edit
 **Creation of new codeexemple that is visable**
 ```
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
 ```
 ```
-Select * from codeexample where exampleid 9021; //The number you wanna test
+select * from codeexample where exampleid = 9023;
 ```
 ###Values
 ```
@@ -186,7 +186,7 @@ Send{
   $opt = "EDITEXAMPLE";
   $playlink = NULL;
   $exampleName = New Code;
-  $sectionName = New Code9021;
+  $sectionName = New Code9023;
   $beforeId = NULL;
   $afterId = NULL;
   $courseId = 1885;
