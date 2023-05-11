@@ -9649,9 +9649,9 @@ function drawElement(element, ghosted = false)
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius}
                     v${(boxh-(sequenceCornerRadius*2))-(linew*2)}
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${(sequenceCornerRadius*-1)},${sequenceCornerRadius}
-                    h${((boxw-linew)-(sequenceCornerRadius*2))*-1}
+                    h${((boxw-(linew*2))-(sequenceCornerRadius*2))*-1}
                     a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${(sequenceCornerRadius*-1)},${(sequenceCornerRadius*-1)}
-                    v${(boxh-sequenceCornerRadius-linew)*-1}
+                    v${(boxh-sequenceCornerRadius-(linew*2))*-1}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
