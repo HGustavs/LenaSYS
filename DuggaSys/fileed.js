@@ -516,10 +516,18 @@ function filterFilesByKind(kind){
         this.firstChild.innerHTML = ++i;
     });
 }
-function setBackgroundForOddEvenRows(){
-	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-sectioned-table-hi)");
-    $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-sectioned-table-lo)");
+
+function setBackgroundForOddEvenRows() {
+    const rows = document.querySelectorAll('#fileLink table tbody tr');
+    for (let i = 0; i < rows.length; i++) {
+      if (i % 2 == 0) {
+        rows[i].style.background = 'var(--color-sectioned-table-hi)';
+      } else {
+        rows[i].style.background = 'var(--color-sectioned-table-lo)';
+      }
+    }
 }
+
 //Sort files by alphabetical order after sorting by kind
 function sortFiles(asc){
     var rows, switching, i, x, y, shouldSwitch;
