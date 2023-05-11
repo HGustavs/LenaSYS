@@ -89,35 +89,35 @@ function getIndexFile($url) {
 	$indexFilePath = "/index.txt";
 	$url = $url . $indexFilePath;
 
-	$headers = get_headers($url);
-  if(substr($headers[0], 9, 3) == "200"){
-		// Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
-		$opts = [
-			'http' => [
-			'method' => 'GET',
-			'header' => [
-			'User-Agent: PHP',
-				// If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
-				// simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
-				// To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
-				// Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
-				//'Authorization: Bearer YOUR_GITHUB_API_KEY'
-				]
+	// Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
+	$opts = [
+		'http' => [
+		'method' => 'GET',
+		'header' => [
+		'User-Agent: PHP',
+			// If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
+			// simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
+			// To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
+			// Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
+			//'Authorization: Bearer YOUR_GITHUB_API_KEY'
 			]
-		];
-		// Starts a stream with the required headers
-		$context = stream_context_create($opts);
-		// Fetches the data with the stream included
-		$data = @file_get_contents($url, true, $context);
-		if($data) {
-			$json = json_decode($data, true);
-			if($json) {
-				//Get content of JSON-object and split files to individual index of the array
-				$array = file_get_contents($json['download_url']);
-				return explode("\n", $array);
-			}
+		]
+	];
+	// Starts a stream with the required headers
+	$context = stream_context_create($opts);
+	// Fetches the data with the stream included
+	
+	if($data = @file_get_contents($url, true, $context)) {
+		$json = json_decode($data, true);
+		if($json) {
+			//Get content of JSON-object and split files to individual index of the array
+			$array = file_get_contents($json['download_url']);
+			return explode("\n", $array);
 		}
-	}	
+	} else {
+		return false;
+	}
+	
 }
 
 function bfs($url, $cid, $opt) 
