@@ -604,7 +604,10 @@ SELECT entryname FROM listentries WHERE vers=:cversion AND cid=:cid AND (kind=1 
 ```sql
 SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;
 ```
-
+- visible = 3 : *
+```sql
+SELECT * FROM listentries WHERE visible = '3'
+```
 <br>
 
 ---
