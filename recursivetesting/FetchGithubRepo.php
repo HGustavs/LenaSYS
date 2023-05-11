@@ -86,7 +86,8 @@ function downloadToWebServer($cid, $item)
     
 //Retrieves the content of a repos index-file
 function getIndexFile($url) {
-	$url = $url . "/index.txt";
+	$indexFilePath = "/index.txt";
+	$url = $url . $indexFilePath;
   // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
   $opts = [
     'http' => [
@@ -108,6 +109,7 @@ function getIndexFile($url) {
   if($data) {
     $json = json_decode($data, true);
     if($json) {
+			//Get content of JSON-object and split files to individual index of the array
       $array = file_get_contents($json['download_url']);
 	    return explode("\n", $array);
     }
@@ -150,10 +152,9 @@ function bfs($url, $cid, $opt)
             if ($json) {
                 foreach ($json as $item) {
 									if ($item['type'] == 'file') {
-										//if item is part of filestoDownload
+										//If file is part of filestoDownload (Index file)
 										if(in_array($item['name'], $filesToDownload)){
 											// Checks if the fetched item is of type 'file'
-											print($item['name'] . "\n");
 											if($opt == "REFRESH") {
 												insertToMetaData($cid, $item);
 											}
