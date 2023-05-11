@@ -9683,7 +9683,6 @@ function drawElement(element, ghosted = false)
                 v${boxh/10}
                 l${((boxw/10)-sequenceCornerRadius)/4},${(boxh/10)/3}
                 H${linew}
-                V${linew}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
