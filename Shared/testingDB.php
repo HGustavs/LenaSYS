@@ -72,10 +72,10 @@ updateCoursesyspw();
 
 // Update coursesyspw.php to include testdatabase
 function updateCoursesyspw() {
-	$filename = "../coursesyspw.php";
+	$filename = "../../coursesyspw.php";
 	if(!file_exists($filename))
 	{
-		echo $filename."doesn't exist";
+		echo $filename." doesn't exist<br>";
 	}
 
 	$str = 'define("TESTDB", "{$dbName}");';
@@ -91,13 +91,13 @@ function updateCoursesyspw() {
 
 		if(file_get_contents($filename, $write) === false)
 		{
-			echo "can't write to file";
+			echo "can't write to file<br>";
 			exit;
 		}
 		echo "Success writing to {$filename}";
 	}
 	else{
-		echo $str." already exists";
+		echo $str." already exists<br>";
 		exit;
 	}
 }
