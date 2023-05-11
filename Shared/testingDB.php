@@ -25,6 +25,7 @@ $query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHER
 if(!$query->execute()) {
 	$error = $query->errorInfo();
 	echo "<h4> Error checking for database: ".$error[2]."</h4>";
+	exit;
 }
 else{
 	// drop database, removing all changes
@@ -34,6 +35,7 @@ else{
 	if(!$query->execute()) {
 		$error = $query->errorInfo();
 		echo "<h4> Error dropping database: ".$error[2]."</h4>";
+		exit;
 	}
 	else{
 		echo "<h2>Database reset</h2>";
@@ -46,6 +48,7 @@ $query = $pdo->prepare("CREATE DATABASE IF NOT EXISTS ".$dbName);
 if(!$query->execute()) {
 	$error = $query->errorInfo();
 	echo "<h4> Error creating database: ".$error[2]."</h4>";
+	exit;
 }
 else{
 	echo "<h4>Database: ".$dbName." created/already exists, no errors</h4>";
@@ -61,9 +64,42 @@ if(file_exists($dir."/".$file))
 }
 else{
 	echo "<h3> File doesn't exist: ".$file."</h3>";
+	exit;
 }
 
+updateCoursesyspw();
 
 
+// Update coursesyspw.php to include testdatabase
+function updateCoursesyspw() {
+	$filename = "../coursesyspw.php";
+	if(!file_exists($filename))
+	{
+		echo $filename."doesn't exist";
+	}
+
+	$str = 'define("TESTDB", "{$dbName}");';
+	$contents = file_get_contents($filename);
+	$pos = strpos($contents, $str);
+
+	if($pos === false)
+	{
+		$find = strpos($contents, '?>');
+		$pre = substr($contents, 0, $find);
+		$post = substr($contents, $find);
+		$write = $pre.$str.$post;
+
+		if(file_get_contents($filename, $write) === false)
+		{
+			echo "can't write to file";
+			exit;
+		}
+		echo "Success writing to {$filename}";
+	}
+	else{
+		echo $str." already exists";
+		exit;
+	}
+}
 
 ?>
