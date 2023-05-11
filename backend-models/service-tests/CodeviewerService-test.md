@@ -243,16 +243,20 @@ Password: Kong
 ###MySQL Pre edit
 **Creation of new codeexemple that is visable**
 ```
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
-/*
-MORE VALUES
-*/
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
+select * from box where exampleid=(select max(exampleid) from box);
 ```
 ###Values
 ```
 Send{
-  
+  $boxTitle
+  $boxContent
+  $wordlist
+  $filename
+  $fontsize
+  $boxId
+  $exampleId
 }
 
 ```
@@ -294,25 +298,10 @@ Title: Title EditContentTestTitle	Kind: Document
 Worldist: Plain Text	File: Greger.txt
 Font size: 11 px
 
-{
-  "opt": "EDITCONTENT",
-  "wordlists": [
-    [ "1", "JS" ],
-    [ "2", "PHP" ],
-    [ "3", "HTML" ],
-    [ "4", "Plain Text" ],
-    [ "5", "Java" ],
-    [ "6",’ "SR" ],
-    [ "7", "SQL" ]
-  ],
-}
-
-
-
-
 ##EDITTITLE line 281
 —---------------------------------------------------------------------------------
-FIXED, Do new test
+NOT FIXED
+—---------------------------------------------------------------------------------
 
 ##DELEXAMPLE Line 294
 —-------------------------------------------------------------
