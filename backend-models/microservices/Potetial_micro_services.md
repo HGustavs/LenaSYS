@@ -740,3 +740,28 @@ Uses service __selectFromTableListentries__ to _get_ information it requires fro
 
 Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
 Uses service __insertIntoTableListentries__ to makes _inserts_ into the table __listentries__.
+
+
+<br>
+
+---
+
+<br>
+
+### getUserDuggaFeedback
+Retrives all information
+Uses service __selectFromTableUserduggafeedback__ to _get_ information it requires from __userduggafeedback__.
+<br>
+
+Retrives the average score
+Uses service __selectFromTableUserduggafeedback__ to _get_ information it requires from __userduggafeedback__.
+
+<br>
+
+---
+
+<br>
+
+### getDeletedListentries
+Retrives all removed (but not delited from db) listentries
+Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.

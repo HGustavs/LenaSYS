@@ -23,6 +23,7 @@
 - score
 - group
 - list
+- userduggafeedback
 
  <br>
   <br>
@@ -1291,3 +1292,30 @@ Performes an insert into the table __list__. Parameters needed:
 - lid
 - responsible =  Christina Sjogren (this is preset in the code)
 - cid
+
+
+
+
+
+
+<br>
+
+---
+## -------------------------- ==userduggafeedback== -------------------------------------------------------
+---
+
+<br>
+<br>
+
+### selectFromTableuserduggafeedback  --only used by getUserDuggaFeedback-- 
+Gathers information from the table __userduggafeedback__.
+
+#### different querys paramaters and retrived information 
+- lid __AND__ cid : *
+```sql
+SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid
+```
+- lid __AND__ cid : avrage score
+```sql
+SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid"
+```
