@@ -696,6 +696,19 @@
                 </span>
             </div>
         </fieldset>   
+        <fieldset id = "localSaveField">
+        <legend aria-hidden="true">Save</legend>
+            <div id="localSave" class="diagramIcons" onclick="toggleErrorCheck()">
+                <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
+                <span class="toolTipText"><b>Save current diagram</b><br>
+                    <p>Click to save current diagram</p>
+                    <p>Saves current diagram</p>
+                    <br>
+                    <p id="tooltip-CLICK_SAVE" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+        </fieldset>   
+
         <!-- <fieldset>
             <legend>Include</legend>
             <div id="Include" class="diagramIcons" onclick="toggleErTable()">
