@@ -12376,7 +12376,7 @@ function toggleActorOrbject(type){
     showdata();
 }
 /**
- * @description toggles the sequence loop/alt element's dashed line running through the middle on or off
+ * @description sets the attribute numberOfDashedLines in sequenceLoopOrAlt to the input box numberOfDashedLines's value.
  */
 function setSequenceDashedLines(){
     //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
