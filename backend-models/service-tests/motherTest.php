@@ -73,8 +73,8 @@ include_once ".../test4";
         <?php    
             
             $motherTest_json = file_get_contents('motherTestJSON.json');
-            $decoded_json = json_decode($motherTest_json, false);
-            echo $motherTest_json->coursename;
+            $decoded_json = json_decode($motherTest_json, true);
+            echo $motherTest_json['Test 1'];
             
 
             $test = json_decode($_GET["Test"]);
