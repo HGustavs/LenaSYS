@@ -17,7 +17,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - sectionedservice __==finished==__
 - profileservice __==finished==__
 - resultedservice __==finished==__
-- showDuggaservice __WORK IN PROGRESS__ 
+- showDuggaservice __==finished==__ 
 
 ---
 ---
@@ -854,6 +854,7 @@ Uses service __selectFromTableSubmission__ to _get_ information it requires from
 
 If no match on _hash_, retreive all submissions
 Uses service __selectFromTableSubmission__ to _get_ information it requires from __submission__.
+
 <br>
 
 ---
@@ -873,3 +874,18 @@ Uses the services __updateTableUserAnswer__ to change the content of these colum
 
 #### createUserAnswer
 Uses service __insertIntoTableUserAnswer__ to makes _inserts_ into the table __userAnswer__.
+
+<br>
+
+---
+
+<br>
+
+### loadDugga
+Get information based on __hash__.
+Uses service __selectFromUserAnswer__ to _get_ information it requires from __userAnswer__ and __variant__.
+<br>
+
+If _hash_ did not work, retrive all answeres for that __moment__. 
+Uses service __selectFromUserAnswer__ to _get_ information it requires from __userAnswer__ and __variant__.
+

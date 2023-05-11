@@ -631,6 +631,10 @@ SELECT * FROM listentries WHERE visible = '3'
 ```sql
 SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:vers AND (kind=3)
 ```
+- lid : entryname
+```sql
+SELECT entryname FROM listentries WHERE lid=:moment
+```
 
 <br>
 
@@ -946,11 +950,16 @@ UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE c
 <br>
 
 
-### selectFromQuiz  --only used by copyCourseVersion--
+### selectFromQuiz 
 Gathers information from the table __quiz__.
 
 #### different querys paramaters and retrived information 
+
 - cid : *
+- quiz.id __AND__ vid __AND__ cid:  quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param,l.entryname AS dugga_title
+```sql
+SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS useranswer,variantanswer,param,l.entryname AS dugga_title FROM quiz LEFT JOIN variant ON quiz.id=variant.quizID LEFT JOIN userAnswer ON userAnswer.variant=variant.vid AND hash=:hash AND password=:hashpwd LEFT JOIN (select cid,link,entryname from listentries) as l ON l.cid=l.cid AND l.link=quiz.id WHERE quiz.id=:did AND vid=:variant AND l.cid=:cid LIMIT 1;
+```
 
 <br>
 
@@ -1180,6 +1189,16 @@ SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Tim
 - hash: password,timesSubmitted,timesAccessed,grade
 ```sql
 SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;
+```
+
+#### loadDugga
+- hash: vid,variant.variantanswer __AS__ variantanswer,useranswer,param,cid,vers,quiz 
+```sql
+SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash
+```
+- moment: vid,variant.variantanswer __AS__ variantanswer,useranswer,param,cid,vers,quiz 
+```sql
+SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE moment=:moment
 ```
 
 <br>
