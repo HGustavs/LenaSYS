@@ -9656,16 +9656,16 @@ function drawElement(element, ghosted = false)
         //svg for the small label in top left corner
         str += `<path 
             d="M${linew+sequenceCornerRadius},${linew}
-                h${(boxw/10)-sequenceCornerRadius}
+                h${(boxw/10)}
                 v${boxh/10}
-                l${(((boxw/10)-sequenceCornerRadius)/2)*-1},${(boxh/10)/2}
+                l${((boxw/10)/2)*-1},${(boxh/10)/2}
                 H${linew}
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='none'
         />`;
-        str += `<text class='text' x='${((boxw/10)-sequenceCornerRadius)/2}' y='${((boxh/10) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `<text class='text' x='${((boxw/10))/2}' y='${((boxh/10) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
