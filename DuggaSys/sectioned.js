@@ -3581,12 +3581,13 @@ async function refreshCodeExample(exampleid) {
 //------------------------------------------------------------------------------
 function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
+  console.log("RefreshButton Clicked! A");
   retdata.entries.map(sectionListEntry => {
     //If current entry is within chosen moment and is a codeexample, try to refresh it
-    console.log("RefreshButton Clicked! A");
+    console.log("RefreshButton Clicked! B");
     if(sectionListEntry.moment == momentID && sectionListEntry.kind == 2){
       refreshCodeExample(sectionListEntry.link);
-      console.log("RefreshButton Clicked! B");
+      console.log("RefreshButton Clicked! C");
     }
   });
 }
