@@ -71,13 +71,15 @@ include_once ".../test4";
         <input type="checkbox" id="sort_failed" name="sort_failed" value="failed_value">
         <label for='sort_failed'>Failed tests</label>
         <?php    
-            //$test = json_decode($_GET["name"]);
+            
             $motherTest_json = file_get_contents('motherTestJSON.json');
             $decoded_json = json_decode($motherTest_json, false);
             echo $motherTest_json->coursename;
             
+
+            $test = json_decode($_GET["Test"]);
             echo 'Choose table: ';
-            echo '<select onchange="this.form.submit()" name="name" >';
+            echo '<select onchange="this.form.submit()" Test="name" >';
                 foreach($test as $row){
                     echo '<option value="'.$row['name'].'"';
                         if(isset($_POST['name'])){
