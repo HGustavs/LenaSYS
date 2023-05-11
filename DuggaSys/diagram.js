@@ -2851,7 +2851,6 @@ function changeState()
     const element =  context[0],
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
-        console.log(newType);
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
         displayMessage("error", `
@@ -2910,6 +2909,7 @@ function changeState()
 
     }
     else if(element.type=='IE') {
+        console.log(newType);
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
