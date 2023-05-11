@@ -25,6 +25,7 @@
 - list
 - userduggafeedback
 - groupdugga
+- submission
 
  <br>
   <br>
@@ -1175,6 +1176,11 @@ __SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.grade 
 ```sql
 SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers
 ```
+#### submitDugga
+- hash: password,timesSubmitted,timesAccessed,grade
+```sql
+SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;
+```
 
 <br>
 
@@ -1182,7 +1188,47 @@ SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Tim
 
 <br>
 
-### deliteFromTableUserAswar  -- ONLY USED BY deleteDuggaVariant-- 
+### insertIntoTableUserAnswer  --only used by submitDugga-- 
+Performes an insert into the table __userAnswer__. Parameters needed:
+
+#### createMOTD
+- cid
+- quiz
+- moment
+- vers
+- variant
+- hash
+- password
+- timesSubmitted = 1 (preset value)
+- timesAccessed = 1 (preset value)
+- useranswer
+```sql
+INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,1,1,:useranswer,now());
+```
+<br>
+
+---
+
+<br>
+
+### updateTableUserAnswer -- ONLY USED BY submitDugga-- 
+Updates values in the table __userAnswer__. Columns that are updated: 
+
+#### submitDugga
+- useranswer
+- timesSubmitted
+```sql
+UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timesSubmitted=timesSubmitted+1 WHERE hash=:hash AND password=:hashpwd;
+```
+
+
+<br>
+
+---
+
+<br>
+
+### deliteFromTableUserAnswer  -- ONLY USED BY deleteDuggaVariant-- 
 Removes row from table __userAnswer__. Parameters needed:
 
 #### deliteExample
@@ -1409,4 +1455,32 @@ Updates values in the table __groupdugga__. Columns that are updated:
 - active_users
 ```sql
 UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
+```
+
+
+
+
+
+
+<br>
+
+---
+## -------------------------- ==submission== -------------------------------------------------------
+---
+
+<br>
+<br>
+
+## selectFromTableSubmission 
+Gathers information from the table __submission__.
+
+#### different querys paramaters and retrived information
+#### processDuggaFile 
+- hash : subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash
+```sql
+SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash ORDER BY subid,fieldnme,updtime asc;
+```
+- segment : subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash
+```sql
+SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE segment=:moment ORDER BY subid,fieldnme,updtime asc;
 ```

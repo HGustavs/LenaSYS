@@ -838,4 +838,38 @@ Uses service __selectFromTableUserAnswar__ to _get_ information it requires from
 <br>
 
 Uses service __insertIntoTableGroupdugga__ to makes _inserts_ into the table __groupdugga__.
-Uses service __updateTableGroupdugga__ to _get_ information it requires from __groupdugga__.
+Uses the services __updateTableGroupdugga__ to change the content of these columns:
+- active_users
+
+<br>
+
+---
+
+<br>
+
+### processDuggaFile
+Search with __hash__
+Uses service __selectFromTableSubmission__ to _get_ information it requires from __submission__.
+<br>
+
+If no match on _hash_, retreive all submissions
+Uses service __selectFromTableSubmission__ to _get_ information it requires from __submission__.
+<br>
+
+---
+
+<br>
+
+### submitDugga
+Get submission based on __hash__.
+Uses service __selectFromUserAnswer__ to _get_ information it requires from __userAnswer__.
+<br>
+
+These are not services but __methods__. 
+#### updateUserAnswer
+Uses the services __updateTableUserAnswer__ to change the content of these columns:
+- useranswer
+- timesSubmitted
+
+#### createUserAnswer
+Uses service __insertIntoTableUserAnswer__ to makes _inserts_ into the table __userAnswer__.
