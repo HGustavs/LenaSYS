@@ -159,7 +159,7 @@ function fetchLatestCommit(gitHubURL)
 	var dataCheck;
 	$.ajax({
 		async: false,
-		url: "../recursivetesting/getLatestCommit.php",
+		url: "../DuggaSys/gitcommitService.php",
 		type: "POST",
 		data: {'githubURL':gitHubURL, 'action':'getCourseID'},
 		success: function() { 
