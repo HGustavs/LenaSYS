@@ -121,7 +121,9 @@ function bfs($url, $cid, $opt)
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
                         if($opt == "REFRESH") {
+                            insertToFileLink($cid, $item);
                             insertToMetaData($cid, $item);
+                            downloadToWebserver($cid, $item); 
                         }
                         else if($opt == "DOWNLOAD") {
                             insertToFileLink($cid, $item);
