@@ -344,10 +344,6 @@ output{
 ```
 
 
-Expected output:
-{"deleted":true,"debug":"NONE!"}
-
-
 
 		
 		
