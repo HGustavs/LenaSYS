@@ -9657,7 +9657,7 @@ function drawElement(element, ghosted = false)
         str += `<path 
             d="M${(linew+sequenceCornerRadius)+(boxw/15)},${linew}
                 v${boxh/10}
-                l${((boxw/45))*-1},${(boxh/20)}
+                l${((boxw/50))*-1},${(boxh/20)}
                 H${linew}
             "
             stroke-width='${linew}'
