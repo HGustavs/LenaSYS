@@ -6697,7 +6697,7 @@ function generateContextProperties()
                             //a checkbox for checking if its dashed or not
                             str += `<div>`
                             //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
-                            str +=`<input id="number" type="number" value='${element[property]}' />`
+                            str +=`<input id="numberOfDashedLines" type="number" value='${element[property]}'/>`
                             str += `</div>`
                             break;
                         default:
@@ -6716,7 +6716,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();setSequenceDashedLines();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -12378,15 +12378,11 @@ function toggleActorOrbject(type){
 /**
  * @description toggles the sequence loop/alt element's dashed line running through the middle on or off
  */
-function toggleDashedLine(){
+function setSequenceDashedLines(){
     //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
     for (let i = 0; i < context.length; i++) {
-        if (context[i].hasDashedLine != null) {
-            if (document.getElementById("dashedLineToggle").checked) {
-                context[i].hasDashedLine = true;
-            } else {
-                context[i].hasDashedLine = false;
-            }
+        if (context[i].numberOfDashedLines != null) {
+            context[i].numberOfDashedLines = document.getElementById("numberOfDashedLines").value;
         }
     }
     showdata();
