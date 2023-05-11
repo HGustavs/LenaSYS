@@ -157,6 +157,7 @@ Uses service __updateTableUser__ to update one of these columns in the table __u
 
 
 ### addClass
+
 Uses service __insertIntoClass__ to makes _inserts_ into the table __class__.
 
 
@@ -167,7 +168,7 @@ Uses service __insertIntoClass__ to makes _inserts_ into the table __class__.
 <br>
 
 
-#### changeUserPassword_accessed (this is not a service)
+#### changeUserPassword_accessed
 Uses service __updateUserPassword__ to _update_ the column "_password_" in the table __user__. 
 
 
