@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {name: "Activation", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", numberOfDashedLines: 3} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {name: "Activation", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", numberOfDashedLines: 4} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -9692,18 +9692,19 @@ function drawElement(element, ghosted = false)
         str += `<path class="text" 
             d="M${boxw-linew},${(boxh-(linew*2))/(numberOfDashedLines+1)}
             H${linew}`
-        //loop through all the number of dashed lines requested and draw them out evenly spaced. No lines at the far top or bottom of the element.
+        //loop through the rest of the dashed lines using the first one as reference for the relative m.
         for (let i = 0; i < element.numberOfDashedLines; i++) {
             str += `
                 m${boxw-linew},${(boxh-(linew*2))/(numberOfDashedLines+1)}
-                H${linew}
-                "
+                H${linew}`
+        }
+        //finally, close the path off with appropriate values.
+        str += `"
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-        }
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
