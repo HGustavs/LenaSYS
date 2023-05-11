@@ -3583,8 +3583,10 @@ function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   retdata.entries.map(sectionListEntry => {
     //If current entry is within chosen moment and is a codeexample, try to refresh it
+    console.log("RefreshButton Clicked! A");
     if(sectionListEntry.moment == momentID && sectionListEntry.kind == 2){
       refreshCodeExample(sectionListEntry.link);
+      console.log("RefreshButton Clicked! B");
     }
   });
 }
