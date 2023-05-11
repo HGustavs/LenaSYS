@@ -93,6 +93,10 @@ SELECT downloadURL FROM gitFiles WHERE cid=".$cid." AND fileName=".$file.";
 Gathers information from the table __user__. parameters used 
 #### different querys paramaters and retrived information 
 - uid : username 
+- uid : password
+```sql
+SELECT password FROM user WHERE uid=:userid LIMIT 1;
+```
 <br>
 
 
@@ -115,20 +119,30 @@ Performes inserts into the table __user__, Parameters used:
 ### updateTableUser 
 
 Updates values in the table __user__ in the database, columns that are updated.
-#### UpdateUserInformation: firstname
+#### UpdateUserInformation:
+__firstname__ 
 - firstname
-#### UpdateUserInformation: lastname
+__lastname__
 - lastname
-#### UpdateUserInformation: ssn
+__ssn__
 - ssn
-#### UpdateUserInformation: username
+__username__
 - username
-#### UpdateUserInformation: class
+__class__
 - class
-#### UpdateUserAndUsercourse: password
-#### changeUserPassword
+#### updateUserPassword
 - password 
+```sql
+UPDATE user SET password=:PW WHERE uid=:userid
+```
 
+#### changeProfileValues:
+__securityquestion__ 
+- securityquestion
+- securityquestionanswer
+```sql
+UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid
+```
 <br>
  <br>
   <br>
@@ -148,7 +162,10 @@ Gathers information from the table __user_course__. parameters used
 
 #### getCourseGroupsAndMembers
 - cid __AND__ vers  : user.uid, user.username, user.email, user_course.groups __FROM__ user, user_course
-
+- uid __AND__ access=W : access
+```sql
+SELECT access FROM user_course WHERE uid=:userid AND access='W' LIMIT 1;
+```
 <br>
 
 ---

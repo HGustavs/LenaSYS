@@ -14,8 +14,8 @@ This document primaraly focuses on the services provided by the service-files, t
 - duggaedservice __==finished==__
 - fileedservice __==finished==__
 - highscoreservice __==finished==__
-- sectionedservice __WORK IN PROGRESS__
-- profileservice 
+- sectionedservice __==finished==__
+- profileservice __WORK IN PROGRESS__
 - resultedservice
 - sectiondservice : __No document found manual research needed__  
 - showDuggaservice
@@ -113,6 +113,14 @@ __USED BY__
 Uses the services __updateTableCourse__ to change the content of these columns:
 - activeversion
 
+### updateUserPassword
+__USED BY__
+- changeUserPassword_accessed
+- changeProfileValues
+
+Uses the services __updateTableUser__ to change the content of these columns:
+- password
+
 ---
 ## ----- _accessedservice_ -----------------------------------------------------
 ---
@@ -160,8 +168,8 @@ Uses service __insertIntoClass__ to makes _inserts_ into the table __class__.
 <br>
 
 
-### changeUserPassword
-Uses service __updateTableUser__ to _update_ the column "_password_" in the table __user__. 
+#### changeUserPassword_accessed (this is not a service)
+Uses service __updateUserPassword__ to _update_ the column "_password_" in the table __user__. 
 
 
 <br>
@@ -530,6 +538,8 @@ __WHERE__ cid __AND__ kind __AND__ filename;
 __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 
 <br>
+<br>
+<br>
 
 ---
 ## -------------------------------------- _highscoreservice_ --------------------------------
@@ -545,6 +555,8 @@ Uses service __selectFromTableScore__ to _get_ information it requires from __Sc
 Return score for a specific test.
 Uses service __selectFromTableScore__ to _get_ information it requires from __Score__ and __userAnswer__. 
 
+<br>
+<br>
 <br>
 
 ---
@@ -765,3 +777,30 @@ Uses service __selectFromTableUserduggafeedback__ to _get_ information it requir
 ### getDeletedListentries
 Retrives all removed (but not delited from db) listentries
 Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
+
+<br>
+<br>
+<br>
+
+---
+## ------------------------------------ _profileservice_ -----------------------------
+---
+
+<br>
+<br>
+profileService - handles password changes and challenge question
+
+### changeProfileValues    (writter comment: i think this service is small enough as is )
+
+Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
+Uses service __selectFromTableUser_course__ to _get_ information it requires from __user_course__.
+
+Statements below are methods and not services
+
+<br>
+
+#### updateSecurityQuestion
+Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
+
+#### updatePassword
+Uses service __updateUserPassword__ to _get_ information it requires from __user__.
