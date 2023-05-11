@@ -2867,9 +2867,9 @@ function changeState()
         if(element.kind != 'EREntity') {
             if (newType == 'SD') {
                 element.type = newType;
-                console.log(element.type);
-                console.log(element.kind);
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                generateContextProperties();
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
                 return;
             }
         }
@@ -2899,9 +2899,9 @@ function changeState()
         if (element.kind != 'UMLEntity') {
             if (newType == 'SD') {
                 element.type = newType;
-                console.log(element.type);
-                console.log(element.kind);
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                generateContextProperties();
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
                 return;
             }
             var property = document.getElementById("propertySelect").value;
@@ -2927,9 +2927,9 @@ function changeState()
         if (element.kind != 'IEEntity') {
             if (newType == 'SD') {
                 element.type = newType;
-                console.log(element.type);
-                console.log(element.kind);
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                generateContextProperties();
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
                 return;
             }
             var property = document.getElementById("propertySelect").value;
@@ -6681,7 +6681,7 @@ function generateContextProperties()
                 }
             }
             //uml relation
-            else if (element.kind = 'UMLRelation') {
+            else if (element.kind == 'UMLRelation') {
                 //ID MUST START WITH "elementProperty_"!!!!!
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6716,7 +6716,7 @@ function generateContextProperties()
                   str += '</select>'; 
             }
             //IE Relation
-            else if(element.kind = 'IERelation') {
+            else if(element.kind == 'IERelation') {
                 //ID MUST START WITH "elementProperty_"!!!!!
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6749,7 +6749,7 @@ function generateContextProperties()
                       }
                   str += '</select>'; 
             }
-            else if (element.kind = 'ERRelation') {
+            else if (element.kind == 'ERRelation') {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
