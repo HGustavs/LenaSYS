@@ -726,3 +726,17 @@ Uses service __selectFromTableBox__ to _get_ information it requires from __box_
 Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
 Uses service __selectFromTableGitFiles__ to _get_ information it requires from __gitFiles__.
 
+<br>
+
+---
+
+<br>
+
+### createGithubCodeexample
+Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
+Uses service __selectFromTableCourse__ to _get_ information it requires from __course__.
+Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
+<br>
+
+Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
+Uses service __insertIntoTableListentries__ to makes _inserts_ into the table __listentries__.

@@ -240,6 +240,10 @@ ORDER BY exampleid DESC LIMIT 1
 ```sql 
 SELECT cid FROM codeexample WHERE exampleid=:exampleid;
 ```
+- cid: runLink
+```sql
+SELECT runlink FROM codeexample WHERE cid=:cid;
+```
 
 <br>
 
@@ -256,11 +260,16 @@ Performes an insert into the table __codeexample__. Parameters needed:
 <br>
 
 #### createNewCodeexample
+#### createGithubCodeexample
 - cid
 - exampleid
 - sectionname
 - uid = 1
 - cversion
+```sql
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)
+```
 <br>
 
 #### updateListentrie
@@ -269,6 +278,7 @@ Performes an insert into the table __codeexample__. Parameters needed:
 - sectionname
 - uid = 1 (static value)
 - cversion
+
 
 <br>
 
@@ -589,6 +599,10 @@ These specific parameters are used in this query:
 ```sql
 SELECT entryname FROM listentries WHERE vers=:cversion AND cid=:cid AND (kind=1 or kind=0 or kind=4) AND (pos < (SELECT pos FROM listentries WHERE lid=:lid)) ORDER BY pos DESC LIMIT 1;
 ```
+- cid : pos
+```sql
+SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;
+```
 
 <br>
 
@@ -606,6 +620,7 @@ Performes an insert into the table __listentries__. Parameters needed:
 <br>
 
 #### createNewListentrie
+#### createGithubCodeexample
 - cid
 - vers
 - entryname
@@ -618,6 +633,10 @@ Performes an insert into the table __listentries__. Parameters needed:
 - gradesys
 - highscoremode
 - groupKind
+```sql
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)
+```
 
 <br>
 
@@ -702,12 +721,15 @@ UPDATE listentries SET visible=:visible WHERE lid=:lid
 <br>
 
 
-### selectFromCourse  --only used by createNewCourse--
+### selectFromCourse 
 Gathers information from the table __course__.
 
 #### different querys paramaters and retrived information 
 - no parameters : cid (orderd by cid, in DESC order, limeted to 1) 
-
+- cid : activeversion
+```sql
+SELECT activeversion FROM course WHERE cid=:cid
+```
 <br>
 
 ---
