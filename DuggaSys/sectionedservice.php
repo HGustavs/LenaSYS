@@ -505,7 +505,7 @@ if($gradesys=="UNK") $gradesys=0;
 					}
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
-				} else if(strcmp($opt,"CreGitEx")===0) {
+				} else if(strcmp($opt,"CREGITEX")===0) {
 
 					echo "<script> console.log('TESTING');</script>";
 					//$parts = explode('/', $url);

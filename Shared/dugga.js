@@ -1279,11 +1279,11 @@ function AJAXService(opt,apara,kind)
 			// }
 		});
 	}
-	else if(kind=="CreGitEx"){
+	else if(kind=="CREGITEX"){
 		$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
-			data: "opt"+opt+para,
+			data: "opt="+opt+para,
 			dataType: "json",
 			success: returnedSection
 

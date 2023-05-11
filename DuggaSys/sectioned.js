@@ -3016,7 +3016,7 @@ function createExamples(dir) {//TODO HERE
   console.log("dir: "+ codeExDir);
   cversid = 45656;
   console.log("cversid: "+ cversid);
-  AJAXService("CreGitEx", {courseid : cid, coursevers : cversid, dirname : codeExDir});
+  AJAXService("CREGITEX", {courseid : cid, coursevers : cversid, dirname : codeExDir});
 }
 
 // ------ Validates all versionnames ------
