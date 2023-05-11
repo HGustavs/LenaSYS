@@ -8790,7 +8790,7 @@ function calculateArrowBase(from, to, size)
         Then we add these values to the end point to get the actual coordinates for the arrow base.
     */
 
-    let ratio = size / Math.sqrt(Math.pow(from.x - to.x, 2)  + Math.pow(from.y - to.y, 2));
+    let ratio = size / Math.sqrt(Math.pow(from.x - to.x, 2) + Math.pow(from.y - to.y, 2));
     let x = to.x + (from.x - to.x) * ratio;
     let y = to.y + (from.y - to.y) * ratio;
     return new Point(x, y);
