@@ -1016,12 +1016,12 @@ const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
-const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
+
 const zoom1_25 = 0.36;
 const zoom1_5 = 0.555;
 const zoom2 = 0.75;
@@ -9041,8 +9041,8 @@ function drawElement(element, ghosted = false)
 
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
-    var boxw  = Math.round(element.width * zoomfact);
-    var boxh  = Math.round(element.height * zoomfact);
+    var boxw = Math.round(element.width * zoomfact);
+    var boxh = Math.round(element.height * zoomfact);
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
@@ -9114,10 +9114,10 @@ function drawElement(element, ghosted = false)
             height : ((boxh + (boxh/2 + (boxh * elemAttri/2)) + (boxh/2 + (boxh * elemFunc/2))) / zoomfact)
         }
         UMLHeight.push(UMLEntityHeight);
-
+        
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9199,7 +9199,7 @@ function drawElement(element, ghosted = false)
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
+                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}" 
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9225,7 +9225,7 @@ function drawElement(element, ghosted = false)
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9251,7 +9251,7 @@ function drawElement(element, ghosted = false)
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
-                    style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                    style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9298,7 +9298,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9390,7 +9390,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:5px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh /3))}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9451,7 +9451,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9504,7 +9504,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
+        style='left:0px; top:0px; margin-top:${((boxh/1.5))}px; width:${boxw}px;height:${boxh/2}px;`;
        
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9616,7 +9616,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
@@ -9629,13 +9629,33 @@ function drawElement(element, ghosted = false)
     //ER element
     else {
         // Create div & svg element
-        str += `
-                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+        if (element.kind == "EREntity") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
+                            margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
+        }
+        else if (element.kind == "ERAttr") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            margin-top:${((boxh / 2))}px;;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
+        }
+        else if (element.kind == "ERRelation") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            margin-top:${((boxh / 2.75))}px;;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
+        }
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
@@ -9649,6 +9669,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == "EREntity") {
+
             var weak = "";
 
             if(element.state == "weak") {
@@ -9705,7 +9726,7 @@ function drawElement(element, ghosted = false)
             }
             
         }
-        else if (element.kind == "ERRelation") {
+        else if (element.kind == "ERRelation") {         
 
             var numOfLetters = element.name.length;
             if (tooBig) {
