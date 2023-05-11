@@ -9655,10 +9655,14 @@ function drawElement(element, ghosted = false)
         />`;
         //svg for the small label in top left corner
         str += `<path 
-            d="M${(linew+sequenceCornerRadius)+(boxw/15)},${linew}
+            d="M${(linew+sequenceCornerRadius)},${linew}
+                h${boxw/15}
                 v${boxh/10}
                 l${((boxw/60))*-1},${(boxh/20)}
                 H${linew}
+                V${linew-sequenceCornerRadius}
+                a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius*-1}
+                z
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
