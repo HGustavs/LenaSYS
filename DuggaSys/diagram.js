@@ -4229,13 +4229,14 @@ function toggleGrid()
     // Toggle active grid + color change of button to clarify if button is pressed or not
     if (grid.style.display == "block") {
         grid.style.display = "none";
-        gridButton.style.backgroundColor ="#2E1A40";
+        gridButton.style.backgroundColor ="#614875";
         gridButton.style.color = "#ffffff";
+        gridButton.style.border = "3px solid #614875";
      } else {
         grid.style.display = "block";
         gridButton.style.backgroundColor ="transparent";
         gridButton.style.border = "3px solid #614875";
-        gridButton.style.color = "#614875";
+        gridButton.style.color = "bold #614875";
    }
 }
 
