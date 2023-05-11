@@ -2868,8 +2868,9 @@ function changeState()
 {
     const element =  context[0],
           oldType = element.type,
-          newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
-
+          newType = document.getElementById("typeSelect")?.value || undefined;
+          var oldRelation = element.state;
+          var newRelation = document.getElementById("propertySelect")?.value || undefined
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
         displayMessage("error", `
@@ -2878,7 +2879,7 @@ function changeState()
         )
         return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } else if (oldType == newType){
+    } else if (oldType == newType && oldRelation == newRelation){
         return;
     }
 
@@ -6654,7 +6655,7 @@ function generateContextProperties()
                     selected = "disjoint"
                 }
 
-                if(element.kind=="IERelation") {
+                if(element.kind =="IERelation") {
                     value = Object.values(inheritanceStateIE);
                 }
                 str += '<select id="propertySelect">';
@@ -9650,6 +9651,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
+        
         if (element.state == 'overlapping') {
                 str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/> 
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
