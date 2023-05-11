@@ -1013,7 +1013,7 @@ function updateContent(file, content, boxnumber)
 				alert("Error when updating content: " + e.message);
 			}
 			console.log("Timeout");
-			setTimeout("location.reload()", 10000); //SETBACK TO 500
+			setTimeout("location.reload()", 100000); //SETBACK TO 500
 		}
 	} else {
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
