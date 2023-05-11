@@ -8833,8 +8833,8 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-    if (element.kind == "sequenceActorAndObject") {
+    //some sequence objects get a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
         nodes += "<span id='md' class='node md'></span>";
     }
 
@@ -8846,7 +8846,7 @@ function addNodes(element)
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if (element.kind == "sequenceActorAndObject") {
+    if (element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
