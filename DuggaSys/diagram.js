@@ -9640,7 +9640,7 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
+        str += `<svg width='${boxw*3}' height='${boxh*3}'>`;
         //svg for the loop rectangle looking thing, its not just a rect with rx since only 3 out of 4 corners should be rounded. 
         //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
         str += `<path
@@ -9655,7 +9655,7 @@ function drawElement(element, ghosted = false)
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
-                fill='transparent'
+                fill='none'
             />`;
         //svg for the small rect in corner
         str += `<rect class='text'
