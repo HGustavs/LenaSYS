@@ -81,7 +81,7 @@ include_once ".../test4";
             echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" Test="name" >';
                 foreach($test as $row){
-                    echo '<option value="'.$row['name'].'"';*/
+                    echo '<option value="'.$row['name'].'"';
                    
                 
                    echo '</select>';
