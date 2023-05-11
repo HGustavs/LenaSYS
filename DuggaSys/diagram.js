@@ -4230,10 +4230,11 @@ function toggleGrid()
     if (grid.style.display == "block") {
         grid.style.display = "none";
         gridButton.style.backgroundColor ="#2E1A40";
+        gridButton.style.color = "#ffffff";
      } else {
         grid.style.display = "block";
         gridButton.style.backgroundColor ="transparent";
-        gridButton.style.border = "thin solid #614875";
+        gridButton.style.border = "3px solid #614875";
         gridButton.style.color = "#614875";
    }
 }
