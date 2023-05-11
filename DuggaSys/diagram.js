@@ -12444,7 +12444,7 @@ async function sendDiagramToServer()
     };
     try
     {
-    const response=await fetch("diagramservice.php", {method: "post", headers:{'Content-Type': 'application/json'}, body: JSON.stringify(objToSave)});
+    const response=await fetch("diagram.php", {method: "post", headers:{'Content-Type': 'application/json'}, body: JSON.stringify(objToSave)});
      const file=await response.text();
 }
 catch(error)
@@ -12452,6 +12452,7 @@ catch(error)
 console.error(error);
 }
 }
+sendDiagramToServer();
 
 /**
  * @description Stores the current diagram as JSON in localstorage

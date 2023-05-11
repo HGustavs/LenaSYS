@@ -3,6 +3,8 @@
     include_once "../../coursesyspw.php";
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
+    $fileTest=file_get_contents("php://input");
+    echo json_decode($fileTest);
 	#general vars regarding current dugga.
 	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
