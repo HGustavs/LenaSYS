@@ -522,9 +522,9 @@ function setBackgroundForOddEvenRows() {
     const rows = document.querySelectorAll('#fileLink table tbody tr');
     for (let i = 0; i < rows.length; i++) {
       if (i % 2 == 0) {
-        rows[i].style.background = 'var(--color-sectioned-table-hi)';
+        rows[i].style.background = 'var(--color-fileLink-table-1)';
       } else {
-        rows[i].style.background = 'var(--color-sectioned-table-lo)';
+        rows[i].style.background = 'var(--color-fileLink-table-2)';
       }
     }
 }
