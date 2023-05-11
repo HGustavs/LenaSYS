@@ -9101,6 +9101,12 @@ function drawElement(element, ghosted = false)
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
     
+    //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
+    //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
+    var nonFilledElementPartStrokeColor;
+    if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
+    else nonFilledElementPartStrokeColor = '#383737';
+
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
@@ -9301,8 +9307,8 @@ function drawElement(element, ghosted = false)
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%">
-                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
-                    <rect width="${boxw/2}px" height="${80 * zoomfact}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
+                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
+                    <rect width="${boxw/2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
@@ -9626,11 +9632,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though.
-            var actorFontColor;
-            if (isDarkTheme()) actorFontColor = '#FFFFFF';
-            else actorFontColor = '#383737';
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
