@@ -78,7 +78,7 @@ $preValuesQuiz =
 
 
 pre-query:  	INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline) 
-           	VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9]);
+           	VALUES ($preValuesQuiz[0], $preValuesQuiz[1], $preValuesQuiz[2], $preValuesQuiz[3], $preValuesQuiz[4], $preValuesQuiz[5], $preValuesQuiz[6], $preValuesQuiz[7], $preValuesQuiz[8], $preValuesQuiz[9], $preValuesQuiz[10]);
 
 pre-query:	    SELECT id FROM quiz WHERE cid = VALUE FROM PREVIOUS QUERY CID;
 //save this value as quizid
@@ -88,8 +88,8 @@ $preValuesVariant =
 	VALUE FROM PREVIOUS QUERY QUIZID
 };
 
-pre-query:	INSERT INTO variant(quizID) VALUES($preValuesVariant[0])
-pre-query:	SELECT vid FROM variant WHERE quizID = VALUE FROM PREVIOUS QUERY QUIZID
+pre-query:	INSERT INTO variant(quizID) VALUES($preValuesVariant[0]);
+pre-query:	SELECT vid FROM variant WHERE quizID = VALUE FROM PREVIOUS QUERY QUIZID;
 //save value as VID for later query
 
 preValuesUserAnswer =
@@ -131,19 +131,19 @@ This is the expected output for the micro service
 ---
 ```
 DELETE FROM userAnswer
-ORDER BY aid DESC LIMIT 1
+ORDER BY aid DESC LIMIT 1;
 
 DELETE FROM variant
-ORDER BY vid DESC LIMIT 1
+ORDER BY vid DESC LIMIT 1;
 
 DELETE FROM quiz
-ORDER BY id DESC LIMIT 1
+ORDER BY id DESC LIMIT 1;
 
 DELETE FROM listentries
-ORDER BY lid DESC LIMIT 1
+ORDER BY lid DESC LIMIT 1;
 
 DELETE FROM course
-ORDER BY cid DESC LIMIT 1
+ORDER BY cid DESC LIMIT 1;
 ```
 ====================
 ---
@@ -229,8 +229,8 @@ This is the expected output for the micro service
 ---
 ```
 DELETE FROM listentries
-ORDER BY lid DESC LIMIT 1
+ORDER BY lid DESC LIMIT 1;
 
 DELETE FROM course
-ORDER BY cid DESC LIMIT 1s
+ORDER BY cid DESC LIMIT 1;
 ```
