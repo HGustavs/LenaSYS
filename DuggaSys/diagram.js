@@ -9631,7 +9631,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceLoop') {
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw*3}px;height:${boxw*3}px;`;
+        style='left:0px; top:0px;width:${boxw}px;height:${boxw}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9640,7 +9640,7 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
-        str += `<svg width='${boxw*3}' height='${boxh*3}'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the loop rectangle looking thing, its not just a rect with rx since only 3 out of 4 corners should be rounded. 
         //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
         str += `<path
