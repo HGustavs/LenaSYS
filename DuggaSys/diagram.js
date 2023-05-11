@@ -5916,13 +5916,17 @@ function toggleRuler()
     if(settings.ruler.isRulerActive){
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
-        rulerToggleButton.style.backgroundColor = 'transparent';
-        rulerToggleButton.style.backgroundColor = "#53FF7D";
+        rulerToggleButton.style.backgroundColor = "#614875";
+        rulerToggleButton.style.color = "#ffffff";
+        rulerToggleButton.style.fontWeight = "normal";
+        rulerToggleButton.style.border = "3px solid #614875";
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
-        rulerToggleButton.style.backgroundColor = "#B589DA";
-
+        rulerToggleButton.style.backgroundColor ="transparent";
+        rulerToggleButton.style.border = "3px solid #614875";
+        rulerToggleButton.style.color = "#614875";
+        rulerToggleButton.style.fontWeight = "bold";
     }
   
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
