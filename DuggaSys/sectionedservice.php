@@ -504,17 +504,21 @@ if($gradesys=="UNK") $gradesys=0;
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				} else if(strcmp($opt,"CreGitEx")===0) {
-					$parts = explode('/', $url);
+
+					$dirname="";
+
+
+					//$parts = explode('/', $url);
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
-					$query->bindParam(":examplename", $parts[count($parts)-1]);
+					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
 					$query->exectue();
 
 					$result = $query->fetch(PDO::FETCH_OBJ);
 					$counted = $result->counted;
 
 					if($counted == 0) {
-						bfs($url, $courseid, "DOWNLOAD");
+					//	bfs($url, $courseid, "DOWNLOAD");
 						
 						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
 						$query->bindParam(":cid", $courseid);
