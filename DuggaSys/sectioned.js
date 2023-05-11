@@ -1686,7 +1686,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);' style='color: white;>`;
+          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);' style='color: black;>`;
           str += "</td>";
 
 
