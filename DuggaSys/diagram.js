@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoop: {name: "Activation", kind: "sequenceLoop", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence" } // Sequence Loop or Alternative.
+    sequenceLoop: {name: "Activation", kind: "sequenceLoop", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", hasDashedLine: true} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -9670,7 +9670,7 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />`;
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //if (element.hasDashedLine) {
+        if (element.hasDashedLine) {
             str += `<path class="text" 
                 d="M${boxw-linew},${(boxh-(linew*2))/2}
                 H${linew}
@@ -9680,7 +9680,7 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-        //}
+        }
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
