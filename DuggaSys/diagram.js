@@ -9688,25 +9688,26 @@ function drawElement(element, ghosted = false)
         />`;
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         
-
-        //the first line is outside of the loop since it has a absolute M instead of a relative m.
-        str += `<path class="text" 
-            d="M${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
-            H${linew}`
-        //loop through the rest of the dashed lines using the first one as reference for the relative m.
-        for (let i = 0; i < element.numberOfDashedLines-1; i++) {
-            str += `
-                m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
+        if (element.numberOfDashedLines != null || 0) {
+            //the first line is outside of the loop since it has a absolute M instead of a relative m.
+            str += `<path class="text" 
+                d="M${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
                 H${linew}`
+            //loop through the rest of the dashed lines using the first one as reference for the relative m.
+            for (let i = 0; i < element.numberOfDashedLines-1; i++) {
+                str += `
+                    m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
+                    H${linew}`
+            }
+            //finally, close the path off with appropriate values.
+            str += `"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew*3},${linew*3}'
+                    fill='transparent'
+                    />`;
+            str += `</svg>`;
         }
-        //finally, close the path off with appropriate values.
-        str += `"
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                stroke-dasharray='${linew*3},${linew*3}'
-                fill='transparent'
-                />`;
-        str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
