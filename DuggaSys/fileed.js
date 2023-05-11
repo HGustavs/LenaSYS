@@ -507,7 +507,7 @@ function filterFilesByKind(kind){
         $("#fileLink table tr").show();
     }
     sortFilter.fileKind=kind;
-    //setBackgroundForOddEvenRows();
+    setBackgroundForOddEvenRows();
 
     //Recalculate the values in the first column that is simply a counter
     var counterElements = $(".fileLink___counter").filter(":visible");
@@ -560,7 +560,7 @@ function sortFiles(asc){
         if(shouldSwitch){
             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
             switching = true;
-            //setBackgroundForOddEvenRows();
+            setBackgroundForOddEvenRows();
 
         }
     }
