@@ -7,7 +7,7 @@
          'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
          //This test has no pre querys since its only an insert
          /*'query-before-test' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",*/
-         'query-after-test' => "DELETE FROM quiz WHERE id = 'UNK'",
+         'query-after-test' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
          'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
          'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'SAVDUGGA',
@@ -35,8 +35,8 @@
      'create course test 2' => array(
          'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
          'query-before-test' => "INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) 
-         VALUES (null, 1885, 0, 1, 'AutomaticTest', 'Quiz', '2023-04-27 00:00:00', '2023-04-29 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}', 0);",
-         'query-after-test' => "DELETE FROM quiz WHERE id = 'prevalue0????'",
+         VALUES (1885, 0, 1, 'AutomaticTest', 'Quiz', '2023-04-27 00:00:00', '2023-04-29 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}', 0);",
+         'query-after-test' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
          'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
          'service-data' => serialize(array( // Data that service needs to execute function
             'opt' = 'SAVDUGGA',
