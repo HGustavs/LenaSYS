@@ -67,6 +67,8 @@ $tabs=getOP('tabs');
 $exampelid=getOP('exampleid');
 $url=getOP('url');
 
+$dirname=getOP('dirname');
+
 $visbile = 0;
 $avgfeedbackscore = 0;
 
@@ -504,8 +506,9 @@ if($gradesys=="UNK") $gradesys=0;
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				} else if(strcmp($opt,"CreGitEx")===0) {
+					
+					$dirname;
 
-					$dirname="";
 
 
 					//$parts = explode('/', $url);

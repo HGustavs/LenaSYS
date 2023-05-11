@@ -3004,10 +3004,11 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 
 //Creates all examples from github that doesnt exists yet
-function createExamples() {//TODO HERE
+function createExamples(dir) {//TODO HERE
   cid = querystring['courseid'];
   cversid = document.getElementById("cversid").value
-  AJAXService("CreGitEx", {courseid : cid, coursevers : cversid});
+  codeExDir = dir;
+  AJAXService("CreGitEx", {courseid : cid, coursevers : cversid, dirname : codeExDir});
 }
 
 // ------ Validates all versionnames ------
