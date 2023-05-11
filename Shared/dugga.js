@@ -1279,6 +1279,17 @@ function AJAXService(opt,apara,kind)
 			// }
 		});
 	}
+	else if(kind=="CreGitEx"){
+		$.ajax({
+			url: "sectionedservice.php",
+			type: "POST",
+			data: "opt"+opt+para,
+			dataType: "json",
+			success: returnedSection
+
+
+		});
+	}
 
 	// Logging to JSON
 	var date = new Date();
