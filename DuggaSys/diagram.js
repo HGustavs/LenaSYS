@@ -796,7 +796,7 @@ const elementTypes = {
 
     sequenceActorAndObject:12, //sequence functionality
     sequenceActivation: 13,
-    sequenceLoop: 14
+    sequenceLoopOrAlt: 14
     
 };
 
@@ -822,7 +822,7 @@ const elementTypesNames = {
 
     sequenceActorAndObject: "sequenceActorAndObject",
     sequenceActivation: "sequenceActivation",
-    sequenceLoop: "sequenceLoop",
+    sequenceLoopOrAlt: "sequenceLoopOrAlt",
 
 }
 
@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoop: {name: "Activation", kind: "sequenceLoop", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", hasDashedLine: true} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {name: "Activation", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", hasDashedLine: true} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -6686,7 +6686,7 @@ function generateContextProperties()
                     }
                 }
             }
-            else if(element.kind == 'sequenceLoop'){
+            else if(element.kind == 'sequenceLoopOrAlt'){
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -9645,7 +9645,7 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;  
     }
     // Sequence loop 
-    else if (element.kind == 'sequenceLoop') {
+    else if (element.kind == 'sequenceLoopOrAlt') {
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
