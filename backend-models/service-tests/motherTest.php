@@ -82,7 +82,7 @@ include_once ".../test4";
             echo '<select onchange="this.form.submit()" Test="name" >';
                 /*foreach($test as $row){
                     echo '<option value="'.$row['name'].'"';*/
-                    foreach($jsonDataObject->response->values as $option){
+                    foreach($motherTest_json->Test1 as $option){
                         echo '<option value=' . $option->Test1 . '>' . $option->Test2 . '>' . $option->Test3 .'</option>';
                     }
                 
