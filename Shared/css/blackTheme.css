@@ -1246,4 +1246,11 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   background-color: #000!important;
   color: #fff;
 }
+
+/* Turn the icons white */
+#Sectionlist .section #dorf, #refreshIMG, .refreshBurgerIMG .header {
+  cursor: pointer;
+   filter: invert(100%) !important; 
+  -webkit-filter: invert(100%) !important;
+}
 /*/ END /*/
