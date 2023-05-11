@@ -12432,6 +12432,27 @@ function exportWithHistory()
     // Download the file
     downloadFile("diagram", objToSave);
 }
+async function sendDiagramToServer()
+{
+    // Remove all future states to the history
+    stateMachine.removeFutureStates();
+
+    // The content of the save file
+    const objToSave = {
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
+    };
+    try
+    {
+    const response=await fetch("diagramservice.php", {method: "post", headers:{'Content-Type': 'application/json'}, body: JSON.stringify(objToSave)});
+     const file=await response.text();
+}
+catch(error)
+{
+console.error(error);
+}
+}
+
 /**
  * @description Stores the current diagram as JSON in localstorage
  */
