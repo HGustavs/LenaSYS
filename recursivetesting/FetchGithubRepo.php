@@ -103,6 +103,7 @@ function getIndexFile($url) {
 			]
 		]
 	];
+
 	// Starts a stream with the required headers
 	$context = stream_context_create($opts);
 	// Fetches the data with the stream included
@@ -117,7 +118,6 @@ function getIndexFile($url) {
 	} else {
 		return false;
 	}
-	
 }
 
 function bfs($url, $cid, $opt) 
@@ -156,6 +156,7 @@ function bfs($url, $cid, $opt)
             if ($json) {
 							foreach ($json as $item) {
 								if ($item['type'] == 'file') {
+									//If an index file has been found, check against the content of the index file
 									if($filesToDownload){
 										//If file is part of filestoDownload (Index file)
 										if(in_array($item['name'], $filesToDownload)){
@@ -169,6 +170,7 @@ function bfs($url, $cid, $opt)
 												downloadToWebserver($cid, $item);  
 											}                 
 										}
+										//Otherwise, fetch and download all files
 									} else {
 											// Checks if the fetched item is of type 'file'
 											if($opt == "REFRESH") {
