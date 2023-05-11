@@ -67,18 +67,18 @@ else{
 	exit;
 }
 
-updateCoursesyspw();
+updateCoursesyspw($dbName);
 
 
 // Update coursesyspw.php to include testdatabase
-function updateCoursesyspw() {
+function updateCoursesyspw($name) {
 	$filename = "../../coursesyspw.php";
 	if(!file_exists($filename))
 	{
 		echo $filename." doesn't exist<br>";
 	}
 
-	$str = 'define("TESTDB", "{$dbName}");';
+	$str = 'define("TESTDB", "'.$name.'");';
 	$contents = file_get_contents($filename);
 	$pos = strpos($contents, $str);
 
@@ -89,7 +89,7 @@ function updateCoursesyspw() {
 		$post = substr($contents, $find);
 		$write = $pre.$str.$post;
 
-		if(file_get_contents($filename, $write) === false)
+		if(file_put_contents($filename, $write) === false)
 		{
 			echo "can't write to file<br>";
 			exit;
@@ -97,7 +97,7 @@ function updateCoursesyspw() {
 		echo "Success writing to {$filename}";
 	}
 	else{
-		echo $str." already exists<br>";
+		echo $str." already exists in 'coursesyspw.php'<br>";
 		exit;
 	}
 }
