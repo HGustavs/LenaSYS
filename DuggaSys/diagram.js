@@ -9659,7 +9659,6 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the loop/alt rectangle
-        //TODO replace element.stroke here with nonFilledElementPartStrokeColor when it gets merged.
         str += `<rect class='text'
             x='${linew}'
             y='${linew}'
