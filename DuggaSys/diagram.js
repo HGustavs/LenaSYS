@@ -9687,9 +9687,9 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />`;
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        for (let i = 0; i < element.numberOfDashedLines; i++) {
+        for (let i = 0; i < element.numberOfDashedLines+1; i++) {
             str += `<path class="text" 
-                d="M${boxw-linew},${(boxh-(linew*2))/2}
+                d="M${boxw-linew},${(boxh-(linew*2))/i}
                 H${linew}
                 "
                 stroke-width='${linew}'
