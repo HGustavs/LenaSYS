@@ -78,7 +78,7 @@ function updateCoursesyspw($name) {
 		echo $filename." doesn't exist<br>";
 	}
 
-	$str = 'define("TESTDB", "'.$name.'");';
+	$str = 'define("DB_TESTING", "'.$name.'");';
 	$contents = file_get_contents($filename);
 	$pos = strpos($contents, $str);
 
