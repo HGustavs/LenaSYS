@@ -13,7 +13,7 @@
 
 	global $pdo;
 
-	//Get data from AJAX call in courseed.js and then runs the function getCourseID or refreshGithubRepo depending on the action
+	//Get data from AJAX call in courseed.js and then runs the function getCourseID, refreshGithubRepo or updateGithubRepo depending on the action
 	if(isset($_POST['action'])) 
 	{
 		if($_POST['action'] == 'getCourseID') 
@@ -23,6 +23,10 @@
 		else if($_POST['action'] == 'refreshGithubRepo') 
 		{
 			refreshGithubRepo($_POST['cid']);
+		}
+		else if($_POST['action'] == 'updateGithubRepo') 
+		{
+			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
 		}
 	};
 
@@ -129,6 +133,52 @@
 			} else {
 				print "The course is already up to date!";
 			}
+		}
+	}
+
+	// -------------==============######## Update Github Repo in Course ###########==============-------------
+
+	//--------------------------------------------------------------------------------------------------
+	// updateGithubRepo: Updates the repo url and commit in the SQLite db
+	//--------------------------------------------------------------------------------------------------
+
+	function updateGithubRepo($repoURL, $cid) {
+		clearGitFiles($cid); // Clear the files before changing git repo
+		
+		$lastCommit = getCommit($url); // Get the latest commit from the new URL
+	
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		$query = $pdolite->prepare("UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :cid"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $repoURL);
+		$query->bindParam(':lastCommit', $lastCommit);
+		$query->execute();
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating file entries" . $error[2];
+			$errorvar = $error[2];
+			print_r($error);
+			echo $errorvar;
+		} else {
+			bfs($url, $cid, "REFRESH");
+		}
+	}
+
+	//--------------------------------------------------------------------------------------------------
+	// clearGitFiles: Clear the gitFiles table in SQLite db when a course has been updated with a new github repo
+	//--------------------------------------------------------------------------------------------------
+
+	function clearGitFiles($cid) {
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		$query = $pdolite->prepare("DELETE FROM gitFiles WHERE cid = :cid"); 
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating file entries" . $error[2];
+			$errorvar = $error[2];
+			print_r($error);
+			echo $errorvar;
 		}
 	}
 	
