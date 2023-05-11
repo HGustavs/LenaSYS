@@ -65,6 +65,7 @@ $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
 $exampelid=getOP('exampleid');
+$url=getOP('url');
 
 $visbile = 0;
 $avgfeedbackscore = 0;
@@ -503,69 +504,136 @@ if($gradesys=="UNK") $gradesys=0;
 					$gdb->close();
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				} else if(strcmp($opt,"CreGitEx")===0) {
-					$query = $pdo->prepare("SELECT runlink FROM codeexample WHERE cid=:cid;");
+					$parts = explode('/', $url);
+					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
-					$query->execute();
+					$query->bindParam(":examplename", $parts[count($pars)-1]);
+					$query->exectue();
 
-					$file = file("../../courses/".$courseid."/indexing.txt");
+					$result = $query->fetch(PDO::FETCH_OBJ);
+					$counted = $result->counted;
 
-					foreach($file as $line) {
-						$exampleName = $line;//filter out to only be the example name
-						$sectionName = $line;//filter out to only be the section name
-						$runlink = $line;//filter out to only be the runlink
-						$exists = false;
-						foreach($query->fetchAll() as $row) {
-							if($row['runlink'] == $runlink) {
-								$exists = true;
-							}
+					if($counted == 0) {
+						bfs($url, $courseid, "DOWNLOAD");
+						
+						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
+						$query->bindParam(":cid", $courseid);
+						$query->execute();
+						$e = $query->fetchAll();
+						$coursevers = $e[0]['activeversion'];
+
+						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
+						$query->bindParam(":cid", $courseid);
+						$query->bindParam(":entryname", $moment);
+						$query->execute();
+						$e = $query->fetchAll();
+						$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
+						
+						$metadata_db = null;
+						$success = false;
+						try {
+							$metadata_db = new PDO('sqlite:../../githubMetadata/metadata'.$metadataDbVersion.'.db');
+							$success = true;
+						} catch (PDOException $e) {
+							echo "Failed to connect to the database";
+							throw $e;
 						}
-						if(!$exists) {
-							$link = "UNK";
-							$kind = 2;
-							$visible = 1;
-							$uid = 1;
-							$comment = null;
-							$gradesys = null;
-							$highscoremode = 0;
-							$groupkind = null;
+						if($success) {
+							$metadata_db->prepare("SELECT filePath FROM gitFiles where cid=:cid");
+							$metadata_db->bindParam(":cid", $courseid);
+							$query = $metadata_db->execute();
 
-							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
-							$query->bindParam(":cid", $courseid);
-							$query->execute();
-							$e = $query->fetchAll();
-							$coursevers = $e[0]['activeversion'];
+							$counter = array();
+							foreach($query->fetchAll() as $row) {
+								$parts = explode('/', $row["filePath"]);
+								if($parts[count($parts)-2] == $exampleName) {
+									array_push($counter, $parts[count($parts)-1]);
+								}
+							}
 
-							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
-							$query->bindParam(":cid", $courseid);
-							$query->bindParam(":entryname", $moment);
-							$query->execute();
-							$e = $query->fetchAll();
-							$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
+							if(count($counter) > 0) {
+								//create codeexample
+								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":ename", $examplename);
+								$query->bindParam(":sname", $sectionname);
+								$query->bindParam(":cversion", $coursevers);
+								$query->execute();
 
-							//create codeexample
-							$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
-							$query->bindParam(":cid", $courseid);
-							$query->bindParam(":ename", $examplename);
-							$query->bindParam(":sname", $sectionname);
-							$query->bindParam(":cversion", $coursevers);
-							$query->execute();
+								$query = $pdo->prepare("SELECT MAX(exampleid) FROM codeexample");
+								$exampleid = $query->execute();
 
-							//add the codeexample to listentries
-							$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
-									   						  		  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
-							$query->bindParam(":cid", $courseid);
-							$query->bindParam(":cvs", $coursevers);
-							$query->bindParam(":entryname", $examplename);
-							$query->bindParam(":link", $link);
-							$query->bindParam(":kind", $kind);
-							$query->bindParam(":pos", $pos);
-							$query->bindParam(":visible", $visible);
-							$query->bindParam(":usrid", $uid);
-							$query->bindParam(":comment", $comment);
-							$query->bindParam(":gradesys", $gradesys);
-							$query->bindParam(":highscoremode", $highscoremode);
-							$query->bindParam(":groupkind", $groupkind);
-							$query->execute();
+
+								for($i = 1; $i <= count($counter); $i++) {
+									$filename = $counter[$i-1];
+									$parts = explode('.', $filename);
+									$filetype = null;
+									$wlid = 0;
+									if($parts[1] == "js") {
+										$filetype = "CODE";
+										$wlid = 1;
+									} else if($parts[1] == "php") {
+										$filetype = "CODE";
+										$wlid = 2;
+									} else if($parts[1] == "html") {
+										$filetype = "CODE";
+										$wlid = 3;
+									} else if($parts[1] == "txt" || $parts[1] == "md") {
+										$filetype = "DOCUMENT";
+										$wlid = 4;
+									} else if($parts[1] == "java") {
+										$filetype = "CODE";
+										$wlid = 5;
+									} else if($parts[1] == "sr") {
+										$filetype = "CODE";
+										$wlid = 6;
+									} else if($parts[1] == "sql") {
+										$filetype = "CODE";
+										$wlid = 7;
+									} else {
+										$filetype = "DOCUMENT";
+										$wlid = 4;
+									}
+									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) values (:boxid, :exampleid, :boxtitle, :filetype, :filename, :settings, :wordlistid, :fontsize);");
+									$query->bindParam(":boxid", $i);
+									$query->bindParam(":exampleid", $exampleid);
+									$query->bindParam(":boxtitle", $filename);
+									$query->bindParam(":filetype", $filetype);
+									$query->bindParam(":filename", $filename);
+									$query->bindParam(":settings", "[viktig=1]");
+									$query->bindParam(":wordlistid", $wlid);
+									$query->bindParam(":fontsize", 9);
+									$query->execute();
+								}
+								
+								$link = "UNK";
+								$kind = 2;
+								$visible = 1;
+								$uid = 1;
+								$comment = null;
+								$gradesys = null;
+								$highscoremode = 0;
+								$groupkind = null;
+
+								//add the codeexample to listentries
+								$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+																		VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":cvs", $coursevers);
+								$query->bindParam(":entryname", $examplename);
+								$query->bindParam(":link", $link);
+								$query->bindParam(":kind", $kind);
+								$query->bindParam(":pos", $pos);
+								$query->bindParam(":visible", $visible);
+								$query->bindParam(":usrid", $uid);
+								$query->bindParam(":comment", $comment);
+								$query->bindParam(":gradesys", $gradesys);
+								$query->bindParam(":highscoremode", $highscoremode);
+								$query->bindParam(":groupkind", $groupkind);
+								$query->execute();
+							}
+						} else {
+							//Check for update
 						}
 					}
 				}
