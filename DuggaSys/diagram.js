@@ -12381,7 +12381,7 @@ function setSequenceDashedLines(){
     //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
     for (let i = 0; i < context.length; i++) {
         if (context[i].numberOfDashedLines != null) {
-            context[i].numberOfDashedLines = document.getElementById("inputNumberOfDashedLines").value;
+            context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
         }
     }
     showdata();
