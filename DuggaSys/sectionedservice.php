@@ -507,7 +507,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$parts = explode('/', $url);
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
-					$query->bindParam(":examplename", $parts[count($pars)-1]);
+					$query->bindParam(":examplename", $parts[count($parts)-1]);
 					$query->exectue();
 
 					$result = $query->fetch(PDO::FETCH_OBJ);
