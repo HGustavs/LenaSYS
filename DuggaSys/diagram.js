@@ -9544,7 +9544,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceActorAndObject') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9662,7 +9662,7 @@ function drawElement(element, ghosted = false)
             "
             stroke-width='${linew}'
             stroke='${element.stroke}'
-            fill='none'
+            fill='${element.fill}'
         />`;
         str += `<text x='${((linew+sequenceCornerRadius)+(boxw/15))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         str += `</svg>`;
