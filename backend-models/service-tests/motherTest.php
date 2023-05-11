@@ -101,8 +101,6 @@ include_once ".../test4";
                     <th>test1</th>
                     <th>test2</th>
                     <th>test3</th>
-                    <th>test4</th>
-                    <th>test5</th>
                     <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
                 </tr>
                 </table>
@@ -121,7 +119,7 @@ include_once ".../test4";
                         </table>
                         ";
 
-                        print_r($test);
+                        print_r($motherTest_json);
 
             ?>
    </body>
