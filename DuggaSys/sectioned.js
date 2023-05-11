@@ -3582,6 +3582,12 @@ async function refreshCodeExample(exampleid) {
 function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked! A "+ momentID);
+
+  dirname="../courses/1895/Github/Demo/Code-example1/"
+  createExamples(dirname)
+ 
+
+  /*
   retdata.entries.map(sectionListEntry => {
     //If current entry is within chosen moment and is a codeexample, try to refresh it
     console.log("RefreshButton Clicked! B "+ retdata);
@@ -3590,6 +3596,9 @@ function refreshMoment(momentID){
       console.log("RefreshButton Clicked! C" + sectionListEntry);
     }
   });
+*/
+
+
 }
 
 //------------------------------------------------------------------------------
