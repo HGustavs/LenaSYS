@@ -9667,8 +9667,8 @@ function drawElement(element, ghosted = false)
             fill='none'
             rx='${sequenceCornerRadius/2}'
         />`;
-        //svg for the small rect in corner
-        str += `<rect class='text'
+        //svg for the small label in top left corner
+        /* str += `<rect class='text'
                 x='${linew}'
                 y='${linew}'
                 width='${boxw/10}'
@@ -9676,7 +9676,19 @@ function drawElement(element, ghosted = false)
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='${element.fill}'
-            />`;
+            />`; */
+        str += `<path 
+            d="M${linew+sequenceCornerRadius},${linew}
+                h${(boxw/10)-sequenceCornerRadius}
+                v${boxh/10}
+                l${((boxw/10)-sequenceCornerRadius)/4},${(boxh/10)/3}
+                H${linew}
+                V${linew}
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='none'
+        />`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
