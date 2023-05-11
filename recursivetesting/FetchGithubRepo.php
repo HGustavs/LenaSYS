@@ -103,7 +103,7 @@ function getIndexFile($url) {
   // Starts a stream with the required headers
   $context = stream_context_create($opts);
   // Fetches the data with the stream included
-  $data = @file_get_contents($indexFile, true, $context);
+  $data = @file_get_contents($url, true, $context);
   if($data) {
     $json = json_decode($data, true);
     if($json) {
