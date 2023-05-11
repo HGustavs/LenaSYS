@@ -8469,7 +8469,7 @@ function drawLine(line, targetGhost = false)
                 // If the line is straight calculate the points required to draw the arrow at an angle.
                 if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                    let from = new Point(fx + x1Offset * zoomfact, fy + x2Offset * zoomfact);  
+                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
 
                     let base = calculateArrowBase(from, to, iconSizeEnd / 2 * zoomfact);
                     let right = rotateArrowPoint(base, to, true);
