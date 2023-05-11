@@ -101,7 +101,7 @@ preValuesUserAnswer =
 	"testvers"
 };
 
-pre-query:	INSERT INTO userAnswer(cid, quiz, variant, moment) VALUES($preValuesUserAnswer[0], $preValuesUserAnswer[1], $preValuesUserAnswer[2], $preValuesUserAnswer[3], $preValuesUserAnswer[4]);
+pre-query:	INSERT INTO userAnswer(cid, quiz, variant, moment, vers) VALUES($preValuesUserAnswer[0], $preValuesUserAnswer[1], $preValuesUserAnswer[2], $preValuesUserAnswer[3], $preValuesUserAnswer[4]);
 ```
 
 
