@@ -150,28 +150,28 @@ function bfs($url, $cid, $opt)
             $json = json_decode($data, true);
             // Loops through each item fetched in the JSON data
             if ($json) {
-                foreach ($json as $item) {
-									if ($item['type'] == 'file') {
-										//If file is part of filestoDownload (Index file)
-										if(in_array($item['name'], $filesToDownload)){
-											// Checks if the fetched item is of type 'file'
-											if($opt == "REFRESH") {
-												insertToMetaData($cid, $item);
-											}
-											else if($opt == "DOWNLOAD") {
-												insertToFileLink($cid, $item);
-												insertToMetaData($cid, $item);
-												downloadToWebserver($cid, $item);  
-											}                 
+							foreach ($json as $item) {
+								if ($item['type'] == 'file') {
+									//If file is part of filestoDownload (Index file)
+									if(in_array($item['name'], $filesToDownload)){
+										// Checks if the fetched item is of type 'file'
+										if($opt == "REFRESH") {
+											insertToMetaData($cid, $item);
 										}
-										// Checks if the fetched item is of type 'dir'
-									} else if ($item['type'] == 'dir') {
-										if (!in_array($item['url'], $visited)) {
-											array_push($visited, $item['url']);
-											array_push($fifoQueue, $item['url']);
-										}
+										else if($opt == "DOWNLOAD") {
+											insertToFileLink($cid, $item);
+											insertToMetaData($cid, $item);
+											downloadToWebserver($cid, $item);  
+										}                 
 									}
-                }
+									// Checks if the fetched item is of type 'dir'
+								} else if ($item['type'] == 'dir') {
+									if (!in_array($item['url'], $visited)) {
+										array_push($visited, $item['url']);
+										array_push($fifoQueue, $item['url']);
+									}
+								}
+              }
             } else {
                 //422: Unprocessable entity
                 http_response_code(422);
