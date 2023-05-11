@@ -539,9 +539,9 @@ if($gradesys=="UNK") $gradesys=0;
 							throw $e;
 						}
 						if($success) {
-							$metadata_db->prepare("SELECT filePath FROM gitFiles where cid=:cid");
-							$metadata_db->bindParam(":cid", $courseid);
-							$query = $metadata_db->execute();
+							$query = $metadata_db->prepare("SELECT filePath FROM gitFiles where cid=:cid");
+							$query->bindParam(":cid", $courseid);
+							$query->execute();
 
 							$counter = array();
 							foreach($query->fetchAll() as $row) {
