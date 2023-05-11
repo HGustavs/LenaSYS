@@ -9688,7 +9688,7 @@ function drawElement(element, ghosted = false)
         //text in the label
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*0.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
-        str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${(boxh*3.075)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
+        str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${((boxh*0.075)*3)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
             //the first line is outside of the loop since it has a absolute M instead of a relative m.
             str += `<path class="text" 
