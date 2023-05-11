@@ -1019,7 +1019,7 @@ function updateContent(file, content, boxnumber)
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
 			try {
 				AJAXService("EDITTITLE", {exampleid: querystring['exampleid'], courseid: querystring['courseid'], boxid: box[0], boxtitle: document.querySelector("#boxtitle").textContent}, "BOXTITLE");
-				console.log(AJAXService);
+				console.log("Ajaxservice, Qstring:Exampleid, Qstring:courseid; ", querystring[exampleid], querystring['courseid']);
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
