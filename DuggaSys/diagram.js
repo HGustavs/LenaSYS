@@ -9661,7 +9661,7 @@ function drawElement(element, ghosted = false)
                 l${((boxw/60))*-1},${(boxh/20)}
                 H${linew}
                 V${linew+sequenceCornerRadius}
-                a${sequenceCornerRadius},${sequenceCornerRadius} 0 0 1 ${sequenceCornerRadius},${sequenceCornerRadius*-1}
+                a${sequenceCornerRadius/4},${sequenceCornerRadius/4} 0 0 1 ${sequenceCornerRadius/4},${(sequenceCornerRadius/4)*-1}
                 z
             "
             stroke-width='${linew}'
