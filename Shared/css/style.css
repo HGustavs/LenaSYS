@@ -854,7 +854,7 @@ p {
     }
 }
 
-#Sectionlist .section .header {
+#Sectionlist .section {
   color: var(--color-text-header);
   background-color: var(--color-primary)/*var(--color-primary-light)*/;
 }
