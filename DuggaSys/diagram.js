@@ -6685,8 +6685,25 @@ function generateContextProperties()
                             break;
                     }
                 }
-                
-            } 
+            }
+            else if(element.kind == 'sequenceLoop'){
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'hasDashedLine':
+                            //a checkbox for checking if its dashed or not
+                            str += `<div>`
+                            str += `<input type="checkbox" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
+                            str += `</div>`
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     
 
