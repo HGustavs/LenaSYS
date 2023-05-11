@@ -5887,11 +5887,17 @@ function toggleSnapToGrid()
     // Color change of button to clarify if button is pressed or not
     if(settings.grid.snapToGrid)
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#2E1A40";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor ="#614875";
+        document.getElementById("rulerSnapToGrid").style.color = "#ffffff";
+        document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
+        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
     }
     else
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#B589DA";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor ="transparent";
+        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
+        document.getElementById("rulerSnapToGrid").style.color = "#614875";
+        document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
     }
 }
 
