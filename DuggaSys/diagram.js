@@ -2859,9 +2859,9 @@ function changeState()
         )
         return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } else if (oldType == newType){
+    } /* else if (oldType == newType){
         return;
-    }
+    } */
 
     else if (element.type == 'ER') {
         
