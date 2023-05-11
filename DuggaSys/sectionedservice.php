@@ -509,6 +509,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 
 					//$parts = explode('/', $url);
+					//count if there is already a codeexample or if we should create a new one.
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
@@ -516,16 +517,16 @@ if($gradesys=="UNK") $gradesys=0;
 
 					$result = $query->fetch(PDO::FETCH_OBJ);
 					$counted = $result->counted;
-
+					//if no codeexample exist create a new one
 					if($counted == 0) {
 					//	bfs($url, $courseid, "DOWNLOAD");
-						
+						//Get active version of the course
 						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
 						$query->bindParam(":cid", $courseid);
 						$query->execute();
 						$e = $query->fetchAll();
 						$coursevers = $e[0]['activeversion'];
-
+						//Get the last position in the listenries to add new course at the bottom
 						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 						$query->bindParam(":cid", $courseid);
 						$query->bindParam(":entryname", $moment);
@@ -533,6 +534,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$e = $query->fetchAll();
 						$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
 						
+						//connect to SQLite
 						$metadata_db = null;
 						$success = false;
 						try {
@@ -542,6 +544,7 @@ if($gradesys=="UNK") $gradesys=0;
 							echo "Failed to connect to the database";
 							throw $e;
 						}
+						//select the files that has should be in the codeexample
 						if($success) {
 							$query = $metadata_db->prepare("SELECT filePath FROM gitFiles where cid=:cid");
 							$query->bindParam(":cid", $courseid);
@@ -554,7 +557,7 @@ if($gradesys=="UNK") $gradesys=0;
 									array_push($counter, $parts[count($parts)-1]);
 								}
 							}
-
+							//If we find files that should be in the codeexample, create the codeexample
 							if(count($counter) > 0) {
 								//create codeexample
 								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
@@ -567,7 +570,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query = $pdo->prepare("SELECT MAX(exampleid) FROM codeexample");
 								$exampleid = $query->execute();
 
-
+								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
 								for($i = 1; $i <= count($counter); $i++) {
 									$filename = $counter[$i-1];
 									$parts = explode('.', $filename);
