@@ -2911,12 +2911,10 @@ function changeState()
 
     }
     else if(element.type=='IE') {
-        console.log(newType);
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
-            console.log(property);
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
