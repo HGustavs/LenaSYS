@@ -6697,7 +6697,7 @@ function generateContextProperties()
                             //a checkbox for checking if its dashed or not
                             str += `<div>`
                             //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
-                            console.log("dropdown goes here");
+                            str +=`<input id="number" type="number" value='${element[property]}' />`
                             str += `</div>`
                             break;
                         default:
