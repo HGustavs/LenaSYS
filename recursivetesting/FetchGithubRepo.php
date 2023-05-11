@@ -113,7 +113,7 @@ function getIndexFile($url) {
       $array = file_get_contents($json['download_url']);
 	    return explode("\n", $array);
     }
-  }
+  } 
 }
 
 function bfs($url, $cid, $opt) 
@@ -152,17 +152,29 @@ function bfs($url, $cid, $opt)
             if ($json) {
 							foreach ($json as $item) {
 								if ($item['type'] == 'file') {
-									//If file is part of filestoDownload (Index file)
-									if(in_array($item['name'], $filesToDownload)){
-										// Checks if the fetched item is of type 'file'
-										if($opt == "REFRESH") {
-											insertToMetaData($cid, $item);
+									if($filesToDownload){
+										//If file is part of filestoDownload (Index file)
+										if(in_array($item['name'], $filesToDownload)){
+											// Checks if the fetched item is of type 'file'
+											if($opt == "REFRESH") {
+												insertToMetaData($cid, $item);
+											}
+											else if($opt == "DOWNLOAD") {
+												insertToFileLink($cid, $item);
+												insertToMetaData($cid, $item);
+												downloadToWebserver($cid, $item);  
+											}                 
 										}
-										else if($opt == "DOWNLOAD") {
-											insertToFileLink($cid, $item);
-											insertToMetaData($cid, $item);
-											downloadToWebserver($cid, $item);  
-										}                 
+									} else {
+											// Checks if the fetched item is of type 'file'
+											if($opt == "REFRESH") {
+												insertToMetaData($cid, $item);
+											}
+											else if($opt == "DOWNLOAD") {
+												insertToFileLink($cid, $item);
+												insertToMetaData($cid, $item);
+												downloadToWebserver($cid, $item);  
+											}      
 									}
 									// Checks if the fetched item is of type 'dir'
 								} else if ($item['type'] == 'dir') {
