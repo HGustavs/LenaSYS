@@ -4236,7 +4236,7 @@ function toggleGrid()
         grid.style.display = "block";
         gridButton.style.backgroundColor ="transparent";
         gridButton.style.border = "3px solid #614875";
-        gridButton.style.color = "bold #614875";
+        gridButton.style.color = "#614875";
    }
 }
 
