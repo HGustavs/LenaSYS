@@ -53,18 +53,10 @@
 			// TODO: Limit this to only one result
 		}
 
-		// Get the latest commit from the URL
-		// $latestCommit = getCommit($githubURL);
-
 		// Check if not null, else add it to Sqlite db
-		// && $latestCommit != ""
 		if($cid != null) {
 			insertIntoSQLite($githubURL, $cid);
-			//, $latestCommit
-		} //else if ($latestCommit == "") {
-			//print_r("Latest commit not valid");
-		//} 
-		else {
+		} else {
 			print_r("No matches in database!");
 		}
 	}
@@ -73,12 +65,11 @@
 	// insertIntoSQLite: Insert into Sqlite db when new course is created
 	//--------------------------------------------------------------------------------------------------
 
-	function insertIntoSQLite($url, $cid) { //, $commit
+	function insertIntoSQLite($url, $cid) { 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); // , lastCommit , :commits
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $url);
-		//$query->bindParam(':commits', $commit);
 		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
@@ -114,24 +105,7 @@
 		//If both values are valid
 		if($commit == "" && $url == "") {
 			print_r("Error! Couldn't get url and commit from SQLite db");
-		} 
-		// else if($url != "" && $commit == NULL) {
-		// 	// Get the latest commit from the URL
-		// 	$latestCommit = getCommit($url);
-
-		// 	// Compare old commit in db with the new one from the url
-		// 	if($latestCommit != $commit) {
-		// 		// Update the SQLite db with the new commit
-		// 		$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
-		// 		$query->bindParam(':cid', $cid);
-		// 		$query->bindParam(':latestCommit', $latestCommit);
-		// 		$query->execute();
-
-		// 		// Update metadata
-		// 		bfs($url, $cid, "REFRESH");
-		// 		print "The course has been updated!";
-		// 	}
-		else {
+		} else {
 			// Get the latest commit from the URL
 			$latestCommit = getCommit($url);
 
@@ -143,7 +117,7 @@
 				$query->bindParam(':latestCommit', $latestCommit);
 				$query->execute();
 
-				// Update metadata
+				// Download files and metadata
 				bfs($url, $cid, "DOWNLOAD");
 				print "The course has been updated, files have been downloaded!";
 			} else {
