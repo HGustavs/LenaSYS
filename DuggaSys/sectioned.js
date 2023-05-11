@@ -3005,6 +3005,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 
 //Creates all examples from github that doesnt exists yet
 function createExamples(dir) {//TODO HERE
+  console.log("**** "+document.getElementById("cversid").value);
   cid = querystring['courseid'];
   cversid = document.getElementById("cversid").value
   console.log(cversid);
