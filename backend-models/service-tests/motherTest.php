@@ -114,6 +114,7 @@ include_once ".../test4";
                         </table>
                         ";
 
+                        print_r($motherTest_json);
 
             ?>
    </body>
