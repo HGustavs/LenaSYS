@@ -508,6 +508,14 @@ if($gradesys=="UNK") $gradesys=0;
 				} else if(strcmp($opt,"CreGitEx")===0) {
 					
 					$dirname;
+					$text = $dirname + $opt;
+					echo "<script>console.log($opt);</script>";
+					echo "<script>console.log($dirname);</script>";
+					$filename = "myfile.txt";
+					if (!file_exists(dirname($filename))) {
+						touch(dirname($filename));
+					}
+					file_put_contents($filename, $text);	
 
 
 
