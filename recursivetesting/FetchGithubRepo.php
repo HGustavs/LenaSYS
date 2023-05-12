@@ -122,8 +122,6 @@ function bfs($url, $cid, $opt)
                     if ($item['type'] == 'file') {
                         if($opt == "REFRESH") {
                             insertToFileLink($cid, $item);
-                            insertToMetaData($cid, $item);
-                            downloadToWebserver($cid, $item); 
                         }
                         else if($opt == "DOWNLOAD") {
                             insertToFileLink($cid, $item);
@@ -131,10 +129,7 @@ function bfs($url, $cid, $opt)
                             downloadToWebserver($cid, $item);  
                         }                 
                         // Checks if the fetched item is of type 'dir'
-                    } else if ($item['type'] == 'dir') {
-                            insertToFileLink($cid, $item);
-                            insertToMetaData($cid, $item);
-                            downloadToWebserver($cid, $item); 
+                    } else if ($item['type'] == 'dir') { 
                         if (!in_array($item['url'], $visited)) { 
                             array_push($visited, $item['url']);
                             array_push($fifoQueue, $item['url']);

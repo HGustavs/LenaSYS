@@ -123,7 +123,7 @@
 				$query->bindParam(':latestCommit', $latestCommit);
 				$query->execute();
 
-				bfs($url, $cid, "DOWNLOAD");
+				bfs($url, $cid, "REFRESH");
 				//echo '<script>console.log(' .$url. '); </script>';
 				print "The course has been updated!";
 			} else {
