@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], numberOfAlternatives: 3, altOrLoop: "Alt"} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -9671,29 +9671,8 @@ function drawElement(element, ghosted = false)
             rx='${7*zoomfact}'
             fill-opacity="0"
         />`;
-        /* if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
-            //the first line is outside of the loop since it has a absolute M instead of a relative m.
-            str += `<path class="text" 
-                d="M${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
-                H${linew}`
-            //loop through the rest of the dashed lines using the first one as reference for the relative m.
-            for (let i = 0; i < element.numberOfDashedLines-1; i++) {
-                str += `
-                m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
-                H${linew}`
-                console.log("text for each line");
-            }
-            //finally, close the path off with appropriate values.
-            str += `"
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            stroke-dasharray='${linew*3},${linew*3}'
-            fill='transparent'
-            />`;
-        } */
         //if the user chose to have alternative lines, iterate and draw them out one by one, evenly spaced out.
         if ((element.alternatives != null) && (element.alternatives.length > 0)) {
-            //let numberOfAlternativeSpaces = element.alternatives.length;
             for (let i = 1; i < element.alternatives.length; i++) {
                 str += `<path class="text"
                 d="M${boxw-linew},${(boxh/element.alternatives.length)*i}
@@ -12396,20 +12375,13 @@ function toggleActorOrbject(type){
     showdata();
 }
 /**
- * @description sets the attribute numberOfAlternatives in sequenceLoopOrAlt to the amount of lines in the input textarea called inputAlternatives.
+ * @description sets the alternatives attribute for sequenceLoopOrAlt to whatever is in the input box inputAlternatives. one index in the array per line.
  */
 //TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
 function setSequenceDashedLines(){
     //for each element in context, check if it has the property alternatives
     for (let i = 0; i < context.length; i++) {
         if (context[i].alternatives != null) {
-            /* let numberOfAttribute = document.getElementById("inputAlternatives");
-            //context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
-            if (context[i].numberOfDashedLines == 0) {
-                context[i].altOrLoop = "Loop";
-            } else {
-                context[i].altOrLoop = "Alt";
-            } */
             //Create an array from string where newline seperates elements
             let alternatives = document.getElementById("inputAlternatives").value.split('\n');
             let formatArr = [];
@@ -12418,14 +12390,14 @@ function setSequenceDashedLines(){
                     formatArr.push(alternatives[i]);
                 } 
             }
-            //Update the attribute array
+            //Update the alternatives array
             alternatives = formatArr;
             console.log(alternatives);
             console.log(alternatives.length);
             context[0].alternatives = alternatives;
-            context[0].numberOfAlternatives = alternatives.length;
 
-            if (context[i].numberOfAlternatives <= 1) {
+            //set altOrLoop accordingly 
+            if (context[i].alternatives.length <= 1) {
                 context[i].altOrLoop = "Loop";
             } else {
                 context[i].altOrLoop = "Alt";
