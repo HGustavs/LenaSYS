@@ -1005,7 +1005,7 @@ function updateContent(file, content, boxnumber)
 				var boxid = box[0];
 
 				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
-				console.log("Sucess: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
+				console.log("Success: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
 				console.log("Boxcontent: ", boxcontent);
 				addedRows = [];
 				removedRows = [];
@@ -1045,7 +1045,7 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 	}
 	
 	var useBoxContent = true;
-
+	console.log(useBoxContent);
 	// Default to using openbox data and use regular retData as fallback incase it's not open
 	if (!box) {
 		useBoxContent = false;
@@ -1058,6 +1058,7 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 		filename = file;
 		boxtitle = titleBox;
 		boxcontent = content;
+		console.log("Check if D a D: ",filename, file, boxtitle, titleBox, boxcontent, content);
 	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
@@ -1067,10 +1068,13 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 			try {
 				if(file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
+					console.log("file == null: ", boxtitle);
 				if(content == null)
 					var boxcontent = $("#boxcontent option:selected").val();
+					console.log("content == null: ", boxcontent);
 				if(file == null)
 					var filename = $("#filename option:selected").val();
+					console.log("file == null: ", filename); 
 				
 				var wordlist = document.querySelector("#wordlist").value;
 				var fontsize = $("#fontsize option:selected").val();
@@ -1078,7 +1082,7 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 				var boxid = box[0];
 
 				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
-				console.log("Sucess: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
+				console.log("Success: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
 				console.log("Boxcontent: ", boxcontent);
 				addedRows = [];
 				removedRows = [];
