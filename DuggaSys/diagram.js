@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], numberOfDashedLines: 3, altOrLoop: "Alt"} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -6693,7 +6693,9 @@ function generateContextProperties()
                             str += `<div>Each line is an alternative. Just one is a loop.`
                             //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
                             //str +=`<input id="inputNumberOfDashedLines" type="number" min="0" value='${element[property]}'/>`
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            //str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            //TODO in the future, this can be implemented as part of saveProperties and combine attribute and func and alternatives cases.
+                            str += `<textarea id='inputAlternatives' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             str += `</div>`
                             break;
                         default:
@@ -9073,7 +9075,7 @@ function drawElement(element, ghosted = false)
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
 
-    //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceAltOrLoop
+    //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
     //replace this with nonFilledElementPartStroke when it gets merged.
     var actorFontColor;
     if (isDarkTheme()) actorFontColor = '#FFFFFF';
@@ -12394,20 +12396,34 @@ function toggleActorOrbject(type){
     showdata();
 }
 /**
- * @description sets the attribute numberOfDashedLines in sequenceLoopOrAlt to the input box numberOfDashedLines's value.
+ * @description sets the attribute numberOfDashedLines in sequenceLoopOrAlt to the amount of lines in the input textarea called inputAlternatives.
  */
+//TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
 function setSequenceDashedLines(){
     //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
-    /* for (let i = 0; i < context.length; i++) {
+    for (let i = 0; i < context.length; i++) {
         if (context[i].numberOfDashedLines != null) {
-            context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
+            /* let numberOfAttribute = document.getElementById("inputAlternatives");
+            //context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
             if (context[i].numberOfDashedLines == 0) {
                 context[i].altOrLoop = "Loop";
             } else {
                 context[i].altOrLoop = "Alt";
+            } */
+            //Create an array from string where newline seperates elements
+            let numberOfAttribute = document.getElementById("inputAlternatives").value.split('\n');
+            let formatArr = [];
+            for (var i = 0; i < numberOfAttribute.length; i++) {
+                if (!(numberOfAttribute[i] == '\n' || numberOfAttribute[i] == '' || numberOfAttribute[i] == ' ')) {
+                    formatArr.push(numberOfAttribute[i]);
+                } 
             }
+            //Update the attribute array
+            numberOfAttribute = formatArr;
+            console.log(numberOfAttribute);
+            console.log(numberOfAttribute.length);
         }
-    } */
+    }
     //elementProperty_numberOfDashedLines
     showdata();
 }
