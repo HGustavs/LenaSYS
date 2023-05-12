@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {name: "name", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", numberOfDashedLines: 1, altOrLoop: "Alt"} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {name: "name", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", alternatives: ["alternative1","alternative2"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -6696,7 +6696,8 @@ function generateContextProperties()
                         case 'numberofdashedlines':
                             str += `<div>Amount of Dashed lines, 0 for loop.`
                             //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
-                            str +=`<input id="inputNumberOfDashedLines" type="number" min="0" value='${element[property]}'/>`
+                            //str +=`<input id="inputNumberOfDashedLines" type="number" min="0" value='${element[property]}'/>`
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             str += `</div>`
                             break;
                         default:
@@ -9693,11 +9694,11 @@ function drawElement(element, ghosted = false)
             />`;
         } */
         //if the user chose to have alternative lines, iterate and draw them out one by one, evenly spaced out.
-        if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
-            let numberOfAlternatives = element.numberOfDashedLines + 1;
-            for (let i = 1; i < numberOfAlternatives; i++) {
+        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
+            let numberOfAlternativeSpaces = element.alternatives.length + 1;
+            for (let i = 1; i < numberOfAlternativeSpaces; i++) {
                 str += `<path class="text"
-                d="M${boxw-linew},${(boxh/numberOfAlternatives)*i}
+                d="M${boxw-linew},${(boxh/numberOfAlternativeSpaces)*i}
                     H${linew}
                 "
                 stroke-width='${linew}'
@@ -9705,7 +9706,7 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-                str += `<text x='${50*zoomfact+linew}' y='${((boxh/numberOfAlternatives)*i)+(texth/2)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
+                str += `<text x='${50*zoomfact+linew}' y='${((boxh/numberOfAlternativeSpaces)*i)+(texth/2)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
         //svg for the small label in top left corner
@@ -9727,7 +9728,7 @@ function drawElement(element, ghosted = false)
         str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
         //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+(linew*2)+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
+        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+(linew*2)+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
@@ -12401,7 +12402,7 @@ function toggleActorOrbject(type){
  */
 function setSequenceDashedLines(){
     //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
-    for (let i = 0; i < context.length; i++) {
+    /* for (let i = 0; i < context.length; i++) {
         if (context[i].numberOfDashedLines != null) {
             context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
             if (context[i].numberOfDashedLines == 0) {
@@ -12410,7 +12411,8 @@ function setSequenceDashedLines(){
                 context[i].altOrLoop = "Alt";
             }
         }
-    }
+    } */
+    //elementProperty_numberOfDashedLines
     showdata();
 }
 /**
