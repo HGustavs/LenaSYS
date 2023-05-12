@@ -9075,6 +9075,12 @@ function drawElement(element, ghosted = false)
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
+
+    //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceAltOrLoop
+    //replace this with nonFilledElementPartStroke when it gets merged.
+    var actorFontColor;
+    if (isDarkTheme()) actorFontColor = '#FFFFFF';
+    else actorFontColor = '#383737';
     
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
@@ -9601,10 +9607,6 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though.
-            var actorFontColor;
-            if (isDarkTheme()) actorFontColor = '#FFFFFF';
-            else actorFontColor = '#383737';
             str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
             str += `</g>`;
         }
