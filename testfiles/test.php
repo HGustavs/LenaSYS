@@ -11,10 +11,7 @@
   <body>
     <main>
         <h1>Welcome to My Website</h1>  
-    </main>
-	<script src="index.js"></script>
-  </body>
-</html>
+  
 
 <?php
 
@@ -36,4 +33,9 @@ $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND exam
 					$counted = $result->counted;
 
                     echo "counted: " + $counted;
-?>
+?> 
+
+    </main>
+	<script src="index.js"></script>
+  </body>
+</html>
