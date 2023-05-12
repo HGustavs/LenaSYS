@@ -17,8 +17,6 @@
         background-color: #800080;
         font-size : 30px;
         padding : 30px;
-        position : relative;
-        left : 80px;
     }
     th a{
         color: white;
