@@ -3016,7 +3016,7 @@ function createExamples(dir) {//TODO HERE
 	$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
-			data: {'cversid':cversid,'dirname':dirname , 'action':'CREGITEX'},
+			data: {'cversid':cversid,'dirname':dirname , 'opt':'CREGITEX'},
 			dataType: "json",
 			//success: returnedSection
 	});
