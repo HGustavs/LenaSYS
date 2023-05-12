@@ -107,14 +107,13 @@ function getIndexFile($url) {
 	// Starts a stream with the required headers
 	$context = stream_context_create($opts);
 	// Fetches the data with the stream included
-	
-	if($data = @file_get_contents($url, true, $context)) {
-		$json = json_decode($data, true);
-		if($json) {
-			//Get content of JSON-object and split files to individual index of the array
-			$array = file_get_contents($json['download_url']);
-			return explode("\n", $array);
-		}
+	$data = @file_get_contents($url, true, $context);
+    $json = json_decode($data, true);
+    //Check if url is found
+	if($json['message'] !== "Not Found") {
+        //Get content of JSON-object and split files to individual index of the array
+        $array = file_get_contents($json['download_url']);
+        return explode("\n", $array);
 	} else {
 		return false;
 	}
