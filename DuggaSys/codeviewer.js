@@ -1033,7 +1033,7 @@ function updateContent(file, content, boxnumber)
 
 function updateBoxTitle(file, content, boxnumber, titleBox) 
 {
-	console.log("Initiate UpdateContent: ", file, content, boxnumber);
+	console.log("Initiate UpdateContent: ", file, content, boxnumber, titleBox);
 	// Check if there is a box number
 	// Only true if function is called by drag and drop
 	if(boxnumber) {
@@ -1170,7 +1170,7 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateBoxTitle(\''+filename+'\','+kind+',' + boxid + ', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateTitle();" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
