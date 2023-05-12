@@ -12401,14 +12401,9 @@ function setSequenceAlternatives(){
             console.log(alternatives.length);
             context[0].alternatives = alternatives;
 
-            //set altOrLoop accordingly 
             let newAltOrLoop;
-            if (context[i].alternatives.length <= 1) {
-                newAltOrLoop = "Loop";
-                
-            } else {
-                newAltOrLoop = "Alt";
-            }
+            //check if the length is less or equal to 1, if so its loop, else its alt.
+            context[i].alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
             context[i].altOrLoop = newAltOrLoop;
             stateMachine.save(
                 StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
