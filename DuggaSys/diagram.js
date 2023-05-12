@@ -2993,7 +2993,7 @@ function saveProperties()
                 arrElementAttr = formatArr;
                 element[propName] = arrElementAttr;
                 propsChanged.attributes = arrElementAttr;
-                console.logpropsChanged.attributes);
+                console.log(propsChanged.attributes);
                 break;
         
             /* case 'functions':
