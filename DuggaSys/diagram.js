@@ -9689,22 +9689,22 @@ function drawElement(element, ghosted = false)
             stroke-dasharray='${linew*3},${linew*3}'
             fill='transparent'
             />`;
-            //svg for the small label in top left corner
-            str += `<path 
-                d="M${(7*zoomfact)+linew},${linew}
-                    h${100*zoomfact}
-                    v${25*zoomfact}
-                    l${-12.5*zoomfact},${12.5*zoomfact}
-                    H${linew}
-                    V${linew+(7*zoomfact)}
-                    a${7*zoomfact},${7*zoomfact} 0 0 1 ${7*zoomfact},${(7*zoomfact)*-1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
         }
+        //svg for the small label in top left corner
+        str += `<path 
+            d="M${(7*zoomfact)+linew},${linew}
+                h${100*zoomfact}
+                v${25*zoomfact}
+                l${-12.5*zoomfact},${12.5*zoomfact}
+                H${linew}
+                V${linew+(7*zoomfact)}
+                a${7*zoomfact},${7*zoomfact} 0 0 1 ${7*zoomfact},${(7*zoomfact)*-1}
+                z
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />`;
         //text in the label
         str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
