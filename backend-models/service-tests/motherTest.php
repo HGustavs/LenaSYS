@@ -32,17 +32,6 @@
     table tr:hover {
         background-color: #ddd;
     }
-
-    #passth {
-        background-color: #614875;
-    }
-    #passG{
-        background-color: green;
-        
-    }
-    #failR{
-        background-color: red;
-    }
     </style>
 <?php
 
@@ -108,9 +97,6 @@ include_once ".../test4";
                             </table>
                             <table>
                             <th>Test 3 (uploadFile)</th>
-                            </table>
-                            <table>
-                            <th id="passth"> <p id="passG">Passed</p> or <p id="failR">Failed</p> </th>
                             </table>
                             <table>
                             </tr>
