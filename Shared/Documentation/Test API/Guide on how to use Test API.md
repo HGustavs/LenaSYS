@@ -54,7 +54,7 @@ $testsData = array(
         'query-before-test-3' => "DELETE FROM course WHERE coursecode = 'IT401G' AND cid = ?",
         'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
-'query-variables' => "blop",
+	'query-variables' => "blop",
         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
