@@ -576,7 +576,7 @@
 					<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder'> 
 							<?php
-								$cid = getOP('courseid');
+								$cid = getOPG('courseid');
 								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
 								echo "<script>console.log('$cid');</script>";
 								echo "<script>console.log('test');</script>";
