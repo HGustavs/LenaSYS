@@ -519,7 +519,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(":ename","TEST2");
 					$query->bindParam(":sname", "TEST2");
 					$query->bindParam(":cversion", $coursevers);
-					$query->bindParam(":templateid",1);
+					$query->bindValue(":templateid",1);
 					$query->execute();
 					
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
