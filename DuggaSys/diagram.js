@@ -9656,7 +9656,6 @@ function drawElement(element, ghosted = false)
             //check if the length is less or equal to 1, if so its loop, else its alt.
             element.alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
             element.altOrLoop = newAltOrLoop;
-            console.log(newAltOrLoop);
         }
         
         //div to encapsulate sequence loop 
