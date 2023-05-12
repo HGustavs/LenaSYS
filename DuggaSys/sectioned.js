@@ -3010,13 +3010,13 @@ function createExamples(dir) {//TODO HERE
 
   //cversid = document.getElementById("cversid").value;
  
-  //cversid = 45656;
-
+  cversid = 45656;
+  dirname = dir;
   //AJAXService("CREGITEX", {courseid : cid, coursevers : cversid, dirname : codeExDir}, "CREGITEX");
 	$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
-			data: "opt="+opt,
+			data: {'cversid':cversid,'dirname':dirname , 'action':'CREGITEX'},
 			dataType: "json",
 			//success: returnedSection
 	});
