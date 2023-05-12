@@ -9696,7 +9696,7 @@ function drawElement(element, ghosted = false)
             let numberOfAlternatives = element.numberOfDashedLines + 1;
             for (let i = 1; i < numberOfAlternatives; i++) {
                 str += `<path class="text"
-                d="M${boxw-linew},${boxh/(numberOfAlternatives*i)}
+                d="M${boxw-linew},${(boxh/numberOfAlternatives)*i}
                     H${linew}
                 "
                 stroke-width='${linew}'
