@@ -90,16 +90,11 @@ include_once ".../test4";
                 echo '
                     <table border="1">
                         <tr>
-                            <th>Test 1 (Login)</th>
-                            </table>
-                            <table>
-                            <th>Test 2 (callService)</th>
-                            </table>
-                            <table>
-                            <th>Test 3 (uploadFile)</th>
-                            </table>
-                            <table>
-                            </tr>
+                          <th>Test 1 (Login)</th>
+                          <th>Test 2 (callService)</th>
+                          <th>Test 3 (uploadFile)</th>
+                        </tr>
+                      </table>
                 ';
                 
                 if(isset($_POST['test']) && $_POST['test'] != 'all'){
