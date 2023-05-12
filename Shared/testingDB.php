@@ -57,10 +57,13 @@ else{
 // add data to database
 if(file_exists($dir."/".$file))
 {
-	echo "<p>".$dir." exists </p>";
+	echo "<p>".$dir."/".$file. "exists </p>";
 	echo "<p>Installing into: ".$dbName."</p>";
-	$ret = shell_exec('mysql --user='.DB_USER.' --password='.DB_PASSWORD.' '.$dbName.' < '.$dir."/".$file);
-	echo "<h2>".$ret."</h2>";
+
+	$sql = file_get_contents($dir."/".$file);
+	$ret = importDatabase("localhost", DB_USER, DB_PASSWORD, DB_TESTING, $sql);
+
+	echo "<h2>Importing database: ".$ret."</h2>";
 }
 else{
 	echo "<h3> File doesn't exist: ".$file."</h3>";
@@ -69,6 +72,12 @@ else{
 
 updateCoursesyspw($dbName);
 
+
+function importDatabase($host, $usr, $pwd, $db, $sql)
+{
+	$mysqli = new mysqli($host, $usr, $pwd, $db);
+	return $mysqli->multi_query($sql);
+}
 
 // Update coursesyspw.php to include testdatabase
 function updateCoursesyspw($name) {
