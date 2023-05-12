@@ -9667,7 +9667,7 @@ function drawElement(element, ghosted = false)
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='none'
-            rx='${sequenceCornerRadius/4}'
+            rx='${7*zoomfact}'
             fill-opacity="0"
         />`;
         //svg for the small label in top left corner
