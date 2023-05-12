@@ -574,7 +574,7 @@
 				</div>
 				<div class='inputwrapper'>
 					<span>Github Directory:</span>
-						<select class='' id='' placeholder='Name.type' value=''> 
+						<select name="githubDir" placeholder='Github Folder'> 
 							<?php
 								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
 								echo "<script>console.log('test');</script>";
@@ -594,7 +594,7 @@
 
 	<?php
 		if(isset($_POST['githubInsert'])) {
-			echo "<script>console.log('hej');</script>";
+			echo "<script>console.log('{$_POST['githubDir']}');</script>";
 		}
 	?>
 
