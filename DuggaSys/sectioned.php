@@ -565,30 +565,38 @@
 
 
 	<!-- github moments box  -->
-	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-			<div class='loginBoxheader'>
-					<h3>Github Moment</h3>
-					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
-			</div>
-			<div class='inputwrapper'>
-				<span>Github Directory:</span>
-					<select class='' id='' placeholder='Name.type' value=''> 
-        		<?php
-							$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-							echo "<script>console.log('test');</script>";
-							foreach ($dirs as $dir) {
-								$dirname = basename($dir);
-								if(strstr($dirname, 'Examples')) {
-									echo "<option value='$dirname'>$dirname</option>";
-								}		
-							}											
-        		?>
-					</select>
+	<form action="sectioned.php" method="post">
+		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
+			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+				<div class='loginBoxheader'>
+						<h3>Github Moment</h3>
+						<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-			<button>
+				<div class='inputwrapper'>
+					<span>Github Directory:</span>
+						<select class='' id='' placeholder='Name.type' value=''> 
+							<?php
+								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
+								echo "<script>console.log('test');</script>";
+								foreach ($dirs as $dir) {
+									$dirname = basename($dir);
+									if(strstr($dirname, 'Examples')) {
+										echo "<option value='$dirname'>$dirname</option>";
+									}		
+								}											
+							?>
+						</select>
+					</div>
+				<input type="submit" name="githubInsert" value="Submit!">
+			</div>
 		</div>
-	</div>
+	</form>
+
+	<?php
+		if($isset($_POST['githubInsert'])) {
+			echo "<script>console.log('hej');</script>";
+		}
+	?>
 
 	<!-- github template  -->
 
