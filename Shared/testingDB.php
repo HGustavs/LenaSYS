@@ -62,9 +62,9 @@ if(file_exists($dir."/".$file))
 	echo "<p>Installing into: ".$dbName."</p>";
 
 	$sql = file_get_contents($dir."/".$file);
-	$ret = importDatabase("localhost", DB_USER, DB_PASSWORD, $dbName, $sql);
+	importDatabase("localhost", DB_USER, DB_PASSWORD, $dbName, $sql);
 
-	echo "<h2>Importing database: ".$ret."</h2>";
+	echo "<h2>Importing database: </h2>";
 }
 else{
 	echo "<h3> File doesn't exist: ".$file."</h3>";
@@ -76,7 +76,8 @@ else{
 function importDatabase($host, $usr, $pwd, $db, $sql)
 {
 	$mysqli = new mysqli($host, $usr, $pwd, $db);
-	return $mysqli->multi_query($sql);
+	$mysqli->multi_query($sql);
+	while ($mysqli->next_result());
 }
 
 // Update coursesyspw.php to include testdatabase
