@@ -594,6 +594,10 @@
 
 	<?php
 		global $pdo;
+		include_once "../Shared/basic.php";
+		include_once "../Shared/sessions.php";
+		session_start();
+		pdoConnect();
 		if(isset($_POST['githubInsert'])) {
 			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
 			$query->bindParam(':cid', $cid);
