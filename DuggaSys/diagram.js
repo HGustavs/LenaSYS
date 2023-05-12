@@ -11837,7 +11837,7 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 & contextLine.length != 0){
+    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 && contextLine.length != 0){
         var lowX;
         var highX;
         var lineLowX;
@@ -11943,7 +11943,7 @@ function drawSelectionBox(str)
         selectionBoxHighY = highY + 5;
         
         // Selection container of selected elements
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
