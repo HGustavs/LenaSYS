@@ -1,44 +1,39 @@
 <?php
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
+include_once "../../../coursesyspw.php";
+include_once "../../Shared/sessions.php";
+
 pdoConnect();
+echo "<p>starting testingdb install! </p>";
+$file = 'testingdb_queries.sql';
+$dbName = DB_NAME . 'testingdb';
 
-
-$dir = '../../testingdb';
-$file = 'testmodels.sql';
-
-// Create directory where sql model is to be stored
-if (!file_exists('../../testingdb')) {
-	mkdir('../../testingdb', 0777, true);
-	
-	echo "<p>Creating '".$dir."' directory</p>";
+if(!file_exists($file))
+{
+	echo "<p>Can't find query file: ".$file." aborting</p>";
+	exit;
 }
 else{
-	echo "<p>Directory '".$dir."' already exists </p>";
-	
+	echo "<p> Query file found! </p>";
 }
-
-$dbName = DB_NAME . 'testingdb';
 
 // Check if database exists
 $query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '."'".$dbName."'");
 if(!$query->execute()) {
 	$error = $query->errorInfo();
-	echo "<h4> Error checking for database: ".$error[2]."</h4>";
+	echo "<p> Error checking for database: ".$error[2]."</p>";
 	exit;
 }
 else{
 	// drop database, removing all changes
-	echo "<h3>Database exists already, resetting...</h3>";
+	echo "<p>Database exists already, resetting...</p>";
 	
 	$query = $pdo->prepare('DROP DATABASE '.$dbName);
 	if(!$query->execute()) {
 		$error = $query->errorInfo();
-		echo "<h4> Error dropping database: ".$error[2]."</h4>";
+		echo "<p> Error dropping database: ".$error[2]."</p>";
 	}
 	else{
-		echo "<h2>Database reset</h2>";
+		echo "<p>Database reset</p>";
 	}
 }
 
@@ -47,31 +42,22 @@ $query = $pdo->prepare("CREATE DATABASE IF NOT EXISTS ".$dbName);
 
 if(!$query->execute()) {
 	$error = $query->errorInfo();
-	echo "<h4> Error creating database: ".$error[2]."</h4>";
+	echo "<p> Error creating database: ".$error[2]."</p>";
 	exit;
 }
 else{
-	echo "<h4>Database: ".$dbName." created/already exists, no errors</h4>";
+	echo "<p>Database: ".$dbName." created/already exists, no errors</p>";
 }
+
 updateCoursesyspw($dbName);
 
 // add data to database
-if(file_exists($dir."/".$file))
-{
-	echo "<p>".$dir."/".$file. "exists </p>";
-	echo "<p>Installing into: ".$dbName."</p>";
+echo "<p>Importing ".$file." into : ".$dbName."</p>";
 
-	$sql = file_get_contents($dir."/".$file);
-	importDatabase("localhost", DB_USER, DB_PASSWORD, $dbName, $sql);
+$sql = file_get_contents($file);
+importDatabase("localhost", DB_USER, DB_PASSWORD, $dbName, $sql);
 
-	echo "<h2>Importing database: </h2>";
-}
-else{
-	echo "<h3> File doesn't exist: ".$file."</h3>";
-	exit;
-}
-
-
+echo "<h2>Testing database installed! </h2>";
 
 function importDatabase($host, $usr, $pwd, $db, $sql)
 {
@@ -82,7 +68,7 @@ function importDatabase($host, $usr, $pwd, $db, $sql)
 
 // Update coursesyspw.php to include testdatabase
 function updateCoursesyspw($name) {
-	$filename = "../../coursesyspw.php";
+	$filename = "../../../coursesyspw.php";
 	if(!file_exists($filename))
 	{
 		echo $filename." doesn't exist<br>";
@@ -110,5 +96,3 @@ function updateCoursesyspw($name) {
 		echo $str." already exists in 'coursesyspw.php'<br>";
 	}
 }
-
-?>
