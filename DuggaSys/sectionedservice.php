@@ -470,13 +470,6 @@ if($gradesys=="UNK") $gradesys=0;
                         $error=$query->errorInfo();
                         $debug="Error updating entries".$error[2]; 
                     }
-				} else if (strcmp($coursevers, "null")!==0) {
-					// Get every coursevers of courses so we seed groups to every courseversion
-					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
-					$stmt->bindParam(":cid", $courseid);
-					$stmt->execute();
-					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
-					$totalGroups = 24 * count($courseversions);
 				} else if(strcmp($opt,"REFGIT")===0) {
 					class githubDB extends SQLite3 {
 						function __construct() {
@@ -667,7 +660,14 @@ if($gradesys=="UNK") $gradesys=0;
 							//Check for update
 						}
 					}
-				}
+				} else if (strcmp($coursevers, "null")!==0) {
+					// Get every coursevers of courses so we seed groups to every courseversion
+					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
+					$stmt->bindParam(":cid", $courseid);
+					$stmt->execute();
+					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
+					$totalGroups = 24 * count($courseversions);
+				} 
 			}
 		}
 
