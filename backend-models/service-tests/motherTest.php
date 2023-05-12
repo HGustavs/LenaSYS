@@ -84,12 +84,13 @@ include_once ".../test4";
                     echo '<option value="'.$row['test'].'"';
                    
                 
-                   echo '</select>';
+                  
                         if(isset($_POST['test'])){
                             if($_POST['test']==$row['test']) echo " selected ";
                         }
                     echo '>'.$row['test'].'</option>';
                     echo"<p>".$row['test']."</p>";
+                    echo '</select>';
                 }
             //echo '</select>';
 
