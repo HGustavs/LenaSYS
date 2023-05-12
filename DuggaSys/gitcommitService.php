@@ -53,14 +53,9 @@
 			// TODO: Limit this to only one result
 		}
 
-		// Get the latest commit from the URL
-		$latestCommit = getCommit($githubURL);
-
 		// Check if not null, else add it to Sqlite db
-		if($cid != null && $latestCommit != "") {
-			insertIntoSQLite($githubURL, $cid, $latestCommit);
-		} else if ($latestCommit == "") {
-			print_r("Latest commit not valid");
+		if($cid != null) {
+			insertIntoSQLite($githubURL, $cid);
 		} else {
 			print_r("No matches in database!");
 		}
@@ -70,12 +65,11 @@
 	// insertIntoSQLite: Insert into Sqlite db when new course is created
 	//--------------------------------------------------------------------------------------------------
 
-	function insertIntoSQLite($url, $cid, $commit) {
+	function insertIntoSQLite($url, $cid) { 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL, lastCommit) VALUES (:cid, :repoURL, :commits)"); 
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $url);
-		$query->bindParam(':commits', $commit);
 		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
@@ -109,7 +103,7 @@
 		}
 
 		//If both values are valid
-		if($commit == "" || $url == "") {
+		if($commit == "" && $url == "") {
 			print_r("Error! Couldn't get url and commit from SQLite db");
 		} else {
 			// Get the latest commit from the URL
@@ -123,9 +117,9 @@
 				$query->bindParam(':latestCommit', $latestCommit);
 				$query->execute();
 
-				// Update metadata
-				bfs($url, $cid, "REFRESH");
-				print "The course has been updated!";
+				// Download files and metadata
+				bfs($url, $cid, "DOWNLOAD");
+				print "The course has been updated, files have been downloaded!";
 			} else {
 				print "The course is already up to date!";
 			}
