@@ -1069,9 +1069,9 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 				if(file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
 					console.log("file == null: ", boxtitle);
-				if(content == null)
+				/*if(content == null)
 					var boxcontent = $("#boxcontent option:selected").val();
-					console.log("content == null: ", boxcontent);
+					console.log("content == null: ", boxcontent);*/
 				if(file == null)
 					var filename = $("#filename option:selected").val();
 					console.log("file == null: ", filename); 
