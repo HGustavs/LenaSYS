@@ -9705,7 +9705,7 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-                str += `<text x='${50*zoomfact+linew}' y='${((boxh/numberOfAlternatives)*i)+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
+                str += `<text x='${50*zoomfact+linew}' y='${((boxh/numberOfAlternatives)*i)+(texth/2)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
             }
         }
         //svg for the small label in top left corner
