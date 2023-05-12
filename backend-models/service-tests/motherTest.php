@@ -147,7 +147,7 @@ include_once ".../test4";
                     }
                 }
                 echo '</tbody>';
-                echo '</table>';
+                
         
                 
 
