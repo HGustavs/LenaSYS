@@ -565,47 +565,30 @@
 
 
 	<!-- github moments box  -->
-	<form method="POST" action="">
 	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 			<div class='loginBoxheader'>
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
-
-			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> 
-        <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
-        <?php
-					$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-					echo "<script>console.log('test');</script>";
-					foreach ($dirs as $dir) {
-						$dirname = basename($dir);
-						if(strstr($dirname, 'Examples')) {
-							echo "<option value='$dirname'>$dirname</option>";
-						}
-					}											
-											/*
-                        $cid = getOPG('courseid');
-                        $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-                        $query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
-                        $query->bindParam(':cid', $cid);
-                        $query->execute();
-                        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
-                    }catch(PDOException $e) {
-                        return '<p>Error: ' . $e->getMessage() . '</p>';
-                    }
-                    foreach($rows as $row){
-                    echo "<option value=''>" .$row['fileName']. "</option>";
-										*/
-        ?>
-			</select></div>
-			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
-			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
-			<input type="submit" value="Submit!">
+			<div class='inputwrapper'>
+				<span>Github Directory:</span>
+					<select class='' id='' placeholder='Name.type' value=''> 
+        		<?php
+							$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
+							echo "<script>console.log('test');</script>";
+							foreach ($dirs as $dir) {
+								$dirname = basename($dir);
+								if(strstr($dirname, 'Examples')) {
+									echo "<option value='$dirname'>$dirname</option>";
+								}		
+							}											
+        		?>
+					</select>
+				</div>
+			<button>
 		</div>
 	</div>
-	</form>
 
 	<!-- github template  -->
 
