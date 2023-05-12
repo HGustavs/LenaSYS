@@ -80,7 +80,7 @@ include_once ".../test4";
             
             echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" Test="name" >';
-                foreach($test as $row){
+                foreach($motherTest_json as $row){
                     echo '<option value="'.$row['name'].'"';
                    
                 
