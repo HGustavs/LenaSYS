@@ -6690,7 +6690,7 @@ function generateContextProperties()
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'alternatives':
-                            str += `<div>Amount of Dashed lines, 0 for loop.`
+                            str += `<div>Each line is an alternative. Just one is a loop.`
                             //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
                             //str +=`<input id="inputNumberOfDashedLines" type="number" min="0" value='${element[property]}'/>`
                             str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
