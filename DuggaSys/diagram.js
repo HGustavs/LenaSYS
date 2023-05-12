@@ -12404,7 +12404,6 @@ function setSequenceDashedLines(){
             }
         }
     }
-    //elementProperty_numberOfDashedLines
     showdata();
 }
 /**
