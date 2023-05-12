@@ -9680,7 +9680,7 @@ function drawElement(element, ghosted = false)
         if ((element.alternatives != null) && (element.alternatives.length > 0)) {
             for (let i = 1; i < element.alternatives.length; i++) {
                 str += `<path class="text"
-                d="M${boxw-linew},${(boxh/element.alternatives.length)*i}
+                d="M${boxw-linew},${((boxh/element.alternatives.length)*i)*zoomfact}
                     H${linew}
                 "
                 stroke-width='${linew}'
