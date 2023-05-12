@@ -1279,17 +1279,7 @@ function AJAXService(opt,apara,kind)
 			// }
 		});
 	}
-	else if(kind=="CREGITEX"){
-		$.ajax({
-			url: "sectionedservice.php",
-			type: "POST",
-			data: "opt="+opt,
-			dataType: "json",
-			//success: returnedSection
-
-
-		});
-	}
+	
 
 	// Logging to JSON
 	var date = new Date();

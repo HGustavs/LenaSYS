@@ -3005,18 +3005,21 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 
 //Creates all examples from github that doesnt exists yet
 function createExamples(dir) {//TODO HERE
-  //console.log("**** CV "+document.getElementById("coursevers").value);
+
   console.log("**** CID "+querystring['courseid']);
-  console.log("**** DIR "+dir);
-  cid = querystring['courseid'];
+
   //cversid = document.getElementById("cversid").value;
-  codeExDir = dir;
-  console.log("cid: "+ cid);
-  console.log("cversid: "+ cversid);
-  console.log("dir: "+ codeExDir);
+ 
   //cversid = 45656;
-  console.log("cversid: "+ cversid);
-  AJAXService("CREGITEX", {courseid : cid, coursevers : cversid, dirname : codeExDir}, "CREGITEX");
+
+  //AJAXService("CREGITEX", {courseid : cid, coursevers : cversid, dirname : codeExDir}, "CREGITEX");
+	$.ajax({
+			url: "sectionedservice.php",
+			type: "POST",
+			data: "opt="+opt,
+			dataType: "json",
+			//success: returnedSection
+	});
 }
 
 // ------ Validates all versionnames ------
