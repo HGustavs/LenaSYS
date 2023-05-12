@@ -147,7 +147,7 @@ include_once ".../test4";
 
                        
 
-                        print_r($motherTest_json);
+                        
 
             ?>
    </body>
