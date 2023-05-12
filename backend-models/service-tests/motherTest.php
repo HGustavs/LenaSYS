@@ -92,33 +92,39 @@ include_once ".../test4";
             echo '</select>';
 
       
-          
-            
+        /*--------------------------------------------------------------------------------*/
+        /*------------------------Headers for each Test-----------------------------------*/
+        /*--------------------------------------------------------------------------------*/
+        
+        
+        if("value=all"){
+            echo "
+            <table border='1'>
+            <tr>
+                <th>test1</th>
+                <th>test2</th>
+                <th>test3</th>
+                <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
+            </tr>
+            </table>
+            ";
+
+            echo "
+            <table border='1'>
+            <tr>
+                <td><p style='font-size:30px';>&#9989;</p></td>
+            </tr>
+            <tr>
+                <td><p style='font-size:30px';>&#10060;</p></td>
+            </tr>
+            </table>
+            ";
+        }
+                
 
 
-                echo "
-                <table border='1'>
-                <tr>
-                    <th>test1</th>
-                    <th>test2</th>
-                    <th>test3</th>
-                    <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
-                </tr>
-                </table>
-                ";
 
-
-
-                        echo "
-                        <table border='1'>
-                        <tr>
-                            <td><p style='font-size:30px';>&#9989;</p></td>
-                        </tr>
-                        <tr>
-                            <td><p style='font-size:30px';>&#10060;</p></td>
-                        </tr>
-                        </table>
-                        ";
+                       
 
                         print_r($motherTest_json);
 
