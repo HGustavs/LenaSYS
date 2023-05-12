@@ -2977,7 +2977,6 @@ function saveProperties()
                 }
                 break;
             case 'attributes':
-            case 'functions':
                 //Get string from textarea
                 var elementAttr = child.value;
                 //Create an array from string where newline seperates elements
@@ -2994,7 +2993,7 @@ function saveProperties()
                 propsChanged.attributes = arrElementAttr;
                 break;
         
-            /* case 'functions':
+            case 'functions':
                 //Get string from textarea
                 var elementFunc = child.value;
                 //Create an array from string where newline seperates elements
@@ -3009,7 +3008,7 @@ function saveProperties()
                 arrElementFunc = formatArr;
                 element[propName] = arrElementFunc;
                 propsChanged.functions = arrElementFunc;
-                break; */
+                break;
 
             default:
                 break;
