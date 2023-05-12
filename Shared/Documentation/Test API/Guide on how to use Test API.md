@@ -26,7 +26,7 @@ The test API aims to be as easy as possible. In figure 2 you can find an example
 #### Save query output
 You can save the output from a "query-before-test" and use the value in the service data as the example in figure 2 shows. Soround the name of the query you want to save with "<!" before and  "!> after (ex !query-before-test-1!) and then you can specify a path to the exact value (optional) to save, for example [0][coursename], do this "<* .... *>".
 
-### Unkown value in query
+#### Unkown value in query
 If you have an unknown value in your SQL query and you need the result of another query to determine that value, you have two options, the first one (more complex) is to modify your query to include an SQL subquery in order to retrive the value. Here's an example of how to use a subquery to delete a row with an unknown `cid` value:
 ```
 DELETE FROM course WHERE coursename = 'MyAPICourse' AND cid = (SELECT cid FROM (SELECT cid FROM course WHERE coursecode = 'IT400G' ORDER BY coursecode DESC LIMIT 1) AS temp_table);
