@@ -79,17 +79,17 @@ include_once ".../test4";
 
             
             echo 'Choose table: ';
-            echo '<select onchange="this.form.submit()" Test="name" >';
+            echo '<select onchange="this.form.submit()" name="test" >';
                 foreach($motherTest_json as $row){
-                    echo '<option value="'.$row['name'].'"';
+                    echo '<option value="'.$row['test'].'"';
                    
                 
                    echo '</select>';
-                        if(isset($_POST['name'])){
-                            if($_POST['name']==$row['name']) echo " selected ";
+                        if(isset($_POST['test'])){
+                            if($_POST['test']==$row['test']) echo " selected ";
                         }
-                    echo '>'.$row['name'].'</option>';
-                    echo"<p>".$row['name']."</p>";
+                    echo '>'.$row['test'].'</option>';
+                    echo"<p>".$row['test']."</p>";
                 }
             echo '</select>';
 
