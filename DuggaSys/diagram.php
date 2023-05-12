@@ -440,6 +440,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
+                    
                     <div id="diagramPopOut"><!--Initial state -->
                         <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
@@ -891,6 +892,18 @@
                 </span>
             </div>
         </fieldset>   
+        <fieldset id = "localSaveField">
+        <legend aria-hidden="true">Save</legend>
+            <div id="localSave" class="diagramIcons" onclick="">
+                <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
+                <span class="toolTipText"><b>Save current diagram</b><br>
+                    <p>Click to save current diagram</p>
+                    <br>
+                    <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
+                </span>
+            </div>
+        </fieldset>   
+
         <!-- <fieldset>
             <legend>Include</legend>
             <div id="Include" class="diagramIcons" onclick="toggleErTable()">
