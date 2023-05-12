@@ -10,7 +10,6 @@
 	}else{
 		$userid="00";
 	}
-	global $pdo;
 ?>
 
 <!DOCTYPE html>
@@ -594,6 +593,7 @@
 	</form>
 
 	<?php
+		global $pdo;
 		if(isset($_POST['githubInsert'])) {
 			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
 			$query->bindParam(':cid', $cid);
