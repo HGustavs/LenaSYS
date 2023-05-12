@@ -9672,7 +9672,7 @@ function drawElement(element, ghosted = false)
             rx='${7*zoomfact}'
             fill-opacity="0"
         />`;
-        if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
+        /* if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
             //the first line is outside of the loop since it has a absolute M instead of a relative m.
             str += `<path class="text" 
                 d="M${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
@@ -9691,6 +9691,21 @@ function drawElement(element, ghosted = false)
             stroke-dasharray='${linew*3},${linew*3}'
             fill='transparent'
             />`;
+        } */
+        if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
+            let numberOfAlternatives = element.numberOfDashedLines + 1;
+            for (let i = 1; i < numberOfAlternatives+1; i++) {
+                str += `<path class="text" 
+                d="M${boxw-linew},${boxh/(numberOfAlternatives*i)}
+                    H${linew}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                stroke-dasharray='${linew*3},${linew*3}'
+                fill='transparent'
+                />`;
+                
+            }
         }
         //svg for the small label in top left corner
         str += `<path 
