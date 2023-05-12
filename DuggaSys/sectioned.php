@@ -593,7 +593,7 @@
 	</form>
 
 	<?php
-		if($isset($_POST['githubInsert'])) {
+		if(isset($_POST['githubInsert'])) {
 			echo "<script>console.log('hej');</script>";
 		}
 	?>
