@@ -860,7 +860,7 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML and SD(state diagram) This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of entity, ie ER, IE, UML, SD & SE This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
