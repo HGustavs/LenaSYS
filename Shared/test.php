@@ -51,7 +51,10 @@ $testsData = array(
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 */
 
-function doDBQuery($query){
+function doDBQuery($query, $data, $testsData){
+    $queryString = $query;
+    $variables = $testsData['query-variables'];
+    $variablesArray = explode(", ", $variables);
     $result = "Error executing query";
     // DB credentials
     include_once("../../../coursesyspw.php");
@@ -72,13 +75,20 @@ function doDBQuery($query){
     // DB query to execute
     if ($query != null) {
         $query = $pdo->prepare($query);
+        if (strpos($queryString, '?') !== false) {
+            for ($i = 0; $i < count($variablesArray); $i++) {
+                $variableToUse = $data[$variablesArray[$i]];
+                $query->bindParam($i+1, $variableToUse);
+            }
+        }
 
         if(!$query->execute()) {
             $error=$query->errorInfo();
             $result = "Error updating entries".$error[2];
         }
         else{
-            $result = "Succesfully executed query but no return data";
+            $error=$query->errorInfo();
+            $result = "Succesfully executed query but no return data".$error[2];
             $resultQuery = $query->fetchAll();
             if ($resultQuery != null) {
                 $result = $resultQuery;
@@ -96,6 +106,8 @@ function testHandler($testsData, $prettyPrint){
 
     foreach($testsData as $testData){
 
+        $data = unserialize($testData['service-data']);
+
         // Name of test
         $name = key($testsData);
 
@@ -110,7 +122,28 @@ function testHandler($testsData, $prettyPrint){
         foreach ($testData as $option => $value) {
             // if query-before-start
             if (strpos($option, 'query-before-test') === 0) {
-               $QueryReturnJSONbefore[$option] = doDBQuery($value);
+
+                // If service data !query-test! replace with actual query output
+                foreach($data as $sInput => $sValue){
+                    foreach($QueryReturnJSONbefore as $oneQuery => $queryValue){
+                        // Check if service data uses query output (!*******!)
+                        $queryName = substr(strstr($sValue, "<!"), 2);
+                        $queryName = substr($queryName, 0, strpos($queryName, "!>"));
+                        $queryPath = substr(strstr($sValue, "<*"), 2);
+                        $queryPath = substr($queryPath, 0, strpos($queryPath, "*>"));
+                        if ($queryName == $oneQuery) {
+                            if ($queryPath != null) {
+                                eval('$queryValue = $queryValue' . $queryPath . ';');
+                                $data[$sInput] = $queryValue;
+                            }
+                            else{
+                                $data[$sInput] = $queryValue;
+                            }
+                        }
+                    }
+                }
+
+               $QueryReturnJSONbefore[$option] = doDBQuery($value, $data, $testData);
            }
         }
 
@@ -141,7 +174,7 @@ function testHandler($testsData, $prettyPrint){
         foreach ($testData as $option => $value) {
             // if query-before-start-
             if (strpos($option, 'query-after-test') === 0) {
-               $QueryReturnJSON[$option] = doDBQuery($value);
+               $QueryReturnJSON[$option] = doDBQuery($value, "UNK", "UNK");
            }
         }
 
@@ -196,9 +229,11 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     foreach($data as $sInput => $sValue){
         foreach($QueryReturnJSON as $oneQuery => $queryValue){
             // Check if service data uses query output (!*******!)
-            $queryName = substr($sValue, 0, strpos($sValue, " "));
-            $queryPath = substr(strstr($sValue, " "), 1);
-            if ($queryName == "!" . $oneQuery . "!") {
+            $queryName = substr(strstr($sValue, "<!"), 2);
+            $queryName = substr($queryName, 0, strpos($queryName, "!>"));
+            $queryPath = substr(strstr($sValue, "<*"), 2);
+            $queryPath = substr($queryPath, 0, strpos($queryPath, "*>"));
+            if ($queryName == $oneQuery) {
                 if ($queryPath != null) {
                     eval('$queryValue = $queryValue' . $queryPath . ';');
                     $queryReturnPathAndDataJSON[$queryName . $queryPath] = $queryValue;
@@ -259,7 +294,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         'result' => $callServiceTestResult,
         'respons' => $curlResponseJSONFiltered,
         'service' => $service,
-        'data' => unserialize($data),
+        'data' => $data,
         'query-return' => $queryReturnPathAndDataJSON
     );
 }
@@ -299,5 +334,5 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 }
 
 
-// Version 1.2 (Increment when new change in code)
+// Version 1.3 (Increment when new change in code)
 ?>
