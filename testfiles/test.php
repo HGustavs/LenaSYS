@@ -1,4 +1,4 @@
-<?
+<?php
 
 $dirname = "..&#47;courses&#47;1895&#47;Github&#47;Demo&#47;Code-example1&#47";
 $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
