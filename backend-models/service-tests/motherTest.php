@@ -89,37 +89,60 @@ include_once ".../test4";
                         }
                         echo '>'.$key.'</option>';
                     }
-            echo '</select>';
-
-      
-        /*--------------------------------------------------------------------------------*/
-        /*------------------------Headers for each Test-----------------------------------*/
-        /*--------------------------------------------------------------------------------*/
+                    echo '
+                    </select>
+                    </form>
+                    ';
+                
+                echo '
+                    <table border="1">
+                        <tr>
+                            <th>Test 1 (Login)</th>
+                            <th>Test 2 (callService)</th>
+                            <th>Test 3 (uploadFile)</th>
+                            <th id="passth"> <p id="passG">Passed</p> or <p id="failR">Failed</p> </th>
+                        </tr>
+                ';
+                
+                if(isset($_POST['test']) && $_POST['test'] != 'all'){
+                    $test = $_POST['test'];
+                    echo '<tr>';
+                    foreach($decoded_json['create course test'][$test] as $key => $value){
+                        if($key == 'result'){
+                            echo '<td>';
+                            if($value == 'passed'){
+                                echo '<p style="font-size:30px">&#9989;</p>';
+                            } else {
+                                echo '<p style="font-size:30px">&#10060;</p>';
+                            }
+                            echo '</td>';
+                        } else {
+                            echo '<td>'.$value.'</td>';
+                        }
+                    }
+                    echo '</tr>';
+                } else {
+                    foreach($decoded_json['create course test'] as $key => $value){
+                        echo '<tr>';
+                        foreach($value as $nyckel => $val){
+                            if($nyckel == 'result'){
+                                echo '<td>';
+                                if($val == 'passed'){
+                                    echo '<p style="font-size:30px">&#9989;</p>';
+                                } else {
+                                    echo '<p style="font-size:30px">&#10060;</p>';
+                                }
+                                echo '</td>';
+                            } else {
+                                echo '<td>'.$val.'</td>';
+                            }
+                        }
+                        echo '</tr>';
+                    }
+                }
+                
+                echo '</table>';
         
-        
-        if("value=all"){
-            echo "
-            <table border='1'>
-            <tr>
-                <th>test1</th>
-                <th>test2</th>
-                <th>test3</th>
-                <th id='passth'> <p id='passG'>Passed</p> or <p id='failR'>Failed</p> </th>
-            </tr>
-            </table>
-            ";
-
-            echo "
-            <table border='1'>
-            <tr>
-                <td><p style='font-size:30px';>&#9989;</p></td>
-            </tr>
-            <tr>
-                <td><p style='font-size:30px';>&#10060;</p></td>
-            </tr>
-            </table>
-            ";
-        }
                 
 
 
