@@ -1108,7 +1108,18 @@ function updateBoxTitle(file, content, boxnumber, titleBox, boxcontent)
 		}
 	}
 }
-
+/*-----------------------------------------------------------------------
+  -              testTitle: Updates title being edited			            -
+  -----------------------------------------------------------------------*/
+function editTitle(boxid, boxtitle) {
+	console.log("Enter editTitle")
+	AJAXService("EDITTITLE", {
+		exampleid: querystring['exampleid'],
+		boxid: boxid,
+		boxtitle: boxtitle
+	}, "BOXTITLE");
+	console.log("AJAXservice: ",exampleid, boxid, boxtitle);
+}
 /*-----------------------------------------------------------------------
   -              updateTitle: Updates the title being edited            -
   -----------------------------------------------------------------------*/
@@ -1175,15 +1186,15 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 
 		var str = "<table cellspacing='2'><tr>";
 
-		// If reader has write access the settings button is shown along with box title
+		// If reader has write access the settings button is shown along with box title 
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateBoxTitle(\''+filename+'\','+kind+',' + boxid + ', $(this).text(), \''+boxcontent+'\');" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateBoxTitle(\''+filename+'\','+kind+',' + boxid + ', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateBoxTitle(\''+filename+'\','+kind+',' + boxid + ', $(this).text(), \''+boxcontent+'\');" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
