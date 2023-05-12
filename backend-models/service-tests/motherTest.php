@@ -57,7 +57,7 @@ include_once ".../test4";
 
 
         <!----------------------------------------------------------------------------------->  
-        <!------Creates a dropdown with all tables in the loglena database------------------->
+        <!------Creates a dropdown with the Test 1-3 from motherTestJSON.json file----------->
         <!-----------------------------------------------------------------------------------> 
         
         <input type="text" id="searchInput" placeholder="Search...">
@@ -76,10 +76,9 @@ include_once ".../test4";
             $decoded_json = json_decode($motherTest_json, true);
             
             
-
-            
             echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" name="test" >';
+            echo '<option value="all">All Tests</option>';
                 foreach($decoded_json ['create course test'] as $key => $value) {
                     echo '<option value="'.$key.'"';
                    
