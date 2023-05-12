@@ -9704,7 +9704,7 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-                str += `<text x='${linew}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
+                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
         //svg for the small label in top left corner
@@ -9726,7 +9726,7 @@ function drawElement(element, ghosted = false)
         str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
         //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${linew}' y='${37.5*zoomfact+(linew*2)+(texth/1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
+        str += `<text x='${linew*2}' y='${37.5*zoomfact+(linew*2)+(texth/1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
