@@ -6,12 +6,16 @@
 ----------------------------------------------------------
 
 <?php
-
+ 
 include "../Shared/test.php";
-
+ 
 $testsData = array(
     'create course test' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'query-before-test-1' => "SELECT coursename FROM course WHERE coursecode = 'DV12G' ORDER BY coursecode DESC LIMIT 1",
+        'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
+        'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
+        'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
@@ -19,7 +23,8 @@ $testsData = array(
             'password' => 'pass',
             'coursecode' => 'IT466G',
             'coursename' => 'TestCourseFromAPI4',
-            'uid' => '101'
+            'uid' => '101',
+        'blop' => '!query-before-test-1! [0][coursename]'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
             'debug',
@@ -42,15 +47,75 @@ $testsData = array(
         )),
     ),
 );
-
+ 
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
-
 */
+
+function doDBQuery($query){
+    $result = "Error executing query";
+    // DB credentials
+    include_once("../../../coursesyspw.php");
+
+    if ($pdo == null) {
+        // Connect to DB
+        try {
+            $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+            if(!defined("MYSQL_VERSION")) {
+                define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+            }
+        } catch (PDOException $e) {
+            $result = "Failed to get DB handle: " . $e->getMessage() . "</br>";
+            exit;
+        }
+    }
+
+    // DB query to execute
+    if ($query != null) {
+        $query = $pdo->prepare($query);
+
+        if(!$query->execute()) {
+            $error=$query->errorInfo();
+            $result = "Error updating entries".$error[2];
+        }
+        else{
+            $result = "Succesfully executed query but no return data";
+            $resultQuery = $query->fetchAll();
+            if ($resultQuery != null) {
+                $result = $resultQuery;
+            }
+        }
+    }
+
+    return $result;
+   
+}
 
 function testHandler($testsData, $prettyPrint){
 
+    $i = 0;
+
     foreach($testsData as $testData){
+
+        // Name of test
         $name = key($testsData);
+
+        if ($prettyPrint) {
+            if ($i > 0) {
+                echo "<hr>";
+            }
+            echo "<h2>{$name} </h2>";
+        }
+
+        // If query to execute before start
+        foreach ($testData as $option => $value) {
+            // if query-before-start
+            if (strpos($option, 'query-before-test') === 0) {
+               $QueryReturnJSONbefore[$option] = doDBQuery($value);
+           }
+        }
+
+        $TestsReturnJSON['querys-before-test'] = $QueryReturnJSONbefore;
+        
         //Output filter
         $filter = unserialize($testData['filter-output']);
 
@@ -64,16 +129,28 @@ function testHandler($testsData, $prettyPrint){
         $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
         // Test 2 callService
-        $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $prettyPrint));
+        $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
         $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
         // Test 3 assertEqual
         $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
         $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
+
+        // If query to execute after test
+        foreach ($testData as $option => $value) {
+            // if query-before-start-
+            if (strpos($option, 'query-after-test') === 0) {
+               $QueryReturnJSON[$option] = doDBQuery($value);
+           }
+        }
+
+        $TestsReturnJSON['querys-after-test'] = $QueryReturnJSON;
+
         $TestsReturnJSONWithName[$name] = $TestsReturnJSON;
 
         next($testsData);
+        $i++;
     }
 
     $TestsReturnJSONFinal = $TestsReturnJSONWithName;
@@ -86,7 +163,7 @@ function testHandler($testsData, $prettyPrint){
 function loginTest($user, $pwd, $prettyPrint){
 
     // Session includes login functionality
-    include_once "../Shared/sessions.php";
+    include_once "../../Shared/sessions.php";
 
     if (login($user, $pwd, true)) {
         $loginTestResult = "passed";
@@ -96,7 +173,7 @@ function loginTest($user, $pwd, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 1 (login): {$loginTestResult} </h4>";
+        echo "<h3> Test 1 (login): {$loginTestResult} </h3>";
         echo "<strong>username: </strong>{$user}";
         echo "<br>";
         echo "<strong>password: </strong>{$pwd}";
@@ -111,11 +188,32 @@ function loginTest($user, $pwd, $prettyPrint){
 }
 
 // Test 2: call service test
-function callServiceTest($service, $data, $filter, $prettyPrint){
+function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrint){
+
+    $data = unserialize($data);
+
+    // If service data !query-test! replace with actual query output
+    foreach($data as $sInput => $sValue){
+        foreach($QueryReturnJSON as $oneQuery => $queryValue){
+            // Check if service data uses query output (!*******!)
+            $queryName = substr($sValue, 0, strpos($sValue, " "));
+            $queryPath = substr(strstr($sValue, " "), 1);
+            if ($queryName == "!" . $oneQuery . "!") {
+                if ($queryPath != null) {
+                    eval('$queryValue = $queryValue' . $queryPath . ';');
+                    $queryReturnPathAndDataJSON[$queryName . $queryPath] = $queryValue;
+                    $data[$sInput] = $queryValue;
+                }
+                else{
+                    $data[$sInput] = $queryValue;
+                }
+            }
+        }
+    }
 
     // Make POST request to service
     $curl = curl_init($service);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, unserialize($data));
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
     $curlResponse = curl_exec($curl);
@@ -126,13 +224,15 @@ function callServiceTest($service, $data, $filter, $prettyPrint){
 
     // Only include JSON same as filter
     foreach($filter as $option){
+        // If none do not filter
         if ($option == "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
         }
         else{
             foreach($curlResponseJSON as $key => $value){
+                // Check if respons key exists in filter
                 if (in_array($key, $filter)) {
-                    $curlResponseJSONFiltered[$key] = $value;
+                    $curlResponseJSONFiltered[$key] = $value; 
                 }
             }
         }
@@ -146,7 +246,7 @@ function callServiceTest($service, $data, $filter, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 2 (callService): {$callServiceTestResult} </h4>";
+        echo "<h3> Test 2 (callService): {$callServiceTestResult} </h3>";
         echo "<strong>service: </strong>{$service}";
         echo "<br>";
         echo "<strong>sent data: </strong>".json_encode(unserialize($data),true);
@@ -160,6 +260,7 @@ function callServiceTest($service, $data, $filter, $prettyPrint){
         'respons' => $curlResponseJSONFiltered,
         'service' => $service,
         'data' => unserialize($data),
+        'query-return' => $queryReturnPathAndDataJSON
     );
 }
 
@@ -183,7 +284,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     }
 
     if ($prettyPrint) {
-        echo "<h4> Test 3 (assertEqual): {$equalTestResult} </h4>";
+        echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
         echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
         echo "<br>";
         echo "<strong>value output: </strong>".json_encode($valueOuput, true);
@@ -197,4 +298,6 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     );
 }
 
+
+// Version 1.2 (Increment when new change in code)
 ?>
