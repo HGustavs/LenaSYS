@@ -1055,7 +1055,7 @@ function updateBoxTitle(file, content, boxnumber, titleBox, boxcontent)
 
 	// Check if a drag and drop instance is created
 	if(file != null && box != null){
-		boxcontent = document.getElementById();
+		boxcontent = document.getElementById(boxcontent);
 		filename = file;
 		boxtitle = titleBox;
 		console.log("Check if D a D: ",filename, boxtitle, boxcontent);
