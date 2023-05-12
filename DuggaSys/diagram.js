@@ -12407,6 +12407,12 @@ function setSequenceAlternatives(){
             } else {
                 context[i].altOrLoop = "Alt";
             }
+
+            stateMachine.save(
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': context[i].altOrLoop }),
+                StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
+            );
         }
     }
     showdata();
