@@ -1071,13 +1071,17 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 					var boxcontent = $("#boxcontent option:selected").val();
 				if(file == null)
 					var filename = $("#filename option:selected").val();
-			
+				
+				var wordlist = document.querySelector("#wordlist").value;
+				var fontsize = $("#fontsize option:selected").val();
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
-				AJAXService("EDITCONTENT", {boxtitle: boxtitle}, "BOXCONTENT");				
+				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
 				console.log("Sucess: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
 				console.log("Boxcontent: ", boxcontent);
+				addedRows = [];
+				removedRows = [];
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
