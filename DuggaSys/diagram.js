@@ -9649,7 +9649,7 @@ function drawElement(element, ghosted = false)
             //increase length of element to avoid squished alternatives
             //boxh += 250*element.alternatives.length;
             for (let i = 0; i < element.alternatives.length; i++) {
-                boxh = 125*zoomfact;
+                boxh += 125*zoomfact;
             }
             //also set alt or loop to whatever is correct
             let newAltOrLoop;
