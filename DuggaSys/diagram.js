@@ -12411,17 +12411,18 @@ function setSequenceDashedLines(){
                 context[i].altOrLoop = "Alt";
             } */
             //Create an array from string where newline seperates elements
-            let numberOfAttribute = document.getElementById("inputAlternatives").value.split('\n');
+            let alternatives = document.getElementById("inputAlternatives").value.split('\n');
             let formatArr = [];
-            for (let i = 0; i < numberOfAttribute.length; i++) {
-                if (!(numberOfAttribute[i] == '\n' || numberOfAttribute[i] == '' || numberOfAttribute[i] == ' ')) {
-                    formatArr.push(numberOfAttribute[i]);
+            for (let i = 0; i < alternatives.length; i++) {
+                if (!(numberOfAttribute[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
+                    formatArr.push(alternatives[i]);
                 } 
             }
             //Update the attribute array
-            numberOfAttribute = formatArr;
-            console.log(numberOfAttribute);
-            console.log(numberOfAttribute.length);
+            alternatives = formatArr;
+            console.log(alternatives);
+            console.log(alternatives.length);
+            context[0].alternatives = alternatives;
         }
     }
     //elementProperty_numberOfDashedLines
