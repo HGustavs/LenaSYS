@@ -15,15 +15,14 @@
 
 <?php
 echo "Pre pdo ";
-//include_once "../Shared/sessions.php";
+include_once "../../coursesyspw.php";
 include_once "../Shared/basic.php";
-include_once "../recursivetesting/FetchGithubRepo.php";
+include_once "../Shared/sessions.php";
 
-// Connect to database and start session
+// Connect to database
 pdoConnect();
-//session_start();
 
-$dirname = "..&#47;courses&#47;1895&#47;Github&#47;Demo&#47;Code-example1&#47";
+$dirname = "../courses/1895/Github/Demo/Code-example1/";
 $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
