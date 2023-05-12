@@ -14,7 +14,7 @@
   
 
 <?php
-
+echo "Pre pdo ";
 //include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 include_once "../recursivetesting/FetchGithubRepo.php";
