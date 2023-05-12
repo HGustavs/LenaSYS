@@ -10,7 +10,7 @@
 	}else{
 		$userid="00";
 	}
-
+	global $pdo;
 ?>
 
 <!DOCTYPE html>
@@ -578,7 +578,7 @@
 							<?php
 								$cid = getOPG('courseid');
 								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-								echo "<script>console.log('$cid');</script>";
+								echo "<script>console.log('$pdo');</script>";
 								echo "<script>console.log('test');</script>";
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
