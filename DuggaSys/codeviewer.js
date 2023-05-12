@@ -1055,10 +1055,10 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 
 	// Check if a drag and drop instance is created
 	if(file != null && box != null){
+		boxcontent = document.getElementById(boxcontent);
 		filename = file;
 		boxtitle = titleBox;
-		//boxcontent = content;
-		console.log("Check if D a D: ",filename, file, boxtitle, titleBox, boxcontent, content);
+		console.log("Check if D a D: ",filename, boxtitle, boxcontent);
 	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
@@ -1069,9 +1069,9 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 				if(file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
 					console.log("file == null: ", boxtitle);
-				/*if(content == null)
+				if(content == null)
 					var boxcontent = $("#boxcontent option:selected").val();
-					console.log("content == null: ", boxcontent);*/
+					console.log("content == null: ", boxcontent);
 				if(file == null)
 					var filename = $("#filename option:selected").val();
 					console.log("file == null: ", filename); 
