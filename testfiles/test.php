@@ -33,17 +33,15 @@ try {
 
 $dirname = "Demo";
 echo "<br>";
-echo "PDO: " . $pdo;
-echo "<br>";
 $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
 					$query->exectue();
 
 					$result = $query->fetch(PDO::FETCH_OBJ);
-					$counted = $result->counted;
+					$counted = $result->$counted;
 
-                    echo "counted: " . $counted;
+ echo "counted: " . $counted;
 ?> 
 
     </main>

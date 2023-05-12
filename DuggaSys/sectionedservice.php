@@ -510,13 +510,14 @@ if($gradesys=="UNK") $gradesys=0;
 					echo "<script> console.log('TESTING');</script>";
 					//$parts = explode('/', $url);
 					//count if there is already a codeexample or if we should create a new one.
+				
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
 					$query->exectue();
 
 					$result = $query->fetch(PDO::FETCH_OBJ);
-					$counted = $result->counted;
+					$counted = $result->$counted;
 					//if no codeexample exist create a new one
 					if($counted == 0) {
 					//	bfs($url, $courseid, "DOWNLOAD");
