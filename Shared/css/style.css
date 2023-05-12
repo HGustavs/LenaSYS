@@ -3278,12 +3278,12 @@ div.submit-button:disabled {
   cursor: pointer;
 }
 
-#plorf, #dorf, #NewTabLink, #refreshIMG, .refreshBurgerIMG {
+/*#plorf, #dorf, #NewTabLink {
   display: block;
   margin: auto;
   /* Makes the icons purple */
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
-}
+  /*filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+}*/
 
 
 #Sectionlist .moment #dorf {
