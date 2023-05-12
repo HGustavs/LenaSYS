@@ -1,6 +1,6 @@
 <?php
-	include_once "../Shared/basic.php";
-	include_once "../Shared/sessions.php";
+	include "../Shared/basic.php";
+	include "../Shared/sessions.php";
 	session_start();
 	//include_once "../../coursesyspw.php";
 	pdoConnect();
@@ -594,8 +594,6 @@
 
 	<?php
 		global $pdo;
-		include_once "../Shared/basic.php";
-		include_once "../Shared/sessions.php";
 		if(isset($_POST['githubInsert'])) {
 			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
 			$query->bindParam(':cid', $cid);
