@@ -12409,6 +12409,7 @@ function setSequenceAlternatives(){
 
             stateMachine.save(
                 StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': context[0].altOrLoop }),
                 StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
             );
         }
