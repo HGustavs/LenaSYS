@@ -38,10 +38,10 @@ $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND exam
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
 					$query->exectue();
 
-					$result = $query->fetch(PDO::FETCH_OBJ);
-					$counted = $result->$counted;
+					//$result = $query->fetch(PDO::FETCH_OBJ);
+					//$counted = $result->$counted;
 
- echo "counted: " . $counted;
+ echo "counted: " ;//. $counted;
 ?> 
 
     </main>
