@@ -110,7 +110,7 @@ include_once ".../test4";
                 echo '<tbody>';
                 if(isset($_POST['test']) && $_POST['test'] != 'all'){
                     $test = $_POST['test'];
-                    echo '<tr>';
+                    echo '<th>';
                     foreach($decoded_json['create course test'][$test] as $key => $value){
                         if($key == 'result'){
                             echo '<td>';
@@ -124,10 +124,10 @@ include_once ".../test4";
                             echo '<td>'.$value.'</td>';
                         }
                     }
-                    echo '</tr>';
+                    echo '</th>';
                 } else {
                     foreach($decoded_json['create course test'] as $key => $value){
-                        echo '<tr>';
+                        echo '<th>';
                         foreach($value as $nyckel => $val){
                             if($nyckel == 'result'){
                                 echo '<td>';
@@ -141,7 +141,7 @@ include_once ".../test4";
                                 echo '<td>'.$val.'</td>';
                             }
                         }
-                        echo '</tr>';
+                        echo '</th>';
                     }
                 }
                 echo '</tbody>';
