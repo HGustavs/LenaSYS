@@ -1077,7 +1077,7 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
-				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows});				
+				AJAXService("EDITCONTENT", {boxtitle: boxtitle, boxcontent: boxcontent}, "BOXCONTENT");				
 				console.log("Sucess: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
 				console.log("Boxcontent: ", boxcontent);
 				addedRows = [];
