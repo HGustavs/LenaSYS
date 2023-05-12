@@ -2965,7 +2965,7 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
-    /*
+    
     else if(element.type=='SE') {
 
         //Check if type has been changed
@@ -2981,7 +2981,7 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
-    */
+    
     generateContextProperties();
     displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
