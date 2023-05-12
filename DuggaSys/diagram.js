@@ -9649,7 +9649,7 @@ function drawElement(element, ghosted = false)
             //increase length of element to avoid squished alternatives
             //boxh += 250*element.alternatives.length;
             for (let i = 0; i < element.alternatives.length; i++) {
-                boxh += 50*zoomfact;
+                boxh += 50;
             }
         }
         //div to encapsulate sequence loop 
