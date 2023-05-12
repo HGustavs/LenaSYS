@@ -9645,13 +9645,19 @@ function drawElement(element, ghosted = false)
     // Sequence loop 
     else if (element.kind == 'sequenceLoopOrAlt') {
         //first, set a suggested height for the element based on the amount of alternatives
-        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
+        if (element.alternatives != null) {
             //increase length of element to avoid squished alternatives
             //boxh += 250*element.alternatives.length;
             for (let i = 0; i < element.alternatives.length; i++) {
                 boxh += 50*zoomfact;
             }
+            //also set alt or loop to whatever is correct
+            let newAltOrLoop;
+            //check if the length is less or equal to 1, if so its loop, else its alt.
+            context[i].alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
+            context[i].altOrLoop = newAltOrLoop;
         }
+        
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
@@ -12401,13 +12407,8 @@ function setSequenceAlternatives(){
             console.log(alternatives.length);
             context[0].alternatives = alternatives;
 
-            let newAltOrLoop;
-            //check if the length is less or equal to 1, if so its loop, else its alt.
-            context[i].alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
-            context[i].altOrLoop = newAltOrLoop;
             stateMachine.save(
                 StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
-                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': newAltOrLoop }),
                 StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
             );
         }
