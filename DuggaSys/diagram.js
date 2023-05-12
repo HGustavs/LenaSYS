@@ -11871,7 +11871,7 @@ function drawSelectionBox(str)
         console.log('length:', contextLine.length);
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
-                if (contextLine[i].kind !== undefined) {
+                if (contextLine[i] && contextLine[i].kind !== undefined) {
                     console.log('kind:', contextLine[i].kind);
                     if (contextLine[i].kind === lineKind.DOUBLE) {
                         tempLines.push(document.getElementById(contextLine[i].id + "-1"));
