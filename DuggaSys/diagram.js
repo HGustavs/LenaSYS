@@ -2978,7 +2978,6 @@ function saveProperties()
                 break;
             case 'attributes':
             case 'functions':
-            case 'alternatives':
                 //Get string from textarea
                 var elementAttr = child.value;
                 //Create an array from string where newline seperates elements
@@ -6714,7 +6713,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="setSequenceDashedLines();changeState();saveProperties();generateContextProperties();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -12393,6 +12392,24 @@ function toggleActorOrbject(type){
             }
         }
     }
+    showdata();
+}
+/**
+ * @description sets the attribute numberOfDashedLines in sequenceLoopOrAlt to the input box numberOfDashedLines's value.
+ */
+function setSequenceDashedLines(){
+    //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
+    /* for (let i = 0; i < context.length; i++) {
+        if (context[i].numberOfDashedLines != null) {
+            context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
+            if (context[i].numberOfDashedLines == 0) {
+                context[i].altOrLoop = "Loop";
+            } else {
+                context[i].altOrLoop = "Alt";
+            }
+        }
+    } */
+    //elementProperty_numberOfDashedLines
     showdata();
 }
 /**
