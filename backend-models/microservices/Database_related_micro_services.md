@@ -1,7 +1,7 @@
 # Database related micro services
-
 ---
-## LIST OF TABLES ACCESSED mySQL
+---
+## LIST OF TABLES ACCESSED trough _mySQL_
 ---
 
 ---
@@ -32,6 +32,7 @@
    <br>
     <br>
 
+---
 ---
 ## LIST OF TABLES ACCESSED SQLite
 ---
@@ -91,16 +92,21 @@ SELECT downloadURL FROM gitFiles WHERE cid=".$cid." AND fileName=".$file.";
 ---
 <br>
 
-### selectFromUser 
+### selectTanbleFromUser 
 Gathers information from the table __user__. parameters used 
+<br>
 #### different querys paramaters and retrived information 
 - uid : username 
 - uid : password
 ```sql
 SELECT password FROM user WHERE uid=:userid LIMIT 1;
 ```
+
 <br>
 
+---
+
+<br>
 
 ### insertIntoTableUser --only used by addUser--
 Performes inserts into the table __user__, Parameters used: 
@@ -124,6 +130,8 @@ INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime,
 ### updateTableUser 
 
 Updates values in the table __user__ in the database, columns that are updated.
+<br>
+
 #### UpdateUserInformation:
 __firstname__ 
 - firstname
@@ -150,6 +158,8 @@ __class__
 ```sql
 UPDATE user SET class=:class WHERE uid=:uid;
 ```
+<br>
+
 #### updateUserPassword
 - password 
 ```sql
@@ -158,6 +168,8 @@ UPDATE user SET password=:PW WHERE uid=:userid
 ```sql
 UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;
 ```
+<br>
+
 #### changeProfileValues:
 __securityquestion__ 
 - securityquestion
@@ -177,9 +189,13 @@ UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:
 
 ## ------------------------------------- ==user_course== ----------------------------------------
 ---
+<br>
+<br>
 
 ### selectFromTableUserCourse --USED ONLY BY getCourseGroupsAndMembers--
 Gathers information from the table __user_course__. parameters used 
+<br>
+
 #### different querys paramaters and retrived information 
 <br>
 
@@ -218,6 +234,8 @@ INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R
 ### updateTableUserCourse --only used by UpdateUserAndUsercourse--
 
 Update values in the table __user_course__, columns that are updated.
+<br>
+
 #### updateUserCourse: examiner
 - examiner
 ```sql
@@ -252,11 +270,13 @@ UPDATE user_course SET `groups`=:groups WHERE uid=:uid AND cid=:cid;
 ## ---------------------------------------------- ==class== -----------------------------------------
 ---
 <br>
+<br>
 
 
-
-### selectFromClass 
+### selectFromTableClass 
 Gathers information from the table __class__. parameters used 
+<br>
+
 #### different querys paramaters and retrived information 
 - className : class 
 ```sql
@@ -293,12 +313,17 @@ INSERT INTO class (class, responsible) VALUES(:className,1);
 ## --------------------------------- ==codeexample== ---------------------------------------------
 ---
 <br>
+<br>
 
 ### selectFromTableCodeexample
 Gathers information from the table __codeexample__.
+<br>
 
 #### different querys paramaters and retrived information
 - exampleId : exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public
+```sql
+SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+```
 - cid AND cversion : *
 ```sql
 SELECT * from codeexample WHERE cid=:cid AND cversion = :oldvers;
@@ -324,6 +349,7 @@ SELECT runlink FROM codeexample WHERE cid=:cid;
 
 ### insertIntoTableCodeexample             
 Performes an insert into the table __codeexample__. Parameters needed:
+<br>
 
 #### copyCourseVersion
 - exampleid:   Copys all values from a table row where id has this value. 
@@ -335,8 +361,6 @@ INSERT INTO codeexample (cid,examplename,sectionname,beforeid,afterid,runlink,cv
 <br>
 
 #### createNewCodeexample
-#### updateListentrie
-#### createGithubCodeexample
 - cid
 - exampleid
 - sectionname
@@ -357,6 +381,7 @@ INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:
 ### deleteFromTableCodeexample 
 
 Removes row from table __codeexample__. Parameters needed:
+<br>
 
 #### deliteExample
 - exampleid
@@ -380,7 +405,7 @@ DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND 
 <br>
 
 
-### updateCodeexample 
+### updateTableCodeexample 
 
 Updates values in the table __codeexample__. Columns that are updated: 
 <br>
@@ -405,6 +430,7 @@ __EDITEXAMPLE__
 ```sql
 UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
 ```
+<br>
 
 __EDITEXAMPLE: beforeid!__
 - beforeid
@@ -414,6 +440,7 @@ UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid AND cid
 ```sql
 UPDATE codeexample SET beforeid=:newexample WHERE beforeid=:oldexample AND cversion=:updvers;
 ```
+<br>
 
 __EDITEXAMPLE: afterid!__
 - afterid
@@ -424,13 +451,6 @@ UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid AND cid =
 UPDATE codeexample SET afterid=:newexample WHERE afterid=:oldexample AND cversion=:updvers;
 ```
 
-
-#### copyCourseVersion: 
-__beforeid__
-- befordeid
-
-__afterid__
-- afterid
 
  <br>
   <br>
@@ -447,9 +467,11 @@ __afterid__
 ## ----------------------------------------- ==box== --------------------------------------------------
 ---
 <br>
+<br>
 
-### selectFromBox           
+### selectFromTableBox           
 Gathers information from the table __box__.
+<br>
 
 #### different querys paramaters and retrived information 
 - boxid AND exampleid : *
@@ -471,16 +493,6 @@ SELECT filename FROM box WHERE exampleid=:exampleid;
 
 <br>
 
-#### deleteFileLink
-Count rows where these conditions hold.
-- __FROM__ fileLink, box __WHERE__ box.filename = fileLink.filename __AND__ (fileLink.kind = 2 __OR__ fileLink.kind = 3) __AND__ fileLink.fileid=:fid ;
-
-<br>
-
----
-
-<br>
-
 ### insertIntoTableBox             
 Performes an insert into the table __box__. Parameters needed:
 
@@ -489,11 +501,10 @@ pre-set values are inserted in the original service.
 - boxtitle: Title
 - settings: [viktig=1]
 - fontsize: 9
-<br>
-
 ```sql
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid,fontsize) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid, :fontsize);
 ```
+<br>
 
 #### copyCourseVersion
 - boxid:        Copys all values from a table row where id has this
@@ -565,10 +576,12 @@ UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
 ## --------------------------------------- ==impwordlist== --------------------------------------
 ---
 <br>
+<br>
 
 
-### selectFromImpwordlist           
+### selectFromTableImpwordlist           
 Gathers information from the table __impwordlist__.
+<br>
 
 #### different querys paramaters and retrived information 
 - exampleid : * 
@@ -582,9 +595,9 @@ SELECT * FROM impwordlist WHERE exampleid=:oldexampleid;
 
 <br>
 
-### insertIntoImpwordlist  
+### insertIntoTableImpwordlist  
 Performes an insert into the table __impwordlist__. Parameters needed:
-
+<br>
 #### settingCodeexampleTemplate
 - exampleid
 - word
@@ -610,6 +623,7 @@ INSERT INTO impwordlist (exampleid,word,label,updated,uid) SELECT :newexampleid 
 
 ### deleteFromTableImpwordlist
 Removes row from table __impwordlist__. Parameters needed:
+<br>
 
 #### EDITEXAMPLE
 - exampleid
@@ -640,13 +654,13 @@ DELETE FROM impwordlist WHERE exampleid=:exampleid;
 ---
 ## --------------------------------- ==improw== ------------------------------------------------
 ---
-
-
-
+<br>
 <br>
 
-### selectFromImprow           
+
+### selectFromTableImprow           
 Gathers information from the table __improw__.
+<br>
 
 #### different querys paramaters and retrived information 
 - exampleid : * 
@@ -662,8 +676,9 @@ SELECT * FROM improw WHERE exampleid=:oldexampleid;
 
 
 
-### insertIntoImprow 
+### insertIntoTableImprow 
 Performes an insert into the table __improw__. Parameters needed:
+<br>
 
 #### settingCodeexampleTemplate
 - boxid
@@ -692,6 +707,7 @@ INSERT INTO improw (boxid,exampleid,istart,iend,irowdesc,updated,uid) SELECT box
 
 ### deleteFromTableImprow
 Removes row from table __improw__. Parameters needed:
+<br>
 
 ### editContentOfCodeExample
 - boxid
@@ -708,12 +724,6 @@ DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exam
 DELETE FROM improw WHERE exampleid=:exampleid;
 ```
 
-<br>
-
---- 
-
-<br>
-
 
 
 
@@ -728,10 +738,11 @@ DELETE FROM improw WHERE exampleid=:exampleid;
 ## -------------------------------------- ==listentries== --------------------------------------------
 ---
 <br>
-
+<br>
 
 ### selectFromTablelistentries  
 Gathers information from the table __listentries__.
+<br>
 
 #### different querys paramaters and retrived information 
 - vers : * 
@@ -767,9 +778,9 @@ SELECT entryname FROM listentries WHERE lid=:moment
 
 <br>
 
-### insertIntolistentries  
+### insertIntoTablelistentries  
 Performes an insert into the table __listentries__. Parameters needed:
-
+<br>
 
 #### copyCourseVersion
 - lid:    Copys all values from a table row where id has this value.  
@@ -781,7 +792,6 @@ INSERT INTO listentries (cid,entryname,link,kind,pos,creator,ts,code_id,visible,
 <br>
 
 #### createNewListentrie
-#### createGithubCodeexample
 - cid
 - vers
 - entryname
@@ -805,8 +815,9 @@ VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys
 
 <br>
 
-### deliteFromListentries 
+### deliteFromTableListentries 
 Removes row from table __listentries__. Parameters needed:
+<br>
 
 #### deliteExample
 #### deleteListentries
@@ -920,8 +931,9 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 <br>
 
 
-### selectFromCourse 
+### selectFromTableCourse 
 Gathers information from the table __course__.
+<br>
 
 #### different querys paramaters and retrived information 
 - no parameters : cid (orderd by cid, in DESC order, limeted to 1) 
@@ -938,8 +950,9 @@ SELECT activeversion FROM course WHERE cid=:cid
 
 <br>
 
-### insertIntoCourse --only used by createNewCourse-- 
+### insertIntoTableCourse --only used by createNewCourse-- 
 Performes an insert into the table __course__. Parameters needed:
+<br>
 
 #### createNewCourse
 - coursecode
@@ -962,8 +975,7 @@ INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) 
 Updates values in the table __Course__. Columns that are updated: 
 <br>
 
-#### createNewCourseVersion
-#### setActiveCourseversion
+#### setAsActiveCourse
 - activeversion
 ```sql
 UPDATE course SET activeversion=:vers WHERE cid=:cid
@@ -985,8 +997,9 @@ UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:co
 
 <br>
 
-### deliteFromCourse  --USED ONLY BY deleteCourseMaterial--
+### deliteFromTableCourse  --USED ONLY BY deleteCourseMaterial--
 Removes row from table __course__. Parameters needed:
+<br>
 
 #### deleteCourseMaterial: 
 __visibility__
@@ -1015,9 +1028,11 @@ DELETE course FROM course WHERE visibility=:deleted;
 ## ----------------------------------------- ==vers== -----------------------------------------
 ---
 <br>
+<br>
 
 ### selectFromTableVers
 Gathers information from the table __vers__.
+<br>
 
 #### different querys paramaters and retrived information 
 - cid : vers
@@ -1032,11 +1047,11 @@ SELECT vers FROM vers WHERE cid=:cid;
 <br>
 
 
-### insertIntoVers  
+### insertIntoTableVers  
 Performes an insert into the table __vers__. Parameters needed:
+<br>
 
 #### createNewVersionOfCourse
-#### copyCourseVersion
 - cid
 - coursecode
 - vers
@@ -1057,8 +1072,9 @@ INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate
 <br>
 
 
-## deliteFromVers  --USED ONLY BY deleteCourseMaterial--
+## deliteFromTableVers  --USED ONLY BY deleteCourseMaterial--
 Removes row from table __vers__. Parameters needed:
+<br>
 
 #### deleteCourseMaterial: 
 Where course.visibility = Delited
@@ -1075,6 +1091,7 @@ DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = cou
 
 ### updateTableCourse 
 Updates values in the table __vers__. Columns that are updated: 
+<br>
 
 #### updateCourseVersion_courseed
 - versname
@@ -1100,9 +1117,6 @@ UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE c
 ```
 <br>
 
----
-
-
 
 
 
@@ -1121,8 +1135,9 @@ UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE c
 <br>
 
 
-### selectFromQuiz 
+### selectFromTableQuiz 
 Gathers information from the table __quiz__.
+<br>
 
 #### different querys paramaters and retrived information 
 
@@ -1138,8 +1153,9 @@ SELECT quiz.*, variant.vid AS vid,IF(useranswer is NULL,'UNK',useranswer) AS use
 
 <br>
 
-### insertIntoQuiz  
+### insertIntoTableQuiz  
 Performes an insert into the table __quiz__. Parameters needed:
+<br>
 
 #### copyCourseVersion
 - id:   Copys all values from a table row where id has this value. 
@@ -1175,6 +1191,7 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 
 ### updateTableQuiz  
 Updates values in the table __quiz__. Columns that are updated: 
+<br>
 
 #### createOrUpdateDugga
 - qname
@@ -1210,8 +1227,9 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 
 <br>
 
-### deliteFromTableQuiz  
+### deleteFromTableQuiz  
 Removes row from table __quiz__. Parameters needed:
+<br>
 
 #### deleteCourseMaterial: 
 Where course.visibility = Delited
@@ -1226,8 +1244,8 @@ DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = cou
 ```
 DELETE FROM quiz WHERE id=:qid
 ```
+<br>
 
---- 
 
 
 <br>
@@ -1246,12 +1264,13 @@ DELETE FROM quiz WHERE id=:qid
 ---
 ## ------------------------------------ ==variant== ----------------------------------------------------
 ---
-
 <br>
 <br>
 
-### selectFromVariant  --only used by copyCourseVersion-- 
+
+### selectFromTableVariant  --only used by copyCourseVersion-- 
 Gathers information from the table __variant__.
+<br>
 
 #### different querys paramaters and retrived information 
 - quizID : *
@@ -1265,15 +1284,15 @@ SELECT * from variant WHERE quizID=:quizid;
 
 <br>
 
-### insertIntoVariant  
+### insertIntoTableVariant  
 Performes an insert into the table __Variant__. Parameters needed:
+<br>
 
 #### copyCourseVersion
 - vid:   Copys all values from a table row where id has this value. 
 - quizID: gives the new copy a new quizID value.
 ```sql
 INSERT INTO variant (quizID,param,variantanswer,modified,creator,disabled) SELECT :newquizid as quizID,param,variantanswer,modified,creator,disabled FROM variant WHERE vid = :oldvid;
-
 ```
 <br>
 
@@ -1297,6 +1316,7 @@ INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:u
 
 ### updateTableVariant  -- used by addDuggaVariant--
 Updates values in the table __quiz__. Columns that are updated: 
+<br>
 
 #### addDuggaVariant
 - disabled
@@ -1325,10 +1345,10 @@ DELETE FROM variant WHERE vid=:vid;
 <br>
 
 
-<be>
- <be>
-  <be>
-   <be>
+<br>
+ <br>
+  <br>
+   <br>
 
 
 
@@ -1341,8 +1361,7 @@ DELETE FROM variant WHERE vid=:vid;
 ---
 ## ------------------------------------------- ==settings== -----------------------------------
 ---
-
-
+<br>
 <br>
 
 ### insertIntoTableSettings  --only used by createMOTD-- 
@@ -1354,14 +1373,12 @@ Performes an insert into the table __settings__. Parameters needed:
 ```sql
 INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 ```
-
 <br>
 
----
-
 <br>
-
-
+ <br>
+  <br>
+   <br>
 
 
 
@@ -1372,9 +1389,11 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 
 <br>
 
-### selectFromUserAnswer
+### selectFromTableUserAnswer
 Gathers information from the table __userAnswer__. parameters used 
+
 #### different querys paramaters and retrived information 
+<br>
 
 #### highscoreservice
 __Return 10 Highest Scores__
@@ -1425,6 +1444,7 @@ SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz
 
 ### insertIntoTableUserAnswer  --only used by submitDugga-- 
 Performes an insert into the table __userAnswer__. Parameters needed:
+<br>
 
 #### createMOTD
 - cid
@@ -1448,6 +1468,7 @@ INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted
 
 ### updateTableUserAnswer -- ONLY USED BY submitDugga-- 
 Updates values in the table __userAnswer__. Columns that are updated: 
+<br>
 
 #### submitDugga
 - useranswer
@@ -1455,7 +1476,6 @@ Updates values in the table __userAnswer__. Columns that are updated:
 ```sql
 UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timesSubmitted=timesSubmitted+1 WHERE hash=:hash AND password=:hashpwd;
 ```
-
 
 <br>
 
@@ -1465,16 +1485,13 @@ UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timesSubmitted=ti
 
 ### deliteFromTableUserAnswer  -- ONLY USED BY deleteDuggaVariant-- 
 Removes row from table __userAnswer__. Parameters needed:
+<br>
 
 #### deliteExample
 - variant
 ```sql
 DELETE FROM userAnswer WHERE variant=:vid;
 ```
-
-<br>
-
----
 
 <br>
 
@@ -1492,10 +1509,11 @@ DELETE FROM userAnswer WHERE variant=:vid;
 ---
 <br>
 
-### selectFromFileLink   
+### selectFromTableFileLink   
 Gathers information from the table __fileLink__.
 
 #### different querys paramaters and retrived information 
+<br>
 
 #### deleteFileLink
 Count rows where these conditions hold.
@@ -1512,6 +1530,7 @@ SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filenam
 
 ### updateTableFileLink  -- used by updataFileLink--
 Updates values in the table __fileLink__. Columns that are updated: 
+<br>
 
 #### updataFileLink: 
 There exist thee different versions of this update with the same column update, but with different _WHERE_ cases.
@@ -1536,6 +1555,7 @@ UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND ci
 
 ### deliteFromTableFileLink  -- ONLY USED BY deleteFile-- 
 Removes row from table __fileLink__. Parameters needed:
+<br>
 
 #### deliteExample
 - fileid
@@ -1546,7 +1566,10 @@ DELETE FROM fileLink WHERE fileid=:fid
 
 
 
-
+<br>
+ <br>
+  <br>
+   <br>
 
 <br>
 
@@ -1560,8 +1583,11 @@ DELETE FROM fileLink WHERE fileid=:fid
 
 ### selectFromTableScore   
 Gathers information from the table __Score__.
+<br>
 
 #### highscoreservice
+<br>
+
 __Return 10 Highest Scores__
 The query specified below selects only scores associated with users that have returned a dugga with a passing grade
 
@@ -1578,7 +1604,10 @@ __SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.quiz =
 
 
 
-
+<br>
+ <br>
+  <br>
+   <br>
 
 
 
@@ -1594,6 +1623,7 @@ __SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.quiz =
 
 ### selectFromTableGroup  --only used by getGroupValues-- 
 Gathers information from the table __group__.
+<br>
 
 #### different querys paramaters and retrived information 
 - no parameters : groupKind, groupVal
@@ -1602,7 +1632,10 @@ SELECT groupKind,groupVal FROM `groups`
 ```
 
 
-
+<br>
+ <br>
+  <br>
+   <br>
 
 
 
@@ -1620,6 +1653,7 @@ SELECT groupKind,groupVal FROM `groups`
 
 ### insertIntoTableList  --only used by updateListentrie-- 
 Performes an insert into the table __list__. Parameters needed:
+<br>
 
 #### updateListentrie
 - listnr = 23415 (this is preset in the code)
@@ -1629,13 +1663,15 @@ Performes an insert into the table __list__. Parameters needed:
 ```sql
 INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);
 ```
-
-
-
-
+<br>
 
 
 <br>
+ <br>
+  <br>
+   <br>
+
+
 
 ---
 ## -------------------------- ==userduggafeedback== -------------------------------------------------------
@@ -1646,6 +1682,7 @@ INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Chr
 
 ### selectFromTableuserduggafeedback  
 Gathers information from the table __userduggafeedback__.
+<br>
 
 #### different querys paramaters and retrived information 
 - lid __AND__ cid : *
@@ -1656,12 +1693,15 @@ SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 ```sql
 SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid"
 ```
-
-
-
-
+<br>
 
 <br>
+ <br>
+  <br>
+   <br>
+
+
+
 
 ---
 ## -------------------------- ==groupdugga== -------------------------------------------------------
@@ -1672,6 +1712,7 @@ SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid"
 
 ### selectFromTableGroupdugga 
 Gathers information from the table __groupdugga__.
+<br>
 
 #### different querys paramaters and retrived information 
 - hash : active_users
@@ -1687,6 +1728,7 @@ SELECT active_users FROM groupdugga WHERE hash=:hash
 
 ### insertIntoTableGroupdugga  --only used by updateActiveUsers-- 
 Performes an insert into the table __groupdugga__. Parameters needed:
+<br>
 
 #### updateActiveUsers
 - hash 
@@ -1704,6 +1746,7 @@ INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);
 
 ### updateTableGroupdugga  -- used by updateActiveUsers--
 Updates values in the table __groupdugga__. Columns that are updated: 
+<br>
 
 #### updateActiveUsers
 - active_users
@@ -1729,6 +1772,8 @@ UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
 Gathers information from the table __submission__.
 
 #### different querys paramaters and retrived information
+<br>
+
 #### processDuggaFile 
 - hash : subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash
 ```sql

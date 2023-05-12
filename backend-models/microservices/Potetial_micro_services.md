@@ -129,6 +129,89 @@ Uses the services __updateTableUser__ to change the content of these columns:
 - password
 
 <br>
+
+---
+
+<br>
+
+### createNewCodeexample
+__USED BY__
+- createListentrie
+- createGithubCodeexample
+<br>
+
+Uses the services __insertIntoTableCodeexample__ to _insert_ into the table __codeexample__.
+- cid
+- exampleid
+- sectionname
+- uid = 1 (static value)
+- cversion
+
+<br>
+
+---
+
+<br>
+
+### createNewListentrie
+__USED BY__
+- createListentrie
+- createGithubCodeexample
+<br>
+
+Uses the services __insertIntoTableListentries__ to _insert_ into the table __listentries__.
+- cid
+- vers
+- entryname
+- link
+- kind
+- pos
+- visibility
+- creator 
+- comment
+- gradesys
+- highscoremode
+- groupKind
+
+<br>
+
+---
+
+<br>
+
+### createNewVersionOfCourse
+__USED BY__
+- createCourseVersion
+- copyCourseVersion
+<br>
+
+Uses the services __insertIntoTableVers__ to _insert_ into the table __vers__.
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
+
+<br>
+
+---
+
+<br>
+
+### setAsActiveCourse
+__USED BY__
+- createCourseVersion
+- setActiveCourseversion
+<br>
+
+Uses the services __updateTableCourse__ to change the content of these columns:
+- activeversion
+
+<br>
 <br>
 <br>
 
@@ -304,10 +387,10 @@ Uses service __selectFromTableCourse__ to _get_ information it requires from __c
 <br>
 
 
-### createNewCourseVersion
+### createCourseVersion
 Uses service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
-Uses the services __updateTableCourse__ to change the content of these columns:
-- vers
+Uses the services __setAsActiveCourse__ to change the content of these columns:
+- activeversion
 
 <br>
 
@@ -340,7 +423,7 @@ Uses the services __setActiveCourseversion__ to change the content of these colu
 
 
 ### copyCourseVersion
-Uses service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
+Uses service __createNewVersionOfCourse__ to makes _inserts_ into the table __Vers__.
 <br>
 
 Uses service __selectFromTableQuiz__ to _get_ information it requires from __quiz__.
@@ -379,7 +462,7 @@ Uses the services __updateTableCodeexample__ to change the content of these colu
 Uses the services __updateTableCodeexample__ to change the content of these columns:
 - afterid
 
-Uses the services __setActiveCourseVersion__ to change the content of these columns:
+Uses the services __setAsActiveCourse__ to change the content of these columns:
 - activeversion
 
 
@@ -613,11 +696,11 @@ Uses the services __updateTableListentries__ to change the content of these colu
 
 <br>
 
-### createNewListentrie
+### createListentrie
 Insert a new code example and update variables accordingly.
 Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__. 
-Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
-Uses service __insertIntoTableListentries__ to makes _inserts_ into the table __listentries__.
+Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
+Uses service __createNewListentrie__ to makes _inserts_ into the table __listentries__.
 
 <br>
 
@@ -638,7 +721,7 @@ Uses the services __updateTableListentries__ to change the content of these colu
 
 ### updateListentrie
 Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
-Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
+Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
 Uses the services __updateTableListentries__ to change the content of these columns:
 - highscoremode
 - gradesystem
@@ -757,8 +840,8 @@ Uses service __selectFromTableCourse__ to _get_ information it requires from __c
 Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
 <br>
 
-Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__.
-Uses service __insertIntoTableListentries__ to makes _inserts_ into the table __listentries__.
+Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
+Uses service __createNewListentrie__ to makes _inserts_ into the table __listentries__.
 
 
 <br>
