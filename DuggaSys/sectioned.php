@@ -565,7 +565,7 @@
 
 
 	<!-- github moments box  -->
-	<form action="sectioned.php" method="post">
+	<form action="" method="post">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 				<div class='loginBoxheader'>
@@ -596,7 +596,6 @@
 	<?php
 		if(isset($_POST['githubInsert'])) {
 			echo "<script>console.log('{$_POST['githubDir']}');</script>";
-
 			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':githubdir', $_POST['githubDir']);
