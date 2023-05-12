@@ -6134,6 +6134,9 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeButton15").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox15").classList.remove("activeTogglePlacementTypeBox");
     }
+    if (num == 13 || type == 12) {
+        docuemnt.getElementById("elementPlacement12").classList.add("mouseData");
+    }
     
     // Unhide the currently selected placement type
     document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
