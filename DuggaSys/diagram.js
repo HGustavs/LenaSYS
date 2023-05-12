@@ -9656,20 +9656,11 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the loop/alt rectangle
-        str += `<rect class='text'
-            x='${linew}'
-            y='${linew}'
-            width='${boxw-(linew*2)}'
-            height='${boxh-(linew*2)}'
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='none'
-            rx='${7*zoomfact}'
-            fill-opacity="0"
-        />`;
+        //svg for the dashed lines for alternatives and their text 
         //if the user chose to have alternative lines, iterate and draw them out one by one, evenly spaced out.
         if ((element.alternatives != null) && (element.alternatives.length > 0)) {
+            //increase length of element to avoid squished alternatives
+            boxh += 250*element.alternatives.length;
             for (let i = 1; i < element.alternatives.length; i++) {
                 str += `<path class="text"
                 d="M${boxw-linew},${(boxh/element.alternatives.length)*i}
@@ -9682,10 +9673,20 @@ function drawElement(element, ghosted = false)
                 />`;
                 str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
-            //increase length of element to avoid squished alternatives
-            boxh += 250*element.alternatives.length;
 
         }
+        //svg for the main loop/alt rectangle
+        str += `<rect class='text'
+            x='${linew}'
+            y='${linew}'
+            width='${boxw-(linew*2)}'
+            height='${boxh-(linew*2)}'
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='none'
+            rx='${7*zoomfact}'
+            fill-opacity="0"
+        />`;
         //svg for the small label in top left corner
         str += `<path 
             d="M${(7*zoomfact)+linew},${linew}
