@@ -500,7 +500,7 @@ if($gradesys=="UNK") $gradesys=0;
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				} else if(strcmp($opt,"CREGITEX")===0) {
 
-					/*
+					
 					//$parts = explode('/', $url);
 					//count if there is already a codeexample or if we should create a new one.
 					$dirname = "Code-example1";
@@ -514,7 +514,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(":cversion", $coursevers);
 					$query->bindValue(":templateid",1);
 					$query->execute();
-					
+					/*
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
