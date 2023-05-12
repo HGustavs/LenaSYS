@@ -9699,6 +9699,7 @@ function drawElement(element, ghosted = false)
                 str += `
                     m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
                     H${linew}`
+                console.log("text for each line");
             }
             //finally, close the path off with appropriate values.
             str += `"
