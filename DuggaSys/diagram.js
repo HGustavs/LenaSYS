@@ -9654,8 +9654,8 @@ function drawElement(element, ghosted = false)
             //also set alt or loop to whatever is correct
             let newAltOrLoop;
             //check if the length is less or equal to 1, if so its loop, else its alt.
-            context[i].alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
-            context[i].altOrLoop = newAltOrLoop;
+            element.alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
+            element.altOrLoop = newAltOrLoop;
             console.log(newAltOrLoop);
         }
         
