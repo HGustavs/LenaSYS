@@ -576,7 +576,9 @@
 					<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder'> 
 							<?php
+								$cid = getOP('cid');
 								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
+								echo "<script>console.log('$cid');</script>";
 								echo "<script>console.log('test');</script>";
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
@@ -596,7 +598,8 @@
 		if(isset($_POST['githubInsert'])) {
 			echo "<script>console.log('{$_POST['githubDir']}');</script>";
 
-			$query = $pdo->prepare("INSERT INTO listentries (githubDir) VALUES (:githubdir)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
+			$query->bindParam(':cid', $cid);
 			$query->bindParam(':githubdir', $_POST['githubDir']);
 			$query->execute();
 		}
