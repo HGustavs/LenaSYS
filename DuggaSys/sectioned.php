@@ -596,9 +596,9 @@
 		if(isset($_POST['githubInsert'])) {
 			echo "<script>console.log('{$_POST['githubDir']}');</script>";
 
-			$query = $pdo->prepare("INSERT INTO listentries(githubDir) values (:githubdir");
+			$query = $pdo->prepare("INSERT INTO listentries (githubDir) VALUES (:githubdir)");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
-
+			$query->execute();
 		}
 	?>
 
