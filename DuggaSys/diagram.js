@@ -9670,25 +9670,6 @@ function drawElement(element, ghosted = false)
             rx='${7*zoomfact}'
             fill-opacity="0"
         />`;
-        //svg for the small label in top left corner
-        str += `<path 
-            d="M${(7*zoomfact)+linew},${linew}
-                h${100*zoomfact}
-                v${25*zoomfact}
-                l${-12.5*zoomfact},${12.5*zoomfact}
-                H${linew}
-                V${linew+(7*zoomfact)}
-                a${7*zoomfact},${7*zoomfact} 0 0 1 ${7*zoomfact},${(7*zoomfact)*-1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />`;
-        //text in the label
-        str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
-        //text below the label
-        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+linew+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
             //the first line is outside of the loop since it has a absolute M instead of a relative m.
             str += `<path class="text" 
@@ -9697,19 +9678,38 @@ function drawElement(element, ghosted = false)
             //loop through the rest of the dashed lines using the first one as reference for the relative m.
             for (let i = 0; i < element.numberOfDashedLines-1; i++) {
                 str += `
-                    m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
-                    H${linew}`
+                m${boxw-linew},${(boxh-(linew*2))/(element.numberOfDashedLines+1)}
+                H${linew}`
                 console.log("text for each line");
             }
             //finally, close the path off with appropriate values.
             str += `"
-                    stroke-width='${linew}'
-                    stroke='${element.stroke}'
-                    stroke-dasharray='${linew*3},${linew*3}'
-                    fill='transparent'
-                    />`;
-            str += `</svg>`;
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            stroke-dasharray='${linew*3},${linew*3}'
+            fill='transparent'
+            />`;
+            //svg for the small label in top left corner
+            str += `<path 
+                d="M${(7*zoomfact)+linew},${linew}
+                    h${100*zoomfact}
+                    v${25*zoomfact}
+                    l${-12.5*zoomfact},${12.5*zoomfact}
+                    H${linew}
+                    V${linew+(7*zoomfact)}
+                    a${7*zoomfact},${7*zoomfact} 0 0 1 ${7*zoomfact},${(7*zoomfact)*-1}
+                    z
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
         }
+        //text in the label
+        str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
+        //text below the label
+        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+linew+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
