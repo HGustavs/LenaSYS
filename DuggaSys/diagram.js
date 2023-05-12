@@ -9692,6 +9692,7 @@ function drawElement(element, ghosted = false)
             fill='transparent'
             />`;
         } */
+        //if the user chose to have alternative lines, iterate and draw them out one by one, evenly spaced out.
         if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
             let numberOfAlternatives = element.numberOfDashedLines + 1;
             for (let i = 1; i < numberOfAlternatives; i++) {
@@ -9704,7 +9705,7 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-                
+                str += `<text x='${50*zoomfact+linew}' y='${((boxh/numberOfAlternatives)*i)+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
             }
         }
         //svg for the small label in top left corner
