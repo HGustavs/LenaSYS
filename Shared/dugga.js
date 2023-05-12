@@ -1284,7 +1284,7 @@ function AJAXService(opt,apara,kind)
 			url: "sectionedservice.php",
 			type: "POST",
 			//data: "opt="+opt+para,
-			//dataType: "json",
+			dataType: "json",
 			//success: returnedSection
 
 
