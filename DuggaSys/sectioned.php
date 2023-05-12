@@ -595,11 +595,14 @@
 
 	<?php
 		if(isset($_POST['githubInsert'])) {
-			echo "<script>console.log('{$_POST['githubDir']}');</script>";
 			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':githubdir', $_POST['githubDir']);
-			$query->execute();
+			if($query->execute()) {
+				echo "<script>console.log('insert successful!');</script>";		
+			} else {
+				echo "<script>console.log('insert failed!');</script>";		
+			}
 		}
 	?>
 
