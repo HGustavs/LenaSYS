@@ -578,14 +578,11 @@
 							<?php
 								$cid = getOPG('courseid');
 								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-								//include_once "../recursivetesting/FetchGithubRepo.php";
-								//bfs("https://github.com/e21krida/Webbprogrammering-Examples", $cid, "DOWNLOAD");
-								echo "<script>console.log('$pdo');</script>";
-								echo "<script>console.log('test');</script>";
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
 									if(strstr($dirname, 'Examples')) {
 										echo "<option value='$dirname'>$dirname</option>";
+                    echo "<script>console.log('$dirname');</script>";
 									}		
 								}											
 							?>
