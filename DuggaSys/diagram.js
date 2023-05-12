@@ -12414,7 +12414,7 @@ function setSequenceDashedLines(){
             let alternatives = document.getElementById("inputAlternatives").value.split('\n');
             let formatArr = [];
             for (let i = 0; i < alternatives.length; i++) {
-                if (!(numberOfAttribute[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
+                if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
                     formatArr.push(alternatives[i]);
                 } 
             }
