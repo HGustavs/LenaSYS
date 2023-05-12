@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], numberOfDashedLines: 3, altOrLoop: "Alt"} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], numberOfAlternatives: 3, altOrLoop: "Alt"} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -12396,7 +12396,7 @@ function toggleActorOrbject(type){
     showdata();
 }
 /**
- * @description sets the attribute numberOfDashedLines in sequenceLoopOrAlt to the amount of lines in the input textarea called inputAlternatives.
+ * @description sets the attribute numberOfAlternatives in sequenceLoopOrAlt to the amount of lines in the input textarea called inputAlternatives.
  */
 //TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
 function setSequenceDashedLines(){
@@ -12423,6 +12423,7 @@ function setSequenceDashedLines(){
             console.log(alternatives);
             console.log(alternatives.length);
             context[0].alternatives = alternatives;
+            context[0].numberOfAlternatives = alternatives.length;
         }
     }
     //elementProperty_numberOfDashedLines
