@@ -4,21 +4,23 @@ include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 pdoConnect();
 
+
 $dir = '../../testingdb';
 $file = 'testmodels.sql';
 
 // Create directory where sql model is to be stored
 if (!file_exists('../../testingdb')) {
 	mkdir('../../testingdb', 0777, true);
-
+	
 	echo "<p>Creating '".$dir."' directory</p>";
 }
 else{
 	echo "<p>Directory '".$dir."' already exists </p>";
-
+	
 }
 
 $dbName = DB_NAME . 'testingdb';
+define("DB_TESTING", $dbName);
 
 // Check if database exists
 $query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '."'".$dbName."'");
@@ -53,6 +55,7 @@ if(!$query->execute()) {
 else{
 	echo "<h4>Database: ".$dbName." created/already exists, no errors</h4>";
 }
+updateCoursesyspw($dbName);
 
 // add data to database
 if(file_exists($dir."/".$file))
@@ -70,7 +73,6 @@ else{
 	exit;
 }
 
-updateCoursesyspw($dbName);
 
 
 function importDatabase($host, $usr, $pwd, $db, $sql)
