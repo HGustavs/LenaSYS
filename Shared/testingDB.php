@@ -107,7 +107,6 @@ function updateCoursesyspw($name) {
 	}
 	else{
 		echo $str." already exists in 'coursesyspw.php'<br>";
-		exit;
 	}
 }
 
