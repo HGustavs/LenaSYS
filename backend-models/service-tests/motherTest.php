@@ -107,44 +107,43 @@ include_once ".../test4";
 
 
                 
-                echo '<tbody>';
-                if(isset($_POST['test']) && $_POST['test'] != 'all'){
-                    $test = $_POST['test'];
-                    echo '<th>';
-                    foreach($decoded_json['create course test'][$test] as $key => $value){
-                        if($key == 'result'){
-                            echo '<td>';
-                            if($value == 'passed'){
-                                echo '<p style="font-size:30px">&#9989;</p>';
-                            } else {
-                                echo '<p style="font-size:30px">&#10060;</p>';
-                            }
-                            echo '</td>';
-                        } else {
-                            echo '<td>'.$value.'</td>';
-                        }
+        if (isset($_POST['test']) && $_POST['test'] != 'all') {
+            $test = $_POST['test'];
+            echo '<tr>';
+            foreach ($decoded_json['create course test'][$test] as $key => $value) {
+                if ($key == 'result') {
+                    echo '<td>';
+                    if ($value == 'passed') {
+                        echo '<p style="font-size:30px">&#9989;</p>';
+                    } else {
+                        echo '<p style="font-size:30px">&#10060;</p>';
                     }
-                    echo '</th>';
+                    echo '</td>';
                 } else {
-                    foreach($decoded_json['create course test'] as $key => $value){
-                        echo '<th>';
-                        foreach($value as $nyckel => $val){
-                            if($nyckel == 'result'){
-                                echo '<td>';
-                                if($val == 'passed'){
-                                    echo '<p style="font-size:30px">&#9989;</p>';
-                                } else {
-                                    echo '<p style="font-size:30px">&#10060;</p>';
-                                }
-                                echo '</td>';
-                            } else {
-                                echo '<td>'.$val.'</td>';
-                            }
+                    echo '<td><table style="width: 200px;"><tr><td>' . $value . '</td></tr></table></td>';
+                }
+            }
+            echo '</tr>';
+        } else {
+            foreach ($decoded_json['create course test'] as $key => $value) {
+                echo '<tr>';
+                foreach ($value as $nyckel => $val) {
+                    if ($nyckel == 'result') {
+                        echo '<td>';
+                        if ($val == 'passed') {
+                            echo '<p style="font-size:30px">&#9989;</p>';
+                        } else {
+                            echo '<p style="font-size:30px">&#10060;</p>';
                         }
-                        echo '</th>';
+                        echo '</td>';
+                    } else {
+                        echo '<td><table style="width: 200px;"><tr><td>' . $val . '</td></tr></table></td>';
                     }
                 }
-                echo '</tbody>';
+                echo '</tr>';
+            }
+        }
+        echo '</table>';
                 
         
                 
