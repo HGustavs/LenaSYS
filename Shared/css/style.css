@@ -860,10 +860,10 @@ p {
 }
 
 /* Turn the icons white */
-#Sectionlist .section #dorf, #refreshIMG, .refreshBurgerIMG .header {
+#Sectionlist .section #dorf, #refreshIMG, .refreshBurgerIMG {
   cursor: pointer;
-   filter: invert(100%) !important; 
-  -webkit-filter: invert(100%) !important;
+   filter: invert(100%); 
+  -webkit-filter: invert(100%);
 }
 .section > #tabElement {color: white;
   filter: invert(0); }
