@@ -983,7 +983,7 @@ function updateContent(file, content, boxnumber)
 	// Check if a drag and drop instance is created
 	if(file != null && box != null){
 		filename = file;
-		boxtitle = file;
+		//boxtitle = file;
 		boxcontent = content;
 	}
 
