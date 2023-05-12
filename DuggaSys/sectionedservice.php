@@ -500,7 +500,7 @@ if($gradesys=="UNK") $gradesys=0;
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				} else if(strcmp($opt,"CREGITEX")===0) {
 
-					
+					/*
 					//$parts = explode('/', $url);
 					//count if there is already a codeexample or if we should create a new one.
 					$dirname = "Code-example1";
@@ -658,8 +658,8 @@ if($gradesys=="UNK") $gradesys=0;
 							}
 						} else {
 							//Check for update
-						}
-					}
+						} 
+					}*/
 				} else if (strcmp($coursevers, "null")!==0) {
 					// Get every coursevers of courses so we seed groups to every courseversion
 					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
