@@ -1045,7 +1045,7 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 	}
 	
 	var useBoxContent = true;
-	console.log(useBoxContent);
+	
 	// Default to using openbox data and use regular retData as fallback incase it's not open
 	if (!box) {
 		useBoxContent = false;
@@ -1057,7 +1057,7 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 	if(file != null && box != null){
 		filename = file;
 		boxtitle = titleBox;
-		boxcontent = content;
+		//boxcontent = content;
 		console.log("Check if D a D: ",filename, file, boxtitle, titleBox, boxcontent, content);
 	}
 
