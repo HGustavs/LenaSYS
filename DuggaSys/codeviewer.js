@@ -958,7 +958,80 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent(file, content, boxnumber, titleBox) 
+function updateContent(file, content, boxnumber) 
+{
+	console.log("Initiate UpdateContent: ", file, content, boxnumber);
+	// Check if there is a box number
+	// Only true if function is called by drag and drop
+	if(boxnumber) {
+		var box = retData['box'][boxnumber - 1];;
+		console.log("If boxnumber: ", boxnumber);
+	} else {
+		var box = retData['box'][openBoxID - 1];
+		console.log("Else boxnumber ", openBoxID);
+	}
+	
+	var useBoxContent = true;
+
+	// Default to using openbox data and use regular retData as fallback incase it's not open
+	if (!box) {
+		useBoxContent = false;
+		box = retData['box'][retData['box'].length - 1];
+		console.log("fallback: ", box);
+	}
+
+	// Check if a drag and drop instance is created
+	if(file != null && box != null){
+		filename = file;
+		boxtitle = file;
+		boxcontent = content;
+	}
+
+	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
+	// TODO: Handle null values
+	if (useBoxContent) {
+		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+			try {
+				if(file == null)
+					var boxtitle = document.querySelector("#boxtitle").value;
+				if(content == null)
+					var boxcontent = $("#boxcontent option:selected").val();
+				if(file == null)
+					var filename = $("#filename option:selected").val();
+				
+				var wordlist = document.querySelector("#wordlist").value;
+				var fontsize = $("#fontsize option:selected").val();
+				var exampleid = querystring['exampleid'];
+				var boxid = box[0];
+
+				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
+				console.log("Sucess: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
+				console.log("Boxcontent: ", boxcontent);
+				addedRows = [];
+				removedRows = [];
+			} catch (e) {
+				alert("Error when updating content: " + e.message);
+			}
+			console.log("Timeout");
+			setTimeout("location.reload()", 500); //SETBACK TO 500
+		}
+	} else {
+		if (box[4] != document.querySelector("#boxtitle2").textContent) {
+			try {
+				AJAXService("EDITTITLE", {exampleid: querystring['exampleid'], courseid: querystring['courseid'], boxid: box[0], boxtitle: document.querySelector("#boxtitle").textContent}, "BOXTITLE");
+				console.log("Ajaxservice, Qstring:Exampleid, Qstring:courseid; ", querystring[exampleid], querystring['courseid']);
+			} catch (e) {
+				alert("Error when updating content: " + e.message);
+			}
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------
+// updateTitle: Updates the title of the box
+//----------------------------------------------------------------------------------
+
+function updateBoxTitle(file, content, boxnumber, titleBox) 
 {
 	console.log("Initiate UpdateContent: ", file, content, boxnumber);
 	// Check if there is a box number
@@ -992,23 +1065,19 @@ function updateContent(file, content, boxnumber, titleBox)
 	if (useBoxContent) {
 		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
-				if(file == null)
+				/*if(file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
 				if(content == null)
 					var boxcontent = $("#boxcontent option:selected").val();
 				if(file == null)
-					var filename = $("#filename option:selected").val();
-				
-				var wordlist = document.querySelector("#wordlist").value;
-				var fontsize = $("#fontsize option:selected").val();
+					var filename = $("#filename option:selected").val();*/
+			
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
-				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
+				AJAXService("EDITCONTENT", {boxtitle: boxtitle}, "BOXCONTENT");				
 				console.log("Sucess: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
 				console.log("Boxcontent: ", boxcontent);
-				addedRows = [];
-				removedRows = [];
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
@@ -1097,7 +1166,7 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent(\''+filename+'\','+kind+',' + boxid + ', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateBoxTitle(\''+filename+'\','+kind+',' + boxid + ', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
