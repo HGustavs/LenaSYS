@@ -12402,15 +12402,17 @@ function setSequenceAlternatives(){
             context[0].alternatives = alternatives;
 
             //set altOrLoop accordingly 
+            let newAltOrLoop;
             if (context[i].alternatives.length <= 1) {
-                context[i].altOrLoop = "Loop";
+                newAltOrLoop = "Loop";
+                
             } else {
-                context[i].altOrLoop = "Alt";
+                newAltOrLoop = "Alt";
             }
-
+            context[i].altOrLoop = newAltOrLoop;
             stateMachine.save(
                 StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
-                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': context[i].altOrLoop }),
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': newAltOrLoop }),
                 StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
             );
         }
