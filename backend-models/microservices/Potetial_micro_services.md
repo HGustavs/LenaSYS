@@ -300,8 +300,8 @@ Uses service __selectFromCourse__ to _get_ information it requires from __course
 <br>
 
 
-### createNewCourseVerion
-Uses service __insertIntoVers__ to makes _inserts_ into the table __Vers__.
+### createNewCourseVersion
+Uses service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
 Uses the services __updateTableCourse__ to change the content of these columns:
 - vers
 

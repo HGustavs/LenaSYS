@@ -181,9 +181,14 @@ UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:
 ### selectFromTableUserCourse --USED ONLY BY getCourseGroupsAndMembers--
 Gathers information from the table __user_course__. parameters used 
 #### different querys paramaters and retrived information 
+<br>
 
 #### getCourseGroupsAndMembers
 - cid __AND__ vers  : user.uid, user.username, user.email, user_course.groups __FROM__ user, user_course
+```sql
+SELECT user.uid,user.username,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers
+```
+
 - uid __AND__ access=W : access
 ```sql
 SELECT access FROM user_course WHERE uid=:userid AND access='W' LIMIT 1;
@@ -300,7 +305,7 @@ SELECT * from codeexample WHERE cid=:cid AND cversion = :oldvers;
 ```
 - no parameter : * 
 ```sql 
-ORDER BY exampleid DESC LIMIT 1
+SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1
 ```
 - exampleid: cid
 ```sql 
@@ -330,25 +335,16 @@ INSERT INTO codeexample (cid,examplename,sectionname,beforeid,afterid,runlink,cv
 <br>
 
 #### createNewCodeexample
+#### updateListentrie
 #### createGithubCodeexample
 - cid
 - exampleid
 - sectionname
-- uid = 1
-- cversion
-```sql
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
-VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)
-```
-
-<br>
-
-#### updateListentrie
-- cid
-- examplename
-- sectionname
 - uid = 1 (static value)
 - cversion
+```sql
+INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);
+```
 
 
 <br>
@@ -743,12 +739,11 @@ Gathers information from the table __listentries__.
 SELECT * from listentries WHERE vers = :oldvers;
 ```
 - vers __AND__ cid __AND__ lid : entryname
-
-These specific parameters are used in this query:
-
 ```sql
 SELECT entryname FROM listentries WHERE vers=:cversion AND cid=:cid AND (kind=1 or kind=0 or kind=4) AND (pos < (SELECT pos FROM listentries WHERE lid=:lid)) ORDER BY pos DESC LIMIT 1;
 ```
+
+
 - cid : pos
 ```sql
 SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;
@@ -846,6 +841,8 @@ Updates values in the table __listentries__. Columns that are updated:
 ```sql
 UPDATE listentries SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;
 ```
+<br>
+
 #### copyCourseVersion: link
 - link
 ```sql
@@ -854,11 +851,23 @@ UPDATE listentries SET link=:newquiz WHERE link=:oldquiz AND vers=:updvers;
 ```sql
 UPDATE listentries SET link=:newexample WHERE link=:oldexample AND vers=:updvers;
 ```
+<br>
+
 #### removeListentries   (sets value to deleted, but does not remove from database)
 - visible = 3 (this is a fixed value change)
+```sql
+UPDATE listentries SET visible = '3' WHERE lid=:lid");
+```
+<br>
+
 #### reorderListentries
 - pos
 - moment
+```sql
+UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
+```
+<br>
+
 #### updateListentrie
 - highscoremode
 - gradesystem
@@ -871,6 +880,11 @@ UPDATE listentries SET link=:newexample WHERE link=:oldexample AND vers=:updvers
 - groupKind
 - feedbackenabled
 - feedbackquestion
+```sql
+UPDATE listentries set highscoremode=:highscoremode, gradesystem=:gradesys, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;
+```
+<br>
+
 #### setVisibleListentrie
 - visible (0 = Hidden, 1 = Public)
 ```sql
@@ -879,7 +893,11 @@ UPDATE listentries SET visible=:visible WHERE lid=:lid
 
 <br>
 
-
+#### updateListentriesGradesystem
+- gradesystem
+```sql
+UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
+```
 
 
 <br>
@@ -942,11 +960,9 @@ INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) 
 
 ### updateTableCourse 
 Updates values in the table __Course__. Columns that are updated: 
-
-#### createNewCourseVersion
-- vers
 <br>
 
+#### createNewCourseVersion
 #### setActiveCourseversion
 - activeversion
 ```sql
@@ -1147,6 +1163,9 @@ INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,relativedead
 - qrelease (the release date)
 - deadline
 - qstart (start date)
+```sql
+INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (:cid,:autograde,:gradesys,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart,:jsondeadline,:group)
+```
 
 <br>
 
@@ -1167,6 +1186,9 @@ Updates values in the table __quiz__. Columns that are updated:
 - qrelease (release date)
 - jsondeadline
 - group
+```sql
+UPDATE quiz SET qname=:qname,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline,`group`=:group WHERE id=:qid;
+```
 <br>
 
 #### updateQuizDeadline
@@ -1201,6 +1223,9 @@ DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = cou
 
 #### deleteDugga
 - id 
+```
+DELETE FROM quiz WHERE id=:qid
+```
 
 --- 
 
@@ -1258,7 +1283,9 @@ INSERT INTO variant (quizID,param,variantanswer,modified,creator,disabled) SELEC
 - disabled
 - param 
 - variantanswer
-
+```sql
+INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)
+```
 
 
 <br>
@@ -1275,7 +1302,9 @@ Updates values in the table __quiz__. Columns that are updated:
 - disabled
 - param
 - variantanswer
-
+```sql
+UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid
+```
 
 <br>
 
@@ -1289,6 +1318,9 @@ Removes row from table __variant__. Parameters needed:
 
 #### deliteExample
 - vid
+```sql
+DELETE FROM variant WHERE vid=:vid;
+```
 
 <br>
 
@@ -1347,21 +1379,33 @@ Gathers information from the table __userAnswer__. parameters used
 #### highscoreservice
 __Return 10 Highest Scores__
 The query specified below selects only scores associated with users that have returned a dugga with a passing grade
-
-__SELECT__ username, score __FROM__ userAnswer, user __where__ userAnswer.grade > 1 __AND__ userAnswer.quiz = _quiz_ __AND__ userAnswer.moment = _moment_ __ORDER BY__ score __ASC LIMIT__ 10;
 - quiz
 - moment
+```sql
+SELECT username, score FROM userAnswer, user where userAnswer.grade > 1 AND userAnswer.quiz = :did AND userAnswer.moment = :lid ORDER BY score ASC LIMIT 10;
+```
+__Return Specific Score__
+- quiz
+- moment
+```sql
+SELECT username, score FROM userAnswer, user where userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;
+```
+<br>
+
 
 #### getUserAnswar
 - cid __AND__ vers : hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited
 ```sql
 SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers
 ```
+<br>
+
 #### submitDugga
 - hash: password,timesSubmitted,timesAccessed,grade
 ```sql
 SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;
 ```
+<br>
 
 #### loadDugga
 - hash: vid,variant.variantanswer __AS__ variantanswer,useranswer,param,cid,vers,quiz 
@@ -1424,6 +1468,9 @@ Removes row from table __userAnswer__. Parameters needed:
 
 #### deliteExample
 - variant
+```sql
+DELETE FROM userAnswer WHERE variant=:vid;
+```
 
 <br>
 
@@ -1452,8 +1499,9 @@ Gathers information from the table __fileLink__.
 
 #### deleteFileLink
 Count rows where these conditions hold.
-- __FROM__ fileLink, box __WHERE__ box.filename = fileLink.filename __AND__ (fileLink.kind = 2 __OR__ fileLink.kind = 3) __AND__ fileLink.fileid=:fid ;
-
+```sql
+SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;
+```
 
 <br>
 
@@ -1467,10 +1515,16 @@ Updates values in the table __fileLink__. Columns that are updated:
 
 #### updataFileLink: 
 There exist thee different versions of this update with the same column update, but with different _WHERE_ cases.
-__WHERE__ kind __AND__ filename;
-__WHERE__ cid __AND__ kind __AND__ filename;
-__WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 - filesize
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE kind=:kindid AND filename=:filename;
+```
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;
+```
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;
+```
 
 
 <br>
@@ -1485,6 +1539,9 @@ Removes row from table __fileLink__. Parameters needed:
 
 #### deliteExample
 - fileid
+```sql
+DELETE FROM fileLink WHERE fileid=:fid
+```
 
 
 
@@ -1540,6 +1597,9 @@ Gathers information from the table __group__.
 
 #### different querys paramaters and retrived information 
 - no parameters : groupKind, groupVal
+```sql
+SELECT groupKind,groupVal FROM `groups`
+```
 
 
 
@@ -1566,6 +1626,9 @@ Performes an insert into the table __list__. Parameters needed:
 - lid
 - responsible =  Christina Sjogren (this is preset in the code)
 - cid
+```sql
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);
+```
 
 
 
