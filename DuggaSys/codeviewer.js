@@ -1064,13 +1064,13 @@ function updateBoxTitle(file, content, boxnumber, titleBox)
 	// TODO: Handle null values
 	if (useBoxContent) {
 		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
-			/*try {
+			try {
 				if(file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
 				if(content == null)
 					var boxcontent = $("#boxcontent option:selected").val();
 				if(file == null)
-					var filename = $("#filename option:selected").val();*/
+					var filename = $("#filename option:selected").val();
 				
 				var wordlist = document.querySelector("#wordlist").value;
 				var fontsize = $("#fontsize option:selected").val();
