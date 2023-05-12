@@ -12400,9 +12400,9 @@ function toggleActorOrbject(type){
  */
 //TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
 function setSequenceDashedLines(){
-    //for each element in context, check if it has the property hasDashedLine and then change it to suit the checkbox.
+    //for each element in context, check if it has the property alternatives
     for (let i = 0; i < context.length; i++) {
-        if (context[i].numberOfDashedLines != null) {
+        if (context[i].alternatives != null) {
             /* let numberOfAttribute = document.getElementById("inputAlternatives");
             //context[i].numberOfDashedLines =  Number(document.getElementById("inputNumberOfDashedLines").value);
             if (context[i].numberOfDashedLines == 0) {
