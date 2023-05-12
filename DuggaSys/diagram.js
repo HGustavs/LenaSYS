@@ -6690,13 +6690,10 @@ function generateContextProperties()
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'alternatives':
-                            str += `<div>Each line is an alternative. Just one is a loop.`
-                            //str += `<input type="checkbox" id="dashedLineToggle" onclick="toggleDashedLine()" name="dashedLineToggle" checked><label for="dashedLineToggle">Toggle dashed line</label>`
-                            //str +=`<input id="inputNumberOfDashedLines" type="number" min="0" value='${element[property]}'/>`
-                            //str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `<div>Each line is an alternative. Just one is a loop.`;
                             //TODO in the future, this can be implemented as part of saveProperties and combine attribute and func and alternatives cases.
                             str += `<textarea id='inputAlternatives' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            str += `</div>`
+                            str += `</div>`;
                             break;
                         default:
                             break;
@@ -6714,7 +6711,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="setSequenceDashedLines();changeState();saveProperties();generateContextProperties();">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="setSequenceAlternatives();changeState();saveProperties();generateContextProperties();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -12378,7 +12375,7 @@ function toggleActorOrbject(type){
  * @description sets the alternatives attribute for sequenceLoopOrAlt to whatever is in the input box inputAlternatives. one index in the array per line.
  */
 //TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
-function setSequenceDashedLines(){
+function setSequenceAlternatives(){
     //for each element in context, check if it has the property alternatives
     for (let i = 0; i < context.length; i++) {
         if (context[i].alternatives != null) {
