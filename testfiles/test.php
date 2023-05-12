@@ -1,6 +1,6 @@
 <?php
 
-include_once "../Shared/sessions.php";
+//include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 include_once "../recursivetesting/FetchGithubRepo.php";
 
@@ -16,6 +16,6 @@ $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND exam
 
 					$result = $query->fetch(PDO::FETCH_OBJ);
 					$counted = $result->counted;
-                    echo "<script> console.log('TESTING'.$counted.'');</script>";
 
+                    echo "counted: " + $counted;
 ?>
