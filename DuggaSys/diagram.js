@@ -1147,7 +1147,7 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "sequence", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "sequence" }, // Sequence Activation.
-    sequenceLoopOrAlt: {name: "name", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", alternatives: ["alternative1","alternative2"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {name: "name", kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 200, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -9695,10 +9695,10 @@ function drawElement(element, ghosted = false)
         } */
         //if the user chose to have alternative lines, iterate and draw them out one by one, evenly spaced out.
         if ((element.alternatives != null) && (element.alternatives.length > 0)) {
-            let numberOfAlternativeSpaces = element.alternatives.length + 1;
-            for (let i = 1; i < numberOfAlternativeSpaces; i++) {
+            //let numberOfAlternativeSpaces = element.alternatives.length;
+            for (let i = 1; i < element.alternatives.length; i++) {
                 str += `<path class="text"
-                d="M${boxw-linew},${(boxh/numberOfAlternativeSpaces)*i}
+                d="M${boxw-linew},${(boxh/element.alternatives.length)*i}
                     H${linew}
                 "
                 stroke-width='${linew}'
@@ -9706,7 +9706,7 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-                str += `<text x='${50*zoomfact+linew}' y='${((boxh/numberOfAlternativeSpaces)*i)+(texth/2)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
+                str += `<text x='${50*zoomfact+linew}' y='${((boxh/element.alternatives.length)*i)+(texth/2)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
         //svg for the small label in top left corner
