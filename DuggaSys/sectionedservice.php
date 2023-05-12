@@ -562,12 +562,21 @@ if($gradesys=="UNK") $gradesys=0;
 							}
 							//If we find files that should be in the codeexample, create the codeexample
 							if(count($counter) > 0) {
+
+								// There are at least two boxes, create two boxes to start with
+								if($counter==1) $templateNumber=10;
+								if($counter==2) $templateNumber=1;
+								if($counter==3) $templateNumber=3;
+								if($counter==4) $templateNumber=5;
+								if($counter==5) $templateNumber=9;
+
 								//create codeexample
-								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":ename", $examplename);
 								$query->bindParam(":sname", $sectionname);
 								$query->bindParam(":cversion", $coursevers);
+								$query->bindParam(":templateid", $templateNumber);
 								$query->execute();
 
 								$query = $pdo->prepare("SELECT MAX(exampleid) FROM codeexample");
