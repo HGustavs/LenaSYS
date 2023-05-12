@@ -12403,8 +12403,6 @@ function setSequenceAlternatives(){
             }
             //Update the alternatives array
             alternatives = formatArr;
-            console.log(alternatives);
-            console.log(alternatives.length);
             context[0].alternatives = alternatives;
 
             stateMachine.save(
