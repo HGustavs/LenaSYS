@@ -12424,6 +12424,12 @@ function setSequenceDashedLines(){
             console.log(alternatives.length);
             context[0].alternatives = alternatives;
             context[0].numberOfAlternatives = alternatives.length;
+
+            if (context[i].numberOfAlternatives <= 1) {
+                context[i].altOrLoop = "Loop";
+            } else {
+                context[i].altOrLoop = "Alt";
+            }
         }
     }
     //elementProperty_numberOfDashedLines
