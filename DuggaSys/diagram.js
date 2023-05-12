@@ -12413,7 +12413,7 @@ function setSequenceDashedLines(){
             //Create an array from string where newline seperates elements
             let numberOfAttribute = document.getElementById("inputAlternatives").value.split('\n');
             let formatArr = [];
-            for (var i = 0; i < numberOfAttribute.length; i++) {
+            for (let i = 0; i < numberOfAttribute.length; i++) {
                 if (!(numberOfAttribute[i] == '\n' || numberOfAttribute[i] == '' || numberOfAttribute[i] == ' ')) {
                     formatArr.push(numberOfAttribute[i]);
                 } 
