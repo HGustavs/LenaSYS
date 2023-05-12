@@ -20,7 +20,6 @@ else{
 }
 
 $dbName = DB_NAME . 'testingdb';
-define("DB_TESTING", $dbName);
 
 // Check if database exists
 $query = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '."'".$dbName."'");
@@ -64,7 +63,7 @@ if(file_exists($dir."/".$file))
 	echo "<p>Installing into: ".$dbName."</p>";
 
 	$sql = file_get_contents($dir."/".$file);
-	$ret = importDatabase("localhost", DB_USER, DB_PASSWORD, DB_TESTING, $sql);
+	$ret = importDatabase("localhost", DB_USER, DB_PASSWORD, $dbName, $sql);
 
 	echo "<h2>Importing database: ".$ret."</h2>";
 }
