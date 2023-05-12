@@ -9644,6 +9644,11 @@ function drawElement(element, ghosted = false)
     }
     // Sequence loop 
     else if (element.kind == 'sequenceLoopOrAlt') {
+        //first, set a suggested height for the element based on the amount of alternatives
+        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
+            //increase length of element to avoid squished alternatives
+            boxh += 250*element.alternatives.length;
+        }
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
@@ -9682,9 +9687,6 @@ function drawElement(element, ghosted = false)
                 />`;
                 str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
-            //increase length of element to avoid squished alternatives
-            boxh += 250*element.alternatives.length;
-
         }
         //svg for the small label in top left corner
         str += `<path 
