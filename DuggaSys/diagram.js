@@ -9675,7 +9675,7 @@ function drawElement(element, ghosted = false)
             d="M${(sequenceCornerRadius/4)+linew},${linew}
                 h${100*zoomfact}
                 v${50*zoomfact}
-                l${-50*zoomfact,50*zoomfact}
+                l${-25*zoomfact},${25*zoomfact}
                 H${linew}
                 V${linew+(sequenceCornerRadius/4)}
                 a${sequenceCornerRadius/4},${sequenceCornerRadius/4} 0 0 1 ${sequenceCornerRadius/4},${(sequenceCornerRadius/4)*-1}
