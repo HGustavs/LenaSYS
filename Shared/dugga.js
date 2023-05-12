@@ -1283,7 +1283,7 @@ function AJAXService(opt,apara,kind)
 		$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
-			data: opt,
+			data: "opt="+opt,
 			dataType: "json",
 			//success: returnedSection
 
