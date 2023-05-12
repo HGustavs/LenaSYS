@@ -96,6 +96,14 @@ include_once ".../test4";
                         </tr>
                       </table>
                 ';
+
+                $test_columns = array(
+                    'Test 1 (Login)' => 1,
+                    'Test 2 (callService)' => 2,
+                    'Test 3 (uploadFile)' => 3
+                  );
+
+
                 
                 if(isset($_POST['test']) && $_POST['test'] != 'all'){
                     $test = $_POST['test'];
@@ -110,7 +118,7 @@ include_once ".../test4";
                             }
                             echo '</td>';
                         } else {
-                            echo '<td>'.$value.'</td>';
+                            echo '<td>'.str_repeat('&nbsp;', 10*$test_columns[$key]).$value.'</td>';
                         }
                     }
                     echo '</tr>';
@@ -127,7 +135,7 @@ include_once ".../test4";
                                 }
                                 echo '</td>';
                             } else {
-                                echo '<td>'.$val.'</td>';
+                               echo '<td>'.str_repeat('&nbsp;', 10*$test_columns[$key]).$value.'</td>';
                             }
                         }
                         echo '</tr>';
