@@ -9727,7 +9727,7 @@ function drawElement(element, ghosted = false)
         str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
         //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+linew+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
+        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+(linew*2)+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
