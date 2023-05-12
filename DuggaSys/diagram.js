@@ -6135,7 +6135,7 @@ function togglePlacementType(num,type){
         document.getElementById("togglePlacementTypeBox15").classList.remove("activeTogglePlacementTypeBox");
     }
     if (num == 13 && type == 12) {
-        docuemnt.getElementById("elementPlacement12").classList.add("mouseData");
+        docuemnt.getElementsByClassName("MatejaTesting").classList.add("mouseData");
     }
     
     // Unhide the currently selected placement type
@@ -9676,7 +9676,7 @@ function drawElement(element, ghosted = false)
     //sequence actor and its life line and also the object since they can be switched via options pane.
     else if (element.kind == 'sequenceActorAndObject') {
         //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        str += `<div id='${element.id}'	class='element MatejaTesting' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
 
         if (context.includes(element)) {
