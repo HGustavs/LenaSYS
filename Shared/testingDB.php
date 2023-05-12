@@ -62,6 +62,7 @@ if(file_exists($dir."/".$file))
 	echo "<p>Installing into: ".$dbName."</p>";
 
 	$sql = file_get_contents($dir."/".$file);
+	echo "<h1> Size of file: ".$sql."</h1>";
 	$ret = importDatabase("localhost", DB_USER, DB_PASSWORD, $dbName, $sql);
 
 	echo "<h2>Importing database: ".$ret."</h2>";
