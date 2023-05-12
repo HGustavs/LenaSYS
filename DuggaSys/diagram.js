@@ -9688,7 +9688,7 @@ function drawElement(element, ghosted = false)
         //text in the label
         str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
-        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `<text x='${50*zoomfact+linew}' y='${37.5*zoomfact+linew+texth}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
             //the first line is outside of the loop since it has a absolute M instead of a relative m.
             str += `<path class="text" 
