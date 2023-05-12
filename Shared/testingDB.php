@@ -36,7 +36,6 @@ else{
 	if(!$query->execute()) {
 		$error = $query->errorInfo();
 		echo "<h4> Error dropping database: ".$error[2]."</h4>";
-		exit;
 	}
 	else{
 		echo "<h2>Database reset</h2>";
