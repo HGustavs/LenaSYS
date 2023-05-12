@@ -93,15 +93,27 @@ include_once ".../test4";
                     </select>
                     </form>
                     ';
-                
+
+                    /*------------------------------------------- */
+                    /*-----------Headers for Tests----------------*/
+                    /*--------------------------------------------*/
+
                 echo '
                     <table border="1">
                         <tr>
                             <th>Test 1 (Login)</th>
+                            </table>
+                            <table>
                             <th>Test 2 (callService)</th>
+                            </table>
+                            <table>
                             <th>Test 3 (uploadFile)</th>
+                            </table>
+                            <table>
                             <th id="passth"> <p id="passG">Passed</p> or <p id="failR">Failed</p> </th>
-                        </tr>
+                            </table>
+                            <table>
+                            </tr>
                 ';
                 
                 if(isset($_POST['test']) && $_POST['test'] != 'all'){
