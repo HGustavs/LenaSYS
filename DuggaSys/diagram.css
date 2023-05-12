@@ -647,5 +647,5 @@
     visibility: visible;
 }
 .mouseData {
-    user-select: none;
+    user-select:text;
 }
