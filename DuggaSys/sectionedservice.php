@@ -511,6 +511,8 @@ if($gradesys=="UNK") $gradesys=0;
 					//$parts = explode('/', $url);
 					//count if there is already a codeexample or if we should create a new one.
 					$dirname = "Demo";
+					$courseid = 1;
+					$coursevers = 45656;
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]

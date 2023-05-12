@@ -3009,12 +3009,12 @@ function createExamples(dir) {//TODO HERE
   console.log("**** CID "+querystring['courseid']);
   console.log("**** DIR "+dir);
   cid = querystring['courseid'];
-  cversid = document.getElementById("cversid").value;
+  //cversid = document.getElementById("cversid").value;
   codeExDir = dir;
   console.log("cid: "+ cid);
   console.log("cversid: "+ cversid);
   console.log("dir: "+ codeExDir);
-  cversid = 45656;
+  //cversid = 45656;
   console.log("cversid: "+ cversid);
   AJAXService("CREGITEX", {courseid : cid, coursevers : cversid, dirname : codeExDir}, "CREGITEX");
 }
