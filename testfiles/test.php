@@ -15,6 +15,7 @@
 
 <?php
 echo "Pre pdo ";
+echo "<br>";
 
 
 $servername = "localhost";
@@ -31,7 +32,9 @@ try {
 }
 
 $dirname = "Demo";
+echo "<br>";
 echo "PDO: " . $pdo;
+echo "<br>";
 $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
