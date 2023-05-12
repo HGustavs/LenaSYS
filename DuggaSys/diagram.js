@@ -1018,12 +1018,12 @@ const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
+const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
 const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
-
 const zoom1_25 = 0.36;
 const zoom1_5 = 0.555;
 const zoom2 = 0.75;
@@ -1416,7 +1416,6 @@ function getData()
     togglePlacementType(0,0)
     togglePlacementType(1,1)
     togglePlacementType(9,9)
-    togglePlacementType(12,12)
 }
 //<-- UML functionality start
 /**
@@ -1501,23 +1500,6 @@ function showDiagramTypes(){
     }
     else {
         Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-    }
-
-    // SE buttons
-    if (diagramType.UML) {
-        document.getElementById("elementPlacement12").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-
-        if (firstShown) {
-            document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
-        }
-        firstShown = true;
-    }
-    else {
-        Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
     }
@@ -2871,9 +2853,8 @@ function changeState()
 {
     const element =  context[0],
           oldType = element.type,
-          newType = document.getElementById("typeSelect")?.value || undefined;
-          var oldRelation = element.state;
-          var newRelation = document.getElementById("propertySelect")?.value || undefined
+          newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
+
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
         displayMessage("error", `
@@ -2882,7 +2863,7 @@ function changeState()
         )
         return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } else if (oldType == newType && oldRelation == newRelation){
+    } else if (oldType == newType){
         return;
     }
 
@@ -6051,7 +6032,7 @@ function togglePlacementTypeBox(num){
 /**
  * @description toggles which entity placement type is selected for the different types of diagrams.
  * @param {Number} num the number connected to the element selected.
- * @param {Number} type the type of element selected. (which pop-out we are referring to)
+ * @param {Number} type the type of element selected.
  */
 function togglePlacementType(num,type){
     if(type==0){
@@ -6109,33 +6090,6 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
-    }
-
-    else if (type == 12) {
-        // Sequence lifetime
-        document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
-        document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton12").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox"); 
-        // Sequence activation
-        document.getElementById("elementPlacement13").classList.add("hiddenPlacementType"); 
-        document.getElementById("elementPlacement13").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement13").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton13").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");
-        // Sequence object
-        document.getElementById("elementPlacement14").classList.add("hiddenPlacementType"); 
-        document.getElementById("elementPlacement14").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox"); 
-        // Sequence condition/loop object
-        document.getElementById("elementPlacement15").classList.add("hiddenPlacementType"); 
-        document.getElementById("elementPlacement15").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement15").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton15").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox15").classList.remove("activeTogglePlacementTypeBox");
     }
     
     // Unhide the currently selected placement type
@@ -6658,7 +6612,7 @@ function generateContextProperties()
                     selected = "disjoint"
                 }
 
-                if(element.kind =="IERelation") {
+                if(element.kind=="IERelation") {
                     value = Object.values(inheritanceStateIE);
                 }
                 str += '<select id="propertySelect">';
@@ -8311,33 +8265,19 @@ function drawLine(line, targetGhost = false)
                 var iconSizeStart=40;
                 break;
             case SDLineIcons.ARROW:
-                var iconSizeStart = 20;
-
-                // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
-
-                    let base = calculateArrowBase(to, from, iconSizeStart / 2 * zoomfact);
-                    let right = rotateArrowPoint(base, from, true);
-                    let left = rotateArrowPoint(base, from, false);
-
-                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${from.x} ${from.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                else {
-                    if (line.ctype == 'TB') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                    else if (line.ctype == 'BT') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy - 5 * zoomfact},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                    else if (line.ctype == 'LR') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                    else if (line.ctype == 'RL') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
+                else if(line.ctype == 'BT'){
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy - 5 * zoomfact},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeStart=40;
                 break;
             default:
                 var iconSizeStart=0;
@@ -8545,34 +8485,19 @@ function drawLine(line, targetGhost = false)
                 var iconSizeEnd=40;
                 break;
             case SDLineIcons.ARROW:
-                var iconSizeEnd = 20;
-
-                // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
-
-                    let base = calculateArrowBase(from, to, iconSizeEnd / 2 * zoomfact);
-                    let right = rotateArrowPoint(base, to, true);
-                    let left = rotateArrowPoint(base, to, false);
-
-                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                // If the line is segmented draw the arrow on a 90 degree angle matching the line.
-                else {
-                    if (line.ctype == 'BT') {
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                    else if(line.ctype == 'TB'){
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                    else if (line.ctype == 'RL') {
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                    else if (line.ctype == 'LR') {
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
+                else if(line.ctype == 'TB'){
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                else if (line.ctype == 'RL') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                else if (line.ctype == 'LR') {
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                var iconSizeEnd=20;
                 break;
             default:
                 var iconSizeEnd=0;
@@ -8851,57 +8776,6 @@ function drawLine(line, targetGhost = false)
     }
 
     return str;
-}
-/**
- * @description Calculates the coordinates of the point representing the base of the arrow, the point is @param size distance away and on the line between @param from and @param to .
- * @param {Point} from The coordinates/Point where the line between two elements start.
- * @param {Point} to The coordinates/Point where the line between two elements end.
- * @param {number} size The size(height) of the arrow that is to be drawn.
- * @returns The coordinates/Point where the arrow base is placed on the line.
- */
-function calculateArrowBase(from, to, size)
-{
-    /*
-        Since we know that the arrow is to be created on the line, we need a Point that is a set distance away from the element that is still on the line.
-        The set distance is the size, as it will be the height of the arrow.
-        Given two points we can find the distance of the line between them by calculating the hypotenuse.
-        Since we know the hypotenuse of the "small" triangle and all the lengths of the "large" triangle, we can calculate the cordinates of the "small" triangle since the triangles are "similar".
-        We start by calculating a ratio on the hypotenuse by taking the "small" hypotenuse divided by the "large" hypotenuse.
-        Then we apply this ratio on the other sides of the large triangle to get the distance in x and in y for the small triangle
-        Then we add these values to the end point to get the actual coordinates for the arrow base.
-    */
-
-    let ratio = size / Math.sqrt(Math.pow(from.x - to.x, 2) + Math.pow(from.y - to.y, 2));
-    let x = to.x + (from.x - to.x) * ratio;
-    let y = to.y + (from.y - to.y) * ratio;
-    return new Point(x, y);
-}
-/**
- * @description Calculates the coordiates of the point representing one of the arrows corners
- * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
- * @param {Point} to The coordinates/Point where the line between @param base and the element end
- * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
- */
-function rotateArrowPoint(base, to, clockwise)
-{
-    /*
-        To create the actual arrow we need the corners.
-        We need to rotate the point "to" around "base" by 90 or -90 degrees and divide the distance by 2 (as this decides how wide the triangle will be).
-        The rotation is done by applying the vector rotation math that states: 
-        Point(x,y) rotated 90 degrees clockwise = Point(y, -1 * x) or,
-        Point(x,y) rotated 90 degrees counter-clockwise = Point(-1 * y, x).
-        The "rotated" value can then be added to the base to get a corner.
-    */
-    if (clockwise) {
-        let point = new Point((to.y - base.y) / 2, -1 * (to.x - base.x) / 2);
-        point.add(base);
-        return point;
-    }
-    else {
-        let point = new Point(-1 * (to.y - base.y) / 2, (to.x - base.x) / 2);
-        point.add(base);
-        return point;
-    }
 }
 /**
  * @description Removes all existing lines and draw them again
@@ -9188,8 +9062,8 @@ function drawElement(element, ghosted = false)
 
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
-    var boxw = Math.round(element.width * zoomfact);
-    var boxh = Math.round(element.height * zoomfact);
+    var boxw  = Math.round(element.width * zoomfact);
+    var boxh  = Math.round(element.height * zoomfact);
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
@@ -9209,12 +9083,6 @@ function drawElement(element, ghosted = false)
     if (isDarkTheme()) actorFontColor = '#FFFFFF';
     else actorFontColor = '#383737';
     
-    //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
-    //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
-    var nonFilledElementPartStrokeColor;
-    if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
-    else nonFilledElementPartStrokeColor = '#383737';
-
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
     font = `${texth}px ${font.split('px')[1]}`;
@@ -9273,10 +9141,10 @@ function drawElement(element, ghosted = false)
             height : ((boxh + (boxh/2 + (boxh * elemAttri/2)) + (boxh/2 + (boxh * elemFunc/2))) / zoomfact)
         }
         UMLHeight.push(UMLEntityHeight);
-        
+
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9358,7 +9226,7 @@ function drawElement(element, ghosted = false)
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}" 
+                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9384,7 +9252,7 @@ function drawElement(element, ghosted = false)
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9410,13 +9278,13 @@ function drawElement(element, ghosted = false)
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
-                    style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                    style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%">
-                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
-                    <rect width="${boxw/2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
+                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
+                    <rect width="${boxw/2}px" height="${80 * zoomfact}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
@@ -9457,7 +9325,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9549,7 +9417,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh /3))}px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:5px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9610,7 +9478,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9663,7 +9531,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxh/1.5))}px; width:${boxw}px;height:${boxh/2}px;`;
+        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
        
         if(context.includes(element)){
             str += `z-index: 1;`;
@@ -9678,7 +9546,6 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
-        
         if (element.state == 'overlapping') {
                 str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/> 
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
@@ -9741,7 +9608,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${actorFontColor}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
@@ -9772,7 +9639,7 @@ function drawElement(element, ghosted = false)
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
@@ -9869,33 +9736,13 @@ function drawElement(element, ghosted = false)
     //ER element
     else {
         // Create div & svg element
-        if (element.kind == "EREntity") {
-            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+        str += `
+                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
-        }
-        else if (element.kind == "ERAttr") {
-            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            margin-top:${((boxh / 2))}px;;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
-        }
-        else if (element.kind == "ERRelation") {
-            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            margin-top:${((boxh / 2.75))}px;;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
-        }
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
@@ -9909,7 +9756,6 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == "EREntity") {
-
             var weak = "";
 
             if(element.state == "weak") {
@@ -9966,7 +9812,7 @@ function drawElement(element, ghosted = false)
             }
             
         }
-        else if (element.kind == "ERRelation") {         
+        else if (element.kind == "ERRelation") {
 
             var numOfLetters = element.name.length;
             if (tooBig) {
