@@ -23,7 +23,7 @@ include_once "../Shared/sessions.php";
 pdoConnect();
 
 $dirname = "Demo";
-echo "PDO: " + $pdo;
+echo "PDO: " . $pdo;
 $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
@@ -32,7 +32,7 @@ $query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND exam
 					$result = $query->fetch(PDO::FETCH_OBJ);
 					$counted = $result->counted;
 
-                    echo "counted: " + $counted;
+                    echo "counted: " . $counted;
 ?> 
 
     </main>
