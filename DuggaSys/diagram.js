@@ -9647,7 +9647,10 @@ function drawElement(element, ghosted = false)
         //first, set a suggested height for the element based on the amount of alternatives
         if ((element.alternatives != null) && (element.alternatives.length > 0)) {
             //increase length of element to avoid squished alternatives
-            boxh += 250*element.alternatives.length;
+            //boxh += 250*element.alternatives.length;
+            for (let i = 0; i < element.alternatives.length; i++) {
+                boxh += 250;
+            }
         }
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
