@@ -9673,8 +9673,8 @@ function drawElement(element, ghosted = false)
         //svg for the small label in top left corner
         str += `<path 
             d="M${(sequenceCornerRadius/4)+linew},${linew}
-                h${200}px
-                v${100}px
+                h${200}
+                v${100}
                 l${-50,-50}
                 H${linew}
                 V${linew+(sequenceCornerRadius/4)}
