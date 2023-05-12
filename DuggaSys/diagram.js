@@ -3005,10 +3005,7 @@ function saveProperties()
                 }
                 //Update the attribute array
                 arrElementAttr = formatArr;
-                if (element.kind == "SDEntity"){
-                    element[propName] = "do: " + arrElementAttr;
-                } else  element[propName] = arrElementAttr;
-
+                element[propName] = arrElementAttr;
                 propsChanged.attributes = arrElementAttr;
                 break;
         
