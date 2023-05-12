@@ -9682,6 +9682,9 @@ function drawElement(element, ghosted = false)
                 />`;
                 str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
+            //increase length of element to avoid squished alternatives
+            boxh += 250*element.alternatives.length;
+
         }
         //svg for the small label in top left corner
         str += `<path 
