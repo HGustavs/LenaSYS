@@ -15,12 +15,20 @@
 
 <?php
 echo "Pre pdo ";
-include_once "../../coursesyspw.php";
-include_once "../Shared/basic.php";
-include_once "../Shared/sessions.php";
 
-// Connect to database
-pdoConnect();
+
+$servername = "localhost";
+$username = "c21sebar";
+$password = "c21sebar";
+
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=myDB", $username, $password);
+  // set the PDO error mode to exception
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  echo "Connected successfully";
+} catch(PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
 
 $dirname = "Demo";
 echo "PDO: " . $pdo;
