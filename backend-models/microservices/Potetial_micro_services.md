@@ -45,7 +45,7 @@ Uses a function in basic.php.
 
 
 ### getUid
-Uses service __selectFromUser__ to _get_ information it requires from __user__.
+Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
 
 
 <br>
@@ -108,29 +108,36 @@ __USED BY__
 - changeActiveCourseVersion_courseed
 - updateCourseVersion_courseed
 - copyCourseVersion
+<br>
 
 Uses the services __updateTableCourse__ to change the content of these columns:
 - activeversion
+
+<br>
+
+---
+
+<br>
 
 ### updateUserPassword
 __USED BY__
 - changeUserPassword_accessed
 - changeProfileValues
+<br>
 
 Uses the services __updateTableUser__ to change the content of these columns:
 - password
+
+<br>
+<br>
+<br>
 
 ---
 ## ----- _accessedservice_ -----------------------------------------------------
 ---
 
 <br>
-
-
-
-
-
-
+<br>
 
 
 ### UpdateUserAndUsercourse
@@ -158,7 +165,7 @@ Uses service __updateTableUser__ to update one of these columns in the table __u
 
 ### addClass
 
-Uses service __insertIntoClass__ to makes _inserts_ into the table __class__.
+Uses service __insertIntoTableClass__ to makes _inserts_ into the table __class__.
 
 
 <br>
@@ -180,7 +187,7 @@ Uses service __updateUserPassword__ to _update_ the column "_password_" in the t
 
 
 ### addUser
-Uses service __selectFromClass__ to _get_ information it requires from __class__.
+Uses service __selectFromTableClass__ to _get_ information it requires from __class__.
 Uses service __insertIntoTableclass__ to _insert_ into the table __class__.
 <br>
 
@@ -203,9 +210,9 @@ Uses service __insertIntoTableUserCourse__ to _insert_ into the table __user_cou
 ### settingCodeexampleTemplate
 Updates the template for the code boxes in LenaSYS.
 
-Uses service __updateCodeexample__ to set templateid recived from input, that value is also placed in the variable __templateNumber__. 
+Uses service __updateTableCodeexample__ to set templateid recived from input, that value is also placed in the variable __templateNumber__. 
 The number of boxes created depends on on the value of _templateNumber_. 
-The contents of all boxes are gatherd with the service __selectFromBox__.
+The contents of all boxes are gatherd with the service __selectFromTableBox__.
 Depending on if a box with the set id exists or not an insert into the table __box__, using service __insertIntoTableBox__, or an update, using __updateTableBox__, is performed. 
 
 
@@ -217,14 +224,14 @@ Depending on if a box with the set id exists or not an insert into the table __b
 
 
 ### editCodeExample
-This service uses __updateCodeexample__ to update values in table __codeexample__:
+This service uses __updateTableCodeexample__ to update values in table __codeexample__:
 - runlink
 - examplename
 - sectionname
 - beforeid
 - afterid
 
-Aswell as __insertIntoImpwordlist__ or __deliteFromImpwordlist__ to add or remove a row in table __impwordlist__.
+Aswell as __insertIntoTableImpwordlist__ or __deliteFromTableImpwordlist__ to add or remove a row in table __impwordlist__.
 
 
 <br>
@@ -242,7 +249,7 @@ Uses the services __updateTableBox__ to change the content of these columns:
 - fontsize
 - wordlistid
 
-Aswell as __insertIntoImprow__ or __deleteFromTableImpwordlist__ to add or remove a row in table __improw__.
+Aswell as __insertIntoTableImprow__ or __deleteFromTableImpwordlist__ to add or remove a row in table __improw__.
 
 
 <br>
@@ -269,8 +276,8 @@ Uses service __updateTableBox__ to change value of column:
 Uses service __deleteFromTableBox__ to delete a row from the table __Box__.
 Uses service __deleteFromTableImprow__ to delete a row from the tabe __improw__.
 Uses service __deleteFromTableImpwordlist__ to delete a row from the tabe __impwordlist__.
-Uses service __deliteFromCodeexample__ to delete a row from the tabe __Codeexample__.
-Uses service __deliteFromListentries__ to delete a row from the tabe __listentries__.
+Uses service __deleteFromTableCodeexample__ to delete a row from the tabe __Codeexample__.
+Uses service __deleteFromTableListentries__ to delete a row from the tabe __listentries__.
 
 
 <br>
@@ -283,14 +290,11 @@ Uses service __deliteFromListentries__ to delete a row from the tabe __listentri
 
 <br>
 
----
-
-<br>
 
 
 ### createNewCourse
-Uses service __insertIntoCourse__ to makes _inserts_ into the table __course__.
-Uses service __selectFromCourse__ to _get_ information it requires from __course__.
+Uses service __insertIntoTableCourse__ to makes _inserts_ into the table __course__.
+Uses service __selectFromTableCourse__ to _get_ information it requires from __course__.
 
 
 <br>
@@ -336,30 +340,30 @@ Uses the services __setActiveCourseversion__ to change the content of these colu
 
 
 ### copyCourseVersion
-Uses service __insertIntoVers__ to makes _inserts_ into the table __Vers__.
+Uses service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
 <br>
 
-Uses service __selectFromQuiz__ to _get_ information it requires from __quiz__.
-Uses service __insertIntoQuiz__ to makes _inserts_ into the table __quiz__. (copys values from a row into a new insert, with new _vers_ number)
+Uses service __selectFromTableQuiz__ to _get_ information it requires from __quiz__.
+Uses service __insertIntoTableQuiz__ to makes _inserts_ into the table __quiz__. (copys values from a row into a new insert, with new _vers_ number)
 <br>
 
-Uses service __selectFromVariant__ to _get_ information it requires from __variant__.
-Uses service __insertIntoVariant__ to makes _inserts_ into the table __variant__. (copys values from a row into a new insert, with new _quizID_ number)
+Uses service __selectFromTableVariant__ to _get_ information it requires from __variant__.
+Uses service __insertIntoTableVariant__ to makes _inserts_ into the table __variant__. (copys values from a row into a new insert, with new _quizID_ number)
 <br>
 
-Uses service __selectFromCodeexample__ to _get_ information it requires from __codeexample__.
+Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
 Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__. (copys values from a row into a new insert, with new _quizID_ number)
 <br>
 
-Uses service __selectFromBox__ to _get_ information it requires from __box__.
+Uses service __selectFromTableBox__ to _get_ information it requires from __box__.
 Uses service __insertIntoTableBox__ to makes _inserts_ into the table __box__. (copys values from a row into a new insert, with new _exampleid_ number)
 <br>
 
-Uses service __selectFromImprow__ to _get_ information it requires from __improw__.
+Uses service __selectFromTableImprow__ to _get_ information it requires from __improw__.
 Uses service __insertIntoTableImprow__ to makes _inserts_ into the table __improw__. (copys values from a row into a new insert, with new _exampleid_ number)
 <br>
 
-Uses service __selectFromImpwordlist__ to _get_ information it requires from __impwordlist__.
+Uses service __selectFromTableImpwordlist__ to _get_ information it requires from __impwordlist__.
 Uses service __insertIntoTableImpwordlist__ to makes _inserts_ into the table __impwordlist__. (copys values from a row into a new insert, with new _exampleid_ number)
 <br>
 
@@ -417,10 +421,10 @@ Uses service __insertIntoTableSettings__ to makes _inserts_ into the table __set
 
 
 ### deleteCourseMaterial
-Uses service __deliteFromCodexample__ to delete a row from the table __codeexample__.
-Uses service __deliteFromListentries__ to delete a row from the table __listentries__.
-Uses service __deliteFromQuiz__ to delete a row from the table __quiz__.
-Uses service __deliteFromVers__ to delete a row from the table __vers__.
+Uses service __deliteFromTableCodexample__ to delete a row from the table __codeexample__.
+Uses service __deliteFromTableListentries__ to delete a row from the table __listentries__.
+Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
+Uses service __deliteFromTableVers__ to delete a row from the table __vers__.
 Uses service __deliteFromTableCourse__ to delete a row from the table __course__.
 
 
@@ -435,7 +439,7 @@ Uses service __deliteFromTableCourse__ to delete a row from the table __course__
 ---
 
 <br>
-
+<br>
 
 ### createOrUpdateDugga
 Uses service __insertIntoTableQuiz__ to makes _inserts_ into the table __quiz__. 
@@ -546,6 +550,7 @@ __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 ---
 
 <br>
+(writers comment: i belive this service is small enough as is)
 
 ### highscoreservice
 Return max ten passed scores.
@@ -708,7 +713,9 @@ Uses the services __setActiveCourseVersion__ to change the content of these colu
 <br>
 
 ### setVisibleListentrie
-These both do the same thing, i would sugest combining them and use if cases instead.e
+(writers comment: These both do the same thing, i would sugest combining them and use if cases instead.)
+<br>
+
 #### changeVisibleHidden
 Uses the services __updateTableListentries__ to change the content of these columns:
 - visible
@@ -761,6 +768,8 @@ Uses service __insertIntoTableListentries__ to makes _inserts_ into the table __
 <br>
 
 ### getUserDuggaFeedback
+<br>
+
 Retrives all information
 Uses service __selectFromTableUserduggafeedback__ to _get_ information it requires from __userduggafeedback__.
 <br>
@@ -790,14 +799,15 @@ Uses service __selectFromTableListentries__ to _get_ information it requires fro
 <br>
 profileService - handles password changes and challenge question
 
-### changeProfileValues    (writter comment: i think this service is small enough as is )
+### changeProfileValues    
+(writter comment: i think this service is small enough as is )
+<br>
 
 Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
 Uses service __selectFromTableUser_course__ to _get_ information it requires from __user_course__.
-
-Statements below are methods and not services
-
 <br>
+
+Statements below are methods for _changeProfileValues_ and not services.
 
 #### updateSecurityQuestion
 Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
@@ -816,10 +826,11 @@ Uses service __updateUserPassword__ to _get_ information it requires from __user
 <br>
 <br>
 
-### getUserAnswar  (writers comment: this service is small enough as is)
+### getUserAnswar  
+(writers comment: this service is small enough as is)
+<br>
+
 Uses service __selectFromTableUserAnswar__ to _get_ information it requires from __userAnswer__.
-
-
 Uses service __selectFromTableListentries__ to _get_ information it requires from __Listentries__.
 
 <br>
@@ -852,7 +863,6 @@ Uses the services __updateTableGroupdugga__ to change the content of these colum
 Search with __hash__
 Uses service __selectFromTableSubmission__ to _get_ information it requires from __submission__.
 <br>
-
 If no match on _hash_, retreive all submissions
 Uses service __selectFromTableSubmission__ to _get_ information it requires from __submission__.
 
@@ -864,7 +874,7 @@ Uses service __selectFromTableSubmission__ to _get_ information it requires from
 
 ### submitDugga
 Get submission based on __hash__.
-Uses service __selectFromUserAnswer__ to _get_ information it requires from __userAnswer__.
+Uses service __selectFromTableUserAnswer__ to _get_ information it requires from __userAnswer__.
 <br>
 
 These are not services but __methods__. 
@@ -884,7 +894,7 @@ Uses service __insertIntoTableUserAnswer__ to makes _inserts_ into the table __u
 
 ### loadDugga
 Get information based on __hash__.
-Uses service __selectFromUserAnswer__ to _get_ information it requires from __userAnswer__ and __variant__.
+Uses service __selectFromTableUserAnswer__ to _get_ information it requires from __userAnswer__ and __variant__.
 <br>
 
 If _hash_ did not work, retrive all answeres for that __moment__. 
