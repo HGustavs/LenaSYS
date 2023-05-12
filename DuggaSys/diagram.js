@@ -9686,7 +9686,7 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />`;
         //text in the label
-        str += `<text x='${50*zoomfact}' y='${37.5*zoomfact}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
+        str += `<text x='${50*zoomfact}' y='${(37.5/2)*zoomfact}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
         str += `<text x='${((linew+(sequenceCornerRadius/4))+(boxw/7.5))/2}' y='${((boxh*0.075)*3)+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         if ((element.numberOfDashedLines != null) && (element.numberOfDashedLines > 0)) {
