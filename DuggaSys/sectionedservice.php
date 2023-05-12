@@ -513,6 +513,15 @@ if($gradesys=="UNK") $gradesys=0;
 					$dirname = "Code-example1";
 					$courseid = 1;
 					$coursevers = 45656;
+					
+					$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
+					$query->bindParam(":cid", $courseid);
+					$query->bindParam(":ename","TEST2");
+					$query->bindParam(":sname", "TEST2");
+					$query->bindParam(":cversion", $coursevers);
+					$query->bindParam(":templateid",1);
+					$query->execute();
+					
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
 					$query->bindParam(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
@@ -521,13 +530,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$result = $query->fetch(PDO::FETCH_OBJ);
 					$counted = $result->$counted;
 
-					$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
-					$query->bindParam(":cid", $courseid);
-					$query->bindParam(":ename","TEST");
-					$query->bindParam(":sname", "TEST");
-					$query->bindParam(":cversion", $coursevers);
-					$query->bindParam(":templateid",1);
-					$query->execute();
+					
 
 					//if no codeexample exist create a new one
 					if($counted == 0) {
