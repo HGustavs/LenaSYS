@@ -80,8 +80,8 @@ include_once ".../test4";
             
             echo 'Choose table: ';
             echo '<select onchange="this.form.submit()" name="test" >';
-                foreach($decoded_json as $row){
-                    echo '<option value="'.$row['test'].'"';
+                foreach($decoded_json ['create course test'] as $key => $value) {
+                    echo '<option value="'.$key.'"';
                    
                         if(isset($_POST['test'])){
                             if($_POST['test']==$row['test']) echo " selected ";
