@@ -73,7 +73,7 @@ include_once ".../test4";
         <?php    
             
             $motherTest_json = file_get_contents('motherTestJSON.json');
-            $decoded_json = json_decode($motherTest_json, false);
+            $decoded_json = json_decode($motherTest_json, true);
             
             
 
@@ -83,13 +83,10 @@ include_once ".../test4";
                 foreach($decoded_json as $row){
                     echo '<option value="'.$row['test'].'"';
                    
-                
-                   echo '</select>';
                         if(isset($_POST['test'])){
                             if($_POST['test']==$row['test']) echo " selected ";
                         }
                     echo '>'.$row['test'].'</option>';
-                    echo"<p>".$row['test']."</p>";
                 }
             echo '</select>';
 
