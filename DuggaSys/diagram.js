@@ -763,8 +763,7 @@ const keybinds = {
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
         STATE_FINAL: { key: "f" , ctrl: false },
-        STATE_SUPER: { key: ">", ctrl: false },
-        Save_diagram: { key: "s", ctrl: true }, //<-- SD functionality
+        STATE_SUPER: { key: ">" , ctrl: false },
 };
 
 /** 
