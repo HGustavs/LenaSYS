@@ -695,9 +695,9 @@
                     <p id="tooltip-TOGGLE_ERROR_CHECK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-        </fieldset>   
+        </fieldset>
         <fieldset id = "localSaveField">
-        <legend aria-hidden="true">Save</legend>
+            <legend aria-hidden="true">Save</legend>
             <div id="localSave" class="diagramIcons" onclick="">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
@@ -706,7 +706,7 @@
                     <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
                 </span>
             </div>
-        </fieldset>   
+        </fieldset>
 
         <!-- <fieldset>
             <legend>Include</legend>
