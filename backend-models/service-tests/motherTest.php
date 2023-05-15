@@ -52,10 +52,10 @@ include_once ".../test4";
 
         <span><form id="form1" name="form1" method="post" action="<?php echo $PHP_SELF; ?>">
         
-        <input type="checkbox"  id="sort_passed" name="sort_passed" value="passed_value">
+        <input type="checkbox" onclick="checkPassed()" id="sort_passed" name="sort_passed" value="passed_value">
         <label for='sort_passed'>Passed tests</label>
 
-        <input type="checkbox" id="sort_failed" name="sort_failed" value="failed_value">
+        <input type="checkbox" onclick="checkFailed()" id="sort_failed" name="sort_failed" value="failed_value">
         <label for='sort_failed'>Failed tests</label>
         <?php    
             
@@ -147,8 +147,16 @@ include_once ".../test4";
                 echo '</tbody>';
                 
         
-                
-
+                function checkPassed() {
+                    if(filter_has_var($PHP_SELF,'sort_passed')) {
+                        echo $val == 'passed';
+                   }
+                }
+                function checkFailed() {
+                    if(filter_has_var($PHP_SELF,'sort_failed')) {
+                        echo $val == 'failed';
+                   }
+                }
 
 
                        
