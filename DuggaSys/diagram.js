@@ -12610,8 +12610,8 @@ function exportWithHistory()
  * @description Stores the current diagram as JSON in localstorage
  */
  function storeDiagramInLocalStorage(){
-    
-    if (stateMachine.currentHistoryIndex == -1) {
+
+    if (stateMachine.currentHistoryIndex == -1 && tempIndex == -1 ) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
         // Remove all future states to the history
@@ -12624,6 +12624,7 @@ function exportWithHistory()
         localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
+    tempIndex = stateMachine.currentHistoryIndex;
 }
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
