@@ -1,7 +1,6 @@
 <?php
 	include "../Shared/basic.php";
 	include "../Shared/sessions.php";
-	include_once "sectionedservice.php";
 	session_start();
 	//include_once "../../coursesyspw.php";
 	pdoConnect();
@@ -14,7 +13,8 @@
 	}else{
 		$userid="00";
 	}
-	$dataValue = $_GET['data_value'];
+	$lid = getOP('lid');
+	echo "'. $lid .'";
 ?>
 
 <!DOCTYPE html>
