@@ -12,7 +12,7 @@
 	}
 
 	global $pdo;
-	if(isset($_POST['githubInsert'])) {
+/* 	if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert'])) {
 		$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':githubdir', $_POST['githubDir']);
@@ -26,7 +26,7 @@
 			$errorMessage = $e->getMessage();
 			echo "<script>console.log('$errorMessage');</script>";
 		}
-	}
+	} */
 ?>
 
 <!DOCTYPE html>

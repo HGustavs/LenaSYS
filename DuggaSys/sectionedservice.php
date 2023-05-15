@@ -1050,9 +1050,24 @@ if($gradesys=="UNK") $gradesys=0;
 				}
 			}
 
+
+	if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert'])) {
+		$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':githubdir', $_POST['githubDir']);
+		try {
+			if($query->execute()) {
+				echo "<script>console.log('insert successful!');</script>";		
+			} else {
+				echo "<script>console.log('insert failed!');</script>";		
+			} 
+		} catch (PDOException $e) {
+			$errorMessage = $e->getMessage();
+			echo "<script>console.log('$errorMessage');</script>";
+		}
+	}
+
 		echo json_encode($array);
 
 		logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php",$userid,$info);
-
-
 ?>
