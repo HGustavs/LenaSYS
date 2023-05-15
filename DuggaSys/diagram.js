@@ -1105,7 +1105,7 @@ var settings = {
     }
 };
 
-let tempHistoryIndex = -1;
+let tempHistoryIndex = stateMachine.currentHistoryIndex;
 // Demo data - read / write from service later on
 
 var diagramToLoad = "";
