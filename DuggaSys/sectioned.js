@@ -3006,12 +3006,13 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 //Creates all examples from github that doesnt exists yet
 function createExamples(dir,momentID) {//TODO HERE
 
-  console.log("**** CID "+querystring['courseid']);
+  //console.log("**** CID "+querystring['courseid']);
 
   //cversid = document.getElementById("cversid").value;
   lid= momentID;
   dirname = dir;
-  console.log("**** DIRNAME "+dirname);
+  //console.log("**** DIRNAME "+dirname);
+  console.log("* AJAX START ");
 	$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
@@ -3592,25 +3593,13 @@ async function refreshCodeExample(exampleid) {
 //------------------------------------------------------------------------------
 function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
-  console.log("RefreshButton Clicked! A "+ momentID);
+  console.log("RefreshButton Clicked! "+ momentID);
 
+  //TODO: take input from column/dropdownlist and iterate through and create the codeexample
   //for each codeexample in the moment dir, do create examples on those code-example dir
+  //for loop not yet implemented, waiting for other issues to be completed before
   dirname="../courses/1895/Github/Demo/Code-example1/"
   createExamples(dirname,momentID)
- 
-
-  /*
-  retdata.entries.map(sectionListEntry => {
-    //If current entry is within chosen moment and is a codeexample, try to refresh it
-    console.log("RefreshButton Clicked! B "+ retdata);
-    if(sectionListEntry.moment == momentID && sectionListEntry.kind == 2){
-      refreshCodeExample(sectionListEntry.link);
-      console.log("RefreshButton Clicked! C" + sectionListEntry);
-    }
-  });
-*/
-
-
 }
 
 //------------------------------------------------------------------------------

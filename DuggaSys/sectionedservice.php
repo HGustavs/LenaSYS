@@ -497,22 +497,22 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					}
 					$gdb->close();
-					//TODO rest från 13179, här anropas uppdateringsfunktionen
+					
 				} else if(strcmp($opt,"CREGITEX")===0) {
 
-					//count if there is already a codeexample or if we should create a new one.
 					
+					//Get cid
 					$query = $pdo->prepare("SELECT cid FROM listentries WHERE lid=:lid");
 					$query->bindParam(":lid", $lid);
 					$query->execute();
 					$e = $query->fetchAll();
 					$courseid = $e[0]['cid'];
 
-
+					//get the correct examplename from the dirname and set the dir path
 					$dirPath = $dirname;
 					$dirnameArray = explode('/', $dirname);
 					$dirname = $dirnameArray[count($dirnameArray)-2];								
-
+					//count if there is already a codeexample or if we should create a new one.
 					$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
 					$query1->bindParam(":cid", $courseid);
 					$query1->bindParam(":examplename", $dirname); 
@@ -556,9 +556,6 @@ if($gradesys=="UNK") $gradesys=0;
 						if($success) {
 							
 							//Count files in the directory for the codeexample
-							
-							
-
 							$fileCount = 0;
 							$files = scandir($dirPath);
 							foreach ($files as $file) {
@@ -597,10 +594,9 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":templateid", $templateNumber);
 								$query->execute();
 							
+								//select the latest codeexample created to link boxes to this codeexample
 								$query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
 								$query->execute();
-								//$exampleid = $query->fetchColumn();
-
 								$result = $query->fetch(PDO::FETCH_OBJ);
 								$exampleid = $result->LatestExID;
 								
@@ -686,6 +682,7 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					} else {
 						//Check for update
+						//TODO: Implement update for already existing code-examples.
 					} 
 				
 				} else if (strcmp($coursevers, "null")!==0) {
