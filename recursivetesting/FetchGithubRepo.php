@@ -114,7 +114,7 @@ function getIndexFile($url) {
 function bfs($url, $cid, $opt) 
 {
     $url = getGitHubURL($url);
-    $filesToDownload = getIndexFile($url);
+    $filesToIgnore = getIndexFile($url);
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
@@ -146,12 +146,12 @@ function bfs($url, $cid, $opt)
             // Loops through each item fetched in the JSON data
             if ($json) {
                 foreach ($json as $item) {
+                    // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
                         //If an index file has been found, check against the content of the index file
-                        if($filesToDownload){
-                            //If file is part of filestoDownload (Index file)
-                            if(!in_array($item['name'], $filesToDownload)){
-                                // Checks if the fetched item is of type 'file'
+                        if($filesToIgnore){
+                            //If file is not part of files to ignore, resume (Index file)
+                            if(!in_array($item['name'], $filesToIgnore)){
                                 if($opt == "REFRESH") {
                                     insertToMetaData($cid, $item);
                                 }
@@ -163,7 +163,6 @@ function bfs($url, $cid, $opt)
                             }
                             //Otherwise, fetch and download all files
                         } else {
-                                // Checks if the fetched item is of type 'file'
                                 if($opt == "REFRESH") {
                                     insertToMetaData($cid, $item);
                                 }
