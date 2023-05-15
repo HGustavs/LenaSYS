@@ -295,9 +295,37 @@ output{
 ***
 ##EDITTITLE line 281
 ***
-—-------------------------------------------------------------
-NOT FIXED
-—-------------------------------------------------------------
+###pre-req:
+```
+{ (checklogin = true) &&
+(hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st')) ==
+true give $writeAccess="w";, else $writeAccess="s";
+```
+
+
+###Login:
+```
+Username: 2
+Password: Kong
+```
+###MySQL Pre edit
+**Creation of new codeexemple that is visable**
+```
+insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
+
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
+
+select * from box where exampleid=(select max(exampleid) from box);
+```
+###Values
+```
+Send{
+  $boxTitle = Title;
+  $boxId = 1;
+  $exampleId 9023;
+}
+
+```
 
 ***
 ##DELEXAMPLE Line 294
