@@ -447,11 +447,15 @@ function returned(data)
 
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
-
+	console.log("enter returnedTitle: ", data);
 	retData['box'][data.id - 1][4] = data.title;
+	console.log("retdata, data.id, data.title: ", retData, data.id, data.title);
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
+	console.log("Boxwrapper: ", boxWrapper);
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
+	console.log("titleSpan: ", titleSpan);
 	titleSpan.innerHTML = data.title;
+	console.log("innerHTML: ", titleSpan.innerHTML);
 	fillBurger();
 }
 
@@ -956,12 +960,15 @@ function editImpRows(editType)
 
 function updateContent(file, content, boxnumber) 
 {
+	console.log("Initiate UpdateContent: ", file, content, boxnumber);
 	// Check if there is a box number
 	// Only true if function is called by drag and drop
 	if(boxnumber) {
 		var box = retData['box'][boxnumber - 1];;
+		console.log("If boxnumber: ", boxnumber);
 	} else {
 		var box = retData['box'][openBoxID - 1];
+		console.log("Else boxnumber ", openBoxID);
 	}
 	
 	var useBoxContent = true;
@@ -970,6 +977,7 @@ function updateContent(file, content, boxnumber)
 	if (!box) {
 		useBoxContent = false;
 		box = retData['box'][retData['box'].length - 1];
+		console.log("fallback: ", box);
 	}
 
 	// Check if a drag and drop instance is created
@@ -997,18 +1005,21 @@ function updateContent(file, content, boxnumber)
 				var boxid = box[0];
 
 				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows, addedRows: addedRows}, "BOXCONTENT");				
-
+				console.log("Success: ", courseid, exampleid, boxid, boxtitle, boxcontent, wordlist, filename);
+				console.log("Boxcontent: ", boxcontent);
 				addedRows = [];
 				removedRows = [];
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
-			setTimeout("location.reload()", 500);
+			console.log("Timeout");
+			setTimeout("location.reload()", 500); //SETBACK TO 500
 		}
 	} else {
 		if (box[4] != document.querySelector("#boxtitle2").textContent) {
 			try {
 				AJAXService("EDITTITLE", {exampleid: querystring['exampleid'], courseid: querystring['courseid'], boxid: box[0], boxtitle: document.querySelector("#boxtitle").textContent}, "BOXTITLE");
+				console.log("Ajaxservice, Qstring:Exampleid, Qstring:courseid; ", querystring[exampleid], querystring['courseid']);
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
@@ -1017,9 +1028,22 @@ function updateContent(file, content, boxnumber)
 }
 
 /*-----------------------------------------------------------------------
+  -              editTitle: Updates title being edited			            -
+  -----------------------------------------------------------------------*/
+function editTitle(boxid, boxtitle) {
+	console.log("Enter editTitle")
+	AJAXService("EDITTITLE", {
+		exampleid: querystring['exampleid'],
+		boxid: boxid,
+		boxtitle: boxtitle
+	}, "BOXTITLE");
+	console.log("AJAXservice: ",exampleid, boxid, boxtitle);
+}
+/*-----------------------------------------------------------------------
   -              updateTitle: Updates the title being edited            -
   -----------------------------------------------------------------------*/
 function updateTitle(e) {
+	console.log("Call updateTitle: ", e)
 	if (e.key === 'Enter') {
 		e.preventDefault();
 		var titleSpan = e.target;
@@ -1081,19 +1105,19 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 
 		var str = "<table cellspacing='2'><tr>";
 
-		// If reader has write access the settings button is shown along with box title
+		// If reader has write access the settings button is shown along with box title 
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else {
 				str += "<td class='butto2 showdesktop'>";
