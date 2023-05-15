@@ -14,6 +14,12 @@
 	}else{
 		$userid="00";
 	}
+
+	if(isset($_POST['lid'])) {
+		$lid = $_POST['lid'];
+	} else {
+		echo "error";
+	}
 ?>
 
 <!DOCTYPE html>
