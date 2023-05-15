@@ -1700,6 +1700,7 @@ function returnedSection(data) {
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this);'>`;
           str += "</td>";
+        }
 
         // github icon for code (itemKind 2 is code)
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher'])  {
@@ -1710,20 +1711,6 @@ function returnedSection(data) {
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(${item['lid']})'>`;
           str += "</td>";
         }
-
-/*         function sendValue(value) {
-          fetch("sectioned.php", {
-            method: "POST",
-            body: JSON.stringify({ value: value })
-          })
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        } */
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
