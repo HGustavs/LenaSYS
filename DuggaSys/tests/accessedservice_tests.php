@@ -204,6 +204,7 @@ $testsData = array(
     // Test 11
     'create access test 11' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}', // Change this on all tests before DONE!
+        'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
             'opt' => 'ADDCLASS',
