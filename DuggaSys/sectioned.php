@@ -600,11 +600,27 @@
                     }catch(PDOException $e) {
 						echo '<p>Error: ' . $e->getMessage() . '</p>';
                     }
+
+					if(isset($_POST['selectedDir'])){
+						$selectDir = $_POST['selectedDir'];
+
+						try {
+							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+							$query =  $pdolite->prepare('UPDATE gitFiles SET selectedDir = :selectedDir WHERE cid = :cid');
+							$query->bindParam(':selectedDir', $selectDir);
+							$query->bindParam(':cid', $cid);
+							$query->execute();
+						} catch(PDOException $e) {
+							echo '<p>Error: ' . $e->getMessage() . '</p>';
+						}
+					}
+
+				
                 ?>
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
-			<input type='button' class='submit-button' onclick="console.log('Button clicked'); confirmBox('saveGitHubBox'); changeMomentName();" value='Save'>
+			<input type='button' class='submit-button' onclick="console.log('Button clicked'); validateForm('saveGithubMoment')" value='Save'>
 
 		</div>
 	</div>
