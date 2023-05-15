@@ -1105,7 +1105,7 @@ var settings = {
     }
 };
 
-
+let tempHistoryIndex = -1;
 // Demo data - read / write from service later on
 
 var diagramToLoad = "";
@@ -12611,7 +12611,7 @@ function exportWithHistory()
  */
  function storeDiagramInLocalStorage(){
 
-    if (stateMachine.currentHistoryIndex == -1 && tempIndex == -1 ) {
+    if (stateMachine.currentHistoryIndex == -1 && tempHistoryIndex == -1 ) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
         // Remove all future states to the history
@@ -12624,7 +12624,7 @@ function exportWithHistory()
         localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
-    tempIndex = stateMachine.currentHistoryIndex;
+    tempHistoryIndex = stateMachine.currentHistoryIndex;
 }
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
