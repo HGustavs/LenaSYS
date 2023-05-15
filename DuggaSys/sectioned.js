@@ -3490,6 +3490,19 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+    // validates the github moment from github integration (the github icon)
+    if (formid === 'saveGithubMoment') {
+    var selectedDir = document.getElementById('selectDir').value;
+
+    // Validate fields here. For example, check if fields are not empty
+    if (selectedDir == "" || selectedDir == null) {
+      alert("Pick directory");
+      return;
+    }
+
+    // If validation passes, submit the form
+    document.getElementById('githubForm').submit();
+  }
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
