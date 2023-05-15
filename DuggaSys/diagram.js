@@ -9536,7 +9536,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>Do: </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`;
             //end of svg for background
             str += `</svg>`;
         }
