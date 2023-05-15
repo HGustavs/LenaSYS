@@ -593,11 +593,12 @@
 			echo "<script>console.log('.$lid.');</script>";
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
-			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled, pos) VALUES (:cid, :githubdir, :creator, :feedbackenabled, :lid)");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':githubdir', $_POST['githubDir']);
 			$query->bindParam(':creator', $userid);
 			$query->bindParam(':feedbackenabled', $feedbackenabled);
+			$query->bindParam(':lid', $_POST['lid']);
 			try {
 				if($query->execute()) {
 					echo "<script>console.log('insert successful!');</script>";		
