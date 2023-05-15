@@ -556,7 +556,7 @@ function sendValue(moment)
 	var dataCheck;
 	$.ajax({
 		async: false,
-		url: "../LenaSYS/sectioned.php",
+		url: "../DuggaSys/sectioned.php",
 		type: "POST",
 		data: {'lid':lid},
 		success: function(data) { 
