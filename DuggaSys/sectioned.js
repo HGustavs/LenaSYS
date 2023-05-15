@@ -482,7 +482,7 @@ var clicks = 0; // Global variable to save number of refresh-attempts
 function refreshTimeout() { 
   console.log(clicks);
 	setInterval(resetClick, 60000);
-	if(clicks > 5) {
+	if(clicks >= 5) {
 		return false;
 	} else {
     clicks++;
