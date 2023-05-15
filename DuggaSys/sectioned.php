@@ -573,10 +573,9 @@
 		}
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
+		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['momentid'])) {
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
-			// $ruery = $pdo->prepare("UPDATE listentries SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;");
 			$query = $pdo->prepare("UPDATE listentries set githubDir=:githubdir WHERE lid=:lid");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
 			$query->bindParam(':lid', $lidvalue);
@@ -616,7 +615,6 @@
 						</select>
 					</div>
 				<input type="submit" name="githubInsert" value="Submit!">
-				<input type="hidden" name="githubForm" value="githubForm">
 			</div>
 		</div>
 	</form>
