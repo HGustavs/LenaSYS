@@ -669,12 +669,12 @@
                                 <p>Creates a option loop or alternative.</p><br>
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
-                        <div id="togglePlacementTypeButton15" class="placementTypeIcon togglePlacementTypeButton">
+                        <div id="togglePlacementTypeButton14" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
                     <div id="diagramPopOut">
-                        <div id="togglePlacementTypeBox15" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                        <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFETIME !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                             <span class="toolTipText"><b>Sequence lifeline</b><br>
