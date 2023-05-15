@@ -668,8 +668,9 @@ if($gradesys=="UNK") $gradesys=0;
 								for($i = 2; $i < count($files); $i++) {
 									$filename = $files[$i];
 									$parts = explode('.', $filename);
-									$filetype = null;
+									$filetype = "CODE";
 									$wlid = 0;
+									/*
 									if($parts[1] == "js") {
 										$filetype = "CODE";
 										$wlid = 1;
@@ -694,7 +695,7 @@ if($gradesys=="UNK") $gradesys=0;
 									} else {
 										$filetype = "DOCUMENT";
 										$wlid = 4;
-									}
+									} */
 									
 				
 									$boxid=$i-1;
