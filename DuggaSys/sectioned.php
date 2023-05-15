@@ -577,9 +577,8 @@
 	<?php
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				echo "<script>console.log('debug 1');</script>";
-		if(isset($_POST['lid'])) {
-			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir'])) {
+			echo "<script>console.log('debug 1');</script>";
+			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['lid'])) {
 				echo "<script>console.log('debug 2');</script>";
 				$lid = (int)$_POST['lid'];
 				echo $lid;
