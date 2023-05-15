@@ -12612,8 +12612,7 @@ catch(error)
 {
 console.error(error);
 }
-}
-sendDiagramToServer();
+    }
 
 /**
  * @description Stores the current diagram as JSON in localstorage

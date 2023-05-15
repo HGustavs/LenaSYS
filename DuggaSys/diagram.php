@@ -896,7 +896,7 @@
         <fieldset id = "localSaveField">
             <legend aria-hidden="true">Save</legend>
             <div id="localSave" class="diagramIcons" onclick="">
-                <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
+                <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram" onclick="sendDiagramToServer();"/>      
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
                     <br>
