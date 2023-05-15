@@ -17,7 +17,7 @@ $testsData = array(
             'prop' => 'firstname',
             'val' => 'test',
             'uid' => 'testuser1',
-            'blop' => '!query-before-test-1! [0][uid]' 
+            'blop' => '<!query-before-test-1!> <*[0][uid]*>' 
         )),
         'filter-output' => serialize(array(
             'none' // To use all output from service
@@ -36,7 +36,7 @@ $testsData = array(
             'prop' => 'lastname',
             'val' => 'test',
             'uid' => 'testuser1',
-            'blop' => '!query-before-test-1! [0][uid]'
+            'blop' => '<!query-before-test-1!> <*[0][uid]*>'
         )),
         'filter-output' => serialize(array(
             'none'
@@ -55,7 +55,7 @@ $testsData = array(
             'prop' => 'ssn',
             'val' => 'test',
             'uid' => 'testuser1',
-            'blop' => '!query-before-test-1! [0][uid]'
+            'blop' => '<!query-before-test-1!> <*[0][uid]*>'
         )),
         'filter-output' => serialize(array(
             'none'
@@ -74,7 +74,7 @@ $testsData = array(
             'prop' => 'username',
             'val' => 'test',
             'uid' => 'testuser1',
-            'blop' => '!query-before-test-1! [0][uid]'
+            'blop' => '<!query-before-test-1!> <*[0][uid]*>'
         )),
         'filter-output' => serialize(aarray(
             'none'
