@@ -546,8 +546,8 @@ function sendValue(moment) {
       }
     }
   };
-  var data = "momentid=" + encodeURIComponent(value);
-  xhr.send(data);
+  console.log(value);
+  xhr.send(value);
 }
 
 
