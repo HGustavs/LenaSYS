@@ -648,7 +648,7 @@
                                 <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>     
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(15,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="toolTipText"><b>Sequence Condition</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
