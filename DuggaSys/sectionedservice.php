@@ -501,6 +501,7 @@ if($gradesys=="UNK") $gradesys=0;
 				} else if(strcmp($opt,"CREGITEX")===0) {
 
 					//count if there is already a codeexample or if we should create a new one.
+					//"../courses/1895/Github/Demo/Code-example1/"
 					$dirnameArray = explode('/', $dirname);
 					$dirname = $dirname[count($dirnameArray)-1];
 					//$dirname = "Code-example1";
