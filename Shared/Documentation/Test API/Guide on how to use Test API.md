@@ -26,13 +26,13 @@ The test API aims to be as easy as possible. In figure 2 you can find an example
 #### Save query output
 You can save the output from a "query-before-test" and use the value in the service data as the example in figure 2 shows. Soround the name of the query you want to save with "<!" before and  "!> after (ex !query-before-test-1!) and then you can specify a path to the exact value (optional) to save, for example [0][coursename], do this "<* .... *>".
 
-#### Unkown value in query
+#### Unkown value in query - **variables-query-before-test-X** 
 If you have an unknown value in your SQL query and you need the result of another query to determine that value, you have two options, the first one (more complex) is to modify your query to include an SQL subquery in order to retrive the value. Here's an example of how to use a subquery to delete a row with an unknown `cid` value:
 ```
 DELETE FROM course WHERE coursename = 'MyAPICourse' AND cid = (SELECT cid FROM (SELECT cid FROM course WHERE coursecode = 'IT400G' ORDER BY coursecode DESC LIMIT 1) AS temp_table);
 ```
 
-The second, more simpler method is to use the `query-variables` field. This allows you to retrieve values from the `service-data` array by specifying the names of the corresponding rows of data, which can be separated by commas (and space after comma ex blop, blop2, blop3). Then, in your query, you can use a question mark '?' as a placeholder. The first '?' corresponds to the first name in the 'query-variables' field. In Figure 2, the value of 'blop' is assigned to `query-before-test-3`, which is the result of **<!query-before-test-1!><[0][cid]>** in this example.
+The second, more simpler method is to use the `variables-query-before-test-X` field, create this field before the query field. This allows you to retrieve values from the `service-data` array by specifying the names of the corresponding rows of data, which can be separated by commas (and space after comma ex blop, blop2, blop3). Then, in your query, you can use a question mark '?' as a placeholder. The first '?' corresponds to the first name in the 'query-variables' field. In Figure 2, the value of 'blop' is assigned to `query-before-test-3`, which is the result of **<!query-before-test-1!><[0][cid]>** in this example.
 
 
 ```php
@@ -50,11 +50,12 @@ $testsData = array(
     'create course test' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'IT401G' ORDER BY coursecode DESC LIMIT 1",
+	'variables-query-before-test-2' => "blop",
         'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
+	'variables-query-before-test-3' => "blop",
         'query-before-test-3' => "DELETE FROM course WHERE coursecode = 'IT401G' AND cid = ?",
         'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
-	'query-variables' => "blop",
         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
@@ -101,4 +102,4 @@ Depending on the second argument to testHandler two different outputs will be di
 - **True:** Returns HTML that displays the results.  
 - **False:** Returns all test results as JSON. 
 
-***Guide for Test API version 1.3***
+***Guide for Test API version 1.4***
