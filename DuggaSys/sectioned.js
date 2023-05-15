@@ -495,22 +495,6 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-function changeMomentName(kind, itemTitle) {
-  console.log("changeMomentName called with kind:", kind, "itemTitle:", itemTitle);
-  const momentName = document.getElementById('momentName').value;
-  
-  const itemSelector = "[data-kind='" + kind + "'][data-title='" + itemTitle + "']";
-  const momentObj = document.querySelector(itemSelector);
-
-  if (momentObj) {
-    momentObj.children[1].innerText = momentName;
-    console.log("Moment name updated:", momentName);
-  } else {
-    console.error("Moment object not found for kind:", kind, "itemTitle:", itemTitle);
-  }
-
-  confirmBox("closeConfirmBox");
-}
 
 
 
