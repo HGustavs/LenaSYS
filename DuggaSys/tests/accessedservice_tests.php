@@ -1,7 +1,7 @@
 
 <?php
 
-include "../Shared/test.php";
+include "../../Shared/test.php";
 
 $testsData = array(
     // Test 1
