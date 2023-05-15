@@ -4124,6 +4124,7 @@ function generateStateDiagramInfo()
     const stateLines = [];
     const queue = [];
     let output = "";
+    let re = new RegExp("\\[.+\\]");
 const stateLinesLabels=[];
     // Picks out the lines of type "State Diagram" and place it in its local array.
     for (let i=0; i<lines.length; i++)
@@ -4187,6 +4188,9 @@ const stateLinesLabels=[];
         for (let i = 0; i < connections.length; i++) {
             if (connections[i][2] == undefined) {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+            }
+            else if (re.test(connections[i][2])) {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][2]}"</p>`;
             }
             else {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with lable "${connections[i][2]}"</p>`;
