@@ -1050,13 +1050,6 @@ if($gradesys=="UNK") $gradesys=0;
 				}
 			}
 
-		function updateGithubTable($dir) {
-			global $pdo;
-			$query = $pdo->prepare("UPDATE listentries SET githubDir = $dir WHERE lid = :lid");
-			$sectid = $sectid=getOP('lid');
-			$query->bindParam(':lid', $sectid);
-			$query->execute();
-		}
 
 		echo json_encode($array);
 
