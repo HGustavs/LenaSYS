@@ -550,8 +550,7 @@ function showSaveButton() {
   xhr.send("momentid=" + encodeURIComponent(value));
 } */
 
-function sendValue(moment) {
-  let lid = moment.getAttribute("data-value");
+function sendValue(lid) {
   console.log(lid);
 	$.ajax({
 		url: "../DuggaSys/sectioned.php",
@@ -1732,7 +1731,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' data-value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this); sendValue(this)'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this); sendValue(${item['lid']})'>`;
           str += "</td>";
         }
 
@@ -1742,7 +1741,7 @@ function returnedSection(data) {
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' data-value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(this)'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(${item['lid']})'>`;
           str += "</td>"; 
        }
 
