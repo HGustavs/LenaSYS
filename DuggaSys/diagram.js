@@ -6819,7 +6819,7 @@ function generateContextProperties()
                 }
             }
         }
-        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
+        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
