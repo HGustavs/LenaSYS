@@ -508,17 +508,17 @@ if($gradesys=="UNK") $gradesys=0;
 					$coursevers = 45656;
 					$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTING",1,45656,1);');
 					$query2->execute();	
-					/*
+					
 					//Server error from here
-					$query1 = $pdo->prepare('SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;');
-					$query1->bindParam(":cid", $courseid);
-					$query1->bindParam(":examplename", $dirname); // $parts[count($parts)-1]
+					$query1 = $pdo->prepare('SELECT COUNT(*) FROM codeexample WHERE cid=1 AND examplename="Code-example1";');
+					//$query1->bindParam(":cid", $courseid);
+					//$query1->bindParam(":examplename", $dirname); // $parts[count($parts)-1]
 					$query1->exectue();
 
+					
+					/*
 					$result = $query1->fetch(PDO::FETCH_OBJ);
 					$counted = $result->$counted;
-					
-					
 					
 					
 					
