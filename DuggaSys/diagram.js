@@ -4166,11 +4166,13 @@ const stateLinesLabels=[];
                 stateLinesLabels.push(stateLines[i].label);
                 for (let j = 0; j < stateElements.length; j++) {
                     if (stateLines[i].toID == stateElements[j][ENTITY].id) {
+                        stateElements[j][2] = stateLines[i].label;
                         connections.push(stateElements[j]);
                     }
                 }
                 for (let j = 0; j < stateFinal.length; j++) {
                     if (stateLines[i].toID == stateFinal[j][ENTITY].id) {
+                        stateFinal[j][2] = stateLines[i].label;
                         connections.push(stateFinal[j]);
                     }
                 }
@@ -4181,10 +4183,14 @@ const stateLinesLabels=[];
                 }
             }
         }
-
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-        output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" </p>`;
+            if (connections[i][2] == undefined) {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+            }
+            else {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with lable "${connections[i][2]}"</p>`;
+            }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
                 queue.push(connections[i]);
