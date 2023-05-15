@@ -1691,6 +1691,15 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+         // Cogwheel for headers
+        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+          src='../Shared/icons/Cogwheel.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          str += "</td>";
+        }
+
          // Trashcan for headers
         if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
