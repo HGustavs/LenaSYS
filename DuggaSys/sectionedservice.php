@@ -626,7 +626,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":templateid", $templateNumber);
 								$query->execute();
 							
-								$query = $pdo->prepare("SELECT MAX(exampleid) FROM codeexample");
+								$query = $pdo->prepare("SELECT MAX(exampleid) FROM codeexample;");
 								$exampleid = $query->execute();
 								
 								$varname="MAXCOUNTEID";
