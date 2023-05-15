@@ -549,7 +549,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$query->bindParam(":entryname", $moment);
 						$query->execute();
 						$e = $query->fetchAll();
-						$pos = $e[1]['pos']+1;//Gets the last filled position+1 to put the new codexample at
+						$pos = $e[1]['pos'];//Gets the last filled position+1 to put the new codexample at
 						
 						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
 						$query3->bindParam(":examplename", $pos); 
