@@ -363,6 +363,7 @@ class StateMachine
          * Interger of the currentIndex position of historyLog
         */
         this.currentHistoryIndex = -1;
+        let tempHistoryIndex = this.currentHistoryIndex;
     }
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
@@ -1105,7 +1106,6 @@ var settings = {
     }
 };
 
-let tempHistoryIndex = stateMachine.currentHistoryIndex;
 // Demo data - read / write from service later on
 
 var diagramToLoad = "";
@@ -12611,7 +12611,7 @@ function exportWithHistory()
  */
  function storeDiagramInLocalStorage(){
 
-    if (stateMachine.currentHistoryIndex == -1 && tempHistoryIndex == -1 ) {
+    if (stateMachine.currentHistoryIndex == -stateMachine.tempHistoryIndex) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
         // Remove all future states to the history
@@ -12624,7 +12624,7 @@ function exportWithHistory()
         localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
-    tempHistoryIndex = stateMachine.currentHistoryIndex;
+    stateMachine.tempHistoryIndex = stateMachine.currentHistoryIndex;
 }
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
