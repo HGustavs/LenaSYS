@@ -514,11 +514,11 @@ if($gradesys=="UNK") $gradesys=0;
 					$dirnameArray = explode('/', $dirname);
 					$dirname = $dirname[count($dirnameArray)-1];
 
-					$varname="DirnameExplode";
-		
+					$varname="DirnameExplodeCount";
+					$countArrayEx = count($dirnameArray);
 					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 					$query3->bindParam(":examplename", $varname); 
-					$query3->bindParam(":sectionname", $dirname); 
+					$query3->bindParam(":sectionname", $countArrayEx); 
 					$query3->execute();	
 					//$dirname = "Code-example1";
 					$courseid = 1895;
