@@ -588,9 +588,9 @@
 	<?php
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$lid = $_POST['lid'];
-		echo "<script>console.log('.$lid.');</script>";
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
+			$lid = $_POST['lid'];
+			echo "<script>console.log('.$lid.');</script>";
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
 			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
