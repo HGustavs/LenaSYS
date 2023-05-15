@@ -442,35 +442,57 @@ function changedType(kind) {
 
 function refreshGithubRepo(courseid) 
 {
-	//Used to return success(true) or error(false) to the calling function
-	var dataCheck;
-	$.ajax({
-		async: false,
-		url: "../DuggaSys/gitcommitService.php",
-		type: "POST",
-		data: {'cid':courseid, 'action':'refreshGithubRepo'},
-		success: function(data) { 
-			//Returns true if the data and JSON is correct
-      alert(data); // Shows if course is up to date or not
-			dataCheck = true;
-		},
-		error: function(data){
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch(data.status){
-				case 422:
-					alert(data.responseJSON.message + "\nDid not update course");
-					break;
-				case 503:
-					alert(data.responseJSON.message + "\nDid not update course");
-					break;
-				default:
-					alert("Something went wrong...");
-			}
-		 	dataCheck = false;
-		}
-	});
-  console.log("ajax done" + courseid);
-	return dataCheck;
+  if(refreshTimeout()) { // 
+    //Used to return success(true) or error(false) to the calling function
+    var dataCheck;
+    $.ajax({
+      async: false,
+      url: "../DuggaSys/gitcommitService.php",
+      type: "POST",
+      data: {'cid':courseid, 'action':'refreshGithubRepo'},
+      success: function(data) { 
+        //Returns true if the data and JSON is correct
+        alert(data); // Shows if course is up to date or not
+        dataCheck = true;
+      },
+      error: function(data){
+        //Check FetchGithubRepo for the meaning of the error code.
+        switch(data.status){
+          case 422:
+            alert(data.responseJSON.message + "\nDid not update course");
+            break;
+          case 503:
+            alert(data.responseJSON.message + "\nDid not update course");
+            break;
+          default:
+            alert("Something went wrong...");
+        }
+        dataCheck = false;
+      }
+    });
+    console.log("ajax done" + courseid);
+    return dataCheck;
+  } else {
+    alert("Currently oversaturated with refresh requests, please wait before refreshing.");
+  }
+}
+
+var clicks = 0; // Global variable to save number of refresh-attempts
+// Checks refresh attempts to decide if we are going to run the function 
+function refreshTimeout() { 
+  console.log(clicks);
+	clicks++;
+	setInterval(resetClick, 6000);
+	if(clicks > 5) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+// After 1 minute, decrese the number of clicks again
+function resetClick() {
+	clicks--;
 }
 
 //----------------------------------------------------------------------------------
