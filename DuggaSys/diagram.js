@@ -9831,8 +9831,7 @@ function drawElement(element, ghosted = false)
             return splitLengthyLine(line, maxCharactersPerLine);
         }).flat();
 
-        elemAttri = text.length;
-        elemFunc = funcText.length;
+        //elemAlternatives = text.length;
 
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
