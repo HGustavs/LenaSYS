@@ -555,20 +555,43 @@ if($gradesys=="UNK") $gradesys=0;
 						$query3->bindParam(":examplename", $success); 
 						$query3->bindParam(":sectionname", $varname); 
 						$query3->execute();	
-						/*
+						
 						//select the files that has should be in the codeexample
 						if($success) {
+							
+							//OLD implementation
+							/*
 							$query = $metadata_db->prepare("SELECT filePath FROM gitFiles where cid=:cid");
 							$query->bindParam(":cid", $courseid);
 							$query->execute();
-
+							
 							$counter = array();
 							foreach($query->fetchAll() as $row) {
 								$parts = explode('/', $row["filePath"]);
 								if($parts[count($parts)-2] == $exampleName) {
 									array_push($counter, $parts[count($parts)-1]);
 								}
+							}*/
+							//Count files in the directory for the codeexample
+							$dirname;
+							$directory = '../courses/1895/Github/Demo/Code-example1/';  // Replace with the actual directory path
+
+							$fileCount = 0;
+							$files = scandir($directory);
+							foreach ($files as $file) {
+								if (is_file($directory . '/' . $file)) {
+									$fileCount++;
+								}
 							}
+
+							//echo "Number of files in the directory: " . $fileCount;
+							$varname="FILECOUNT";
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $fileCount); 
+							$query3->bindParam(":sectionname", $varname); 
+							$query3->execute();	
+
+							/*
 							//If we find files that should be in the codeexample, create the codeexample
 							if(count($counter) > 0) {
 
@@ -660,6 +683,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":groupkind", $groupkind);
 								$query->execute();
 							}*/
+						}
 					} else {
 						//Check for update
 						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTINGELSE","TESTINGELSE",1,45656,1);');
