@@ -10,6 +10,18 @@
 	}else{
 		$userid="00";
 	}
+
+	global $pdo;
+	if(isset($_POST['githubInsert'])) {
+		$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':githubdir', $_POST['githubDir']);
+		if($query->execute()) {
+			echo "<script>console.log('insert successful!');</script>";		
+		} else {
+			echo "<script>console.log('insert failed!');</script>";		
+		}
+	}
 ?>
 
 <!DOCTYPE html>
