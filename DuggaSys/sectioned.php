@@ -571,8 +571,8 @@
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
-			if(isset($_POST['value'])) {
-				$value = $_POST['value'];
+			if(isset($_POST['momentid'])) {
+				$value = $_POST['momentid'];
 				echo"<script>var php = '$value'; console.log(php);</script>";
 			}
 			$cid = getOPG('courseid');
