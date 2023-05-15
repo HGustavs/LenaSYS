@@ -553,7 +553,7 @@ function showSaveButton() {
 function sendValue(lid) {
   console.log(lid);
 	$.ajax({
-		url: "sectioned.php",
+		url: "../DuggaSys/sectioned.php",
 		type: "POST",
 		data: {lid: lid},
 		success: function(data) {
