@@ -531,15 +531,14 @@ function showSaveButton() {
 }
 
 function sendValue(element) {
-  let dataValue = element.getAttribute('data-value');
-  fetch('sectioned.php?data_value=' + encodeURIComponent(dataValue))
-    .then(response => response.text())
-    .then(data => {
+  let value = $(element).attr('data-value');
+  console.log(value);
+  const data = {
+    data_value: value
+  };
+  $.post('sectioned.php', data, function(response) {
 
-    })
-    .catch(error => {
-
-    });
+  });
 }
 
 
