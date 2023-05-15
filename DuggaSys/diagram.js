@@ -798,7 +798,8 @@ const elementTypes = {
     UMLSuperState: 11,
 
     sequenceActorAndObject:12, //sequence functionality
-    sequenceActivation: 13
+    sequenceActivation: 13,
+    sequenceLoopOrAlt: 14
     
 };
 
@@ -824,6 +825,7 @@ const elementTypesNames = {
 
     sequenceActorAndObject: "sequenceActorAndObject",
     sequenceActivation: "sequenceActivation",
+    sequenceLoopOrAlt: "sequenceLoopOrAlt",
 
 }
 
@@ -1148,7 +1150,8 @@ var defaults = {
     UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor" }, // sequence actor and object
-    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" } // Sequence Activation.
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
+    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "sequence", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
 
 }
 var defaultLine = { kind: "Normal" };
@@ -6750,6 +6753,20 @@ function generateContextProperties()
                     }
                 }
                 
+            }
+            else if(element.kind == 'sequenceLoopOrAlt'){
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'alternatives':
+                            str += `<div>Each line is an alternative. Just one is a loop.`;
+                            //TODO in the future, this can be implemented as part of saveProperties and combine attribute and func and alternatives cases.
+                            str += `<textarea id='inputAlternatives' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `</div>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
             } 
         }
     
@@ -6762,7 +6779,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="setSequenceAlternatives();changeState();saveProperties();generateContextProperties();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -8964,8 +8981,8 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-    if (element.kind == "sequenceActorAndObject") {
+    //some sequence objects get a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
         nodes += "<span id='md' class='node md'></span>";
     }
 
@@ -8977,7 +8994,7 @@ function addNodes(element)
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if (element.kind == "sequenceActorAndObject") {
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
@@ -9213,6 +9230,12 @@ function drawElement(element, ghosted = false)
     var nonFilledElementPartStrokeColor;
     if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
     else nonFilledElementPartStrokeColor = '#383737';
+
+    //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
+    //replace this with nonFilledElementPartStroke when it gets merged.
+    var actorFontColor;
+    if (isDarkTheme()) actorFontColor = '#FFFFFF';
+    else actorFontColor = '#383737';
 
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
@@ -9778,6 +9801,83 @@ function drawElement(element, ghosted = false)
         //svg for the activation rect
         str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
         str += `</svg>`;  
+    }
+    // Sequence loop or alt
+    else if (element.kind == 'sequenceLoopOrAlt') {
+        //first, set a suggested height for the element based on the amount of alternatives
+        if (element.alternatives != null) {
+            //increase length of element to avoid squished alternatives
+            //boxh += 250*element.alternatives.length;
+            for (let i = 0; i < element.alternatives.length; i++) {
+                boxh += 125*zoomfact;
+            }
+            //also set alt or loop to whatever is correct
+            let newAltOrLoop;
+            //check if the length is less or equal to 1, if so its loop, else its alt.
+            element.alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
+            element.altOrLoop = newAltOrLoop;
+        }
+
+        //div to encapsulate sequence loop 
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the loop/alt rectangle
+        str += `<rect class='text'
+            x='${linew}'
+            y='${linew}'
+            width='${boxw-(linew*2)}'
+            height='${boxh-(linew*2)}'
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='none'
+            rx='${7*zoomfact}'
+            fill-opacity="0"
+        />`;
+        //if the user chose to have alternative lines, iterate and draw them out one by one, evenly spaced out.
+        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
+            for (let i = 1; i < element.alternatives.length; i++) {
+                str += `<path class="text"
+                d="M${boxw-linew},${(boxh/element.alternatives.length)*i}
+                    H${linew}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                stroke-dasharray='${linew*3},${linew*3}'
+                fill='transparent'
+                />`;
+                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
+            }
+        }
+        //svg for the small label in top left corner
+        str += `<path 
+            d="M${(7*zoomfact)+linew},${linew}
+                h${100*zoomfact}
+                v${25*zoomfact}
+                l${-12.5*zoomfact},${12.5*zoomfact}
+                H${linew}
+                V${linew+(7*zoomfact)}
+                a${7*zoomfact},${7*zoomfact} 0 0 1 ${7*zoomfact},${(7*zoomfact)*-1}
+                z
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />`;
+        //text in the label
+        str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
+        //text below the label
+        //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
+        str += `<text x='${linew*2}' y='${37.5*zoomfact+(linew*3)+(texth/1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
+        str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
@@ -12465,6 +12565,35 @@ function toggleActorOrbject(type){
             else {
                 console.error(type + " is an unexpected parameter for toggleActorOrbject. This can only support actor or object.");
             }
+        }
+    }
+    showdata();
+}
+/**
+ * @description sets the alternatives attribute for sequenceLoopOrAlt to whatever is in the input box inputAlternatives. one index in the array per line.
+ */
+//TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
+function setSequenceAlternatives(){
+    //for each element in context, check if it has the property alternatives
+    for (let i = 0; i < context.length; i++) {
+        if (context[i].alternatives != null) {
+            //Create an array from string where newline seperates elements
+            let alternatives = document.getElementById("inputAlternatives").value.split('\n');
+            let formatArr = [];
+            for (let i = 0; i < alternatives.length; i++) {
+                if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
+                    formatArr.push(alternatives[i]);
+                } 
+            }
+            //Update the alternatives array
+            alternatives = formatArr;
+            context[0].alternatives = alternatives;
+
+            stateMachine.save(
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': context[0].altOrLoop }),
+                StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
+            );
         }
     }
     showdata();
