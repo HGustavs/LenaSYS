@@ -221,6 +221,23 @@ $testsData = array(
             'none'
         )),
     ),
+    // Test 12
+    'create access test 12' => array(
+        'expected-output' => '{"debug":"NONE!","motd":"UNK"}', // Change this on all tests before DONE!
+        'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'",
+        'query-before-test-2' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')",
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
+        'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
+        'service-data' => serialize(array(
+            'opt' => 'CHPWD',
+            'uid' => 'testuser1',
+            'pwd' => '123123',
+            'blop' => '<!query-before-test-1> <*[0][uid]*>'
+        )),
+        'filter-output' => serialize(array(
+            'none'
+        )),
+    ),
     // Create new test
 );
 
