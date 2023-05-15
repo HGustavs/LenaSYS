@@ -500,15 +500,11 @@ if($gradesys=="UNK") $gradesys=0;
 					//TODO rest från 13179, här anropas uppdateringsfunktionen
 				} else if(strcmp($opt,"CREGITEX")===0) {
 
-					
-					//$parts = explode('/', $url);// $parts[count($parts)-1]
 					//count if there is already a codeexample or if we should create a new one.
 					$dirname = "Code-example1";
 					$courseid = 1;
 					$coursevers = 45656;
-					
-					
-					//Server error from here
+
 					$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
 					$query1->bindParam(":cid", $courseid);
 					$query1->bindParam(":examplename", $dirname); 
@@ -532,7 +528,6 @@ if($gradesys=="UNK") $gradesys=0;
 						//Get the last position in the listenries to add new course at the bottom
 						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 						$query->bindParam(":cid", $courseid);
-						//$query->bindParam(":entryname", $moment);
 						$query->execute();
 						$e = $query->fetchAll();
 						$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
@@ -548,30 +543,10 @@ if($gradesys=="UNK") $gradesys=0;
 							echo "Failed to connect to the database";
 							throw $e;
 						}
-						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTINGSQLITE",1,45656,1);');
-						$query2->execute();	
-						$varname="success";
-						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-						$query3->bindParam(":examplename", $success); 
-						$query3->bindParam(":sectionname", $varname); 
-						$query3->execute();	
 						
 						//select the files that has should be in the codeexample
 						if($success) {
 							
-							//OLD implementation
-							/*
-							$query = $metadata_db->prepare("SELECT filePath FROM gitFiles where cid=:cid");
-							$query->bindParam(":cid", $courseid);
-							$query->execute();
-							
-							$counter = array();
-							foreach($query->fetchAll() as $row) {
-								$parts = explode('/', $row["filePath"]);
-								if($parts[count($parts)-2] == $exampleName) {
-									array_push($counter, $parts[count($parts)-1]);
-								}
-							}*/
 							//Count files in the directory for the codeexample
 							
 							$directory = '../courses/1895/Github/Demo/Code-example2/';  // Replace with the actual directory path
@@ -583,38 +558,6 @@ if($gradesys=="UNK") $gradesys=0;
 									$fileCount++;
 								}
 							}
-
-							//echo "Number of files in the directory: " . $fileCount;
-							$varname="fileTest0";
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $files[0]); 
-							$query3->bindParam(":sectionname", $varname); 
-							$query3->execute();
-
-							$varname="fileTest1";
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $files[1]); 
-							$query3->bindParam(":sectionname", $varname); 
-							$query3->execute();	
-
-							$varname="fileTest2";
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $files[2]); 
-							$query3->bindParam(":sectionname", $varname); 
-							$query3->execute();	
-
-							$varname="fileTest3";
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $files[3]); 
-							$query3->bindParam(":sectionname", $varname); 
-							$query3->execute();	
-
-
-							$varname="fileCount";
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $fileCount); 
-							$query3->bindParam(":sectionname", $varname); 
-							$query3->execute();	
 							
 							//If we find files that should be in the codeexample, create the codeexample
 							//Only template for 1 up to 5 files
@@ -632,11 +575,7 @@ if($gradesys=="UNK") $gradesys=0;
 								} else if ($fileCount == 5) {
 									$templateNumber = 9;
 								} 
-								$varname="Template";
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $templateNumber); 
-								$query3->bindParam(":sectionname", $varname); 
-								$query3->execute();	
+								
 								
 								$examplename = $dirname;
 								$sectionname = $dirname;
@@ -656,13 +595,6 @@ if($gradesys=="UNK") $gradesys=0;
 
 								$result = $query->fetch(PDO::FETCH_OBJ);
 								$exampleid = $result->LatestExID;
-								
-								$varname="MAXCOUNTEID";
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $exampleid); 
-								$query3->bindParam(":sectionname", $varname); 
-								$query3->execute();
-
 								
 								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
 								for($i = 2; $i < count($files); $i++) {
@@ -746,8 +678,6 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					} else {
 						//Check for update
-						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTINGELSE","TESTINGELSE",1,45656,1);');
-						$query2->execute();	
 					} 
 				
 				} else if (strcmp($coursevers, "null")!==0) {
