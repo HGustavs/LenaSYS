@@ -11,7 +11,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - contribution_loginbox_service : __dont know if needed__
 - courseedservice  __==finished==__
 - diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
-- duggaedservice __==finished==__
+- duggaedservice __==NOT FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!==__
 - fileedservice __==finished==__
 - highscoreservice __==finished==__
 - sectionedservice __==finished==__
@@ -518,7 +518,7 @@ Uses service __deliteFromTableCourse__ to delete a row from the table __course__
 
 
 ---
-# ----- _fileedservice_ -----------------------------------------------------------
+# ----- _duggaedservice_ -----------------------------------------------------------
 ---
 
 <br>
@@ -593,11 +593,16 @@ Uses service __deliteFromTableVariant__ to delete a row from the table __variant
 
 
 <br>
+<br>
+<br>
 
+
+---
+# ----- _fileedservice_ -----------------------------------------------------------
 ---
 
 <br>
-
+<br>
 
 ### deleteFileLink
 Count rows where these conditions hold. This will indicate if the file is in used.
