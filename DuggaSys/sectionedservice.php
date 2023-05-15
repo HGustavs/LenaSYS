@@ -1050,7 +1050,6 @@ if($gradesys=="UNK") $gradesys=0;
 				}
 			}
 
-
 		echo json_encode($array);
 
 		logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php",$userid,$info);
