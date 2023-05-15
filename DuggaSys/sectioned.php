@@ -18,9 +18,11 @@
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert'])) {
 		$cid = getOPG('courseid');
-		$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
+		$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':githubdir', $_POST['githubDir']);
+		$query->bindParam(':creator', $userid);
+		$query->bindParam(':feedbackenabled', 0);
 		try {
 			if($query->execute()) {
 				echo "<script>console.log('insert successful!');</script>";		
