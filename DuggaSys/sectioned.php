@@ -572,7 +572,9 @@
 	<?php
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir'])) {
+			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['data_value'])) {
+				$dataValue = $_POST['data_value'];
+				echo "<script>console.log('. $dataValue .');</script>";		
 				$query = $pdo->prepare("UPDATE listentries SET githubDir=:githubdir WHERE lid=:lid");
 				$query->bindParam(':githubdir', $_POST['githubDir']);
 				$query->bindParam(':lid', $_POST['data_value']);

@@ -532,13 +532,20 @@ function showSaveButton() {
 
 function sendValue(element) {
   let value = $(element).attr('data-value');
-  console.log(value);
-  const data = {
-    data_value: value
-  };
-  $.post('sectioned.php', data, function(response) {
 
-  });
+  var form = document.createElement('form');
+  form.type = 'hidden';
+  form.method = 'POST';
+  form.action = 'sectioned.php';
+
+  var input = document.createElement('input');
+  input.type = 'hidden'; 
+  input.name = 'data_value';
+  input.value = value;
+
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
 }
 
 
