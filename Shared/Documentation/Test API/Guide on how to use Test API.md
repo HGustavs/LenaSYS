@@ -44,7 +44,7 @@ The second, more simpler method is to use the `query-variables` field. This allo
  
 <?php
  
-include "../Shared/test.php";
+include "../../Shared/test.php";
  
 $testsData = array(
     'create course test' => array(
