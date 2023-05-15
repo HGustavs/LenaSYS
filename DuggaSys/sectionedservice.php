@@ -512,7 +512,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 
 					$dirnameArray = explode('/', $dirname);
-					$dirname = $dirname[count($dirnameArray)-1];
+					$dirname = $dirname[count($dirnameArray)-2];
 
 					$varname="DirnameExplodeCount";
 					$countArrayEx = count($dirnameArray);
