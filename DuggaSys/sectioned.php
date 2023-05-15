@@ -13,8 +13,6 @@
 	}else{
 		$userid="00";
 	}
-	$lid = getOP('lid');
-	echo "'. $lid .'";
 ?>
 
 <!DOCTYPE html>
@@ -571,6 +569,7 @@
 	<!-- github moments box  -->
 	<?php
 		global $pdo;
+		updateGithubTable("pelle");
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['data_value'])) {
 				$dataValue = $_POST['data_value'];
