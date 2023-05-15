@@ -15,8 +15,8 @@
 		$userid="00";
 	}
 
-	if(isset($_POST['lid'])) {
-		$lid = $_POST['lid'];
+	if(isset($_GET['lid'])) {
+		$lid = $_GET['lid'];
 	} else {
 		echo "error";
 	}
@@ -578,7 +578,7 @@
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			echo "<script>console.log('debug 1');</script>";
-			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['lid'])) {
+			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_GET['lid'])) {
 				echo "<script>console.log('debug 2');</script>";
 				$lid = (int)$_POST['lid'];
 				echo $lid;
