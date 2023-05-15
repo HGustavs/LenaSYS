@@ -1700,6 +1700,21 @@ function returnedSection(data) {
           str += `<img style='max-width: 60%;' class="githubPointer" value='${item['lid']} alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this);'>`;
           str += "</td>";
+
+          var value = this.getAttribute("value");
+          fetch("sectioned.php", {
+            method: "POST",
+            body: JSON.stringify( {
+              value: value
+            })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+            })
+            .catch(error => {
+              console.log(error);
+            })
+          })
         }
         // github icon for code (itemKind 2 is code)
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher'])  {
