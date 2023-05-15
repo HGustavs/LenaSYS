@@ -16,10 +16,15 @@
 		$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':githubdir', $_POST['githubDir']);
-		if($query->execute()) {
-			echo "<script>console.log('insert successful!');</script>";		
-		} else {
-			echo "<script>console.log('insert failed!');</script>";		
+		try {
+			if($query->execute()) {
+				echo "<script>console.log('insert successful!');</script>";		
+			} else {
+				echo "<script>console.log('insert failed!');</script>";		
+			} 
+		} catch (PDOException $e) {
+			$errorMessage = $e->getMessage();
+			echo "<script>console.log('$errorMessage');</script>";
 		}
 	}
 ?>
@@ -603,20 +608,6 @@
 			</div>
 		</div>
 	</form>
-
-	<?php
-		global $pdo;
-		if(isset($_POST['githubInsert'])) {
-			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir) VALUES (:cid, :githubdir)");
-			$query->bindParam(':cid', $cid);
-			$query->bindParam(':githubdir', $_POST['githubDir']);
-			if($query->execute()) {
-				echo "<script>console.log('insert successful!');</script>";		
-			} else {
-				echo "<script>console.log('insert failed!');</script>";		
-			}
-		}
-	?>
 
 	<!-- github template  -->
 
