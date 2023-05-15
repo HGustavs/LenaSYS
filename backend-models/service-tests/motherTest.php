@@ -57,6 +57,8 @@ include_once ".../test4";
 
         <input type="checkbox" onchange="checkFailed()" id="sort_failed" name="sort_failed" value="failed_value">
         <label for='sort_failed'>Failed tests</label>
+
+        <tr class="<?php echo ($value['result'] == 'passed') ? 'passed' : 'failed'; ?>">
         <?php    
             
             $motherTest_json = file_get_contents('motherTestJSON.json');
@@ -159,10 +161,28 @@ include_once ".../test4";
                 }
 
 
-                       
-
-                        
-
             ?>
+
+        <script>
+            function filterTests() {
+            var passedChecked = document.getElementById("sort_passed").checked;
+            var failedChecked = document.getElementById("sort_failed").checked;
+            var rows = document.getElementsByTagName("tr");
+
+            for (var i = 1; i < rows.length; i++) { // start at i=1 to skip table header
+                var row = rows[i];
+                if (passedChecked && row.classList.contains("failed")) {
+                row.style.display = "none";
+                } else if (failedChecked && row.classList.contains("passed")) {
+                row.style.display = "none";
+                } else {
+                row.style.display = "";
+                }
+            }
+            }
+
+            document.getElementById("sort_passed").addEventListener("change", filterTests);
+            document.getElementById("sort_failed").addEventListener("change", filterTests);
+        </script>
    </body>
 </html>
