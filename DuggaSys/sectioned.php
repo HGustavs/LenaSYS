@@ -571,8 +571,6 @@
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['momentid'])) {
-			$cid = getOPG('courseid');
-			$feedbackenabled = 0;
 			$query = $pdo->prepare("UPDATE listentries set githubDir=:githubdir WHERE lid=:lid");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
 			$query->bindParam(':lid', $_POST['momentid']);
