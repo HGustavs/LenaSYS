@@ -585,23 +585,35 @@ if($gradesys=="UNK") $gradesys=0;
 							}
 
 							//echo "Number of files in the directory: " . $fileCount;
-							$varname="FILECOUNT";
+							
+							$varname="fileCount";
 							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $fileCount); 
-							$query3->bindParam(":sectionname", $varname); 
+							$query3->bindParam(":examplename", $templateNumber); 
+							$query3->bindParam(":sectionname", $fileCount); 
 							$query3->execute();	
-
-							/*
+							
 							//If we find files that should be in the codeexample, create the codeexample
-							if(count($counter) > 0) {
-
+							//Only template for 1 up to 5 files
+							if($fileCount > 0 && $fileCount<6) {
+								
 								// There are at least two boxes, create two boxes to start with
-								if($counter==1) $templateNumber=10;
-								if($counter==2) $templateNumber=1;
-								if($counter==3) $templateNumber=3;
-								if($counter==4) $templateNumber=5;
-								if($counter==5) $templateNumber=9;
-
+								if ($fileCount == 1) {
+									$templateNumber = 10;
+								} else if ($fileCount == 2) {
+									$templateNumber = 1;
+								} else if ($fileCount == 3) {
+									$templateNumber = 3;
+								} else if ($fileCount == 4) {
+									$templateNumber = 5;
+								} else if ($fileCount == 5) {
+									$templateNumber = 9;
+								} 
+								$varname="Template";
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $templateNumber); 
+								$query3->bindParam(":sectionname", $varname); 
+								$query3->execute();	
+								/*
 								//create codeexample
 								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
 								$query->bindParam(":cid", $courseid);
@@ -682,7 +694,8 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":highscoremode", $highscoremode);
 								$query->bindParam(":groupkind", $groupkind);
 								$query->execute();
-							}*/
+								*/
+							}
 						}
 					} else {
 						//Check for update
