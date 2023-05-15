@@ -547,7 +547,7 @@ function sendValue(moment) {
     }
   };
   console.log(value);
-  xhr.send(value);
+  xhr.send("momentid=" + encodeURIComponent(value));
 }
 
 
