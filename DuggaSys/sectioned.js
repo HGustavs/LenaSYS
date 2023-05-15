@@ -554,7 +554,7 @@ function sendValue(lid) {
   console.log(lid);
 	$.ajax({
 		url: "../DuggaSys/sectioned.php?lid=" + lid,
-		type: "POST",
+		type: "GET",
 		data: {lid: lid},
 		success: function(data) {
       console.log(data);
