@@ -502,7 +502,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 					//count if there is already a codeexample or if we should create a new one.
 					$dirname = "Code-example1";
-					$courseid = 1;
+					$courseid = 1895;
 					$coursevers = 45656;
 
 					$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
