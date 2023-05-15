@@ -7,12 +7,13 @@
 
 <?php
  
-include "../Shared/test.php";
+include "../../Shared/test.php";
  
 $testsData = array(
     'create course test' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
         'query-before-test-1' => "SELECT coursename FROM course WHERE coursecode = 'DV12G' ORDER BY coursecode DESC LIMIT 1",
+        'variables-query-before-test-2' => "blop",
         'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
         'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
@@ -51,9 +52,9 @@ $testsData = array(
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 */
 
-function doDBQuery($query, $data, $testsData){
+function doDBQuery($query, $data, $testsData, $testname){
     $queryString = $query;
-    $variables = $testsData['query-variables'];
+    $variables = $testsData['variables-' . $testname];
     $variablesArray = explode(", ", $variables);
     $result = "Error executing query";
     // DB credentials
@@ -137,13 +138,12 @@ function testHandler($testsData, $prettyPrint){
                                 $data[$sInput] = $queryValue;
                             }
                             else{
-                                $data[$sInput] = $queryValue;
+                                $dataN[$sInput] = $queryValue;
                             }
                         }
                     }
                 }
-
-               $QueryReturnJSONbefore[$option] = doDBQuery($value, $data, $testData);
+               $QueryReturnJSONbefore[$option] = doDBQuery($value, $data, $testData, $option);
            }
         }
 
@@ -174,7 +174,7 @@ function testHandler($testsData, $prettyPrint){
         foreach ($testData as $option => $value) {
             // if query-before-start-
             if (strpos($option, 'query-after-test') === 0) {
-               $QueryReturnJSON[$option] = doDBQuery($value, "UNK", "UNK");
+               $QueryReturnJSON[$option] = doDBQuery($value, "UNK", "UNK", "UNK");
            }
         }
 
@@ -334,5 +334,5 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 }
 
 
-// Version 1.3 (Increment when new change in code)
+// Version 1.4 (Increment when new change in code)
 ?>
