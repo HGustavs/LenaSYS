@@ -530,6 +530,11 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
+// Fetching the value from clicked button
+function sendValue(moment) {
+  console.log(moment);
+}
+
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
@@ -1690,10 +1695,6 @@ function returnedSection(data) {
           str += "</td>";
 
 
-        }
-
-        function sendValue(moment) {
-          console.log(moment);
         }
 
         // github icon for moments (itemKind 4 is moments)
