@@ -47,13 +47,9 @@
 	
 </head>
 <script>
-function handleAjaxResponse(data, error) {
-  if (data) {
-    console.log('cid found');
-  } else {
-    console.log('cid not found');
-  }
-}
+	function imageClick(value) {
+		console.log('Clicked image: ', value);
+	}
 </script>
 <body onload="setup();">
 
