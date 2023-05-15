@@ -767,6 +767,7 @@ const keybinds = {
         STATE_FINAL: { key: "f" , ctrl: false },
         STATE_SUPER: { key: ">", ctrl: false },
         SAVE_DIAGRAM: { key: "s", ctrl: true }, 
+        LOAD_DIAGRAM: { key: "l", ctrl: true }, 
 };
 
 /** 
