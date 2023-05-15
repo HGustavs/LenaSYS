@@ -12618,6 +12618,7 @@ function exportWithHistory()
         initialState: stateMachine.initialState
     };
     localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+    displayMessage(messageTypes.SUCCESS, "You have saved the current diagram")
 }
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
