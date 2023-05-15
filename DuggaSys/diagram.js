@@ -8088,10 +8088,13 @@ function drawLine(line, targetGhost = false)
             str += `fill = none stroke = '${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
         //Line creation when adding icons
+        var iconSizeStart;
+        var iconSizeEnd;
+
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
                 if (line.ctype == 'TB') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
@@ -8106,22 +8109,22 @@ function drawLine(line, targetGhost = false)
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 20 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 5 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 5 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=30;
+                iconSizeStart=30;
                 break;
             case IELineIcons.ONE:
                 if (line.ctype == 'TB') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case IELineIcons.FORCEDONE:
                 if (line.ctype == 'TB') {
@@ -8140,12 +8143,12 @@ function drawLine(line, targetGhost = false)
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=30;
+                iconSizeStart=30;
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8159,7 +8162,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx + 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=40;
+                iconSizeStart=40;
                 break;
             case IELineIcons.MANY:
                 if (line.ctype == 'TB') {
@@ -8174,12 +8177,12 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                     break;
             case IELineIcons.ZERO_MANY:
                 if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8193,11 +8196,11 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=30;
+                iconSizeStart=30;
                 break;
             case IELineIcons.ONE_MANY:
                 if (line.ctype == 'TB') {
-                    str += `<polyline class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
@@ -8212,7 +8215,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.ARROW:
                 if (elemsAreClose) {
@@ -8230,7 +8233,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'TB') {
@@ -8245,7 +8248,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx - 0.5 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'TB') {
@@ -8260,7 +8263,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'TB') {
@@ -8275,7 +8278,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=40;
+                iconSizeStart=40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'TB') {
@@ -8290,7 +8293,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=40;
+                iconSizeStart=40;
                 break;
             case SDLineIcons.ARROW:
                 var iconSizeStart = 20;
@@ -8320,15 +8323,16 @@ function drawLine(line, targetGhost = false)
                         str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     }
                 }
+                iconSizeStart=40;
                 break;
             default:
-                var iconSizeStart=0;
+                iconSizeStart=0;
                 break;
         }
         switch (line.endIcon) {
             case IELineIcons.ZERO_ONE:
                 if (line.ctype == 'BT') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
@@ -8343,22 +8347,22 @@ function drawLine(line, targetGhost = false)
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 20 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 5 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 5 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=30;
+                iconSizeEnd=30;
                 break;
             case IELineIcons.ONE:
                 if (line.ctype == 'BT') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case IELineIcons.FORCEDONE:
                 if (line.ctype == 'BT') {
@@ -8377,12 +8381,12 @@ function drawLine(line, targetGhost = false)
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 30 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 30 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=30;
+                iconSizeEnd=30;
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'BT') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8396,7 +8400,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=40;
+                iconSizeEnd=40;
                 break;
             case IELineIcons.MANY:
                 if (line.ctype == 'BT') {
@@ -8411,12 +8415,12 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
-                    break;
+                iconSizeEnd=20;
+                break;
             case IELineIcons.ZERO_MANY:
                 if (line.ctype == 'BT') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8430,11 +8434,11 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=30;
+                iconSizeEnd=30;
                 break;
             case IELineIcons.ONE_MANY:
                 if (line.ctype == 'BT') {
-                    str += `<polyline class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
@@ -8449,7 +8453,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.ARROW:
                 if (line.ctype == 'BT') {
@@ -8464,7 +8468,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'BT') {
@@ -8479,7 +8483,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx - 0.5 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'BT') {
@@ -8494,7 +8498,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'BT') {
@@ -8509,7 +8513,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=40;
+                iconSizeEnd=40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'BT') {
@@ -8524,7 +8528,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=40;
+                iconSizeEnd=40;
                 break;
             case SDLineIcons.ARROW:
                 var iconSizeEnd = 20;
@@ -8555,9 +8559,10 @@ function drawLine(line, targetGhost = false)
                         str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     }
                 }
+                iconSizeEnd=20;
                 break;
             default:
-                var iconSizeEnd=0;
+                iconSizeEnd=0;
                 break;
         }
         if (line.startLabel && line.startLabel != '') {
@@ -11987,7 +11992,7 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 & contextLine.length != 0){
+    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 && contextLine.length != 0){
         var lowX;
         var highX;
         var lineLowX;
@@ -12016,14 +12021,17 @@ function drawSelectionBox(str)
                 if (y2 > highY) highY = y2;
             }
         }
+
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
-                if (contextLine[i].kind === lineKind.DOUBLE) {
-                    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
-                    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
-                } else {
-                    tempLines.push(document.getElementById(contextLine[i].id));
+                if (contextLine[i] && contextLine[i].kind !== undefined) {
+                    if (contextLine[i].kind === lineKind.DOUBLE) {
+                        tempLines.push(document.getElementById(contextLine[i].id + "-1"));
+                        tempLines.push(document.getElementById(contextLine[i].id + "-2"));
+                    } else {
+                        tempLines.push(document.getElementById(contextLine[i].id));
+                    }
                 }
             }
             var tempX1, tempX2, tempY1, tempY2;
@@ -12090,7 +12098,7 @@ function drawSelectionBox(str)
         selectionBoxHighY = highY + 5;
         
         // Selection container of selected elements
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
