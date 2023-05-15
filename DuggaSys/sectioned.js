@@ -484,7 +484,7 @@ function refreshTimeout() {
 		return false;
 	} else {
     clicks++;
-    setInterval(resetClick, 60000);
+    setTimeout(resetClick, 60000);
     console.log(clicks);
 		return true;
 	}
