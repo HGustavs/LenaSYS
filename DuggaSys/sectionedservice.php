@@ -513,26 +513,13 @@ if($gradesys=="UNK") $gradesys=0;
 					$query1->bindParam(":cid", $courseid);
 					$query1->bindParam(":examplename", $dirname); 
 					$query1->execute();
-
-					
 					
 					$result = $query1->fetch(PDO::FETCH_OBJ);
 					$counted = $result->count;
-					
-					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
-					$query3->bindParam(":examplename", $counted); 
-					$query3->execute();	
-					
-					
-
-					
 
 					//if no codeexample exist create a new one
 					if($counted == 0) {
-						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTING",1,45656,1);');
-						$query2->execute();	
-						
-						
+	
 						//	bfs($url, $courseid, "DOWNLOAD");
 						//Get active version of the course
 						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
@@ -541,8 +528,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$e = $query->fetchAll();
 						$coursevers = $e[0]['activeversion'];
 
-						
-						
+	
 						//Get the last position in the listenries to add new course at the bottom
 						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 						$query->bindParam(":cid", $courseid);
@@ -551,20 +537,20 @@ if($gradesys=="UNK") $gradesys=0;
 						$e = $query->fetchAll();
 						$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
 						
-						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
-						$query3->bindParam(":examplename", $pos); 
-						$query3->execute();	
-						/*
 						//connect to SQLite
 						$metadata_db = null;
 						$success = false;
 						try {
 							$metadata_db = new PDO('sqlite:../../githubMetadata/metadata'.$metadataDbVersion.'.db');
 							$success = true;
+							
 						} catch (PDOException $e) {
 							echo "Failed to connect to the database";
 							throw $e;
 						}
+						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTINGSQLITE",1,45656,1);');
+						$query2->execute();	
+						/*
 						//select the files that has should be in the codeexample
 						if($success) {
 							$query = $metadata_db->prepare("SELECT filePath FROM gitFiles where cid=:cid");
