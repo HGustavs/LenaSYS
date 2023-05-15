@@ -99,6 +99,25 @@ $testsData = array(
             'none'
         )),
     ),
+    // Test 6
+    'create access test 6' => array(
+        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
+        'query-before-test-2' => "INSERT INTO course(creator, ccoursecode) VALUES(1 , 'testtest')",
+        'query-after-test-1' => "DELETE FROM course WHERE cid = 'testtest'", // cid may have another value
+        'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
+        'service-data' => serialize(array(
+            'opt' => 'UPDAT',
+            'prop' => 'examiner',
+            'val' => 'test',
+            'uid' => '2',
+            'cid' => 'testtest',
+            'blop' => '<!query-before-test-1> <*[0][coursecode]*>'
+        )),
+        'filter-output' => serialize(array(
+            'none'
+        )),
+    ),
     // Create new test
 );
 
