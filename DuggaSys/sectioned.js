@@ -1397,7 +1397,7 @@ function returnedSection(data) {
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
         if (itemKind === 0) {
           // Styling for header row
-          str += `</td><td class='header' placeholder='${momentexists}'id='I${item['lid']}' `;
+          str += `</td><td class='header item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' `;
           kk = 0;
 
         } else if (itemKind === 1) {
