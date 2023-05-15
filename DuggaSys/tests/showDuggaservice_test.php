@@ -1,6 +1,6 @@
 <?php
 
-include "../Shared/test.php";
+include "../../Shared/test.php";
 
 $testsData = array(
     'Get active users' => array(
