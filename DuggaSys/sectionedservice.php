@@ -541,10 +541,8 @@ if($gradesys=="UNK") $gradesys=0;
 						$e = $query->fetchAll();
 						$coursevers = $e[0]['activeversion'];
 
-						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
-						$query3->bindParam(":examplename", $coursevers); 
-						$query3->execute();	
-						/*
+						
+						
 						//Get the last position in the listenries to add new course at the bottom
 						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 						$query->bindParam(":cid", $courseid);
@@ -553,6 +551,10 @@ if($gradesys=="UNK") $gradesys=0;
 						$e = $query->fetchAll();
 						$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
 						
+						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
+						$query3->bindParam(":examplename", $pos); 
+						$query3->execute();	
+						/*
 						//connect to SQLite
 						$metadata_db = null;
 						$success = false;
