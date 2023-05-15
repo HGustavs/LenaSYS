@@ -507,7 +507,9 @@ class StateMachine
             console.log(this.currentHistoryIndex);
         }
 
-        clearGhosts()
+        // Remove ghost only if stepBack while creating edge
+        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts()
+
         clearContext();
         clearContextLine();
         showdata();
