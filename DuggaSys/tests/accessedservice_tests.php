@@ -201,6 +201,25 @@ $testsData = array(
             'none'
         )),
     ),
+    // Test 11
+    'create access test 11' => array(
+        'expected-output' => '{"debug":"NONE!","motd":"UNK"}', // Change this on all tests before DONE!
+        'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
+        'service-data' => serialize(array(
+            'opt' => 'ADDCLASS',
+            'class' => 'testClass',
+            'responsible' => '2',
+            'classname' => 'testClassName',
+            'regcode' => '12345678',
+            'classcode' => '87654321',
+            'hp' => '7.5',
+            'tempo' => '100',
+            'hpProgress' => '1.5'
+        )),
+        'filter-output' => serialize(array(
+            'none'
+        )),
+    ),
     // Create new test
 );
 
