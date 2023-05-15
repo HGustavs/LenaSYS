@@ -175,42 +175,6 @@ Example output (can be some differences):
         ],
         "entries": [
           {
-            "cid": "1946",
-            "coursename": "APICreateCourseTestQuery",
-            "coursecode": "IT477G",
-            "visibility": "0",
-            "activeversion": null,
-            "activeedversion": null,
-            "registered": false
-          },
-          {
-            "cid": "1918",
-            "coursename": "APICreateCourseTestQuery",
-            "coursecode": "IT469G",
-            "visibility": "0",
-            "activeversion": null,
-            "activeedversion": null,
-            "registered": false
-          },
-          {
-            "cid": "1913",
-            "coursename": "APICreateCourseTestQuery",
-            "coursecode": "IT467G",
-            "visibility": "0",
-            "activeversion": null,
-            "activeedversion": null,
-            "registered": false
-          },
-          {
-            "cid": "3",
-            "coursename": "Datorns grunder",
-            "coursecode": "IT500G",
-            "visibility": "1",
-            "activeversion": "1337",
-            "activeedversion": null,
-            "registered": false
-          },
-          {
             "cid": "307",
             "coursename": "Datorns grunder",
             "coursecode": "IT115G",
