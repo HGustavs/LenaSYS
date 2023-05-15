@@ -9855,7 +9855,7 @@ function drawElement(element, ghosted = false)
                 fill='transparent'
                 />`;
                 //if the alternative is longer than the avaliable space, add a linebreak.
-                if (canvasContext.measureText(element.alternatives[i]).width >= boxw-(linw*2)) {
+                if (canvasContext.measureText(element.alternatives[i]).width >= boxw-(linew*2)) {
                     console.log("alternative needs a linebreak");
                 }
                 console.log(element.alternatives[i] + "is " + canvasContext.measureText(element.alternatives[i]).width + "long");
