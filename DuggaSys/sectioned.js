@@ -1674,7 +1674,7 @@ function returnedSection(data) {
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
-        
+
         // Cog Wheel
         if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
@@ -1692,7 +1692,7 @@ function returnedSection(data) {
         }
 
         // Trashcan
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+        if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
