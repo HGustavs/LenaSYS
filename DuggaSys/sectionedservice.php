@@ -574,7 +574,7 @@ if($gradesys=="UNK") $gradesys=0;
 							}*/
 							//Count files in the directory for the codeexample
 							$dirname;
-							$directory = '../courses/1895/Github/Demo/Code-example1/';  // Replace with the actual directory path
+							$directory = '../courses/1895/Github/Demo/Code-example2/';  // Replace with the actual directory path
 
 							$fileCount = 0;
 							$files = scandir($directory);
