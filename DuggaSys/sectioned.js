@@ -530,25 +530,6 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-function sendValue(element) {
-  let value = $(element).attr('data-value');
-
-  var form = document.createElement('form');
-  form.type = 'hidden';
-  form.method = 'POST';
-  form.action = 'sectioned.php';
-
-  var input = document.createElement('input');
-  input.type = 'hidden'; 
-  input.name = 'data_value';
-  input.value = value;
-
-  form.appendChild(input);
-  document.body.appendChild(form);
-  form.submit();
-}
-
-
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
@@ -1715,7 +1696,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' data-value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this); sendValue(this)'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this)'>`;
           str += "</td>";
         }
 
