@@ -571,8 +571,8 @@
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 				<div class='loginBoxheader'>
-						<h3>Github Moment</h3>
-						<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+					<h3>Github Moment</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
 				<div class='inputwrapper'>
 					<span>Github Directory:</span>
@@ -591,10 +591,11 @@
 						</select>
 					</div>
 				<input type="submit" name="githubInsert" value="Submit!">
+				<input type="hidden" name="githubForm" value="githubForm">
 				<?php
 					global $pdo;
 					$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert']) && !empty($_POST['githubDir'])) {
+					if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
 						$cid = getOPG('courseid');
 						$feedbackenabled = 0;
 						$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
