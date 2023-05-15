@@ -659,7 +659,7 @@
                     </div>
                 </div> <!-- SEQUENCE ACTIVATION END -->
                 <div> <!-- SEQUENCE CONDITION/LOOP START -->
-                    <div id="elementPlacement15"
+                    <div id="elementPlacement14"
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(14); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
