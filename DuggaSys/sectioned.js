@@ -550,6 +550,28 @@ function sendValue(moment) {
   xhr.send("momentid=" + encodeURIComponent(value));
 }
 
+function sendValue(moment) 
+{
+  let lid = moment.getAttribute("value");
+	var dataCheck;
+	$.ajax({
+		async: false,
+		url: "../LenaSYS/sectioned.php",
+		type: "POST",
+		data: {'lid':lid},
+		success: function(data) { 
+      alert(data);
+			dataCheck = true;
+		},
+		error: function(data){
+      alert(data);
+		 	dataCheck = false;
+		}
+	});
+  console.log("ajax done" + lid);
+	return dataCheck;
+}
+
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
