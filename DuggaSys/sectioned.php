@@ -46,6 +46,9 @@
 	<script src="backToTop.js"></script>
 	
 </head>
+<script>
+	console.log("test");
+</script>
 <body onload="setup();">
 
 	<?php
