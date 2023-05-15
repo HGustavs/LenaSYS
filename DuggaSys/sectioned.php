@@ -47,7 +47,13 @@
 	
 </head>
 <script>
-	console.log("test");
+function handleAjaxResponse(data, error) {
+  if (data) {
+    console.log('cid found');
+  } else {
+    console.log('cid not found');
+  }
+}
 </script>
 <body onload="setup();">
 

@@ -477,23 +477,22 @@ function refreshGithubRepo(courseid)
 // lidToSectioned: Sends the correct "lid" to sectioned.php
 //----------------------------------------------------------------------------------
 
-function sendToSectioned(moment) {
+function sendToSectioned(moment, callback) {
   $.ajax({
-  async: false,
-  url: "sectioned.php",
-  type: "POST",
-  data: {
-    'cid': moment.getAttribute('value-data')
-  },
-  success: function(data) {
-    alert(data);
-  },
-  error: function(data) {
-    alert("Error:" + data);
-  }
-  })
+    async: false,
+    url: "sectioned.php",
+    type: "POST",
+    data: {
+      'cid': moment.getAttribute('value-data')
+    },
+    success: function(data) {
+      callback(data); // Execute the callback function with the returned data
+    },
+    error: function(data) {
+      callback(null, "Error:" + data); // Execute the callback function with an error message
+    }
+  });
 }
-
 //----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog
 //----------------------------------------------------------------------------------
