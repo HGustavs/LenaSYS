@@ -9883,16 +9883,16 @@ function drawElement(element, ghosted = false)
                 //using the same split function used in UML and IE but in a slightly different way.
                 let splitAlts = splitLengthyLine(element.alternatives[i], maxLengthOfAlt);
                 console.log(splitLengthyLine(element.alternatives[i], maxLengthOfAlt));
-                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlts[0]}`
+                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlts[0]}</text>`;
                 if (splitAlts.length > 1) {
                     //something special
                     for (let j = 1; j < splitAlts.length; j++) {
-                        str += `\n${splitAlts[j]}`
+                        //str += `\n${splitAlts[j]}`
+                        str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/0.5)+linew*2}' fill='${actorFontColor}'>${splitAlts[j]}</text>`;
                     }
                 }
                 else{
                     //write it out normally
-                    `</text>`;
                 }
                 //}
                 //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
