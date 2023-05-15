@@ -705,7 +705,7 @@ if($gradesys=="UNK") $gradesys=0;
 									$query->bindParam(":boxid", $boxid);
 									$query->bindParam(":exampleid", $exampleid);
 									$query->bindParam(":boxtitle", $filename);
-									$query->bindParam(":boxcontent", $filetype); // Corrected line
+									$query->bindParam(":boxcontent", $filetype); 
 									$query->bindParam(":filename", $filename);
 									$query->bindParam(":settings", $setting);
 									$query->bindParam(":wordlistid", $wlid);
@@ -714,7 +714,7 @@ if($gradesys=="UNK") $gradesys=0;
 									
 
 
-								}/*
+								}
 								
 								$link = "UNK";
 								$kind = 2;
@@ -731,7 +731,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":cvs", $coursevers);
 								$query->bindParam(":entryname", $examplename);
-								$query->bindParam(":link", $exampleid);// $link); 
+								$query->bindParam(":link", $exampleid); 
 								$query->bindParam(":kind", $kind);
 								$query->bindParam(":pos", $pos);
 								$query->bindParam(":visible", $visible);
@@ -741,7 +741,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":highscoremode", $highscoremode);
 								$query->bindParam(":groupkind", $groupkind);
 								$query->execute();
-								*/
+								
 							}
 						}
 					} else {
