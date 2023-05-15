@@ -573,7 +573,7 @@ if($gradesys=="UNK") $gradesys=0;
 								}
 							}*/
 							//Count files in the directory for the codeexample
-							$dirname;
+							
 							$directory = '../courses/1895/Github/Demo/Code-example1/';  // Replace with the actual directory path
 
 							$fileCount = 0;
@@ -613,7 +613,10 @@ if($gradesys=="UNK") $gradesys=0;
 								$query3->bindParam(":examplename", $templateNumber); 
 								$query3->bindParam(":sectionname", $varname); 
 								$query3->execute();	
-								/*
+								
+								$examplename = $dirname;
+								$sectionname = $dirname;
+
 								//create codeexample
 								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
 								$query->bindParam(":cid", $courseid);
@@ -622,7 +625,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":cversion", $coursevers);
 								$query->bindParam(":templateid", $templateNumber);
 								$query->execute();
-
+								/*
 								$query = $pdo->prepare("SELECT MAX(exampleid) FROM codeexample");
 								$exampleid = $query->execute();
 
