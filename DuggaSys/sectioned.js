@@ -1697,25 +1697,10 @@ function returnedSection(data) {
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" value='${item['lid']} alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
+          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this);'>`;
           str += "</td>";
 
-          var value = this.getAttribute("value");
-          fetch("sectioned.php", {
-            method: "POST",
-            body: JSON.stringify( {
-              value: value
-            })
-            .then(response => response.json())
-            .then(data => {
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            })
-          })
-        }
         // github icon for code (itemKind 2 is code)
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
@@ -1726,7 +1711,7 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        function sendValue(value) {
+/*         function sendValue(value) {
           fetch("sectioned.php", {
             method: "POST",
             body: JSON.stringify({ value: value })
@@ -1738,7 +1723,7 @@ function returnedSection(data) {
           .catch(error => {
             console.log(error);
           });
-        }
+        } */
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
