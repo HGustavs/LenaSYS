@@ -9828,7 +9828,7 @@ function drawElement(element, ghosted = false)
         }
 
         let splitAlternatives = element.alternatives.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
+            return splitLengthyLine(line, maxLengthOfAlt);
         }).flat();
 
         //elemAlternatives = text.length;
