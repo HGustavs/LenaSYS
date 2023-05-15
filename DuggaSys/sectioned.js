@@ -474,6 +474,27 @@ function refreshGithubRepo(courseid)
 }
 
 //----------------------------------------------------------------------------------
+// lidToSectioned: Sends the correct "lid" to sectioned.php
+//----------------------------------------------------------------------------------
+
+function sendToSectioned(moment) {
+  $.ajax({
+  async: false,
+  url: "sectioned.php",
+  type: "POST",
+  data: {
+    'cid': moment.getAttribute('value-data')
+  },
+  success: function(data) {
+    alert(data);
+  },
+  error: function(data) {
+    alert("Error:" + data);
+  }
+  })
+}
+
+//----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog
 //----------------------------------------------------------------------------------
 
@@ -1696,7 +1717,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' data-value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this)'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), sendToSectioned(this)'>`;
           str += "</td>";
         }
 

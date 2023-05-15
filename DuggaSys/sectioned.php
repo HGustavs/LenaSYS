@@ -13,6 +13,11 @@
 	}else{
 		$userid="00";
 	}
+	if(isset($_POST['cid'])) {
+		echo "<script>console.log('cid found');</script>";
+	} else {
+		echo "<script>console.log('cid not found');</script>";
+	}
 ?>
 
 <!DOCTYPE html>
