@@ -4125,7 +4125,6 @@ function generateStateDiagramInfo()
     const queue = [];
     let output = "";
     let re = new RegExp("\\[.+\\]");
-const stateLinesLabels=[];
     // Picks out the lines of type "State Diagram" and place it in its local array.
     for (let i=0; i<lines.length; i++)
     {
@@ -4164,7 +4163,6 @@ const stateLinesLabels=[];
         // Finds all entities connected to the current "head" and adds line labels to a list.
         for (let i = 0; i < stateLines.length; i++) {
             if (stateLines[i].fromID == head[ENTITY].id) {
-                stateLinesLabels.push(stateLines[i].label);
                 for (let j = 0; j < stateElements.length; j++) {
                     if (stateLines[i].toID == stateElements[j][ENTITY].id) {
                         stateElements[j][LABEL] = stateLines[i].label;
@@ -4204,14 +4202,6 @@ const stateLinesLabels=[];
     }
 
     // Adds additional information in the view.
-    output+=`<p>Line labels:</p>`;
-    for(var i=0; i<stateLinesLabels.length; i++)
-    {
-        if(stateLinesLabels[i]==undefined)
-        output+=`<p>Unlabeled</p>`;
-        else
-        output+=`<p>${stateLinesLabels[i]}</p>`;
-    }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>Super States: ${stateSuper.length}</p>`;
