@@ -13,9 +13,6 @@
 	}else{
 		$userid="00";
 	}
-	if(isset($_POST['value'])) {
-		$value = $_POST['value'];
-	}
 ?>
 
 <!DOCTYPE html>
@@ -574,6 +571,9 @@
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
+			if(isset($_POST['value'])) {
+				$value = $_POST['value'];
+			}
 			echo"<script>console.log('$value');</script>";
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
