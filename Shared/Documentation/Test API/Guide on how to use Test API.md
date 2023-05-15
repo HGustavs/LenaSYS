@@ -9,7 +9,7 @@ The test API makes it possible to test multiple services in a monolithic or a mi
 
 ### How it works 
 
-The test API executes three different tests, the first one making sure that the login credentials work, the second one calling the actual service with the service data, and the last test compares the result. The result that is to be compared can either be the results from the monolithic service and the microservice, or the value of a service execution and an expected value from the JSON input data. All these three tests will output a pass or fail for each test as well as the response. 
+The test API executes three different tests, the first one making sure that the login credentials work, the second one calling the actual service with the service data, and the last test compares the result. The result that is to be compared can either be the results from the monolithic service and the microservice (to be implemented), or the value of a service execution and an expected output from the JSON input data. You need to determine the expected output yourself, a good strategy is to manually perform steps required to do something on LenaSys and then look at the payload. This payload from correct manuall steps should then be the same as the output from the automated process by the API. All these three tests will output a pass or fail for each test as well as the response. 
 
 ### How to use it 
 
@@ -90,6 +90,163 @@ $testsData = array(
  
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
+```
+
+
+Example output (can be some differences): 
+```
+{
+  "create course test": {
+    "querys-before-test": {
+      "query-before-test-1": [
+        {
+          "0": "2354",
+          "cid": "2354"
+        }
+      ],
+      "query-before-test-2": "Succesfully executed query but no return data",
+      "query-before-test-3": "Succesfully executed query but no return data"
+    },
+    "Test 1 (Login)": {
+      "result": "passed",
+      "username": "hidden",
+      "password": "hidden"
+    },
+    "Test 2 (callService)": {
+      "result": "passed",
+      "respons": {
+        "debug": "Error updating entries\nDuplicate entry 'IT466G' for key 'course.coursecode'",
+        "motd": "UNK"
+      },
+      "service": "https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php",
+      "data": {
+        "opt": "NEW",
+        "username": "hidden",
+        "password": "hidden",
+        "coursecode": "IT466G",
+        "coursename": "TestCourseFromAPI4",
+        "uid": "101",
+        "blop": "2354",
+        "blop2": "S"
+      },
+      "query-return": {
+        "query-before-test-1[0][cid]": "2354",
+        "query-before-test-2[0][coursename]": "S"
+      }
+    },
+    "Test 3 (assertEqual)": {
+      "result": "failed",
+      "value-expected": {
+        "debug": "NONE!",
+        "motd": "UNK"
+      },
+      "value-output": {
+        "debug": "Error updating entries\nDuplicate entry 'IT466G' for key 'course.coursecode'",
+        "motd": "UNK"
+      }
+    },
+    "querys-after-test": {
+      "query-after-test-2": "Succesfully executed query but no return data"
+    }
+  },
+  "create course test 2": {
+    "querys-before-test": {
+      "query-before-test-1": [
+        {
+          "0": "2354",
+          "cid": "2354"
+        }
+      ],
+      "query-before-test-2": "Succesfully executed query but no return data",
+      "query-before-test-3": "Succesfully executed query but no return data"
+    },
+    "Test 1 (Login)": {
+      "result": "passed",
+      "username": "stei",
+      "password": "password"
+    },
+    "Test 2 (callService)": {
+      "result": "passed",
+      "respons": {
+        "LastCourseCreated": [
+          {
+            "LastCourseCreatedId": "2354"
+          }
+        ],
+        "entries": [
+          {
+            "cid": "1946",
+            "coursename": "APICreateCourseTestQuery",
+            "coursecode": "IT477G",
+            "visibility": "0",
+            "activeversion": null,
+            "activeedversion": null,
+            "registered": false
+          },
+          {
+            "cid": "1918",
+            "coursename": "APICreateCourseTestQuery",
+            "coursecode": "IT469G",
+            "visibility": "0",
+            "activeversion": null,
+            "activeedversion": null,
+            "registered": false
+          },
+          {
+            "cid": "1913",
+            "coursename": "APICreateCourseTestQuery",
+            "coursecode": "IT467G",
+            "visibility": "0",
+            "activeversion": null,
+            "activeedversion": null,
+            "registered": false
+          },
+          {
+            "cid": "3",
+            "coursename": "Datorns grunder",
+            "coursecode": "IT500G",
+            "visibility": "1",
+            "activeversion": "1337",
+            "activeedversion": null,
+            "registered": false
+          },
+          {
+            "cid": "307",
+            "coursename": "Datorns grunder",
+            "coursecode": "IT115G",
+            "visibility": "0",
+            "activeversion": "12307",
+            "activeedversion": null,
+            "registered": false
+          },
+          {
+            "cid": "324",
+            "coursecode": "IT108G",
+            "vers": "12324",
+            "versname": "HT15",
+            "coursename": "Webbutveckling - webbplatsdesign",
+            "coursenamealt": "UNK"
+          },
+          {
+            "cid": "1894",
+            "coursecode": "G420",
+            "vers": "52432",
+            "versname": "ST20",
+            "coursename": "Demo-Course",
+            "coursenamealt": "Chaos Theory - Conspiracy 64k Demo"
+          }
+        ],
+        "debug": "Error updating entries\nDuplicate entry 'IT466G' for key 'course.coursecode'",
+        "writeaccess": true,
+        "motd": "UNK",
+        "readonly": 0
+      }
+    },
+    "querys-after-test": {
+      "query-after-test-2": "Succesfully executed query but no return data"
+    }
+  }
+}
 ```
 
 **Figure 2**  Example of test case code 
