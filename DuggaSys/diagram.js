@@ -12612,10 +12612,8 @@ function exportWithHistory()
  function storeDiagramInLocalStorage(){
     
     if (stateMachine.currentHistoryIndex == -1) {
-        console.log("test");
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
-        console.log(stateMachine.currentHistoryIndex);
         // Remove all future states to the history
         stateMachine.removeFutureStates();
         // The content of the save file
