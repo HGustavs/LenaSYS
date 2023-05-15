@@ -532,8 +532,7 @@ function showSaveButton() {
 
 // Fetching the value from clicked button
 function sendValue(moment) {
-  value = moment.getAttribute("value");
-  console.log(value);
+  console.log("button pressed");
   $.ajax({
     url: "sectioned.php",
     type: "POST",
@@ -541,6 +540,7 @@ function sendValue(moment) {
       value: value
     },
     success: function(response) {
+      console.log(value);
       console.log("value was sent correctly");
     }
   })
