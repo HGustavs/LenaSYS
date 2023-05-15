@@ -566,39 +566,58 @@
 
 	<!-- github moments box  -->
 	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-			<div class='loginBoxheader'>
-					<h3>Github Moment</h3>
-					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
-			</div>
-			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
-
-			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> 
+    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+        <div class='loginBoxheader'>
+		<h3 id='githubMomentTitle'>Github Moment</h3>
+            <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+        </div>
+			<!-- Start of form -->
+			<form action="githubForm" method="POST">
+			<div class='inputwrapper'><span>directory:</span><select class='selectDir' id='selectDir' name="selectDir" placeholder='Directory' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
                 <?php
-    try {
-        $cid = getOPG('courseid');
-        $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+                    try{
+                        $cid = getOPG('courseid');
+						echo "<script>console.log('CID: ', $cid);</script>";
 
-        $query = $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
-        $query->bindParam(':cid', $cid);
-        $query->execute();
-        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+                        $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+                
+                        $query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
+                        $query->bindParam(':cid', $cid);
+                        $query->execute();
+                        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        if (empty($rows)) {
-            echo "<script>console.error('No directories found');</script>";
-        } else {
-            echo "<script>console.log('Directories fetched');</script>";
-        }
+						//Generate options
+						if (empty($rows)) {
+							echo "<script>console.error('No directories found');</script>";
+							echo "<option value=''>No directories found</option>";
 
-    } catch(PDOException $e) {
-        echo "<script>console.error('Error: " . addslashes($e->getMessage()) . "');</script>";
-        return '<p>Error: ' . $e->getMessage() . '</p>';
-    }
-    foreach($rows as $row) {
-        echo "<option value=''>" . $row['fileName'] . "</option>";
-    }
-?>
+						} else {
+							echo "<script>console.log('Directories fetched');</script>";
+							foreach ($rows as $row) {
+								echo "<option value='" . $row['fileName'] . "'>" . $row['fileName'] . "</option>";
+							}
+						}
+                    }catch(PDOException $e) {
+						echo '<p>Error: ' . $e->getMessage() . '</p>';
+                    }
+
+					if(isset($_POST['selectedDir'])){
+						$selectDir = $_POST['selectedDir'];
+
+						try {
+							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+							$query =  $pdolite->prepare('UPDATE gitFiles SET selectedDir = :selectedDir WHERE cid = :cid');
+							$query->bindParam(':selectedDir', $selectDir);
+							$query->bindParam(':cid', $cid);
+							$query->execute();
+						} catch(PDOException $e) {
+							echo '<p>Error: ' . $e->getMessage() . '</p>';
+						}
+					}
+
+				
+                ?>
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
