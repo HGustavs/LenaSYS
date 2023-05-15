@@ -1692,6 +1692,9 @@ function returnedSection(data) {
 
         }
 
+        function sendValue(moment) {
+          console.log(moment);
+        }
 
         // github icon for moments (itemKind 4 is moments)
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher'])  {
@@ -1710,10 +1713,6 @@ function returnedSection(data) {
           str += `<img style='max-width: 60%;' value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(this)'>`;
           str += "</td>";
-        }
-
-        function sendValue(moment) {
-          console.log(moment);
         }
 
         // Checkbox
