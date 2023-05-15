@@ -7501,7 +7501,7 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
 }
 
 /**
- * @description
+ * @description Checks if the lines intersect and if the possible intersection point is within edges
  * @param {Number} x1 Position 1 
  * @param {Number} y1 Position 1 
  * @param {Number} x2 Position 2 
@@ -7510,22 +7510,18 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  * @param {Number} y3 Position 3 
  * @param {Number} x4 Position 4 
  * @param {Number} y4 Position 4 
- * @returns False or An object with x/y coordinates.
+ * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
- // TODO : WHY does it return EITHER a boolean OR an object??????? Either this is a TRUE/FALSE function and return booleans OR it returns objects/null/undefined!
- // TODO : Use new POINT objects to reduce amount of arguments?
+
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
-    // TODO : Can be deleted?
-    // Display line test locations using svg lines
-    // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
-    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
-
-    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    if (isNaN(x) || isNaN(y)) {
+    var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
+    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
+    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
+    if (isNaN(x) || isNaN(y)) {//Check if lines don't intersect
         return false;
-    } else {
+    } else {//Check if intersection point is within edges
 
         if (x1 >= x2) {
             if (!(x2 <= x && x <= x1)) return false;
@@ -7551,10 +7547,7 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
             if (!(y3 <= y && y <= y4)) return false;
         }
     }
-    return { 
-        x: x,
-        y: y 
-    };
+    return true;
 }
 
 /**
