@@ -507,16 +507,10 @@ if($gradesys=="UNK") $gradesys=0;
 					$query3->bindParam(":examplename", $varname); 
 					$query3->bindParam(":sectionname", $courseid); 
 					$query3->execute();		
-					
-
-
+				
+					$dirPath = $dirname;
 					$dirnameArray = explode('/', $dirname);
-					$dirname = $dirnameArray[count($dirnameArray)-2];
-
-					
-					//$dirname = "Code-example1";
-					//$courseid = 1895;
-					
+					$dirname = $dirnameArray[count($dirnameArray)-2];								
 
 					$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
 					$query1->bindParam(":cid", $courseid);
@@ -562,12 +556,12 @@ if($gradesys=="UNK") $gradesys=0;
 							
 							//Count files in the directory for the codeexample
 							
-							$directory = '../courses/1895/Github/Demo/Code-example2/';  // Replace with the actual directory path
+							
 
 							$fileCount = 0;
-							$files = scandir($directory);
+							$files = scandir($dirPath);
 							foreach ($files as $file) {
-								if (is_file($directory . '/' . $file)) {
+								if (is_file($dirPath . '/' . $file)) {
 									$fileCount++;
 								}
 							}
