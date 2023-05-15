@@ -713,13 +713,14 @@ if($gradesys=="UNK") $gradesys=0;
 									*/
 									$boxid=$i-1;
 									$fontsize= 9;
+									$setting = "[viktig=1]";
 									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
 									$query->bindParam(":boxid", $boxid);
 									$query->bindParam(":exampleid", $exampleid);
 									$query->bindParam(":boxtitle", $filename);
 									$query->bindParam(":boxcontent", $filetype); // Corrected line
 									$query->bindParam(":filename", $filename);
-									$query->bindParam(":settings", "[viktig=1]");
+									$query->bindParam(":settings", $setting);
 									$query->bindParam(":wordlistid", $wlid);
 									$query->bindParam(":fontsize", $fontsize);
 									$query->execute();
