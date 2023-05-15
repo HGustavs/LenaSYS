@@ -49,7 +49,14 @@
 <script>
 	function imageClick(value) {
 		let lid = value.getAttribute('data-value');
-		console.log('Clicked image: ', lid);
+		$.ajax({
+		url: window.location.href,
+		method: 'POST',
+		data: { lid: lid },
+		success: function(response) {
+			console.log('PHP script response:', response);
+			}
+		});
 	}
 </script>
 <body onload="setup();">
@@ -581,9 +588,8 @@
 	<?php
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$lid = getOPG('lid');
-		$lid = getOP('lid');
-		echo "<script>console.log('$lid');</script>";
+		$lid = $_POST['lid'];
+		echo "<script>console.log('.$lid.');</script>";
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
