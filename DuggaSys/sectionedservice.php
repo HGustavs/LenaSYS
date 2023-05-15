@@ -670,12 +670,19 @@ if($gradesys=="UNK") $gradesys=0;
 									$parts = explode('.', $filename);
 									$filetype = "CODE";
 									$wlid = 0;
-
+								/*	
 									$varname="fileTest3";
 									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 									$query3->bindParam(":examplename", $filename); 
 									$query3->bindParam(":sectionname", $varname); 
 									$query3->execute();	
+									$varname="boxTest";
+									$boxid = $i-1;
+									$query3 = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,fontsize) values (:boxid,:exampleid,:boxtitle,9);");
+									$query3->bindParam(":exampleid", $filename); 
+									$query3->bindParam(":boxtitle", $varname); 
+									$query3->execute();	
+									*/
 									/*
 									if($parts[1] == "js") {
 										$filetype = "CODE";
@@ -703,8 +710,9 @@ if($gradesys=="UNK") $gradesys=0;
 										$wlid = 4;
 									} 
 									
-				
+									*/
 									$boxid=$i-1;
+									$fontsize= 9;
 									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
 									$query->bindParam(":boxid", $boxid);
 									$query->bindParam(":exampleid", $exampleid);
@@ -713,9 +721,9 @@ if($gradesys=="UNK") $gradesys=0;
 									$query->bindParam(":filename", $filename);
 									$query->bindParam(":settings", "[viktig=1]");
 									$query->bindParam(":wordlistid", $wlid);
-									$query->bindParam(":fontsize", 9);
+									$query->bindParam(":fontsize", $fontsize);
 									$query->execute();
-									*/
+									
 
 
 								}/*
