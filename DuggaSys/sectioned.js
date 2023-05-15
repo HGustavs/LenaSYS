@@ -531,7 +531,7 @@ function showSaveButton() {
 }
 
 // Fetching the value from clicked button
-function sendValue(moment) {
+/* function sendValue(moment) {
   var value = moment.getAttribute("value");
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "sectioned.php");
@@ -548,28 +548,20 @@ function sendValue(moment) {
   };
   console.log(value);
   xhr.send("momentid=" + encodeURIComponent(value));
-}
+} */
 
-function sendValue(moment) 
-{
+function sendValue(moment) {
   let lid = moment.getAttribute("value");
-	var dataCheck;
 	$.ajax({
-		async: false,
 		url: "../DuggaSys/sectioned.php",
 		type: "POST",
 		data: {'lid':lid},
 		success: function(data) { 
-      alert(data);
-			dataCheck = true;
 		},
 		error: function(data){
-      alert(data);
-		 	dataCheck = false;
 		}
 	});
   console.log("ajax done" + lid);
-	return dataCheck;
 }
 
 
