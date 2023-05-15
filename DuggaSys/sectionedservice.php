@@ -639,10 +639,10 @@ if($gradesys=="UNK") $gradesys=0;
 								$query3->bindParam(":sectionname", $varname); 
 								$query3->execute();
 
-								/*
+								
 								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
-								for($i = 1; $i <= count($counter); $i++) {
-									$filename = $counter[$i-1];
+								for($i = 1; $i <= count($files); $i++) {
+									$filename = $files[$i-1];
 									$parts = explode('.', $filename);
 									$filetype = null;
 									$wlid = 0;
@@ -671,6 +671,7 @@ if($gradesys=="UNK") $gradesys=0;
 										$filetype = "DOCUMENT";
 										$wlid = 4;
 									}
+									
 									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) values (:boxid, :exampleid, :boxtitle, :filetype, :filename, :settings, :wordlistid, :fontsize);");
 									$query->bindParam(":boxid", $i);
 									$query->bindParam(":exampleid", $exampleid);
@@ -681,7 +682,7 @@ if($gradesys=="UNK") $gradesys=0;
 									$query->bindParam(":wordlistid", $wlid);
 									$query->bindParam(":fontsize", 9);
 									$query->execute();
-								}
+								}/*
 								
 								$link = "UNK";
 								$kind = 2;
