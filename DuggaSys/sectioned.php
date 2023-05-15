@@ -573,8 +573,8 @@
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
 			if(isset($_POST['value'])) {
 				$value = $_POST['value'];
+				echo"<script>console.log('$value');</script>";
 			}
-			echo"<script>console.log('$value');</script>";
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
 			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
