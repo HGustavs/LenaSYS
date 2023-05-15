@@ -567,6 +567,16 @@
 
 
 	<!-- github moments box  -->
+	<?
+	 $dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
+	 foreach ($dirs as $dir) {
+		 $dirname = basename($dir);
+		 if(strstr($dirname, 'Examples')) {
+				$options += "<option value='$dirname'>$dirname</option>";
+       	echo "<script>console.log('$dirname');</script>";
+		 }		
+	 }			
+	?>
 	<form action="" method="POST">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
@@ -577,17 +587,7 @@
 				<div class='inputwrapper'>
 					<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder'> 
-							<?php
-								$cid = getOPG('courseid');
-								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-								foreach ($dirs as $dir) {
-									$dirname = basename($dir);
-									if(strstr($dirname, 'Examples')) {
-										echo "<option value='$dirname'>$dirname</option>";
-                    echo "<script>console.log('$dirname');</script>";
-									}		
-								}											
-							?>
+							<?php echo $options; ?>
 						</select>
 					</div>
 				<input type="submit" name="githubInsert" value="Submit!">
