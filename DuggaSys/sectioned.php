@@ -580,7 +580,7 @@
 			echo "<script>console.log('debug 1');</script>";
 			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_GET['lid'])) {
 				echo "<script>console.log('debug 2');</script>";
-				$lid = (int)$_POST['lid'];
+				$lid = (int)$_GET['lid'];
 				echo $lid;
 				$query = $pdo->prepare("UPDATE listentries SET githubDir=:githubdir WHERE lid=:lid");
 				$query->bindParam(':githubdir', $_POST['githubDir']);
