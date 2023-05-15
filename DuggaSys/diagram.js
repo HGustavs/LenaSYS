@@ -9875,12 +9875,12 @@ function drawElement(element, ghosted = false)
                 /* for (let i = 0; i < splitAlternatives.length; i++) {
                     str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
                 } */
-                let splitAlternatives = element.alternatives[i](line => {
+                /* let splitAlternatives = element.alternatives[i](line => {
                     return splitLengthyLine(line, maxLengthOfAlt);
-                }).flat();
-                for (let j = 0; j < splitAlternatives.length; j++) {
-                    console.log(splitAlternatives[j]);
-                }
+                }).flat(); */
+                //for (let j = 0; j < splitAlternatives.length; j++) {
+                console.log(splitLengthyLine(element.alternatives[i], maxLengthOfAlt));
+                //}
                 //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
                 //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
