@@ -9827,9 +9827,7 @@ function drawElement(element, ghosted = false)
             }
         }
 
-        let splitAlternatives = element.alternatives.map(line => {
-            return splitLengthyLine(line, maxLengthOfAlt);
-        }).flat();
+        
 
         //elemAlternatives = text.length;
 
@@ -9877,7 +9875,13 @@ function drawElement(element, ghosted = false)
                 /* for (let i = 0; i < splitAlternatives.length; i++) {
                     str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
                 } */
-                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
+                let splitAlternatives = element.alternatives[i].map(line => {
+                    return splitLengthyLine(line, maxLengthOfAlt);
+                }).flat();
+                for (let j = 0; j < splitAlternatives.length; j++) {
+                    console.log(splitAlternatives[j]);
+                }
+                //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
                 //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
