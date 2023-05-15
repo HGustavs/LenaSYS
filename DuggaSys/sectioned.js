@@ -1641,7 +1641,7 @@ function returnedSection(data) {
         if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<input style='filer: invert (1);' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
+          str += `<input style='filer: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
