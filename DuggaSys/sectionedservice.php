@@ -503,7 +503,7 @@ if($gradesys=="UNK") $gradesys=0;
 					
 					//$parts = explode('/', $url);// $parts[count($parts)-1]
 					//count if there is already a codeexample or if we should create a new one.
-					$dirname = "Code-example1";
+					$dirname = "TESTING";
 					$courseid = 1;
 					$coursevers = 45656;
 					
