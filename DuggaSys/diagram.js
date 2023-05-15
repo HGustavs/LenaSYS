@@ -766,7 +766,7 @@ const keybinds = {
         STATE_INITIAL: { key: "<" , ctrl: false },
         STATE_FINAL: { key: "f" , ctrl: false },
         STATE_SUPER: { key: ">", ctrl: false },
-        Save_diagram: { key: "s", ctrl: true }, //<-- SD functionality
+        SAVE_DIAGRAM: { key: "s", ctrl: true }, 
 };
 
 /** 
@@ -1724,7 +1724,8 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
-        if(isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+        if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) storeDiagramInLocalStorage();
         //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
@@ -12611,7 +12612,6 @@ function exportWithHistory()
  function storeDiagramInLocalStorage(){
     // Remove all future states to the history
     stateMachine.removeFutureStates();
-
     // The content of the save file
     var objToSave = {
         historyLog: stateMachine.historyLog,
