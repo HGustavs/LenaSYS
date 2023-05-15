@@ -568,9 +568,6 @@
 
 	<!-- github moments box  -->
 	<?php
-		if(isset($_POST['momentid'])) {
-			$lidvalue = $_POST['momentid'];
-		}
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['momentid'])) {
@@ -578,7 +575,7 @@
 			$feedbackenabled = 0;
 			$query = $pdo->prepare("UPDATE listentries set githubDir=:githubdir WHERE lid=:lid");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
-			$query->bindParam(':lid', $lidvalue);
+			$query->bindParam(':lid', $_POST['momentid']);
 			try {
 				if($query->execute()) {
 					echo "<script>console.log('update successful!');</script>";		
