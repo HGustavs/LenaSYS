@@ -578,26 +578,28 @@
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		echo "debug 1";
-		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir'])) {
-			echo "debug 2";
-			$lid = (int)$_POST['lid'];
-			echo $lid;
-			$query = $pdo->prepare("UPDATE listentries SET githubDir=:githubdir WHERE lid=:lid");
-			$query->bindParam(':githubdir', $_POST['githubDir']);
-			$query->bindParam(':lid', $lid, PDO::PARAM_INT);
-			try {
-				if($query->execute()) {
-					echo "debug 3";
-					echo "<script>console.log('update successful!');</script>";		
-				} else {
-					echo "<script>console.log('update failed!');</script>";		
-				} 
-			} catch (PDOException $e) {
-				$errorMessage = $e->getMessage();
-				echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
+		if(isset($_POST['lid'])) {
+			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir'])) {
+				echo "debug 2";
+				$lid = (int)$_POST['lid'];
+				echo $lid;
+				$query = $pdo->prepare("UPDATE listentries SET githubDir=:githubdir WHERE lid=:lid");
+				$query->bindParam(':githubdir', $_POST['githubDir']);
+				$query->bindParam(':lid', $lid, PDO::PARAM_INT);
+				try {
+					if($query->execute()) {
+						echo "debug 3";
+						echo "<script>console.log('update successful!');</script>";		
+					} else {
+						echo "<script>console.log('update failed!');</script>";		
+					} 
+				} catch (PDOException $e) {
+					$errorMessage = $e->getMessage();
+					echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
+				}
+			} else {
+				echo "<script>console.log('it did not run');</script>";		
 			}
-		} else {
-			echo "<script>console.log('it did not run');</script>";		
 		}
 	?>
 	<form action="" method="POST">
