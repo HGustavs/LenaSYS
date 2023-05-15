@@ -665,8 +665,8 @@ if($gradesys=="UNK") $gradesys=0;
 
 								
 								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
-								for($i = 1; $i <= count($files); $i++) {
-									$filename = $files[$i-1];
+								for($i = 2; $i < count($files); $i++) {
+									$filename = $files[$i];
 									$parts = explode('.', $filename);
 									$filetype = null;
 									$wlid = 0;
@@ -697,9 +697,9 @@ if($gradesys=="UNK") $gradesys=0;
 									}
 									
 				
-
+									$boxid=$i-1;
 									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
-									$query->bindParam(":boxid", $i);
+									$query->bindParam(":boxid", $boxid);
 									$query->bindParam(":exampleid", $exampleid);
 									$query->bindParam(":boxtitle", $filename);
 									$query->bindParam(":boxcontent", $filetype); // Corrected line
