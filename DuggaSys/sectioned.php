@@ -13,28 +13,6 @@
 	}else{
 		$userid="00";
 	}
-
-	global $pdo;
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert'])) {
-		$cid = getOPG('courseid');
-		$feedbackenabled = 0;
-		$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':githubdir', $_POST['githubDir']);
-		$query->bindParam(':creator', $userid);
-		$query->bindParam(':feedbackenabled', $feedbackenabled);
-		try {
-			if($query->execute()) {
-				echo "<script>console.log('insert successful!');</script>";		
-			} else {
-				echo "<script>console.log('insert failed!');</script>";		
-			} 
-		} catch (PDOException $e) {
-			$errorMessage = $e->getMessage();
-			echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
-		}
-	}
 ?>
 
 <!DOCTYPE html>
@@ -613,6 +591,29 @@
 						</select>
 					</div>
 				<input type="submit" name="githubInsert" value="Submit!">
+				<?php
+					global $pdo;
+					$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert'])) {
+						$cid = getOPG('courseid');
+						$feedbackenabled = 0;
+						$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
+						$query->bindParam(':cid', $cid);
+						$query->bindParam(':githubdir', $_POST['githubDir']);
+						$query->bindParam(':creator', $userid);
+						$query->bindParam(':feedbackenabled', $feedbackenabled);
+						try {
+							if($query->execute()) {
+								echo "<script>console.log('insert successful!');</script>";		
+							} else {
+								echo "<script>console.log('insert failed!');</script>";		
+							} 
+						} catch (PDOException $e) {
+							$errorMessage = $e->getMessage();
+							echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
+						}
+					}
+				?>
 			</div>
 		</div>
 	</form>
