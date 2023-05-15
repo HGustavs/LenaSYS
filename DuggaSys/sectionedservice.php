@@ -531,7 +531,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$query2->execute();	
 						
 						/*
-					//	bfs($url, $courseid, "DOWNLOAD");
+						//	bfs($url, $courseid, "DOWNLOAD");
 						//Get active version of the course
 						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
 						$query->bindParam(":cid", $courseid);
@@ -660,12 +660,12 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":groupkind", $groupkind);
 								$query->execute();
 							}*/
-						} else {
-							//Check for update
-							$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTINGELSE","TESTING",1,45656,1);');
-							$query2->execute();	
-						} 
-					}
+					} else {
+						//Check for update
+						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTINGELSE","TESTING",1,45656,1);');
+						$query2->execute();	
+					} 
+				
 				} else if (strcmp($coursevers, "null")!==0) {
 					// Get every coursevers of courses so we seed groups to every courseversion
 					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
