@@ -3004,19 +3004,18 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 
 //Creates all examples from github that doesnt exists yet
-function createExamples(dir) {//TODO HERE
+function createExamples(dir,momentID) {//TODO HERE
 
   console.log("**** CID "+querystring['courseid']);
 
   //cversid = document.getElementById("cversid").value;
-  cid= 1895;
-  cversid = 45656;
+  lid= momentID;
   dirname = dir;
   console.log("**** DIRNAME "+dirname);
 	$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
-			data: {'courseid':cid,'cversid':cversid,'dirname':dirname , 'opt':'CREGITEX'},
+			data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
 			dataType: "json",
 			//success: returnedSection
 	});
@@ -3597,7 +3596,7 @@ function refreshMoment(momentID){
 
   //for each codeexample in the moment dir, do create examples on those code-example dir
   dirname="../courses/1895/Github/Demo/Code-example1/"
-  createExamples(dirname)
+  createExamples(dirname,momentID)
  
 
   /*

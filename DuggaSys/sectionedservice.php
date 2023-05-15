@@ -68,7 +68,7 @@ $exampelid=getOP('exampleid');
 $url=getOP('url');
 
 $dirname=getOP('dirname');
-
+$lid=getOP('lid');
 $visbile = 0;
 $avgfeedbackscore = 0;
 
@@ -502,12 +502,13 @@ if($gradesys=="UNK") $gradesys=0;
 
 					//count if there is already a codeexample or if we should create a new one.
 					
-					$varname="cid";	
-					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-					$query3->bindParam(":examplename", $varname); 
-					$query3->bindParam(":sectionname", $courseid); 
-					$query3->execute();		
-				
+					$query = $pdo->prepare("SELECT cid FROM listentries WHERE lid=:lid");
+					$query->bindParam(":lid", $lid);
+					$query->execute();
+					$e = $query->fetchAll();
+					$courseid = $e[0]['cid'];
+
+
 					$dirPath = $dirname;
 					$dirnameArray = explode('/', $dirname);
 					$dirname = $dirnameArray[count($dirnameArray)-2];								
