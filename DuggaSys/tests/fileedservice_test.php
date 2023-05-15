@@ -1,5 +1,6 @@
 <?php
 	include "../../Shared/test.php";
+	include_once "../../../coursesyspw.php";
  
 	$testsData = array(
 		'create course test' => array(
@@ -7,8 +8,8 @@
 			'service' => 'localhost/LenaSYS/DuggaSys/courseedservice.php',
 			'service-data' => serialize(array( // Data that service needs to execute function
 				'opt' => 'NEW',
-				'username' => 'usr',
-				'password' => 'pass',
+				'username' => 'toddler',
+				'password' => 'Kong',
 				'coursecode' => 'IT466G',
 				'coursename' => 'TestCourseFromAPI4',
 				'uid' => '101'
@@ -23,8 +24,8 @@
 			'service' => 'localhost/LenaSYS/DuggaSys/courseedservice.php',
 			'service-data' => serialize(array( // Data that service needs to execute function
 				'opt' => 'NEW',
-				'username' => 'usr',
-				'password' => 'pass',
+				'username' => 'toddler',
+				'password' => 'Kong',
 				'coursecode' => 'IT466G',
 				'coursename' => 'TestCourseFromAPI5',
 				'uid' => '101'
