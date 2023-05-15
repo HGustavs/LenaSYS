@@ -532,7 +532,8 @@ function showSaveButton() {
 
 // Fetching the value from clicked button
 function sendValue(moment) {
-  console.log(moment);
+  value = moment.getAttribute("value");
+  console.log(value);
 }
 
 
