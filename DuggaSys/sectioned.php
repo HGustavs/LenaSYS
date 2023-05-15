@@ -576,9 +576,9 @@
 			$query->bindParam(':lid', $_POST['lid']);
 			try {
 				if($query->execute()) {
-					echo "<script>console.log('insert successful!');</script>";		
+					echo "<script>console.log('Update successful!');</script>";		
 				} else {
-					echo "<script>console.log('insert failed!');</script>";		
+					echo "<script>console.log('Update failed!');</script>";		
 				} 
 			} catch (PDOException $e) {
 				$errorMessage = $e->getMessage();
@@ -603,7 +603,6 @@
 									$dirname = basename($dir);
 									if(strstr($dirname, 'Examples')) {
 										echo "<option value='$dirname'>$dirname</option>";
-										echo "<script>console.log('$dirname');</script>";
 									}		
 								}			
 							?>
