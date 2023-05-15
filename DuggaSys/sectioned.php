@@ -591,7 +591,7 @@
 						} else {
 							echo "<script>console.log('Directories fetched');</script>";
 							foreach ($rows as $row) {
-								echo "<option value=''>" . $row['fileName'] . "</option>";
+								echo "<option value='" . $row['fileName'] . "'>" . $row['fileName'] . "</option>";
 							}
 						}
                     }catch(PDOException $e) {
