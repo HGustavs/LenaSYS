@@ -578,7 +578,7 @@
 				$query->bindParam(':lid', $_POST['data_value']);
 				try {
 					if($query->execute()) {
-						echo "debug 3";
+						echo $_POST['data_value'];
 						echo "<script>console.log('update successful!');</script>";		
 					} else {
 						echo "<script>console.log('update failed!');</script>";		
