@@ -552,6 +552,7 @@ function showSaveButton() {
 
 function sendValue(moment) {
   let lid = moment.getAttribute("data-value");
+  console.log(lid);
 	$.ajax({
 		url: "../DuggaSys/sectioned.php",
 		type: "POST",
