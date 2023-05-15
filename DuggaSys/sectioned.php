@@ -575,7 +575,7 @@
 			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir'])) {
 				$query = $pdo->prepare("UPDATE listentries SET githubDir=:githubdir WHERE lid=:lid");
 				$query->bindParam(':githubdir', $_POST['githubDir']);
-				$query->bindParam(':lid', $lid, PDO::PARAM_INT);
+				$query->bindParam(':lid', $dataValue, PDO::PARAM_INT);
 				try {
 					if($query->execute()) {
 						echo "debug 3";
