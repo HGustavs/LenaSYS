@@ -585,7 +585,18 @@ if($gradesys=="UNK") $gradesys=0;
 							}
 
 							//echo "Number of files in the directory: " . $fileCount;
-							
+							$varname="fileTest";
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $files[1]); 
+							$query3->bindParam(":sectionname", $varname); 
+							$query3->execute();	
+							$varname="fileTest2";
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $files[0]); 
+							$query3->bindParam(":sectionname", $varname); 
+							$query3->execute();	
+
+
 							$varname="fileCount";
 							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 							$query3->bindParam(":examplename", $fileCount); 
