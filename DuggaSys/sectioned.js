@@ -533,17 +533,21 @@ function showSaveButton() {
 // Fetching the value from clicked button
 function sendValue(moment) {
   var value = moment.getAttribute("value");
-  $.ajax({
-    url: "sectioned.php",
-    type: "POST",
-    data: {
-      momentid: value
-    },
-    success: function(response) {
-      console.log(value);
-      console.log("value was sent correctly");
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "sectioned.php");
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == XMLHttpRequest.DONE) {
+      if(xhr.status === 200) {
+        console.log(value);
+        console.log("value was sent correctly");      
+      } else {
+        console.log("value was not sent correctly");
+      }
     }
-  });
+  };
+  var data = "momentid=" + encodeURIComponent(value);
+  xhr.send(data);
 }
 
 
