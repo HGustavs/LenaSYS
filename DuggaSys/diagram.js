@@ -799,7 +799,8 @@ const elementTypes = {
     UMLSuperState: 11,
 
     sequenceActorAndObject:12, //sequence functionality
-    sequenceActivation: 13
+    sequenceActivation: 13,
+    sequenceObject: 14
     
 };
 
