@@ -599,7 +599,6 @@
 			} else {
 				echo "<script>console.log('it did not run');</script>";		
 			}
-		}
 	?>
 	<form action="" method="POST">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
