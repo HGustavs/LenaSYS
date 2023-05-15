@@ -100,11 +100,11 @@ function getIndexFile($url) {
 
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    $response = json_decode(curl_exec($curl));
     $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
     
     if($http_response_code == 200){
-        $response = json_decode(curl_exec($curl));
         return explode("\n", file_get_contents($response->download_url));
     } else {
         return false;
