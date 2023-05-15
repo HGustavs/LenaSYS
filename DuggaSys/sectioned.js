@@ -3018,6 +3018,7 @@ function createExamples(dir,momentID) {//TODO HERE
 			type: "POST",
 			data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
 			dataType: "json",
+      //TODO: reload back to coursepage
 			//success: returnedSection
 	});
   console.log("** AJAX DONE **");
