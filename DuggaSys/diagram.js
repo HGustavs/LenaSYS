@@ -12611,7 +12611,7 @@ function exportWithHistory()
  * @description Stores the current diagram as JSON in localstorage
  */
  function storeDiagramInLocalStorage(){
-
+    console.log(tempCurrentHistoryIndex);
     if ((tempCurrentHistoryIndex == stateMachine.currentHistoryIndex)) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
