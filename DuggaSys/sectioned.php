@@ -573,7 +573,7 @@
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
 			if(isset($_POST['value'])) {
 				$value = $_POST['value'];
-				echo"<script>var php = '$value'; console.log('$value');</script>";
+				echo"<script>var php = '$value'; console.log(php);</script>";
 			}
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
