@@ -585,9 +585,12 @@
                         $query->bindParam(':cid', $cid);
                         $query->execute();
                         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
-						// Console log if no directories are found
+
+						//Generate options
 						if (empty($rows)) {
 							echo "<script>console.error('No directories found');</script>";
+							echo "<option value=''>No directories found</option>";
+
 						} else {
 							echo "<script>console.log('Directories fetched');</script>";
 							foreach ($rows as $row) {
@@ -596,9 +599,6 @@
 						}
                     }catch(PDOException $e) {
                         return '<p>Error: ' . $e->getMessage() . '</p>';
-                    }
-                    foreach($rows as $row){
-                    echo "<option value=''>" .$row['fileName']. "</option>";
                     }
                 ?>
 			</select></div>
