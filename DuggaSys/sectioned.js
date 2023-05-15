@@ -1721,9 +1721,23 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" value='${item['lid']} alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
+          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(${item['lid']}'>`;
           str += "</td>";
+        }
+
+        function sendValue(value) {
+          fetch("sectioned.php", {
+            method: "POST",
+            body: JSON.stringify({ value: value })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
         }
 
         // Checkbox
