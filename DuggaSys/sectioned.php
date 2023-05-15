@@ -24,7 +24,7 @@
 			} 
 		} catch (PDOException $e) {
 			$errorMessage = $e->getMessage();
-			echo "<script>console.log('$errorMessage');</script>";
+			echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
 		}
 	}
 ?>
