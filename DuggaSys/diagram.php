@@ -906,8 +906,8 @@
         <legend aria-hidden="true">Load</legend>
             <div id="localLoad" class="diagramIcons" onclick="">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
-                <span class="toolTipText"><b>Load a diagram from your machine</b><br>
-                    <p>Click to load diagram</p>
+                <span class="toolTipText"><b>Load a diagram</b><br>
+                    <p>Click to load a diagram</p>
                     <br>
                     <p id="tooltip-Load_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "L"-->
                 </span>
