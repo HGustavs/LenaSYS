@@ -572,7 +572,7 @@
             <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
         </div>
 
-			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Directory' value=''> 
+			<div class='inputwrapper'><span>directory:</span><select class='selectDir' id='selectDir' name="selectDir" placeholder='Directory' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
                 <?php
                     try{
