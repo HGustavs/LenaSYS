@@ -672,16 +672,20 @@ if($gradesys=="UNK") $gradesys=0;
 										$wlid = 4;
 									}
 									
-									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) values (:boxid, :exampleid, :boxtitle, :filetype, :filename, :settings, :wordlistid, :fontsize);");
+				
+
+									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
 									$query->bindParam(":boxid", $i);
 									$query->bindParam(":exampleid", $exampleid);
 									$query->bindParam(":boxtitle", $filename);
-									$query->bindParam(":filetype", $filetype);
+									$query->bindParam(":boxcontent", $filetype); // Corrected line
 									$query->bindParam(":filename", $filename);
 									$query->bindParam(":settings", "[viktig=1]");
 									$query->bindParam(":wordlistid", $wlid);
 									$query->bindParam(":fontsize", 9);
 									$query->execute();
+
+
 								}/*
 								
 								$link = "UNK";
