@@ -12605,7 +12605,11 @@ async function sendDiagramToServer()
     };
     try
     {
-    const response=await fetch("diagram.php", {method: "post", headers:{'Content-Type': 'application/json'}, body: JSON.stringify(objToSave)});
+    const response = await fetch("diagramservice.php", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: "json=" + encodeURIComponent(JSON.stringify(objToSave))
+      });    
      const file=await response.text();
 }
 catch(error)
