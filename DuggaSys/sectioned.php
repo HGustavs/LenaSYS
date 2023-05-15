@@ -569,10 +569,9 @@
 	<!-- github moments box  -->
 	<?php
 		global $pdo;
+		$value = $_POST['value'];
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		echo "<script>console.log('$lid');</script>";
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
-			$value = $_POST['value'];
 			echo"<script>console.log('$value');</script>";
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
