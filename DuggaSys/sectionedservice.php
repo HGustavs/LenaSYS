@@ -509,7 +509,7 @@ if($gradesys=="UNK") $gradesys=0;
 						
 					//Server error from here
 					$query = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
-					$query->bindParam(":cid", $courseid);
+					$query->bindValue(":cid", $courseid);
 					$query->bindParam(":examplename",$dirname); // $parts[count($parts)-1]
 					$query->exectue();
 
