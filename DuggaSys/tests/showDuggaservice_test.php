@@ -5,7 +5,7 @@ include "../../Shared/test.php";
 $testsData = array(
     'Get active users' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'UPDATEAU',
             'hash' => 'hnf3j58s'
@@ -17,7 +17,7 @@ $testsData = array(
     ),
     'Create active users' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'UPDATEAU',
             'hash' => 'tj7dh2nb',
@@ -29,7 +29,7 @@ $testsData = array(
     ),
     'update active users' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'UPDATEAU',
             'hash' => 'hjk4ert6',
@@ -41,7 +41,7 @@ $testsData = array(
     ),
     'get data from userAnswer' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'SAVDU',
             'hash' => 'ghj1jfg2'
@@ -52,7 +52,7 @@ $testsData = array(
     ),
     'update submitted dugga' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'SAVDU',
             'hash' => 'dfg4zxc5',
@@ -72,7 +72,7 @@ $testsData = array(
         'query-after-test-2' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-3' => "DELETE FROM course WHERE cid = 9999;",
         'query-variables' => "moment",
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'SAVDU',
             'cid' => '9999',
@@ -90,7 +90,7 @@ $testsData = array(
     ),
     'super-view data from useranswer on hash' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'hash' => 'dfg4zxc5'
         )),
@@ -106,7 +106,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
         'query-variables' => "moment",
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'moment' => '<!query-before-test3!> <[0][listentries]>'
         )),
@@ -122,7 +122,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
         'query-variables' => "moment",
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'moment' => '<!query-before-test3!> <[0][listentries]>'
         )),
@@ -132,7 +132,7 @@ $testsData = array(
     ),
     'view data on userAnswer' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'hash' => 'ghj1ghj2',
             'hashpwd' => 'asddasdd'
@@ -143,7 +143,7 @@ $testsData = array(
     ),
     'super-view data on quizname' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21oscgu/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'courseid' => '9999',
             'duggaid' => '1',
