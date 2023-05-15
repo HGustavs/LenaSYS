@@ -567,6 +567,29 @@
 
 
 	<!-- github moments box  -->
+	<?php
+		global $pdo;
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
+			$cid = getOPG('courseid');
+			$feedbackenabled = 0;
+			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':githubdir', $_POST['githubDir']);
+			$query->bindParam(':creator', $userid);
+			$query->bindParam(':feedbackenabled', $feedbackenabled);
+			try {
+				if($query->execute()) {
+					echo "<script>console.log('insert successful!');</script>";		
+				} else {
+					echo "<script>console.log('insert failed!');</script>";		
+				} 
+			} catch (PDOException $e) {
+				$errorMessage = $e->getMessage();
+				echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
+			}
+		}
+	?>
 	<form action="" method="POST">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
@@ -577,44 +600,21 @@
 				<div class='inputwrapper'>
 					<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder'> 
-								<option value="">Choose a directory</option>
-								<?php
-									$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
-									foreach ($dirs as $dir) {
-										$dirname = basename($dir);
-										if(strstr($dirname, 'Examples')) {
-											echo "<option value='$dirname'>$dirname</option>";
-											echo "<script>console.log('$dirname');</script>";
-										}		
-									}			
-								?>
+							<option value="">Choose a directory</option>
+							<?php
+								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
+								foreach ($dirs as $dir) {
+									$dirname = basename($dir);
+									if(strstr($dirname, 'Examples')) {
+										echo "<option value='$dirname'>$dirname</option>";
+										echo "<script>console.log('$dirname');</script>";
+									}		
+								}			
+							?>
 						</select>
 					</div>
 				<input type="submit" name="githubInsert" value="Submit!">
 				<input type="hidden" name="githubForm" value="githubForm">
-				<?php
-					global $pdo;
-					$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					if($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
-						$cid = getOPG('courseid');
-						$feedbackenabled = 0;
-						$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
-						$query->bindParam(':cid', $cid);
-						$query->bindParam(':githubdir', $_POST['githubDir']);
-						$query->bindParam(':creator', $userid);
-						$query->bindParam(':feedbackenabled', $feedbackenabled);
-						try {
-							if($query->execute()) {
-								echo "<script>console.log('insert successful!');</script>";		
-							} else {
-								echo "<script>console.log('insert failed!');</script>";		
-							} 
-						} catch (PDOException $e) {
-							$errorMessage = $e->getMessage();
-							echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
-						}
-					}
-				?>
 			</div>
 		</div>
 	</form>
