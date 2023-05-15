@@ -501,7 +501,7 @@ if($gradesys=="UNK") $gradesys=0;
 				} else if(strcmp($opt,"CREGITEX")===0) {
 
 					
-					//$parts = explode('/', $url);
+					//$parts = explode('/', $url);// $parts[count($parts)-1]
 					//count if there is already a codeexample or if we should create a new one.
 					$dirname = "Code-example1";
 					$courseid = 1;
@@ -510,9 +510,9 @@ if($gradesys=="UNK") $gradesys=0;
 					$query2->execute();	
 					
 					//Server error from here
-					$query1 = $pdo->prepare('SELECT COUNT(*) FROM codeexample WHERE cid=1 AND examplename="Code-example1";');
+					$query1 = $pdo->prepare('SELECT COUNT(*) FROM codeexample WHERE cid=1 AND examplename="TESTING";');
 					//$query1->bindParam(":cid", $courseid);
-					//$query1->bindParam(":examplename", $dirname); // $parts[count($parts)-1]
+					//$query1->bindParam(":examplename", $dirname); 
 					$query1->exectue();
 
 					
