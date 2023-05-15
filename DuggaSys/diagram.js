@@ -9858,7 +9858,7 @@ function drawElement(element, ghosted = false)
                 /* if (canvasContext.measureText(element.alternatives[i]).width >= boxw-(linw*2)) {
                     console.log("alternative needs a linebreak");
                 } */
-                console.log(canvasContext.measureText(element.alternatives[i]).width);
+                console.log(element.alternatives[i] + "is " + canvasContext.measureText(element.alternatives[i]).width + "long");
                 str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
