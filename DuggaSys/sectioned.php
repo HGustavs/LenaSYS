@@ -571,10 +571,11 @@
 	<?php
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['lid'])) {	
+		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir'])) {	
+			$lid = $_POST['lid'];
 			$query = $pdo->prepare("UPDATE listentries set githubDir=:githubdir WHERE lid=:lid");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
-			$query->bindParam(':lid', $_POST['lid']);
+			$query->bindParam(':lid', $lid);
 			try {
 				if($query->execute()) {
 					echo "<script>console.log('update successful!');</script>";		
