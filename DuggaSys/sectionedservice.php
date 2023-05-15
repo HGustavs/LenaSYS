@@ -519,7 +519,9 @@ if($gradesys=="UNK") $gradesys=0;
 					$result = $query1->fetch(PDO::FETCH_OBJ);
 					$counted = $result->count;
 					
-					
+					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
+					$query3->bindParam(":examplename", $counted); 
+					$query3->execute();	
 					
 					
 
