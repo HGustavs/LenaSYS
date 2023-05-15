@@ -4179,6 +4179,7 @@ const stateLinesLabels=[];
                 }
                 for (let j = 0; j < stateSuper.length; j++) {
                     if (stateLines[i].toID == stateSuper[j][ENTITY].id) {
+                        stateSuper[j][LABEL] = stateLines[i].label;
                         connections.push(stateSuper[j]);
                     }
                 }
