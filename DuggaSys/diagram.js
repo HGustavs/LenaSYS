@@ -12611,7 +12611,7 @@ function exportWithHistory()
  */
  function storeDiagramInLocalStorage(){
 
-    if (stateMachine.currentHistoryIndex == stateMachine.tempHistoryIndex) {
+    if (stateMachine.currentHistoryIndex == stateMachine.tempHistoryIndex || stateMachine.tempHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
         // Remove all future states to the history
