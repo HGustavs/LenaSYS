@@ -569,7 +569,7 @@
 	<!-- github moments box  -->
 	<?php
 		if(isset($_POST['momentid'])) {
-			$value = $_POST['momentid'];
+			$lidvalue = $_POST['momentid'];
 			echo"<script>var php = '$value'; console.log(php);</script>";
 		}
 		global $pdo;
@@ -577,11 +577,10 @@
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && !empty($_POST['githubDir']) && isset($_POST['githubForm']) && $_POST['githubForm'] === 'githubForm') {
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
-			$query = $pdo->prepare("INSERT INTO listentries (cid, githubDir, creator, feedbackenabled) VALUES (:cid, :githubdir, :creator, :feedbackenabled)");
-			$query->bindParam(':cid', $cid);
+			// $ruery = $pdo->prepare("UPDATE listentries SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;");
+			$query = $pdo->prepare("UPDATE listentries set githubdir=:githubdir WHERE lid=:lid");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
-			$query->bindParam(':creator', $userid);
-			$query->bindParam(':feedbackenabled', $feedbackenabled);
+			$query->bindParam(':lid', $lidvalue);
 			try {
 				if($query->execute()) {
 					echo "<script>console.log('insert successful!');</script>";		
