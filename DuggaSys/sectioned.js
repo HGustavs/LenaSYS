@@ -492,8 +492,8 @@ function refreshTimeout() {
 
 // After 1 minute, decrese the number of clicks again
 function resetClick() {
-  console.log("click reset, current clicks: " + clicks);
 	clicks--;
+  console.log("click reset, current clicks: " + clicks);
 }
 
 //----------------------------------------------------------------------------------
