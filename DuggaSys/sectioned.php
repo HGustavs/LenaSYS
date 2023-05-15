@@ -589,7 +589,7 @@
 
 
 	<!-- github moments box  -->
-	<form action="" method="post">
+	<form action="" method="POST">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 				<div class='loginBoxheader'>
