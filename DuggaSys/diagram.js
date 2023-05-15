@@ -12615,6 +12615,7 @@ function exportWithHistory()
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
         console.log(this.currentHistoryIndex);
+        console.log(currentHistoryIndex);
         // Remove all future states to the history
         stateMachine.removeFutureStates();
         // The content of the save file
