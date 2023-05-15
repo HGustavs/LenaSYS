@@ -572,7 +572,7 @@
 	 foreach ($dirs as $dir) {
 		 $dirname = basename($dir);
 		 if(strstr($dirname, 'Examples')) {
-				$options += "<option value='$dirname'>$dirname</option>";
+				$options .= "<option value='$dirname'>$dirname</option>";
        	echo "<script>console.log('$dirname');</script>";
 		 }		
 	 }			
