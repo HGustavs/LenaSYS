@@ -4116,7 +4116,7 @@ function boxSelect_Draw(str)
  */
 function generateStateDiagramInfo()
 {
-    const ENTITY = 0, SEEN = 1;
+    const ENTITY = 0, SEEN = 1, LABEL = 2;
     const stateInitial = [];
     const stateFinal = [];
     const stateSuper = [];
@@ -4167,13 +4167,13 @@ const stateLinesLabels=[];
                 stateLinesLabels.push(stateLines[i].label);
                 for (let j = 0; j < stateElements.length; j++) {
                     if (stateLines[i].toID == stateElements[j][ENTITY].id) {
-                        stateElements[j][2] = stateLines[i].label;
+                        stateElements[j][LABEL] = stateLines[i].label;
                         connections.push(stateElements[j]);
                     }
                 }
                 for (let j = 0; j < stateFinal.length; j++) {
                     if (stateLines[i].toID == stateFinal[j][ENTITY].id) {
-                        stateFinal[j][2] = stateLines[i].label;
+                        stateFinal[j][LABEL] = stateLines[i].label;
                         connections.push(stateFinal[j]);
                     }
                 }
@@ -4186,14 +4186,14 @@ const stateLinesLabels=[];
         }
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-            if (connections[i][2] == undefined) {
+            if (connections[i][LABEL] == undefined) {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
             }
-            else if (re.test(connections[i][2])) {
-                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][2]}"</p>`;
+            else if (re.test(connections[i][LABEL])) {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][LABEL]}"</p>`;
             }
             else {
-                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with lable "${connections[i][2]}"</p>`;
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with lable "${connections[i][LABEL]}"</p>`;
             }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
