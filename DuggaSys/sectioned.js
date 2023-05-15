@@ -3012,7 +3012,7 @@ function createExamples(dir) {//TODO HERE
  
   cversid = 45656;
   dirname = dir;
-  //AJAXService("CREGITEX", {courseid : cid, coursevers : cversid, dirname : codeExDir}, "CREGITEX");
+  console.log("**** DIRNAME "+dirname);
 	$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
@@ -3020,6 +3020,7 @@ function createExamples(dir) {//TODO HERE
 			dataType: "json",
 			//success: returnedSection
 	});
+  console.log("** AJAX DONE **");
 }
 
 // ------ Validates all versionnames ------
@@ -3594,6 +3595,7 @@ function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked! A "+ momentID);
 
+  //for each codeexample in the moment dir, do create examples on those code-example dir
   dirname="../courses/1895/Github/Demo/Code-example1/"
   createExamples(dirname)
  
