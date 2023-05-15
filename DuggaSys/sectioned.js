@@ -534,6 +534,13 @@ function showSaveButton() {
 function sendValue(moment) {
   value = moment.getAttribute("value");
   console.log(value);
+  $.ajax({
+    url: "sectioned.php",
+    type: "POST",
+    data: {
+      value: value
+    }
+  })
 }
 
 
@@ -1705,7 +1712,7 @@ function returnedSection(data) {
           str += `<img style='max-width: 60%;' value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this); sendValue(this)'>`;
           str += "</td>";
-        }
+        
 
         // github icon for code (itemKind 2 is code)
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher'])  {
@@ -1715,7 +1722,7 @@ function returnedSection(data) {
           str += `<img style='max-width: 60%;' value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(this)'>`;
           str += "</td>";
-        }
+        
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
