@@ -32,7 +32,7 @@ If you have an unknown value in your SQL query and you need the result of anothe
 DELETE FROM course WHERE coursename = 'MyAPICourse' AND cid = (SELECT cid FROM (SELECT cid FROM course WHERE coursecode = 'IT400G' ORDER BY coursecode DESC LIMIT 1) AS temp_table);
 ```
 
-The second, more simpler method is to use the `query-variables` field. This allows you to retrieve values from the `service-data` array by specifying the names of the corresponding rows of data, which can be separated by commas. Then, in your query, you can use a question mark '?' as a placeholder. The first '?' corresponds to the first name in the 'query-variables' field. In Figure 2, the value of 'blop' is assigned to `query-before-test-3`, which is the result of **<!query-before-test-1!><[0][cid]>** in this example.
+The second, more simpler method is to use the `query-variables` field. This allows you to retrieve values from the `service-data` array by specifying the names of the corresponding rows of data, which can be separated by commas (and space after comma ex blop, blop2, blop3). Then, in your query, you can use a question mark '?' as a placeholder. The first '?' corresponds to the first name in the 'query-variables' field. In Figure 2, the value of 'blop' is assigned to `query-before-test-3`, which is the result of **<!query-before-test-1!><[0][cid]>** in this example.
 
 
 ```php
