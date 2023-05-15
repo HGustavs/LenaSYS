@@ -621,7 +621,7 @@
 				<script>
 					function imageClick(value) {
 						let lid = value.getAttribute('data-value');
-						document.getElementById('lidInpuit').value = lid;
+						document.getElementById('lidInput').value = lid;
 						document.getElementById('myForm').submit();
 					}
 				</script>
