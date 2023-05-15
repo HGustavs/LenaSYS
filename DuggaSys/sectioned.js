@@ -530,39 +530,16 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-// Fetching the value from clicked button
-/* function sendValue(moment) {
-  var value = moment.getAttribute("value");
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "sectioned.php");
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-  xhr.onreadystatechange = function() {
-    if(xhr.readyState == XMLHttpRequest.DONE) {
-      if(xhr.status === 200) {
-        console.log(value);
-        console.log("value was sent correctly");      
-      } else {
-        console.log("value was not sent correctly");
-      }
-    }
-  };
-  console.log(value);
-  xhr.send("momentid=" + encodeURIComponent(value));
-} */
+function sendValue(element) {
+  let dataValue = element.getAttribute('data-value');
+  fetch('sectioned.php?data_value=' + encodeURIComponent(dataValue))
+    .then(response => response.text())
+    .then(data => {
 
-function sendValue(lid) {
-  console.log(lid);
-	$.ajax({
-		url: "../DuggaSys/sectioned.php?lid=" +lid,
-		type: "GET",
-		data: {lid: lid},
-		success: function(data) {
-      console.log(data);
-		},
-		error: function(data){
-      console.log("Error:", data);
-		}
-	});
+    })
+    .catch(error => {
+
+    });
 }
 
 
@@ -1742,7 +1719,7 @@ function returnedSection(data) {
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' data-value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(${item['lid']})'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this)'>`;
           str += "</td>"; 
        }
 
