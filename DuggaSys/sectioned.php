@@ -48,7 +48,8 @@
 </head>
 <script>
 	function imageClick(value) {
-		console.log('Clicked image: ', value);
+		let lid = value.getAttribute(data-value);
+		console.log('Clicked image: ', lid);
 	}
 </script>
 <body onload="setup();">
