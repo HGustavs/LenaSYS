@@ -9854,6 +9854,10 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
+                //if the alternative is longer than the avaliable space, add a linebreak.
+                if (canvasContext.measureText(element.alternatives[i]).width >= boxw-(linw*2)) {
+                    console.log("alternative needs a linebreak");
+                }
                 str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
