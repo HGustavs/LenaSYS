@@ -480,12 +480,12 @@ function refreshGithubRepo(courseid)
 var clicks = 0; // Global variable to save number of refresh-attempts
 // Checks refresh attempts to decide if we are going to run the function 
 function refreshTimeout() { 
-  console.log(clicks);
-	setInterval(resetClick, 60000);
 	if(clicks >= 5) {
 		return false;
 	} else {
     clicks++;
+    setInterval(resetClick, 60000);
+    console.log(clicks);
 		return true;
 	}
 }
