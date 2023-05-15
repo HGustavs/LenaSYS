@@ -534,11 +534,16 @@ function showSaveButton() {
 function sendValue(moment) {
   value = moment.getAttribute("value");
   console.log(value);
+
+  var formData = new formData();
   $.ajax({
     url: "sectioned.php",
     type: "POST",
     data: {
       value: value
+    },
+    success: function(response) {
+      console.log("value was sent correctly");
     }
   })
 }
