@@ -506,8 +506,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$dirname = "Code-example1";
 					$courseid = 1;
 					$coursevers = 45656;
-					$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTING",1,45656,1);');
-					$query2->execute();	
+					
 					
 					//Server error from here
 					$query1 = $pdo->prepare("SELECT COUNT(*) FROM codeexample WHERE cid=:cid AND examplename=:examplename;");
@@ -516,7 +515,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query1->execute();
 
 					
-					/*
+					
 					$result = $query1->fetch(PDO::FETCH_OBJ);
 					$counted = $result->$counted;
 					
@@ -528,6 +527,10 @@ if($gradesys=="UNK") $gradesys=0;
 
 					//if no codeexample exist create a new one
 					if($counted == 0) {
+						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTING",1,45656,1);');
+						$query2->execute();	
+						
+						/*
 					//	bfs($url, $courseid, "DOWNLOAD");
 						//Get active version of the course
 						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
@@ -656,11 +659,13 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":highscoremode", $highscoremode);
 								$query->bindParam(":groupkind", $groupkind);
 								$query->execute();
-							}
+							}*/
 						} else {
 							//Check for update
+							$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTINGELSE","TESTING",1,45656,1);');
+							$query2->execute();	
 						} 
-					}*/
+					}
 				} else if (strcmp($coursevers, "null")!==0) {
 					// Get every coursevers of courses so we seed groups to every courseversion
 					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
