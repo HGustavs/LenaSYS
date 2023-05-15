@@ -578,7 +578,7 @@
 					<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder'> 
 								<option value="">Choose a directory</option>
-								<?
+								<?php
 									$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
 									foreach ($dirs as $dir) {
 										$dirname = basename($dir);
