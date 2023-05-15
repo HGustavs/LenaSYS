@@ -483,9 +483,9 @@ function refreshTimeout() {
   console.log(clicks);
 	setInterval(resetClick, 60000);
 	if(clicks > 5) {
-    clicks++;
 		return false;
 	} else {
+    clicks++;
 		return true;
 	}
 }
