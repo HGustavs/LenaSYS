@@ -89,19 +89,22 @@ function getIndexFile($url) {
     $indexFilePath = "/index.txt";
     $url = $url . $indexFilePath;
 
-    $authorization = 'Authorization: Bearer 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';
-    $c = curl_init($url);
-    curl_setopt($c, CURLOPT_USERAGENT, 'curl/7.48.0');
-    curl_setopt($c, CURLOPT_HEADER, 0);
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($c, CURLOPT_HTTPHEADER, array($authorization) );
-    curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, 0);
-    $http_response_code = curl_getinfo($c, CURLINFO_HTTP_CODE);
-    curl_close($c);
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
+    curl_setopt($curl, CURLOPT_HEADER, 0);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+    // To use github-token, uncomment the two lines below and add your token after "Bearer". See more in comments in  bfs-method
+    // $authorization = 'Authorization: Bearer YOUR_GITHUB_API_KEY';
+    // curl_setopt($curl, CURLOPT_HTTPHEADER, array($authorization) );
+
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
     
     if($http_response_code == 200){
-        $response = json_decode(curl_exec($c));
+        $response = json_decode(curl_exec($curl));
         return explode("\n", file_get_contents($response->download_url));
     } else {
         return false;
