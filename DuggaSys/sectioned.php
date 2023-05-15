@@ -593,7 +593,7 @@
 			}
 		}
 	?>
-	<form action="" method="POST">
+	<form action="" method="POST" id="form">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 				<div class='loginBoxheader'>
@@ -622,7 +622,7 @@
 					function imageClick(value) {
 						let lid = value.getAttribute('data-value');
 						document.getElementById('lidInput').value = lid;
-						document.getElementById('myForm').submit();
+						document.getElementById('form').submit();
 					}
 				</script>
 			</div>
