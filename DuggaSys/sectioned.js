@@ -3009,14 +3009,14 @@ function createExamples(dir) {//TODO HERE
   console.log("**** CID "+querystring['courseid']);
 
   //cversid = document.getElementById("cversid").value;
- 
+  cid= 1895;
   cversid = 45656;
   dirname = dir;
   console.log("**** DIRNAME "+dirname);
 	$.ajax({
 			url: "sectionedservice.php",
 			type: "POST",
-			data: {'cversid':cversid,'dirname':dirname , 'opt':'CREGITEX'},
+			data: {'courseid':cid,'cversid':cversid,'dirname':dirname , 'opt':'CREGITEX'},
 			dataType: "json",
 			//success: returnedSection
 	});

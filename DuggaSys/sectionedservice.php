@@ -501,27 +501,21 @@ if($gradesys=="UNK") $gradesys=0;
 				} else if(strcmp($opt,"CREGITEX")===0) {
 
 					//count if there is already a codeexample or if we should create a new one.
-					//"../courses/1895/Github/Demo/Code-example1/"
-
-					$varname="Dirname";
-						
+					
+					$varname="cid";	
 					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 					$query3->bindParam(":examplename", $varname); 
-					$query3->bindParam(":sectionname", $dirname); 
-					$query3->execute();	
+					$query3->bindParam(":sectionname", $courseid); 
+					$query3->execute();		
+					
 
 
 					$dirnameArray = explode('/', $dirname);
 					$dirname = $dirnameArray[count($dirnameArray)-2];
 
-					$varname="DirnameExplodeCount";
-					$countArrayEx = count($dirnameArray);
-					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-					$query3->bindParam(":examplename", $varname); 
-					$query3->bindParam(":sectionname", $countArrayEx); 
-					$query3->execute();	
+					
 					//$dirname = "Code-example1";
-					$courseid = 1895;
+					//$courseid = 1895;
 					
 
 					$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
