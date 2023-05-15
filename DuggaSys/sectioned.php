@@ -13,11 +13,6 @@
 	}else{
 		$userid="00";
 	}
-	if(isset($_POST['cid'])) {
-		echo "<script>console.log('cid found');</script>";
-	} else {
-		echo "<script>console.log('cid not found');</script>";
-	}
 ?>
 
 <!DOCTYPE html>
@@ -46,19 +41,6 @@
 	<script src="backToTop.js"></script>
 	
 </head>
-<script>
-	function imageClick(value) {
-		let lid = value.getAttribute('data-value');
-		$.ajax({
-		url: window.location.href,
-		method: 'POST',
-		data: { lid: lid },
-		success: function(response) {
-			console.log('PHP script response:', response);
-			}
-		});
-	}
-</script>
 <body onload="setup();">
 
 	<?php
@@ -634,7 +616,15 @@
 							?>
 						</select>
 					</div>
+				<input type="hidden" name="lid" id="lidInput">
 				<input type="submit" name="githubInsert" value="Submit!">
+				<script>
+					function imageClick(value) {
+						let lid = value.getAttribute('data-value');
+						document.getElementById('lidInpuit').value = lid;
+						document.getElementById('myForm').submit();
+					}
+				</script>
 			</div>
 		</div>
 	</form>
