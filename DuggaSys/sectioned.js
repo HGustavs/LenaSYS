@@ -551,7 +551,7 @@ function showSaveButton() {
 } */
 
 function sendValue(moment) {
-  let lid = moment.getAttribute("value");
+  let lid = moment.getAttribute("data-value");
 	$.ajax({
 		url: "../DuggaSys/sectioned.php",
 		type: "POST",
@@ -1730,7 +1730,7 @@ function returnedSection(data) {
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
+          str += `<img style='max-width: 60%;' data-value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this); sendValue(this)'>`;
           str += "</td>";
         }
@@ -1740,7 +1740,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
+          str += `<img style='max-width: 60%;' data-value="${item['lid']}" class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
           src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this); sendValue(this)'>`;
           str += "</td>"; 
        }
