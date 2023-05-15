@@ -503,7 +503,7 @@ if($gradesys=="UNK") $gradesys=0;
 					
 					//$parts = explode('/', $url);// $parts[count($parts)-1]
 					//count if there is already a codeexample or if we should create a new one.
-					$dirname = "TESTING";
+					$dirname = "Code-example1";
 					$courseid = 1;
 					$coursevers = 45656;
 					
@@ -532,7 +532,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTING",1,45656,1);');
 						$query2->execute();	
 						
-						/*
+						
 						//	bfs($url, $courseid, "DOWNLOAD");
 						//Get active version of the course
 						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
@@ -540,6 +540,11 @@ if($gradesys=="UNK") $gradesys=0;
 						$query->execute();
 						$e = $query->fetchAll();
 						$coursevers = $e[0]['activeversion'];
+
+						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
+						$query3->bindParam(":examplename", $coursevers); 
+						$query3->execute();	
+						/*
 						//Get the last position in the listenries to add new course at the bottom
 						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 						$query->bindParam(":cid", $courseid);
