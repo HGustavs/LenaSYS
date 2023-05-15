@@ -48,7 +48,7 @@
 </head>
 <script>
 	function imageClick(value) {
-		let lid = value.getAttribute(data-value);
+		let lid = value.getAttribute('data-value');
 		console.log('Clicked image: ', lid);
 	}
 </script>
