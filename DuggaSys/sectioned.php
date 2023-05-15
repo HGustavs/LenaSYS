@@ -1,6 +1,7 @@
 <?php
 	include "../Shared/basic.php";
 	include "../Shared/sessions.php";
+	include "sectioned.js";
 	session_start();
 	//include_once "../../coursesyspw.php";
 	pdoConnect();
