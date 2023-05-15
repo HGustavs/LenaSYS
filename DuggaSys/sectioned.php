@@ -13,7 +13,9 @@
 	}else{
 		$userid="00";
 	}
-	$value = $_POST['value'];
+	if(isset($_POST['value'])) {
+		$value = $_POST['value'];
+	}
 ?>
 
 <!DOCTYPE html>
