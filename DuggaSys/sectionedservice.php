@@ -588,8 +588,8 @@ if($gradesys=="UNK") $gradesys=0;
 							
 							$varname="fileCount";
 							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $templateNumber); 
-							$query3->bindParam(":sectionname", $fileCount); 
+							$query3->bindParam(":examplename", $fileCount); 
+							$query3->bindParam(":sectionname", $varname); 
 							$query3->execute();	
 							
 							//If we find files that should be in the codeexample, create the codeexample
