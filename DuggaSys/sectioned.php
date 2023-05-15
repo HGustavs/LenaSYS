@@ -568,7 +568,7 @@
 	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
     <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
         <div class='loginBoxheader'>
-		<h3 id='editSectionDialogTitle'>Testing</h3>
+		<h3 id='githubMomentTitle'>Github Moment</h3>
             <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
         </div>
 
