@@ -569,21 +569,21 @@
 	<!-- github moments box  -->
 	<?php
 		global $pdo;
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && isset($_POST['lid']) && !empty($_POST['githubDir'])) {
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$query = $pdo->prepare("UPDATE listentries SET githubDir = :githubdir WHERE lid = :lid");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
 			$query->bindParam(':lid', $_POST['lid']);
 			try {
 				if($query->execute()) {
-					echo "<script>console.log('Update successful!');</script>";		
+					$message = 'Update Successful!';
 				} else {
-					echo "<script>console.log('Update failed!');</script>";		
+					$message = 'Update failed.';
 				} 
 			} catch (PDOException $e) {
-				$errorMessage = $e->getMessage();
-				echo "<script>console.log('" . addslashes($errorMessage) . "');</script>";
+				$message = 'Update failed: ' . $e->getMessage();
 			}
+			echo "<script>console.log('" . addslashes($message) . "');</script>";
 		}
 	?>
 	<form action="" method="POST" id="form">
@@ -598,7 +598,8 @@
 						<select name="githubDir" placeholder='Github Folder'> 
 							<option value="">Choose a directory</option>
 							<?php
-								$dirs = glob('../courses/1/Github/*', GLOB_ONLYDIR);
+								$cid = getOP('courseid');
+								$dirs = glob('../courses/${cid}/Github/*', GLOB_ONLYDIR);
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
 									if(strstr($dirname, 'Examples')) {
