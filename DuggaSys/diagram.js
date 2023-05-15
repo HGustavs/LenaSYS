@@ -9818,16 +9818,16 @@ function drawElement(element, ghosted = false)
             element.altOrLoop = newAltOrLoop;
         }
 
-        const maxCharactersPerLine = Math.floor((boxw / texth)*1.75);
+        let maxLengthOfAlt = Math.floor((boxw / texth)*1.75);
 
-        const splitLengthyLine = (str, max) => {
+        let splitLengthyLine = (str, max) => {
             if (str.length <= max) return str;
             else {
                 return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
             }
         }
 
-        const text = element.alternatives.map(line => {
+        let splitAlternatives = element.alternatives.map(line => {
             return splitLengthyLine(line, maxCharactersPerLine);
         }).flat();
 
@@ -9874,8 +9874,8 @@ function drawElement(element, ghosted = false)
                     console.log("alternative needs a linebreak");
                 }
                 console.log(element.alternatives[i] + "is " + canvasContext.measureText(element.alternatives[i]).width + "long"); */
-                for (var i = 0; i < elemAttri; i++) {
-                    str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${text[i]}</text>`;
+                for (let i = 0; i < splitAlternatives.length; i++) {
+                    str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
                 }
                 //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
