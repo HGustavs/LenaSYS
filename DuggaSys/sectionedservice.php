@@ -552,7 +552,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$query2->execute();	
 
 						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-						$query3->bindParam(":examplename", $metadata_db); 
+						$query3->bindParam(":examplename", $success); 
 						$query3->bindParam(":sectionname", $success); 
 						$query3->execute();	
 						/*
