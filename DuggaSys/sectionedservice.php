@@ -550,10 +550,10 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 						$query2 = $pdo->prepare('INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,"TESTING","TESTINGSQLITE",1,45656,1);');
 						$query2->execute();	
-
+						$varname="success";
 						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 						$query3->bindParam(":examplename", $success); 
-						$query3->bindParam(":sectionname", $success); 
+						$query3->bindParam(":sectionname", $varname); 
 						$query3->execute();	
 						/*
 						//select the files that has should be in the codeexample
