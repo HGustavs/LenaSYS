@@ -598,7 +598,7 @@
 							}
 						}
                     }catch(PDOException $e) {
-                        return '<p>Error: ' . $e->getMessage() . '</p>';
+						echo '<p>Error: ' . $e->getMessage() . '</p>';
                     }
                 ?>
 			</select></div>
