@@ -2898,6 +2898,7 @@ function changeState()
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity') {
             if (newType == 'SD') {
+                displayMessage("You cannot change to SD relation type");
                 return;
             }
             var property = document.getElementById("propertySelect").value;
@@ -2922,6 +2923,7 @@ function changeState()
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'IEEntity') {
             if (newType == 'SD') {
+                displayMessage("You cannot change to SD relation type");
                 return;
             }
             var property = document.getElementById("propertySelect").value;
