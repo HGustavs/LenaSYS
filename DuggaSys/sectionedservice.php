@@ -546,10 +546,10 @@ if($gradesys=="UNK") $gradesys=0;
 						//Get the last position in the listenries to add new course at the bottom
 						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 						$query->bindParam(":cid", $courseid);
-						$query->bindParam(":entryname", $moment);
+						//$query->bindParam(":entryname", $moment);
 						$query->execute();
 						$e = $query->fetchAll();
-						$pos = $e[1]['pos'];//Gets the last filled position+1 to put the new codexample at
+						$pos = $e[0]['pos'];//Gets the last filled position+1 to put the new codexample at
 						
 						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:examplename,1,45656,1);");
 						$query3->bindParam(":examplename", $pos); 
