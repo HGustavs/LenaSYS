@@ -9818,6 +9818,22 @@ function drawElement(element, ghosted = false)
             element.altOrLoop = newAltOrLoop;
         }
 
+        const maxCharactersPerLine = Math.floor((boxw / texth)*1.75);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.alternatives.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;
+        elemFunc = funcText.length;
+
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
@@ -9855,11 +9871,14 @@ function drawElement(element, ghosted = false)
                 fill='transparent'
                 />`;
                 //if the alternative is longer than the avaliable space, add a linebreak.
-                if (canvasContext.measureText(element.alternatives[i]).width >= boxw-(linew*2)) {
+                /* if (canvasContext.measureText(element.alternatives[i]).width >= boxw-(linew*2)) {
                     console.log("alternative needs a linebreak");
                 }
-                console.log(element.alternatives[i] + "is " + canvasContext.measureText(element.alternatives[i]).width + "long");
-                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
+                console.log(element.alternatives[i] + "is " + canvasContext.measureText(element.alternatives[i]).width + "long"); */
+                for (var i = 0; i < elemAttri; i++) {
+                    str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${text[i]}</text>`;
+                }
+                //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
         //svg for the small label in top left corner
