@@ -570,7 +570,6 @@
 	<?php
 		if(isset($_POST['momentid'])) {
 			$lidvalue = $_POST['momentid'];
-			echo"<script>var php = '$value'; console.log(php);</script>";
 		}
 		global $pdo;
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -578,14 +577,14 @@
 			$cid = getOPG('courseid');
 			$feedbackenabled = 0;
 			// $ruery = $pdo->prepare("UPDATE listentries SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;");
-			$query = $pdo->prepare("UPDATE listentries set githubdir=:githubdir WHERE lid=:lid");
+			$query = $pdo->prepare("UPDATE listentries set githubDir=:githubdir WHERE lid=:lid");
 			$query->bindParam(':githubdir', $_POST['githubDir']);
 			$query->bindParam(':lid', $lidvalue);
 			try {
 				if($query->execute()) {
-					echo "<script>console.log('insert successful!');</script>";		
+					echo "<script>console.log('update successful!');</script>";		
 				} else {
-					echo "<script>console.log('insert failed!');</script>";		
+					echo "<script>console.log('update failed!');</script>";		
 				} 
 			} catch (PDOException $e) {
 				$errorMessage = $e->getMessage();
