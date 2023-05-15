@@ -1712,8 +1712,8 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        function sendValue(this) {
-          console.log(this);
+        function sendValue(moment) {
+          console.log(moment);
         }
 
         // Checkbox
