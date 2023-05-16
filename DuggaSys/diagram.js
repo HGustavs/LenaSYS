@@ -9790,7 +9790,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the activation rect
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew*2)}' height='${boxh - (linew*2)}' rx='${sequenceCornerRadius*4}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew*2)}' height='${boxh - (linew*2)}' rx='${sequenceCornerRadius*3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
