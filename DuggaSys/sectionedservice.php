@@ -499,8 +499,6 @@ if($gradesys=="UNK") $gradesys=0;
 					$gdb->close();
 					
 				} else if(strcmp($opt,"CREGITEX")===0) {
-
-					
 					//Get cid
 					$query = $pdo->prepare("SELECT cid FROM listentries WHERE lid=:lid");
 					$query->bindParam(":lid", $lid);
@@ -516,22 +514,18 @@ if($gradesys=="UNK") $gradesys=0;
 					$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
 					$query1->bindParam(":cid", $courseid);
 					$query1->bindParam(":examplename", $dirname); 
-					$query1->execute();
-					
+					$query1->execute();					
 					$result = $query1->fetch(PDO::FETCH_OBJ);
 					$counted = $result->count;
 
 					//if no codeexample exist create a new one
 					if($counted == 0) {
-	
-						//	bfs($url, $courseid, "DOWNLOAD");
 						//Get active version of the course
 						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
 						$query->bindParam(":cid", $courseid);
 						$query->execute();
 						$e = $query->fetchAll();
 						$coursevers = $e[0]['activeversion'];
-
 	
 						//Get the last position in the listenries to add new course at the bottom
 						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
@@ -545,16 +539,14 @@ if($gradesys=="UNK") $gradesys=0;
 						$success = false;
 						try {
 							$metadata_db = new PDO('sqlite:../../githubMetadata/metadata'.$metadataDbVersion.'.db');
-							$success = true;
-							
+							$success = true;							
 						} catch (PDOException $e) {
 							echo "Failed to connect to the database";
 							throw $e;
 						}
 						
 						//select the files that has should be in the codeexample
-						if($success) {
-							
+						if($success) {							
 							//Count files in the directory for the codeexample
 							$fileCount = 0;
 							$files = scandir($dirPath);
@@ -563,11 +555,9 @@ if($gradesys=="UNK") $gradesys=0;
 									$fileCount++;
 								}
 							}
-							
 							//If we find files that should be in the codeexample, create the codeexample
 							//Only template for 1 up to 5 files
-							if($fileCount > 0 && $fileCount<6) {
-								
+							if($fileCount > 0 && $fileCount<6) {					
 								// There are at least two boxes, create two boxes to start with
 								if ($fileCount == 1) {
 									$templateNumber = 10;
@@ -579,12 +569,9 @@ if($gradesys=="UNK") $gradesys=0;
 									$templateNumber = 5;
 								} else if ($fileCount == 5) {
 									$templateNumber = 9;
-								} 
-								
-								
+								} 						
 								$examplename = $dirname;
 								$sectionname = $dirname;
-
 								//create codeexample
 								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
 								$query->bindParam(":cid", $courseid);
@@ -606,7 +593,6 @@ if($gradesys=="UNK") $gradesys=0;
 									$parts = explode('.', $filename);
 									$filetype = "CODE";
 									$wlid = 0;
-								
 									if($parts[1] == "js") {
 										$filetype = "CODE";
 										$wlid = 1;
@@ -632,8 +618,6 @@ if($gradesys=="UNK") $gradesys=0;
 										$filetype = "DOCUMENT";
 										$wlid = 4;
 									} 
-									
-									
 									$boxid=$i-1;
 									$fontsize= 9;
 									$setting = "[viktig=1]";
@@ -647,9 +631,6 @@ if($gradesys=="UNK") $gradesys=0;
 									$query->bindParam(":wordlistid", $wlid);
 									$query->bindParam(":fontsize", $fontsize);
 									$query->execute();
-									
-
-
 								}
 								
 								$link = "UNK";
@@ -660,7 +641,6 @@ if($gradesys=="UNK") $gradesys=0;
 								$gradesys = null;
 								$highscoremode = 0;
 								$groupkind = null;
-
 								//add the codeexample to listentries
 								$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
 																		VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
@@ -676,8 +656,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":gradesys", $gradesys);
 								$query->bindParam(":highscoremode", $highscoremode);
 								$query->bindParam(":groupkind", $groupkind);
-								$query->execute();
-								
+								$query->execute();	
 							}
 						}
 					} else {
