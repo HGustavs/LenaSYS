@@ -3115,8 +3115,8 @@ function changeLineProperties()
         line.label = label.value
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-    // UML line
-    if (line.type == 'UML') {
+    // UML or IE line
+    if ((line.type == 'UML')||(line.type == 'IE')) {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -6825,7 +6825,7 @@ function generateContextProperties()
                 }
             }
         }
-        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
+        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
