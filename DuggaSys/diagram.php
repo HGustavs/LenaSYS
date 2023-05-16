@@ -447,12 +447,12 @@
                             <br>
                             <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                         </span>
-                        <div id="togglePlacementTypeButton9" class="placementTypeIcon togglePlacementTypeButton">
+                        <div id="togglePlacementTypeButton2" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>  
                     <div id="diagramPopOut">  
-                        <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                        <div id="togglePlacementTypeBox2" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
