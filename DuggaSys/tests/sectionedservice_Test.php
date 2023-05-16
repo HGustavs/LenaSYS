@@ -100,16 +100,16 @@ $testsData = array(
     ),
 );
 
-foreach($testsData as $i => $value){
-    echo $i;
-    echo $value;
-    foreach($i as $i2 => $value2){
-        echo $i2;
-        echo $value2;
-    }
+// foreach($testsData as $i => $value){
+//     echo $i;
+//     echo $value;
+//     foreach($i as $i2 => $value2){
+//         echo $i2;
+//         echo $value2;
+//     }
 
-}
-//echo $testsData['service-data'];
+// }
+echo $testsData['create course test']['expected-output'];
 testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 
