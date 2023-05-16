@@ -4253,7 +4253,7 @@ function toggleDiagramDropdown()
         dropdown.style.display="none";
     }
 
-    document.getElementById("diagramDropdownToggle").classList.toggle("active");
+    //document.getElementById("diagramDropdownToggle").classList.toggle("active");
     // Toggle active grid + color change of button to clarify if button is pressed or not
     
     if (btn.style.backgroundColor ="#614875") {
