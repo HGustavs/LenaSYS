@@ -853,7 +853,7 @@ function updateSelectedDir() {
     data: {
       action: "updateSelectedDir",
       selectedDir: selectedDir,
-      cid: cid
+      cid: cidFromServer
     },
     success: function(data) {
       console.log('Update successful');
