@@ -599,7 +599,7 @@
 							<option value="">Choose a directory</option>
 							<?php
 								$cid = getOPG('courseid');
-								$dirs = glob('../courses/${cid}/Github/*', GLOB_ONLYDIR);
+								$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
 									if(strstr($dirname, 'Examples')) {
