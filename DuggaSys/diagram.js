@@ -8997,8 +8997,8 @@ function addNodes(element)
         mdNode.style.width = nodeSize+"px"; 
         mdNode.style.height = nodeSize+"px";
         mdNode.style.height = nodeSize+"px";
-        mdNode.style.top = "calc(50% - "+(nodeSize/4)+"px)";
-        //mdNode.style.top = "100%";
+        mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
+        mdNode.style.top = "100%";
     }
 
     if (element.kind == "UMLSuperState"){
