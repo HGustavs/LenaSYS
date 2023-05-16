@@ -15,7 +15,7 @@ true give $writeAccess="w";, else $writeAccess="s";
 
 ###Login:
 ```
-Username: 2
+Username: Toddler
 Password: Kong
 ```
 
@@ -31,13 +31,13 @@ Select * from codeexample where exampleid=9013
 send{
 	$exampleCount=1;
 	$exampleId=9013; 
-	$exampleName=New Code;
+	$exampleName="New Code";
 	$courseID = 1885
 	$cversion= 1337;
 	$beforeId= [];
 	$afterId= [];
 	$public=0;
-	$sectionName=New Code9013;
+	$sectionName="New Code9013";
 	$playlink= NULL;
 }
 
@@ -84,10 +84,10 @@ true give $writeAccess="w";, else $writeAccess="s";
 
 ###Login:
 ```
-Username: 2
+Username: Toddler
 Password: Kong
 ```
-###Creation of new codeexemple that is visable
+###Creation of new codeexemple that is visible
 ```
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9012', NULL, NULL, NULL, 1338, 0, 1, 0);
 INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9012,2,5,1,2,'undefined', 2, 0, null);
@@ -118,8 +118,8 @@ Send{
   $courseId = 1885;
   $courseVersion = 1337;
   $i = 1;
-  $kind = CODE
-  $file = HTML-TEST1.html
+  $kind = "CODE"
+  $file = "HTML-TEST1.html"
   $wordlist = 1
 }
 
@@ -168,11 +168,11 @@ true give $writeAccess="w";, else $writeAccess="s";
 
 ###Login:
 ```
-Username: 2
+Username: Toddler
 Password: Kong
 ```
 ###MySQL Pre edit
-**Creation of new codeexemple that is visable**
+**Creation of new codeexemple that is visible**
 ```
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
 INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
@@ -185,8 +185,8 @@ select * from codeexample where exampleid = 9023;
 Send{
   $opt = "EDITEXAMPLE";
   $playlink = NULL;
-  $exampleName = New Code;
-  $sectionName = New Code9023;
+  $exampleName = "New Code";
+  $sectionName = "New Code9023";
   $beforeId = NULL;
   $afterId = NULL;
   $courseId = 1885;
@@ -237,11 +237,11 @@ true give $writeAccess="w";, else $writeAccess="s";
 
 ###Login:
 ```
-Username: 2
+Username: Toddler
 Password: Kong
 ```
 ###MySQL Pre edit
-**Creation of new codeexemple that is visable**
+**Creation of new codeexemple that is visible**
 ```
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
 
@@ -252,10 +252,10 @@ select * from box where exampleid=(select max(exampleid) from box);
 ###Values
 ```
 Send{
-  $boxTitle = Title;
-  $boxContent = DOCUMENT;
+  $boxTitle = "Title";
+  $boxContent = "DOCUMENT";
   $wordlist = 4;
-  $filename = ---===######===---;
+  $filename = "---===######===---";
   $fontsize = 9;
   $boxId = 1;
   $exampleId 9023;
@@ -305,11 +305,11 @@ true give $writeAccess="w";, else $writeAccess="s";
 
 ###Login:
 ```
-Username: 2
+Username: Toddler
 Password: Kong
 ```
 ###MySQL Pre edit
-**Creation of new codeexemple that is visable**
+**Creation of new codeexemple that is visible**
 ```
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
 
@@ -320,9 +320,14 @@ select * from box where exampleid=(select max(exampleid) from box);
 ###Values
 ```
 Send{
-  $boxTitle = Title;
+  $boxTitle = "Title";
   $boxId = 1;
   $exampleId 9023;
+}
+
+output{
+  "id":
+  "title":
 }
 
 ```
@@ -342,11 +347,11 @@ true give $writeAccess="w";, else $writeAccess="s";
 
 ###Login:
 ```
-Username: 2
+Username: Toddler
 Password: Kong
 ```
 ###MySQL Pre edit
-**Creation of new codeexemple that is visable**
+**Creation of new codeexemple that is visible**
 ```
 INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(4,1338,'New Code',9021,2,5,1,2,'undefined', 2, 0, null);
 insert into codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) values (4, 'New Code', 'New Code9021', NULL, NULL, NULL, 1338, 0, 1, 0);
