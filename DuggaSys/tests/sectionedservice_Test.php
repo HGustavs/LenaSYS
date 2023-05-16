@@ -8,8 +8,8 @@ $testsData = array(
         
         'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(1,45656,'New Group',9021,6,5,0,22,'TOP', 0, 0, null)",
         'query-before-test-2' => "INSERT INTO codeexample (exampleid, cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) VALUE (9021, 1, 'New Code', 'New Code9021', NULL, NULL, NULL, 45656, 0, 1, 0);",
-        // 'query-after-test-1' => "DELETE FROM listentries WHERE lid > 5009;",
-        // 'query-after-test-2' => "DELETE FROM codeexample WHERE exampleid > 9009;",
+        'query-after-test-1' => "DELETE FROM listentries WHERE lid > 5009;",
+        'query-after-test-2' => "DELETE FROM codeexample WHERE exampleid > 9009;",
         'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'GRP',
