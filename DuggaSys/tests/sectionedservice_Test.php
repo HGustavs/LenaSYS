@@ -110,7 +110,7 @@ $testsData = array(
 
 // }
 
-testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
+testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 echo $testsData['create course test']['service-data'];
 
 
