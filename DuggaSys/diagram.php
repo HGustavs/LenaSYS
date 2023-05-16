@@ -441,7 +441,7 @@
                          onmouseup='holdPlacementButtonUp();'
                          onmousedown="holdPlacementButtonDown(2)">
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                        <span class="toolTipText"><b>Attribute</b><br>
+                        <span class="toolTipText"><b>ER Attribute</b><br>
                             <p>Add a ER attribute to the diagram</p>
                             <p>Each attribute represents different characteristics of an entity.</p>
                             <br>
@@ -477,7 +477,7 @@
                             </div>
                             <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="toolTipText"><b>Attribute</b><br>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
                                     <p>Add a ER attribute to the diagram</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
