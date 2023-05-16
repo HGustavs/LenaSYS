@@ -149,7 +149,7 @@ function testHandler($testsData, $prettyPrint){
 
         $TestsReturnJSON['querys-before-test'] = $QueryReturnJSONbefore;
         
-        //Output filter
+        // Output filter
         $filter = unserialize($testData['filter-output']);
 
         if ($prettyPrint) {
@@ -258,16 +258,29 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     $curlResponseJSON = json_decode($curlResponse, true);
 
     // Only include JSON same as filter
-    foreach($filter as $option){
+    foreach($filter as $option => $optionArray){
         // If none do not filter
-        if ($option == "none") {
+        if ($option === "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
         }
         else{
             foreach($curlResponseJSON as $key => $value){
                 // Check if respons key exists in filter
                 if (in_array($key, $filter)) {
-                    $curlResponseJSONFiltered[$key] = $value; 
+                    // Not to store if array, handled further down
+                    if (!(is_array($optionArray))) {
+                        $curlResponseJSONFiltered[$key] = $value; 
+                    }
+                }
+                // Check what to save in array
+                foreach($curlResponseJSON[$key] as $inside => $insideValue){
+                    foreach($insideValue as $inside2 => $insideValue2){
+                        foreach($optionArray as $insideFilter){
+                            if ($inside2 == $insideFilter) {
+                              $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -284,9 +297,9 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         echo "<h3> Test 2 (callService): {$callServiceTestResult} </h3>";
         echo "<strong>service: </strong>{$service}";
         echo "<br>";
-        echo "<strong>sent data: </strong>".json_encode(unserialize($data),true);
+        echo "<strong>sent data: </strong>".json_encode($data,true);
         echo "<br>";
-        echo "<strong>result: </strong>".json_encode($curlResponseJSONFiltered, true);
+        echo "<strong>respons: </strong>".json_encode($curlResponseJSONFiltered, true);
         echo "<br>";
         echo "<br>";
     }
@@ -294,7 +307,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         'result' => $callServiceTestResult,
         'respons' => $curlResponseJSONFiltered,
         'service' => $service,
-        'data' => $data,
+        'sent-data' => $data,
         'query-return' => $queryReturnPathAndDataJSON
     );
 }
@@ -334,5 +347,5 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 }
 
 
-// Version 1.4 (Increment when new change in code)
+// Version 1.4.1 (Increment when new change in code)
 ?>

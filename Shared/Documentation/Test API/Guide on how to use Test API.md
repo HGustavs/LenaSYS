@@ -21,7 +21,7 @@ The test API aims to be as easy as possible. In figure 2 you can find an example
 - **service:** This should be the URL to the file that contains the service you are going to test. 
 - **service-data**: Include here all data that are needed to execute the specific service. The monolithic services use the opt to decide which service to execute. But each service also needs other parameters to be able to execute the service. In the example all parameters to create a new course is defined. This is something you need to find out, and there should be test descriptions on GitHub that describes all these needed parameters. 
 
-- **filter-option:** This decides what JSON output to use in the comparison test that will be performed later. This should be the same as the expected output if used. And it is also the displayed repones from the test. If none is used as the only value in the array all output data from the service will be used.  
+- **filter-option:** This decides what JSON output to use in the comparison test that will be performed later. This should be the same as the expected output if used. And it is also the displayed repones from the test. If none is used as the only value in the array all output data from the service will be used. You can also make an array to specify what values in the array of a respons field to include, in the example only coursename, cousecode and visibility will be saved. If there is no array like this alla data will be used (no filter will be applied to the specific field)
 
 #### Save query output
 You can save the output from a "query-before-test" and use the value in the service data as the example in figure 2 shows. Soround the name of the query you want to save with "<!" before and  "!> after (ex !query-before-test-1!) and then you can specify a path to the exact value (optional) to save, for example [0][coursename], do this "<* .... *>".
@@ -68,7 +68,12 @@ $testsData = array(
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
             'debug',
-            'readonly'
+            'readonly',
+            'entries' => array( // if not specified all data in array is used otherwise filtered with defined values
+                'coursename',
+                'coursecode',
+                'visibility'
+            ),
         )),
     ),
     'create course test 2' => array(
@@ -223,4 +228,4 @@ Depending on the second argument to testHandler two different outputs will be di
 - **True:** Returns HTML that displays the results.  
 - **False:** Returns all test results as JSON. 
 
-***Guide for Test API version 1.4***
+***Guide for Test API version 1.4.1***
