@@ -579,6 +579,8 @@
                     try{
                         $cid = getOPG('courseid');
 						echo "<script>console.log('CID: ', $cid);</script>";
+						echo "<script>var cidFromServer = $cid;</script>";
+
 
                         $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
                 

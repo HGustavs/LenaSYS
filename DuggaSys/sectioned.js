@@ -844,8 +844,11 @@ function cancelDelete() {
 function updateSelectedDir() {
   var selectedDir = $('#selectDir').val();
   console.log('Sending POST REQUEST');
+  console.log(cid);
+  console.log(selectedDir);
+  console.log(cidFromServer);
   $.ajax({
-    url: "sectioned.php",
+    url: "./sectioned.php",
     type: "POST",
     data: {
       action: "updateSelectedDir",
