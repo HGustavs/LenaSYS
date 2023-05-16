@@ -2921,18 +2921,17 @@ function changeState()
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    //Check if type has been changed
-    if (oldType != newType) {
-        var newKind = element.kind;
-        newKind = newKind.replace(oldType, newType);
-        //Update element kind
-        element.kind = newKind;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    }
-    //Update element type
-    element.type = newType;
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
     else if(element.type=='IE') {
