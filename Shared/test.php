@@ -152,9 +152,6 @@ function testHandler($testsData, $prettyPrint){
         // Output filter
         $filter = unserialize($testData['filter-output']);
 
-        // Remove output filter
-        $remove = unserialize($testData['remove-output-in-array']);
-
         if ($prettyPrint) {
             echo "<h2>{$testData['name']} </h2>";
         }
@@ -165,7 +162,7 @@ function testHandler($testsData, $prettyPrint){
         $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
         // Test 2 callService
-        $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $remove, $prettyPrint));
+        $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
         $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
@@ -224,7 +221,7 @@ function loginTest($user, $pwd, $prettyPrint){
 }
 
 // Test 2: call service test
-function callServiceTest($service, $data, $filter, $QueryReturnJSON, $remove, $prettyPrint){
+function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrint){
 
     $data = unserialize($data);
 
@@ -263,20 +260,24 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $remove, $p
     // Only include JSON same as filter
     foreach($filter as $option => $optionArray){
         // If none do not filter
-        if ($option == "none") {
+        if ($option === "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
         }
         else{
             foreach($curlResponseJSON as $key => $value){
                 // Check if respons key exists in filter
                 if (in_array($key, $filter)) {
-                    $curlResponseJSONFiltered[$key] = $value; 
+                    // Not to store if array, handled further down
+                    if (!(is_array($optionArray))) {
+                        $curlResponseJSONFiltered[$key] = $value; 
+                    }
                 }
+                // Check what to save in array
                 foreach($curlResponseJSON[$key] as $inside => $insideValue){
                     foreach($insideValue as $inside2 => $insideValue2){
                         foreach($optionArray as $insideFilter){
                             if ($inside2 == $insideFilter) {
-                              unset($curlResponseJSONFiltered[$key][$inside][$inside2]);
+                              $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
                             }
                         }
                     }
@@ -298,7 +299,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $remove, $p
         echo "<br>";
         echo "<strong>sent data: </strong>".json_encode($data,true);
         echo "<br>";
-        echo "<strong>result: </strong>".json_encode($curlResponseJSONFiltered, true);
+        echo "<strong>respons: </strong>".json_encode($curlResponseJSONFiltered, true);
         echo "<br>";
         echo "<br>";
     }
