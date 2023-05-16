@@ -4271,13 +4271,6 @@ function changeReplayState(sliderValue)
  */
 function toggleStepForward()
 {
-        // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
-        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
-    }
-    // Add the diagramActive to current diagramIcon
-    document.getElementById("stepForwardToggle").classList.add("active");
 
     stateMachine.stepForward();
 }
@@ -4287,13 +4280,6 @@ function toggleStepForward()
  */
 function toggleStepBack() 
 {
-    // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
-        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
-    }
-    // Add the diagramActive to current diagramIcon
-    document.getElementById("stepBackToggle").classList.add("active");
 
     stateMachine.stepBack();
 }
@@ -12551,13 +12537,6 @@ function showdata()
  */
 function centerCamera()
 {
-        // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
-        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
-    }
-    // Add the diagramActive to current diagramIcon
-    document.getElementById("camtoOrigo").classList.add("active");
 
     // Stops execution if there are no elements to center the camera around.
     if (data.length == 0) {
@@ -12659,13 +12638,6 @@ function exportWithHistory()
  * @description Stores the current diagram as JSON in localstorage
  */
  function storeDiagramInLocalStorage(){
-        // Remove all "active" classes in nav bar
-        var navButtons = document.getElementsByClassName("toolbarMode");
-        for (var i = 0; i < navButtons.length; i++) {
-            if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
-        }
-        // Add the diagramActive to current diagramIcon
-        document.getElementById("localSave").classList.add("active");
 
     // Remove all future states to the history
     stateMachine.removeFutureStates();
@@ -12927,14 +12899,6 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
 
 //Alert function to give user a warning/choice before reseting diagram data.
 function resetDiagramAlert(){
-     // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
-        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
-    }
-    // Add the diagramActive to current diagramIcon
-    document.getElementById("diagramReset").classList.add("active");
-
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if(refreshConfirm){
         resetDiagram();
