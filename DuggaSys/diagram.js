@@ -4256,7 +4256,7 @@ function toggleDiagramDropdown()
     //document.getElementById("diagramDropdownToggle").classList.toggle("active");
     // Toggle active grid + color change of button to clarify if button is pressed or not
     
-    if (btn.style.backgroundColor ="#614875") {
+    if (window.getComputedStyle(dropdown).display==="none") {
         btn.style.backgroundColor ="transparent";
         btn.style.border = "3px solid #614875";
         btn.style.color = "#614875";
@@ -4377,7 +4377,7 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
-
+    
     if (stylesheet.href.includes('blackTheme')) {
         btn.style.backgroundColor ="#614875";
         btn.style.color = "#ffffff";
