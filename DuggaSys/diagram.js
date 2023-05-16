@@ -9856,8 +9856,6 @@ function drawElement(element, ghosted = false)
                 />`;
                 //text for each alternative
                 str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
-                }
-                //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
         //svg for the small label in top left corner
