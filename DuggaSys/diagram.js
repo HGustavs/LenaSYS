@@ -2854,8 +2854,8 @@ function constructElementOfType(type)
  * @param {Element} element
  * @returns {array} result
  */
-function getElementLines(element) {
-    return element.top.concat(element.right, element.bottom, element.left);
+function getElementLines(element) { 
+    return element.bottom.concat(element.right, element.top, element.left);
 }
 
 /**
@@ -2916,11 +2916,11 @@ function changeState()
     else if(element.type=='UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity') {
+
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-
         //Check if type has been changed
         if (oldType != newType) {
             var newKind = element.kind;
