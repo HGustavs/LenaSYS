@@ -850,7 +850,7 @@ function updateSelectedDir() {
     data: {
       action: "updateSelectedDir",
       selectedDir: selectedDir,
-      cid: getOPG('courseid')
+      cid: cid
     },
     success: function(data) {
       console.log('Update successful');
