@@ -132,7 +132,7 @@ INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime,
 Updates values in the table __user__ in the database, columns that are updated.
 <br>
 
-#### UpdateUserInformation:
+#### UpdateUser:
 __firstname__ 
 - firstname
 ```sql
@@ -231,7 +231,7 @@ INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R
 
 <br>
 
-### updateTableUserCourse --only used by UpdateUserAndUsercourse--
+### updateTableUserCourse --ONLY USED BY updateUsercourse--
 
 Update values in the table __user_course__, columns that are updated.
 <br>

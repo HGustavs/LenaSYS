@@ -11,7 +11,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - contribution_loginbox_service : __dont know if needed__
 - courseedservice  __==finished==__
 - diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
-- duggaedservice __==NOT FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!==__
+- duggaedservice __==finished==__
 - fileedservice __==finished==__
 - highscoreservice __==finished==__
 - sectionedservice __==finished==__
@@ -223,19 +223,34 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 <br>
 
 
-### UpdateUserAndUsercourse
+### UpdateUser
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - firstname
+Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - lastname
+Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - ssn
+Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - username
+Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - class
+Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - password 
 
+<br>
+
+---
+
+<br>
+
+### updateUsercourse
 Uses service __updateTableUser__ to update one of these columns in the table __user_course__ at a time:
 - examiner
+Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
 - vers
+Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
 - access
+Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
 - group
 
 
