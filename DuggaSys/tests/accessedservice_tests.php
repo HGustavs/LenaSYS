@@ -204,6 +204,7 @@ $testsData = array(
     // Test 11
     'create access test 11' => array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
+        'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2, 'testClassName', 12345678, '87654321', 7.5, 100, 1.5)",
         'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
