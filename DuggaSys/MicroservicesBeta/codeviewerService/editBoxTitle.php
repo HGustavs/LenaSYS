@@ -18,6 +18,7 @@
 	$opt=getOP('opt');
     
     require __DIR__ . '../Misc/checkUserStatus.php';
+    require __DIR__ . '/codeViewerRetriveInformation.php'
 
     echo checkUserStatusTest();
 
@@ -37,4 +38,6 @@
             return;
         }
     }
+
+    echo retrieveCodeViewerInformation();
 ?>
