@@ -27,7 +27,12 @@ send {
 	$action = "challenge";
 }
 
+*********
+Service output-
+*********
 
+Save the values in encoded JSON string (for example '{"success": true, "status": "", "debug": "NONE!"}')
+this is the expected output for the micro service.
 
 -----------------------------------------
 Row : 46 Check if methods work if student
@@ -56,6 +61,13 @@ End pre-
 	}
 
 
+*********
+Service output-
+*********
+
+Save the values in encoded JSON string (for example '{"success": false, "status": "teacher", "debug": "NONE!"}')
+this is the expected output for the micro service.
+
 ----------------------------------
 Row 62: Check if passwords matches
 ----------------------------------
@@ -82,8 +94,14 @@ End pre-
 		$password = "Kong";
 		$result = "Kong"; 	
 	}
-	
 
+*********
+Service output-
+*********
+
+Save the values in encoded JSON string (for example '{"success": false, "status": "wrongpassword", "debug": "NONE!"}')
+this is the expected output for the micro service. Indicating that the password provided is incorrect.
+	
 ------------------------------------------------------------------------
 Row 64: Methods for changing challenge and passwords of a student user. 
 ------------------------------------------------------------------------
@@ -108,6 +126,12 @@ Sql-query: "UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer
 
 Sql-query: "UPDATE user SET password=:PW WHERE uid=:userid";
 
-
- 
 // Test as student user, check data in database. If password and challenge changed, it's correct.
+
+*********
+Service output-
+*********
+
+Save the values in encoded JSON string (for example '"success": true, "status": "", "debug": "NONE!"}')
+this is the expected output for the micro service. indicating that the password and challenge question updates were successful.
+ 
