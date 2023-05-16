@@ -9807,15 +9807,12 @@ function drawElement(element, ghosted = false)
         //first, set a suggested height for the element based on the amount of alternatives
         if (element.alternatives != null) {
             //increase length of element to avoid squished alternatives
-            //boxh += 250*element.alternatives.length;
             for (let i = 0; i < element.alternatives.length; i++) {
                 boxh += 125*zoomfact;
             }
             //also set alt or loop to whatever is correct
-            let newAltOrLoop;
             //check if the length is less or equal to 1, if so its loop, else its alt.
-            element.alternatives.length <= 1 ? newAltOrLoop = "Loop" : newAltOrLoop = "Alt";
-            element.altOrLoop = newAltOrLoop;
+            element.alternatives.length <= 1 ? element.altOrLoop = "Loop" : element.altOrLoop = "Alt";
         }
 
         //div to encapsulate sequence loop 
