@@ -9839,7 +9839,7 @@ function drawElement(element, ghosted = false)
             rx='${7*zoomfact}'
             fill-opacity="0"
         />`;
-        //if the user chose to have alternative lines, iterate and draw them out one by one, evenly spaced out.
+        //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
         if ((element.alternatives != null) && (element.alternatives.length > 0)) {
             for (let i = 1; i < element.alternatives.length; i++) {
                 str += `<path class="text"
