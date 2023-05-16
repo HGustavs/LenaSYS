@@ -852,8 +852,9 @@ function updateSelectedDir() {
       cid: cidFromServer
     },
     success: function(data) {
-      console.log('Update successful');
-      console.log("Response: ", data);      
+      console.log('POST-request call successful');
+      console.log("Response: ", data);
+
       // Parse the JSON response
       var response;
       try {
@@ -865,9 +866,8 @@ function updateSelectedDir() {
 
       // Handle the response
       if (response.status === "success") {
-        console.log('Directory update successful');
-        alert('Directory has been picked succesfully')
-        
+        console.log('Update successful');
+        alert('Directory has been updated succesfully')
       } else {
         console.error('Update failed:', response.message);
       }
