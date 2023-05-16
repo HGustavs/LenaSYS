@@ -62,7 +62,7 @@ $testsData = array(
  
 
 
-//echo $testsData;
+echo $testsData;
 testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 ?>
