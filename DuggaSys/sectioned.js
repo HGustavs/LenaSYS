@@ -3516,17 +3516,20 @@ function validateForm(formid) {
   }
     // validates the github moment from github integration (the github icon)
     if (formid === 'saveGithubMoment') {
-    var selectedDir = document.getElementById('selectDir').value;
+      event.preventDefault();
+      var selectedDir = document.getElementById('selectDir').value;
 
-    // Validate fields here. For example, check if fields are not empty
-    if (selectedDir == "" || selectedDir == null) {
-      alert("Pick directory");
-      return;
+      // Validate fields here. For example, check if fields are not empty
+      if (selectedDir == "" || selectedDir == null) {
+        alert("Pick directory");
+        return;
+      }
+
+      updateSelectedDir(cid, selectedDir);
+
+      // If validation passes, submit the form
+      document.getElementById('githubForm').submit();
     }
-
-    // If validation passes, submit the form
-    document.getElementById('githubForm').submit();
-  }
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
