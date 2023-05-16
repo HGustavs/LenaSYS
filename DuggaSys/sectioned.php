@@ -627,7 +627,7 @@
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
-			<input type='button' class='submit-button' onclick="console.log('Button clicked'); validateForm('saveGithubMoment'); updateSelectedDir();" value='Save'>
+			<input type='button' class='submit-button' onclick="console.log('Button clicked'); updateSelectedDir();" value='Save'>
 			</form>
 			<!-- End of form -->
 
