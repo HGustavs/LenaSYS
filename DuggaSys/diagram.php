@@ -314,6 +314,15 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
+                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="toolTipText"><b>Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -357,6 +366,15 @@
                                     <p>Change to IE inheritance</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="toolTipText"><b>Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -404,17 +422,70 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
+                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="toolTipText"><b>Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                    <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Add a ER attribute to the diagram</p>
-                        <p>Each attribute represents different characteristics of an entity.</p>
-                        <br>
-                        <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
-                    </span>
+                <div>
+                    <div id="elementPlacement9"
+                         class="ERAttribute diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(9); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(9)">
+                        <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                        <span class="toolTipText"><b>Attribute</b><br>
+                            <p>Add a ER attribute to the diagram</p>
+                            <p>Each attribute represents different characteristics of an entity.</p>
+                            <br>
+                            <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton9" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>  
+                    <div id="diagramPopOut">  
+                        <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
+                                <span class="placementTypeToolTipText"><b>ER Relation</b><br>
+                                    <p>Change to ER relation</p>
+                                    <p>Represents how entities are associated with each other.</p>
+                                </span>
+                            </div>
+                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
+                                <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                    <p>Change to UML inheritance</p>
+                                    <p>A relation between a superclass and subclasses.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
+                                <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
+                                    <p>A relation between two or more entities.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="toolTipText"><b>Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
