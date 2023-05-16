@@ -1,7 +1,5 @@
 profileservice-tests.txt
 
-
-
 ------------------------------------------------------------------
 Row : 46 Check if it blocks teacher, send parameters as an teacher
 ------------------------------------------------------------------
