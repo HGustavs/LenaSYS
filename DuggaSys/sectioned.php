@@ -572,7 +572,7 @@
             <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
         </div>
 			<!-- Start of form -->
-			<form id="githubForm" method="POST" onsubmit="event.preventDefault();">
+			<form id="githubForm" method="POST">
 			<div class='inputwrapper'><span>directory:</span><select class='selectDir' id='selectDir' name="selectDir" placeholder='Directory' value=''> 
                 <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
                 <?php
@@ -627,7 +627,7 @@
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
-			<input type='button' class='submit-button' onclick="console.log('Button clicked'); validateForm('saveGithubMoment'); " value='Save'>
+			<input type='button' class='submit-button' onclick="console.log('Button clicked'); validateForm('saveGithubMoment'); updateSelectedDir();" value='Save'>
 			</form>
 			<!-- End of form -->
 

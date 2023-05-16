@@ -854,12 +854,19 @@ function updateSelectedDir() {
     },
     success: function(data) {
       console.log('Update successful');
-      console.log("Response: ",data);
-       // Parse the JSON response
-      var response = JSON.parse(data);
+      console.log("Response: ", data);
 
-     // Handle the response
-     if(response.status === "success") {
+      // Parse the JSON response
+      var response;
+      try {
+        response = JSON.parse(data);
+      } catch (e) {
+        console.error('Failed to parse JSON:', e);
+        return;
+      }
+
+      // Handle the response
+      if (response.status === "success") {
         console.log('Update successful');
       } else {
         console.error('Update failed:', response.message);
@@ -867,8 +874,8 @@ function updateSelectedDir() {
     },
     error: function(xhr, status, error) {
       console.error('Update failed:', error);
-      console.log("Status: ",status );
-      console.log("Error: ",error );
+      console.log("Status: ", status);
+      console.log("Error: ", error);
     }
   });
 }
@@ -3534,7 +3541,7 @@ function validateForm(formid) {
         return;
       }
 
-      updateSelectedDir(cid, selectedDir);
+      updateSelectedDir();
 
       // If validation passes, submit the form
       // document.getElementById('githubForm').submit();
