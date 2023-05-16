@@ -13,6 +13,30 @@
 	}else{
 		$userid="00";
 	}
+
+	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && isset($_POST['lid']) && !empty($_POST['githubDir'])) {
+		global $pdo;
+		$githubDir = $_POST['githubDir'];
+		$lid = $_POST['lid'];
+		updateGithubDirectory($pdo, $githubDir, $lid);
+	}
+
+	function updateGithubDirectory($pdo, $githubDir, $lid) {
+		try {
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$query = $pdo->prepare("UPDATE listentries SET githubDir = :githubdir WHERE lid = :lid");
+			$query->bindParam(':githubdir', $githubDir);
+			$query->bindParam(':lid',$lid);
+			if($query->execute()) {
+				echo "<script>console.log('Update Successful!');</script>";
+			} else {
+				echo "<script>console.log('Update Failed.');</script>";
+			} 
+		}
+		catch(PDOException $exception) {
+			echo "<script>console.log('Update Failed: " . addslashes($exception->getMessage()) . "');</script>";
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -567,33 +591,6 @@
 
 
 	<!-- github moments box  -->
-	<?php
-		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && isset($_POST['lid']) && !empty($_POST['githubDir'])) {
-			global $pdo;
-			$githubDir = $_POST['githubDir'];
-			$lid = $_POST['lid'];
-			updateGithubDirectory($pdo, $githubDir, $lid);
-		}
-
-		function updateGithubDirectory($pdo, $githubDir, $lid) {
-			try {
-				$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$query = $pdo->prepare("UPDATE listentries SET githubDir = :githubdir WHERE lid = :lid");
-				$query->bindParam(':githubdir', $githubDir);
-				$query->bindParam(':lid',$lid);
-				if($query->execute()) {
-					$message = 'Update Successful!';
-				} else {
-					$message = 'Update failed.';
-				} 
-				echo "<script>console.log('. $message .');</script>";
-			}
-			catch(PDOException $exception) {
-				$message = 'Update failed: ' . $exception->getMessage();
-			}
-		}
-	?>
-
 	<form action="" method="POST" id="form">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
