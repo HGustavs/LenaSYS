@@ -9885,7 +9885,7 @@ function drawElement(element, ghosted = false)
                 //using the same split function used in UML and IE but in a slightly different way.
                 //let splitAlts = splitLengthyLine(element.alternatives[i], maxLengthOfAlt);
                 //let splitAlts = splitLengthyLine(element.alternatives[i], boxw);
-                console.log(splitLengthyLine(element.alternatives[i], boxw));
+                console.log(splitAlts);
                 if (splitAlts.length > 1) {
                     str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlts[0]}</text>`;
                     //something special
