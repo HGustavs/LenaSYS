@@ -237,7 +237,8 @@ $testsData = array(
     // Test 13
     'create access test 13' => array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
-        'query-before-test-1' => "INSERT INTO class(class, responsible, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2,'testClassName', 12345678, '87654321', 7.5, 100, 1.5)",
+        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')",
+        'query-before-test-2' => "INSERT INTO class(class, responsible, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2,'testClassName', 12345678, '87654321', 7.5, 100, 1.5)",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'query-after-test-2' => "DELETE FROM class WHERE class = 'testClass'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
@@ -257,10 +258,10 @@ $testsData = array(
         )),
     ),
     // Test 14
-    // Add select and insert
     'create access test 14' => array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
-        'query-before-test-1' => "SELECT count(username) FROM user", // May change!
+        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')",
+        'query-before-test-2' => "INSERT INTO class(class, responsible, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2,'testClassName', 12345678, '87654321', 7.5, 100, 1.5)",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'query-after-test-2' => "DELETE FROM class WHERE class = 'testClass'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
