@@ -1675,6 +1675,22 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        // Cog Wheel for headers
+        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+
+
+          str += "<img style='filter: invert(1);' alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
+          str += " onclick='setActiveLid("+item['lid']+");selectItem(" + makeparams([item['lid'], item['entryname'],
+          item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+
+          str += "</td>";
+        }
+
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
