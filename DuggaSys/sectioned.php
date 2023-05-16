@@ -568,24 +568,32 @@
 
 	<!-- github moments box  -->
 	<?php
-		global $pdo;
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && isset($_POST['lid']) && !empty($_POST['githubDir'])) {
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$query = $pdo->prepare("UPDATE listentries SET githubDir = :githubdir WHERE lid = :lid");
-			$query->bindParam(':githubdir', $_POST['githubDir']);
-			$query->bindParam(':lid', $_POST['lid']);
+			global $pdo;
+			$githubDir = $_POST['githubDir'];
+			$lid = $_POST['lid'];
+			updateGithubDirectory($pdo, $githubDir, $lid);
+		}
+
+		function updateGithubDirectory($pdo, $githubDir, $lid) {
 			try {
+				$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$query = $pdo->prepare("UPDATE listentries SET githubDir = :githubdir WHERE lid = :lid");
+				$query->bindParam(':githubdir', $githubDir);
+				$query->bindParam(':lid',$lid);
 				if($query->execute()) {
 					$message = 'Update Successful!';
 				} else {
 					$message = 'Update failed.';
 				} 
-			} catch (PDOException $e) {
-				$message = 'Update failed: ' . $e->getMessage();
+				echo "<script>console.log('. $message .');</script>";
 			}
-			echo "<script>console.log('" . addslashes($message) . "');</script>";
+			catch(PDOException $exception) {
+				$message = 'Update failed: ' . $exception->getMessage();
+			}
 		}
 	?>
+
 	<form action="" method="POST" id="form">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
 			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
