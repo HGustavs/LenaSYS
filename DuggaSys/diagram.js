@@ -2608,7 +2608,7 @@ function mmoving(event)
 
                 // Remove the new width, giving us the total change
                 const widthChange = -(tmp - elementData.width);
-                
+                console.log(widthChange);
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
