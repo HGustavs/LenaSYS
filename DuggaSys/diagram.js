@@ -1106,7 +1106,6 @@ var settings = {
     }
 };
 
-
 // Demo data - read / write from service later on
 
 var diagramToLoad = "";
@@ -12629,14 +12628,20 @@ function exportWithHistory()
  * @description Stores the current diagram as JSON in localstorage
  */
  function storeDiagramInLocalStorage(){
-    // Remove all future states to the history
-    stateMachine.removeFutureStates();
-    // The content of the save file
-    var objToSave = {
-        historyLog: stateMachine.historyLog,
-        initialState: stateMachine.initialState
-    };
-    localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+
+    if (stateMachine.currentHistoryIndex == -1) {
+        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+    } else {
+        // Remove all future states to the history
+        stateMachine.removeFutureStates();
+        // The content of the save file
+        var objToSave = {
+            historyLog: stateMachine.historyLog,
+            initialState: stateMachine.initialState
+        };
+        localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+        displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
+    }
 }
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
