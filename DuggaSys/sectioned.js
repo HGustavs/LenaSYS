@@ -843,6 +843,7 @@ function cancelDelete() {
 // update selected directory
 function updateSelectedDir() {
   var selectedDir = $('#selectDir').val();
+  console.log('Sending POST REQUEST');
   $.ajax({
     url: "sectioned.php",
     type: "POST",
@@ -853,9 +854,12 @@ function updateSelectedDir() {
     },
     success: function(data) {
       console.log('Update successful');
+      console.log("Response: ",data);
     },
     error: function(xhr, status, error) {
       console.error('Update failed:', error);
+      console.log("Status: ",status );
+      console.log("Error: ",error );
     }
   });
 }

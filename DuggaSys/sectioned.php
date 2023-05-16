@@ -602,20 +602,26 @@
 						echo '<p>Error: ' . $e->getMessage() . '</p>';
                     }
 
-					if(isset($_POST['selectedDir'])){
+					if(isset($_POST['selectedDir']) && isset($_POST['cid'])){
 						$selectDir = $_POST['selectedDir'];
-
+						$cid = $_POST['cid'];
+					
 						try {
+							echo 'Connecting to database\n';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+							echo 'Preparing query\n';
 							$query =  $pdolite->prepare('UPDATE gitFiles SET selectedDir = :selectedDir WHERE cid = :cid');
 							$query->bindParam(':selectedDir', $selectDir);
 							$query->bindParam(':cid', $cid);
+							echo 'Executing query\n';
 							$query->execute();
+							echo 'Query executed successfully\n';
 						} catch(PDOException $e) {
-							echo '<p>Error: ' . $e->getMessage() . '</p>';
+							echo 'Error: ' . $e->getMessage() . '\n';
 						}
-					}
-
+					} else {
+						echo 'POST parameters not set\n';
+					}					
 				
                 ?>
 			</select></div>
