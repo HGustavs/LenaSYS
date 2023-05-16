@@ -854,6 +854,7 @@ function updateSelectedDir() {
     success: function(data) {
       console.log('Update successful');
       console.log("Response: ", data);
+      alert('Directory has been picked succesfully')
 
       // Parse the JSON response
       var response;
