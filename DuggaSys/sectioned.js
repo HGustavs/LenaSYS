@@ -871,6 +871,7 @@ function updateSelectedDir() {
       // Handle the response
       if (response.status === "success") {
         console.log('Update successful');
+        // alert('Directory has been picked succesfully')
       } else {
         console.error('Update failed:', response.message);
       }
@@ -3545,6 +3546,17 @@ function validateForm(formid) {
       }
 
       updateSelectedDir();
+
+      //Toggle for alert when updateSelectedDir is called
+      var element = document.getElementById("updateAlert");
+      element.classList.toggle("createAlertToggle");
+      //Set text for the alert when updateSelectedDir is called
+      document.getElementById("updateAlert").innerHTML = "The directory is now updated!";
+      //Duration time for the alert before remove
+      setTimeout(function(){
+        $("#updateAlert").removeClass("createAlertToggle");
+        document.getElementById("updateAlert").innerHTML = "";
+      },3000);
 
       // If validation passes, submit the form
       // document.getElementById('githubForm').submit();
