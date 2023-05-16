@@ -442,7 +442,7 @@ function changedType(kind) {
 
 function refreshGithubRepo(courseid) 
 {
-  if(refreshTimeout()) { // 
+  //if(refreshTimeout()) { // 
     //Used to return success(true) or error(false) to the calling function
     var dataCheck;
     $.ajax({
@@ -472,11 +472,12 @@ function refreshGithubRepo(courseid)
     });
     console.log("ajax done" + courseid);
     return dataCheck;
-  } else {
-    alert("Currently oversaturated with refresh requests, please wait before refreshing.");
-  }
+  //} else {
+    //alert("Currently oversaturated with refresh requests, please wait before refreshing.");
+  //}
 }
 
+/*
 var clicks = 0; // Global variable to save number of refresh-attempts
 // Checks refresh attempts to decide if we are going to run the function 
 function refreshTimeout() { 
@@ -494,7 +495,7 @@ function refreshTimeout() {
 function resetClick() {
 	clicks--;
   console.log("click reset, current clicks: " + clicks);
-}
+}*/
 
 //----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog

@@ -89,6 +89,38 @@
 	// -------------==============######## Refresh Github Repo in Course ###########==============-------------
 
 	//--------------------------------------------------------------------------------------------------
+	// refreshCheck: Checks how often the data is updated, and if it can be updated again
+	//--------------------------------------------------------------------------------------------------
+
+	// TODO::: Does this mean we need to save the updated time when an update is made?? 
+	// Do we do this already???
+	// Where in the code should this happen???
+	function refreshCheck($cid, $user) {
+		// Connect to database and start session
+		pdoConnect();
+		session_start();
+
+		// Fetching from the database
+		global $pdo;
+		$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+
+		// get the "last updated time" from mysql
+		// compare with current time
+		// "We have two variables, $shortdeadline and $longdeadline (for example configured to 5 minutes and 10 minutes)"
+
+		// if user "teacher" 
+		// // if "($currenttime-$mostrecent<$shortdeadline)"
+		// // // return
+		// // else refresh
+		// else if "student" 
+		// // if "($currenttime-$mostrecent>$longdeadline)"
+		// // //refresh repo
+		// // else return
+	}
+
+	//--------------------------------------------------------------------------------------------------
 	// refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit
 	//--------------------------------------------------------------------------------------------------
 
