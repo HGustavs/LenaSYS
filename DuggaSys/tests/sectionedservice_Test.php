@@ -21,7 +21,9 @@ $testsData = array(
             'blop' => '!query-before-test-1! [0][coursename]',
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            //'entries',
+            'entries' => array(
+                'ts'
+            ),
             'debug',
             'writeaccess',
             'studentteacher',
