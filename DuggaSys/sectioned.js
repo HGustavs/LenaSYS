@@ -842,7 +842,7 @@ function cancelDelete() {
 
 // update selected directory
 function updateSelectedDir() {
-  var selectedDir = $('#selectDir').val();
+  const selectedDir = $('#selectDir').val();
   $.ajax({
     url: "./sectioned.php",
     type: "POST",
@@ -852,43 +852,35 @@ function updateSelectedDir() {
       cid: cidFromServer
     },
     success: function(data) {
-      console.log('Update successful');
-      console.log("Response: ", data);
-      //Toggle for alert when updateSelectedDir is called
-      var element = document.getElementById("updateAlert");
-      element.classList.toggle("createAlertToggle");
-      //Set text for the alert when updateSelectedDir is called
-      document.getElementById("updateAlert").innerHTML = "The directory is now updated!";
-      //Duration time for the alert before remove
-      setTimeout(function(){
-        $("#updateAlert").removeClass("createAlertToggle");
-        document.getElementById("updateAlert").innerHTML = "";
-      },3000);
+      console.log('POST-request successful');
+
       // Parse the JSON response
-      var response;
+      let response;
       try {
         response = JSON.parse(data);
       } catch (e) {
-        console.error('Failed to parse JSON:', e);
+        console.error(`Failed to parse JSON: ${e}`);
+        alert('An error occurred while processing your request');
         return;
       }
 
       // Handle the response
       if (response.status === "success") {
-        console.log('Update successful');
+        console.log('Directory update successful');
         alert('Directory has been picked succesfully')
-        
       } else {
-        console.error('Update failed:', response.message);
+        console.error(`Update failed: ${response.message}`);
+        alert('Error occurred while updating the directory');
       }
     },
     error: function(xhr, status, error) {
-      console.error('Update failed:', error);
-      console.log("Status: ", status);
-      console.log("Error: ", error);
+      console.error(`Update failed: ${error}`);
+      console.log(`Status: ${status}`);
+      console.log(`Error: ${error}`);
     }
   });
 }
+
 
 //----------------------------------------------------------------------------------
 // getDeletedItems: Used to retrieve deleted list entries
