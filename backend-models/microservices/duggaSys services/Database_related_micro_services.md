@@ -1166,7 +1166,7 @@ INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,relativedead
 
 <br>
 
-#### createOrUpdateDugga
+#### createDugga
 - cid
 - creator  (this is the user id)
 - vers 
@@ -1193,7 +1193,7 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 Updates values in the table __quiz__. Columns that are updated: 
 <br>
 
-#### createOrUpdateDugga
+#### UpdateDugga
 - qname
 - autograde
 - gradesystem

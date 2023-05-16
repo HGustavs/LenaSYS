@@ -226,14 +226,19 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 ### UpdateUser
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - firstname
+
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - lastname
+
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - ssn
+
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - username
+
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - class
+
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
 - password 
 
@@ -246,10 +251,13 @@ Uses service __updateTableUser__ to update one of these columns in the table __u
 ### updateUsercourse
 Uses service __updateTableUser__ to update one of these columns in the table __user_course__ at a time:
 - examiner
+
 Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
 - vers
+
 Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
 - access
+
 Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
 - group
 
@@ -539,8 +547,17 @@ Uses service __deliteFromTableCourse__ to delete a row from the table __course__
 <br>
 <br>
 
-### createOrUpdateDugga
+### createDugga
 Uses service __insertIntoTableQuiz__ to makes _inserts_ into the table __quiz__. 
+
+<br>
+
+---
+
+<br>
+
+### UpdateDugga
+
 Uses the services __updateTableQuiz__ to change the content of these columns:
 - coursename
 - visibility
@@ -556,15 +573,11 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 - jsondeadline
 - group
 
-
-
 <br>
 
 ---
 
 <br>
-
-
 ### deleteDugga
 Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 
