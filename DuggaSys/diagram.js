@@ -4515,12 +4515,8 @@ function toggleErTable()
     for (var i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
-    console.log(document.getElementById("erTableToggle").classList.value.split(' '));
-    // remove when servers shows updated diagram.php
-    document.getElementById("erTableToggle").classList.add("toolbarMode");
     // Add the diagramActive to current diagramIcon
     document.getElementById("erTableToggle").classList.add("active");
-    console.log(document.getElementById("erTableToggle").classList.value.split(' '));
 
     if(erTableToggle == false){
         erTableToggle = true;
