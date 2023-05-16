@@ -9,7 +9,7 @@ $testsData = array(
         'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(1,45656,'New Group',9021,6,5,0,22,'TOP', 0, 0, null)",
         // 'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
         // 'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
-//        'query-after-test-2' => "DELETE FROM listentries WHERE lid > 5009;",
+        'query-after-test-2' => "DELETE FROM listentries WHERE lid > 5009;",
         'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'GRP',
