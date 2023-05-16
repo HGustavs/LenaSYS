@@ -855,6 +855,15 @@ function updateSelectedDir() {
     success: function(data) {
       console.log('Update successful');
       console.log("Response: ",data);
+       // Parse the JSON response
+      var response = JSON.parse(data);
+
+     // Handle the response
+     if(response.status === "success") {
+        console.log('Update successful');
+      } else {
+        console.error('Update failed:', response.message);
+      }
     },
     error: function(xhr, status, error) {
       console.error('Update failed:', error);
