@@ -34,16 +34,20 @@
             $username = $row['username'];
         }
 
-        //Users: superuser, studentteacher, write, read, superviser 
+        //Users: superuser, studentteacher, write, read, supervisor 
         // Checks and sets user rights
-        if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
-            $writeAccess="w";
-        }else (checklogin() && (hasAccess($userid, $courseId, 'st'))){
-            $writeAccess="st";
-        }else (checklogin() && (hasAccess($userid, $courseId, 'r'))){
-            $writeAccess="r";
-        }else (checklogin() && (hasAccess($userid, $courseId, 'sv'))){
-            $writeAccess="sv";
+        if(checklogin() && (hasAccess($userid, $courseId, 'w'))){ //Write
+            $userAccess="w";
+        }else (checklogin() && (hasAccess($userid, $courseId, 'st'))){ //studentteacher 
+            $userAccess="st";
+        }else (checklogin() && (hasAccess($userid, $courseId, 'r'))){ //Read 
+            $userAccess="r";
+        }else (checklogin() && (hasAccess($userid, $courseId, 'sv'))){ //Supervisor 
+            $userAccess="sv";
+        }
+        
+        if (checklogin() && (isSuperUser($userid))){ //Super user
+            $superAccess=true;
         }
     }
 ?>
