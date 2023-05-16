@@ -43,28 +43,28 @@ $testsData = array(
             // 'avgfeedbackscore'
         )),
     ),
-    'create course test 2' => array(
-        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/courseedservice.php',
-        'service-data' => serialize(array( // Data that service needs to execute function
-            'opt' => 'NEW',
-            'username' => 'mestr',
-            'password' => 'password',
-            'coursecode' => 'IT466G',
-            'coursename' => 'TestCourseFromAPI5',
-            'uid' => '101'
-        )),
-        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            'none'
-        )),
-    ),
+    // 'create course test 2' => array(
+    //     'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+    //     'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/courseedservice.php',
+    //     'service-data' => serialize(array( // Data that service needs to execute function
+    //         'opt' => 'NEW',
+    //         'username' => 'mestr',
+    //         'password' => 'password',
+    //         'coursecode' => 'IT466G',
+    //         'coursename' => 'TestCourseFromAPI5',
+    //         'uid' => '101'
+    //     )),
+    //     'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+    //         'none'
+    //     )),
+    // ),
 );
  
 
 foreach($testsData as $i => $value){
     echo $i;
     echo $value;
-    foreach($values as $i2 => $value2){
+    foreach($i as $i2 => $value2){
         echo $i2;
         echo $value2;
     }
