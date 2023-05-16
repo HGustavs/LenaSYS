@@ -842,7 +842,7 @@ function cancelDelete() {
 
 // update selected directory
 function updateSelectedDir() {
-  const selectedDir = $('#selectDir').val();
+  var selectedDir = $('#selectDir').val();
   $.ajax({
     url: "./sectioned.php",
     type: "POST",
@@ -852,15 +852,14 @@ function updateSelectedDir() {
       cid: cidFromServer
     },
     success: function(data) {
-      console.log('POST-request successful');
-
+      console.log('Update successful');
+      console.log("Response: ", data);      
       // Parse the JSON response
-      let response;
+      var response;
       try {
         response = JSON.parse(data);
       } catch (e) {
-        console.error(`Failed to parse JSON: ${e}`);
-        alert('An error occurred while processing your request');
+        console.error('Failed to parse JSON:', e);
         return;
       }
 
@@ -868,19 +867,18 @@ function updateSelectedDir() {
       if (response.status === "success") {
         console.log('Directory update successful');
         alert('Directory has been picked succesfully')
+        
       } else {
-        console.error(`Update failed: ${response.message}`);
-        alert('Error occurred while updating the directory');
+        console.error('Update failed:', response.message);
       }
     },
     error: function(xhr, status, error) {
-      console.error(`Update failed: ${error}`);
-      console.log(`Status: ${status}`);
-      console.log(`Error: ${error}`);
+      console.error('Update failed:', error);
+      console.log("Status: ", status);
+      console.log("Error: ", error);
     }
   });
 }
-
 
 //----------------------------------------------------------------------------------
 // getDeletedItems: Used to retrieve deleted list entries
