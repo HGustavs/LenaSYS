@@ -132,7 +132,7 @@ $testsData = array(
         'query-variables' => "moment",
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
-            'moment' => '<!query-before-test3!> <[0][listentries]>'
+            'moment' => '<!query-before-test3!> <*[0][listentries]*>'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
             'none'
@@ -148,7 +148,7 @@ $testsData = array(
         'query-variables' => "moment",
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
-            'moment' => '<!query-before-test3!> <[0][listentries]>'
+            'moment' => '<!query-before-test3!> <*[0][listentries]*>'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
             'none'
