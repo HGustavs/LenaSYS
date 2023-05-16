@@ -6112,33 +6112,28 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
-        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); //ER attribute start
+        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); // ER ATTR START
         document.getElementById("elementPlacement2").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement2").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton2").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); // ER attribute end
+        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); // ER ATTR END
     }
     else if (type == 9) {
-        document.getElementById("elementPlacement9").classList.add("hiddenPlacementType");// ER relation start
+        document.getElementById("elementPlacement9").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement9").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement9").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton9").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox9").classList.remove("activeTogglePlacementTypeBox");// ER relation end
-        document.getElementById("elementPlacement10").classList.add("hiddenPlacementType"); // UML inheritance start
+        document.getElementById("togglePlacementTypeBox9").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement10").classList.add("hiddenPlacementType"); 
         document.getElementById("elementPlacement10").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement10").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton10").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");// UML inheritance end
-        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); //IE inheritance start
+        document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); 
         document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
-        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); //ER attribute start
-        document.getElementById("elementPlacement2").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement2").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton2").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); // ER attribute end
+        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); 
     }
 
     else if (type == 12) {
