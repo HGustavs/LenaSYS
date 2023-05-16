@@ -314,7 +314,7 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
-                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                            <div id="ERAttribute" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="toolTipText"><b>Attribute</b><br>
                                     <p>Add a ER attribute to the diagram</p>
@@ -368,7 +368,7 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
-                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                            <div id="ERAttribute" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="toolTipText"><b>Attribute</b><br>
                                     <p>Add a ER attribute to the diagram</p>
@@ -422,7 +422,7 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
-                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                            <div id="ERAttribute" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="toolTipText"><b>Attribute</b><br>
                                     <p>Add a ER attribute to the diagram</p>
@@ -468,14 +468,14 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
-                            <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
-                            <div id="ERAttribute elementPlacement2" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                            <div id="ERAttribute placementTypeBoxIcons activePlacementType" class="diagramIcons toolbarMode" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="toolTipText"><b>Attribute</b><br>
                                     <p>Add a ER attribute to the diagram</p>
