@@ -9,9 +9,13 @@
         // Checks user id, if user has none a guest id is set
         if(isset($_SESSION['uid'])){
             $userid=$_SESSION['uid'];
+            print_r("isset:if");
         }else{
             $userid="1";
+            print_r("isset:else");
         }
+
+        
 
         // Gets username based on uid, USED FOR LOGGING
         $query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
@@ -34,32 +38,44 @@
         // Checks and sets user rights
         if(checklogin() && (hasAccess($userid, $courseId, 'w'))){ //Write
         	$hasWAccess = true;
+            print_r("w:true");
         } else {
             $hasWAccess = false;
+            print_r("w:false");
         } 
 
         if(checklogin() && (hasAccess($userid, $courseId, 'st'))){ //studentteacher
             $hasStAccess= true;
+            print_r("st:true");
         } else {
             $hasStAccess = false;
+            print_r("st:false");
         } 
 
         if(checklogin() && (hasAccess($userid, $courseId, 'r'))){ //Read
             $hasRAccess= true;
+            print_r("r:true");
         } else {
             $hasRAccess = false;
+            print_r("r:false");
         } 
 
         if(checklogin() && (hasAccess($userid, $courseId, 'sv'))){ //Supervisor
             $hasSvAccess= true;
+            print_r("sv:true");
         } else {
             $hasSvAccess = false;
+            print_r("sv:false");
         } 
         
         if (checklogin() && (isSuperUser($userid))){ //Super user
             $hasSuperAccess = true;
+            print_r("super:true");
         } else {
             $hasSuperAccess = false;
+            print_r("super:false");
         }
+
+    var_dump($hasWAccess,$hasSvAccess,$hasSuperAccess,$hasStAccess,$hasRAccess);        
     }
 ?>

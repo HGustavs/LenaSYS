@@ -23,4 +23,6 @@ require __DIR__ . '../Misc/checkUserStatus.php';
 
 echo checkUserStatusTest();
 
+
+
 ?>
