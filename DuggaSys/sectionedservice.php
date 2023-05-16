@@ -559,17 +559,23 @@ if($gradesys=="UNK") $gradesys=0;
 							//Only template for 1 up to 5 files
 							if($fileCount > 0 && $fileCount<6) {					
 								// There are at least two boxes, create two boxes to start with
-								if ($fileCount == 1) {
-									$templateNumber = 10;
-								} else if ($fileCount == 2) {
-									$templateNumber = 1;
-								} else if ($fileCount == 3) {
-									$templateNumber = 3;
-								} else if ($fileCount == 4) {
-									$templateNumber = 5;
-								} else if ($fileCount == 5) {
-									$templateNumber = 9;
-								} 						
+								switch ($fileCount) {
+									case 1:
+										$templateNumber = 10;
+										break;
+									case 2:
+										$templateNumber = 1;
+										break;
+									case 3:
+										$templateNumber = 3;
+										break;
+									case 4:
+										$templateNumber = 5;
+										break;
+									case 5:
+										$templateNumber = 9;
+										break;	
+								}			
 								$examplename = $dirname;
 								$sectionname = $dirname;
 								//create codeexample
@@ -593,31 +599,46 @@ if($gradesys=="UNK") $gradesys=0;
 									$parts = explode('.', $filename);
 									$filetype = "CODE";
 									$wlid = 0;
-									if($parts[1] == "js") {
-										$filetype = "CODE";
-										$wlid = 1;
-									} else if($parts[1] == "php") {
-										$filetype = "CODE";
-										$wlid = 2;
-									} else if($parts[1] == "html") {
-										$filetype = "CODE";
-										$wlid = 3;
-									} else if($parts[1] == "txt" || $parts[1] == "md") {
-										$filetype = "DOCUMENT";
-										$wlid = 4;
-									} else if($parts[1] == "java") {
-										$filetype = "CODE";
-										$wlid = 5;
-									} else if($parts[1] == "sr") {
-										$filetype = "CODE";
-										$wlid = 6;
-									} else if($parts[1] == "sql") {
-										$filetype = "CODE";
-										$wlid = 7;
-									} else {
-										$filetype = "DOCUMENT";
-										$wlid = 4;
-									} 
+									
+									switch ($parts[1]) {
+										case "js":
+											$filetype = "CODE";
+											$wlid = 1;
+											break;
+										case "php":
+											$filetype = "CODE";
+											$wlid = 2;
+											break;
+										case "html":
+											$filetype = "CODE";
+											$wlid = 3;
+											break;
+										case "txt":
+											$filetype = "DOCUMENT";
+											$wlid = 4;
+											break;
+										case "md":
+											$filetype = "DOCUMENT";
+											$wlid = 4;
+											break;
+										case "java":
+											$filetype = "CODE";
+											$wlid = 5;
+											break;
+										case "sr":
+											$filetype = "CODE";
+											$wlid = 6;
+											break;
+										case "sql":
+											$filetype = "CODE";
+											$wlid = 7;
+											break;
+										default:
+											$filetype = "DOCUMENT";
+											$wlid = 4;
+											break;
+									}
+
 									$boxid=$i-1;
 									$fontsize= 9;
 									$setting = "[viktig=1]";
