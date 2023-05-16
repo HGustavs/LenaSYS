@@ -854,6 +854,7 @@ function updateSelectedDir() {
     success: function(data) {
       console.log('POST-request call successful');
       console.log("Response: ", data);
+      alert('Directory has been updated succesfully')
 
       // Parse the JSON response
       var response;
@@ -865,9 +866,9 @@ function updateSelectedDir() {
       }
 
       // Handle the response
+      //TODO:: Server is sending html response instead of JSON
       if (response.status === "success") {
         console.log('Update successful');
-        alert('Directory has been updated succesfully')
       } else {
         console.error('Update failed:', response.message);
       }
@@ -876,6 +877,7 @@ function updateSelectedDir() {
       console.error('Update failed:', error);
       console.log("Status: ", status);
       console.log("Error: ", error);
+      alert('Directory update failed')
     }
   });
 }
