@@ -612,8 +612,7 @@
 				<input type="hidden" name="lid" id="lidInput">
 				<input type="submit" name="githubInsert" value="Submit!">
 				<script>
-					function imageClick(value) {
-						let lid = value.getAttribute('data-value');
+					function getLidFromButton(lid) {
 						document.getElementById('lidInput').value = lid;
 					}
 				</script>
