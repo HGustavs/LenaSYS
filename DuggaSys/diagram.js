@@ -2616,11 +2616,14 @@ function mmoving(event)
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight + (deltaY / zoomfact));
-
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
+                tmp = elementData.y;
+                elementData.y  = screenToDiagramCoordinates((startY - deltaY), 0).y;
+
+                const yChange = -(tmp - elementData.y);
                 
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], yChange, 0, heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
 
