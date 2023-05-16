@@ -598,7 +598,7 @@
 						<select name="githubDir" placeholder='Github Folder'> 
 							<option value="">Choose a directory</option>
 							<?php
-								$cid = getOP('courseid');
+								$cid = getOPG('courseid');
 								$dirs = glob('../courses/${cid}/Github/*', GLOB_ONLYDIR);
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
