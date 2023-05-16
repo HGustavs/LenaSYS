@@ -4256,7 +4256,7 @@ function toggleDiagramDropdown()
     document.getElementById("diagramDropdownToggle").classList.toggle("active");
     // Toggle active grid + color change of button to clarify if button is pressed or not
     
-    if (dropdown.style.display==="none") {
+    if (btn.style.backgroundColor ="#614875") {
         btn.style.backgroundColor ="transparent";
         btn.style.border = "3px solid #614875";
         btn.style.color = "#614875";
