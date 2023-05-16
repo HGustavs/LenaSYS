@@ -3528,7 +3528,7 @@ function validateForm(formid) {
       updateSelectedDir(cid, selectedDir);
 
       // If validation passes, submit the form
-      document.getElementById('githubForm').submit();
+      // document.getElementById('githubForm').submit();
     }
    //Validates new course version form
   if (formid === 'newCourseVersion') {
