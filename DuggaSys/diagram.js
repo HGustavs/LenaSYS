@@ -4242,6 +4242,7 @@ function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
     const load=document.getElementById("diagramLoad");
+    const btn=document.getElementById("diagramDropdownToggle");
     if(window.getComputedStyle(dropdown).display==="none"){
         load.style.display="block";
         dropdown.style.display="block";
@@ -4250,6 +4251,21 @@ function toggleDiagramDropdown()
         load.style.display="none";
         dropdown.style.display="none";
     }
+
+    document.getElementById("diagramDropdownToggle").classList.toggle("active");
+    // Toggle active grid + color change of button to clarify if button is pressed or not
+    if (window.getComputedStyle(dropdown).display==="none") {
+        btn.style.backgroundColor ="transparent";
+        btn.style.border = "3px solid #614875";
+        btn.style.color = "#614875";
+        btn.style.fontWeight = "bold";
+
+     } else {
+        btn.style.backgroundColor ="#614875";
+        btn.style.color = "#ffffff";
+        btn.style.fontWeight = "normal";
+        btn.style.border = "3px solid #614875";
+   }
 }
 
 /**
@@ -4346,6 +4362,7 @@ function toggleDarkmode()
 {
     const stylesheet = document.getElementById("themeBlack");
     const storedTheme = localStorage.getItem('diagramTheme');
+    const btn = document.getElementById("darkmodeToggle");
 
 	if(storedTheme) stylesheet.href = storedTheme;
 
@@ -4358,6 +4375,20 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
+
+    // Toggle active grid + color change of button to clarify if button is pressed or not
+    if (stylesheet.href.includes('blackTheme')) {
+        btn.style.backgroundColor ="transparent";
+        btn.style.border = "3px solid #614875";
+        btn.style.color = "#614875";
+        btn.style.fontWeight = "bold";
+
+     } else {
+        btn.style.backgroundColor ="#614875";
+        btn.style.color = "#ffffff";
+        btn.style.fontWeight = "normal";
+        btn.style.border = "3px solid #614875";
+   }
 
     showdata();
 
