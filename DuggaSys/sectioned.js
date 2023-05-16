@@ -1676,7 +1676,7 @@ function returnedSection(data) {
         }
 
         // Cog Wheel for headers
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+        /*if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
@@ -1689,7 +1689,7 @@ function returnedSection(data) {
 
 
           str += "</td>";
-        }
+        }*/
 
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
