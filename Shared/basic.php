@@ -258,18 +258,19 @@ $metadata_db->exec($sql2);
 
 $sql3 = '
 	CREATE TABLE IF NOT EXISTS gitFiles ( 
-		cid INTEGER,
-		fileName VARCHAR(50), 
-    	fileType VARCHAR(50),
-		fileURL VARCHAR(255),
-   		downloadURL VARCHAR(255), 
-    	fileSHA VARCHAR(255), 
-    	filePath VARCHAR(255),
-		selectedDir VARCHAR(255), 
-		PRIMARY KEY (cid, fileName)
+	cid INTEGER,
+	fileName VARCHAR(50), 
+    fileType VARCHAR(50),
+	fileURL VARCHAR(255),
+   	downloadURL VARCHAR(255), 
+    fileSHA VARCHAR(255), 
+    filePath VARCHAR(255),
+	selectedDir VARCHAR(255), 
+	PRIMARY KEY (cid, fileName)
 	);
 '; 
 $metadata_db->exec($sql3);
+
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
