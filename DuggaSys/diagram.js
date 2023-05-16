@@ -2619,7 +2619,7 @@ function mmoving(event)
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
-                
+                console.log(heightChange);
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
@@ -8977,11 +8977,10 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    nodes += "<span id='md' class='node md'></span>";
     //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-   /*  if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceActivation")) {
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceActivation")) {
         nodes += "<span id='md' class='node md'></span>";
-    } */
+    } 
 
     if (element.kind == "UMLSuperState") {
         nodes += "<span id='md' class='node md'></span>";
