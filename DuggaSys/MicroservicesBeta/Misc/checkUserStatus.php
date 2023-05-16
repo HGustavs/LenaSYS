@@ -33,5 +33,17 @@
         while ($row = $query->fetch(PDO::FETCH_ASSOC)){
             $username = $row['username'];
         }
+
+        //Users: superuser, studentteacher, write, read, superviser 
+        // Checks and sets user rights
+        if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
+            $writeAccess="w";
+        }else (checklogin() && (hasAccess($userid, $courseId, 'st'))){
+            $writeAccess="st";
+        }else (checklogin() && (hasAccess($userid, $courseId, 'r'))){
+            $writeAccess="r";
+        }else (checklogin() && (hasAccess($userid, $courseId, 'sv'))){
+            $writeAccess="sv";
+        }
     }
 ?>
