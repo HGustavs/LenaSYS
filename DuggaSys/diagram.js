@@ -9790,8 +9790,8 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the activation rect
-        str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
-        str += `</svg>`;  
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - linew}' height='${boxh - linew}' rx="12" stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
+        str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
