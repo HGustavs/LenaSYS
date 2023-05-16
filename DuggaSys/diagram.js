@@ -4244,6 +4244,8 @@ function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
     const load=document.getElementById("diagramLoad");
+    const btn=document.getElementById("diagramDropDownToggle");
+
     if(window.getComputedStyle(dropdown).display==="none"){
         load.style.display="block";
         dropdown.style.display="block";
@@ -4252,6 +4254,21 @@ function toggleDiagramDropdown()
         load.style.display="none";
         dropdown.style.display="none";
     }
+
+    document.getElementById("diagramDropDownToggle").classList.toggle("active");
+    
+    if (window.getComputedStyle(dropdown).display==="none") {
+        btn.style.backgroundColor ="transparent";
+        btn.style.border = "3px solid #614875";
+        btn.style.color = "#614875";
+        btn.style.fontWeight = "bold";
+
+     } else {
+        btn.style.backgroundColor ="#614875";
+        btn.style.color = "#ffffff";
+        btn.style.fontWeight = "normal";
+        btn.style.border = "3px solid #614875";
+   }
 }
 
 /**
@@ -4327,10 +4344,17 @@ function toggleGrid()
     // Toggle active grid + color change of button to clarify if button is pressed or not
     if (grid.style.display == "block") {
         grid.style.display = "none";
-        gridButton.style.backgroundColor ="#614875";
+        gridButton.style.backgroundColor ="transparent";
+        gridButton.style.border = "3px solid #614875";
+        gridButton.style.color = "#614875";
+        gridButton.style.fontWeight = "bold";
+
      } else {
         grid.style.display = "block";
-        gridButton.style.backgroundColor ="#362049";
+        gridButton.style.backgroundColor ="#614875";
+        gridButton.style.color = "#ffffff";
+        gridButton.style.fontWeight = "normal";
+        gridButton.style.border = "3px solid #614875";
    }
 }
 
@@ -4341,6 +4365,7 @@ function toggleDarkmode()
 {
     const stylesheet = document.getElementById("themeBlack");
     const storedTheme = localStorage.getItem('diagramTheme');
+    const btn = document.getElementById("darkmodeToggle");
 
 	if(storedTheme) stylesheet.href = storedTheme;
 
@@ -4353,6 +4378,18 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
+    
+    if (stylesheet.href.includes('blackTheme')) {
+        btn.style.backgroundColor ="#614875";
+        btn.style.color = "#ffffff";
+        btn.style.fontWeight = "normal";
+        btn.style.border = "3px solid #614875";
+     } else {
+        btn.style.backgroundColor ="transparent";
+        btn.style.border = "3px solid #614875";
+        btn.style.color = "#614875";
+        btn.style.fontWeight = "bold";
+   }
 
     showdata();
 
@@ -5899,12 +5936,18 @@ function toggleA4Template()
         template.style.display = "none";
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
-        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
+        document.getElementById("a4TemplateToggle").style.backgroundColor ="transparent";
+        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
+        document.getElementById("a4TemplateToggle").style.color = "#614875";
+        document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
      } else {
         template.style.display = "block";
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
-        document.getElementById("a4TemplateToggle").style.backgroundColor = "#362049";
+        document.getElementById("a4TemplateToggle").style.backgroundColor ="#614875";
+        document.getElementById("a4TemplateToggle").style.color = "#ffffff";
+        document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
+        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
    }
    generateContextProperties();
 }
@@ -5979,11 +6022,17 @@ function toggleSnapToGrid()
     // Color change of button to clarify if button is pressed or not
     if(settings.grid.snapToGrid)
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#362049";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor ="#614875";
+        document.getElementById("rulerSnapToGrid").style.color = "#ffffff";
+        document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
+        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
     }
     else
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor ="transparent";
+        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
+        document.getElementById("rulerSnapToGrid").style.color = "#614875";
+        document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
     }
 }
 
@@ -6002,12 +6051,17 @@ function toggleRuler()
     if(settings.ruler.isRulerActive){
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
-        rulerToggleButton.style.backgroundColor = "#614875";
+        rulerToggleButton.style.backgroundColor ="transparent";
+        rulerToggleButton.style.border = "3px solid #614875";
+        rulerToggleButton.style.color = "#614875";
+        rulerToggleButton.style.fontWeight = "bold";
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
-        rulerToggleButton.style.backgroundColor = "#362049";
-
+        rulerToggleButton.style.backgroundColor = "#614875";
+        rulerToggleButton.style.color = "#ffffff";
+        rulerToggleButton.style.fontWeight = "normal";
+        rulerToggleButton.style.border = "3px solid #614875";
     }
   
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
