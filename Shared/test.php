@@ -284,7 +284,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         echo "<h3> Test 2 (callService): {$callServiceTestResult} </h3>";
         echo "<strong>service: </strong>{$service}";
         echo "<br>";
-        echo "<strong>sent data: </strong>".json_encode(unserialize($data),true);
+        echo "<strong>sent data: </strong>".json_encode(($data),true);
         echo "<br>";
         echo "<strong>result: </strong>".json_encode($curlResponseJSONFiltered, true);
         echo "<br>";
