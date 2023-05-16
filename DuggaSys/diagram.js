@@ -12927,13 +12927,13 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
 
 //Alert function to give user a warning/choice before reseting diagram data.
 function resetDiagramAlert(){
-        // Remove all "active" classes in nav bar
-        var navButtons = document.getElementsByClassName("toolbarMode");
-        for (var i = 0; i < navButtons.length; i++) {
-            if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
-        }
-        // Add the diagramActive to current diagramIcon
-        document.getElementById("diagramReset").classList.add("active");
+     // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+    // Add the diagramActive to current diagramIcon
+    document.getElementById("diagramReset").classList.add("active");
 
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if(refreshConfirm){
