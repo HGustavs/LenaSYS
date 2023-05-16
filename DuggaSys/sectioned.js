@@ -840,6 +840,26 @@ function cancelDelete() {
   location.reload();
 }
 
+// update selected directory
+function updateSelectedDir() {
+  var selectedDir = $('#selectDir').val();
+  $.ajax({
+    url: "sectioned.php",
+    type: "POST",
+    data: {
+      action: "updateSelectedDir",
+      selectedDir: selectedDir,
+      cid: getOPG('courseid')
+    },
+    success: function(data) {
+      console.log('Update successful');
+    },
+    error: function(xhr, status, error) {
+      console.error('Update failed:', error);
+    }
+  });
+}
+
 //----------------------------------------------------------------------------------
 // getDeletedItems: Used to retrieve deleted list entries
 //----------------------------------------------------------------------------------
