@@ -287,8 +287,9 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         'query-before-test-2' => "INSERT INTO course(creator, coursecode) VALUES (1, 'testtest')",
-        'query-after-test-1' => "DELETE FROM course WHERE cid = 'testtest'",
-        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'testtest'",
+        'query-before-test-3' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 'testtest', 'test')",
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 'testtest'",
+        'query-after-test-3' => "DELETE FROM user_course WHERE cid = 'testtest'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
             'opt' => 'ADDUSR',
