@@ -2608,7 +2608,6 @@ function mmoving(event)
 
                 // Remove the new width, giving us the total change
                 const widthChange = -(tmp - elementData.width);
-                console.log(widthChange);
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
@@ -2619,8 +2618,8 @@ function mmoving(event)
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
-                console.log(heightChange);
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
 
