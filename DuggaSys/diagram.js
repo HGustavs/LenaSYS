@@ -9818,21 +9818,6 @@ function drawElement(element, ghosted = false)
             element.altOrLoop = newAltOrLoop;
         }
 
-        //let maxLengthOfAlt = Math.floor((boxw / texth)*1.75);
-
-        let splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-        let splitAlts = element.alternatives.map(line => {
-            return splitLengthyLine(line, boxw);
-        }).flat();
-        
-
-        //elemAlternatives = text.length;
-
         //div to encapsulate sequence loop 
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
@@ -9869,37 +9854,9 @@ function drawElement(element, ghosted = false)
                 stroke-dasharray='${linew*3},${linew*3}'
                 fill='transparent'
                 />`;
-                //if the alternative is longer than the avaliable space, add a linebreak.
-                /* if (canvasContext.measureText(element.alternatives[i]).width >= boxw-(linew*2)) {
-                    console.log("alternative needs a linebreak");
+                //text for each alternative
+                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
                 }
-                console.log(element.alternatives[i] + "is " + canvasContext.measureText(element.alternatives[i]).width + "long"); */
-                /* for (let i = 0; i < splitAlternatives.length; i++) {
-                    str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
-                } */
-                /* let splitAlts = element.alternatives[i](line => {
-                    return splitLengthyLine(line, boxw);
-                }).flat(); */
-                //for (let j = 0; j < splitAlternatives.length; j++) {
-                //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitLengthyLine(element.alternatives[i], maxLengthOfAlt)}</text>`;
-                //using the same split function used in UML and IE but in a slightly different way.
-                //let splitAlts = splitLengthyLine(element.alternatives[i], maxLengthOfAlt);
-                //let splitAlts = splitLengthyLine(element.alternatives[i], boxw);
-                console.log(splitAlts);
-                if (splitAlts.length > 1) {
-                    str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlts[0]}</text>`;
-                    //something special
-                    for (let j = 1; j < splitAlts.length; j++) {
-                        //str += `\n${splitAlts[j]}`
-                        str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/0.5)+linew*2}' fill='${actorFontColor}'>${splitAlts[j]}</text>`;
-                    }
-                }
-                else{
-                    str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
-                    //write it out normally
-                }
-                //}
-                //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
                 //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
