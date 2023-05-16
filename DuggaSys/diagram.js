@@ -4510,8 +4510,9 @@ function setReplayRunning(state)
  */
 function toggleErTable()
 {
+    // Add the diagramActive to current diagramIcon
     document.getElementById("erTableToggle").classList.add("active");
-
+    
     if(erTableToggle == false){
         erTableToggle = true;
         testCaseToggle = false;
