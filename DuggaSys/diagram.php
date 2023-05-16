@@ -990,7 +990,7 @@
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" style="background-color: transparent;" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
-                <button id="a4TemplateToggle" class="saveButton" style="background-color: transparent;" style="border:#614875; border-width:3px; border-style:solid;" style="color: #614875;" onclick="toggleA4Template()">A4 template</button><br><br>
+                <button id="a4TemplateToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid;" onclick="toggleA4Template()">A4 template</button><br><br>
                 <button id="darkmodeToggle" class="saveButton" style="background-color: transparent;" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <button id="diagramDropDownToggle" class="saveButton" style="background-color: transparent;" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
