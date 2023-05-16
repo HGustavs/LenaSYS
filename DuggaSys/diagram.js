@@ -4243,7 +4243,7 @@ function toggleDiagramDropdown()
     const dropdown=document.getElementById("diagramTypeDropdown");
     const load=document.getElementById("diagramLoad");
     const btn=document.getElementById("diagramDropdownToggle");
-    
+
     if(window.getComputedStyle(dropdown).display==="none"){
         load.style.display="block";
         dropdown.style.display="block";
@@ -4256,7 +4256,7 @@ function toggleDiagramDropdown()
     document.getElementById("diagramDropdownToggle").classList.toggle("active");
     // Toggle active grid + color change of button to clarify if button is pressed or not
     
-    if (window.getComputedStyle(dropdown).display==="none") {
+    if (dropdown.style.display==="none") {
         btn.style.backgroundColor ="transparent";
         btn.style.border = "3px solid #614875";
         btn.style.color = "#614875";
@@ -4378,7 +4378,6 @@ function toggleDarkmode()
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
 
-    // Toggle active grid + color change of button to clarify if button is pressed or not
     if (stylesheet.href.includes('blackTheme')) {
         btn.style.backgroundColor ="#614875";
         btn.style.color = "#ffffff";
