@@ -732,7 +732,7 @@
         </fieldset> -->
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
-            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
+            <div id="camtoOrigo" class="diagramIcons toolbarMode" onclick="centerCamera(); centerCamera();">
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 <span class="toolTipText"><b>Reset view</b><br>
                     <p>Reset view to show all elements</p><br>
@@ -742,20 +742,20 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">History</legend>
-            <div id="diagramReset" class="diagramIcons" onclick="resetDiagramAlert()">
+            <div id="diagramReset" class="diagramIcons toolbarMode" onclick="resetDiagramAlert()">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
                     <p>Reset diagram to default state</p><br>
                 </span>
             </div>
-            <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
+            <div id="stepForwardToggle" class="diagramIcons toolbarMode" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg" alt="Redo"/>
                 <span class="toolTipText"><b>Redo</b><br>
                     <p>Redo last change</p><br>
                     <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack()">
+            <div id="stepBackToggle" class="diagramIcons toolbarMode" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg" alt="Undo"/>
                 <span class="toolTipText"><b>Undo</b><br>
                     <p>Undo last change</p><br>
@@ -782,7 +782,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Testcase</legend>
-            <div id="testCaseToggle" class="diagramIcons" onclick="toggleTestCase()"> <!--add func here later-->
+            <div id="testCaseToggle" class="diagramIcons toolbarMode" onclick="toggleTestCase()"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options</p><br>
@@ -804,7 +804,7 @@
         </fieldset>
         <fieldset id = "localSaveField">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="storeDiagramInLocalStorage()">
+            <div id="localSave" class="diagramIcons toolbarMode" onclick="storeDiagramInLocalStorage()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
