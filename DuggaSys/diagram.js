@@ -9826,7 +9826,9 @@ function drawElement(element, ghosted = false)
                 return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
             }
         }
-
+        let splitAlts = element.alternatives.map(line => {
+            return splitLengthyLine(line, boxw);
+        }).flat();
         
 
         //elemAlternatives = text.length;
@@ -9875,9 +9877,9 @@ function drawElement(element, ghosted = false)
                 /* for (let i = 0; i < splitAlternatives.length; i++) {
                     str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitAlternatives[i]}</text>`;
                 } */
-                let splitAlts = element.alternatives[i](line => {
+                /* let splitAlts = element.alternatives[i](line => {
                     return splitLengthyLine(line, boxw);
-                }).flat();
+                }).flat(); */
                 //for (let j = 0; j < splitAlternatives.length; j++) {
                 //str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${splitLengthyLine(element.alternatives[i], maxLengthOfAlt)}</text>`;
                 //using the same split function used in UML and IE but in a slightly different way.
