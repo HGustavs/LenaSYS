@@ -61,10 +61,12 @@ $testsData = array(
 );
  
 
+foreach($testsData as $i =>$values){
+    echo "<br>"$i;"</br>";
 
 
-
-print_r $testsData['service-data'];
+}
+echo $testsData['service-data'];
 testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 ?>
