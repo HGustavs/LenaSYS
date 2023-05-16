@@ -35,6 +35,8 @@ $testsData = array(
             'versions',
             'codeexamples',
             'unmarked',
+            'startdate',
+            'enddate',
             'groups',
             'grpmembershp',
             'grplst',
