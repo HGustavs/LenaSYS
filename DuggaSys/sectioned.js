@@ -1638,7 +1638,7 @@ function returnedSection(data) {
           str += "</td>";
         }
         // Tab example button
-        if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
+        if ((itemKind !== 4) && (itemKind !== 0) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<input style='filter: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
