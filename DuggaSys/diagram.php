@@ -435,11 +435,11 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement16"
+                    <div id="elementPlacement2"
                          class="ERAttribute diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(16); setMouseMode(2);'
+                         onclick='setElementPlacementType(2); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(16)">
+                         onmousedown="holdPlacementButtonDown(2)">
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         <span class="toolTipText"><b>Attribute</b><br>
                             <p>Add a ER attribute to the diagram</p>
