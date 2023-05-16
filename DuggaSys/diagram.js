@@ -4510,6 +4510,8 @@ function setReplayRunning(state)
  */
 function toggleErTable()
 {
+    document.getElementById("erTableToggle").classList.add("active");
+
     if(erTableToggle == false){
         erTableToggle = true;
         testCaseToggle = false;
