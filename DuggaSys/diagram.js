@@ -766,7 +766,8 @@ const keybinds = {
         STATE_INITIAL: { key: "<" , ctrl: false },
         STATE_FINAL: { key: "f" , ctrl: false },
         STATE_SUPER: { key: ">", ctrl: false },
-        Save_diagram: { key: "s", ctrl: true }, //<-- SD functionality
+        SAVE_DIAGRAM: { key: "s", ctrl: true }, 
+        LOAD_DIAGRAM: { key: "l", ctrl: true }, 
 };
 
 /** 
@@ -1727,7 +1728,8 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
-        if(isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+        if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) storeDiagramInLocalStorage();
         //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
@@ -3116,8 +3118,8 @@ function changeLineProperties()
         line.label = label.value
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-    // UML line
-    if (line.type == 'UML') {
+    // UML or IE line
+    if ((line.type == 'UML')||(line.type == 'IE')) {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -3707,7 +3709,7 @@ function entityIsOverlapping(id, x, y)
                 break;
               }
               //if its overlapping with a sequence actor, just break since that is allowed.
-              if (data[i].kind == "sequenceActor") {
+              if (data[i].kind == "sequenceActorAndObject") {
                 break;
               }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
@@ -4137,7 +4139,7 @@ function boxSelect_Draw(str)
  */
 function generateStateDiagramInfo()
 {
-    const ENTITY = 0, SEEN = 1;
+    const ENTITY = 0, SEEN = 1, LABEL = 2;
     const stateInitial = [];
     const stateFinal = [];
     const stateSuper = [];
@@ -4145,7 +4147,7 @@ function generateStateDiagramInfo()
     const stateLines = [];
     const queue = [];
     let output = "";
-const stateLinesLabels=[];
+    let re = new RegExp("\\[.+\\]");
     // Picks out the lines of type "State Diagram" and place it in its local array.
     for (let i=0; i<lines.length; i++)
     {
@@ -4184,28 +4186,37 @@ const stateLinesLabels=[];
         // Finds all entities connected to the current "head" and adds line labels to a list.
         for (let i = 0; i < stateLines.length; i++) {
             if (stateLines[i].fromID == head[ENTITY].id) {
-                stateLinesLabels.push(stateLines[i].label);
                 for (let j = 0; j < stateElements.length; j++) {
                     if (stateLines[i].toID == stateElements[j][ENTITY].id) {
+                        stateElements[j][LABEL] = stateLines[i].label;
                         connections.push(stateElements[j]);
                     }
                 }
                 for (let j = 0; j < stateFinal.length; j++) {
                     if (stateLines[i].toID == stateFinal[j][ENTITY].id) {
+                        stateFinal[j][LABEL] = stateLines[i].label;
                         connections.push(stateFinal[j]);
                     }
                 }
                 for (let j = 0; j < stateSuper.length; j++) {
                     if (stateLines[i].toID == stateSuper[j][ENTITY].id) {
+                        stateSuper[j][LABEL] = stateLines[i].label;
                         connections.push(stateSuper[j]);
                     }
                 }
             }
         }
-
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-        output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" </p>`;
+            if (connections[i][LABEL] == undefined) {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+            }
+            else if (re.test(connections[i][LABEL])) {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][LABEL]}"</p>`;
+            }
+            else {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with lable "${connections[i][LABEL]}"</p>`;
+            }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
                 queue.push(connections[i]);
@@ -4214,14 +4225,6 @@ const stateLinesLabels=[];
     }
 
     // Adds additional information in the view.
-    output+=`<p>Line labels:</p>`;
-    for(var i=0; i<stateLinesLabels.length; i++)
-    {
-        if(stateLinesLabels[i]==undefined)
-        output+=`<p>Unlabeled</p>`;
-        else
-        output+=`<p>${stateLinesLabels[i]}</p>`;
-    }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>Super States: ${stateSuper.length}</p>`;
@@ -6113,6 +6116,11 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
+        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); //ER attribute start
+        document.getElementById("elementPlacement2").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement2").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton2").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); // ER attribute end
     }
     else if (type == 9) {
         document.getElementById("elementPlacement9").classList.add("hiddenPlacementType");// ER relation start
@@ -6130,6 +6138,11 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
+        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); //ER attribute start
+        document.getElementById("elementPlacement2").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement2").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton2").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); // ER attribute end
     }
 
     else if (type == 12) {
@@ -6145,18 +6158,12 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement13").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton13").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");
-        // Sequence object
+        // Sequence condition/loop object
         document.getElementById("elementPlacement14").classList.add("hiddenPlacementType"); 
         document.getElementById("elementPlacement14").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox"); 
-        // Sequence condition/loop object
-        document.getElementById("elementPlacement15").classList.add("hiddenPlacementType"); 
-        document.getElementById("elementPlacement15").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement15").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton15").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox15").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
     }
     
     // Unhide the currently selected placement type
@@ -6835,7 +6842,7 @@ function generateContextProperties()
                 }
             }
         }
-        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
+        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -7536,7 +7543,7 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
 }
 
 /**
- * @description
+ * @description Checks if the lines intersect and if the possible intersection point is within edges
  * @param {Number} x1 Position 1 
  * @param {Number} y1 Position 1 
  * @param {Number} x2 Position 2 
@@ -7545,22 +7552,18 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  * @param {Number} y3 Position 3 
  * @param {Number} x4 Position 4 
  * @param {Number} y4 Position 4 
- * @returns False or An object with x/y coordinates.
+ * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
- // TODO : WHY does it return EITHER a boolean OR an object??????? Either this is a TRUE/FALSE function and return booleans OR it returns objects/null/undefined!
- // TODO : Use new POINT objects to reduce amount of arguments?
+
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
-    // TODO : Can be deleted?
-    // Display line test locations using svg lines
-    // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
-    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
-
-    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    if (isNaN(x) || isNaN(y)) {
+    var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
+    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
+    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
+    if (isNaN(x) || isNaN(y)) {//Check if lines don't intersect
         return false;
-    } else {
+    } else {//Check if intersection point is within edges
 
         if (x1 >= x2) {
             if (!(x2 <= x && x <= x1)) return false;
@@ -7586,10 +7589,7 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
             if (!(y3 <= y && y <= y4)) return false;
         }
     }
-    return { 
-        x: x,
-        y: y 
-    };
+    return true;
 }
 
 /**
@@ -7652,17 +7652,17 @@ function determineLine(line, targetGhost = false)
 
     // Add accordingly to association end
     if (line.ctype == "LR"){
-        if (felem.kind == "EREntity") felem.left.push(line.id);
-        if (telem.kind == "EREntity") telem.right.push(line.id);
+        felem.left.push(line.id);
+        telem.right.push(line.id);
     }else if (line.ctype == "RL"){
-        if (felem.kind == "EREntity") felem.right.push(line.id);
-        if (telem.kind == "EREntity") telem.left.push(line.id);
+        felem.right.push(line.id);
+        telem.left.push(line.id);
     }else if (line.ctype == "TB"){
-        if (felem.kind == "EREntity") felem.top.push(line.id);
-        if (telem.kind == "EREntity") telem.bottom.push(line.id);
+        felem.top.push(line.id);
+        telem.bottom.push(line.id);
     }else if (line.ctype == "BT"){
-        if (felem.kind == "EREntity") felem.bottom.push(line.id);
-        if (telem.kind == "EREntity") telem.top.push(line.id);
+        felem.bottom.push(line.id);
+        telem.top.push(line.id);
     }
 
     if (felem.neighbours[telem.id] == undefined) {
@@ -8861,14 +8861,28 @@ function drawLine(line, targetGhost = false)
         if(!!rememberTargetLabelID){
             targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
         }
+
+        
+        // Label position for recursive edges
+        const labelPositionX = labelPosX+lineLabel.labelMovedX+lineLabel.displacementX + 180 * zoomfact
+        const labelPositionY = labelPosY+lineLabel.labelMovedY+lineLabel.displacementY - 40 * zoomfact
+
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
+        str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
         //Add label with styling based on selection.
         if (contextLine.includes(line)) {
-            str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            if (line.kind === "Recursive") {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            } else {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            }
         }
         else {
-            str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            if (line.kind === "Recursive") {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            } else {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            }
         }
     }
 
@@ -8981,8 +8995,8 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    //some sequence objects get a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
+    //vertical resizing
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         nodes += "<span id='md' class='node md'></span>";
     }
 
@@ -9559,7 +9573,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>Do: </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`;
             //end of svg for background
             str += `</svg>`;
         }
@@ -12744,7 +12758,6 @@ function exportWithHistory()
  function storeDiagramInLocalStorage(){
     // Remove all future states to the history
     stateMachine.removeFutureStates();
-
     // The content of the save file
     var objToSave = {
         historyLog: stateMachine.historyLog,
@@ -12926,29 +12939,18 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
 }
-//code has no functionallity execpt for when the hard coded diagram was used. looks like it reloaeded the diagram and got the file. Diagram in onSetup()
-/* function fetchDiagramFileContentOnLoad()
-{
-    let temp = getVariantParam();
-    var fullParam = temp[0];
-    cid = temp[1];
-    cvers = temp[2];
-    diagramToLoad = temp[3];
-    diagramToLoadContent = temp[4];
 
-    // Check whether there is a diagram saved in localstorage and load it.
-    // Otherwise, load from VariantParam  
-    if (localStorage.getItem("CurrentlyActiveDiagram")) {
-        var diagramFromLocalStorage = localStorage.getItem("CurrentlyActiveDiagram");
+ function loadDiagramFromLocalStorage(key)
+{
+    // Check whether there is a diagram saved in localstorage and load it. key for current diagram is CurrentlyActiveDiagram
+    if (localStorage.getItem(key)) {
+        var diagramFromLocalStorage = localStorage.getItem(key);
         loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
-    } else if (diagramToLoadContent != "NO_FILE_FETCHED" && diagramToLoadContent != "") {
-        loadDiagramFromString(JSON.parse(diagramToLoadContent));
-        storeDiagramInLocalStorage();
     } else {
         // Failed to load content
         console.error("No content to load")
     }
-} */
+} 
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
