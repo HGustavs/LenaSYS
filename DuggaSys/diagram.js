@@ -6134,11 +6134,6 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); 
-        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); 
-        document.getElementById("elementPlacement2").children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement2").children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton2").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); 
     }
 
     else if (type == 12) {
