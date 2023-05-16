@@ -6130,6 +6130,11 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
+        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); //ER attribute start
+        document.getElementById("elementPlacement2").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement2").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton2").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); // ER attribute end
     }
 
     else if (type == 12) {
