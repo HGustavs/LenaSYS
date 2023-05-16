@@ -62,7 +62,7 @@ $testsData = array(
  
 
 foreach($testsData as $i =>$values){
-    echo "<br>"$i;"</br>";
+    echo $i;
 
 
 }
