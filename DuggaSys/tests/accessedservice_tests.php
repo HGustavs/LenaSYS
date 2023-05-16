@@ -9,7 +9,6 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT userid FROM user WHERE username = 'testuser1'", // May change userid to uid
         'query-before-test-2' => "INSERT INTO user(username, pwd) VALUES('testuser1', 'testpwd')",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array( // The data that the service needs to execute
@@ -28,7 +27,6 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT userid FROM user WHERE username = 'testuser1'", // May change userid to uid
         'query-before-test-2' => "INSERT INTO user(username, pwd) VALUES('testuser1', 'testpwd')",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array( 
@@ -47,7 +45,6 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT userid FROM user WHERE username = 'testuser1'", // May change userid to uid
         'query-before-test-2' => "INSERT INTO user(username, pwd) VALUES('testuser1', 'testpwd')",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
@@ -66,7 +63,6 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT userid FROM user WHERE username = 'testuser1'", // May change userid to uid
         'query-before-test-2' => "INSERT INTO user(username, pwd) VALUES('testuser1', 'testpwd')",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
@@ -76,7 +72,7 @@ $testsData = array(
             'uid' => 'testuser1',
             'blop' => '<!query-before-test-1!> <*[0][uid]*>'
         )),
-        'filter-output' => serialize(aarray(
+        'filter-output' => serialize(array(
             'none'
         )),
     ),
@@ -85,7 +81,6 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT userid FROM user WHERE username = 'testuser1'", // May change userid to uid
         'query-before-test-2' => "INSERT INTO user(username, pwd) VALUES('testuser1', 'testpwd')",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
@@ -104,7 +99,7 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'query-before-test-2' => "INSERT INTO course(creator, ccoursecode) VALUES(1 , 'testtest')",
-        'query-after-test-1' => "DELETE FROM course WHERE cid = 'testtest'", // cid may have another value
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 'testtest'", // cid may have another value
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
             'opt' => 'UPDAT',
@@ -124,7 +119,7 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'query-before-test-2' => "INSERT INTO user_course(userid, cid, access) VALUES(1 , 'testtest', 'test')",
-        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
+        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' =>serialize(array(
             'opt' => 'UPDAT',
@@ -144,8 +139,8 @@ $testsData = array(
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'query-before-test-2' => "INSERT INTO course(creator, coursecode) VALUES(1 , 'testtest')",
         'query-before-test-3' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 'testtest', 'test')",
-        'query-after-test-1' => "DELETE FROM course WHERE cid = 'testtest'",
-        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 'testtest'",
+        'query-after-test-3' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
             'opt' => 'UPDATE',
@@ -165,8 +160,8 @@ $testsData = array(
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'query-before-test-2' => "INSERT INTO course(creator, coursecode) VALUES(1 , 'testtest')",
         'query-before-test-3' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 'testtest', 'test')",
-        'query-after-test-1' => "DELETE FROM course WHERE cid = 'testtest'",
-        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 'testtest'",
+        'query-after-test-3' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
             'opt' => 'UPDATE',
@@ -186,8 +181,8 @@ $testsData = array(
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'query-before-test-2' => "INSERT INTO course(creator, coursecode) VALUES(1 , 'testtest')",
         'query-before-test-3' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 'testtest', 'test')",
-        'query-after-test-1' => "DELETE FROM course WHERE cid = 'testtest'",
-        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 'testtest'",
+        'query-after-test-3' => "DELETE FROM user_course WHERE cid = 'testtest'", // cid may have another value
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
             'opt' => 'UPDATE',
@@ -227,7 +222,7 @@ $testsData = array(
         'expected-output' => '{"entries":"UNK", "debug":"UNK", "teachers":"UNK", "classes":"UNK", "courses":"UNK", "groups":"UNK", "queryResult":"UNK", "examiners":"UNK", "submissions":"UNK", "access":"UNK"}',
         'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'query-before-test-2' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
+        'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
             'opt' => 'CHPWD',
