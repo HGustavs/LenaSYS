@@ -434,7 +434,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <!-- <div>
                     <div id="elementPlacement2"
                          class="ERAttribute diagramIcons toolbarMode"
                          onclick='setElementPlacementType(2); setMouseMode(2);'
@@ -486,7 +486,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                     <span class="toolTipText"><b>Line</b><br>
