@@ -9811,8 +9811,8 @@ function drawElement(element, ghosted = false)
                 boxh += 125*zoomfact;
             }
             //also set alt or loop to whatever is correct
-            //check if the length is less or equal to 1, if so its loop, else its alt.
-            element.alternatives.length <= 1 ? element.altOrLoop = "Loop" : element.altOrLoop = "Alt";
+            //if it has more than one alternative its an alt, else its loop.
+            element.alternatives.length > 1 ? element.altOrLoop = "Alt" : element.altOrLoop = "Loop";
         }
 
         //div to encapsulate sequence loop 
