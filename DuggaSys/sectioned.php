@@ -603,7 +603,7 @@
                     }
 
 					if(isset($_POST['selectedDir']) && isset($_POST['cid'])){
-						$selectDir = $_POST['selectedDir'];
+						$selectedDir = $_POST['selectedDir'];
 						$cid = $_POST['cid'];
 					
 						try {
@@ -611,7 +611,7 @@
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 							echo 'Preparing query\n';
 							$query =  $pdolite->prepare('UPDATE gitFiles SET selectedDir = :selectedDir WHERE cid = :cid');
-							$query->bindParam(':selectedDir', $selectDir);
+							$query->bindParam(':selectedDir', $selectedDir);
 							$query->bindParam(':cid', $cid);
 							echo 'Executing query\n';
 							$query->execute();
@@ -627,7 +627,7 @@
 			</select></div>
 			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
 			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
-			<input type='button' class='submit-button' onclick="console.log('Button clicked'); updateSelectedDir();" value='Save'>
+			<input type='button' class='submit-button' onclick="console.log('Button clicked'); validateForm('saveGithubMoment'); " value='Save'>
 			</form>
 			<!-- End of form -->
 
