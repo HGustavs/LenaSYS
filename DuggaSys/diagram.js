@@ -2856,7 +2856,7 @@ function constructElementOfType(type)
  */
 function getElementLines(element) {
     //console.log(getElementLines(element));
-    return element.bottom.concat(element.right, element.top, element.left);
+    return element.right.concat(element.top, element.bottom, element.left);
 }
 
 /**
