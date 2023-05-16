@@ -23,7 +23,8 @@
     echo checkUserStatusTest();
 
     //Check access
-    if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
+    if(checklogin() && ($hasWriteAccess==true || ))
+    //if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
         if(strcmp('EDITTITLE',$opt)===0) {
             $exampleid = $_POST['exampleid'];
             $boxId = $_POST['boxid'];

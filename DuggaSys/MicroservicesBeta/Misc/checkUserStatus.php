@@ -37,17 +37,33 @@
         //Users: superuser, studentteacher, write, read, supervisor 
         // Checks and sets user rights
         if(checklogin() && (hasAccess($userid, $courseId, 'w'))){ //Write
-            $userAccess="w";
-        }else (checklogin() && (hasAccess($userid, $courseId, 'st'))){ //studentteacher 
-            $userAccess="st";
-        }else (checklogin() && (hasAccess($userid, $courseId, 'r'))){ //Read 
-            $userAccess="r";
-        }else (checklogin() && (hasAccess($userid, $courseId, 'sv'))){ //Supervisor 
-            $userAccess="sv";
-        }
+        	$hasWAccess = true;
+        } else {
+            $hasWAccess = false;
+        } 
+
+        if(checklogin() && (hasAccess($userid, $courseId, 'st'))){ //studentteacher
+            $hasStAccess= true;
+        } else {
+            $hasStAccess = false;
+        } 
+
+        if(checklogin() && (hasAccess($userid, $courseId, 'r'))){ //Read
+            $hasRAccess= true;
+        } else {
+            $hasRAccess = false;
+        } 
+
+        if(checklogin() && (hasAccess($userid, $courseId, 'sv'))){ //Supervisor
+            $hasSvAccess= true;
+        } else {
+            $hasSvAccess = false;
+        } 
         
         if (checklogin() && (isSuperUser($userid))){ //Super user
-            $superAccess=true;
+            $hasSuperAccess = true;
+        } else {
+            $hasSuperAccess = false;
         }
     }
 ?>
