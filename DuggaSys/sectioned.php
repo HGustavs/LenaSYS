@@ -588,7 +588,8 @@
                         $query->bindParam(':cid', $cid);
                         $query->execute();
                         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
-
+						
+						echo "<option value=''></option>";  // Empty default option
 						//Generate options
 						if (empty($rows)) {
 							echo "<script>console.error('No directories found');</script>";
