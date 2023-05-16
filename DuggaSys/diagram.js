@@ -3706,7 +3706,7 @@ function entityIsOverlapping(id, x, y)
                 break;
               }
               //if its overlapping with a sequence actor, just break since that is allowed.
-              if (data[i].kind == "sequenceActor") {
+              if (data[i].kind == "sequenceActorAndObject") {
                 break;
               }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
@@ -8969,7 +8969,7 @@ function addNodes(element)
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
     //sequence lifeline gets a new node, for vertical resizing. This could probably be set for all elements if desired, but I have not tried that.
-    if (element.kind == "sequenceActorAndObject") {
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceActivation")) {
         nodes += "<span id='md' class='node md'></span>";
     }
 
