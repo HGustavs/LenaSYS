@@ -9444,9 +9444,9 @@ function drawElement(element, ghosted = false)
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%">
-                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
-                    <rect width="${boxw/2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
+                    <svg width='${boxw}' height='${boxh}'>
+                    <rect x='${linew}' y='${linew}' width='${boxw-(linew*2)}' height='${boxh-(linew*2)}' fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
+                    <rect x='${linew}' y='${linew}' width="${boxw/2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
@@ -9807,8 +9807,8 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the activation rect
-        str += `<rect rx="12" style="height: 100%; width: 100%; fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />`;
-        str += `</svg>`;  
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew*2)}' height='${boxh - (linew*2)}' rx='${sequenceCornerRadius*3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
+        str += `</svg>`;
     }
     // Sequence loop or alt
     else if (element.kind == 'sequenceLoopOrAlt') {
