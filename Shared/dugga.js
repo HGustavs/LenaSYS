@@ -1279,7 +1279,6 @@ function AJAXService(opt,apara,kind)
 			// }
 		});
 	}
-	
 
 	// Logging to JSON
 	var date = new Date();

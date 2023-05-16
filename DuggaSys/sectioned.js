@@ -3009,11 +3009,11 @@ function createExamples(dir,momentID) {//TODO HERE
   dirname = dir;
   console.log("* AJAX START ");
 	$.ajax({
-			url: "sectionedservice.php",
-			type: "POST",
-			data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
-			dataType: "json",
-      //TODO: reload back to coursepage
+		url: "sectionedservice.php",
+		type: "POST",
+		data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
+		dataType: "json",
+    //TODO: reload back to coursepage
 	});
   console.log("** AJAX DONE **");
 }
