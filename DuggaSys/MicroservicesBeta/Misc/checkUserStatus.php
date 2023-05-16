@@ -5,10 +5,6 @@
     include_once "../Shared/sessions.php";
     include_once "../Shared/basic.php";
 
-    // Connect to database and start session
-    pdoConnect();
-    session_start();
-
     function checkUserStatusTest(){
         // Checks user id, if user has none a guest id is set
         if(isset($_SESSION['uid'])){
