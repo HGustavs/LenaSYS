@@ -294,7 +294,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         'result' => $callServiceTestResult,
         'respons' => $curlResponseJSONFiltered,
         'service' => $service,
-        'data' => $data,
+        'sent data' => $data,
         'query-return' => $queryReturnPathAndDataJSON
     );
 }
