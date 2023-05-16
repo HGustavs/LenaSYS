@@ -4026,6 +4026,7 @@ function boxSelect_Update(mouseX, mouseY)
 
         // Select all objects inside the box
         var coords = getBoxSelectionCoordinates();
+        console.log(getElementsInsideCoordinateBox(rect));
             
         // Calculate top-left and bottom-right coordinates
         var topLeft = getPoint(0, 0), bottomRight = getPoint(0, 0);
@@ -4046,7 +4047,6 @@ function boxSelect_Update(mouseX, mouseY)
             topLeft.y = coords.n4.y;
             bottomRight.y = coords.n1.y;
         }
-        console.log(topleft, bottomRight);
         var rect = getRectFromPoints(topLeft, bottomRight);
 
         if (ctrlPressed) {
@@ -4083,6 +4083,7 @@ function boxSelect_Update(mouseX, mouseY)
         }else {
             context = getElementsInsideCoordinateBox(rect);
             contextLine = getLinesInsideCoordinateBox(rect);
+            console.log(context, contextLine);
         }
     }
 }
