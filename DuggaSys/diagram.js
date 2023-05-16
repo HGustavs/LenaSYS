@@ -1,4 +1,5 @@
-    // =============================================================================================
+import { drawElement } from "./diagram_module";
+   // =============================================================================================
 //#region ================================ CLASSES             ==================================
 /** 
  * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. */
@@ -2504,157 +2505,9 @@ function mouseMode_onMouseMove(event)
     }
 }
 
-/**
- * @description Event function triggered when the mouse has moved on top of the container.
- * @param {MouseEvent} event Triggered mouse event.
- */
-function mmoving(event)
-{ 
-    lastMousePos = getPoint(event.clientX, event.clientY);
-    switch (pointerState) {
-        case pointerStates.CLICKED_CONTAINER:
-            // Compute new scroll position
-            movingContainer = true;
-            deltaX = startX - event.clientX;
-            deltaY = startY - event.clientY;
-            scrollx = sscrollx - Math.round(deltaX * zoomfact);
-            scrolly = sscrolly - Math.round(deltaY * zoomfact);
-            updateGridPos();
-            updateA4Pos();
-            // Update scroll position
-            updatepos(null, null);
-
-            // Update the ruler
-            drawRulerBars(scrollx,scrolly);
-
-            calculateDeltaExceeded();
-            break;
-
-        case pointerState.CLICKED_LINE:
-
-            if(mouseMode == mouseModes.BOX_SELECTION){
-                calculateDeltaExceeded();
-                mouseMode_onMouseMove(mouseMode);
-            }
-            break;
-
-        case pointerStates.CLICKED_LABEL:
-            updateLabelPos(event.clientX, event.clientY);
-            updatepos(null, null);
-            break;
-
-        case pointerStates.CLICKED_ELEMENT:
-            if(mouseMode != mouseModes.EDGE_CREATION){
-
-                var prevTargetPos = {
-                    x: data[findIndex(data, targetElement.id)].x,
-                    y: data[findIndex(data, targetElement.id)].y
-                }
-                var targetPos = {
-                    x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
-                    y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
-                };
-                targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
-                targetDelta = {
-                    x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
-                    y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
-                }
-
-                // Moving object
-                movingObject = true;
-                // Moving object
-                deltaX = startX - event.clientX;
-                deltaY = startY - event.clientY;
-
-                // We update position of connected objects
-                updatepos(deltaX, deltaY);
-
-                calculateDeltaExceeded();
-            }
-            break;
-
-        case pointerStates.CLICKED_NODE:
-            var index = findIndex(data, context[0].id);
-            var elementData = data[index];
-            
-            const minWidth = 20; // Declare the minimal with of an object
-            deltaX = startX - event.clientX;
-
-            const minHeight = 150; // Declare the minimal height of an object
-            deltaY = startY - event.clientY;
-            
-            // Functionality for the four different nodes
-            if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth + (deltaX / zoomfact));
-
-                // Deduct the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-
-                // Fetch original x-position
-                tmp = elementData.x;
-                elementData.x = screenToDiagramCoordinates((startX - deltaX), 0).x;
-
-                // Deduct the new position, giving us the total change
-                const xChange = -(tmp - elementData.x);
-                
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-
-            } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth - (deltaX / zoomfact));
-
-                // Remove the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-                
-                // Right node will never change the position of the element. We pass 0 as x and y movement.
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
-
-            } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height
-                var tmp = elementData.height;
-                elementData.height = (startHeight - (deltaY / zoomfact));
-
-                // Deduct the new height, giving us the total change
-                const heightChange = -(tmp - elementData.height);
-                
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
-
-            } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
-
-                // Fetch original height
-                var tmp = elementData.height;
-                elementData.height = (startHeight + (deltaY / zoomfact));
-
-                // Deduct the new height, giving us the total change
-                const heightChange = -(tmp - elementData.height);
-
-                // Fetch original y-position
-                // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
-                tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
-
-                // Deduct the new position, giving us the total change
-                const yChange = -(tmp - elementData.y);
-
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-            }
-
-            document.getElementById(context[0].id).remove();
-            document.getElementById("container").innerHTML += drawElement(data[index]);
-            updatepos(null, null);
-            break;
-
-        default:
-            mouseMode_onMouseMove(event);
-            break;
-    }
-
-    //Sets the rules to current position on screen.
-    setRulerPosition(event.clientX, event.clientY);
-}
+//-----------------------
+//mmove find me
+//----------------------
 
 //#endregion ===================================================================================
 //#region ================================ ELEMENT MANIPULATION ================================
@@ -9194,9 +9047,7 @@ function drawRulerBars(X,Y)
 
 
 // ---------------------
-// DRAW ELEMENT
-
-import { drawElement } from "./diagram_module";
+// DRAW ELEMENT find me
 
 // --------------------
 
