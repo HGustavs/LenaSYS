@@ -777,30 +777,6 @@
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
         </fieldset>
-        <!-- <fieldset>
-            <legend>Zoom</legend>
-            <div class="diagramIcons" onclick='zoomin();'>
-                <img src="../Shared/icons/diagram_zoomin.svg"/>
-                <span class="toolTipText"><b>Zoom IN</b><br>
-                    <p>Zoom in on viewed area</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramIcons" onclick='zoomout();'>
-                <img src="../Shared/icons/diagram_zoomout.svg"/>
-                <span class="toolTipText"><b>Zoom OUT</b><br>
-                    <p>Zoom out on viewed area</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
-                <span class="toolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to 1x</p><br>
-                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-        </fieldset> -->
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
@@ -895,23 +871,11 @@
                 </span>
             </div>
         </fieldset>
-
-        <!-- <fieldset>
-            <legend>Include</legend>
-            <div id="Include" class="diagramIcons" onclick="toggleErTable()">
-                <img src="../Shared/icons/angelBrackets.svg"/>
-                <span class="toolTipText"><b>To use less than</b><br>
-                    <p>To use less than type & #60; <br><strong>"EX: <& #60;Include>>"</STRONG> </p><br>
-                </span>
-        </fieldset> -->      
     </div>
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
-
-  <!--  <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg" alt="An icon depicting a magnifying glass"/><text id ="zoom-message">1x</text></div> -->
-
-
+    
     <!-- Diagram drawing system canvas. -->
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
