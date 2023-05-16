@@ -3534,7 +3534,6 @@ function validateForm(formid) {
   }
     // validates the github moment from github integration (the github icon)
     if (formid === 'saveGithubMoment') {
-      event.preventDefault();
       var selectedDir = document.getElementById('selectDir').value;
 
       // Validate fields here. For example, check if fields are not empty
@@ -3544,7 +3543,6 @@ function validateForm(formid) {
       }
 
       updateSelectedDir();
-
       // If validation passes, submit the form
       document.getElementById('githubForm').submit();
     }
