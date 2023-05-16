@@ -4046,7 +4046,7 @@ function boxSelect_Update(mouseX, mouseY)
             topLeft.y = coords.n4.y;
             bottomRight.y = coords.n1.y;
         }
-
+        console.log(topleft, bottomRight);
         var rect = getRectFromPoints(topLeft, bottomRight);
 
         if (ctrlPressed) {
