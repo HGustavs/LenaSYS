@@ -8847,8 +8847,8 @@ function drawLine(line, targetGhost = false)
 
         
         // Label position for recursive edges
-        const labelPositionX = labelPosX+lineLabel.labelMovedX+lineLabel.displacementX + 180 * zoomfact
-        const labelPositionY = labelPosY+lineLabel.labelMovedY+lineLabel.displacementY - 40 * zoomfact
+        const labelPositionX = labelPosX+lineLabel.labelMovedX+lineLabel.displacementX + 1 * zoomfact
+        const labelPositionY = labelPosY+lineLabel.labelMovedY+lineLabel.displacementY - 1 * zoomfact
 
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
         str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
