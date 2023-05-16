@@ -1,5 +1,5 @@
 <?php
-    //TODO: This will crash
+    //TODO: This will crash, don't know what to do with exampleCount yet, since it was porely made from the begining
     Function retrieveCodeViewerInformation(){
         if($exampleCount>0){
             //------------------------------------------------------------------------------------------------
