@@ -596,7 +596,6 @@
 				<div class='inputwrapper'>
 					<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder'> 
-							<option value="">Choose a directory</option>
 							<?php
 								$cid = getOPG('courseid');
 								$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
