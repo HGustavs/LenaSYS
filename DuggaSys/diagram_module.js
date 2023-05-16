@@ -1,3 +1,4 @@
+import { isDarkTheme, checkElementError } from "./diagram.js";
 /**
  * @description Construct an string containing all the elements for an data-object.
  * @param {Object} element The object that should be drawn.
