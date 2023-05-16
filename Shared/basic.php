@@ -255,7 +255,7 @@ $sql2 = '
 	);
 '; 
 $metadata_db->exec($sql2);
-
+// The indentation is really weird down below, i tried to make it normal but it just broke the code.
 $sql3 = '
 	CREATE TABLE IF NOT EXISTS gitFiles ( 
 		cid INTEGER,
