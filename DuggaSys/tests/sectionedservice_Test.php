@@ -60,45 +60,45 @@ $testsData = array(
     // ),
 );
  
-$testsData = array(
-    'create course test' => array(
-        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
-        'query-before-test-1' => "SELECT coursename FROM course WHERE coursecode = 'DV12G' ORDER BY coursecode DESC LIMIT 1",
-        'variables-query-before-test-2' => "blop",
-        'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
-        'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
-        'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
-        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
-        'service-data' => serialize(array( // Data that service needs to execute function
-            'opt' => 'NEW',
-            'username' => 'usr',
-            'password' => 'pass',
-            'coursecode' => 'IT466G',
-            'coursename' => 'TestCourseFromAPI4',
-            'uid' => '101',
-        'blop' => '!query-before-test-1! [0][coursename]'
-        )),
-        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            'debug',
-            'readonly'
-        )),
-    ),
-    'create course test 2' => array(
-        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
-        'service-data' => serialize(array( // Data that service needs to execute function
-            'opt' => 'NEW',
-            'username' => 'usr',
-            'password' => 'pass',
-            'coursecode' => 'IT466G',
-            'coursename' => 'TestCourseFromAPI5',
-            'uid' => '101'
-        )),
-        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            'none'
-        )),
-    ),
-);
+// $testsData = array(
+//     'create course test' => array(
+//         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+//         'query-before-test-1' => "SELECT coursename FROM course WHERE coursecode = 'DV12G' ORDER BY coursecode DESC LIMIT 1",
+//         'variables-query-before-test-2' => "blop",
+//         'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
+//         'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
+//         'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
+//         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
+//         'service-data' => serialize(array( // Data that service needs to execute function
+//             'opt' => 'NEW',
+//             'username' => 'usr',
+//             'password' => 'pass',
+//             'coursecode' => 'IT466G',
+//             'coursename' => 'TestCourseFromAPI4',
+//             'uid' => '101',
+//         'blop' => '!query-before-test-1! [0][coursename]'
+//         )),
+//         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+//             'debug',
+//             'readonly'
+//         )),
+//     ),
+//     'create course test 2' => array(
+//         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+//         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
+//         'service-data' => serialize(array( // Data that service needs to execute function
+//             'opt' => 'NEW',
+//             'username' => 'usr',
+//             'password' => 'pass',
+//             'coursecode' => 'IT466G',
+//             'coursename' => 'TestCourseFromAPI5',
+//             'uid' => '101'
+//         )),
+//         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+//             'none'
+//         )),
+//     ),
+// );
 
 // foreach($testsData as $i => $value){
 //     echo $i;
