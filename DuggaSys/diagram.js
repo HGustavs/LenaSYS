@@ -2855,7 +2855,7 @@ function constructElementOfType(type)
  * @returns {array} result
  */
 function getElementLines(element) {
-    console.log("GotELementLines");
+    console.log(getElementLines(element));
     return element.top.concat(element.right, element.bottom, element.left);
 }
 
@@ -2865,7 +2865,7 @@ function getElementLines(element) {
  * @returns {boolean} result
  */
 function elementHasLines(element) {
-    console.log("HasLines");
+    console.log(elementHasLines(element));
     return (getElementLines(element).length > 0);
 }
 /** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
