@@ -7587,17 +7587,17 @@ function determineLine(line, targetGhost = false)
 
     // Add accordingly to association end
     if (line.ctype == "LR"){
-        felem.left.push(line.id);
-        telem.right.push(line.id);
+        if (felem.kind == "EREntity") felem.left.push(line.id);
+        if (telem.kind == "EREntity") telem.right.push(line.id);
     }else if (line.ctype == "RL"){
-        felem.right.push(line.id);
-        telem.left.push(line.id);
+        if (felem.kind == "EREntity") felem.right.push(line.id);
+        if (telem.kind == "EREntity") telem.left.push(line.id);
     }else if (line.ctype == "TB"){
-        felem.top.push(line.id);
-        telem.bottom.push(line.id);
+        if (felem.kind == "EREntity") felem.top.push(line.id);
+        if (telem.kind == "EREntity") telem.bottom.push(line.id);
     }else if (line.ctype == "BT"){
-        felem.bottom.push(line.id);
-        telem.top.push(line.id);
+        if (felem.kind == "EREntity") felem.bottom.push(line.id);
+        if (telem.kind == "EREntity") telem.top.push(line.id);
     }
 
     if (felem.neighbours[telem.id] == undefined) {
