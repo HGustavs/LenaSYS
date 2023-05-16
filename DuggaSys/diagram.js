@@ -4211,7 +4211,7 @@ function generateStateDiagramInfo()
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][LABEL]}"</p>`;
             }
             else {
-                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with lable "${connections[i][LABEL]}"</p>`;
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with label "${connections[i][LABEL]}"</p>`;
             }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
