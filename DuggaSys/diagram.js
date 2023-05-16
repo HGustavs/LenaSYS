@@ -9778,8 +9778,8 @@ function drawElement(element, ghosted = false)
     // Sequence activation 
     else if (element.kind == 'sequenceActivation') {
         //div to encapsulate sequence lifeline.
-        str += `<div x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${(boxw/2) - linew}' id='${element.id}' class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;`;
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
