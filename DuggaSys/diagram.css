@@ -560,8 +560,8 @@
 }
 
 #closeLoadModal{
-    top: 0;
-    right: 0;
+    top: 0px;
+    right: 0px;
 }
 
 .hiddenLoad{
