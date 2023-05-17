@@ -6635,9 +6635,9 @@ function generateContextProperties()
               //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
               for (const property in element) {
                   switch (property.toLowerCase()) {
-                      case 'name':
-                          str += `<div style='color:white'>Name</div>`;
-                          str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                      case'name':
+                          str += `<div style='color:white'>name</div>`;
+                          str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                           break;
                       default:
                           break;
