@@ -28,9 +28,11 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 
+
 function IsLoggedIn(bool){
   bool ? isLoggedIn = true : isLoggedIn = false ;
 }
+
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -555,16 +557,18 @@ function confirmBox(operation, item = null) {
   }else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
-  }else if (operation == "openGitHubBox") {
-    console.log("testworkornah2?");
+  }
+  // Responsible for opening github moment
+  else if (operation == "openGitHubBox") {
     $("#gitHubBox").css("display", "flex");
   }
+  else if (operation == "saveGitHubBox") {
+  }
+
   //ändra 
   else if (operation == "openGitHubTemplate") {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
-
-
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
@@ -745,6 +749,10 @@ async function createFABItem(kind, itemtitle, comment) {
     console.log(numberOfItems + " " + itemtitle + "(s) created");
     numberOfItems = 1; // Reset number of items to create
   }
+  console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
+  console.log(selectItem);
+  console.log("newItem function:", newItem.toString());
+
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
@@ -861,6 +869,48 @@ function cancelDelete() {
     deletedElements[i].classList.remove("deleted");
   }
   location.reload();
+}
+
+// update selected directory
+function updateSelectedDir() {
+  var selectedDir = $('#selectDir').val();
+  $.ajax({
+    url: "./sectioned.php",
+    type: "POST",
+    data: {
+      action: "updateSelectedDir",
+      selectedDir: selectedDir,
+      cid: cidFromServer
+    },
+    success: function(data) {
+      console.log('POST-request call successful');
+      console.log("Response: ", data);
+      alert('Directory has been updated succesfully')
+
+      // Parse the JSON response
+      var response;
+      try {
+        response = JSON.parse(data);
+      } catch (e) {
+        console.error('Failed to parse JSON:', e);
+        return;
+      }
+
+      // Handle the response
+      //TODO:: Server is sending html response instead of JSON
+      if (response.status === "success") {
+        console.log('Update successful');
+      } else {
+        console.error('Update failed:', response.message);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error('Update failed:', error);
+      console.log("Status: ", status);
+      console.log("Error: ", error);
+      alert('Directory update failed')
+    }
+  });
 }
 
 //----------------------------------------------------------------------------------
@@ -3563,6 +3613,20 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+    // validates the github moment from github integration (the github icon)
+    if (formid === 'saveGithubMoment') {
+      var selectedDir = document.getElementById('selectDir').value;
+
+      // Validate fields here. For example, check if fields are not empty
+      if (selectedDir == "" || selectedDir == null) {
+        alert("Pick directory");
+        return;
+      }
+
+      updateSelectedDir();
+      // If validation passes, submit the form
+      document.getElementById('githubForm').submit();
+    }
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
