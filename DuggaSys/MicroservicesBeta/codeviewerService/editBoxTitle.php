@@ -42,4 +42,6 @@
     }
 
     echo retrieveCodeViewerInformation();
+
+    var_dump(checkUserStatusTest());
 ?>
