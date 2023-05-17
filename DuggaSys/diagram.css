@@ -548,10 +548,9 @@
 
 .loadModal{
     position: absolute;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    z-index: 999;
+    left: 50%;
+    top: 50%;
 }
 
 .hiddenLoad{
