@@ -6848,8 +6848,8 @@ function generateContextProperties()
                     }
                 }
               } 
-        else if (element.type == 'Note') {
-                if (element.kind == 'noteEntity') {
+        else if (element.type == 'NOTE') {
+                if (element.kind == 'NOTE') {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'name':
