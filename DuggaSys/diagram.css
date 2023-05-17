@@ -559,6 +559,11 @@
     flex-direction: column;
 }
 
+#closeLoadModal{
+    top: 0;
+    right: 0;
+}
+
 .hiddenLoad{
     display: none;
 }
