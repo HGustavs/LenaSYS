@@ -877,6 +877,9 @@
         <button id="closeLoadModal" onclick="closeModal();">&times;</button>
         <p>Select a load:</p>
         <a href="#">CLICK</a>
+        <a href="#">CLICK</a>
+        <a href="#">CLICK</a>
+        <a href="#">CLICK</a>
     </div>
     <div class="loadModalOverlay hiddenLoad"></div>
 
