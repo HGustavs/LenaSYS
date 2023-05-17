@@ -9969,6 +9969,37 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
+    //=============================================== <-- Start Note functionality
+    else if (element.kind == 'Note') {
+        //div to encapuslate UML element
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh / 3))}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+
+        //svg for inheritance symbol
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+
+        //Overlapping UML-inheritance
+        if (element.state == 'overlapping') {
+            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
+            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
+        }
+        //Disjoint UML-inheritance
+        else {
+            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
+            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
+        }
+        //end of svg
+        str += `</svg>`;
+    }
+    //=============================================== <-- End of Note functionality
     //=============================================== <-- Start ER functionality
     //ER element
     else {
