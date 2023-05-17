@@ -876,6 +876,7 @@ const entityType = {
     IE: "IE",
     SD: "SD",
     SE: "SE",
+    NOTE: "NOTE",
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -1082,7 +1083,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false,IE:false,SD:false};
+var diagramType = {ER:false,UML:false,IE:false,SD:false,NOTE:false};
 
 //Grid Settings
 var settings = {
@@ -1525,6 +1526,22 @@ function showDiagramTypes(){
     }
     else {
         Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
+    // NOTE button
+    if (diagramType.NOTE) {
+        document.getElementById("elementPlacement15").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement15").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else {
+        Array.from(document.getElementsByClassName("NOTEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
     }
