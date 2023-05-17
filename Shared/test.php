@@ -402,9 +402,9 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     echo "I AM HERE !!!!!!!!!";
     
-    // foreach($outputDiff as $value){
-    //     echo $value;
-    // };
+    foreach($outputDiff as $row => $value){
+        echo $value;
+    };
     // $outputDiff = array_diff($valueExpected,$valueOuput);
 
     if (($valueExpected != null) && ($valueOuput != null)){
