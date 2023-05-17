@@ -8,6 +8,7 @@
 </head>
 
 <?php 
+include ("../../../shared/dugga.js");
 echo '<script> testLogin_showLoginPopup(); </script>'; 
 ?>
 
