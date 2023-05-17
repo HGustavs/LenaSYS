@@ -408,7 +408,7 @@ function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
 
     if (($valueExpected != null) && ($valueOuput != null)){
         //$equalTest = ($valueExpected == $valueOuput);
-        if (/empty($result_array[0])){
+        if (empty($result_array[0])){
             $equalTestResult = "passed";
         }
         else{
