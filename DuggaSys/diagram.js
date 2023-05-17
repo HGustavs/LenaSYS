@@ -9998,7 +9998,24 @@ function drawElement(element, ghosted = false)
                             margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
+                            ${ghostAttr};
                             font-size:${texth}px;`;
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `
+                pointer-events: none;
+                opacity: ${ghostPreview};
+            `;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}' >`;
+        str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+                    ${weak}
+                    <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
+                    `;
         if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
