@@ -1158,7 +1158,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['-Attribute'], functions: ['+function'] },  // UML Super State.
+    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE"},  // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -6860,31 +6860,7 @@ function generateContextProperties()
                                 break;
                         }
                     }
-                    str += `<div style='color:white'>Variant</div>`;
-
-                    //Creates drop down for changing state of ER elements
-                    var value;
-                    var selected = context[0].state;
-                    if (selected == undefined) {
-                        selected = "normal"
-                    }
-                    if (element.kind == "NOTE") {
-                        value = Object.values(attrState);
-                    } else if (element.kind == "NOTE") {
-                        value = Object.values(entityState);
-                    } else if (element.kind == "NOTE") {
-                        value = Object.values(relationState);
-                    }
-
-                    str += '<select id="propertySelect">';
-                    for (i = 0; i < value.length; i++) {
-                        if (selected != value[i]) {
-                            str += '<option value=' + value[i] + '>' + value[i] + '</option>';
-                        } else if (selected == value[i]) {
-                            str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
-                        }
-                    }
-                    str += '</select>';
+                   
                 }
          }
       }
