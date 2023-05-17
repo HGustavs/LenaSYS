@@ -1,0 +1,993 @@
+# showDuggaservice-test.php
+
+=====================================================================
+
+## TEST #1 - 100-105 Get active users
+
+## Pre-req
+
+```
+$pre-values =
+{   
+    “hnf3j58s”
+    5
+};
+Pre-query: INSERT INTO groupdugga(hash,active_users)  VALUES ($pre-values[0], $pre-values[1]);
+```
+
+## Sent input
+
+```
+send
+{
+	$opt = “UPDATEAU”
+    $hash = “hnf3j58s”
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using hash
+
+```
+SQL-query DELETE FROM groupdugga WHERE hash = $hash;
+```
+
+=====================================================================
+
+## TEST #2 - 106-110 Create active users
+
+## Pre-req
+
+```
+$active == NULL
+Pre query:
+SQL-query: SELECT hash FROM groupdugga WHERE hash=’tj7dh2nb’; //This is to check that this hash isn't already in the db, this also makes the pre-req active==NULL true which will lead to an insert happening.
+```
+
+## Sent input
+
+```
+send
+{
+	$opt = “UPDATEAU”
+    $hash = “tj7dh2nb”
+    $AUtoken = 999
+}
+```
+
+##  Get newly added active users
+
+```
+	SQL-query: SELECT MAX(active_users) FROM groupdugga; // Save to variable $active_users this will identify the last active user that was created (it has the highest AUtoken)
+```
+
+## Service output
+
+### Gather service output
+
+```
+Save the values of the echoed array as a JSON 
+(at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+```
+
+## Remove inserted row from DB, using hash
+
+```
+SQL-query DELETE FROM groupdugga WHERE hash = $hash;
+```
+
+=====================================================================
+
+## TEST #3 - 111-117 update active users
+
+## Pre-req
+
+```
+Pre-req: $active != NULL
+```
+
+## Pre-req variables
+
+```
+$pre-values =
+{
+    “hjk4ert6”,
+    52
+};
+SQL-query: INSERT INTO groupdugga(hash,active_users) VALUES($pre-values[0], $pre-values[1])
+```
+
+## Get newly created active users, make sure it was added
+
+```
+SQL-query: SELECT * FROM groupdugga WHERE hash=$pre-values[0]; //
+```
+
+## Update information on a active users, send parameters input to showDuggaservice.php
+
+```
+send
+{
+    $opt = “UPDATEAU”
+    $hash = “hjk4ert6”
+    $newToken = 9999
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+Save the values of the echoed array as a JSON (at the end of the file. echo json_encode($array);)
+this is the expected output for the micro service.
+```
+
+## Remove inserted row from DB, using hash
+
+```
+SQL-query: DELETE FROM groupdugga WHERE hash = $hash;
+```
+
+=====================================================================
+
+## Test#4 - 261 - 309 get data from userAnswer
+
+## Pre-req
+
+```
+pre-req: !isSuperUser($userid) && isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) == TRUE &&
+isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"] == TRUE
+Pre-querys:
+$preValuesCourse = 
+{	
+    9999
+    1
+};
+SQL-query: INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+$pre-values = 
+{
+    “ghj1jfg2”,
+    “dsa4cxz5”,
+    13,
+    9999,
+    "VALUE FROM PREVIOUS QUERY"//this is an INT, no quotationmarks.
+}
+SQL-query: INSERT INTO userAnswer (hash, password, variant, cid, moment) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3], $pre-values[4])
+//Get the selected user by hash
+SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=$hash;
+```
+
+## Sent input
+
+```
+send 
+{
+    $opt = “SAVDU”
+    $hash = “ghj1jfg2”
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+## Remove inserted row from DB, using aid
+
+```
+SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+			DELETE FROM listentries WHERE cid = 9999;
+			DELETE FROM course WHERE cid = 9999;
+```
+
+=====================================================================
+
+## TEST #5 - 279 - 287 update submitted dugga
+
+## Pre-req
+
+```
+Pre-req: !isset($grade) || !$grade > 1 &&
+isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0
+```
+
+## Pre-req variables
+
+```
+Pre-querys:
+$preValuesCourse = 
+{	
+    9999,
+	1
+};
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+$pre-values =
+{
+    9999,
+    “dfg4zxc5”,
+    “asdfasdf”,
+    "VALUE FROM PREVIOUS QUERY"//this is an INT, no quotationmarks.
+};
+SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
+* Get newly created data, make sure the new insert was added.
+SQL-query: SELECT * WHERE hash=pre-values[1];
+```
+
+## Update information on userAnswer, send parameters input to showDuggaservice.php
+
+```
+send
+{
+	$opt = SAVDU
+    $hash = “dfg4zxc5”
+    $haspwd = “asdfasdf”
+    $answer = “im updated”
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using aid
+
+```
+SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+            DELETE FROM listentries WHERE cid = 9999;
+	    DELETE FROM course WHERE cid = 9999;
+```
+
+=====================================================================
+
+## TEST #6 - 293 - 307 submit dugga
+
+## Pre-req
+
+```
+Pre-req: !isset($grade) || !$grade > 1
+Pre-querys:
+$preValuesCourse = 
+{	
+    9999,
+	1
+};
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+```
+
+## send parameters input to showDuggaservice.php
+
+```
+send
+{
+	$opt = “SAVDU”
+	$cid = 9999
+	$coursevers = 52432
+	$duggaid = 1
+	$moment = "SAVED VALUE FROM PREVIOUS QUERY"//this value is an INT, so no quotation marks.
+	$variant = 3
+    $hash = “ghj1ghj2”
+    $haspwd = “asddasdd”
+    $answer = NULL
+}
+```
+
+## get newly created data
+
+```
+SQL-query: SELECT hash FROM useranswer WHERE hash = $hash
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using aid
+
+```
+SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+            DELETE FROM listentries WHERE cid = 9999;
+	    DELETE FROM course WHERE cid = 9999;
+```
+
+=====================================================================
+
+
+## TEST #7 - 319 - 324 super-view data from useranswer on hash
+
+## Pre-req
+
+```
+Pre-req: isSuperUser = TRUE
+	  $hash != “UNK”
+Pre-querys:
+$preValuesCourse = 
+{	
+    9999,
+	1
+};
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+$pre-values =
+{
+    9999,
+    “dfg4zxc5”,
+    “asdfasdf”,
+    "SAVED VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
+};
+SQL-query: INSERT INTO userAnswer(cid,hash,password,moment) VALUES ($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3]);
+```
+
+## send parameters input to showDuggaservice.php
+
+```
+send
+{
+    $hash = “dfg4zxc5”
+}
+```
+
+## get newly created data
+
+```
+SQL-query: SELECT hash FROM useranswer WHERE hash = $hash
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using aid
+
+```
+SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+            DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
+```
+
+=====================================================================
+
+
+## TEST #8 - 327 - 334 super-view data from useranswer on moment
+
+## Pre-req
+
+```
+Pre-req: isSuperUser = TRUE
+	  $hash != “UNK”
+	  $rows == NULL
+Pre-query:
+$preValuesCourse = 
+{	
+    9999,
+    1
+};
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+SELECT * FROM userAnswer WHERE hash = “xxxxxxxx”// This should return nothing, otherwise, change hash to something where previous query returns nothing. This is to ensure that the pre-req rows == NULL is matched.
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+```
+
+## send parameters input to showDuggaservice.php
+
+```
+send
+{
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using aid
+
+```
+SQL-query:  DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
+```
+
+=====================================================================
+
+
+## TEST #9 - 345 - 351 super-view data on quizname
+
+## Pre-req
+
+```
+Pre-req: isSuperUser = TRUE
+	  $hash != “UNK”
+Pre-query:
+$preValuesCourse = 
+{	
+    9999
+    1
+};
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+```
+
+## send parameters input to showDuggaservice.php
+
+```
+send
+{
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using aid
+
+```
+SQL-query:  DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
+```
+
+=====================================================================
+
+## TEST #10 - 374 - 402 view data on userAnswer
+
+## Pre-req
+
+```
+Pre-req: !isSuperUser 
+	  $hash != “UNK” && password != “UNK”
+Pre-query:
+$preValuesCourse = {	9999
+			1
+};
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+$pre-values = 
+{
+	$cid = 9999
+	$coursevers = 52432
+	$duggaid = 1
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
+	$variant = 3
+    $hash = “ghj1ghj2”
+    $haspwd = “asddasdd”
+    $answer = NULL
+}
+SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3] , $pre-values[4], $pre-values[5] , $pre-values[6],$pre-values[7] , $pre-values[8], $pre-values[9] ,now());")
+```
+
+## send parameters input to showDuggaservice.php
+
+```
+send
+{
+	$hash = “ghj1ghj2”
+	$hashpwd = “asddasdd”
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using aid
+
+```
+	SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+                DELETE FROM listentries WHERE cid = 9999;
+	            DELETE FROM course WHERE cid = 9999;
+```
+
+=====================================================================
+
+
+## TEST #11 - 402- 449 super-view data on quizname
+
+## Pre-req
+
+```
+Pre-req: !isSuperUser 
+	  $hash = “UNK” || password = “UNK”
+Pre-query:
+$preValuesCourse = {	9999
+			1
+};
+INSERT INTO course(cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
+$preValuesListentries = 
+{   
+    9999, 
+    "Inserttobedeleted",
+    "UNK",
+    4,
+    12,
+    2,
+    1,
+    1337,
+    1,
+    1,
+    0, 
+    "UNK"
+}; 
+SQL-query:  INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) 
+            VALUES ($preValuesListentries[0], $preValuesListentries[1], $preValuesListentries[2], $preValuesListentries[3], $preValuesListentries[4], $preValuesListentries[5], $preValuesListentries[6], $preValuesListentries[7], $preValuesListentries[8], $preValuesListentries[9],$preValuesListentries[10],$preValuesListentries[11]);
+//Now check what lid this added listenetry has
+SQL-query: SELECT MAX(lid) FROM listentries
+//Save this value since it has to be used in moment for the next part.
+$pre-values = 
+{
+	$cid = 9999
+	$coursevers = 52432
+	$duggaid = 1
+	$moment = "VALUE FROM PREVIOUS QUERY"//value is an INT, no quotation marks.
+	$variant = 3
+    $hash = “ghj1ghj2”
+    $haspwd = “UNK”
+    $answer = NULL
+}
+SQL-query INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES($pre-values[0], $pre-values[1], $pre-values[2], $pre-values[3] , $pre-values[4], $pre-values[5] , $pre-values[6],$pre-values[7] , $pre-values[8], $pre-values[9] ,now());")
+```
+
+## send parameters input to showDuggaservice.php
+
+```
+send
+{
+	$courseid = 9999
+	$duggaid = 1
+    $tmpvariant = 3
+    $tmphash = “ghj1ghj2”
+    $tmphashpwd = “UNK”
+}
+```
+
+## Service output
+
+### Gather service output
+
+```
+{
+  "debug":
+  "param": 
+  "answer": 
+  "danswer": 
+  "score": 
+  "highscoremode": 
+  "grade": 
+  "submitted": 
+  "marked": 
+  "deadline": 
+  "release": 
+  "files": 
+  "userfeedback": 
+  "feedbackquestion": 
+  "variant": 
+  "ishashindb": 
+  "variantsize": 
+  "variantvalue": 
+  "password": 
+  "hashvariant": 
+  "isFileSubmitted": 
+  "isTeacher": 
+  "variants": 
+  "duggaTitle": 
+  "hash": 
+  "hashpwd": 
+  "opt": 
+  "link": 
+}
+```
+
+## Remove inserted row from DB, using aid
+
+```
+SQL-query:  DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;
+            DELETE FROM listentries WHERE cid = 9999;
+            DELETE FROM course WHERE cid = 9999;
+```
+
+##### NOTE: This test might have better testing solutions, since the query is very complex.
+
+=====================================================================
+
