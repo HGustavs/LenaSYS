@@ -3086,19 +3086,33 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 
 //Creates all examples from github that doesnt exists yet
-function createExamples(dir,momentID) {//TODO HERE
-  lid= momentID;
+function createExamples(dir,momentID) {
+  lid = momentID;
   dirname = dir;
+
+  console.log("Function createExamples called with parameters:");
+  console.log("dir:", dir);
+  console.log("momentID:", momentID);
+
   console.log("* AJAX START ");
+
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
     data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
     dataType: "json",
-    //TODO: reload back to coursepage
+    success: function(response) {
+      console.log("AJAX request succeeded. Response:", response);
+    },
+    error: function(xhr, status, error) {
+      console.log("AJAX request failed. Status:", status);
+      console.log("Error:", error);
+    }
   });
+
   console.log("** AJAX DONE **");
 }
+
 
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
