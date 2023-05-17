@@ -768,6 +768,7 @@ const keybinds = {
         STATE_SUPER: { key: ">", ctrl: false },
         SAVE_DIAGRAM: { key: "s", ctrl: true }, 
         LOAD_DIAGRAM: { key: "l", ctrl: true }, 
+        NOTE_ENTITY: { key: "n", ctrl: false }
 };
 
 /** 
@@ -800,7 +801,8 @@ const elementTypes = {
 
     sequenceActorAndObject:12, //sequence functionality
     sequenceActivation: 13,
-    sequenceLoopOrAlt: 14
+    sequenceLoopOrAlt: 14,
+    noteEntity: 15,
     
 };
 
@@ -827,7 +829,7 @@ const elementTypesNames = {
     sequenceActorAndObject: "sequenceActorAndObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
-
+    noteEntity: "Note",
 }
 
 /**
@@ -1151,8 +1153,9 @@ var defaults = {
 
     sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor" }, // sequence actor and object
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
-    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
+    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
+    noteEntity: { name: "Note", kind: "Note", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "NOTE" },  // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1716,7 +1719,10 @@ document.addEventListener('keyup', function (e)
             setElementPlacementType(elementTypes.UMLSuperState);
             setMouseMode(mouseModes.PLACING_ELEMENT);
         }
-
+        if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
+            setElementPlacementType(elementTypes.noteEntity); //link note keybindhere
+            setMouseMode(mouseModes.PLACING_ELEMENT);
+        }
 
         if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
         if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
@@ -6822,7 +6828,30 @@ function generateContextProperties()
                             break;
                     }
                 }
-            } 
+              } 
+        else if (element.type == 'Note') {
+            if (element.kind == 'noteEntity') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'attributes':
+                            str += `<div style='color:white'>Attributes</div>`;
+                                /* find me str += `<div>`;
+                                 str += `<select id="SDOption">`;
+                                     str +=  `<option value ="Do: " selected>Do</option>`;
+                                     str += `<option value="Exit: ">Exit</option>`;
+                                 str += `</select>`;
+                                 str += `</div>`; */
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                                break;
+                        default:
+                                break;
+                    }
+                }
+            }
         }
     
 
