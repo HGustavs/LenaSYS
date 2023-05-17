@@ -9992,22 +9992,13 @@ function drawElement(element, ghosted = false)
     else if (element.kind == "NOTE") {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                     class="element note"
-                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}" 
-                     onmousedown='ddown(event);' 
-                     onmouseenter='mouseEnter();' 
-                     onmouseleave='mouseLeave();'>
-                        <svg width="100%" height="100%" 
-                             viewBox="0 0 24 24"
-                             xmlns="http://www.w3.org/2000/svg" 
-                             xml:space="preserve"
-                             style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                            <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
-                                <circle cx="16.5" cy="12.5" r="10.5"/>
-                            </g>
-                        </svg>
-                </div>`;
+        str += str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            margin-top:${((boxh / 2))}px;;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
         if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
