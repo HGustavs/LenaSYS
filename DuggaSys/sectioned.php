@@ -5,12 +5,38 @@
 	//include_once "../../coursesyspw.php";
 	pdoConnect();
 
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
 		$userid="00";
 	}
 
+	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['githubInsert']) && isset($_POST['lid']) && !empty($_POST['githubDir'])) {
+		global $pdo;
+		$githubDir = $_POST['githubDir'];
+		$lid = $_POST['lid'];
+		updateGithubDir($pdo, $githubDir, $lid);
+	}
+
+	function updateGithubDir($pdo, $githubDir, $lid) {
+		try {
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$query = $pdo->prepare("UPDATE listentries SET githubDir = :githubdir WHERE lid = :lid");
+			$query->bindParam(':githubdir', $githubDir);
+			$query->bindParam(':lid',$lid);
+			if($query->execute()) {
+				echo "<script>console.log('Update Successful!');</script>";
+			} else {
+				echo "<script>console.log('Update Failed.');</script>";
+			} 
+		}
+		catch(PDOException $exception) {
+			echo "<script>console.log('Update Failed: " . addslashes($exception->getMessage()) . "');</script>";
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -298,7 +324,7 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 					<p id="EndDialog1" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 				</div>
 
@@ -565,37 +591,44 @@
 
 
 	<!-- github moments box  -->
-	<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-			<div class='loginBoxheader'>
+	<form action="" method="POST" id="form">
+		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
+			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+				<div class='loginBoxheader'>
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+				</div>
+				<div class='inputwrapper'>
+					<span>Github Directory:</span>
+						<select name="githubDir" placeholder='Github Folder'>
+							<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
+							<?php
+								// Gets "cid" via getOPG.
+								$cid = getOPG('courseid');
+								// Traverses the github map for the respective course, only fetches directories. 
+								$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
+								foreach ($dirs as $dir) {
+									$dirname = basename($dir);
+									// Creates an option for each directory containing the string "Examples". 
+									if(strstr($dirname, 'Examples')) {
+										echo "<option value='$dirname'>$dirname</option>";
+									}		
+								}			
+							?>
+						</select>
+					</div>
+				<input type="hidden" name="lid" id="lidInput">
+				<!-- Hidden input using the "lid" from "getLidFromButton" -->
+				<input type="submit" name="githubInsert" value="Submit!">
+				<script>
+					// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
+					function getLidFromButton(lid) {
+						document.getElementById('lidInput').value = lid;
+					}
+				</script>
 			</div>
-			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
-
-			<div class='inputwrapper'><span>directory:</span><select class='' id='' placeholder='Name.type' value=''> 
-                <!-- get all data from the sqlite database from the current course(cid) and print the filenames as options -->
-                <?php
-                    try{
-                        $cid = getOPG('courseid');
-                        $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-                
-                        $query =  $pdolite->prepare('SELECT * FROM gitFiles WHERE fileType = "dir" and cid = :cid');
-                        $query->bindParam(':cid', $cid);
-                        $query->execute();
-                        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
-                    }catch(PDOException $e) {
-                        return '<p>Error: ' . $e->getMessage() . '</p>';
-                    }
-                    foreach($rows as $row){
-                    echo "<option value=''>" .$row['fileName']. "</option>";
-                    }
-                ?>
-			</select></div>
-			<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
-			<div class='inputwrapper'><span>Order of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
 		</div>
-	</div>
+	</form>
 
 	<!-- github template  -->
 

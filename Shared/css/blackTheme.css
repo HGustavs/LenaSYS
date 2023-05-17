@@ -828,13 +828,6 @@ option:checked{
 }
 /* END */
 
-/* Style for "Input elements" */
-button{
-    background-color: var(--color-background-codeviewer-nav);
-    color: var(--color-text-light);
-    border-radius: 5px;
-}
-
 select{
     background-color: var(--color-background-light-surface);
     color: var(--color-text-list);
