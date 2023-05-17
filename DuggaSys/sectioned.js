@@ -3116,6 +3116,7 @@ function createExamples(dir,momentID) {
   setInterval(function() {
     if (dir !== "" && momentID !== "") {
       createExamples(dir, momentID);
+      console.log("createExamples() called in the setInterval function.");
     } else {
       console.log("No dir and momentID set yet.");
     }
