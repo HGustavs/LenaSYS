@@ -6849,18 +6849,15 @@ function generateContextProperties()
                 }
               } 
         else if (element.type == 'NOTE') {
-                if (element.kind == 'NOTE') {
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            default:
-                                break;
-                        }
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        default:
+                            break;
                     }
-                   
                 }
          }
       }
