@@ -4549,6 +4549,14 @@ function setReplayRunning(state)
  */
 function toggleErTable()
 {
+        // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+    // Add the diagramActive to current diagramIcon
+    document.getElementById("erTableToggle").classList.add("active");
+
     if(erTableToggle == false){
         erTableToggle = true;
         testCaseToggle = false;
@@ -4571,6 +4579,14 @@ function toggleErTable()
  */
 function toggleTestCase()
 {
+    // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+    // Add the diagramActive to current diagramIcon
+    document.getElementById("testCaseToggle").classList.add("active");
+    
     if (testCaseToggle == false) {
         testCaseToggle = true;
         erTableToggle = false;
