@@ -9816,7 +9816,7 @@ function drawElement(element, ghosted = false)
                 }
             }
 
-            let text = element.name.map(line => {
+            let text = element.name(line => {
                 return splitLengthyLine(line, maxCharactersPerLine);
             }).flat();
 
