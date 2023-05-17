@@ -6583,12 +6583,16 @@ function generateContextProperties()
               var selected = context[0].type;
 
               str += '<select id="typeSelect">';
-              for (i = 0; i < value.length; i++) {
-                  if (selected != value[i]) {
-                      str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                  } else if(selected == value[i]) {
-                      str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                  }
+              if (elementHasLines(element)){
+                str += '<option selected ="selected" value='+selected+'>'+ selected +'</option>';
+              }else{
+                for (i = 0; i < value.length; i++) {
+                    if (selected != value[i]) {
+                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
+                    } else if(selected == value[i]) {
+                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                    }
+                }
               }
               str += '</select>'; 
           }
