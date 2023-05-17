@@ -387,6 +387,11 @@ function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
        // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
 
+
+    // $valueExpected = json_decode($valueExpected);
+    // $valueOuput = json_decode($valueOuput);
+
+
     $i = 0; 
     foreach($valueExpected as $row => $arrayValues){
         echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues]."</br>";
@@ -394,10 +399,11 @@ function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
         echo $outputDiff[$arrayValues];
     };
 
+    // echo "I AM HERE !!!!!!!!!";
     
-    foreach($outputDiff as $value){
-        echo $value;
-    };
+    // foreach($outputDiff as $value){
+    //     echo $value;
+    // };
     // $outputDiff = array_diff($valueExpected,$valueOuput);
 
     if (($valueExpected != null) && ($valueOuput != null)){
