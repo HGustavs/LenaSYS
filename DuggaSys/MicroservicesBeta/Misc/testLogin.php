@@ -14,7 +14,7 @@ include("../../../shared/sessions.php");
 require __DIR__ . '../Misc/checkUserStatus.php';
 
 echo checkUserStatusTest();
-var_dump(checkUserStatusTest());
+print_r(checkUserStatusTest());
 ?>
 <!DOCTYPE html>
 <html lang="en">
