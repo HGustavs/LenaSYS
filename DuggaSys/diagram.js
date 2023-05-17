@@ -9785,7 +9785,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceActorAndObject') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9824,6 +9824,19 @@ function drawElement(element, ghosted = false)
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='transparent'
+            />`;
+            //canvasContext.measureText(element.name).width;
+            //textWidth
+            //rect for sitting behind the actor text
+            str += `<rect class='text'
+                x='${xAnchor-(textWidth/2)}'
+                y='${boxw}'
+                width='${textWidth}'
+                height='${texth}'
+                rx='${sequenceCornerRadius}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}' 
             />`;
             str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
             str += `</g>`;
