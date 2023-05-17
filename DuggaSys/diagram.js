@@ -1158,7 +1158,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['-attribute'], functions: ['+function'] },  // UML Super State.
+    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE"},  // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -6852,9 +6852,8 @@ function generateContextProperties()
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
-                            str += `<div style='color:white'>Name</div>`;
-                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                            str += `</div>`;
+                            str += `<div style='color:white'>Attributes</div>`;
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                             break;
                         default:
                             break;
