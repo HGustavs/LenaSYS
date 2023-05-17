@@ -54,6 +54,9 @@
 
   --box-shadow: rgba(0, 0, 0, 0.12);
   --box-shadow-2: rgba(0, 0, 0, 0.5);
+
+  --color-fileLink-table-1: #ccc;
+  --color-fileLink-table-2: #eae8eb;
 }
 
 /* --------------================################================-------------- *
@@ -870,10 +873,12 @@ p {
 
 .code #NewTabLink{
   filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  cursor: pointer;
 } 
 
 #tabElement{
   filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  cursor: pointer;
 }
 #Sectionlist .header {
   color: var(--color-text-header);
@@ -3538,6 +3543,7 @@ span.arrow {
   -moz-appearance: none;
   vertical-align: text-top;
   color: black;
+  outline: none;
 }
 
 .deadlineInfo {
