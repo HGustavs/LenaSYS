@@ -166,6 +166,7 @@ function testHandler($testsData, $prettyPrint){
         $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
+
         // Test 3 assertEqual
         $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
         $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
@@ -317,6 +318,10 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
+
+    // Handle bad unicode in service files
+    //$valueOuput = json_encode($valueExpected, true, JSON_UNESCAPED_UNICODE);
+    //$valueOuput = json_decode($valueOuput, true);
 
     if (($valueExpected != null) && ($valueOuput != null)){
         $equalTest = ($valueExpected == $valueOuput);
