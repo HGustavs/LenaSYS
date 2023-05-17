@@ -9807,6 +9807,21 @@ function drawElement(element, ghosted = false)
         />`;
         //actor or object is determined via the buttons in the context menu. the default is actor.
         if (element.actorOrObject == "actor") {
+            const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+
+            let splitLengthyLine = (str, max) => {
+                if (str.length <= max) return str;
+                else {
+                    return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+                }
+            }
+
+            let text = element.name.map(line => {
+                return splitLengthyLine(line, maxCharactersPerLine);
+            }).flat();
+
+            elemAttri = text.length;
+            }
             //svg for actor.
             str += `<g>`
             str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
@@ -9825,17 +9840,19 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                x='${xAnchor-(textWidth/2)}'
-                y='${boxw+(linew*2)}'
-                width='${textWidth}'
-                height='${texth}'
-                stroke='none'
-                fill='red' 
-            />`;
-            //fill='${element.fill}' 
-            str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
+            for (let i = 0; i < text.length; i++) {
+                //rect for sitting behind the actor text
+                str += `<rect class='text'
+                    x='${xAnchor-(textWidth/2)}'
+                    y='${boxw+(linew*2)+((boxw+(linew*2))*i)}'
+                    width='${textWidth}'
+                    height='${texth}'
+                    stroke='none'
+                    fill='red' 
+                />`;
+                //fill='${element.fill}' 
+                str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)+((boxw+(texth/2)+(linew*2))*i)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
+            }
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
