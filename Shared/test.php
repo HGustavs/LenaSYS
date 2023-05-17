@@ -312,39 +312,39 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     );
 }
 
-// Test 3: assert equal test
-function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
+// // Test 3: assert equal test
+// function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
-    // Expected value is JSON
-    $valueExpected = json_decode($valueExpected, true);
+//     // Expected value is JSON
+//     $valueExpected = json_decode($valueExpected, true);
 
-    if (($valueExpected != null) && ($valueOuput != null)){
-        $equalTest = ($valueExpected == $valueOuput);
-        if ($equalTest){
-            $equalTestResult = "passed";
-        }
-        else{
-            $equalTestResult = "failed";
-        }
-    }
-    else{
-        $equalTestResult = "failed with error: no valid values to compare";
-    }
+//     if (($valueExpected != null) && ($valueOuput != null)){
+//         $equalTest = ($valueExpected == $valueOuput);
+//         if ($equalTest){
+//             $equalTestResult = "passed";
+//         }
+//         else{
+//             $equalTestResult = "failed";
+//         }
+//     }
+//     else{
+//         $equalTestResult = "failed with error: no valid values to compare";
+//     }
 
-    if ($prettyPrint) {
-        echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
-        echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
-        echo "<br>";
-        echo "<strong>value output: </strong>".json_encode($valueOuput, true);
-        echo "<br>";
-        echo "<br>";
-    }
-    return array(
-        'result' => $equalTestResult,
-        'value-expected' => $valueExpected,
-        'value-output' => $valueOuput
-    );
-}
+//     if ($prettyPrint) {
+//         echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
+//         echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
+//         echo "<br>";
+//         echo "<strong>value output: </strong>".json_encode($valueOuput, true);
+//         echo "<br>";
+//         echo "<br>";
+//     }
+//     return array(
+//         'result' => $equalTestResult,
+//         'value-expected' => $valueExpected,
+//         'value-output' => $valueOuput
+//     );
+// }
 
 // // Test 3: assert equal test
 // function assertEqualTest2($valueExpected, $valueOuput, $prettyPrint){
@@ -381,76 +381,70 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 //     );
 // }
 
-// // Test 3: assert equal test
-// function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
+// Test 3: assert equal test
+function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
 
-//        // Expected value is JSON
-//     $valueExpected = json_decode($valueExpected, true);
+       // Expected value is JSON
+    $valueExpected = json_decode($valueExpected, true);
 
+    $i = 0; 
+    foreach($valueExpected as $row => $arrayValues){
+        echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues]."</br>";
+        $outputDiff[$arrayValues] = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
+        echo $outputDiff[$arrayValues];
+    };
 
-//     // $valueExpected = json_decode($valueExpected);
-//     // $valueOuput = json_decode($valueOuput);
-
-
-//     $i = 0; 
-//     foreach($valueExpected as $row => $arrayValues){
-//         echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues]."</br>";
-//         $outputDiff[$arrayValues] = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
-//         echo $outputDiff[$arrayValues];
-//     };
-
-//     // echo "I AM HERE !!!!!!!!!";
     
-//     foreach($outputDiff as $value){
-//         echo $value;
-//     };
-//     // $outputDiff = array_diff($valueExpected,$valueOuput);
+    foreach($outputDiff as $value){
+        echo $value;
+    };
+    // $outputDiff = array_diff($valueExpected,$valueOuput);
 
-//     if (($valueExpected != null) && ($valueOuput != null)){
-//         //$equalTest = ($valueExpected == $valueOuput);
-//         if (/empty($result_array[0])){
-//             $equalTestResult = "passed";
-//         }
-//         else{
-//             $equalTestResult = "failed";
-//         }
-//     }
-//     else{
-//         $equalTestResult = "failed with error: no valid values to compare";
-//     };
+    if (($valueExpected != null) && ($valueOuput != null)){
+        //$equalTest = ($valueExpected == $valueOuput);
+        if (/empty($result_array[0])){
+            $equalTestResult = "passed";
+        }
+        else{
+            $equalTestResult = "failed";
+        }
+    }
+    else{
+        $equalTestResult = "failed with error: no valid values to compare";
+    };
     
 
-//   // Expected value is JSON
-//     $valueExpected = json_encode($valueExpected);
-//     $valueOuput = json_encode($valueOuput);
+  // Expected value is JSON
+    $valueExpected = json_encode($valueExpected);
+    $valueOuput = json_encode($valueOuput);
 
-//     if (($valueExpected != null) && ($valueOuput != null)){
-//         $equalTest = ($valueExpected == $valueOuput);
-//         if ($equalTest){
-//             $equalTestResult = "passed";
-//         }
-//         else{
-//             $equalTestResult = "failed";
-//         }
-//     }
-//     else{
-//         $equalTestResult = "failed with error: no valid values to compare";
-//     }
+    if (($valueExpected != null) && ($valueOuput != null)){
+        $equalTest = ($valueExpected == $valueOuput);
+        if ($equalTest){
+            $equalTestResult = "passed";
+        }
+        else{
+            $equalTestResult = "failed";
+        }
+    }
+    else{
+        $equalTestResult = "failed with error: no valid values to compare";
+    }
 
-//     if ($prettyPrint) {
-//         echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
-//         echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
-//         echo "<br>";
-//         echo "<strong>value output: </strong>".json_encode($valueOuput, true);
-//         echo "<br>";
-//         echo "<br>";
-//     }
-//     return array(
-//         'result' => $equalTestResult,
-//         'value-expected' => $valueExpected,
-//         'value-output' => $valueOuput
-//     );
-// }
+    if ($prettyPrint) {
+        echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
+        echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
+        echo "<br>";
+        echo "<strong>value output: </strong>".json_encode($valueOuput, true);
+        echo "<br>";
+        echo "<br>";
+    }
+    return array(
+        'result' => $equalTestResult,
+        'value-expected' => $valueExpected,
+        'value-output' => $valueOuput
+    );
+}
 
 
 // Version 1.4 (Increment when new change in code)
