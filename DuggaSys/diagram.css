@@ -545,6 +545,19 @@
 .hiddenToolTiptext{
     visibility:hidden;
 }
+
+.loadModal{
+    position: absolute;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hiddenLoad{
+    display: none;
+}
+
 .placementTypeIcon img{
     position: absolute;
     top: 0px;

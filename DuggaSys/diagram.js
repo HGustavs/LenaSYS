@@ -12994,6 +12994,22 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 }
 
+function showModal(){
+    var modal = document.querySelector('.loadModal');
+    var overlay = document.querySelector('.loadModalOverlay');
+
+    modal.classList.remove('hiddenLoad');
+    overlay.classList.remove('hiddenLoad');
+}
+
+function closeModal(){
+    var modal = document.querySelector('.loadModal');
+    var overlay = document.querySelector('.loadModalOverlay');
+
+    modal.classList.add('hiddenLoad');
+    overlay.classList.add('hiddenLoad');
+}
+
  function loadDiagramFromLocalStorage(key)
 {
     // Check whether there is a diagram saved in localstorage and load it. key for current diagram is CurrentlyActiveDiagram
