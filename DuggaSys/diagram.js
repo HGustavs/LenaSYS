@@ -6830,28 +6830,28 @@ function generateContextProperties()
                 }
               } 
         else if (element.type == 'Note') {
-            if (element.kind == 'noteEntity') {
-                for (const property in element) {
-                    switch (property.toLowerCase()) {
-                        case 'name':
-                            str += `<div style='color:white'>Name</div>`;
-                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                            break;
-                        case 'attributes':
-                            str += `<div style='color:white'>Attributes</div>`;
+                if (element.kind == 'noteEntity') {
+                    for (const property in element) {
+                        switch (property.toLowerCase()) {
+                            case 'name':
+                                str += `<div style='color:white'>Name</div>`;
+                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                break;
+                            case 'attributes':
+                                str += `<div style='color:white'>Attributes</div>`;
                                 /* find me str += `<div>`;
                                  str += `<select id="SDOption">`;
                                      str +=  `<option value ="Do: " selected>Do</option>`;
                                      str += `<option value="Exit: ">Exit</option>`;
                                  str += `</select>`;
                                  str += `</div>`; */
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                                 break;
-                        default:
+                            default:
                                 break;
+                        }
                     }
-                }
-            }
+                }   }
         }
     
 
