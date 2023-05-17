@@ -547,9 +547,12 @@
 }
 
 .loadModalOverlay{
+    position: absolute;
+    z-index: 998;
     width: 100vh;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.2);
+    filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .loadModal{
