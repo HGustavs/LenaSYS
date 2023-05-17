@@ -1,9 +1,10 @@
 <?php
  
- include "../Shared/test.php";
+include "../Shared/test.php";
 
   
  $testsData = array(
+
      'create an assignment' => array(
          'expected-output' => '{
             "entries": [],
@@ -170,7 +171,7 @@
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'SAVVARI',
-            'id' => '<!query-before-test-2!> <*[0][quiz]*>'
+            'id' => '<!query-before-test-2!> <*[0][quiz]*>',
             'vid' => '<!query-before-test-4!> <*[0][variant]*>',
             'disabled' => '1',
             'param' => '{"type":"md","filelink":"","gType":"md","gFilelink":"","diagram_File":"","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""},{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}',
