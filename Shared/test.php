@@ -399,7 +399,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
         $outputDiff[$i] = array_diff($valueExpected[$row],$valueOuput[$row]); 
         // echo print_r($outputDiff[$row]);
         
-        echo print_r($outputDiff[$i]);
+        echo print_r($outputDiff[$i])."</br>";
 
         // foreach($outputDiff[$row] as $row2 => $value){
         //     echo print_r($value);
