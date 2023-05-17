@@ -84,9 +84,37 @@ function downloadToWebServer($cid, $item)
     file_put_contents($path, $fileContents);    
 }
     
+//Retrieves the content of a repos index-file
+function getIndexFile($url) {
+    $indexFilePath = "/index.txt";
+    $url = $url . $indexFilePath;
+
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
+    curl_setopt($curl, CURLOPT_HEADER, 0);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+    // To use github-token, uncomment the two lines below and add your token after "Bearer". See more in comments in  bfs-method
+    // $authorization = 'Authorization: Bearer YOUR_GITHUB_API_KEY';
+    // curl_setopt($curl, CURLOPT_HTTPHEADER, array($authorization) );
+
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    $response = json_decode(curl_exec($curl));
+    $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+    
+    if($http_response_code == 200){
+        return explode("\n", file_get_contents($response->download_url));
+    } else {
+        return false;
+    }
+}
+
 function bfs($url, $cid, $opt) 
 {
     $url = getGitHubURL($url);
+    $filesToIgnore = getIndexFile($url);
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
@@ -120,14 +148,30 @@ function bfs($url, $cid, $opt)
                 foreach ($json as $item) {
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
-                        if($opt == "REFRESH") {
-                            insertToMetaData($cid, $item);
+                        //If an index file has been found, check against the content of the index file
+                        if($filesToIgnore){
+                            //If file is not part of files to ignore, resume (Index file)
+                            if(!in_array($item['name'], $filesToIgnore)){
+                                if($opt == "REFRESH") {
+                                    insertToMetaData($cid, $item);
+                                }
+                                else if($opt == "DOWNLOAD") {
+                                    insertToFileLink($cid, $item);
+                                    insertToMetaData($cid, $item);
+                                    downloadToWebserver($cid, $item);  
+                                }                 
+                            }
+                            //Otherwise, fetch and download all files
+                        } else {
+                                if($opt == "REFRESH") {
+                                    insertToMetaData($cid, $item);
+                                }
+                                else if($opt == "DOWNLOAD") {
+                                    insertToFileLink($cid, $item);
+                                    insertToMetaData($cid, $item);
+                                    downloadToWebserver($cid, $item);  
+                                }      
                         }
-                        else if($opt == "DOWNLOAD") {
-                            insertToFileLink($cid, $item);
-                            insertToMetaData($cid, $item);
-                            downloadToWebserver($cid, $item);  
-                        }                 
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {
@@ -135,7 +179,7 @@ function bfs($url, $cid, $opt)
                             array_push($fifoQueue, $item['url']);
                         }
                     }
-                }
+              }
             } else {
                 //422: Unprocessable entity
                 http_response_code(422);
