@@ -6623,7 +6623,7 @@ function generateContextProperties()
                   switch (property.toLowerCase()) {
                       case 'name':
                           str += `<div style='color:white'>Attributes</div>`;
-                          str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                          str += `<textarea id='elementProperty_${property}' rows='1' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                           break;
                       default:
                           break;
