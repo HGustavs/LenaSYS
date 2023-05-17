@@ -321,6 +321,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     foreach($valueExpected as $row => $arrayValues){
         
         $outputDiff = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
+        echo "I AM HERE !!!!!!!!!";
         echo $outputDiff[$i++];
     };
 
