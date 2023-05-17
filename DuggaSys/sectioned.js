@@ -530,7 +530,6 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
@@ -1730,18 +1729,19 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this);'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}")'>`;
           str += "</td>";
         }
+
         // github icon for code (itemKind 2 is code)
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
-          str += "</td>";
-        }
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this)'>`;
+          str += "</td>"; 
+       }
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
@@ -3036,10 +3036,18 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 
 //Creates all examples from github that doesnt exists yet
-function createExamples() {//TODO HERE
-  cid = querystring['courseid'];
-  cversid = document.getElementById("cversid").value
-  AJAXService("CreGitEx", {courseid : cid, coursevers : cversid});
+function createExamples(dir,momentID) {//TODO HERE
+  lid= momentID;
+  dirname = dir;
+  console.log("* AJAX START ");
+  $.ajax({
+    url: "sectionedservice.php",
+    type: "POST",
+    data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
+    dataType: "json",
+    //TODO: reload back to coursepage
+  });
+  console.log("** AJAX DONE **");
 }
 
 // ------ Validates all versionnames ------
@@ -3612,12 +3620,13 @@ async function refreshCodeExample(exampleid) {
 //------------------------------------------------------------------------------
 function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
-  retdata.entries.map(sectionListEntry => {
-    //If current entry is within chosen moment and is a codeexample, try to refresh it
-    if(sectionListEntry.moment == momentID && sectionListEntry.kind == 2){
-      refreshCodeExample(sectionListEntry.link);
-    }
-  });
+  console.log("RefreshButton Clicked!");
+
+  //TODO: take input from column/dropdownlist and iterate through and create the codeexample
+  //for each codeexample in the moment dir, do create examples on those code-example dir
+  //for loop not yet implemented, waiting for other issues to be completed before
+  dirname="../courses/1895/Github/Demo/Code-example1/"
+  createExamples(dirname,momentID)
 }
 
 //------------------------------------------------------------------------------

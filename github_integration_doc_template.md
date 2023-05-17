@@ -37,6 +37,9 @@ If applicable, be sure to mention which files your functions are in, and whether
 
 If there is something in your code that depends on an outside factor (eg. in getCommit() in getLatestCommit.php we are using the class elements in github’s own HTML, which we have no control over), be sure to describe this dependency. This is so future developers can easily find the problem if an error occurs in the future. 
 
+If you're mentioning functions that do not appear either right above or below what you're currently describing, make sure to link the function name to the corresponding paragraph heading so it's easy to navigate.
+For example, [this](#paragraph-heading---which-function-are-you-describing-eg-getcommit) is a link to the paragraph heading above.
+
 ***
 
 
