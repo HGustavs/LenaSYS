@@ -16,10 +16,8 @@ require __DIR__ . '../Misc/checkUserStatus.php';
 echo checkUserStatusTest();
 ?>
 <html lang="en">
-<body onload="checkUserStatusTest();">
-    <button onclick="showLoginPopUp();">
-        <h3>Login</h3>
-    </button>
+<body onload="showLoginPopUp();">
+   
 
     <button >Call checkUserStatusTest</button>
 </body>
