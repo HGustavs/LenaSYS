@@ -62,7 +62,29 @@
             'password' => 'Kong'
          )),
          'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+             'LastCourseCreated' => array(
+
+             ),
+             'entries' => array(
+                'cid',
+                'coursename',
+                'coursecode',
+                'visibility',
+                'activeversion',
+                'activeedversion',
+                'registered'
+             ),
+             'versions' => array(
+                'cid',
+                'coursecode',
+                'vers',
+                'versname',
+                'coursename',
+                'coursenamealt'
+             ),
              'debug',
+             'writeaccess',
+             'motd',
              'readonly'
          )),
      ),
