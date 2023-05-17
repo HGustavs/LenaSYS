@@ -6622,9 +6622,9 @@ function generateContextProperties()
                   console.log("note was made");
                   switch (property.toLowerCase()) {
                       case 'name':
-                          str += `<div style='color:white'>Attributes</div>`;
-                          str += `<textarea id='elementProperty_${property}' rows='1' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                          break;
+                          str += `<div style='color:white'>Name</div>`;
+                          str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                         break;
                       default:
                           break;
                   }
