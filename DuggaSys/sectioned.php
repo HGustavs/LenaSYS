@@ -21,6 +21,25 @@
 		updateGithubDir($pdo, $githubDir, $lid);
 	}
 
+	function checkGithubDir($pdo, $lid) {
+		try {
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$query = $pdo->prepare("SELECT githubDir FROM listentries WHERE lid = :lid");
+			$query->bindParam(':lid', $lid);
+			if($query->execute()) {
+				echo "<script>console.log('Select Successful!');</script>";
+				$result = $query->fetch(PDO::FETCH_ASSOC);
+				$currentGithubDir = $result['githubDir'];
+				return $currentGithubDir;
+			} else {
+				echo "<script>console.log('Select Failed.');</script>";
+			}
+		}
+		catch(PDOException $exception) {
+			echo "<script>console.log('Select Failed: " . addslashes($exception->getMessage()) . "');</script>";
+		}
+	}
+
 	function updateGithubDir($pdo, $githubDir, $lid) {
 		try {
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
