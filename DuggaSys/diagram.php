@@ -777,6 +777,17 @@
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
         </fieldset>
+        <fieldset id = "Note">
+            <legend aria-hidden="true">Note</legend>
+            <div id="Note" class="diagramIcons" onclick="storeDiagramInLocalStorage()">
+                <img src="../Shared/icons/diagram_note.svg" alt="Note"/>
+                <span class="toolTipText"><b>Note</b><br>
+                    <p>Create a note</p>
+                    <br>
+                   <!-- <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
+                </span>
+            </div>
+        </fieldset>
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
