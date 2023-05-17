@@ -1412,7 +1412,7 @@ function getData()
     drawRulerBars(scrollx,scrolly);
     setContainerStyles(mouseMode);
     generateKeybindList();
-    setPreviewValues();
+    //setPreviewValues();
     saveDiagramBeforeUnload();
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
@@ -13096,11 +13096,13 @@ function resetDiagram(){
     */
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
+
 /**
+ * this function is commented out because it is unknown at this time what value is expected and it throws an error. It also appears that this does not really surve any purpose.
  *
  *  @description Function to set the values of the current variant in the preivew
  *  @throws error If "window.parent.parameterArray" is not set or null.
- */
+ 
 function setPreviewValues(){
     try {
         if (!window.parent.parameterArray) throw new Error("\"window.parent.parameterArray\" is not set or empty!");
@@ -13113,4 +13115,5 @@ function setPreviewValues(){
         console.error(e);
     }
 }
+*/
 //#endregion =====================================================================================
