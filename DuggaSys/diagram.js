@@ -9832,8 +9832,9 @@ function drawElement(element, ghosted = false)
                 width='${textWidth}'
                 height='${texth}'
                 stroke='none'
-                fill='${element.fill}' 
+                fill='red' 
             />`;
+            //fill='${element.fill}' 
             str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
             str += `</g>`;
         }
