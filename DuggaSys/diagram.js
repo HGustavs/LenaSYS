@@ -6783,16 +6783,6 @@ function generateContextProperties()
                             str += `<div style='color:white'>Name</div>`;
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
-                        case 'attributes':
-                            str += `<div style='color:white'>Attributes</div>`;
-                           /* find me str += `<div>`;
-                            str += `<select id="SDOption">`;
-                                str +=  `<option value ="Do: " selected>Do</option>`;
-                                str += `<option value="Exit: ">Exit</option>`;
-                            str += `</select>`;
-                            str += `</div>`; */
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            break;
                         default:
                             break;
                     }
@@ -10013,7 +10003,6 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}' >`;
         str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-                    
                     <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                     `;
         str += "</svg>";
@@ -10064,6 +10053,7 @@ function drawElement(element, ghosted = false)
                 opacity: ${ghostPreview};
             `;
         }
+        str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == "EREntity") {
