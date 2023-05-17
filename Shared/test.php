@@ -317,6 +317,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
+    $valueOutPut = json_decode($valueOuPut, true);
 
     if (($valueExpected != null) && ($valueOuput != null)){
         $equalTest = ($valueExpected == $valueOuput);
