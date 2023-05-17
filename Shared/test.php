@@ -394,10 +394,10 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     $i = 0; 
     foreach($valueExpected as $row => $arrayValues){
-        echo $arrayValues."</br>";
-        echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues]."</br>";
-        $outputDiff[$arrayValues] = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
-        echo $outputDiff[$arrayValues];
+        echo $row."</br>";
+        echo "value expected: ".$valueExpected[$row]." value output: ".$valueOuput[$row]."</br>";
+        $outputDiff[$row] = array_diff($valueExpected[$row],$valueOuput[$row]); 
+        echo $outputDiff[$row];
     };
 
     echo "I AM HERE !!!!!!!!!";
