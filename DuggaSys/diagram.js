@@ -6619,6 +6619,7 @@ function generateContextProperties()
           }
           if (element.type == 'NOTE') {
               for (const property in element) {
+                  console.log("note was made");
                   switch (property.toLowerCase()) {
                       case 'name':
                           str += `<div style='color:white'>Attributes</div>`;
