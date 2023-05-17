@@ -6783,6 +6783,16 @@ function generateContextProperties()
                             str += `<div style='color:white'>Name</div>`;
                             str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                             break;
+                        case 'attributes':
+                            str += `<div style='color:white'>Attributes</div>`;
+                           /* find me str += `<div>`;
+                            str += `<select id="SDOption">`;
+                                str +=  `<option value ="Do: " selected>Do</option>`;
+                                str += `<option value="Exit: ">Exit</option>`;
+                            str += `</select>`;
+                            str += `</div>`; */
+                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            break;
                         default:
                             break;
                     }
@@ -6846,22 +6856,38 @@ function generateContextProperties()
                                 str += `<div style='color:white'>Name</div>`;
                                 str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
-                            case 'attributes':
-                                str += `<div style='color:white'>Attributes</div>`;
-                                /* find me str += `<div>`;
-                                 str += `<select id="SDOption">`;
-                                     str +=  `<option value ="Do: " selected>Do</option>`;
-                                     str += `<option value="Exit: ">Exit</option>`;
-                                 str += `</select>`;
-                                 str += `</div>`; */
-                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                                break;
                             default:
                                 break;
                         }
                     }
-                }   }
-        }
+                    str += `<div style='color:white'>Variant</div>`;
+
+                    //Creates drop down for changing state of ER elements
+                    var value;
+                    var selected = context[0].state;
+                    if (selected == undefined) {
+                        selected = "normal"
+                    }
+                    if (element.kind == "NOTE") {
+                        value = Object.values(attrState);
+                    } else if (element.kind == "NOTE") {
+                        value = Object.values(entityState);
+                    } else if (element.kind == "NOTE") {
+                        value = Object.values(relationState);
+                    }
+
+                    str += '<select id="propertySelect">';
+                    for (i = 0; i < value.length; i++) {
+                        if (selected != value[i]) {
+                            str += '<option value=' + value[i] + '>' + value[i] + '</option>';
+                        } else if (selected == value[i]) {
+                            str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
+                        }
+                    }
+                    str += '</select>';
+                }
+         }
+      }
     
 
 
