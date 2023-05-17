@@ -382,7 +382,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
 // }
 
 // Test 3: assert equal test
-function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
+function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
        // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
