@@ -316,7 +316,12 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
 function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
        // Expected value is JSON
-    $valueExpected = json_decode($valueExpected, true);
+    // $valueExpected = json_decode($valueExpected, true);
+
+    $valueExpected = json_decode($valueExpected);
+    $valueOuput = json_decode($valueOuput);
+
+
     // $i = 0; 
     // foreach($valueExpected as $row => $arrayValues){
     //     echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues]."</br>";
