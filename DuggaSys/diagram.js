@@ -1158,7 +1158,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "NOTE" },  // UML Super State.
+    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE" },  // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -10019,7 +10019,7 @@ function drawElement(element, ghosted = false)
         if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-            element.fill = `${"#000000"}`;
+            element.fill = `${"#FFFFFF"}`;
         }
     }
     //=============================================== <-- End of Note functionality
