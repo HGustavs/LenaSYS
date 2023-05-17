@@ -65,7 +65,10 @@ $feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
 $exampelid=getOP('exampleid');
+$url=getOP('url');
 
+$dirname=getOP('dirname');
+$lid=getOP('lid');
 $visbile = 0;
 $avgfeedbackscore = 0;
 
@@ -467,13 +470,6 @@ if($gradesys=="UNK") $gradesys=0;
                         $error=$query->errorInfo();
                         $debug="Error updating entries".$error[2]; 
                     }
-				} else if (strcmp($coursevers, "null")!==0) {
-					// Get every coursevers of courses so we seed groups to every courseversion
-					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
-					$stmt->bindParam(":cid", $courseid);
-					$stmt->execute();
-					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
-					$totalGroups = 24 * count($courseversions);
 				} else if(strcmp($opt,"REFGIT")===0) {
 					class githubDB extends SQLite3 {
 						function __construct() {
@@ -501,74 +497,202 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					}
 					$gdb->close();
-					//TODO rest från 13179, här anropas uppdateringsfunktionen
-				} else if(strcmp($opt,"CreGitEx")===0) {
-					$query = $pdo->prepare("SELECT runlink FROM codeexample WHERE cid=:cid;");
-					$query->bindParam(":cid", $courseid);
+					
+				} else if(strcmp($opt,"CREGITEX")===0) {
+					//Get cid
+					$query = $pdo->prepare("SELECT cid FROM listentries WHERE lid=:lid");
+					$query->bindParam(":lid", $lid);
 					$query->execute();
+					$e = $query->fetchAll();
+					$courseid = $e[0]['cid'];
 
-					$file = file("../../courses/".$courseid."/indexing.txt");
+					//get the correct examplename from the dirname and set the dir path
+					$dirPath = $dirname;
+					$dirnameArray = explode('/', $dirname);
+					$dirname = $dirnameArray[count($dirnameArray)-2];								
+					//count if there is already a codeexample or if we should create a new one.
+					$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
+					$query1->bindParam(":cid", $courseid);
+					$query1->bindParam(":examplename", $dirname); 
+					$query1->execute();					
+					$result = $query1->fetch(PDO::FETCH_OBJ);
+					$counted = $result->count;
 
-					foreach($file as $line) {
-						$exampleName = $line;//filter out to only be the example name
-						$sectionName = $line;//filter out to only be the section name
-						$runlink = $line;//filter out to only be the runlink
-						$exists = false;
-						foreach($query->fetchAll() as $row) {
-							if($row['runlink'] == $runlink) {
-								$exists = true;
+					//if no codeexample exist create a new one
+					if($counted == 0) {
+						//Get active version of the course
+						$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
+						$query->bindParam(":cid", $courseid);
+						$query->execute();
+						$e = $query->fetchAll();
+						$coursevers = $e[0]['activeversion'];
+	
+						//Get the last position in the listenries to add new course at the bottom
+						$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
+						$query->bindParam(":cid", $courseid);
+						$query->execute();
+						$e = $query->fetchAll();
+						$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
+						
+						//connect to SQLite
+						$metadata_db = null;
+						$success = false;
+						try {
+							$metadata_db = new PDO('sqlite:../../githubMetadata/metadata'.$metadataDbVersion.'.db');
+							$success = true;							
+						} catch (PDOException $e) {
+							echo "Failed to connect to the database";
+							throw $e;
+						}
+						
+						//select the files that has should be in the codeexample
+						if($success) {							
+							//Count files in the directory for the codeexample
+							$fileCount = 0;
+							$files = scandir($dirPath);
+							foreach ($files as $file) {
+								if (is_file($dirPath . '/' . $file)) {
+									$fileCount++;
+								}
+							}
+							//If we find files that should be in the codeexample, create the codeexample
+							//Only template for 1 up to 5 files
+							if($fileCount > 0 && $fileCount<6) {					
+								// There are at least two boxes, create two boxes to start with
+								switch ($fileCount) {
+									case 1:
+										$templateNumber = 10;
+										break;
+									case 2:
+										$templateNumber = 1;
+										break;
+									case 3:
+										$templateNumber = 3;
+										break;
+									case 4:
+										$templateNumber = 5;
+										break;
+									case 5:
+										$templateNumber = 9;
+										break;	
+								}			
+								$examplename = $dirname;
+								$sectionname = $dirname;
+								//create codeexample
+								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":ename", $examplename);
+								$query->bindParam(":sname", $sectionname);
+								$query->bindParam(":cversion", $coursevers);
+								$query->bindParam(":templateid", $templateNumber);
+								$query->execute();
+							
+								//select the latest codeexample created to link boxes to this codeexample
+								$query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
+								$query->execute();
+								$result = $query->fetch(PDO::FETCH_OBJ);
+								$exampleid = $result->LatestExID;
+								
+								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
+								for($i = 2; $i < count($files); $i++) {
+									$filename = $files[$i];
+									$parts = explode('.', $filename);
+									$filetype = "CODE";
+									$wlid = 0;
+									
+									switch ($parts[1]) {
+										case "js":
+											$filetype = "CODE";
+											$wlid = 1;
+											break;
+										case "php":
+											$filetype = "CODE";
+											$wlid = 2;
+											break;
+										case "html":
+											$filetype = "CODE";
+											$wlid = 3;
+											break;
+										case "txt":
+											$filetype = "DOCUMENT";
+											$wlid = 4;
+											break;
+										case "md":
+											$filetype = "DOCUMENT";
+											$wlid = 4;
+											break;
+										case "java":
+											$filetype = "CODE";
+											$wlid = 5;
+											break;
+										case "sr":
+											$filetype = "CODE";
+											$wlid = 6;
+											break;
+										case "sql":
+											$filetype = "CODE";
+											$wlid = 7;
+											break;
+										default:
+											$filetype = "DOCUMENT";
+											$wlid = 4;
+											break;
+									}
+
+									$boxid=$i-1;
+									$fontsize= 9;
+									$setting = "[viktig=1]";
+									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
+									$query->bindParam(":boxid", $boxid);
+									$query->bindParam(":exampleid", $exampleid);
+									$query->bindParam(":boxtitle", $filename);
+									$query->bindParam(":boxcontent", $filetype); 
+									$query->bindParam(":filename", $filename);
+									$query->bindParam(":settings", $setting);
+									$query->bindParam(":wordlistid", $wlid);
+									$query->bindParam(":fontsize", $fontsize);
+									$query->execute();
+								}
+								
+								$link = "UNK";
+								$kind = 2;
+								$visible = 1;
+								$uid = 1;
+								$comment = null;
+								$gradesys = null;
+								$highscoremode = 0;
+								$groupkind = null;
+								//add the codeexample to listentries
+								$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+																		VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":cvs", $coursevers);
+								$query->bindParam(":entryname", $examplename);
+								$query->bindParam(":link", $exampleid); 
+								$query->bindParam(":kind", $kind);
+								$query->bindParam(":pos", $pos);
+								$query->bindParam(":visible", $visible);
+								$query->bindParam(":usrid", $uid);
+								$query->bindParam(":comment", $comment);
+								$query->bindParam(":gradesys", $gradesys);
+								$query->bindParam(":highscoremode", $highscoremode);
+								$query->bindParam(":groupkind", $groupkind);
+								$query->execute();	
 							}
 						}
-						if(!$exists) {
-							$link = "UNK";
-							$kind = 2;
-							$visible = 1;
-							$uid = 1;
-							$comment = null;
-							$gradesys = null;
-							$highscoremode = 0;
-							$groupkind = null;
-
-							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
-							$query->bindParam(":cid", $courseid);
-							$query->execute();
-							$e = $query->fetchAll();
-							$coursevers = $e[0]['activeversion'];
-
-							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
-							$query->bindParam(":cid", $courseid);
-							$query->bindParam(":entryname", $moment);
-							$query->execute();
-							$e = $query->fetchAll();
-							$pos = $e[0]['pos']+1;//Gets the last filled position+1 to put the new codexample at
-
-							//create codeexample
-							$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
-							$query->bindParam(":cid", $courseid);
-							$query->bindParam(":ename", $examplename);
-							$query->bindParam(":sname", $sectionname);
-							$query->bindParam(":cversion", $coursevers);
-							$query->execute();
-
-							//add the codeexample to listentries
-							$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
-									   						  		  VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
-							$query->bindParam(":cid", $courseid);
-							$query->bindParam(":cvs", $coursevers);
-							$query->bindParam(":entryname", $examplename);
-							$query->bindParam(":link", $link);
-							$query->bindParam(":kind", $kind);
-							$query->bindParam(":pos", $pos);
-							$query->bindParam(":visible", $visible);
-							$query->bindParam(":usrid", $uid);
-							$query->bindParam(":comment", $comment);
-							$query->bindParam(":gradesys", $gradesys);
-							$query->bindParam(":highscoremode", $highscoremode);
-							$query->bindParam(":groupkind", $groupkind);
-							$query->execute();
-						}
-					}
-				}
+					} else {
+						//Check for update
+						//TODO: Implement update for already existing code-examples.
+					} 
+				
+				} else if (strcmp($coursevers, "null")!==0) {
+					// Get every coursevers of courses so we seed groups to every courseversion
+					$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
+					$stmt->bindParam(":cid", $courseid);
+					$stmt->execute();
+					$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
+					$totalGroups = 24 * count($courseversions);
+				} 
 			}
 		}
 
