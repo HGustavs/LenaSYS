@@ -439,6 +439,43 @@ function changedType(kind) {
 }
 
 //----------------------------------------------------------------------------------
+// refreshGithubRepo: Send course id to function in gitcommitService.php
+//----------------------------------------------------------------------------------
+
+function refreshGithubRepo(courseid) 
+{
+	//Used to return success(true) or error(false) to the calling function
+	var dataCheck;
+	$.ajax({
+		async: false,
+		url: "../DuggaSys/gitcommitService.php",
+		type: "POST",
+		data: {'cid':courseid, 'action':'refreshGithubRepo'},
+		success: function(data) { 
+			//Returns true if the data and JSON is correct
+      alert(data); // Shows if course is up to date or not
+			dataCheck = true;
+		},
+		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch(data.status){
+				case 422:
+					alert(data.responseJSON.message + "\nDid not update course");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not update course");
+					break;
+				default:
+					alert("Something went wrong...");
+			}
+		 	dataCheck = false;
+		}
+	});
+  console.log("ajax done" + courseid);
+	return dataCheck;
+}
+
+//----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog
 //----------------------------------------------------------------------------------
 
@@ -494,11 +531,6 @@ function showSaveButton() {
   $(".updateDugga").css("display", "block");
   $(".closeDugga").css("display", "block");
 }
-
-
-
-
-
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
@@ -1628,13 +1660,13 @@ function returnedSection(data) {
         }
 
         // Refresh button
-        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
+       /*if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
           str += " onclick='refreshCodeExample("+item['link']+")'"
           str += "</td>";
-        }
+        }*/
 
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
@@ -1643,11 +1675,22 @@ function returnedSection(data) {
           onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
           str += "</td>";
         }
+
+        // Testing implementation
+        if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+          // The string below was part of the original refresh button on each code-example that i simply moved and modified, keeping this here in case it's relevant for future issue to handle back-end.
+          // str += "onclick='refreshCodeExample("+item['link']+")'"
+          str += "onclick='console.log(\"RefreshButton Clicked!\");'"
+          str += "</td>";
+        }
         // Tab example button
-        if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
+        if ((itemKind !== 4) && (itemKind !== 0) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
+          str += `<input style='filter: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
@@ -1671,8 +1714,34 @@ function returnedSection(data) {
           }
         }
 
+
+        // Tab element button for heading
+        if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<input style='filter: invert(1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
+            title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
+          str += "</td>";
+        }
+
+        // Cog Wheel for headers
+        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+
+
+          str += "<img style='filter: invert(1);' alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
+          str += " onclick='setActiveLid("+item['lid']+");selectItem(" + makeparams([item['lid'], item['entryname'],
+          item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+
+          str += "</td>";
+        }
+
         // Cog Wheel
-        if (data['writeaccess'] || data['studentteacher']) {
+        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
@@ -1687,37 +1756,42 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        // Trashcan
-        if (data['writeaccess'] || data['studentteacher']) {
+         // Trashcan for headers
+        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+          str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
-
-
         }
 
+        // Trashcan
+        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          str += "</td>";
+        }
 
         // github icon for moments (itemKind 4 is moments)
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this);'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}")'>`;
           str += "</td>";
         }
+
         // github icon for code (itemKind 2 is code)
         if (itemKind === 2 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this);'>`;
-          str += "</td>";
-        }
-
-
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this)'>`;
+          str += "</td>"; 
+       }
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
@@ -3012,10 +3086,18 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 }
 
 //Creates all examples from github that doesnt exists yet
-function createExamples() {//TODO HERE
-  cid = querystring['courseid'];
-  cversid = document.getElementById("cversid").value
-  AJAXService("CreGitEx", {courseid : cid, coursevers : cversid});
+function createExamples(dir,momentID) {//TODO HERE
+  lid= momentID;
+  dirname = dir;
+  console.log("* AJAX START ");
+  $.ajax({
+    url: "sectionedservice.php",
+    type: "POST",
+    data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
+    dataType: "json",
+    //TODO: reload back to coursepage
+  });
+  console.log("** AJAX DONE **");
 }
 
 // ------ Validates all versionnames ------
@@ -3602,12 +3684,13 @@ async function refreshCodeExample(exampleid) {
 //------------------------------------------------------------------------------
 function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
-  retdata.entries.map(sectionListEntry => {
-    //If current entry is within chosen moment and is a codeexample, try to refresh it
-    if(sectionListEntry.moment == momentID && sectionListEntry.kind == 2){
-      refreshCodeExample(sectionListEntry.link);
-    }
-  });
+  console.log("RefreshButton Clicked!");
+
+  //TODO: take input from column/dropdownlist and iterate through and create the codeexample
+  //for each codeexample in the moment dir, do create examples on those code-example dir
+  //for loop not yet implemented, waiting for other issues to be completed before
+  dirname="../courses/1895/Github/Demo/Code-example1/"
+  createExamples(dirname,momentID)
 }
 
 //------------------------------------------------------------------------------

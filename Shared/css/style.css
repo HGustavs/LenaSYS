@@ -862,7 +862,7 @@ p {
 /* Turn the icons white */
 #Sectionlist .section #dorf, #refreshIMG, .refreshBurgerIMG {
   cursor: pointer;
-   filter: invert(100%);
+   filter: invert(100%); 
   -webkit-filter: invert(100%);
 }
 .section > #tabElement {color: white;
@@ -3285,6 +3285,7 @@ div.submit-button:disabled {
   filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
 }
 
+
 #Sectionlist .moment #dorf {
   filter: invert(1);
 }
@@ -5188,7 +5189,8 @@ ul.hamburgerList button.menuButton {
 .fileLink-uploaddate,
 .fileLink-filesize,
 .fileLink-kind,
-.fileLink-extension {
+.fileLink-extension,
+.fileLink-type {
   text-align: center;
 }
 
@@ -9357,8 +9359,5 @@ margin:2px;
 .ruler-text {
   fill: #000;
 }
-
-
-
 
 /* END */

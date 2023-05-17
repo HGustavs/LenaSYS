@@ -507,7 +507,9 @@ class StateMachine
             console.log(this.currentHistoryIndex);
         }
 
-        clearGhosts()
+        // Remove ghost only if stepBack while creating edge
+        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts()
+
         clearContext();
         clearContextLine();
         showdata();
@@ -565,7 +567,6 @@ class StateMachine
         var keys = Object.keys(state);
 
         // If there is only an key that is ID in the state, delete those objects
-        // TODO: Change the delete key to "del" OR "delete"
         if (keys.length == 2 && keys[0] == "id") {
             var elementsToRemove = [];
             var linesToRemove = [];
@@ -763,8 +764,10 @@ const keybinds = {
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
         STATE_INITIAL: { key: "<" , ctrl: false },
-        STATE_FINAL: { key: "<" , ctrl: true },
-        STATE_SUPER: { key: ">" , ctrl: false },
+        STATE_FINAL: { key: "f" , ctrl: false },
+        STATE_SUPER: { key: ">", ctrl: false },
+        SAVE_DIAGRAM: { key: "s", ctrl: true }, 
+        LOAD_DIAGRAM: { key: "l", ctrl: true }, 
 };
 
 /** 
@@ -790,12 +793,15 @@ const elementTypes = {
     IEEntity: 6,       //<-- IE functionality
     IERelation: 7, // IE inheritance functionality
 
-    SDState: 8,////SD(State diagram) functionality
+    SDEntity: 8,////SD(State diagram) functionality
     UMLInitialState: 9,
     UMLFinalState: 10,
+    UMLSuperState: 11,
 
-    UMLSuperState:11,
-
+    sequenceActorAndObject:12, //sequence functionality
+    sequenceActivation: 13,
+    sequenceLoopOrAlt: 14
+    
 };
 
 /**
@@ -811,12 +817,16 @@ const elementTypesNames = {
     IEEntity: "IEEntity",
     IERelation: "IERelation",
 
-    SDState: "SDState",
+    SDEntity: "SDEntity",
 
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState",
 
     UMLSuperState: "UMLSuperState",
+
+    sequenceActorAndObject: "sequenceActorAndObject",
+    sequenceActivation: "sequenceActivation",
+    sequenceLoopOrAlt: "sequenceLoopOrAlt",
 
 }
 
@@ -856,13 +866,14 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML and SD(state diagram) This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of entity, ie ER, IE, UML, SD & SE This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
     ER: "ER",
     IE: "IE",
     SD: "SD",
+    SE: "SE",
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -966,8 +977,12 @@ var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
 var hasRecursion = false;
 var startWidth;
+var startHeight;
+var startNodeLeft = false;
 var startNodeRight = false;
-var cursorStyle;
+var startNodeDown = false;
+var startNodeUp = false;
+var containerStyle;
 var lastMousePos = getPoint(0,0);
 var dblPreviousTime = new Date().getTime(); ; // Used when determining if an element was doubleclicked.
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
@@ -1008,12 +1023,12 @@ const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
-const avgcharwidth = 6; // <-- This variable is never used anywhere in this file. 
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000"];
+const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
 const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 // Zoom values for offsetting the mouse cursor positioning
+
 const zoom1_25 = 0.36;
 const zoom1_5 = 0.555;
 const zoom2 = 0.75;
@@ -1093,7 +1108,6 @@ var settings = {
     }
 };
 
-
 // Demo data - read / write from service later on
 
 var diagramToLoad = "";
@@ -1127,14 +1141,18 @@ var defaults = {
 
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
-    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'] },     //<-- IE functionality
+    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
-    SDState: { name: "State", kind: "SDState", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'] }, //<-- SD functionality
+    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#0000FF", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
 
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" } // UML Super State.
+    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor" }, // sequence actor and object
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
+    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"} // Sequence Loop or Alternative.
+
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -1154,9 +1172,9 @@ var allAttrToEntityRelations = [];
 var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
 /* draws the State diagram on LOAD.
-function debugDrawSDState() {
+function debugDrawSDEntity() {
     const EMPLOYEE_ID = makeRandomID();
-    const demoState = { name: "STATE", x: 100, y: 200, width: 200, height: 50, kind: "SDState", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['do: func']};
+    const demoState = { name: "STATE", x: 100, y: 200, width: 200, height: 50, kind: "SDEntity", fill: "#ffffff", stroke: "#000000", id: EMPLOYEE_ID, isLocked: false, state: "normal", type: "SD", attributes: ['do: func']};
     addObjectToData(demoState, false);
     console.log(demoState.name);
 }
@@ -1384,7 +1402,7 @@ function getData()
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
     // onSetup();
-    //debugDrawSDState(); // <-- debugfunc to show an sd entity
+    //debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
     updateGridPos();
@@ -1392,7 +1410,7 @@ function getData()
     updateGridSize();
     showdata();
     drawRulerBars(scrollx,scrolly);
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
     generateKeybindList();
     setPreviewValues();
     saveDiagramBeforeUnload();
@@ -1401,6 +1419,8 @@ function getData()
     // SHOULD BE CHANGED LATER
     togglePlacementType(0,0)
     togglePlacementType(1,1)
+    togglePlacementType(9,9)
+    togglePlacementType(12,12)
 }
 //<-- UML functionality start
 /**
@@ -1485,6 +1505,23 @@ function showDiagramTypes(){
     }
     else {
         Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
+            button.classList.add("hiddenPlacementType");
+        });
+    }
+
+    // SE buttons
+    if (diagramType.UML) {
+        document.getElementById("elementPlacement12").onmousedown = function () {
+            holdPlacementButtonDown(0);
+        };
+
+        if (firstShown) {
+            document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
+        }
+        firstShown = true;
+    }
+    else {
+        Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
         });
     }
@@ -1577,7 +1614,6 @@ document.addEventListener('keydown', function (e)
                     saveProperties(); 
                     propField.blur();
                 }
-                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
         }
     }
@@ -1602,7 +1638,7 @@ document.addEventListener('keyup', function (e)
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
             
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
+            if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
             if (context.length > 0) {
                 removeElements(context);
             } else if (contextLine.length > 0) {
@@ -1646,7 +1682,7 @@ document.addEventListener('keyup', function (e)
         //Temp for UML class
         if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
             setElementPlacementType(elementTypes.UMLEntity);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
@@ -1654,7 +1690,7 @@ document.addEventListener('keyup', function (e)
         //Temp for IE entity
         if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
             setElementPlacementType(elementTypes.IEEntity)
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
@@ -1663,22 +1699,22 @@ document.addEventListener('keyup', function (e)
         //Temp for SD entity
         if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
             setElementPlacementType(elementTypes.SDEntity)
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         //======================================================
 
         if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
             setElementPlacementType(elementTypes.UMLInitialState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
         if (isKeybindValid(e, keybinds.STATE_FINAL)) {
             setElementPlacementType(elementTypes.UMLFinalState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
         if (isKeybindValid(e, keybinds.STATE_SUPER)) {
             setElementPlacementType(elementTypes.UMLSuperState);
-            setMouseMode(mouseMode.PLACING_ELEMENT);
+            setMouseMode(mouseModes.PLACING_ELEMENT);
         }
 
 
@@ -1691,7 +1727,8 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
-        if(isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+        if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) storeDiagramInLocalStorage();
         //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
@@ -1779,12 +1816,12 @@ function mdown(event)
 {
     mouseButtonDown = true;
 
-        // Mouse pressed over delete button for multiple elements
-        if (event.button == 0 && mouseMode != mouseModes.EDGE_CREATION) {
-            if (context.length > 0 || contextLine.length > 0) {
-               hasPressedDelete = checkDeleteBtn();
-            }
+    // Mouse pressed over delete button for multiple elements
+    if (event.button == 0) {
+        if (context.length > 0 || contextLine.length > 0) {
+            hasPressedDelete = checkDeleteBtn();
         }
+    }
 
     // Prevent middle mouse panning when moving an object
     if(event.button == 1) {
@@ -1809,20 +1846,25 @@ function mdown(event)
     if(event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active){
+    if(pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
+
+        // If a line was clicked, determine if the label or line was clicked.
         if(determinedLines){
-            if (determinedLines.id.length == 6) {
-               pointerState=pointerStates.CLICKED_LINE;
+            
+            if (determinedLines.id.length == 6) { // LINE
+                pointerState = pointerStates.CLICKED_LINE;
     
+                // If double click, open option pane
                 if((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
                     document.getElementById('optmarker').innerHTML = "&#9650;Options";
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
             }
-            else if(determinedLines.id.length > 6){
+            else if(determinedLines.id.length > 6) { // LABEL
                 targetLabel = lineLabelList[findIndex(lineLabelList, determinedLines.id)];
                 startX = event.clientX;
                 startY = event.clientY;
@@ -1832,7 +1874,7 @@ function mdown(event)
         }
     }
 
-    // React to mouse down on container
+    // If no line, label or delete button was clicked, react to mouse down on container
     if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL && !hasPressedDelete) {
         if (event.target.id == "container") {
             switch (mouseMode) {
@@ -1841,6 +1883,7 @@ function mdown(event)
                     sscrolly = scrolly;
                     startX = event.clientX;
                     startY = event.clientY;
+
                     // If pressed down in selection box
                     if (context.length > 0) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
@@ -1849,7 +1892,7 @@ function mdown(event)
                             targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
-                            cursorStyle.cursor = "grabbing";
+                            containerStyle.cursor = "grabbing";
                             if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                                 wasDblClicked = true;
                                 document.getElementById("options-pane").className = "hide-options-pane";
@@ -1859,13 +1902,15 @@ function mdown(event)
                     }
                     else {
                         pointerState = pointerStates.CLICKED_CONTAINER;
-                        cursorStyle.cursor = "grabbing";
+                        containerStyle.cursor = "grabbing";
+
                         if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                             wasDblClicked = true;
                             toggleOptionsPane();
                         }
                         break;
                     }
+
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if(context.length > 0){
@@ -1875,10 +1920,10 @@ function mdown(event)
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
                             targetElementDiv = document.getElementById(targetElement.id);
-                        }else{
+                        } else {
                             boxSelect_Start(event.clientX, event.clientY);
                         }
-                    }else {
+                    } else {
                         boxSelect_Start(event.clientX, event.clientY);
                     }
                     break;
@@ -1886,12 +1931,17 @@ function mdown(event)
                 default:
                     break;
             }
-
+        // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
+            startHeight = data[findIndex(data, context[0].id)].height;
 
-            startNodeRight = !event.target.classList.contains("mr");
+            //startNodeRight = !event.target.classList.contains("mr");
+            startNodeLeft = event.target.classList.contains("ml")
+            startNodeRight = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
+            startNodeDown = event.target.classList.contains("md");
+            startNodeUp = event.target.classList.contains("mu");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -1908,7 +1958,7 @@ function mdown(event)
 function ddown(event)
 {
     // Mouse pressed over delete button for a single line over a element
-    if (event.button == 0 && (contextLine.length > 0 || context.length > 0) && mouseMode != mouseModes.EDGE_CREATION) {
+    if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
         hasPressedDelete = checkDeleteBtn();
     }
     
@@ -1917,7 +1967,7 @@ function ddown(event)
 
         wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
         
-        var element = data[findIndex(data, event.currentTarget.id)];
+        const element = data[findIndex(data, event.currentTarget.id)];
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0){
             event.preventDefault(); // Needed in order for focus() to work properly 
             var input = document.getElementById("elementProperty_name");
@@ -1951,7 +2001,7 @@ if(!hasPressedDelete){
 
         case mouseModes.EDGE_CREATION:
             if(event.button == 2) return;
-            var element = data[findIndex(data, event.currentTarget.id)];
+            const element = data[findIndex(data, event.currentTarget.id)];
             // If element not in context, update selection on down click
             if (element != null && !context.includes(element)){
                 pointerState = pointerStates.CLICKED_ELEMENT;
@@ -2024,17 +2074,19 @@ function mouseMode_onMouseUp(event)
                     makeGhost();
                     // Create ghost line
                     ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
-                }else if (ghostElement !== null) { 
+                } else if (ghostElement !== null) { 
+
                     // create a line from the element to itself
-                    addLine(context[0], context[0], "Recursive");
-                    clearContext();
-        
+                    addLine(context[0], context[0], "Recursive");                  
+                    clearContext();             
+
                     // Bust the ghosts
                     ghostElement = null;
                     ghostLine = null;
-        
+
                     showdata();
-                    updatepos(0,0);
+                    updatepos(0, 0);
+                    
                 } else{   
                     clearContext();
                     ghostElement = null;
@@ -2081,7 +2133,7 @@ function mouseMode_onMouseUp(event)
 function mup(event)
 {
     if(!mouseOverLine && !mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
     mouseButtonDown = false;
     targetElement = null;
@@ -2162,7 +2214,7 @@ function mup(event)
 function mouseEnter(){
     if(!mouseButtonDown){
         mouseOverElement = true;
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     }
 }
 
@@ -2171,7 +2223,7 @@ function mouseEnter(){
  */
 function mouseLeave(){
     mouseOverElement = false;
-    setCursorStyles(mouseMode);
+    setContainerStyles(mouseMode);
 }
 /**
 
@@ -2182,7 +2234,6 @@ function mouseLeave(){
 function checkDeleteBtn(){
     if (deleteBtnX != 0) {
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-            if (mouseMode == mouseModes.EDGE_CREATION) return;
             if (context.length > 0) {
                 removeElements(context);
             }
@@ -2204,37 +2255,41 @@ function mouseOverSelection(mouseX, mouseY){
     if(context.length > 0 || contextLine.length > 0){
         // If there is a selection box and mouse position is inside it.
         if (mouseX > selectionBoxLowX && mouseX < selectionBoxHighX && mouseY > selectionBoxLowY && mouseY < selectionBoxHighY){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // If mouse position is over the delete button.
         else if (mouseX > deleteBtnX && mouseX < (deleteBtnX + deleteBtnSize) && mouseY > deleteBtnY && mouseY < (deleteBtnY + deleteBtnSize)){
-            cursorStyle.cursor = "pointer";
+            containerStyle.cursor = "pointer";
         }
         // Not inside selection box, nor over an element or line.
         else if(!mouseOverElement && !mouseOverLine){
-            setCursorStyles(mouseMode);
+            setContainerStyles(mouseMode);
         }
     }
     // There is no selection box, and mouse position is not over any element or line.
     else if(!mouseOverElement && !mouseOverLine){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
 }
 
 /**
+ * @description Retrieves lines from svgbacklayer. If none is found return empty array
+ */
+function getLinesFromBackLayer() {
+    return Array.from(document.getElementById("svgbacklayer").children);
+}
+/**
  * @description Calculates if any line is present on x/y position in pixels.
-
+ * 
  * @param {Number} mouseX
  * @param {Number} mouseY
  */
 function determineLineSelect(mouseX, mouseY)
 {
     // This func is used when determining which line is clicked on.
-
-    // TODO: Add functionality to make sure we are only getting LINES from svgbacklayer in the future !!!!!.
     
-    var allLines = document.getElementById("svgbacklayer").children;
-    var bLayerLineIDs = []; // Used to only store the IDs. Needed since we later need a value copy of the ID and not the ref.
+    var allLines = getLinesFromBackLayer();
+    var bLayerLineIDs = []
 
     var cMouse_XY = {
         x: mouseX, 
@@ -2411,12 +2466,13 @@ function mouseMode_onMouseMove(event)
 
     // Change cursor style if mouse pointer is over a line.
     if(mouseOverLine && !mouseButtonDown){
-        cursorStyle.cursor = "pointer";
+        containerStyle.cursor = "pointer";
     } else if(!mouseOverElement){
-        setCursorStyles(mouseMode);
+        setContainerStyles(mouseMode);
     }
      switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
+            mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -2526,18 +2582,11 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth - (deltaX / zoomfact));
-
-                // Remove the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-                
-                // Right node will never change the position of the element. We pass 0 as x and y movement.
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
-
-            } else if (!startNodeRight && (startWidth + (deltaX / zoomfact)) > minWidth) {
+            const minHeight = 150; // Declare the minimal height of an object
+            deltaY = startY - event.clientY;
+            
+            // Functionality for the four different nodes
+            if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
@@ -2553,6 +2602,46 @@ function mmoving(event)
                 const xChange = -(tmp - elementData.x);
                 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+
+            } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                // Fetch original width
+                var tmp = elementData.width;
+                elementData.width = (startWidth - (deltaX / zoomfact));
+
+                // Remove the new width, giving us the total change
+                const widthChange = -(tmp - elementData.width);
+                
+                // Right node will never change the position of the element. We pass 0 as x and y movement.
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+
+            } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                // Fetch original height
+                var tmp = elementData.height;
+                elementData.height = (startHeight - (deltaY / zoomfact));
+
+                // Deduct the new height, giving us the total change
+                const heightChange = -(tmp - elementData.height);
+                
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+
+            } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
+
+                // Fetch original height
+                var tmp = elementData.height;
+                elementData.height = (startHeight + (deltaY / zoomfact));
+
+                // Deduct the new height, giving us the total change
+                const heightChange = -(tmp - elementData.height);
+
+                // Fetch original y-position
+                // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
+                tmp = elementData.y;
+                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+
+                // Deduct the new position, giving us the total change
+                const yChange = -(tmp - elementData.y);
+
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
 
             document.getElementById(context[0].id).remove();
@@ -2767,8 +2856,8 @@ function constructElementOfType(type)
  * @param {Element} element
  * @returns {array} result
  */
-function getElementLines(element) {
-    return element.top.concat(element.right, element.bottom, element.left);
+function getElementLines(element) { 
+    return element.bottom.concat(element.right, element.top, element.left);
 }
 
 /**
@@ -2779,7 +2868,7 @@ function getElementLines(element) {
 function elementHasLines(element) {
     return (getElementLines(element).length > 0);
 }
-/**
+/** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
  */
@@ -2787,22 +2876,26 @@ function changeState()
 {
     const element =  context[0],
           oldType = element.type,
-          newType = document.getElementById("typeSelect")?.value || document.getElementById("propertySelect")?.value || undefined;
-    /* If the element has a new type and got lines, then it can't change type. */
-    if ((newType !== undefined && oldType != newType && elementHasLines(element)) || 
-    (newType !== undefined &&  oldType == 'UML' && newType != 'UML'  && elementHasLines(element) == false) || 
-    (newType !== undefined &&  oldType == 'IE' && newType != 'IE'  && elementHasLines(element) == false)) {
+          newType = document.getElementById("typeSelect")?.value || undefined;
+          var oldRelation = element.state;
+          var newRelation = document.getElementById("propertySelect")?.value || undefined
+    // If we are changing types and the element has lines, we should not change
+    if ((elementHasLines(element))){
         displayMessage("error", `
-            Can't change type from \"${oldType}\" to \"${newType}\" as
-            these types should not be able to connect with each other.`
-        );
+        Can't change type from \"${oldType}\" to \"${newType}\" as
+        different diagrams should not be able to connect to each other.`
+        )
+        return;
+    // If we are changing to the same type, (simply pressed save without changes), do nothing.
+    } else if (oldType == newType && oldRelation == newRelation){
         return;
     }
 
-    if (element.type == 'ER') {
-
+    else if (element.type == 'ER') {
+        
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
+
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
@@ -2825,11 +2918,11 @@ function changeState()
     else if(element.type=='UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity') {
+
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-
         //Check if type has been changed
         if (oldType != newType) {
             var newKind = element.kind;
@@ -2864,6 +2957,41 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
+
+    else if(element.type=='SD') {
+
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    }
+    
+    else if(element.type=='SE') {
+
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    }
+    
+    generateContextProperties();
+    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
 }
 
@@ -2989,8 +3117,8 @@ function changeLineProperties()
         line.label = label.value
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-    // UML line
-    if (line.type == 'UML') {
+    // UML or IE line
+    if ((line.type == 'UML')||(line.type == 'IE')) {
         // Start label, near side
         if(line.startLabel != startLabel.value){
             startLabel.value = startLabel.value.trim();
@@ -3015,8 +3143,9 @@ function changeLineProperties()
     // SD line
     if (line.type == 'SD') {
         if (line.innerType != lineType.value) {
-            line.innerType = lineType.value.trim();
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { lineType: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            lineType.value = lineType.value.trim();
+            line.innerType = lineType.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { innerType: lineType.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // Start label, near side
         if (line.startLabel != startLabel.value) {
@@ -3090,7 +3219,7 @@ function updateSelectedLine(selectedLine)
  * @description Updates the current selection of elements depending on what buttons are down. Context array may have the new element added or removed from the context array, have the context array replaced with only the new element or simply have the array emptied.
  * @param {Object} ctxelement Element that has was clicked or null. A null value will DESELECT all elements, emptying the entire context array.
  */
-function updateSelection(ctxelement) // TODO : Default null value since we use it for deselection?
+function updateSelection(ctxelement)
 {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null) {
@@ -3285,7 +3414,6 @@ function clearContextLine()
  * @param {Number} mouseX Pixel position in the x-axis.
  * @param {Number} mouseY Pixel position in the y-axis.
  * @returns {Point} Point containing the calculated coordinates.
- * @see diagramToScreenPosition() For converting the other way.
  */
 function screenToDiagramCoordinates(mouseX,mouseY)
 {
@@ -3309,23 +3437,6 @@ function screenToDiagramCoordinates(mouseX,mouseY)
 
     return new Point(Math.round( ((mouseX - 0) / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
                     Math.round(((mouseY - 0) / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
-    );
-}
-
-/**
- * @description Converts a coordinate on the canvas into a pixel position on the screen.
- * @param {Number} coordX Coordinate position in the x-axis.
- * @param {Number} coordY Coordinate position in the y-axis.
- * @returns {Point} Point containing the calculated screen position.
- * @depricated TODO : Needs to be updated
- * @see screenToDiagramCoordinates() For converting the other way.
- */
-function diagramToScreenPosition(coordX, coordY)
-{
-    console.warn("diagramToScreenPosition() is depricated. It should be updated to use new screenToDiagramCoordinates() algorithm reversed.");
-    return new Point(
-        Math.round((coordX + scrollx) / zoomfact + 0),
-        Math.round((coordY + scrolly) / zoomfact + 0)
     );
 }
 
@@ -3529,7 +3640,7 @@ function entityIsOverlapping(id, x, y)
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
     if(foundIndex > -1){
-        var element = data[foundIndex];
+        const element = data[foundIndex];
         let targetX;
         let targetY;
         var elementHeight = element.height;
@@ -3596,6 +3707,10 @@ function entityIsOverlapping(id, x, y)
               if (data[i].kind == "UMLSuperState") {
                 break;
               }
+              //if its overlapping with a sequence actor, just break since that is allowed.
+              if (data[i].kind == "sequenceActorAndObject") {
+                break;
+              }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                 isOverlapping = true;
@@ -3620,7 +3735,7 @@ function setMouseMode(mode)
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
         mouseMode = mode;
-        setCursorStyles(mode);
+        setContainerStyles(mode);
         onMouseModeEnabled();
     } else {
         // Not implemented exception
@@ -3630,26 +3745,24 @@ function setMouseMode(mode)
 
 /**
  * @description Changes the current visual cursor style for the user.
- * @param {Number} cursorMode CursorStyle value. This will be translated into appropriate cursor style.
+ * @param {Number} cursorMode containerStyle value. This will be translated into appropriate container style.
  */
-function setCursorStyles(cursorMode = mouseModes.POINTER)
+function setContainerStyles(cursorMode = mouseModes.POINTER)
 {
-    // TODO : Create new string enum for all cursor styles? This would result in us not needing to use any form of branching and still get correct result.
-    // TODO : Should have better name. This is the CONTAINER and not a CURSORSTYLE!
-    cursorStyle = document.getElementById("container").style;
+    containerStyle = document.getElementById("container").style;
 
     switch(cursorMode) {
         case mouseModes.POINTER:
-            cursorStyle.cursor = "grab";
+            containerStyle.cursor = "grab";
             break;
         case mouseModes.BOX_SELECTION:
-            cursorStyle.cursor = "crosshair";
+            containerStyle.cursor = "crosshair";
             break;
         case mouseModes.PLACING_ELEMENT:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         case mouseModes.EDGE_CREATION:
-            cursorStyle.cursor = "default";
+            containerStyle.cursor = "default";
             break;
         default:
             break;
@@ -4005,14 +4118,14 @@ function boxSelect_Draw(str)
         var nodeX = boxCoords.n2
         var nodeY = boxCoords.n3;
         var nodeXY = boxCoords.n4;
+        var strokeWidth = 2;
 
         // Draw lines between all neighbours
-        // TODO : NO MAGIC NUMBERS!
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${2}' />`;
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${2}' />`;
+        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
 
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${2}' />`;
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${2}' />`;
+        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
     }
     
     return str;
@@ -4025,7 +4138,7 @@ function boxSelect_Draw(str)
  */
 function generateStateDiagramInfo()
 {
-    const ENTITY = 0, SEEN = 1;
+    const ENTITY = 0, SEEN = 1, LABEL = 2;
     const stateInitial = [];
     const stateFinal = [];
     const stateSuper = [];
@@ -4033,7 +4146,7 @@ function generateStateDiagramInfo()
     const stateLines = [];
     const queue = [];
     let output = "";
-const stateLinesLabels=[];
+    let re = new RegExp("\\[.+\\]");
     // Picks out the lines of type "State Diagram" and place it in its local array.
     for (let i=0; i<lines.length; i++)
     {
@@ -4045,7 +4158,7 @@ const stateLinesLabels=[];
     // Picks out the entities related to State Diagrams and place them in their local arrays.
     for (let i=0; i<data.length; i++)
     {
-        if (data[i].kind == elementTypesNames.SDState) {
+        if (data[i].kind == elementTypesNames.SDEntity) {
             stateElements.push([data[i], false]);
         }
         else if (data[i].kind == elementTypesNames.UMLInitialState) {
@@ -4072,28 +4185,37 @@ const stateLinesLabels=[];
         // Finds all entities connected to the current "head" and adds line labels to a list.
         for (let i = 0; i < stateLines.length; i++) {
             if (stateLines[i].fromID == head[ENTITY].id) {
-                stateLinesLabels.push(stateLines[i].label);
                 for (let j = 0; j < stateElements.length; j++) {
                     if (stateLines[i].toID == stateElements[j][ENTITY].id) {
+                        stateElements[j][LABEL] = stateLines[i].label;
                         connections.push(stateElements[j]);
                     }
                 }
                 for (let j = 0; j < stateFinal.length; j++) {
                     if (stateLines[i].toID == stateFinal[j][ENTITY].id) {
+                        stateFinal[j][LABEL] = stateLines[i].label;
                         connections.push(stateFinal[j]);
                     }
                 }
                 for (let j = 0; j < stateSuper.length; j++) {
                     if (stateLines[i].toID == stateSuper[j][ENTITY].id) {
+                        stateSuper[j][LABEL] = stateLines[i].label;
                         connections.push(stateSuper[j]);
                     }
                 }
             }
         }
-
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-        output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" </p>`;
+            if (connections[i][LABEL] == undefined) {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
+            }
+            else if (re.test(connections[i][LABEL])) {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][LABEL]}"</p>`;
+            }
+            else {
+                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with label "${connections[i][LABEL]}"</p>`;
+            }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
                 queue.push(connections[i]);
@@ -4102,10 +4224,6 @@ const stateLinesLabels=[];
     }
 
     // Adds additional information in the view.
-    for(var i=0; i<stateLinesLabels.length; i++)
-    {
-    output+=`<p>${stateLinesLabels[i]}</p>`;
-    }
     output += `<p>Initial States: ${stateInitial.length}</p>`;
     output += `<p>Final States: ${stateFinal.length}</p>`;
     output += `<p>Super States: ${stateSuper.length}</p>`;
@@ -4125,10 +4243,32 @@ const stateLinesLabels=[];
 function toggleDiagramDropdown()
 {
     const dropdown=document.getElementById("diagramTypeDropdown");
-    if(window.getComputedStyle(dropdown).display==="none")
-    dropdown.style.display="block";
-    else
-    dropdown.style.display="none";
+    const load=document.getElementById("diagramLoad");
+    const btn=document.getElementById("diagramDropDownToggle");
+
+    if(window.getComputedStyle(dropdown).display==="none"){
+        load.style.display="block";
+        dropdown.style.display="block";
+    }
+    else{
+        load.style.display="none";
+        dropdown.style.display="none";
+    }
+
+    document.getElementById("diagramDropDownToggle").classList.toggle("active");
+    
+    if (window.getComputedStyle(dropdown).display==="none") {
+        btn.style.backgroundColor ="transparent";
+        btn.style.border = "3px solid #614875";
+        btn.style.color = "#614875";
+        btn.style.fontWeight = "bold";
+
+     } else {
+        btn.style.backgroundColor ="#614875";
+        btn.style.color = "#ffffff";
+        btn.style.fontWeight = "normal";
+        btn.style.border = "3px solid #614875";
+   }
 }
 
 /**
@@ -4204,10 +4344,17 @@ function toggleGrid()
     // Toggle active grid + color change of button to clarify if button is pressed or not
     if (grid.style.display == "block") {
         grid.style.display = "none";
-        gridButton.style.backgroundColor ="#614875";
+        gridButton.style.backgroundColor ="transparent";
+        gridButton.style.border = "3px solid #614875";
+        gridButton.style.color = "#614875";
+        gridButton.style.fontWeight = "bold";
+
      } else {
         grid.style.display = "block";
-        gridButton.style.backgroundColor ="#362049";
+        gridButton.style.backgroundColor ="#614875";
+        gridButton.style.color = "#ffffff";
+        gridButton.style.fontWeight = "normal";
+        gridButton.style.border = "3px solid #614875";
    }
 }
 
@@ -4218,6 +4365,7 @@ function toggleDarkmode()
 {
     const stylesheet = document.getElementById("themeBlack");
     const storedTheme = localStorage.getItem('diagramTheme');
+    const btn = document.getElementById("darkmodeToggle");
 
 	if(storedTheme) stylesheet.href = storedTheme;
 
@@ -4230,12 +4378,25 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
+    
+    if (stylesheet.href.includes('blackTheme')) {
+        btn.style.backgroundColor ="#614875";
+        btn.style.color = "#ffffff";
+        btn.style.fontWeight = "normal";
+        btn.style.border = "3px solid #614875";
+     } else {
+        btn.style.backgroundColor ="transparent";
+        btn.style.border = "3px solid #614875";
+        btn.style.color = "#614875";
+        btn.style.fontWeight = "bold";
+   }
 
     showdata();
 
     toggleBorderOfElements();
 
 }
+
 
 /**
  * @description When diagram page is loaded, check if preferred theme is stored in local storage.
@@ -4326,7 +4487,7 @@ function toggleReplay()
  */
 function toggleKeybindList()
 {
-    var element = document.getElementById("markdownKeybinds");
+    const element = document.getElementById("markdownKeybinds");
     if (element.style.display == "block") {
         element.style.display = "none";
     }
@@ -5775,12 +5936,18 @@ function toggleA4Template()
         template.style.display = "none";
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
-        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
+        document.getElementById("a4TemplateToggle").style.backgroundColor ="transparent";
+        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
+        document.getElementById("a4TemplateToggle").style.color = "#614875";
+        document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
      } else {
         template.style.display = "block";
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
-        document.getElementById("a4TemplateToggle").style.backgroundColor = "#362049";
+        document.getElementById("a4TemplateToggle").style.backgroundColor ="#614875";
+        document.getElementById("a4TemplateToggle").style.color = "#ffffff";
+        document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
+        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
    }
    generateContextProperties();
 }
@@ -5792,9 +5959,11 @@ function toggleErrorCheck(){
     errorActive = !errorActive;
     if (errorActive) {
         document.getElementById("errorCheckToggle").classList.add("active");
+        displayMessage(messageTypes.SUCCESS, 'Error Check tool is on.');
     }  
     else{
         document.getElementById("errorCheckToggle").classList.remove("active");
+        displayMessage(messageTypes.SUCCESS, 'Error Check tool is off.');
     }
     showdata();
 }
@@ -5853,11 +6022,17 @@ function toggleSnapToGrid()
     // Color change of button to clarify if button is pressed or not
     if(settings.grid.snapToGrid)
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#362049";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor ="#614875";
+        document.getElementById("rulerSnapToGrid").style.color = "#ffffff";
+        document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
+        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
     }
     else
     {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor ="transparent";
+        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
+        document.getElementById("rulerSnapToGrid").style.color = "#614875";
+        document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
     }
 }
 
@@ -5876,12 +6051,17 @@ function toggleRuler()
     if(settings.ruler.isRulerActive){
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
-        rulerToggleButton.style.backgroundColor = "#614875";
+        rulerToggleButton.style.backgroundColor ="transparent";
+        rulerToggleButton.style.border = "3px solid #614875";
+        rulerToggleButton.style.color = "#614875";
+        rulerToggleButton.style.fontWeight = "bold";
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
-        rulerToggleButton.style.backgroundColor = "#362049";
-
+        rulerToggleButton.style.backgroundColor = "#614875";
+        rulerToggleButton.style.color = "#ffffff";
+        rulerToggleButton.style.fontWeight = "normal";
+        rulerToggleButton.style.border = "3px solid #614875";
     }
   
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
@@ -5948,7 +6128,7 @@ function togglePlacementTypeBox(num){
 /**
  * @description toggles which entity placement type is selected for the different types of diagrams.
  * @param {Number} num the number connected to the element selected.
- * @param {Number} type the type of element selected.
+ * @param {Number} type the type of element selected. (which pop-out we are referring to)
  */
 function togglePlacementType(num,type){
     if(type==0){
@@ -5989,6 +6169,49 @@ function togglePlacementType(num,type){
         document.getElementById("elementPlacement7").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton7").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox"); // IE inheritance end
+        document.getElementById("elementPlacement2").classList.add("hiddenPlacementType"); // ER ATTR START
+        document.getElementById("elementPlacement2").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement2").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton2").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox"); // ER ATTR END
+    }
+    else if (type == 9) {
+        document.getElementById("elementPlacement9").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement9").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement9").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton9").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox9").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement10").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement10").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement10").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton10").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); 
+    }
+
+    else if (type == 12) {
+        // Sequence lifetime
+        document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton12").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox"); 
+        // Sequence activation
+        document.getElementById("elementPlacement13").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement13").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement13").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton13").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");
+        // Sequence condition/loop object
+        document.getElementById("elementPlacement14").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement14").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
     }
     
     // Unhide the currently selected placement type
@@ -6348,7 +6571,7 @@ function generateContextProperties()
           }
 
           //Get selected element
-          var element = context[0];
+          const element = context[0];
 
           //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
           //TODO: Find a way to do this dynamically as new diagram types are added
@@ -6511,7 +6734,7 @@ function generateContextProperties()
                     selected = "disjoint"
                 }
 
-                if(element.kind=="IERelation") {
+                if(element.kind =="IERelation") {
                     value = Object.values(inheritanceStateIE);
                 }
                 str += '<select id="propertySelect">';
@@ -6527,8 +6750,8 @@ function generateContextProperties()
         }
         //Selected SD type
         else if (element.type == 'SD') {
-            //if SDState kind
-            if (element.kind == 'SDState') {
+            //if SDEntity kind
+            if (element.kind == 'SDEntity') {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -6563,6 +6786,44 @@ function generateContextProperties()
                 }
             }
         }
+        //Selected sequence type
+        else if (element.type == 'SE') {
+            //if sequenceActorAndObject kind
+            if (element.kind == 'sequenceActorAndObject') {
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'name':
+                            str += `<div style='color:white'>Name</div>`;
+                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                            break;
+                        case 'actororobject':
+                            //buttons for choosing object or actor via toggleActorOrbject
+                            str += `<div>`
+                            str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
+                            str += `<button onclick='toggleActorOrbject("object");'>Object</button>`
+                            str += `</div>`
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                
+            }
+            else if(element.kind == 'sequenceLoopOrAlt'){
+                for (const property in element) {
+                    switch (property.toLowerCase()) {
+                        case 'alternatives':
+                            str += `<div>Each line is an alternative. Just one is a loop.`;
+                            //TODO in the future, this can be implemented as part of saveProperties and combine attribute and func and alternatives cases.
+                            str += `<textarea id='inputAlternatives' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                            str += `</div>`;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } 
+        }
     
 
 
@@ -6573,7 +6834,7 @@ function generateContextProperties()
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
         }
-        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="changeState();saveProperties();generateContextProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="setSequenceAlternatives();changeState();saveProperties();generateContextProperties();">`;
       }
 
       // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
@@ -6629,7 +6890,7 @@ function generateContextProperties()
                 }
             }
         }
-        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'SD')) {
+        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6828,7 +7089,7 @@ function generateContextProperties()
                     str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
                 }
             });
-            str += `</select>`;
+            str += `</select>`; 
         }
         str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
       }
@@ -6924,15 +7185,20 @@ function generateToolTips()
 /**
  * @description Generates a markdown file with a list of keybinds from file diagramkeybinds.md for all keybinds that are available in the diagram.
  */
-function generateKeybindList()
+async function generateKeybindList()
 {
-    $.ajax({
-        method: "GET",
-        url: "diagramkeybinds.md",
-    }).done(function(file) {
-        document.getElementById("markdownKeybinds").innerHTML=parseMarkdown(file);
-    });
+try
+{
+    const response=await fetch("diagramkeybinds.md");
+    const file=await response.text();
+    document.getElementById("markdownKeybinds").innerHTML = parseMarkdown(file);
 }
+catch(error)
+{
+console.error(error);
+}
+    }
+
 /**
  * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
  * @param {Number} x Absolute x-position in pixels from the left of the inner window.
@@ -7079,7 +7345,7 @@ function setTimerToMessage(element, time = 5000)
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
     var timer = setInterval( function(){
-        var element = document.getElementById(settings.misc.errorMsgMap[timer].id); // TODO : SAME VARIABLE NAME AS OUTER SCOPE?????
+        const element = document.getElementById(settings.misc.errorMsgMap[timer].id); 
         settings.misc.errorMsgMap[timer].percent -= 1;
         element.lastElementChild.style.width = `calc(${settings.misc.errorMsgMap[timer].percent - 1}% - 10px)`;
 
@@ -7325,7 +7591,7 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
 }
 
 /**
- * @description
+ * @description Checks if the lines intersect and if the possible intersection point is within edges
  * @param {Number} x1 Position 1 
  * @param {Number} y1 Position 1 
  * @param {Number} x2 Position 2 
@@ -7334,22 +7600,18 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
  * @param {Number} y3 Position 3 
  * @param {Number} x4 Position 4 
  * @param {Number} y4 Position 4 
- * @returns False or An object with x/y coordinates.
+ * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
- // TODO : WHY does it return EITHER a boolean OR an object??????? Either this is a TRUE/FALSE function and return booleans OR it returns objects/null/undefined!
- // TODO : Use new POINT objects to reduce amount of arguments?
+
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
 {
-    // TODO : Can be deleted?
-    // Display line test locations using svg lines
-    // str+=`<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='#44f' stroke-width='2' />`;
-    // str+=`<line x1='${x3}' y1='${y3}' x2='${x4}' y2='${y4}' stroke='#44f' stroke-width='2' />`
-
-    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    if (isNaN(x) || isNaN(y)) {
+    var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
+    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
+    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
+    if (isNaN(x) || isNaN(y)) {//Check if lines don't intersect
         return false;
-    } else {
+    } else {//Check if intersection point is within edges
 
         if (x1 >= x2) {
             if (!(x2 <= x && x <= x1)) return false;
@@ -7375,10 +7637,7 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
             if (!(y3 <= y && y <= y4)) return false;
         }
     }
-    return { 
-        x: x,
-        y: y 
-    };
+    return true;
 }
 
 /**
@@ -7441,17 +7700,17 @@ function determineLine(line, targetGhost = false)
 
     // Add accordingly to association end
     if (line.ctype == "LR"){
-        if (felem.kind == "EREntity") felem.left.push(line.id);
-        if (telem.kind == "EREntity") telem.right.push(line.id);
+        felem.left.push(line.id);
+        telem.right.push(line.id);
     }else if (line.ctype == "RL"){
-        if (felem.kind == "EREntity") felem.right.push(line.id);
-        if (telem.kind == "EREntity") telem.left.push(line.id);
+        felem.right.push(line.id);
+        telem.left.push(line.id);
     }else if (line.ctype == "TB"){
-        if (felem.kind == "EREntity") felem.top.push(line.id);
-        if (telem.kind == "EREntity") telem.bottom.push(line.id);
+        felem.top.push(line.id);
+        telem.bottom.push(line.id);
     }else if (line.ctype == "BT"){
-        if (felem.kind == "EREntity") felem.bottom.push(line.id);
-        if (telem.kind == "EREntity") telem.top.push(line.id);
+        felem.bottom.push(line.id);
+        telem.top.push(line.id);
     }
 
     if (felem.neighbours[telem.id] == undefined) {
@@ -7467,11 +7726,10 @@ function determineLine(line, targetGhost = false)
 function sortElementAssociations(element)
 {
     // Only sort if size of list is >= 2
-    // TODO : Replace variable names a and b
-    if (element.top.length > 1) element.top.sort(function (a, b) { return sortvectors(a, b, element.top, element.id, 2) });
-    if (element.bottom.length > 1) element.bottom.sort(function (a, b) { return sortvectors(a, b, element.bottom, element.id, 3) });
-    if (element.left.length > 1) element.left.sort(function (a, b) { return sortvectors(a, b, element.left, element.id, 0) });
-    if (element.right.length > 1) element.right.sort(function (a, b) { return sortvectors(a, b, element.right, element.id, 1) });
+    if (element.top.length > 1) element.top.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.top, element.id, 2) });
+    if (element.bottom.length > 1) element.bottom.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.bottom, element.id, 3) });
+    if (element.left.length > 1) element.left.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.left, element.id, 0) });
+    if (element.right.length > 1) element.right.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.right, element.id, 1) });
 }
 
 /**
@@ -7483,7 +7741,7 @@ function sortElementAssociations(element)
  */
 
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
-
+    
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
      if (toElement.kind == "EREntity"){
         var tempElement = toElement;
@@ -7492,7 +7750,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     
-    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDState' || toElement.kind === 'SDState')) {
+    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDEntity' || toElement.kind === 'SDEntity')) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -7506,6 +7764,9 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     if (toElement.kind == "UMLInitialState") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
+    }else if(fromElement.kind == "UMLFinalState") {
+        displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}`);
+        return; 
     }
 
     // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
@@ -7631,14 +7892,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  */
 function isClose(fromX, toX, fromY, toY, zoom = 1) {
     const concideredNearValue = 600 * zoom,
-          deltaX = toX - fromX,
-          deltaY = toY - fromY;
+          deltaX = Math.abs(toX - fromX),
+          deltaY = Math.abs(toY - fromY);
 
-    if (deltaX < concideredNearValue && deltaY < concideredNearValue) {
-        return true;
-    } else {
-        return false;
-    }
+    // Returns true if deltaX and deltaY is within considered near value, otherwise false
+    return deltaX < concideredNearValue && deltaY < concideredNearValue
 }
 
 /**
@@ -7658,12 +7916,15 @@ function preProcessLine(line) {
         } else {
             line.endIcon = 'ARROW';
         }
+
         if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
             line.innerType = SDLineType.STRAIGHT;
         }
         else {
             line.innerType = SDLineType.SEGMENT;
         }
+        
+        
     }
 }
 //#endregion =====================================================================================
@@ -7840,26 +8101,6 @@ function drawLine(line, targetGhost = false)
         x2Offset = 0;
         y2Offset = 0;
     }
-
-    // Create recursive line for SD entities
-    if ((felem.type == 'SD') || (telem.type == 'SD')){
-        if (line.kind == "Recursive"){
-            const length = 80 * zoomfact;
-            const startX = fx - 10 * zoomfact;
-            const startY = fy - 15 * zoomfact;
-            const endX = fx - 10 * zoomfact;
-            const endY = fy - 15 * zoomfact;
-            const cornerX = fx + length;
-            const cornerY = fy - length;
-
-            str += `<line id='${line.id}-line1' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line2' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line3' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}-line4' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<polygon id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
-        }
-    }
-
     /* if (felem.type != 'ER' || telem.type != 'ER') {
         line.type = 'UML';
     } else {
@@ -7871,6 +8112,9 @@ function drawLine(line, targetGhost = false)
         if (targetGhost) {
             line.endIcon = "ARROW";
         }
+    }
+    else if ((felem.type == "IE") || (telem.type == 'IE')) {
+        line.type = "IE"
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
@@ -7886,7 +8130,34 @@ function drawLine(line, targetGhost = false)
         var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
 
         if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            if (line.kind == "Recursive") {
+                const length = 80 * zoomfact;
+                const startX = fx - 10 * zoomfact;
+                const startY = fy - 10 * zoomfact;
+                const endX = fx - 25 * zoomfact;
+                const endY = fy - 15 * zoomfact;
+                const cornerX = fx + length;
+                const cornerY = fy - length;
+
+                
+                str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset - 17 * zoomfact}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+                str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+
+            } else { 
+                if ((fy > ty) && (line.ctype == "TB")) {
+                    y1Offset = 1;
+                    y2Offset = -7 + 3 / zoomfact;
+                }
+                else if ((fy < ty) && (line.ctype == "BT")) {
+                    y1Offset = -7 + 3 / zoomfact;
+                    y2Offset = 1;
+                }
+                str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset * zoomfact}' y1='${fy + y1Offset * zoomfact}' x2='${tx + x2Offset * zoomfact}' y2='${ty + y2Offset * zoomfact}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+            }
         }
         else if (line.ctype == 'TB' || line.ctype == 'BT') {
             str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' `;
@@ -7900,10 +8171,13 @@ function drawLine(line, targetGhost = false)
             str += `fill = none stroke = '${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
         //Line creation when adding icons
+        var iconSizeStart;
+        var iconSizeEnd;
+
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
                 if (line.ctype == 'TB') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
@@ -7918,22 +8192,22 @@ function drawLine(line, targetGhost = false)
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 20 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 5 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 5 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=30;
+                iconSizeStart=30;
                 break;
             case IELineIcons.ONE:
                 if (line.ctype == 'TB') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case IELineIcons.FORCEDONE:
                 if (line.ctype == 'TB') {
@@ -7952,12 +8226,12 @@ function drawLine(line, targetGhost = false)
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=30;
+                iconSizeStart=30;
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -7971,7 +8245,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx + 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=40;
+                iconSizeStart=40;
                 break;
             case IELineIcons.MANY:
                 if (line.ctype == 'TB') {
@@ -7986,12 +8260,12 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                     break;
             case IELineIcons.ZERO_MANY:
                 if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8005,11 +8279,11 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=30;
+                iconSizeStart=30;
                 break;
             case IELineIcons.ONE_MANY:
                 if (line.ctype == 'TB') {
-                    str += `<polyline class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'BT'){
@@ -8024,7 +8298,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.ARROW:
                 if (elemsAreClose) {
@@ -8042,7 +8316,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'TB') {
@@ -8057,7 +8331,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx - 0.5 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'TB') {
@@ -8072,7 +8346,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=20;
+                iconSizeStart=20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'TB') {
@@ -8087,7 +8361,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=40;
+                iconSizeStart=40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'TB') {
@@ -8102,31 +8376,46 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'RL') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeStart=40;
+                iconSizeStart=40;
                 break;
             case SDLineIcons.ARROW:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                var iconSizeStart = 20;
+
+                // If the line is straight calculate the points required to draw the arrow at an angle.
+                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
+                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
+
+                    let base = calculateArrowBase(to, from, iconSizeStart / 2 * zoomfact);
+                    let right = rotateArrowPoint(base, from, true);
+                    let left = rotateArrowPoint(base, from, false);
+
+                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${from.x} ${from.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy - 5 * zoomfact},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                else {
+                    if (line.ctype == 'TB') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'BT') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy - 5 * zoomfact},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'LR') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'RL') {
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
                 }
-                else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                var iconSizeStart=40;
+                iconSizeStart=40;
                 break;
             default:
-                var iconSizeStart=0;
+                iconSizeStart=0;
                 break;
         }
         switch (line.endIcon) {
             case IELineIcons.ZERO_ONE:
                 if (line.ctype == 'BT') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
@@ -8141,22 +8430,22 @@ function drawLine(line, targetGhost = false)
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 20 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 5 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 5 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=30;
+                iconSizeEnd=30;
                 break;
             case IELineIcons.ONE:
                 if (line.ctype == 'BT') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'RL') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if (line.ctype == 'LR') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case IELineIcons.FORCEDONE:
                 if (line.ctype == 'BT') {
@@ -8175,12 +8464,12 @@ function drawLine(line, targetGhost = false)
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 30 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 30 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=30;
+                iconSizeEnd=30;
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'BT') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8194,7 +8483,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=40;
+                iconSizeEnd=40;
                 break;
             case IELineIcons.MANY:
                 if (line.ctype == 'BT') {
@@ -8209,12 +8498,12 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
-                    break;
+                iconSizeEnd=20;
+                break;
             case IELineIcons.ZERO_MANY:
                 if (line.ctype == 'BT') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'s/>`;
+                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
@@ -8228,11 +8517,11 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=30;
+                iconSizeEnd=30;
                 break;
             case IELineIcons.ONE_MANY:
                 if (line.ctype == 'BT') {
-                    str += `<polyline class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 else if(line.ctype == 'TB'){
@@ -8247,7 +8536,7 @@ function drawLine(line, targetGhost = false)
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.ARROW:
                 if (line.ctype == 'BT') {
@@ -8262,7 +8551,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'BT') {
@@ -8277,7 +8566,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx - 0.5 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'BT') {
@@ -8292,7 +8581,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'BT') {
@@ -8307,7 +8596,7 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=40;
+                iconSizeEnd=40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'BT') {
@@ -8322,25 +8611,41 @@ function drawLine(line, targetGhost = false)
                 else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                var iconSizeEnd=40;
+                iconSizeEnd=40;
                 break;
             case SDLineIcons.ARROW:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                var iconSizeEnd = 20;
+
+                // If the line is straight calculate the points required to draw the arrow at an angle.
+                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
+                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
+
+                    let base = calculateArrowBase(from, to, iconSizeEnd / 2 * zoomfact);
+                    let right = rotateArrowPoint(base, to, true);
+                    let left = rotateArrowPoint(base, to, false);
+
+                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                // If the line is segmented draw the arrow on a 90 degree angle matching the line.
+                else {
+                    if (line.ctype == 'BT') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if(line.ctype == 'TB'){
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty - 5 * zoomfact},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'RL') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
+                    else if (line.ctype == 'LR') {
+                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    }
                 }
-                else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                var iconSizeEnd=20;
+                iconSizeEnd=20;
                 break;
             default:
-                var iconSizeEnd=0;
+                iconSizeEnd=0;
                 break;
         }
         if (line.startLabel && line.startLabel != '') {
@@ -8555,7 +8860,7 @@ function drawLine(line, targetGhost = false)
         str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
     }
 
-    if (line.label && line.label != ""){
+    if (line.label && line.label != "" && line.type !== "IE"){
         //Get width of label's text through canvas 
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
@@ -8604,18 +8909,83 @@ function drawLine(line, targetGhost = false)
         if(!!rememberTargetLabelID){
             targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
         }
+
+        
+        // Label position for recursive edges
+        const labelPositionX = labelPosX+lineLabel.labelMovedX+lineLabel.displacementX + 1 * zoomfact
+        const labelPositionY = labelPosY+lineLabel.labelMovedY+lineLabel.displacementY - 1 * zoomfact
+
         //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPosX+lineLabel.labelMovedX+lineLabel.displacementX}" y="${labelPosY+lineLabel.labelMovedY+lineLabel.displacementY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
+        str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
         //Add label with styling based on selection.
         if (contextLine.includes(line)) {
-            str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            if (line.kind === "Recursive") {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            } else {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            }
         }
         else {
-            str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            if (line.kind === "Recursive") {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            } else {
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle"; style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+            }
         }
     }
 
     return str;
+}
+/**
+ * @description Calculates the coordinates of the point representing the base of the arrow, the point is @param size distance away and on the line between @param from and @param to .
+ * @param {Point} from The coordinates/Point where the line between two elements start.
+ * @param {Point} to The coordinates/Point where the line between two elements end.
+ * @param {number} size The size(height) of the arrow that is to be drawn.
+ * @returns The coordinates/Point where the arrow base is placed on the line.
+ */
+function calculateArrowBase(from, to, size)
+{
+    /*
+        Since we know that the arrow is to be created on the line, we need a Point that is a set distance away from the element that is still on the line.
+        The set distance is the size, as it will be the height of the arrow.
+        Given two points we can find the distance of the line between them by calculating the hypotenuse.
+        Since we know the hypotenuse of the "small" triangle and all the lengths of the "large" triangle, we can calculate the cordinates of the "small" triangle since the triangles are "similar".
+        We start by calculating a ratio on the hypotenuse by taking the "small" hypotenuse divided by the "large" hypotenuse.
+        Then we apply this ratio on the other sides of the large triangle to get the distance in x and in y for the small triangle
+        Then we add these values to the end point to get the actual coordinates for the arrow base.
+    */
+
+    let ratio = size / Math.sqrt(Math.pow(from.x - to.x, 2) + Math.pow(from.y - to.y, 2));
+    let x = to.x + (from.x - to.x) * ratio;
+    let y = to.y + (from.y - to.y) * ratio;
+    return new Point(x, y);
+}
+/**
+ * @description Calculates the coordiates of the point representing one of the arrows corners
+ * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
+ * @param {Point} to The coordinates/Point where the line between @param base and the element end
+ * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
+ */
+function rotateArrowPoint(base, to, clockwise)
+{
+    /*
+        To create the actual arrow we need the corners.
+        We need to rotate the point "to" around "base" by 90 or -90 degrees and divide the distance by 2 (as this decides how wide the triangle will be).
+        The rotation is done by applying the vector rotation math that states: 
+        Point(x,y) rotated 90 degrees clockwise = Point(y, -1 * x) or,
+        Point(x,y) rotated 90 degrees counter-clockwise = Point(-1 * y, x).
+        The "rotated" value can then be added to the base to get a corner.
+    */
+    if (clockwise) {
+        let point = new Point((to.y - base.y) / 2, -1 * (to.x - base.x) / 2);
+        point.add(base);
+        return point;
+    }
+    else {
+        let point = new Point(-1 * (to.y - base.y) / 2, (to.x - base.x) / 2);
+        point.add(base);
+        return point;
+    }
 }
 /**
  * @description Removes all existing lines and draw them again
@@ -8673,11 +9043,41 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    elementDiv.innerHTML += nodes;
+    //vertical resizing
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
+        nodes += "<span id='md' class='node md'></span>";
+    }
 
+    if (element.kind == "UMLSuperState") {
+        nodes += "<span id='md' class='node md'></span>";
+        nodes += "<span id='mu' class='node mu'></span>";
+    }
+    elementDiv.innerHTML += nodes;
     // This is the standard node size
     const defaultNodeSize = 8;
+    var nodeSize = defaultNodeSize*zoomfact;
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
+        var mdNode = document.getElementById("md");
+        mdNode.style.width = nodeSize+"px";
+        mdNode.style.width = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
+        mdNode.style.top = "100%";
+    }
 
+    if (element.kind == "UMLSuperState"){
+        var mdNode = document.getElementById("md");
+        var muNode = document.getElementById("mu");
+        mdNode.style.width = nodeSize+"px";
+        muNode.style.width = nodeSize+"px";
+        mdNode.style.height = nodeSize+"px";
+        muNode.style.height = nodeSize+"px";
+        mdNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
+        muNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
+    }
+    
+    if (element.kind == "")
     var nodeSize = defaultNodeSize*zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
@@ -8867,16 +9267,18 @@ function drawRulerBars(X,Y)
  */
 function drawElement(element, ghosted = false)
 {
+    let ghostPreview = ghostLine ? 0 : 0.4;
     var str = "";
 
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
-    var boxw  = Math.round(element.width * zoomfact);
-    var boxh  = Math.round(element.height * zoomfact);
+    var boxw = Math.round(element.width * zoomfact);
+    var boxh = Math.round(element.height * zoomfact);
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
     var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
+    var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
                                 //This value represents the amount of attributes, hopefully this will be calculated through
                                 //an array in the UML document that contains the element's attributes.
@@ -8884,6 +9286,18 @@ function drawElement(element, ghosted = false)
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
+    
+    //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
+    //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
+    var nonFilledElementPartStrokeColor;
+    if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
+    else nonFilledElementPartStrokeColor = '#383737';
+
+    //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
+    //replace this with nonFilledElementPartStroke when it gets merged.
+    var actorFontColor;
+    if (isDarkTheme()) actorFontColor = '#FFFFFF';
+    else actorFontColor = '#383737';
 
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
@@ -8943,16 +9357,16 @@ function drawElement(element, ghosted = false)
             height : ((boxh + (boxh/2 + (boxh * elemAttri/2)) + (boxh/2 + (boxh * elemFunc/2))) / zoomfact)
         }
         UMLHeight.push(UMLEntityHeight);
-
+        
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9024,10 +9438,11 @@ function drawElement(element, ghosted = false)
 
     }
     else if (element.kind == 'UMLInitialState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}" 
+                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}" 
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9036,17 +9451,24 @@ function drawElement(element, ghosted = false)
                              xmlns="http://www.w3.org/2000/svg" 
                              xml:space="preserve"
                              style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                            <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
+                            <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
                                 <circle cx="16.5" cy="12.5" r="10.5"/>
                             </g>
                         </svg>
                 </div>`;
+                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
+                    element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
+                }
+
     }
     else if (element.kind == 'UMLFinalState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+        const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9061,25 +9483,32 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
+                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
+                    element.fill = `${"#FFFFFF"}`;
+                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+                    element.fill = `${"#000000"}`;
+                }
+
     }
     else if (element.kind == 'UMLSuperState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};` : "";
+        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
-                    style="width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                    style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%">
-                    <rect width="${boxw}px" height="${boxh}px" fill="none" fill-opacity="0" stroke="#000" stroke-width="2" rx="20"/>
-                    <rect width="${boxw/2}px" height="${boxh/6}px" fill="#FFF" fill-opacity="1" stroke="#000" stroke-width="2" />   
-                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${boxh/30}px">${element.name}</text>
+                    <svg width='${boxw}' height='${boxh}'>
+                    <rect x='${linew}' y='${linew}' width='${boxw-(linew*2)}' height='${boxh-(linew*2)}' fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
+                    <rect x='${linew}' y='${linew}' width="${boxw/2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
+                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
+
     }
 
-    // Check if element is SDState
-    else if (element.kind == "SDState") {
+    // Check if element is SDEntity
+    else if (element.kind == "SDEntity") {
 
         const maxCharactersPerLine = Math.floor(boxw / texth);
 
@@ -9112,13 +9541,13 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9192,7 +9621,7 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'>Do: </text>`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`;
             //end of svg for background
             str += `</svg>`;
         }
@@ -9204,13 +9633,13 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:5px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh /3))}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9265,13 +9694,13 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
 
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
 
@@ -9318,14 +9747,14 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxw/2))}px; width:${boxw}px;height:${boxh/2}px;`;
+        style='left:0px; top:0px; margin-top:${((boxh/1.5))}px; width:${boxw}px;height:${boxh/2}px;`;
        
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
         
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
       
@@ -9333,6 +9762,7 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
+        
         if (element.state == 'overlapping') {
                 str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/> 
                 <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
@@ -9347,33 +9777,214 @@ function drawElement(element, ghosted = false)
         //end of svg
         str += `</svg>`;
         
-    }    
+    }
+    
     //=============================================== <-- End of IE functionality
+    //=============================================== <-- Start Sequnece functionality
+    //sequence actor and its life line and also the object since they can be switched via options pane.
+    else if (element.kind == 'sequenceActorAndObject') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
 
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the life line
+        str += `<path class="text" 
+        d="M${(boxw/2)+linew},${(boxw/4)+linew}
+        V${boxh}
+        "
+        stroke-width='${linew}'
+        stroke='${element.stroke}'
+        stroke-dasharray='${linew*3},${linew*3}'
+        fill='transparent'
+        />`;
+        //actor or object is determined via the buttons in the context menu. the default is actor.
+        if (element.actorOrObject == "actor") {
+            //svg for actor.
+            str += `<g>`
+            str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+            str += `<path class="text"
+                d="M${(boxw/2)+linew},${(boxw/4)+linew}
+                    v${boxw/6}
+                    m-${(boxw/4)},0
+                    h${boxw/2}
+                    m-${(boxw/4)},0
+                    v${boxw/3}
+                    l${boxw/4},${boxw/4}
+                    m${(boxw/4)*-1},${(boxw/4)*-1}
+                    l${(boxw/4)*-1},${boxw/4}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='transparent'
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
+            str += `</g>`;
+        }
+        else if (element.actorOrObject == "object") {
+            //svg for object.
+            str += `<g>`;
+            str += `<rect class='text'
+                x='${linew}'
+                y='${linew}'
+                width='${boxw - (linew * 2)}'
+                height='${(boxw/2) - linew}'
+                rx='${sequenceCornerRadius}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}' 
+            />`;
+            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;   
+        }
+        str += `</svg>`;  
+    }
+    // Sequence activation 
+    else if (element.kind == 'sequenceActivation') {
+        //div to encapsulate sequence lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the activation rect
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew*2)}' height='${boxh - (linew*2)}' rx='${sequenceCornerRadius*3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
+        str += `</svg>`;
+    }
+    // Sequence loop or alt
+    else if (element.kind == 'sequenceLoopOrAlt') {
+        //first, set a suggested height for the element based on the amount of alternatives
+        if (element.alternatives != null) {
+            //increase length of element to avoid squished alternatives
+            for (let i = 0; i < element.alternatives.length; i++) {
+                boxh += 125*zoomfact;
+            }
+            //also set alt or loop to whatever is correct
+            //if it has more than one alternative its an alt, else its loop.
+            element.alternatives.length > 1 ? element.altOrLoop = "Alt" : element.altOrLoop = "Loop";
+        }
+
+        //div to encapsulate sequence loop 
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the loop/alt rectangle
+        str += `<rect class='text'
+            x='${linew}'
+            y='${linew}'
+            width='${boxw-(linew*2)}'
+            height='${boxh-(linew*2)}'
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='none'
+            rx='${7*zoomfact}'
+            fill-opacity="0"
+        />`;
+        //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
+        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
+            for (let i = 1; i < element.alternatives.length; i++) {
+                str += `<path class="text"
+                d="M${boxw-linew},${(boxh/element.alternatives.length)*i}
+                    H${linew}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                stroke-dasharray='${linew*3},${linew*3}'
+                fill='transparent'
+                />`;
+                //text for each alternative
+                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
+            }
+        }
+        //svg for the small label in top left corner
+        str += `<path 
+            d="M${(7*zoomfact)+linew},${linew}
+                h${100*zoomfact}
+                v${25*zoomfact}
+                l${-12.5*zoomfact},${12.5*zoomfact}
+                H${linew}
+                V${linew+(7*zoomfact)}
+                a${7*zoomfact},${7*zoomfact} 0 0 1 ${7*zoomfact},${(7*zoomfact)*-1}
+                z
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />`;
+        //text in the label
+        str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
+        //text below the label
+        //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
+        str += `<text x='${linew*2}' y='${37.5*zoomfact+(linew*3)+(texth/1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
+        str += `</svg>`;
+    }
+    //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start ER functionality
     //ER element
     else {
         // Create div & svg element
-        str += `
-                    <div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+        if (element.kind == "EREntity") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
+                            margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
+        }
+        else if (element.kind == "ERAttr") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            margin-top:${((boxh / 2))}px;;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
+        }
+        else if (element.kind == "ERRelation") {
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
+                            left:0px;
+                            top:0px;
+                            margin-top:${((boxh / 2.75))}px;;
+                            width:${boxw}px;
+                            height:${boxh}px;
+                            font-size:${texth}px;`;
+        }
         if(context.includes(element)){
             str += `z-index: 1;`;
         }
         if (ghosted) {
             str += `
                 pointer-events: none;
-                opacity: ${ghostLine ? 0 : 0.0};
+                opacity: ${ghostPreview};
             `;
         }
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == "EREntity") {
+
             var weak = "";
 
             if(element.state == "weak") {
@@ -9430,7 +10041,7 @@ function drawElement(element, ghosted = false)
             }
             
         }
-        else if (element.kind == "ERRelation") {
+        else if (element.kind == "ERRelation") {         
 
             var numOfLetters = element.name.length;
             if (tooBig) {
@@ -11559,7 +12170,7 @@ function drawSelectionBox(str)
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    if ((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) {
+    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 && contextLine.length != 0){
         var lowX;
         var highX;
         var lineLowX;
@@ -11588,14 +12199,17 @@ function drawSelectionBox(str)
                 if (y2 > highY) highY = y2;
             }
         }
+
         var tempLines = [];
         if (contextLine.length > 0) {
             for (var i = 0; i < contextLine.length; i++) {
-                if (contextLine[i].kind === lineKind.DOUBLE) {
-                    tempLines.push(document.getElementById(contextLine[i].id + "-1"));
-                    tempLines.push(document.getElementById(contextLine[i].id + "-2"));
-                } else {
-                    tempLines.push(document.getElementById(contextLine[i].id));
+                if (contextLine[i] && contextLine[i].kind !== undefined) {
+                    if (contextLine[i].kind === lineKind.DOUBLE) {
+                        tempLines.push(document.getElementById(contextLine[i].id + "-1"));
+                        tempLines.push(document.getElementById(contextLine[i].id + "-2"));
+                    } else {
+                        tempLines.push(document.getElementById(contextLine[i].id));
+                    }
                 }
             }
             var tempX1, tempX2, tempY1, tempY2;
@@ -11660,9 +12274,9 @@ function drawSelectionBox(str)
         selectionBoxHighX = highX + 5;
         selectionBoxLowY = lowY - 5;
         selectionBoxHighY = highY + 5;
-
+        
         // Selection container of selected elements
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}'; style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
@@ -11791,8 +12405,8 @@ function updateCSSForAllElements()
                         }
                     }
                 }
-                // Update SDState
-                else if (element.kind == "SDState") {
+                // Update SDEntity
+                else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -11847,16 +12461,6 @@ function updateCSSForAllElements()
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
                         }
-                    } else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
@@ -11887,8 +12491,8 @@ function updateCSSForAllElements()
                         fontContrast();
                     }
                 }
-                // Update SDState
-                else if (element.kind == "SDState") {
+                // Update SDEntity
+                else if (element.kind == "SDEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -11927,16 +12531,6 @@ function updateCSSForAllElements()
                             fontColor.style.fill = `${"#ffffff"}`;
                         }else{
                             fillColor.style.fill = `${"#ffffff"}`;
-                        }
-                    } else if(element.kind == "IERelation"){
-                        if(element.state == "overlapping"){
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
-                        }else{
-                            fillColor.style.fill = `${"#ffffff"}`;
-                            disjointLine1Color.style.stroke = `${"#000000"}`;
-                            disjointLine2Color.style.stroke = `${"#000000"}`;
                         }
                     } else{
                         fillColor.style.fill = `${element.fill}`;
@@ -12014,6 +12608,55 @@ function toggleBorderOfElements() {
             }
         }
     }
+}
+/**
+ * @description toggles the sequence actor/object selected to the type specified in the parameter: actor or object.
+ * @param type the type that youd like to switch to, actor or object.
+ */
+function toggleActorOrbject(type){
+    for (let i = 0; i < context.length; i++) {
+        if (context[i].actorOrObject != null) {
+            if (type=="object") {
+                context[i].actorOrObject = "object";
+            }
+            else if (type=="actor") {
+                context[i].actorOrObject = "actor";
+            }
+            else {
+                console.error(type + " is an unexpected parameter for toggleActorOrbject. This can only support actor or object.");
+            }
+        }
+    }
+    showdata();
+}
+/**
+ * @description sets the alternatives attribute for sequenceLoopOrAlt to whatever is in the input box inputAlternatives. one index in the array per line.
+ */
+//TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
+function setSequenceAlternatives(){
+    //for each element in context, check if it has the property alternatives
+    for (let i = 0; i < context.length; i++) {
+        if (context[i].alternatives != null) {
+            //Create an array from string where newline seperates elements
+            let alternatives = document.getElementById("inputAlternatives").value.split('\n');
+            let formatArr = [];
+            for (let i = 0; i < alternatives.length; i++) {
+                if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
+                    formatArr.push(alternatives[i]);
+                } 
+            }
+            //Update the alternatives array
+            alternatives = formatArr;
+            context[0].alternatives = alternatives;
+
+            stateMachine.save(
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
+                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': context[0].altOrLoop }),
+                StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
+            );
+        }
+    }
+    showdata();
 }
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
@@ -12126,7 +12769,7 @@ function centerCamera()
 function downloadFile(filename, dataObj)
 {
     // Create a "a"-element
-    var element = document.createElement('a');
+    const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
     element.setAttribute('download', filename + ".json");
 
@@ -12161,15 +12804,20 @@ function exportWithHistory()
  * @description Stores the current diagram as JSON in localstorage
  */
  function storeDiagramInLocalStorage(){
-    // Remove all future states to the history
-    stateMachine.removeFutureStates();
 
-    // The content of the save file
-    var objToSave = {
-        historyLog: stateMachine.historyLog,
-        initialState: stateMachine.initialState
-    };
-    localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+    if (stateMachine.currentHistoryIndex == -1) {
+        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+    } else {
+        // Remove all future states to the history
+        stateMachine.removeFutureStates();
+        // The content of the save file
+        var objToSave = {
+            historyLog: stateMachine.historyLog,
+            initialState: stateMachine.initialState
+        };
+        localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+        displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
+    }
 }
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
@@ -12223,9 +12871,15 @@ function exportWithoutHistory()
  * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
 function loadMockupDiagram(path){
-    
-    let fileType = document.getElementById("diagramTypeDropdown").value;
-    path = fileType;
+
+    // "resetDiagram()" calls this method with "EMPTYDiagram" as parameter
+
+    // The path is not set yet if we do it from the dropdown as the function
+    // is called without a parameter.
+    if(!path){
+        let fileType = document.getElementById("diagramTypeDropdown").value;
+        path = fileType;
+    }
     //make sure its not null first
     if (path != null) {
         //via fetch API, request the json file 
@@ -12340,28 +12994,17 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 }
 
-function fetchDiagramFileContentOnLoad()
+ function loadDiagramFromLocalStorage(key)
 {
-    let temp = getVariantParam();
-    var fullParam = temp[0];
-    cid = temp[1];
-    cvers = temp[2];
-    diagramToLoad = temp[3];
-    diagramToLoadContent = temp[4];
-
-    // Check whether there is a diagram saved in localstorage and load it.
-    // Otherwise, load from VariantParam  
-    if (localStorage.getItem("CurrentlyActiveDiagram")) {
-        var diagramFromLocalStorage = localStorage.getItem("CurrentlyActiveDiagram");
+    // Check whether there is a diagram saved in localstorage and load it. key for current diagram is CurrentlyActiveDiagram
+    if (localStorage.getItem(key)) {
+        var diagramFromLocalStorage = localStorage.getItem(key);
         loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
-    } else if (diagramToLoadContent != "NO_FILE_FETCHED" && diagramToLoadContent != "") {
-        loadDiagramFromString(JSON.parse(diagramToLoadContent));
-        storeDiagramInLocalStorage();
     } else {
         // Failed to load content
         console.error("No content to load")
     }
-}
+} 
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
@@ -12437,15 +13080,21 @@ function resetDiagramAlert(){
  * @description Cleares the diagram.
  */
 function resetDiagram(){
+    
     // Goto the beginning of the diagram
+        // NOTE: stateMachine should be StateMachine, but this had no effect
+        // on functionality.
+    /*
     stateMachine.gotoInitialState();
 
     // Remove the previous history
     stateMachine.currentHistoryIndex = -1;
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
-    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
-    fetchDiagramFileContentOnLoad();
+    //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    //fetchDiagramFileContentOnLoad();
+    */
+    loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 /**
  *
