@@ -21,12 +21,12 @@ require __DIR__ . '../Misc/checkUserStatus.php';
 echo checkUserStatusTest();
 ?>
 
-<body>
+<body onload="checkUserStatusTest();">
     <button onclick="showLoginPopUp();">
         <h3>Login</h3>
     </button>
 
-    <button onload="checkUserStatusTest();">Call checkUserStatusTest</button>
+    <button >Call checkUserStatusTest</button>
 </body>
 </html>
 
