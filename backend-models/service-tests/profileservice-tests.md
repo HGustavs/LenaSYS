@@ -27,6 +27,9 @@ send {
 	$action = "challenge";
 }
 
+*********
+Expected outputs-
+********* 
 
 
 -----------------------------------------
@@ -55,6 +58,10 @@ End pre-
 		$action = "challenge";	
 	}
 
+*********
+Expected outputs-
+********* 
+
 
 ----------------------------------
 Row 62: Check if passwords matches
@@ -82,6 +89,10 @@ End pre-
 		$password = "Kong";
 		$result = "Kong"; 	
 	}
+
+*********
+Expected outputs-
+********* 
 	
 
 ------------------------------------------------------------------------
@@ -111,3 +122,7 @@ Sql-query: "UPDATE user SET password=:PW WHERE uid=:userid";
 
  
 // Test as student user, check data in database. If password and challenge changed, it's correct.
+
+*********
+Expected outputs-
+********* 
