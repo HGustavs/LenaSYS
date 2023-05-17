@@ -3557,8 +3557,9 @@ function rectsIntersect (left, right)
                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
              }
              // Set the new snap point to center of element
-             obj.x -= obj.width / 2
+             obj.x -= obj.width / 2;
              obj.y -= obj.height / 2;
+             console.log(obj.width, obj.height, "tester");
 
            } else {
              obj.x += (targetDelta.x / zoomfact);
