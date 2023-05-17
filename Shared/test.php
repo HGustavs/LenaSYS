@@ -323,7 +323,10 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
         $outputDiff = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
     };
 
-    echo "I AM HERE !!!!!!!!!".$outputDiff;
+    echo "I AM HERE !!!!!!!!!";
+    foreach($outputDiff as $value){
+        echo $value;
+    };
     // $outputDiff = array_diff($valueExpected,$valueOuput);
 
     if (($valueExpected != null) && ($valueOuput != null)){
