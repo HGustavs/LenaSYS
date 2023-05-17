@@ -93,9 +93,15 @@
 	//--------------------------------------------------------------------------------------------------
 
 	// TODO::: Does this mean we need to save the updated time when an update is made?? 
-	// Do we do this already???
-	// Where in the code should this happen???
+	/* This does not currently happen.
+	 * I think it updates automatically when the MySQL database is updated. 
+	 * Eg. it's not done anywhere in the code.
+	*/
 	function refreshCheck($cid, $user) {
+		// Specify deadlines in seconds
+		$shortdeadline = 300; // 5 minutes
+		$longdeadline = 600; // 10 minutes
+
 		// Connect to database and start session
 		pdoConnect();
 		session_start();
@@ -106,18 +112,27 @@
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
-		// get the "last updated time" from mysql
-		// compare with current time
-		// "We have two variables, $shortdeadline and $longdeadline (for example configured to 5 minutes and 10 minutes)"
+		$updated = "";
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$updated = $row['updated'];
+		}
 
-		// if user "teacher" 
-		// // if "($currenttime-$mostrecent<$shortdeadline)"
-		// // // return
-		// // else refresh
-		// else if "student" 
-		// // if "($currenttime-$mostrecent>$longdeadline)"
-		// // //refresh repo
-		// // else return
+		$currentTime = time(); // Get the current time as a Unix timestamp
+		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
+
+		if($user == 'superuser') { // TODO: What will user contain?
+			if(($currentTime - $updateTime) < $shortdeadline) {
+				print "Too soon since last update, please wait.";
+			} else {
+				refreshGithubRepo($cid);
+			}
+		} else {
+			if(($currentTime - $updateTime) > $longdeadline) {
+				refreshGithubRepo($cid);
+			} else {
+				print "Too soon since last update, please wait.";
+			}
+		}
 	}
 
 	//--------------------------------------------------------------------------------------------------

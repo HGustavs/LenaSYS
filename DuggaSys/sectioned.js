@@ -442,39 +442,35 @@ function changedType(kind) {
 
 function refreshGithubRepo(courseid) 
 {
-  //if(refreshTimeout()) { // 
-    //Used to return success(true) or error(false) to the calling function
-    var dataCheck;
-    $.ajax({
-      async: false,
-      url: "../DuggaSys/gitcommitService.php",
-      type: "POST",
-      data: {'cid':courseid, 'action':'refreshGithubRepo'},
-      success: function(data) { 
-        //Returns true if the data and JSON is correct
-        alert(data); // Shows if course is up to date or not
-        dataCheck = true;
-      },
-      error: function(data){
-        //Check FetchGithubRepo for the meaning of the error code.
-        switch(data.status){
-          case 422:
-            alert(data.responseJSON.message + "\nDid not update course");
-            break;
-          case 503:
-            alert(data.responseJSON.message + "\nDid not update course");
-            break;
-          default:
-            alert("Something went wrong...");
-        }
-        dataCheck = false;
+  //Used to return success(true) or error(false) to the calling function
+  var dataCheck;
+  $.ajax({
+    async: false,
+    url: "../DuggaSys/gitcommitService.php",
+    type: "POST",
+    data: {'cid':courseid, 'action':'refreshGithubRepo'},
+    success: function(data) { 
+      //Returns true if the data and JSON is correct
+      alert(data); // Shows if course is up to date or not
+      dataCheck = true;
+    },
+    error: function(data){
+      //Check FetchGithubRepo for the meaning of the error code.
+      switch(data.status){
+        case 422:
+          alert(data.responseJSON.message + "\nDid not update course");
+          break;
+        case 503:
+          alert(data.responseJSON.message + "\nDid not update course");
+          break;
+        default:
+          alert("Something went wrong...");
       }
-    });
-    console.log("ajax done" + courseid);
-    return dataCheck;
-  //} else {
-    //alert("Currently oversaturated with refresh requests, please wait before refreshing.");
-  //}
+      dataCheck = false;
+    }
+  });
+  console.log("ajax done" + courseid);
+  return dataCheck;
 }
 
 /*
