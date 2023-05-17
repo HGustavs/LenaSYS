@@ -386,7 +386,7 @@ function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
 
        // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
-
+    $i = 0; 
 
     // $valueExpected = json_decode($valueExpected);
     // $valueOuput = json_decode($valueOuput);
