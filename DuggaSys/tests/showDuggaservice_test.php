@@ -57,7 +57,7 @@ $testsData = array(
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'SAVDU',
-            'hash' => 'ghj1jfg2'
+            'hash' => 'ghj1jfg2',
             'moment' => '<!query-before-test-3!><*[0][listentries]*>'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
