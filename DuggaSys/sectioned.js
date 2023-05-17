@@ -1637,10 +1637,10 @@ function returnedSection(data) {
           str += "</td>";
         }
         // Tab example button
-        if ((itemKind != 4) && (data['writeaccess'] || data['studentteacher'])) {
+        if ((itemKind !== 4) && (itemKind !== 0) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<input type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
+          str += `<input style='filter: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
@@ -1664,8 +1664,34 @@ function returnedSection(data) {
           }
         }
 
+
+        // Tab element button for heading
+        if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<input style='filter: invert(1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
+            title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
+          str += "</td>";
+        }
+
+        // Cog Wheel for headers
+        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+
+
+          str += "<img style='filter: invert(1);' alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
+          str += " onclick='setActiveLid("+item['lid']+");selectItem(" + makeparams([item['lid'], item['entryname'],
+          item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
+          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+
+          str += "</td>";
+        }
+
         // Cog Wheel
-        if (data['writeaccess'] || data['studentteacher']) {
+        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
@@ -1680,15 +1706,22 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        // Trashcan
-        if (data['writeaccess'] || data['studentteacher']) {
+         // Trashcan for headers
+        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img  class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+          str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
+        }
 
-
+        // Trashcan
+        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+          "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          str += "</td>";
         }
 
         // github icon for moments (itemKind 4 is moments)
