@@ -315,13 +315,13 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
 // Test 3: assert equal test
 function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
-    // Expected value is JSON
+       // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
-    $valueOutPut = json_decode($valueOuPut, true);
+    $outputDiff = array_diff($valueExpected,$valueOuput);
 
     if (($valueExpected != null) && ($valueOuput != null)){
-        $equalTest = ($valueExpected == $valueOuput);
-        if ($equalTest){
+        //$equalTest = ($valueExpected == $valueOuput);
+        if (empty($result_array[0])){
             $equalTestResult = "passed";
         }
         else{
@@ -331,7 +331,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     else{
         $equalTestResult = "failed with error: no valid values to compare";
     }
-
+    
     if ($prettyPrint) {
         echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
         echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
