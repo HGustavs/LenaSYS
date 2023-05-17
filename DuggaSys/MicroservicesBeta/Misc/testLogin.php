@@ -14,10 +14,11 @@ include("../../../shared/sessions.php");
 require __DIR__ . '../Misc/checkUserStatus.php';
 
 echo checkUserStatusTest();
+var_dump(checkUserStatusTest());
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<body onload="showLoginPopUp();">
+<body onload="">
    
 </body>
 </html>
