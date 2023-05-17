@@ -9825,8 +9825,6 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //canvasContext.measureText(element.name).width;
-            //textWidth
             //rect for sitting behind the actor text
             str += `<rect class='text'
                 x='${xAnchor-(textWidth/2)}'
