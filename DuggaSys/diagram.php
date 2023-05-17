@@ -779,7 +779,7 @@
         </fieldset>
         <fieldset id = "Note">
             <legend aria-hidden="true">Note</legend>
-            <div id="Note" class="diagramIcons" onclick="setElementPlacementType(15); setMouseMode(2);">
+            <div id="Note" class="diagramIcons" onclick='setElementPlacementType(15); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                 <img src="../Shared/icons/diagram_note.svg" alt="Note"/>
                 <span class="toolTipText"><b>Note</b><br>
                     <p>Create a note</p>

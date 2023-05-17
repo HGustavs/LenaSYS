@@ -1156,7 +1156,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    noteEntity: { name: "Note", kind: "Note", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "NOTE" },  // UML Super State.
+    noteEntity: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "NOTE" },  // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -9987,34 +9987,57 @@ function drawElement(element, ghosted = false)
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start Note functionality
-    else if (element.kind == 'Note') {
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh / 3))}px;`;
+    else if (element.kind == "NOTE") {
+        elemAttri = element.attributes.length;
+        //div to encapuslate SD element
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
+            str += `pointer-events: none; opacity: ${ghostLine ? 0 : 0.0};`;
         }
         str += `'>`;
 
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-
-        //Overlapping UML-inheritance
-        if (element.state == 'overlapping') {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //Disjoint UML-inheritance
-        else {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //end of svg
+        //div to encapuslate Note header
+        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
+        //svg for Note header, background and text
+        str += `<svg width='${boxw}' height='${boxh}' style='border-top-left-radius: ${boxh / 2}px; border-top-right-radius: ${boxh / 2}px;'>`; //This is a silly way to round corners, should be done in the rect but the merge is tomorrow
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <text style='fill: ${element.stroke};' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`; //style shouldn't be needed, the div randomly gets fill: rgb(0, 0, 0), no clue why'
+        //end of svg for Note header
         str += `</svg>`;
+        //end of div for Note header
+        str += `</div>`;
+
+        //div to encapuslate Note content
+        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+        //Draw Note-content if there exist at least one attribute
+        if (elemAttri != 0) {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}' style='border-bottom-left-radius: ${boxh / 2}px; border-bottom-right-radius: ${boxh / 2}px;'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            for (var i = 0; i < elemAttri; i++) {
+                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.attributes[i]}</text>`;
+            }
+            //end of svg for background
+            str += `</svg>`;
+            // Draw Note-content if there are no attributes.
+        } else {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)} rx='20'
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
+            //end of svg for background
+            str += `</svg>`;
+        }
+        //end of div for Note content
+        str += `</div>`;
     }
     //=============================================== <-- End of Note functionality
     //=============================================== <-- Start ER functionality
