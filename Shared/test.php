@@ -256,7 +256,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     curl_close($curl);
 
     $curlResponseJSON = json_decode($curlResponse, true);
-
+    echo print_r($curlResponseJSON);
     // Only include JSON same as filter
     foreach($filter as $option => $optionArray){
         // If none do not filter
