@@ -9828,14 +9828,14 @@ function drawElement(element, ghosted = false)
             //rect for sitting behind the actor text
             str += `<rect class='text'
                 x='${xAnchor-(textWidth/2)}'
-                y='${boxw+linew}'
+                y='${boxw+(linew*2)}'
                 width='${textWidth}'
                 height='${texth}'
                 stroke='none'
                 fill='red' 
             />`;
             //fill='${element.fill}' 
-            str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
+            str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
