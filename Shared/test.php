@@ -313,7 +313,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
 }
 
 // Test 3: assert equal test
-function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
+function assertEqualTest2($valueExpected, $valueOuput, $prettyPrint){
 
     // Expected value is JSON
     $valueExpected = json_encode($valueExpected);
@@ -348,22 +348,22 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 }
 
 // Test 3: assert equal test
-function assertEqualTest2($valueExpected, $valueOuput, $prettyPrint){
+function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
        // Expected value is JSON
-    // $valueExpected = json_decode($valueExpected, true);
+    $valueExpected = json_decode($valueExpected, true);
 
 
-    $valueExpected = json_decode($valueExpected);
-    $valueOuput = json_decode($valueOuput);
+    // $valueExpected = json_decode($valueExpected);
+    // $valueOuput = json_decode($valueOuput);
 
 
-    // $i = 0; 
-    // foreach($valueExpected as $row => $arrayValues){
-    //     echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues]."</br>";
-    //     $outputDiff = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
-    //     echo $outputDiff[$i++];
-    // };
+    $i = 0; 
+    foreach($valueExpected as $row => $arrayValues){
+        echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues]."</br>";
+        $outputDiff[$arrayValues] = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
+        echo $outputDiff[$arrayValues];
+    };
 
     // echo "I AM HERE !!!!!!!!!";
     
@@ -374,7 +374,7 @@ function assertEqualTest2($valueExpected, $valueOuput, $prettyPrint){
 
     if (($valueExpected != null) && ($valueOuput != null)){
         //$equalTest = ($valueExpected == $valueOuput);
-        if (/*empty($result_array[0])*/strcmp($valueExpected, $valueOuput) == 0){
+        if (/empty($result_array[0])){
             $equalTestResult = "passed";
         }
         else{
