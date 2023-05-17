@@ -319,7 +319,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     $valueExpected = json_decode($valueExpected, true);
     $i = 0; 
     foreach($valueExpected as $row => $arrayValues){
-        echo $i;
+        echo "value expected: ".$valueExpected[$arrayValues]." value output: ".$valueOuput[$arrayValues];
         $outputDiff = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
         echo "I AM HERE !!!!!!!!!";
         echo $outputDiff[$i++];
