@@ -166,7 +166,7 @@ $testsData = array(
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'hash' => 'ghj1ghj2',
-            'hashpwd' => 'asddasdd'
+            'hashpwd' => 'asddasdd',
             'moment' => '<!query-before-test3!> <*[0][listentries]*>'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
@@ -189,7 +189,7 @@ $testsData = array(
             'duggaid' => '1',
             'tmpvariant' => '3',
             'tmphash' => 'ghj1ghj2',
-            'tmphashpwd' => 'UNK'
+            'tmphashpwd' => 'UNK',
             'moment' => '<!query-before-test3!> <*[0][listentries]*>'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
