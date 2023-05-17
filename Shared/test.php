@@ -327,7 +327,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     if (($valueExpected != null) && ($valueOuput != null)){
         //$equalTest = ($valueExpected == $valueOuput);
-        if (/*empty($result_array[0])*/ $outputDiff[]){
+        if (empty($result_array[0])){
             $equalTestResult = "passed";
         }
         else{
