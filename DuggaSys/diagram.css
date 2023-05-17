@@ -552,6 +552,8 @@
     left: 50%;
     top: 50%;
     background-color: #FFF;
+    color: black;
+    border: 2px solid #000;
     display: flex;
     align-items: center;
     flex-direction: column;
