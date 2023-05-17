@@ -9828,7 +9828,7 @@ function drawElement(element, ghosted = false)
             //rect for sitting behind the actor text
             str += `<rect class='text'
                 x='${xAnchor-(textWidth/2)}'
-                y='${boxw}'
+                y='${boxw+linew}'
                 width='${textWidth}'
                 height='${texth}'
                 stroke='none'
