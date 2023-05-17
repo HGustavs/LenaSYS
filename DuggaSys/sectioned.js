@@ -3111,6 +3111,15 @@ function createExamples(dir,momentID) {
   });
 
   console.log("** AJAX DONE **");
+
+  // Call `createExamples()` every 10 minutes with the latest dir and momentID
+  setInterval(function() {
+    if (dir !== "" && momentID !== "") {
+      createExamples(dir, momentID);
+    } else {
+      console.log("No dir and momentID set yet.");
+    }
+  }, 10 * 60 * 1000); //
 }
 
 
