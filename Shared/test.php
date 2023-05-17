@@ -163,7 +163,7 @@ function testHandler($testsData, $prettyPrint){
 
         // Test 2 callService
         $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
-        $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
+        $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, JSON_UNESCAPED_UNICODE, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
         // Test 3 assertEqual
@@ -335,7 +335,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
         echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
         echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
         echo "<br>";
-        echo "<strong>value output: </strong>".json_encode($valueOuput, JSON_UNESCAPED_UNICODE, true);
+        echo "<strong>value output: </strong>".json_encode($valueOuput, true);
         echo "<br>";
         echo "<br>";
     }
