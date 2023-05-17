@@ -9821,7 +9821,6 @@ function drawElement(element, ghosted = false)
             }).flat();
 
             elemAttri = text.length;
-            }
             //svg for actor.
             str += `<g>`
             str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
