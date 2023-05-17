@@ -317,7 +317,6 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
-    $valueRecivedOutput = json_encode($valueOuput, JSON_UNESCAPED_UNICODE);
 
     if (($valueExpected != null) && ($valueOuput != null)){
         $equalTest = ($valueExpected == $valueOuput);
@@ -336,7 +335,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
         echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
         echo "<strong>value expected: </strong>".json_encode($valueExpected, true);
         echo "<br>";
-        echo "<strong>value output: </strong>".json_encode($valueRecivedOutput, true);
+        echo "<strong>value output: </strong>".json_encode($valueOuput, JSON_UNESCAPED_UNICODE, true);
         echo "<br>";
         echo "<br>";
     }
