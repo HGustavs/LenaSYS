@@ -399,7 +399,7 @@ function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
         echo $outputDiff[$arrayValues];
     };
 
-    // echo "I AM HERE !!!!!!!!!";
+    echo "I AM HERE !!!!!!!!!";
     
     // foreach($outputDiff as $value){
     //     echo $value;
