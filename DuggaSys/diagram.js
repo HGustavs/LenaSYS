@@ -10064,7 +10064,6 @@ function drawElement(element, ghosted = false)
                 opacity: ${ghostPreview};
             `;
         }
-        str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == "EREntity") {
