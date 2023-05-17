@@ -646,10 +646,3 @@
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
-
-/* SEQUENCE */
-.sequenceActivation {
-    /* Fill parent box */
-    width: 100%;
-    height: 100%;
-}
