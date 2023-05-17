@@ -9044,6 +9044,7 @@ function addNodes(element)
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
     nodes += "<span id='md' class='node md'></span>";
+    nodes += "<span id='mu' class='node mu'></span>";
     //vertical resizing
     if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         nodes += "<span id='md' class='node md'></span>";
