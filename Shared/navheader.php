@@ -201,7 +201,7 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton'>";
             	echo "<span id='refreshBTN' title='Refresh Github repo' value='Refresh' href='#'>";
-             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' onclick='refreshGithubRepo(".$_SESSION['courseid'].");' src='../Shared/icons/refresh.svg'>";
+             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".$_SESSION['loginname'].");' src='../Shared/icons/refresh.svg'>";
 							echo "</span>";
 							echo "</div>";
 							echo "</td>";
@@ -245,7 +245,7 @@
 							echo "<a class='burgerButtText' href='accessed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Change student access</a></div>";
 
 							// Refresh button for Github repo in hamburger menu
-							echo "<div id='refreshBurger 'onclick='refreshGithubRepo(".$_SESSION['courseid'].");' style ='cursor:pointer;'>";
+							echo "<div id='refreshBurger 'onclick='refreshGithubRepo(".$_SESSION['courseid'].",".$_SESSION['loginname'].");' style ='cursor:pointer;'>";
             	echo "<span id='refreshBTN' title='Refresh Github Repo' value='Refresh' href='#'>";
 							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' src='../Shared/icons/refresh.svg'>";
 							echo "</span";

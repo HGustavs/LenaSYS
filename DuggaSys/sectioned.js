@@ -440,7 +440,7 @@ function changedType(kind) {
 // refreshGithubRepo: Send course id to function in gitcommitService.php
 //----------------------------------------------------------------------------------
 
-function refreshGithubRepo(courseid) 
+function refreshGithubRepo(courseid, username) 
 {
   //Used to return success(true) or error(false) to the calling function
   var dataCheck;
@@ -448,7 +448,7 @@ function refreshGithubRepo(courseid)
     async: false,
     url: "../DuggaSys/gitcommitService.php",
     type: "POST",
-    data: {'cid':courseid, 'action':'refreshGithubRepo'},
+    data: {'cid':courseid, 'username':username, 'action':'refreshGithubRepo'},
     success: function(data) { 
       //Returns true if the data and JSON is correct
       alert(data); // Shows if course is up to date or not

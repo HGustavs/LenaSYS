@@ -22,7 +22,7 @@
 		}
 		else if($_POST['action'] == 'refreshGithubRepo') 
 		{
-			refreshGithubRepo($_POST['cid']);
+			refreshCheck($_POST['cid'], $_POST['username']);
 		}
 		else if($_POST['action'] == 'updateGithubRepo') 
 		{
@@ -89,7 +89,7 @@
 	// -------------==============######## Refresh Github Repo in Course ###########==============-------------
 
 	//--------------------------------------------------------------------------------------------------
-	// refreshCheck: Checks how often the data is updated, and if it can be updated again
+	// refreshCheck: Decided how often the data can be updated, and if it can be updated again
 	//--------------------------------------------------------------------------------------------------
 
 	// TODO::: Does this mean we need to save the updated time when an update is made?? 
@@ -97,7 +97,7 @@
 	 * I think it updates automatically when the MySQL database is updated. 
 	 * Eg. it's not done anywhere in the code.
 	*/
-	function refreshCheck($cid, $user) {
+	function refreshCheck($cid, $username) {
 		// Specify deadlines in seconds
 		$shortdeadline = 300; // 5 minutes
 		$longdeadline = 600; // 10 minutes
@@ -106,28 +106,41 @@
 		pdoConnect();
 		session_start();
 
-		// Fetching from the database
+		// Fetching the latest update of the course from the MySQL database
 		global $pdo;
 		$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
+		// Save the result in a variable
 		$updated = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$updated = $row['updated'];
 		}
 
+		// Fetching the user priviliges from the MySQL database to see if the user is a superuser
+		$query = $pdo->prepare('SELECT superuser FROM user WHERE username = :username;');
+		$query->bindParam(':username', $username);
+		$query->execute();
+
+		// Save the result in a variable
+		$userPriv = "";
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$userPriv = $row['superuser'];
+		}
+
 		$currentTime = time(); // Get the current time as a Unix timestamp
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
 
-		if($user == 'superuser') { // TODO: What will user contain?
-			if(($currentTime - $updateTime) < $shortdeadline) {
+		// Check if the user has superuser priviliges
+		if($userPriv == 1) {
+			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
 			} else {
 				refreshGithubRepo($cid);
 			}
-		} else {
-			if(($currentTime - $updateTime) > $longdeadline) {
+		} else { 
+			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
 				refreshGithubRepo($cid);
 			} else {
 				print "Too soon since last update, please wait.";
