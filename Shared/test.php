@@ -317,9 +317,14 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
        // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
-    $outputDiff = array_diff($valueExpected,$valueOuput);
+    
+    // foreach($valueExpected as $row => $arrayValues){
+        
+    //     $outputDiff = array_diff($valueExpected[$arrayValues],$valueOuput[$arrayValues]); 
+    // };
 
-    echo $outputDiff[0];
+    // $outputDiff = array_diff($valueExpected,$valueOuput);
+
     if (($valueExpected != null) && ($valueOuput != null)){
         //$equalTest = ($valueExpected == $valueOuput);
         if (/*empty($result_array[0])*/ $outputDiff[]){
@@ -331,7 +336,7 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
     }
     else{
         $equalTestResult = "failed with error: no valid values to compare";
-    }
+    };
     
     if ($prettyPrint) {
         echo "<h3> Test 3 (assertEqual): {$equalTestResult} </h3>";
