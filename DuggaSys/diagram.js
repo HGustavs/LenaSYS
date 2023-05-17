@@ -6597,11 +6597,17 @@ function generateContextProperties()
                 str += `<div style='color:white'>Type</div>`;
 
                 str += '<select id="typeSelect">';
-                for (i = 0; i < typesToChangeTo.length; i++) {
-                    if (selected != typesToChangeTo[i]) {
-                        str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;   
-                    } else if(selected == typesToChangeTo[i]) {
-                        str +=  `<option selected="selected" value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
+
+                //Only displays selected element in dropdown if it has any lines
+                if (elementHasLines(element)){
+                    str += '<option selected ="selected" value='+selected+'>'+ selected +'</option>';
+                }else{
+                    for (i = 0; i < typesToChangeTo.length; i++) {
+                        if (selected != typesToChangeTo[i]) {
+                            str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;   
+                        } else if(selected == typesToChangeTo[i]) {
+                            str +=  `<option selected="selected" value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
+                        }
                     }
                 }
                 str += '</select>'; 
