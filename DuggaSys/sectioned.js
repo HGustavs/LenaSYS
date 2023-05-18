@@ -1729,19 +1729,8 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), sendLidToServer("${item['lid']}")'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}")'>`;
           str += "</td>";
-        }
-
-        function sendLidToServer(lid) {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', 'sectioned.php', true);
-          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-            }
-          };
-          xhr.send(`lid=${encodeURIComponent(lid)}`);
         }
 
         // github icon for code (itemKind 2 is code)

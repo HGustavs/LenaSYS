@@ -85,10 +85,6 @@
 		;
 			
 		}
-
-		if (isset($_POST['lid'])) {
-			$lid = $_POST['lid'];
-		}
 	?>
 
 	<!-- content START -->
