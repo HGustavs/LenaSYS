@@ -592,6 +592,12 @@
     align-items: left;
 }
 
+#loadContainer button{
+    border-style: none;
+    background-color: #815e9d;
+    color: white;
+}
+
 #closeLoadModal {
     position: absolute;
     top: 1rem;

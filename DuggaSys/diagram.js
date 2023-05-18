@@ -12999,7 +12999,7 @@ function showModal(){
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
 
-    var testArray = ["ERDiagram", "StateDiagram", "SequenceDiagram", "IE Diagram"];
+    var testArray = ["ERDiagram - 2021-03-13", "StateDiagram - 2021-03-13", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
 
     for (let i = 0; i<testArray.length; i++){
         var btn = document.createElement('button');
