@@ -10025,10 +10025,10 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //div to encapuslate UML header
-        str += `<div class='note-header' style='width: $0; height: $0;'>`;
+        str += `<div class='note-header' style='width: 0; height: 0;'>`;
         //svg for UML header, background and text
-        str += `<svg width='$0' height='$0'>`;
-        str += `<rect class='text' x='$0' y='$0' width='$0' height='$0'
+        str += `<svg width='0' height='0'>`;
+        str += `<rect class='text' x='0' y='0' width='0' height='0'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //end of svg for UML header
