@@ -3130,7 +3130,7 @@ function autoRefreshCodeExample(dir, momentID) {
     } else {
       console.log("No dir and momentID set yet.");
     }
-  }, 10 * 60 * 1000); // set to 10 minutes
+  },  60 * 100); // set to 1 minutes currently
 }
 
 
