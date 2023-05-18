@@ -10013,10 +10013,9 @@ function drawElement(element, ghosted = false)
         NOTEHeight.push(NOTEEntityHeight);
 
         //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; -webkit-clip-path: polygon(87% 0,100% 32%, 100% 100%, 0 100%, 0 0);
-  clip-path: polygon(87% 0,100% 32%, 100% 100%, 0 100%, 0 0); background: Black;`;
-
+        str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' position:relative;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`;
+        str += `<div content: ""; position:absolute; margin:-20px; width:40px; height:40px; transform:rotate(45deg); background-color:#000; </div> `
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -10031,7 +10030,7 @@ function drawElement(element, ghosted = false)
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
+            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'  />`;
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }

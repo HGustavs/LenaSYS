@@ -643,6 +643,7 @@
     z-index: 20;
 }
 
+
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
