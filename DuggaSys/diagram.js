@@ -10008,7 +10008,7 @@ function drawElement(element, ghosted = false)
         // Calculate and store the NOTEEntity's real height
         var NOTEEntityHeight = {
             id: element.id,
-                height: ((boxh + (boxh / 2)+50) / zoomfact)   
+                height: ((boxh + (boxh / 2)) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
 
@@ -10026,7 +10026,8 @@ function drawElement(element, ghosted = false)
        
         //div to encapuslate note content
         //Draw note-content if there exist at least one attribute
-        if (elemAttri == 1) {         
+        if (elemAttri == 1) {   
+                height: 75;
             console.log("elemAttri == 1");
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
