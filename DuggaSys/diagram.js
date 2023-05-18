@@ -10022,7 +10022,6 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
-        str += `<div content: ""; position:absolute; margin:-20px; width:40px; height:40px; transform:rotate(45deg); background-color:#000; </div> `
         //div to encapuslate note content
         //Draw note-content if there exist at least one attribute
         if (elemAttri != 0) {
@@ -10046,6 +10045,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         //end of div for UML content
+        str += `<div content: ""; position:absolute; margin:-20px; width:40px; height:40px; transform:rotate(45deg); background-color:#000; </div> `
         str += `</div>`;
        /* if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
