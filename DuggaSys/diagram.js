@@ -10008,11 +10008,11 @@ function drawElement(element, ghosted = false)
         // Calculate and store the UMLEntity's real height
         var NOTEEntityHeight = {
             id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
+            height: ((boxh + (boxh / 2)) / zoomfact)
         }
         NOTEHeight.push(NOTEEntityHeight);
 
-        //div to encapuslate UML element
+        //div to encapuslate note element
         str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`;
 
@@ -10024,20 +10024,20 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
 
-        //div to encapuslate UML header
-        /*str += `<div class='note-header' style='width: 0; height: 0;'>`;
-        //svg for UML header, background and text
+        //div to encapuslate note header
+        str += `<div class='note-header' style='width: 0; height: 0;'>`;
+        //svg for note header, background and text
         str += `<svg width='0' height='0'>`;
         str += `<rect class='text' x='0' y='0' width='0' height='0'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for UML header
+        //end of svg for note header
         str += `</svg>`;
-        //end of div for UML header
-        str += `</div>`;*/
+        //end of div for note header
+        str += `</div>`;
 
-        //div to encapuslate UML content
-        str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
+        //div to encapuslate note content
+        str += `<div class='note-content' style='margin-top: -0.5em;'>`;
         //Draw note-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
