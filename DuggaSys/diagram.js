@@ -10014,7 +10014,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' position:relative;
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; overflow:hidden`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -10045,7 +10045,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         //end of div for UML content
-        str += `<div content: ""; position:absolute; margin:-20px; width:500px; height:500px; transform:rotate(45deg); background-color:#000; </div> `
+        str += `<div content: ""; position:absolute; margin:-20px; width:${boxw}px; height:${boxh}; transform:rotate(45deg); background-color:#000; </div> `
         str += `</div>`;
        /* if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
