@@ -619,7 +619,7 @@
 				</div>
 				<div class='inputwrapper'>
 					<span>Github Directory:</span>
-						<select name="githubDir" placeholder='Github Folder'>
+						<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
 							<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
 							<?php
 								// Gets "cid" via getOPG.
@@ -643,6 +643,11 @@
 					// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 					function getLidFromButton(lid) {
 						document.getElementById('lidInput').value = lid;
+					}
+
+					function saveLocalStorage(selectedValue) {
+						localStorage.setItem('githubDirSelected', selectedValue.value);
+						console.log(localStorage);
 					}
 				</script>
 			</div>
