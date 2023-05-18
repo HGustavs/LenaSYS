@@ -10028,7 +10028,7 @@ function drawElement(element, ghosted = false)
         str += `<div class='note-header' style='width: ${boxw}; height: ${boxh};'>`;
         //svg for UML header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        str += `<rect class='text' x='${linew}' y='${linew}' width='0' height='0'
         stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
         <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //end of svg for UML header
