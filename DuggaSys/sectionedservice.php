@@ -528,14 +528,15 @@ if($gradesys=="UNK") $gradesys=0;
 							array_push($allFiles, $temp);
 						}
 					}
-					$countAllFiles = count($allFiles);
-					$varname="countFiles";	
-					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-					$query3->bindParam(":examplename", $varname); 
-					$query3->bindParam(":sectionname", $countAllFiles); 
-					$query3->execute();	
+					
 
 					foreach($allFiles as $groupedFiles){
+						$countAllFiles = count($groupedFiles);
+						$varname="countGroupedFiles";	
+						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+						$query3->bindParam(":examplename", $varname); 
+						$query3->bindParam(":sectionname", $countAllFiles); 
+						$query3->execute();	
 						//get the correct examplename
 						$explodeFiles = explode('.',$groupedFiles[0]);
 						$exampleName = $explodeFiles[0];
