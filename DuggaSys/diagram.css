@@ -138,6 +138,15 @@
     overflow: none;
     position:absolute;
 }
+
+.noteElement {
+    font-size: small;
+    box-sizing: border-box;
+    overflow: scroll;
+    position: absolute;
+    background: linear-gradient(45deg, transparent 45px, #ddd 0);
+}
+
 #pad_lock{
     top: -45%;
     display: block;

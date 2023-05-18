@@ -10014,7 +10014,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; background: linear-gradient(135deg, transparent 30px, #ddd 0) top right;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
