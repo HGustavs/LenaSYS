@@ -598,8 +598,8 @@ if($gradesys=="UNK") $gradesys=0;
 								$exampleid = $result->LatestExID;
 
 								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
-								foreach($groupedFiles as $gFile){
-									$filename = $gFile;
+								for ($i = 0; $i < count($groupedFiles); $i++) {
+									$filename = $groupedFiles[$i];
 									$parts = explode('.', $filename);
 									$filetype = "CODE";
 									$wlid = 0;
@@ -655,6 +655,32 @@ if($gradesys=="UNK") $gradesys=0;
 									$query->bindParam(":wordlistid", $wlid);
 									$query->bindParam(":fontsize", $fontsize);
 									$query->execute();
+										
+									$varname="boxid";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $boxid); 
+									$query3->execute();	
+									$varname="exampleid";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $exampleid); 
+									$query3->execute();	
+									$varname="filename";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $filename); 
+									$query3->execute();	
+									$varname="filetype";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $filetype); 
+									$query3->execute();	
+									$varname="wlid";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $wlid); 
+									$query3->execute();		
 
 								}
 
