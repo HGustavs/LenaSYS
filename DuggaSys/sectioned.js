@@ -3109,7 +3109,7 @@ function createExamples(dir,momentID) {
 
   console.log("** AJAX DONE **");
 
-  // Call `createExamples()` every 10 minutes with the latest dir and momentID
+  // Call `createExamples()` every 1 minutes with the latest dir and momentID
   setInterval(function() {
     if (dir !== "" && momentID !== "") {
       createExamples(dir, momentID);
@@ -3117,7 +3117,7 @@ function createExamples(dir,momentID) {
     } else {
       console.log("No dir and momentID set yet.");
     }
-  }, 10 * 60 * 100); // set to 1 minutes currently
+  }, 600 * 100); // set to 1 minutes currently
 }
 
 
@@ -3126,12 +3126,14 @@ function autoRefreshCodeExample(dir, momentID) {
   setInterval(function() {
     if (dir !== "" && momentID !== "") {
       createExamples(dir, momentID);
-      console.log("createExamples() called in the setInterval function.");
+      console.log("createExamples() called in the autoRefreshCodeExample function.");
     } else {
       console.log("No dir and momentID set yet.");
     }
   }, 10 * 60 * 1000); // set to 10 minutes
 }
+
+
 
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
@@ -3724,6 +3726,11 @@ function refreshMoment(momentID){
   //for loop not yet implemented, waiting for other issues to be completed before
   dirname="../courses/1895/Github/Demo/Code-example1/"
   createExamples(dirname,momentID)
+
+
+  // Start auto-refresh every 10 minutes
+  autoRefreshCodeExample(dirname, momentID);
+
 }
 
 //------------------------------------------------------------------------------
