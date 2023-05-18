@@ -1126,7 +1126,7 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
-
+var NOTEHeight = [];// List with NOTE Entities' real height
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
@@ -3689,6 +3689,11 @@ function entityIsOverlapping(id, x, y)
             }
         }
 
+        for (var i = 0; i < NOTEHeight.length; i++) {
+            if (element.id == NOTEHeight[i].id) {
+                elementHeight = NOTEHeight[i].height;
+            }
+        }
         targetX = x //(x / zoomfact);
         targetY =  y//(y / zoomfact);
 
