@@ -588,10 +588,8 @@
 }
 
 #closeLoadModal {
-    position: absolute;
-    top: 1rem;
-    right: 5px;
-    font-size: 5px;
+    text-align: right;
+    font-size: 2rem;
     color: #333;
     cursor: pointer;
     border: none;
