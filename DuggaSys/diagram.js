@@ -10045,7 +10045,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         //end of div for UML content
-        str += `<div content: ""; position:absolute; margin:-20px; width:${boxw}px; height:${boxh}; transform:rotate(45deg); background-color:#000; </div> `
+        str += `<div position:absolute; margin:-20px; width:${boxw}px; height:${boxh}; transform:rotate(45deg); background-color:#000; </div> `
         str += `</div>`;
        /* if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
