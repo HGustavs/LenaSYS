@@ -10023,23 +10023,14 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
-        /*
-        //div to encapuslate note header
-        str += `<div class='note-header' style='width: 0; height: 0;'>`;
-        //svg for note header, background and text
-        str += `<svg width='0' height='0'>`;
-        str += `</svg>`;
-        //end of div for note header
-        str += `</div>`;       
-        */
+       
         //div to encapuslate note content
         //Draw note-content if there exist at least one attribute
         if (elemAttri == 1) {         
             console.log("elemAttri == 1");
-            NOTE(height = 75);
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh*2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
