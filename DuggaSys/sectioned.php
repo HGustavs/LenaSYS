@@ -655,6 +655,15 @@
 						localStorage.setItem(lid, value);
 						console.log(localStorage);
 					}
+
+					function getLocalStorage() {
+						let lid = document.getElementById('lidInput').value;
+						let selectedValue = localStorage.getItem(lidInput.value);
+						if(selectedValue) {
+							let dropdown = document.querySelector('select[name="githubDir"]');
+							dropdown.value = selectedValue;
+						}
+					}
 				</script>
 			</div>
 		</div>
