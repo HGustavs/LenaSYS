@@ -598,8 +598,8 @@ if($gradesys=="UNK") $gradesys=0;
 								$exampleid = $result->LatestExID;
 
 								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
-								for ($i = 0; $i < count($groupedFiles); $i++) {
-									$filename = $groupedFiles[$i];
+								foreach($groupedFiles as $gFile){
+									$filename = $gFile;
 									$parts = explode('.', $filename);
 									$filetype = "CODE";
 									$wlid = 0;
