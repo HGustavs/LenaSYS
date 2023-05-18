@@ -10028,7 +10028,7 @@ function drawElement(element, ghosted = false)
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-              background: linear-gradient(-135deg, transparent ${boxh / 2}px, #000 0);/>`;//stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
+              />`;//stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }

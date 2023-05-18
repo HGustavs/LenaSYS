@@ -130,13 +130,14 @@
 
 .hide {
     display: none;
-}	
+}
 
 .element {
     font-size: small;
     box-sizing: border-box;
     overflow: none;
-    position:absolute;
+    position: absolute;
+    background: linear-gradient(-135deg, transparent 45px, #fff 0);
 }
 
 #pad_lock{
