@@ -12997,6 +12997,17 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
 function showModal(){
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
+    var container = document.querySelector('#loadContainer');
+
+    var testArray = ["ERDiagram", "StateDiagram", "SequenceDiagram", "IE Diagram"];
+
+    for (let i = 0; i<testArray.length; i++){
+        var btn = document.createElement('button');
+        var btnText = document.createTextNode(testArray[i]);
+
+        btn.appendChild(btnText);
+        container.appendChild(btn);
+    }
 
     modal.classList.remove('hiddenLoad');
     overlay.classList.remove('hiddenLoad');

@@ -584,6 +584,7 @@
 #loadContainer{
     margin-top: 3rem;
     margin-bottom: 1rem;
+    padding: 5px;
     border: 1px solid #333;
     display: flex;
     flex-direction: column;
