@@ -577,14 +577,13 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
-    font-size: 2rem;
+    font-size: 1.2rem;
     color: #333;
 }
 
 #loadContainer{
     display: flex;
     flex-direction: column;
-    gap: 20px;
     justify-content: space-evenly;
     align-items: center;
 }
