@@ -10008,7 +10008,7 @@ function drawElement(element, ghosted = false)
         // Calculate and store the UMLEntity's real height
         var NOTEEntityHeight = {
             id: element.id,
-            height: ((boxh + (boxh / 2)) / zoomfact)
+            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
         }
         NOTEHeight.push(NOTEEntityHeight);
 
@@ -10025,7 +10025,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //div to encapuslate UML header
-       /* str += `<div class='note-header' style='width: 0; height: 0;'>`;
+        /*str += `<div class='note-header' style='width: 0; height: 0;'>`;
         //svg for UML header, background and text
         str += `<svg width='0' height='0'>`;
         str += `<rect class='text' x='0' y='0' width='0' height='0'
