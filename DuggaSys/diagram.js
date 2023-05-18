@@ -10015,7 +10015,7 @@ function drawElement(element, ghosted = false)
         if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-            element.fill = `${"#FFFFFF"}`;
+            element.fill = `${"#000000"}`;
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
