@@ -1158,7 +1158,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE"},  // UML Super State.
+    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['-attribute']},  // UML Super State.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -6621,7 +6621,7 @@ function generateContextProperties()
               for (const property in element) {
                   console.log("note was made");
                   switch (property.toLowerCase()) {
-                      case 'name':
+                      case 'att':
                           str += `<div style='color:white'>Name</div>`;
                           str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                           break;
@@ -6635,7 +6635,7 @@ function generateContextProperties()
               //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
               for (const property in element) {
                   switch (property.toLowerCase()) {
-                      case'name':
+                      case'attributes':
                           str += `<div style='color:white'>name</div>`;
                           str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                           break;
