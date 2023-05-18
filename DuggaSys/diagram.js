@@ -6617,19 +6617,7 @@ function generateContextProperties()
               }
               str += '</select>'; 
           }
-          if (element.type == 'NOTE') {
-              for (const property in element) {
-                  console.log("note was made");
-                  switch (property.toLowerCase()) {
-                      case 'name':
-                          str += `<div style='color:white'>Name</div>`;
-                          str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                         break;
-                      default:
-                          break;
-                  }
-              }
-          }
+          
           //Selected ER type
           if (element.type == 'ER') {
               //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -6694,7 +6682,19 @@ function generateContextProperties()
                       }
                   }
               }
-
+          else if (element.type == 'NOTE') {
+               for (const property in element) {
+                   console.log("note was made");
+                   switch (property.toLowerCase()) {
+                       case 'name':
+                           str += `<div style='color:white'>Name</div>`;
+                           str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                           break;
+                       default:
+                           break;
+                      }
+                  }
+              }
               //If UML inheritance
               else if (element.kind = 'UMLRelation') {
                 //ID MUST START WITH "elementProperty_"!!!!!
