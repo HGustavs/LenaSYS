@@ -662,6 +662,25 @@ if($gradesys=="UNK") $gradesys=0;
 										$query3->execute();	
 										
 									}else {
+										if ($query->errorCode() !== '00000') {
+											$errorInfo = $query->errorInfo();
+											$errorCode = $errorInfo[0];
+											$errorMessage = $errorInfo[2];
+											
+											// Handle or display the error message as needed
+											$varname="errorCode";	
+											$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+											$query3->bindParam(":examplename", $varname); 
+											$query3->bindParam(":sectionname", $errorCode); 
+											$query3->execute();	
+											$varname="errorMessage";	
+											$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+											$query3->bindParam(":examplename", $varname); 
+											$query3->bindParam(":sectionname", $errorMessage); 
+											$query3->execute();	
+											
+											//echo "Error [{$errorCode}]: {$errorMessage}";
+										}
 										$varname="boxNotCreated";	
 										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 										$query3->bindParam(":examplename", $varname); 
@@ -702,6 +721,7 @@ if($gradesys=="UNK") $gradesys=0;
 										$query3->bindParam(":examplename", $varname); 
 										$query3->bindParam(":sectionname", $setting); 
 										$query3->execute();	
+
 										
 									}
 							
