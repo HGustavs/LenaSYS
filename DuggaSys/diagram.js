@@ -10029,7 +10029,7 @@ function drawElement(element, ghosted = false)
         //svg for note header, background and text
         str += `<svg width='0' height='0'>`;
         str += `<rect class='text' x='0' y='0' width='0' height='0'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        stroke-width='0' stroke='0' fill='0}' />
         <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
         //end of svg for note header
         str += `</svg>`;
