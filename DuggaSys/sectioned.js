@@ -3121,6 +3121,18 @@ function createExamples(dir,momentID) {
 }
 
 
+// Function to start the interval, used to refresh without having to click the button
+function autoRefreshCodeExample(dir, momentID) {
+  setInterval(function() {
+    if (dir !== "" && momentID !== "") {
+      createExamples(dir, momentID);
+      console.log("createExamples() called in the setInterval function.");
+    } else {
+      console.log("No dir and momentID set yet.");
+    }
+  }, 10 * 60 * 1000); // set to 10 minutes
+}
+
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
