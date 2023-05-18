@@ -511,14 +511,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->execute();
 					$e = $query->fetchAll();
 					$githubDir = $e[0]['githubDir'];
-					$dirPath = "../courses/".$courseid."/Github/" . $githubDir;
-
-						
-					$varname="dirpath";	
-					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-					$query3->bindParam(":examplename", $varname); 
-					$query3->bindParam(":sectionname", $dirPath); 
-					$query3->execute();		
+					$dirPath = "../courses/".$courseid."/Github/" . $githubDir;	
 
 					$allFiles = array();
 					foreach($files as $file) {
@@ -534,6 +527,11 @@ if($gradesys=="UNK") $gradesys=0;
 							array_push($allFiles, $temp);
 						}
 					}
+					$varname="arrayFiles";	
+					$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+					$query3->bindParam(":examplename", $varname); 
+					$query3->bindParam(":sectionname", $allFiles[0][0]); 
+					$query3->execute();	
 
 					foreach($allFiles as $groupedFiles){
 						//get the correct examplename
