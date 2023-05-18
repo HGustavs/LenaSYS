@@ -10015,7 +10015,6 @@ function drawElement(element, ghosted = false)
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' position:relative;
         style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`;
-        str += `<div content: ""; position:absolute; margin:-20px; width:40px; height:40px; transform:rotate(45deg); background-color:#000; </div> `
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -10023,7 +10022,7 @@ function drawElement(element, ghosted = false)
             str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
-       
+        str += `<div content: ""; position:absolute; margin:-20px; width:40px; height:40px; transform:rotate(45deg); background-color:#000; </div> `
         //div to encapuslate note content
         //Draw note-content if there exist at least one attribute
         if (elemAttri != 0) {
