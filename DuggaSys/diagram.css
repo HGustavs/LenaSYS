@@ -579,7 +579,7 @@
 }
 
 #loadContainer{
-    margin-top: 3rem;
+    margin-top: 2rem;
     border: 1px solid #333;
     display: flex;
     flex-direction: column;
@@ -590,8 +590,8 @@
 #closeLoadModal {
     position: absolute;
     top: 1rem;
-    right: 1rem;
-    font-size: 2rem;
+    right: 5px;
+    font-size: 5px;
     color: #333;
     cursor: pointer;
     border: none;
