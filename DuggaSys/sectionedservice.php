@@ -553,152 +553,143 @@ if($gradesys=="UNK") $gradesys=0;
 							$e = $query->fetchAll();
 							$pos = $e[0]['pos'] + 1; //Gets the last filled position+1 to put the new codexample at
 
-							//connect to SQLite
-							$metadata_db = null;
-							$success = false;
-							try {
-								$metadata_db = new PDO('sqlite:../../githubMetadata/metadata' . $metadataDbVersion . '.db');
-								$success = true;
-							} catch (PDOException $e) {
-								echo "Failed to connect to the database";
-								throw $e;
-							}
-
 							//select the files that has should be in the codeexample
-							if ($success) {
-								//Count files in the directory for the codeexample
-								$fileCount = 0;
-								$files = scandir($dirPath);
-								foreach ($files as $file) {
-									if (is_file($dirPath . '/' . $file)) {
-										$fileCount++;
-									}
+							
+							//Count files in the directory for the codeexample
+							//$fileCount = 0;
+							//$files = scandir($dirPath);
+							//foreach ($files as $file) {
+							//	if (is_file($dirPath . '/' . $file)) {
+							//		$fileCount++;
+							//	}
+							//}
+
+							$fileCount = count($groupedFiles);
+							//If we find files that should be in the codeexample, create the codeexample
+							//Only template for 1 up to 5 files
+							if ($fileCount > 0 && $fileCount < 6) {
+								// There are at least two boxes, create two boxes to start with
+								switch ($fileCount) {
+									case 1:
+										$templateNumber = 10;
+										break;
+									case 2:
+										$templateNumber = 1;
+										break;
+									case 3:
+										$templateNumber = 3;
+										break;
+									case 4:
+										$templateNumber = 5;
+										break;
+									case 5:
+										$templateNumber = 9;
+										break;
 								}
-								//If we find files that should be in the codeexample, create the codeexample
-								//Only template for 1 up to 5 files
-								if ($fileCount > 0 && $fileCount < 6) {
-									// There are at least two boxes, create two boxes to start with
-									switch ($fileCount) {
-										case 1:
-											$templateNumber = 10;
+								$examplename = $exampleName;
+								$sectionname = $exampleName;
+								//create codeexample
+								$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":ename", $examplename);
+								$query->bindParam(":sname", $sectionname);
+								$query->bindParam(":cversion", $coursevers);
+								$query->bindParam(":templateid", $templateNumber);
+								$query->execute();
+
+								//select the latest codeexample created to link boxes to this codeexample
+								$query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
+								$query->execute();
+								$result = $query->fetch(PDO::FETCH_OBJ);
+								$exampleid = $result->LatestExID;
+
+								//Add each file to a box and add that box to the codeexample and set the box to its correct content.
+								for ($i = 0; $i < count($groupedFiles); $i++) {
+									$filename = $groupedFiles[$i];
+									$parts = explode('.', $filename);
+									$filetype = "CODE";
+									$wlid = 0;
+
+									switch ($parts[1]) {
+										case "js":
+											$filetype = "CODE";
+											$wlid = 1;
 											break;
-										case 2:
-											$templateNumber = 1;
+										case "php":
+											$filetype = "CODE";
+											$wlid = 2;
 											break;
-										case 3:
-											$templateNumber = 3;
+										case "html":
+											$filetype = "CODE";
+											$wlid = 3;
 											break;
-										case 4:
-											$templateNumber = 5;
+										case "txt":
+											$filetype = "DOCUMENT";
+											$wlid = 4;
 											break;
-										case 5:
-											$templateNumber = 9;
+										case "md":
+											$filetype = "DOCUMENT";
+											$wlid = 4;
+											break;
+										case "java":
+											$filetype = "CODE";
+											$wlid = 5;
+											break;
+										case "sr":
+											$filetype = "CODE";
+											$wlid = 6;
+											break;
+										case "sql":
+											$filetype = "CODE";
+											$wlid = 7;
+											break;
+										default:
+											$filetype = "DOCUMENT";
+											$wlid = 4;
 											break;
 									}
-									$examplename = $dirname;
-									$sectionname = $dirname;
-									//create codeexample
-									$query = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion,:templateid);");
-									$query->bindParam(":cid", $courseid);
-									$query->bindParam(":ename", $examplename);
-									$query->bindParam(":sname", $sectionname);
-									$query->bindParam(":cversion", $coursevers);
-									$query->bindParam(":templateid", $templateNumber);
-									$query->execute();
 
-									//select the latest codeexample created to link boxes to this codeexample
-									$query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
-									$query->execute();
-									$result = $query->fetch(PDO::FETCH_OBJ);
-									$exampleid = $result->LatestExID;
-
-									//Add each file to a box and add that box to the codeexample and set the box to its correct content.
-									for ($i = 2; $i < count($files); $i++) {
-										$filename = $files[$i];
-										$parts = explode('.', $filename);
-										$filetype = "CODE";
-										$wlid = 0;
-
-										switch ($parts[1]) {
-											case "js":
-												$filetype = "CODE";
-												$wlid = 1;
-												break;
-											case "php":
-												$filetype = "CODE";
-												$wlid = 2;
-												break;
-											case "html":
-												$filetype = "CODE";
-												$wlid = 3;
-												break;
-											case "txt":
-												$filetype = "DOCUMENT";
-												$wlid = 4;
-												break;
-											case "md":
-												$filetype = "DOCUMENT";
-												$wlid = 4;
-												break;
-											case "java":
-												$filetype = "CODE";
-												$wlid = 5;
-												break;
-											case "sr":
-												$filetype = "CODE";
-												$wlid = 6;
-												break;
-											case "sql":
-												$filetype = "CODE";
-												$wlid = 7;
-												break;
-											default:
-												$filetype = "DOCUMENT";
-												$wlid = 4;
-												break;
-										}
-
-										$boxid = $i - 1;
-										$fontsize = 9;
-										$setting = "[viktig=1]";
-										$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
-										$query->bindParam(":boxid", $boxid);
-										$query->bindParam(":exampleid", $exampleid);
-										$query->bindParam(":boxtitle", $filename);
-										$query->bindParam(":boxcontent", $filetype);
-										$query->bindParam(":filename", $filename);
-										$query->bindParam(":settings", $setting);
-										$query->bindParam(":wordlistid", $wlid);
-										$query->bindParam(":fontsize", $fontsize);
-										$query->execute();
-									}
-
-									$link = "UNK";
-									$kind = 2;
-									$visible = 1;
-									$uid = 1;
-									$comment = null;
-									$gradesys = null;
-									$highscoremode = 0;
-									$groupkind = null;
-									//add the codeexample to listentries
-									$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
-																										VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
-									$query->bindParam(":cid", $courseid);
-									$query->bindParam(":cvs", $coursevers);
-									$query->bindParam(":entryname", $examplename);
-									$query->bindParam(":link", $exampleid);
-									$query->bindParam(":kind", $kind);
-									$query->bindParam(":pos", $pos);
-									$query->bindParam(":visible", $visible);
-									$query->bindParam(":usrid", $uid);
-									$query->bindParam(":comment", $comment);
-									$query->bindParam(":gradesys", $gradesys);
-									$query->bindParam(":highscoremode", $highscoremode);
-									$query->bindParam(":groupkind", $groupkind);
+									$boxid = $i + 1;
+									$fontsize = 9;
+									$setting = "[viktig=1]";
+									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
+									$query->bindParam(":boxid", $boxid);
+									$query->bindParam(":exampleid", $exampleid);
+									$query->bindParam(":boxtitle", $filename);
+									$query->bindParam(":boxcontent", $filetype);
+									$query->bindParam(":filename", $filename);
+									$query->bindParam(":settings", $setting);
+									$query->bindParam(":wordlistid", $wlid);
+									$query->bindParam(":fontsize", $fontsize);
 									$query->execute();
 								}
+
+								$link = "UNK";
+								$kind = 2;
+								$visible = 1;
+								$uid = 1;
+								$comment = null;
+								$gradesys = null;
+								$highscoremode = 0;
+								$groupkind = null;
+								//add the codeexample to listentries
+								$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
+																									VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":cvs", $coursevers);
+								$query->bindParam(":entryname", $examplename);
+								$query->bindParam(":link", $exampleid);
+								$query->bindParam(":kind", $kind);
+								$query->bindParam(":pos", $pos);
+								$query->bindParam(":visible", $visible);
+								$query->bindParam(":usrid", $uid);
+								$query->bindParam(":comment", $comment);
+								$query->bindParam(":gradesys", $gradesys);
+								$query->bindParam(":highscoremode", $highscoremode);
+								$query->bindParam(":groupkind", $groupkind);
+								$query->execute();
 							}
+							
 						} else {
 							//Check for update
 							//TODO: Implement update for already existing code-examples.
