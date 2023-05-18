@@ -574,6 +574,9 @@
 }
 
 .loadModal p{
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
     font-size: 1.2rem;
     color: #333;
 }
@@ -588,7 +591,9 @@
 }
 
 #closeLoadModal {
-    text-align: right;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
     font-size: 2rem;
     color: #333;
     cursor: pointer;
