@@ -530,13 +530,7 @@ if($gradesys=="UNK") $gradesys=0;
 					}
 					
 
-					foreach($allFiles as $groupedFiles){
-						$countAllFiles = $groupedFiles[0];
-						$varname="nameGroupedFiles";	
-						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-						$query3->bindParam(":examplename", $varname); 
-						$query3->bindParam(":sectionname", $countAllFiles); 
-						$query3->execute();	
+					foreach($allFiles as $groupedFiles){	
 						//get the correct examplename
 						$explodeFiles = explode('.',$groupedFiles[0]);
 						$exampleName = $explodeFiles[0];
@@ -609,7 +603,12 @@ if($gradesys=="UNK") $gradesys=0;
 									$parts = explode('.', $filename);
 									$filetype = "CODE";
 									$wlid = 0;
-
+									
+									$varname="fileName";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $filename); 
+									$query3->execute();
 									switch ($parts[1]) {
 										case "js":
 											$filetype = "CODE";
