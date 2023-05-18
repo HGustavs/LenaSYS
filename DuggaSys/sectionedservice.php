@@ -514,6 +514,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$dirPath = "../courses/".$courseid."/Github/" . $githubDir;	
 
 					$allFiles = array();
+					$files = scandir($dirPath);
 					foreach($files as $file) {
 						if(is_file($dirPath."/".$file)) {
 							$temp = array();
