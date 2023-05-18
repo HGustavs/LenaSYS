@@ -548,11 +548,13 @@
 
 .loadModalOverlay{
     position: absolute;
+    top: 0;
+    left: 0;
     z-index: 998;
-    width: 100vh;
-    height: 100vh;
-    filter: blur(8px);
-    background-color: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .loadModal{
@@ -575,7 +577,9 @@
 }
 
 #closeLoadModal{
-
+    display: block;
+    top: 0;
+    right: 0;
 }
 
 .hiddenLoad{
