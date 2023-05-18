@@ -9978,27 +9978,61 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start Note functionality
     else if (element.kind == "NOTE") {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            margin-top:${((boxh / 2))}px;;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            ${ghostAttr};
-                            font-size:${texth}px;`;
+        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+
+        const splitLengthyLine = (str, max) => {
+            if (str.length <= max) return str;
+            else {
+                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+            }
+        }
+
+        const text = element.attributes.map(line => {
+            return splitLengthyLine(line, maxCharactersPerLine);
+        }).flat();
+
+        elemAttri = text.length;      
+
+        // Removes the previouse value in UMLHeight for the element
+        for (var i = 0; i < NOTEHeight.length; i++) {
+            if (element.id == NOTEHeight[i].id) {
+                NOTEHeight.splice(i, 1);
+            }
+        }
+
+        // Calculate and store the UMLEntity's real height
+        var NOTEEntityHeight = {
+            id: element.id,
+            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
+        }
+        NOTEHeight.push(NOTEEntityHeight);
+
+        //div to encapuslate UML element
+        str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`;
+
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
         if (ghosted) {
-            str += `
-                pointer-events: none;
-                opacity: ${ghostPreview};
-            `;
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
-        str += `<div class='note-content' style='margin-top: -0.5em;'>`;
+
+        //div to encapuslate UML header
+        str += `<div class='note-header' style='width: ${boxw}; height: ${boxh};'>`;
+        //svg for UML header, background and text
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
+        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
+        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        //end of svg for UML header
+        str += `</svg>`;
+        //end of div for UML header
+        str += `</div>`;
+
+        //div to encapuslate UML content
+        str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
         //Draw note-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
