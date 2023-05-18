@@ -10036,6 +10036,7 @@ function drawElement(element, ghosted = false)
         //Draw note-content if there exist at least one attribute
         if (elemAttri == 1) {         
             console.log("elemAttri == 1");
+            NOTEEntityHeight = 75;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
