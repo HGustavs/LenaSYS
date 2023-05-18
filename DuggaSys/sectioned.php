@@ -21,25 +21,6 @@
 		updateGithubDir($pdo, $githubDir, $lid);
 	}
 
-	function checkGithubDir($pdo, $lid) {
-		try {
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$query = $pdo->prepare("SELECT githubDir FROM listentries WHERE lid = :lid");
-			$query->bindParam(':lid', $lid);
-			if($query->execute()) {
-				echo "<script>console.log('Select Successful!');</script>";
-				$result = $query->fetch(PDO::FETCH_ASSOC);
-				$currentGithubDir = $result['githubDir'];
-				return $currentGithubDir;
-			} else {
-				echo "<script>console.log('Select Failed.');</script>";
-			}
-		}
-		catch(PDOException $exception) {
-			echo "<script>console.log('Select Failed: " . addslashes($exception->getMessage()) . "');</script>";
-		}
-	}
-
 	function updateGithubDir($pdo, $githubDir, $lid) {
 		try {
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -639,23 +620,20 @@
 				<input type="hidden" name="lid" id="lidInput">
 				<!-- Hidden input using the "lid" from "getLidFromButton" -->
 				<input type="submit" name="githubInsert" value="Submit!">
-				<script>
-
-					document.addEventListener('DOMContentLoaded', function() {
-						console.log(localStorage);
-					})
+<!-- 				<script>
 					// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 					function getLidFromButton(lid) {
 						document.getElementById('lidInput').value = lid;
 					}
 
+					// Saves the chosen value to localStorage after a choice is made in the dropdown menu
 					function saveLocalStorage(selectedValue) {
 						let lid = document.getElementById('lidInput').value;
 						let value = selectedValue.value;
 						localStorage.setItem(lid, value);
-						console.log(localStorage);
 					}
 
+					// Sets the chosen value from localStorage to the dropdown if a value is saved in localStorage
 					function getLocalStorage() {
 						let lid = document.getElementById('lidInput').value;
 						let selectedValue = localStorage.getItem(lidInput.value);
@@ -664,7 +642,7 @@
 							dropdown.value = selectedValue;
 						}
 					}
-				</script>
+				</script> -->
 			</div>
 		</div>
 	</form>
