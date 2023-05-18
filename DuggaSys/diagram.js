@@ -10013,8 +10013,8 @@ function drawElement(element, ghosted = false)
         NOTEHeight.push(NOTEEntityHeight);
 
         //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' position:relative;
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; overflow:hidden`;
+        str += `<div id='${element.id}'	class='element note-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; background: linear-gradient(135deg, transparent 30px, #ddd 0) top right;`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -10030,7 +10030,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'  />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
+              //  str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
@@ -10045,7 +10045,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
         }
         //end of div for UML content
-        str += `<div content: ""; position:absolute; margin:-20px; width:${boxw}px; height:${boxh}; transform:rotate(45deg); background-color:#000; `
+        str += `<div content: ""; position:absolute; margin:20px; width:${boxw}px; height:${boxh}; transform:rotate(45deg); background-color:#000; `
         str += `</div>`;
        /* if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
