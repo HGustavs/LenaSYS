@@ -624,7 +624,7 @@
 							<?php
 								// Gets "cid" via getOPG.
 								$cid = getOPG('courseid');
-								// Traverses the github map for the respective course, only fetches directories. 
+								// Traverses the github map for the respective course, only fetches directories.
 								$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
@@ -640,6 +640,10 @@
 				<!-- Hidden input using the "lid" from "getLidFromButton" -->
 				<input type="submit" name="githubInsert" value="Submit!">
 				<script>
+
+					document.addEventListener('DOMContentLoaded', function() {
+						console.log(localStorage);
+					})
 					// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 					function getLidFromButton(lid) {
 						document.getElementById('lidInput').value = lid;
