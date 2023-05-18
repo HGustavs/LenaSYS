@@ -10027,7 +10027,8 @@ function drawElement(element, ghosted = false)
         //div to encapuslate note content
         //Draw note-content if there exist at least one attribute
         if (elemAttri == 1) {   
-                height: 500;
+            height: 500;
+            NOTEHeight.push(height);
             console.log("elemAttri == 1");
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
