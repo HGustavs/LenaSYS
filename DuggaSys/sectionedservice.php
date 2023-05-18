@@ -531,8 +531,8 @@ if($gradesys=="UNK") $gradesys=0;
 					
 
 					foreach($allFiles as $groupedFiles){
-						$countAllFiles = count($groupedFiles);
-						$varname="countGroupedFiles";	
+						$countAllFiles = $groupedFiles[0];
+						$varname="nameGroupedFiles";	
 						$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 						$query3->bindParam(":examplename", $varname); 
 						$query3->bindParam(":sectionname", $countAllFiles); 
