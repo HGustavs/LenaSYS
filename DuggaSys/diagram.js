@@ -9364,8 +9364,8 @@ function drawElement(element, ghosted = false)
 
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
-    if (element.kind == "UMLEntity") { 
-        const maxCharactersPerLine = Math.floor((boxw / texth)*1.75);
+    if (element.kind == "UMLEntity") {
+        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
 
         const splitLengthyLine = (str, max) => {
             if (str.length <= max) return str;
@@ -9394,16 +9394,16 @@ function drawElement(element, ghosted = false)
 
         // Calculate and store the UMLEntity's real height
         var UMLEntityHeight = {
-            id : element.id,
-            height : ((boxh + (boxh/2 + (boxh * elemAttri/2)) + (boxh/2 + (boxh * elemFunc/2))) / zoomfact)
+            id: element.id,
+            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2)) + (boxh / 2 + (boxh * elemFunc / 2))) / zoomfact)
         }
         UMLHeight.push(UMLEntityHeight);
-        
+
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`;
 
-        if(context.includes(element)){
+        if (context.includes(element)) {
             str += `z-index: 1;`;
         }
         if (ghosted) {
@@ -9412,7 +9412,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
 
         //div to encapuslate UML header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`;
         //svg for UML header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
@@ -9422,21 +9422,21 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
         //end of div for UML header
         str += `</div>`;
-        
+
         //div to encapuslate UML content
         str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemAttri/2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
-        // Draw UML-content if there are no attributes.
+            // Draw UML-content if there are no attributes.
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
@@ -9452,17 +9452,17 @@ function drawElement(element, ghosted = false)
         //Draw UML-footer if there exist at least one function
         if (elemFunc != 0) {
             //div for UML footer
-            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh/2 + (boxh * elemFunc/2)}px;'>`;
+            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh / 2 + (boxh * elemFunc / 2)}px;'>`;
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemFunc/2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemFunc/2) - (linew * 2)}'
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}'>`;
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemFunc; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${funcText[i]}</text>`;
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${funcText[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
-        // Draw UML-footer if there are no functions
+            // Draw UML-footer if there are no functions
         } else {
             //div for UML footer
             str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh / 2 + (boxh / 2)}px;'>`;
@@ -9497,11 +9497,11 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
-                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
-                    element.fill = `${"#FFFFFF"}`;
-                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-                    element.fill = `${"#000000"}`;
-                }
+        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
+            element.fill = `${"#FFFFFF"}`;
+        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+            element.fill = `${"#000000"}`;
+        }
 
     }
     else if (element.kind == 'UMLFinalState') {
@@ -9524,11 +9524,11 @@ function drawElement(element, ghosted = false)
                             </g>
                         </svg>
                 </div>`;
-                if(element.fill == `${"#000000"}` && theme.href.includes('blackTheme')){
-                    element.fill = `${"#FFFFFF"}`;
-                }else if(element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-                    element.fill = `${"#000000"}`;
-                }
+        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
+            element.fill = `${"#FFFFFF"}`;
+        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+            element.fill = `${"#000000"}`;
+        }
 
     }
     else if (element.kind == 'UMLSuperState') {
@@ -9540,8 +9540,8 @@ function drawElement(element, ghosted = false)
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
                     <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw-(linew*2)}' height='${boxh-(linew*2)}' fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${boxw/2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
+                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
+                    <rect x='${linew}' y='${linew}' width="${boxw / 2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
@@ -9597,13 +9597,13 @@ function drawElement(element, ghosted = false)
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path class="text" 
-            d="M${linew+cornerRadius},${(linew)}
-                h${(boxw - (linew * 2))-(cornerRadius*2)}
+            d="M${linew + cornerRadius},${(linew)}
+                h${(boxw - (linew * 2)) - (cornerRadius * 2)}
                 a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2))-cornerRadius)}
-                h${(boxw - (linew * 2))*-1}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2))-(cornerRadius))*-1}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius)*-1}
+                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius)}
+                h${(boxw - (linew * 2)) * -1}
+                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - (cornerRadius)) * -1}
+                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius) * -1}
                 z
             "
             stroke-width='${linew}'
@@ -9621,18 +9621,18 @@ function drawElement(element, ghosted = false)
         str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
-           /* find me let sdOption = document.getElementById("SDOption");
-            console.log(sdOption); */
+            /* find me let sdOption = document.getElementById("SDOption");
+             console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius*-1)},${cornerRadius}
-                    h${(boxw - (linew * 2)-(cornerRadius*2))*-1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius)*-1},${(cornerRadius)*-1}
-                    v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-cornerRadius)*-1}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
+                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
+                    v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius) * -1}
                     z
                 "
                 stroke-width='${linew}'
@@ -9651,11 +9651,11 @@ function drawElement(element, ghosted = false)
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2))-cornerRadius}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius*-1)},${cornerRadius}
-                    h${(boxw - (linew * 2)-(cornerRadius*2))*-1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius)*-1},${(cornerRadius)*-1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2))-cornerRadius)*-1}
+                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
+                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
+                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
                     z
                 "
                 stroke-width='${linew}'
@@ -9674,9 +9674,9 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh /3))}px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh / 3))}px;`;
 
-        if(context.includes(element)){
+        if (context.includes(element)) {
             str += `z-index: 1;`;
         }
         if (ghosted) {
@@ -9689,12 +9689,12 @@ function drawElement(element, ghosted = false)
 
         //Overlapping UML-inheritance
         if (element.state == 'overlapping') {
-            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
             style='fill:black;stroke:black;stroke-width:${linew};'/>`;
         }
         //Disjoint UML-inheritance
         else {
-            str += `<polygon points='${linew},${boxh-linew} ${boxw/2},${linew} ${boxw-linew},${boxh-linew}' 
+            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
             style='fill:white;stroke:black;stroke-width:${linew};'/>`;
         }
         //end of svg
@@ -9703,7 +9703,7 @@ function drawElement(element, ghosted = false)
 
     //=============================================== <-- IE functionality
     //Check if the element is a IE entity
-    else if (element.kind == "IEEntity") { 
+    else if (element.kind == "IEEntity") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
 
         const splitLengthyLine = (str, max) => {
@@ -9737,7 +9737,7 @@ function drawElement(element, ghosted = false)
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
 
-        if(context.includes(element)){
+        if (context.includes(element)) {
             str += `z-index: 1;`;
         }
         if (ghosted) {
@@ -9745,8 +9745,8 @@ function drawElement(element, ghosted = false)
         }
         str += `'>`;
 
-         //div to encapuslate IE header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`; 
+        //div to encapuslate IE header
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`;
         //svg for IE header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
@@ -9756,21 +9756,21 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
         //end of div for IE header
         str += `</div>`;
-        
+
         //div to encapuslate IE content
         str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
         //Draw IE-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh/2 + (boxh * elemAttri/2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh/2 + (boxh * elemAttri/2) - (linew * 2)}'
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='5' y='${hboxh + boxh * i/2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
+                str += `<text class='text' x='5' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
             //end of svg for background
             str += `</svg>`;
-        // Draw IE-content if there are no attributes.
+            // Draw IE-content if there are no attributes.
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
@@ -9783,43 +9783,43 @@ function drawElement(element, ghosted = false)
         //end of div for IE content
         str += `</div>`;
     }
-    
+
     //IE inheritance
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxh/1.5))}px; width:${boxw}px;height:${boxh/2}px;`;
-       
-        if(context.includes(element)){
+        style='left:0px; top:0px; margin-top:${((boxh / 1.5))}px; width:${boxw}px;height:${boxh / 2}px;`;
+
+        if (context.includes(element)) {
             str += `z-index: 1;`;
         }
-        
+
         if (ghosted) {
             str += `pointer-events: none; opacity: ${ghostPreview};`;
         }
         str += `'>`;
-      
+
         //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh/2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
+        str += `<svg width='${boxw}' height='${boxh / 2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
 
         // Overlapping IE-inheritance
-        
+
         if (element.state == 'overlapping') {
-                str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/> 
-                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />`
+            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/> 
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />`
         }
         // Disjoint IE-inheritance
         else {
-            str+= `<circle cx="${(boxw/2)}" cy="0" r="${(boxw/2.08)}" fill="white"; stroke="black";'/>
-                <line x1="0" y1="${boxw/50}" x2="${boxw}" y2="${boxw/50}" stroke="black"; />
-                <line x1="${boxw/1.6}" y1="${boxw/2.9}" x2="${boxw/2.6}" y2="${boxw/12.7}" stroke="black" />
-                <line x1="${boxw/2.6}" y1="${boxw/2.87}" x2="${boxw/1.6}" y2="${boxw/12.7}" stroke="black" />`
+            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/>
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />
+                <line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke="black" />
+                <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke="black" />`
         }
         //end of svg
         str += `</svg>`;
-        
+
     }
-    
+
     //=============================================== <-- End of IE functionality
     //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
@@ -9838,29 +9838,29 @@ function drawElement(element, ghosted = false)
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the life line
         str += `<path class="text" 
-        d="M${(boxw/2)+linew},${(boxw/4)+linew}
+        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
         V${boxh}
         "
         stroke-width='${linew}'
         stroke='${element.stroke}'
-        stroke-dasharray='${linew*3},${linew*3}'
+        stroke-dasharray='${linew * 3},${linew * 3}'
         fill='transparent'
         />`;
         //actor or object is determined via the buttons in the context menu. the default is actor.
         if (element.actorOrObject == "actor") {
             //svg for actor.
             str += `<g>`
-            str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+            str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
             str += `<path class="text"
-                d="M${(boxw/2)+linew},${(boxw/4)+linew}
-                    v${boxw/6}
-                    m-${(boxw/4)},0
-                    h${boxw/2}
-                    m-${(boxw/4)},0
-                    v${boxw/3}
-                    l${boxw/4},${boxw/4}
-                    m${(boxw/4)*-1},${(boxw/4)*-1}
-                    l${(boxw/4)*-1},${boxw/4}
+                d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                    v${boxw / 6}
+                    m-${(boxw / 4)},0
+                    h${boxw / 2}
+                    m-${(boxw / 4)},0
+                    v${boxw / 3}
+                    l${boxw / 4},${boxw / 4}
+                    m${(boxw / 4) * -1},${(boxw / 4) * -1}
+                    l${(boxw / 4) * -1},${boxw / 4}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
@@ -9876,16 +9876,16 @@ function drawElement(element, ghosted = false)
                 x='${linew}'
                 y='${linew}'
                 width='${boxw - (linew * 2)}'
-                height='${(boxw/2) - linew}'
+                height='${(boxw / 2) - linew}'
                 rx='${sequenceCornerRadius}'
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='${element.fill}' 
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            str += `</g>`;   
+            str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            str += `</g>`;
         }
-        str += `</svg>`;  
+        str += `</svg>`;
     }
     // Sequence activation 
     else if (element.kind == 'sequenceActivation') {
@@ -9902,7 +9902,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}'>`;
         //svg for the activation rect
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew*2)}' height='${boxh - (linew*2)}' rx='${sequenceCornerRadius*3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
+        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' rx='${sequenceCornerRadius * 3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
         str += `</svg>`;
     }
     // Sequence loop or alt
@@ -9911,7 +9911,7 @@ function drawElement(element, ghosted = false)
         if (element.alternatives != null) {
             //increase length of element to avoid squished alternatives
             for (let i = 0; i < element.alternatives.length; i++) {
-                boxh += 125*zoomfact;
+                boxh += 125 * zoomfact;
             }
             //also set alt or loop to whatever is correct
             //if it has more than one alternative its an alt, else its loop.
@@ -9934,39 +9934,39 @@ function drawElement(element, ghosted = false)
         str += `<rect class='text'
             x='${linew}'
             y='${linew}'
-            width='${boxw-(linew*2)}'
-            height='${boxh-(linew*2)}'
+            width='${boxw - (linew * 2)}'
+            height='${boxh - (linew * 2)}'
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='none'
-            rx='${7*zoomfact}'
+            rx='${7 * zoomfact}'
             fill-opacity="0"
         />`;
         //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
         if ((element.alternatives != null) && (element.alternatives.length > 0)) {
             for (let i = 1; i < element.alternatives.length; i++) {
                 str += `<path class="text"
-                d="M${boxw-linew},${(boxh/element.alternatives.length)*i}
+                d="M${boxw - linew},${(boxh / element.alternatives.length) * i}
                     H${linew}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
-                stroke-dasharray='${linew*3},${linew*3}'
+                stroke-dasharray='${linew * 3},${linew * 3}'
                 fill='transparent'
                 />`;
                 //text for each alternative
-                str += `<text x='${linew*2}' y='${((boxh/element.alternatives.length)*i)+(texth/1.5)+linew*2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
+                str += `<text x='${linew * 2}' y='${((boxh / element.alternatives.length) * i) + (texth / 1.5) + linew * 2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
             }
         }
         //svg for the small label in top left corner
         str += `<path 
-            d="M${(7*zoomfact)+linew},${linew}
-                h${100*zoomfact}
-                v${25*zoomfact}
-                l${-12.5*zoomfact},${12.5*zoomfact}
+            d="M${(7 * zoomfact) + linew},${linew}
+                h${100 * zoomfact}
+                v${25 * zoomfact}
+                l${-12.5 * zoomfact},${12.5 * zoomfact}
                 H${linew}
-                V${linew+(7*zoomfact)}
-                a${7*zoomfact},${7*zoomfact} 0 0 1 ${7*zoomfact},${(7*zoomfact)*-1}
+                V${linew + (7 * zoomfact)}
+                a${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
                 z
             "
             stroke-width='${linew}'
@@ -9974,10 +9974,10 @@ function drawElement(element, ghosted = false)
             fill='${element.fill}'
         />`;
         //text in the label
-        str += `<text x='${50*zoomfact+linew}' y='${18.75*zoomfact+linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
+        str += `<text x='${50 * zoomfact + linew}' y='${18.75 * zoomfact + linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
         //text below the label
         //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${linew*2}' y='${37.5*zoomfact+(linew*3)+(texth/1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
+        str += `<text x='${linew * 2}' y='${37.5 * zoomfact + (linew * 3) + (texth / 1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
         str += `</svg>`;
     }
     //=============================================== <-- End of Sequnece functionality
@@ -9996,19 +9996,19 @@ function drawElement(element, ghosted = false)
             return splitLengthyLine(line, maxCharactersPerLine);
         }).flat();
 
-        elemAttri = text.length;      
+        elemAttri = text.length;
 
-        // Removes the previouse value in UMLHeight for the element
+        // Removes the previouse value in NOTEHeight for the element
         for (var i = 0; i < NOTEHeight.length; i++) {
             if (element.id == NOTEHeight[i].id) {
                 NOTEHeight.splice(i, 1);
             }
         }
 
-        // Calculate and store the UMLEntity's real height
+        // Calculate and store the NOTEEntity's real height
         var NOTEEntityHeight = {
             id: element.id,
-            height: ((boxh + (boxh / 2)) / zoomfact)
+                height: ((boxh + (boxh / 2)+50) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
 
@@ -10030,7 +10030,7 @@ function drawElement(element, ghosted = false)
             console.log("elemAttri == 1");
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh*2) - (linew * 2)}'
+            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
                 str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
