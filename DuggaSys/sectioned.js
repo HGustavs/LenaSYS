@@ -3090,11 +3090,8 @@ function createExamples(dir,momentID) {
   lid = momentID;
   dirname = dir;
 
-  console.log("Function createExamples called with parameters:");
-  console.log("dir:", dir);
-  console.log("momentID:", momentID);
-
-  console.log("* AJAX START ");
+  console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
+  console.log("** AJAX START **");
 
   $.ajax({
     url: "sectionedservice.php",
@@ -3120,7 +3117,7 @@ function createExamples(dir,momentID) {
     } else {
       console.log("No dir and momentID set yet.");
     }
-  }, 10 * 60 * 1000); //
+  }, 10 * 60 * 100); // set to 1 minutes currently
 }
 
 
