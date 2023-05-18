@@ -876,7 +876,6 @@
     <div class="loadModal hiddenLoad">
         <button id="closeLoadModal" onclick="closeModal();">&times;</button>
         <p>Select a load:</p>
-        <hr>
         <div id="loadContainer">
             <a href="#">CLICK</a>
             <a href="#">CLICK</a>
