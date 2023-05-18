@@ -573,10 +573,18 @@
     border: 2px solid #000;
 }
 
+.loadModal p{
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 2rem;
+    color: #333;
+}
+
 #loadContainer{
     display: flex;
     flex-direction: column;
-    gap: 20;
+    gap: 20px;
     justify-content: space-evenly;
     align-items: center;
 }
