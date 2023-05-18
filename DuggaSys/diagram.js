@@ -10011,15 +10011,19 @@ function drawElement(element, ghosted = false)
                 height: ((boxh + (boxh / 2)) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
-        
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+        var noteFill = `${"#000000"}`;
+        if (element.fill == `${"#FFFFFF"}` && theme.href.includes('blackTheme')) {
+            noteFill = `${"#FFFFFF"}`;
             element.fill = `${"#000000"}`;
+        } else if (element.fill == `${"#000000"}` && theme.href.includes('style')) {
+            element.fill = `${"#FFFFFF"}`;
+            noteFill = `${"#000000"}`;
         }
+        
+
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; height:${boxh}px; width:${boxw}px;font-size:${texth}px;`;//background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${element.fill} 0);
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; height:${boxh}px; width:${boxw}px;font-size:${texth}px;background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${noteFill} 0);`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
