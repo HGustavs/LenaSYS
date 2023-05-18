@@ -522,11 +522,7 @@ if($gradesys=="UNK") $gradesys=0;
 					}
 
 					foreach($allFiles as $groupedFiles){
-						//get the correct examplename from the dirname and set the dir path
-						//$dirPath = $dirname;
-						//$dirnameArray = explode('/', $dirname);
-						//$dirname = $dirnameArray[count($dirnameArray) - 2];
-
+						//get the correct examplename
 						$explodeFiles = explode('.',$groupedFiles[0]);
 						$exampleName = $explodeFiles[0];
 						//count if there is already a codeexample or if we should create a new one.
@@ -554,21 +550,10 @@ if($gradesys=="UNK") $gradesys=0;
 							$pos = $e[0]['pos'] + 1; //Gets the last filled position+1 to put the new codexample at
 
 							//select the files that has should be in the codeexample
-							
-							//Count files in the directory for the codeexample
-							//$fileCount = 0;
-							//$files = scandir($dirPath);
-							//foreach ($files as $file) {
-							//	if (is_file($dirPath . '/' . $file)) {
-							//		$fileCount++;
-							//	}
-							//}
-
 							$fileCount = count($groupedFiles);
-							//If we find files that should be in the codeexample, create the codeexample
-							//Only template for 1 up to 5 files
+							//Start create the codeexample
 							if ($fileCount > 0 && $fileCount < 6) {
-								// There are at least two boxes, create two boxes to start with
+								//Select the correct template, only template for 1 up to 5 files exist
 								switch ($fileCount) {
 									case 1:
 										$templateNumber = 10;
