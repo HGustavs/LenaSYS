@@ -582,7 +582,7 @@
 }
 
 #loadContainer{
-    margin-top: 2rem;
+    margin-top: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
