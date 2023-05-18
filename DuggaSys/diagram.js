@@ -10061,11 +10061,11 @@ function drawElement(element, ghosted = false)
         }
         //end of div for UML content
         str += `</div>`;
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
+       /* if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
             element.fill = `${"#FFFFFF"}`;
-        }
+        }*/
     }
     //=============================================== <-- End of Note functionality
     //=============================================== <-- Start ER functionality
