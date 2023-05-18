@@ -641,13 +641,14 @@
 				<input type="submit" name="githubInsert" value="Submit!">
 				<script>
 					// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
-					function getLidFromButton(lid, element) {
+					function getLidFromButton(lid) {
 						document.getElementById('lidInput').value = lid;
-						console.log(element);
 					}
 
-					function saveLocalStorage(selectedValue, lid) {
-						localStorage.setItem('githubDirSelected', selectedValue.value);
+					function saveLocalStorage(selectedValue) {
+						let lid = document.getElementById('lidInput').value;
+						let value = selectedValue.value;
+						localStorage.setItem(lid, value);
 						console.log(localStorage);
 					}
 				</script>
