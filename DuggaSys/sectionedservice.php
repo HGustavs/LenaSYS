@@ -67,7 +67,6 @@ $tabs=getOP('tabs');
 $exampelid=getOP('exampleid');
 $url=getOP('url');
 
-$dirname=getOP('dirname');
 $lid=getOP('lid');
 $visbile = 0;
 $avgfeedbackscore = 0;
@@ -505,6 +504,14 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->execute();
 					$e = $query->fetchAll();
 					$courseid = $e[0]['cid'];
+
+					//Get dir from the listentrie that was clicked
+					$query = $pdo->prepare("SELECT githubDir FROM listentries WHERE lid=:lid");
+					$query->bindParam(":lid", $lid);
+					$query->execute();
+					$e = $query->fetchAll();
+					$githubDir = $e[0]['githubDir'];
+					$dirPath = "../courses/".$courseid."/Github/" . $githubDir;
 
 					$allFiles = array();
 					foreach($files as $file) {
