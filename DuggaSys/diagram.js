@@ -6627,7 +6627,7 @@ function generateContextProperties()
                   console.log("note was made");
                   switch (property.toLowerCase()) {
                       case 'attributes':
-                          str += `<div style='color:white'>Attributes</div>`;
+                          str += `<div style='color:white'>Attributes background: linear-gradient(45deg, transparent 45px, #ddd 0);</div>`;
                           str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                           break;
                       default:
