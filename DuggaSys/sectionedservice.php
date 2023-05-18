@@ -645,23 +645,17 @@ if($gradesys=="UNK") $gradesys=0;
 									$boxid = $i + 1;
 									$fontsize = 9;
 									$setting = "[viktig=1]";
+									$boxtitle = substr($filename, 0, 20);
 									$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
 									$query->bindParam(":boxid", $boxid);
 									$query->bindParam(":exampleid", $exampleid);
-									$query->bindParam(":boxtitle", $filename);
+									$query->bindParam(":boxtitle", $boxtitle);
 									$query->bindParam(":boxcontent", $filetype);
 									$query->bindParam(":filename", $filename);
 									$query->bindParam(":settings", $setting);
 									$query->bindParam(":wordlistid", $wlid);
 									$query->bindParam(":fontsize", $fontsize);
-									if($query->execute()){
-										$varname="boxCreated";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $varname); 
-										$query3->execute();	
-										
-									}else {
+									if(!$query->execute()){																				
 										if ($query->errorCode() !== '00000') {
 											$errorInfo = $query->errorInfo();
 											$errorCode = $errorInfo[0];
@@ -677,14 +671,9 @@ if($gradesys=="UNK") $gradesys=0;
 											$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 											$query3->bindParam(":examplename", $varname); 
 											$query3->bindParam(":sectionname", $errorMessage); 
-											$query3->execute();	
-																					
+											$query3->execute();																						
 										}																			
-									}
-							
-										
-										
-
+									}	
 								}
 
 								$link = "UNK";
