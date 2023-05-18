@@ -3088,7 +3088,6 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 //Creates all examples from github that doesnt exists yet
 function createExamples(momentID) {//TODO HERE
   lid= momentID;
-  dirname = dir;
   console.log("* AJAX START ");
   $.ajax({
     url: "sectionedservice.php",
