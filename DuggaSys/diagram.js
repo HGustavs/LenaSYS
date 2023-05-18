@@ -10014,7 +10014,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${element.fill} 0);`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; height:${boxh}px; width:${boxw}px;font-size:${texth}px; background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${element.fill} 0);`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -10046,11 +10046,11 @@ function drawElement(element, ghosted = false)
         }
         //end of div for UML content
         str += `</div>`;
-       /* if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
+       if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
             element.fill = `${"#FFFFFF"}`;
-        }*/
+        }
     }
     //=============================================== <-- End of Note functionality
     //=============================================== <-- Start ER functionality
