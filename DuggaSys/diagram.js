@@ -9984,7 +9984,7 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- Start Note functionality
     else if (element.kind == "NOTE") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-
+        const theme = document.getElementById("themeBlack");
         const splitLengthyLine = (str, max) => {
             if (str.length <= max) return str;
             else {
@@ -10011,7 +10011,7 @@ function drawElement(element, ghosted = false)
                 height: ((boxh + (boxh / 2)) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
-
+        
         if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
             element.fill = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
