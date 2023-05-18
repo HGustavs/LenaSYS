@@ -10032,12 +10032,11 @@ function drawElement(element, ghosted = false)
         //end of div for note header
         str += `</div>`;       
 
-        //div to encapuslate note content
-        //str += `<div class='note-content' style='margin-top: -0.5em;'>`;
+        //div to encapuslate note content      
         //Draw note-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+            str += `<svg width='${boxw}' height='${((boxh / 2 + (boxh * elemAttri / 2))*4)}'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
