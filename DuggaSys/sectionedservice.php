@@ -521,7 +521,7 @@ if($gradesys=="UNK") $gradesys=0;
 							foreach($files as $file2) {
 								$n1 = explode(".", $file);
 								$n2 = explode(".", $file2);
-								if(is_file($dirpath."/".$file2) && $n1[0] == $n2[0]) {
+								if(is_file($dirPath."/".$file2) && $n1[0] == $n2[0]) {
 									array_push($temp, $file2);
 								}
 							}
