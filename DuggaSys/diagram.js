@@ -10029,7 +10029,7 @@ function drawElement(element, ghosted = false)
         if (elemAttri == 1) {   
             var NOTEEntityHeight = {
                 id: element.id,
-                height: ((boxh + (boxh / 2)) / zoomfact)
+                height: ((boxh + boxh) / zoomfact)
             }
             NOTEHeight.push(NOTEEntityHeight);
             console.log("elemAttri == 1");
