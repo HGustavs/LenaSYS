@@ -6627,7 +6627,7 @@ function generateContextProperties()
                   console.log("note was made");
                   switch (property.toLowerCase()) {
                       case 'attributes':
-                          str += `<div style='color:white'>Attributes background: linear-gradient(45deg, transparent 45px, #ddd 0);</div>`;
+                          str += `<div style='color:white'>Attributes </div>`;
                           str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                           break;
                       default:
@@ -10014,7 +10014,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; background: linear-gradient(-135deg, transparent ${boxh/2}px, #000 0);`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px; background: linear-gradient(-135deg, transparent ${boxh/2}px, #000 0); background-size: 100% 85%;`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
