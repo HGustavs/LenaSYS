@@ -9804,9 +9804,9 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
     else if (element.kind == 'sequenceActorAndObject') {
-        //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+        //div to encapsulate sequence actor/object and its lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9846,7 +9846,33 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
+            //svg for the actor name text, it has a background rect for ease of readability.
+            //make the rect fit the text if the text isn't too big
+            if (!tooBig) {
+                //rect for sitting behind the actor text
+                str += `<rect class='text'
+                    x='${xAnchor-(textWidth/2)}'
+                    y='${boxw+(linew*2)}'
+                    width='${textWidth}'
+                    height='${texth-linew}'
+                    stroke='none'
+                    fill='${element.fill}'
+                />`;
+                str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            }
+            //else just make a boxw width rect and adjust the text to fit this new rect better
+            else {
+                //rect for sitting behind the actor text
+                str += `<rect class='text'
+                    x='${linew}'
+                    y='${boxw+(linew*2)}'
+                    width='${boxw-linew}'
+                    height='${texth-linew}'
+                    stroke='none'
+                    fill='${element.fill}'
+                />`;
+                str += `<text class='text' x='${linew}' y='${boxw+texth}'>${element.name}</text>`;
+            }
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
