@@ -133,17 +133,34 @@
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
 			} else {
-				//refreshGithubRepo($cid);
 				print "Debug - refreshing...";
+				newUpdateTime($currentTime);
+				refreshGithubRepo($cid);
 			}
 		} else { 
 			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
-				//refreshGithubRepo($cid);
 				print "Debug - refreshing...";
+				newUpdateTime($currentTime);
+				refreshGithubRepo($cid);
 			} else {
 				print "Too soon since last update, please wait.";
 			}
 		}
+	}
+
+	function newUpdateTime ($currentTime, $cid) {
+		// Connect to database and start session
+		pdoConnect();
+		session_start();
+
+		$parsedTime = date("Y-m-d H:i:s", $currentTime); 
+
+		// Fetching the latest update of the course from the MySQL database
+		global $pdo;
+		$query = $pdo->prepare('UPDATE course SET updated = :parsedTime WHERE cid = :cid;');
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':parsedTime', $parsedTime);
+		$query->execute();
 	}
 
 	//--------------------------------------------------------------------------------------------------
