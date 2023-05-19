@@ -914,29 +914,29 @@
         </svg>  
     </div>  
     <div id="zoom-container">
-            <div id="zoom-message-box"><img width="25%" height="27px" src="../Shared/icons/zoom-message-icon.svg"/> <text id ="zoom-message">1x</text></div>
-            <div class="diagramZoomIcons" onclick='zoomin();'>
-                <img src="../Shared/icons/diagram_zoomin.svg"/>
-                <span class="zoomToolTipText"><b>Zoom IN</b><br>
-                    <p>Zoom in on viewed area</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick='zoomout();'>
-                <img src="../Shared/icons/diagram_zoomout.svg"/>
-                <span class="zoomToolTipText"><b>Zoom OUT</b><br>
-                    <p>Zoom out on viewed area</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
-                <span class="zoomToolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to 1x</p><br>
-                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
+        <div id="zoom-message-box"><img width="25%" height="27px" src="../Shared/icons/zoom-message-icon.svg"/> <text id ="zoom-message">1x</text></div>
+        <div class="diagramZoomIcons" onclick='zoomin();'>
+            <img src="../Shared/icons/diagram_zoomin.svg"/>
+            <span class="zoomToolTipText"><b>Zoom IN</b><br>
+                <p>Zoom in on viewed area</p><br>
+                <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
+            </span>
         </div>
+        <div class="diagramZoomIcons" onclick='zoomout();'>
+            <img src="../Shared/icons/diagram_zoomout.svg"/>
+            <span class="zoomToolTipText"><b>Zoom OUT</b><br>
+                <p>Zoom out on viewed area</p><br>
+                <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+        <div class="diagramZoomIcons" onclick="zoomreset()">
+            <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
+            <span class="zoomToolTipText"><b>Zoom RESET</b><br>
+                <p>Reset the zoom to 1x</p><br>
+                <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+    </div>
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
         <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
             <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>

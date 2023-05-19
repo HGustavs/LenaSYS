@@ -342,17 +342,6 @@
     background-color: #FEEFB3;
 }
 
-#zoom-message-box{
-    width: 75px;
-    left: 100px;
-    bottom: 5px;
-    color: white;
-    border-radius: 5px;
-    text-align: center;
-    z-index: 100;
-    pointer-events: none;
-}
-
 /*tooltip*/
 
 .toolTipText{
@@ -705,4 +694,23 @@
 
 #a4Text {
  /* no styling yet */
+}
+
+/****************
+  ZOOM CONTAINER 
+*****************/
+#zoom-message-box{
+    width: 75px;
+    left: 100px;
+    bottom: 5px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 100;
+    pointer-events: none;
+}
+
+#zoom-message-box > img {
+    width: 25%; 
+    height: 27px;
 }
