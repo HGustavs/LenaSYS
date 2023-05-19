@@ -19,16 +19,7 @@
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
-	//$courseId=getOP('courseid');
-	//$courseVersion=getOP('cvers');
-	//$templateNumber=getOP('templateno');
-	//$beforeId=getOP('beforeid');
-	//$afterId=getOP('afterid');
-	//$sectionName=getOP('sectionname');
-	//$exampleName=getOP('examplename');
-	//$playlink=getOP('playlink');
-	//$debug="NONE!";
-	
+
 	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -58,7 +49,7 @@
   $query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 
-	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	/while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$exampleCount++;
 		$exampleId=$row['exampleid'];
 		$exampleName=$row['examplename'];
@@ -72,7 +63,8 @@
 	}
 
 	// TODO: Better handle a situation where there are no examples available
-	if($exampleCount>0){
+	//if($exampleCount>0){
+	if(){
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
