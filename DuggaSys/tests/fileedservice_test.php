@@ -3,7 +3,7 @@ include "../../Shared/test.php";
 include_once "../../../coursesyspw.php";
 
 $testsData = array(
-	'Delete file test' => array(
+	'Delete file - Global test' => array(
 		'expected-output' => '{"debug":"The file was deleted.","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
 		'service' => 'cms.webug.se/root/G2/students/b21kurar/LenaSYS/DuggaSys/fileedservice.php',
 		'service-data' => serialize(array( // Data that service needs to execute function
@@ -81,7 +81,7 @@ $testsData = array(
 			'supervisor'
 		)),
 	),
-	'Delete file course local file test' => array(
+	'Delete file - Course local file test' => array(
 		'expected-output' => '{"debug":"NONE!","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
 		'service' => 'cms.webug.se/root/G2/students/b21kurar/LenaSYS/DuggaSys/fileedservice.php',
 		'service-data' => serialize(array( // Data that service needs to execute function
@@ -107,7 +107,7 @@ $testsData = array(
 			'supervisor'
 		)),
 	),
-	'Delete file course version local file test' => array(
+	'Delete file - Course version local file test' => array(
 		'expected-output' => '{"debug":"The file was deleted.","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
 		'service' => 'cms.webug.se/root/G2/students/b21kurar/LenaSYS/DuggaSys/fileedservice.php',
 		'service-data' => serialize(array( // Data that service needs to execute function
