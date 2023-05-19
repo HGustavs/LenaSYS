@@ -10023,7 +10023,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${noteFill} 0);`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`; //background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${noteFill} 0);
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -10037,7 +10037,7 @@ function drawElement(element, ghosted = false)
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;              
             //str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}' "/>`;//stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'   //remove rx="15" and try to get linear-gradient to work here
-            str += `<path d="M ${boxw * 0, 875} ${boxh} L ${boxw * 0, 875} ${boxh * (2 / 3)} L ${boxh*(2/3)} 0 T 0 0 L 0 ${boxh} L ${boxw*0,875} ${boxh}"/>`
+            str += `<path d="M ${boxw * 0, 875} ${boxh} L ${boxw * 0, 875} ${boxh * (2 / 3)} L ${boxh * (2 / 3)} 0 T 0 0 L 0 ${boxh} L ${boxw * 0, 875} ${boxh} stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}/>`
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }            
