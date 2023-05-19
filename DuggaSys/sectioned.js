@@ -3139,7 +3139,8 @@ $(window).on('focus', function() {
   console.log(momentID);
   console.log(dir);
   console.log(lid);
-  
+  console.log(dirname);
+
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
