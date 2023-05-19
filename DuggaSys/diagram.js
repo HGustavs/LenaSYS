@@ -1728,7 +1728,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
         if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) storeDiagramInLocalStorage();
+        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) storeDiagramInLocalStorage("CurrentlyActiveDiagram");
         //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
@@ -4549,6 +4549,14 @@ function setReplayRunning(state)
  */
 function toggleErTable()
 {
+        // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+    // Add the diagramActive to current diagramIcon
+    document.getElementById("erTableToggle").classList.add("active");
+
     if(erTableToggle == false){
         erTableToggle = true;
         testCaseToggle = false;
@@ -4571,6 +4579,14 @@ function toggleErTable()
  */
 function toggleTestCase()
 {
+    // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+    // Add the diagramActive to current diagramIcon
+    document.getElementById("testCaseToggle").classList.add("active");
+    
     if (testCaseToggle == false) {
         testCaseToggle = true;
         erTableToggle = false;
@@ -12804,7 +12820,7 @@ function exportWithHistory()
 /**
  * @description Stores the current diagram as JSON in localstorage
  */
- function storeDiagramInLocalStorage(){
+ function storeDiagramInLocalStorage(key){
 
     if (stateMachine.currentHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
@@ -12816,7 +12832,7 @@ function exportWithHistory()
             historyLog: stateMachine.historyLog,
             initialState: stateMachine.initialState
         };
-        localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+        localStorage.setItem(key,JSON.stringify(objToSave));
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
 }
@@ -13012,7 +13028,7 @@ function saveDiagramBeforeUnload() {
     window.addEventListener("beforeunload", (e) => {
         e.preventDefault();
         e.returnValue = "";
-        storeDiagramInLocalStorage();
+        storeDiagramInLocalStorage("CurrentlyActiveDiagram");
     })
 }
 
