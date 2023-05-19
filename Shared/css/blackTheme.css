@@ -673,8 +673,7 @@ body {
     width: 40%;
     z-index: 999;
     overflow-y: auto;
-    background-color: black;
-    color: black;
+    background-color: #333;
     border: 1px solid #000;
 }
 
