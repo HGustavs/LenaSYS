@@ -440,14 +440,13 @@ function changedType(kind) {
 // sendLidtoSectionedService: Send lid to sectionedservice.php
 //----------------------------------------------------------------------------------
 
-function sendLidtoSectionedService(button) 
+function sendLidtoSectionedService(value) 
 {
-	var lid = button.getAttribute('data-value').value;
 	$.ajax({
 		async: false,
 		url: "../DuggaSys/sectionedservice.php",
 		type: "POST",
-		data: {'lid':lid},
+		data: {'lid':value},
 		success: function(data) { 
       alert(data); 
 		},
@@ -1759,7 +1758,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), sendLidtoSectionedService(this);"'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), sendLidtoSectionedService("${item['lid']}");"'>`;
           str += "</td>";
         }
 
