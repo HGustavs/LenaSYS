@@ -1158,7 +1158,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
+    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: [''],},  // Note.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -10011,21 +10011,19 @@ function drawElement(element, ghosted = false)
                 height: ((boxh + (boxh / 2)) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
-        /*
-        var noteFill = `${"#000000"}`;
+        
+        
         if (element.fill == `${"#FFFFFF"}` && theme.href.includes('blackTheme')) {
-            noteFill = `${"#FFFFFF"}`;
             element.fill = `${"#000000"}`;
         } else if (element.fill == `${"#000000"}` && theme.href.includes('style')) {
             element.fill = `${"#FFFFFF"}`;
-            noteFill = `${"#000000"}`;
-        }*/
+        }
 
 
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`; //background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${noteFill} 0);
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`; 
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -10038,7 +10036,7 @@ function drawElement(element, ghosted = false)
         if (elemAttri != 0) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;    
-            //(boxh / 2 + (boxh * 1 / 2) - (linew * 2))*0.2
+            //path math to create the note entity
            str += `<path class="text"
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
