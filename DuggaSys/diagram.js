@@ -2884,24 +2884,57 @@ function changeState()
 
     //console.log(fromElem, toElem);
 
-    /* const element =  context[0],
+    const element =  context[0],
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || undefined;
           //newType = newTypetemp;
           var oldRelation = element.state;
-          var newRelation = document.getElementById("propertySelect")?.value || undefined */
+          var newRelation = document.getElementById("propertySelect")?.value || undefined
 
-    let element = context[0];
+    /* let element = context[0];
     let oldType = element.type;
     let newType = document.getElementById("typeSelect")?.value || undefined;
     let oldRelation = element.state;
-    let newRelation = document.getElementById("propertySelect")?.value || undefined;
+    let newRelation = document.getElementById("propertySelect")?.value || undefined; */
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
-        displayMessage("error", `
-        Can't change type from \"${oldType}\" to \"${newType}\" as
-        different diagrams should not be able to connect to each other.`
-        )
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].fromID == element.id) {
+                //find the element the line is going to
+                for (let j = 0; j < data.length; j++) {
+                    if (data[j].id == lines[i].toID) {
+                        if (data[j].type == element.type) {
+                            return;
+                        }
+                        else{
+                            displayMessage("error", `
+                            Can't change type from \"${oldType}\" to \"${newType}\" as
+                            different diagrams should not be able to connect to each other.`
+                            )
+                        }
+                    }
+                }
+            }
+            else if (lines[i].toID == element.id) {
+                //find the element the line is going to
+                for (let j = 0; j < data.length; j++) {
+                    if (data[j].id == lines[i].fromID) {
+                        if (data[j].type == element.type) {
+                            return;
+                        }
+                        else{
+                            displayMessage("error", `
+                            Can't change type from \"${oldType}\" to \"${newType}\" as
+                            different diagrams should not be able to connect to each other.`
+                            )
+                        }
+                    }
+                }
+            }
+            //else reversed
+            
+        }
+        
         return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
