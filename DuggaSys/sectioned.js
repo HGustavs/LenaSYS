@@ -3132,7 +3132,7 @@ function autoRefreshCodeExample(dir, momentID) {
 
 // When the user is watching course page, set isActivelyFocused to true
 $(window).on('focus', function() {
-  isActivelyFocused = true;
+  state.isActivelyFocused = true;
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
@@ -3141,7 +3141,7 @@ $(window).on('focus', function() {
   }
 // When the user stops watching course page, set isActivelyFocused to false
 }).on('blur', function() {
-  isActivelyFocused = false;
+  state.isActivelyFocused = false;
   console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
 });
 
