@@ -599,8 +599,8 @@ $testsData = array(
                     'coursename',
                     'coursenamealt'
                 ),
-            )
-        ),
+            ),
+        )
     ),
     
     /*
