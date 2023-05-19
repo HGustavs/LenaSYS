@@ -12999,7 +12999,8 @@ function showModal(){
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
 
-    var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
+    // Array for testing visuals, remove this once once functionality has been finished
+    //var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
 
     while (container.firstElementChild){
         container.firstElementChild.remove();
@@ -13009,6 +13010,7 @@ function showModal(){
         var btn = document.createElement('button');
         var btnText = document.createTextNode(testArray[i]);
 
+        // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
         btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
 
         btn.appendChild(btnText);
