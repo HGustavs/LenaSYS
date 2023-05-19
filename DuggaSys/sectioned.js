@@ -3099,7 +3099,7 @@ function createExamples(dir,momentID) {
   lid = momentID;
   dirname = dir;
   console.log("The value of lid is: ", lid);
-  console.log(collectedLid);
+  console.log("The value of all lids is: " + collectedLid);
 
 
   console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
