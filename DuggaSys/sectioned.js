@@ -3136,7 +3136,6 @@ function autoRefreshCodeExample(dir, momentID) {
 // When the user is watching course page, set isActivelyFocused to true
 $(window).on('focus', function( ) {
   isActivelyFocused = true;
-  let dir = "../courses/1895/Github/Demo/Code-example1/";
 
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
