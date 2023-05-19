@@ -4387,25 +4387,31 @@ function toggleDarkmode()
         btn.style.fontWeight = "bold";
     }
 
-    if (stylesheet.href.includes('blackTheme')) {
-        
-        btn.style.backgroundColor ="#614875";
-        btn.style.color = "#ffffff";
-        btn.style.fontWeight = "normal";
-        btn.style.border = "3px solid #614875";
-     } else {
-        btn.style.backgroundColor ="transparent";
-        btn.style.border = "3px solid #614875";
-        btn.style.color = "#614875";
-        btn.style.fontWeight = "bold";
-   }
-
    if(cssUrl == 'blackTheme.css'){
     btn.style.backgroundColor ="#00FFFF";
     btn.style.border = "3px solid #614875";
     btn.style.color = "#614875";
     btn.style.fontWeight = "bold";
    }
+   else {
+    btn.style.backgroundColor ="transparent";
+    btn.style.border = "3px solid #614875";
+    btn.style.color = "#614875";
+    btn.style.fontWeight = "bold";
+   }
+   // if (stylesheet.href.includes('blackTheme')) {
+        
+       // btn.style.backgroundColor ="#614875";
+       // btn.style.color = "#ffffff";
+       // btn.style.fontWeight = "normal";
+       // btn.style.border = "3px solid #614875";
+     //} else {
+        //btn.style.backgroundColor ="transparent";
+       // btn.style.border = "3px solid #614875";
+       // btn.style.color = "#614875";
+       // btn.style.fontWeight = "bold";
+   //}
+
 
     showdata();
 
