@@ -2621,7 +2621,6 @@ function mmoving(event)
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
-                console.log(heightChange);
                 
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
