@@ -851,7 +851,7 @@
         </fieldset>
         <fieldset id = "localSaveField">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="storeDiagramInLocalStorage('CurrentlyActiveDiagram')">
+            <div id="localSave" class="diagramIcons" onclick="showSavePopout()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
@@ -1025,6 +1025,27 @@
     <div id="diagram-replay-message">
         <h2>Replay mode</h2>
         <p>Press "ESCAPE" to exit the replay-mode.</p>
+    </div>
+    <div id="savePopoutContainer" class="loginBoxContainer" style="display:none">
+        <div class="loginBox">
+            <div class="loginBoxheader">
+                <h3>
+                    Save current diagram as
+                </h3>
+                <div class="cursorPointer" onclick="hideSavePopout()">
+                    x
+                </div>
+            </div>
+            <div id="savePopout" style="margin-top:15px;display:block">
+                <div class="inputwrapper">
+                    <span style="margin-right:5px">Filename:</span>
+                    <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
+                </div>
+                <div class="button-row">
+                    <input type="submit" class="submit-button" onclick="saveDiagramAs(), hideSavePopout()" value="Save"/>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- content END -->
     <?php

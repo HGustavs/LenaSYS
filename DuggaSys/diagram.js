@@ -1609,7 +1609,12 @@ document.addEventListener('keydown', function (e)
                 var propField = document.getElementById("elementProperty_name");
                 if(!!document.getElementById("lineLabel")){
                     changeLineProperties();
-                }else{
+                }
+                else if (document.activeElement.id == "saveDiagramAs") {
+                    saveDiagramAs();
+                    hideSavePopout();
+                }
+                else {
                     changeState();
                     saveProperties(); 
                     propField.blur();
@@ -1728,7 +1733,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
         if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) storeDiagramInLocalStorage("CurrentlyActiveDiagram");
+        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
         //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
@@ -13029,6 +13034,30 @@ function saveDiagramBeforeUnload() {
         e.returnValue = "";
         storeDiagramInLocalStorage("CurrentlyActiveDiagram");
     })
+}
+
+function showSavePopout()
+{
+    $("#savePopoutContainer").css("display", "flex");
+    document.getElementById("saveDiagramAs").focus();
+}
+
+function hideSavePopout()
+{
+    $("#savePopoutContainer").css("display", "none");
+}
+
+function saveDiagramAs()
+{
+    let elem = document.getElementById("saveDiagramAs");
+    let fileName = elem.value;
+    elem.value = "";
+    if (fileName.trim() == "") {
+        // fileName = "Untitled"
+        fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
+    }
+
+    storeDiagramInLocalStorage(fileName);
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
