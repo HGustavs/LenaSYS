@@ -161,11 +161,17 @@ $testsData = array(
             'userid' => '2',
             'link' => '-1',
             'kind' => '2',
-            'comments' => 'Top',
-            
+            'comments' => 'undefined',
+            'lid' => 'undefined',
+            'moment' => 'null',
+            'grptype' => 'UNK',
+            'deadline' => '0:0',
+            'relativedeadline' => '1:1:0:0'
             'visibility' => '0',
             'highscoremode' => '0',
             'pos' => '5'
+            'log_uuid' => 'XvH6j8E6SLBWBLP',
+            'hash' => 'UNK'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
             'entries' => array(
