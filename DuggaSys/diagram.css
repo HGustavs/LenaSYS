@@ -611,10 +611,11 @@
     position: absolute;
     right: 1rem;
     font-size: 2rem;
-    color: #333;
+    padding: 10px 5px;
+    color: white;
     cursor: pointer;
     border: none;
-    background: #da2727;
+    background-color: #da2727;
   }
 
 .hiddenLoad{
