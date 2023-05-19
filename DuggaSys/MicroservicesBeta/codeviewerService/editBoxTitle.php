@@ -393,6 +393,6 @@
 
 	}
 
-	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "editBoxTitle.php",$userid,$info);
+	//logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "editBoxTitle.php",$userid,$info);
 
 ?>
