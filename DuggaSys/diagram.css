@@ -646,3 +646,31 @@
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
+
+/* SVG GRID */
+#svggrid {
+    z-index: -11;
+}
+
+#grid {
+    width: 100;
+    height: 100;
+}
+
+#grid > path {
+    fill: none;
+    stroke: gray;
+    stroke: 0.8 0.8;
+    stroke-width: 1;
+}
+
+#grid_rect {
+    width: 100%;
+    height: 100%;
+    fill: url(#grid);
+}
+
+#origoX, #origoY {
+    stroke: rgb(105, 105, 105);
+    stroke-width: 8;
+}
