@@ -10039,8 +10039,9 @@ function drawElement(element, ghosted = false)
             //str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}' "/>`;//stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'   //remove rx="15" and try to get linear-gradient to work here// stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}
             //str += `<path d="m'${linew}','${linew}' h0 v'${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}' h'${boxw - (linew * 2)}' v'${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * (-2 / 3)}' l'${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * (-1 / 5)}', '${(boxw - (linew * 2)) * (-1 / 3)}' />`          
             str += `<path class="text"
-                d="M-${boxw - (linew * 2)},0
-                    v${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}
+                d="M${(boxw - (linew * 2))*0,85},0
+                l${(boxw - (linew * 2))*0,15},${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))*0.2}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))*0.8}
                     h-${boxw - (linew * 2)}
                     v-${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}  
                     h${boxw - (linew * 2)}
