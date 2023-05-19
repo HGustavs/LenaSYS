@@ -9849,17 +9849,18 @@ function drawElement(element, ghosted = false)
                     width='${textWidth}'
                     height='${texth}'
                     stroke='none'
-                    fill='red' 
+                    fill='${element.fill}' 
                 />`;
-            } 
+            }
+            //else just make a boxw width rect.
             else {
                 str += `<rect class='text'
                     x='${linew}'
                     y='${boxw+(linew*2)}'
-                    width='${boxw}'
+                    width='${boxw-linew}'
                     height='${texth}'
                     stroke='none'
-                    fill='red' 
+                    fill='${element.fill}' 
                 />`;
             }
             //fill='${element.fill}' 
