@@ -1026,7 +1026,7 @@
         <h2>Replay mode</h2>
         <p>Press "ESCAPE" to exit the replay-mode.</p>
     </div>
-    <div id="savePopoutContainer" class="loginBoxContainer" style="display:flex">
+    <div id="savePopoutContainer" class="loginBoxContainer" style="display:none">
         <div class="loginBox">
             <div class="loginBoxheader">
                 <h3>
