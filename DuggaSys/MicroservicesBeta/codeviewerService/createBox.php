@@ -43,8 +43,7 @@
 
 
 
-    if($exampleCount>0){
-
+    	if($exampleCount>0){
                 // There are at least two boxes, create two boxes to start with
 				if($templateNumber==10) $boxCount=1;
 				if($templateNumber==1||$templateNumber==2) $boxCount=2;
