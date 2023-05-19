@@ -13001,12 +13001,22 @@ function showModal(){
 
     var testArray = ["ERDiagram - 2021-03-13", "StateDiagram - 2021-03-13", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
 
+    while (container.firstElementChild){
+        container.firstElementChild.remove();
+    }
+
     for (let i = 0; i<testArray.length; i++){
         var btn = document.createElement('button');
         var btnText = document.createTextNode(testArray[i]);
 
         btn.appendChild(btnText);
         container.appendChild(btn);
+    }
+
+    // If no items were found for loading in 
+    if (!testArray){
+        var btn = document.createElement('p');
+        var btnText = document.createTextNode('No saves could be found');
     }
 
     modal.classList.remove('hiddenLoad');
