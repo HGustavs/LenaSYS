@@ -10037,7 +10037,7 @@ function drawElement(element, ghosted = false)
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;              
             //str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}' "/>`;//stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'   //remove rx="15" and try to get linear-gradient to work here// stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}
-            str += `<path d="m${linew},${linew} h0 v${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)} h${boxw - (linew * 2)} v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * (-2 / 3)} l${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * (-1 / 5)}, ${(boxw - (linew * 2))*(-1/3)} />`
+            str += `<path d="m'${linew}','${linew}' h0 v'${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}' h'${boxw - (linew * 2)}' v'${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * (-2 / 3)}' l'${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * (-1 / 5)}', '${(boxw - (linew * 2)) * (-1 / 3)}' />`
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }            
