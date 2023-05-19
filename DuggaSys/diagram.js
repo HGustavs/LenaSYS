@@ -10042,7 +10042,7 @@ function drawElement(element, ghosted = false)
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
-            `</linearGradient>`
+            str += `</linearGradient>`
             str += `</defs>`
             //end of svg for background
             str += `</svg>`;
