@@ -674,3 +674,35 @@
     stroke: rgb(105, 105, 105);
     stroke-width: 8;
 }
+
+/****************
+   A4 TEMPLATE 
+*****************/
+#a4template {
+    z-index: -11;
+}
+
+#a4rect {
+    width: 794;
+    height: 1122;
+    stroke:rgb(50, 50, 50);
+    stroke-width:2;
+    stroke-dasharray: 5 3;
+    fill: #ffffee;
+    fill-opacity: 0.4;
+}
+
+#vRect {
+    width: 1133;
+    height: 794;
+    display:none; 
+    stroke:rgb(50, 50, 50);
+    stroke-width:2; 
+    stroke-dasharray: 5 3; 
+    fill: #ffffee;
+    fill-opacity: 0.4;
+}
+
+#a4Text {
+ /* no styling yet */
+}
