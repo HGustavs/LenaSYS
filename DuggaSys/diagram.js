@@ -2119,9 +2119,10 @@ function mouseMode_onMouseUp(event)
 
  function tup(event) 
  {
-     mouseButtonDown = false;
-     pointerState = pointerStates.DEFAULT;
-     deltaExceeded = false;
+    console.log(event);
+    mouseButtonDown = false;
+    pointerState = pointerStates.DEFAULT;
+    deltaExceeded = false;
  }
 
 /**
@@ -2132,6 +2133,7 @@ function mouseMode_onMouseUp(event)
 
 function mup(event)
 {
+    console.log(event);
     if(!mouseOverLine && !mouseOverElement){
         setContainerStyles(mouseMode);
     }

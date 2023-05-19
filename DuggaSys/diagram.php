@@ -42,9 +42,9 @@
      <!-- Used for calculating pixels per millimeter using offsetWidth. Note that in offsetWidth system scaling is not included
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
-
+    
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
+    <div id="diagram-toolbar" onmousedown='mdown(e)' onmouseup='tup(e);'>
         <fieldset>
             <legend aria-hidden="true" aria-hidden="true">Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
