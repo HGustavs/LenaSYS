@@ -437,6 +437,37 @@ function changedType(kind) {
 }
 
 //----------------------------------------------------------------------------------
+// sendLidtoSectionedService: Send lid to sectionedservice.php
+//----------------------------------------------------------------------------------
+
+function sendLidtoSectionedService(button) 
+{
+	var lid = button.getAttribute('data-value').value;
+	$.ajax({
+		async: false,
+		url: "../DuggaSys/sectionedservice.php",
+		type: "POST",
+		data: {'lid':lid},
+		success: function(data) { 
+      alert(data); // Shows if course is up to date or not
+		},
+		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch(data.status){
+				case 422:
+					alert(data.responseJSON.message + "\nDid not update course");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not update course");
+					break;
+				default:
+					alert("Something went wrong...");
+			}
+		}
+	});
+}
+
+//----------------------------------------------------------------------------------
 // refreshGithubRepo: Send course id to function in gitcommitService.php
 //----------------------------------------------------------------------------------
 
