@@ -3135,7 +3135,7 @@ $(window).on('focus', function() {
   isActivelyFocused = true;
   let momentID;
   let dir;
-  console.log('Window gained focus, isActivelyFocused is now', isActivelyFocused);
+  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
@@ -3144,7 +3144,7 @@ $(window).on('focus', function() {
 // When the window loses focus, set isActivelyFocused to false
 }).on('blur', function() {
   isActivelyFocused = false;
-  console.log('Window lost focus, isActivelyFocused is now', isActivelyFocused);
+  console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
 });
 
 // ------ Validates all versionnames ------
