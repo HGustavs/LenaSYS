@@ -86,27 +86,7 @@ $testsData = array(
             // 'coursevers', 
             // 'coursecode',
             // 'courseid'
-            'entries' => array(
-                'entryname',
-                //'lid',
-                'pos',
-                'moment',
-                //'link',
-                'visible',
-                'highscoremode',
-                'gradesys',
-                'code_id',
-                'deadline',
-                'relativedeadline',
-                'qrelease',
-                'comments',
-                'qstart',
-                'grptype',
-                'tabs',
-                'feedbackenabled',
-                'feedbackquestion',
-                //'ts'
-            ),
+            
             'debug',
             'writeaccess',
             'studentteacher',
