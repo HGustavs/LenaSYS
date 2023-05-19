@@ -1,26 +1,7 @@
 <?php
-
-	//----------------------------------------------------------------------------------
-	// TODO:
-	//	78: Better handle a situation where there are no examples available
-	//	84: Redundant? Is set a couple of rows above
-	//	106: Check what viktig is and what it's for
-	//	107: Should only bind with the file used (if used) and not to one by default
-	//	128: Check for better way to get and set before/afterId
-	//	Change variables to a fitting or standardized manner:
-	//		forward_examples
-	//		currid
-	//		backward_examples
-	//		boxcontent
-	//	Comment and document functions/statements that seems non-self explanatory
-	//---------------------------------------------------------------------------------------------------------------
-	// editorService - Saves and Reads content for Code Editor
-	//---------------------------------------------------------------------------------------------------------------
-
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services
-	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
 	include_once ("../../../Shared/courses.php");
