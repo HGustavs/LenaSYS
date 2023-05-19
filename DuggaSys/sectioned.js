@@ -447,20 +447,8 @@ function sendLidtoSectionedService(value)
 		url: "../DuggaSys/sectionedservice.php",
 		type: "POST",
 		data: {'lid':value},
-		success: function(data) { 
-      alert(data); 
-		},
 		error: function(data){
-			switch(data.status){
-				case 422:
-					alert(data.responseJSON.message + "\nDid not update course");
-					break;
-				case 503:
-					alert(data.responseJSON.message + "\nDid not update course");
-					break;
-				default:
-					alert("Something went wrong...");
-			}
+      console.log(data);
 		}
 	});
 }
