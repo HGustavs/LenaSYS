@@ -1141,7 +1141,7 @@ var defaults = {
 
     UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
-    IEEntity: {name: "IEEntity", kind: "IEEntity", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'] },     //<-- IE functionality
+    IEEntity: {name: "IEEntity", kind: "IEEntity", stroke: "#000000", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
     SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'] }, //<-- SD functionality
 
