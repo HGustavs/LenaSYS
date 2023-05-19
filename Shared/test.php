@@ -7,12 +7,13 @@
 
 <?php
  
-include "../Shared/test.php";
+include "../../Shared/test.php";
  
 $testsData = array(
     'create course test' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
         'query-before-test-1' => "SELECT coursename FROM course WHERE coursecode = 'DV12G' ORDER BY coursecode DESC LIMIT 1",
+        'variables-query-before-test-2' => "blop",
         'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES('IT401G','MyAPICourse',0,101, 7.5)",
         'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
@@ -51,7 +52,10 @@ $testsData = array(
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 */
 
-function doDBQuery($query){
+function doDBQuery($query, $data, $testsData, $testname){
+    $queryString = $query;
+    $variables = $testsData['variables-' . $testname];
+    $variablesArray = explode(", ", $variables);
     $result = "Error executing query";
     // DB credentials
     include_once("../../../coursesyspw.php");
@@ -72,13 +76,20 @@ function doDBQuery($query){
     // DB query to execute
     if ($query != null) {
         $query = $pdo->prepare($query);
+        if (strpos($queryString, '?') !== false) {
+            for ($i = 0; $i < count($variablesArray); $i++) {
+                $variableToUse = $data[$variablesArray[$i]];
+                $query->bindParam($i+1, $variableToUse);
+            }
+        }
 
         if(!$query->execute()) {
             $error=$query->errorInfo();
             $result = "Error updating entries".$error[2];
         }
         else{
-            $result = "Succesfully executed query but no return data";
+            $error=$query->errorInfo();
+            $result = "Succesfully executed query but no return data".$error[2];
             $resultQuery = $query->fetchAll();
             if ($resultQuery != null) {
                 $result = $resultQuery;
@@ -96,6 +107,8 @@ function testHandler($testsData, $prettyPrint){
 
     foreach($testsData as $testData){
 
+        $data = unserialize($testData['service-data']);
+
         // Name of test
         $name = key($testsData);
 
@@ -110,13 +123,33 @@ function testHandler($testsData, $prettyPrint){
         foreach ($testData as $option => $value) {
             // if query-before-start
             if (strpos($option, 'query-before-test') === 0) {
-               $QueryReturnJSONbefore[$option] = doDBQuery($value);
+
+                // If service data !query-test! replace with actual query output
+                foreach($data as $sInput => $sValue){
+                    foreach($QueryReturnJSONbefore as $oneQuery => $queryValue){
+                        // Check if service data uses query output (!*******!)
+                        $queryName = substr(strstr($sValue, "<!"), 2);
+                        $queryName = substr($queryName, 0, strpos($queryName, "!>"));
+                        $queryPath = substr(strstr($sValue, "<*"), 2);
+                        $queryPath = substr($queryPath, 0, strpos($queryPath, "*>"));
+                        if ($queryName == $oneQuery) {
+                            if ($queryPath != null) {
+                                eval('$queryValue = $queryValue' . $queryPath . ';');
+                                $data[$sInput] = $queryValue;
+                            }
+                            else{
+                                $dataN[$sInput] = $queryValue;
+                            }
+                        }
+                    }
+                }
+               $QueryReturnJSONbefore[$option] = doDBQuery($value, $data, $testData, $option);
            }
         }
 
         $TestsReturnJSON['querys-before-test'] = $QueryReturnJSONbefore;
         
-        //Output filter
+        // Output filter
         $filter = unserialize($testData['filter-output']);
 
         if ($prettyPrint) {
@@ -133,6 +166,7 @@ function testHandler($testsData, $prettyPrint){
         $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
+
         // Test 3 assertEqual
         $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
         $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
@@ -141,7 +175,7 @@ function testHandler($testsData, $prettyPrint){
         foreach ($testData as $option => $value) {
             // if query-before-start-
             if (strpos($option, 'query-after-test') === 0) {
-               $QueryReturnJSON[$option] = doDBQuery($value);
+               $QueryReturnJSON[$option] = doDBQuery($value, "UNK", "UNK", "UNK");
            }
         }
 
@@ -196,9 +230,11 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     foreach($data as $sInput => $sValue){
         foreach($QueryReturnJSON as $oneQuery => $queryValue){
             // Check if service data uses query output (!*******!)
-            $queryName = substr($sValue, 0, strpos($sValue, " "));
-            $queryPath = substr(strstr($sValue, " "), 1);
-            if ($queryName == "!" . $oneQuery . "!") {
+            $queryName = substr(strstr($sValue, "<!"), 2);
+            $queryName = substr($queryName, 0, strpos($queryName, "!>"));
+            $queryPath = substr(strstr($sValue, "<*"), 2);
+            $queryPath = substr($queryPath, 0, strpos($queryPath, "*>"));
+            if ($queryName == $oneQuery) {
                 if ($queryPath != null) {
                     eval('$queryValue = $queryValue' . $queryPath . ';');
                     $queryReturnPathAndDataJSON[$queryName . $queryPath] = $queryValue;
@@ -223,7 +259,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     $curlResponseJSON = json_decode($curlResponse, true);
 
     // Only include JSON same as filter
-    foreach($filter as $option){
+    foreach($filter as $option => $optionArray){
         // If none do not filter
         if ($option == "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
@@ -232,7 +268,20 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
             foreach($curlResponseJSON as $key => $value){
                 // Check if respons key exists in filter
                 if (in_array($key, $filter)) {
-                    $curlResponseJSONFiltered[$key] = $value; 
+                    // Not to store if array, handled further down
+                    if (!(is_array($optionArray))) {
+                        $curlResponseJSONFiltered[$key] = $value; 
+                    }
+                }
+                // Check what to save in array
+                foreach($curlResponseJSON[$key] as $inside => $insideValue){
+                    foreach($insideValue as $inside2 => $insideValue2){
+                        foreach($optionArray as $insideFilter){
+                            if ($inside2 == $insideFilter) {
+                              $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -249,9 +298,9 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         echo "<h3> Test 2 (callService): {$callServiceTestResult} </h3>";
         echo "<strong>service: </strong>{$service}";
         echo "<br>";
-        echo "<strong>sent data: </strong>".json_encode(unserialize($data),true);
+        echo "<strong>sent data: </strong>".json_encode($data,true);
         echo "<br>";
-        echo "<strong>result: </strong>".json_encode($curlResponseJSONFiltered, true);
+        echo "<strong>respons: </strong>".json_encode($curlResponseJSONFiltered, true);
         echo "<br>";
         echo "<br>";
     }
@@ -259,7 +308,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         'result' => $callServiceTestResult,
         'respons' => $curlResponseJSONFiltered,
         'service' => $service,
-        'data' => unserialize($data),
+        'sent-data' => $data,
         'query-return' => $queryReturnPathAndDataJSON
     );
 }
@@ -269,6 +318,10 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
+
+    // Handle bad unicode in service files
+    //$valueOuput = json_encode($valueExpected, true, JSON_UNESCAPED_UNICODE);
+    //$valueOuput = json_decode($valueOuput, true);
 
     if (($valueExpected != null) && ($valueOuput != null)){
         $equalTest = ($valueExpected == $valueOuput);
@@ -299,5 +352,5 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 }
 
 
-// Version 1.2 (Increment when new change in code)
+// Version 1.4.1 (Increment when new change in code)
 ?>

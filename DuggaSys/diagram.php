@@ -314,6 +314,15 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -357,6 +366,15 @@
                                     <p>Change to IE inheritance</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -404,17 +422,70 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="elementPlacement2" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);'>
-                    <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                    <span class="toolTipText"><b>Attribute</b><br>
-                        <p>Add a ER attribute to the diagram</p>
-                        <p>Each attribute represents different characteristics of an entity.</p>
-                        <br>
-                        <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
-                    </span>
+                <div>
+                    <div id="elementPlacement2"
+                         class="ERAttribute diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(2); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp();'
+                         onmousedown="holdPlacementButtonDown(2)">
+                        <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                        <span class="toolTipText"><b>ER Attribute</b><br>
+                            <p>Add a ER attribute to the diagram</p>
+                            <p>Each attribute represents different characteristics of an entity.</p>
+                            <br>
+                            <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                        </span>
+                        <div id="togglePlacementTypeButton2" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>  
+                    <div id="diagramPopOut">  
+                        <div id="togglePlacementTypeBox2" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
+                                <span class="placementTypeToolTipText"><b>ER Relation</b><br>
+                                    <p>Change to ER relation</p>
+                                    <p>Represents how entities are associated with each other.</p>
+                                </span>
+                            </div>
+                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
+                                <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
+                                    <p>Change to UML inheritance</p>
+                                    <p>A relation between a superclass and subclasses.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
+                                <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
+                                    <p>A relation between two or more entities.</p>
+                                    <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                </span>
+                            </div>
+                            <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
@@ -440,7 +511,6 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    
                     <div id="diagramPopOut"><!--Initial state -->
                         <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
@@ -559,71 +629,154 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
-                 <!--Sequence diagram lifeline | for now is bound to uml final state -->
-                <div id="elementPlacement12" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                    <span class="toolTipText"><b>Sequence lifeline</b><br>
-                        <p>Creates a lifeline for a sequnece diagram</p>
-                        <p>Represents the passage of time.</p>
-                        <p>Shows events that occur to an object during the process.</p>
-                        <br>
-                        <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>              
-                <!-- Sequence diagram object selection -->
-                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence Object"/>
-                    <span class="toolTipText"><b>Sequence Object</b><br>
-                        <p>Creates a sequence object.</p>
-                        <p>Represents a class or object.</p>
-                        <p>Used to show how an object will behave.</p>
-                        <br>
-                        <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+
+                <!-- SEQUENCE POP-OUT START-->
+
+                <div> <!-- SEQUENCE LIFELINE START -->
+                    <div id="elementPlacement12"
+                         class="SEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(12); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp()'
+                         onmousedown="holdPlacementButtonDown(12)">
+                         <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                        <span class="toolTipText"><b>Sequence lifeline</b><br>
+                            <p>Creates a lifeline for a sequnece diagram</p>
+                            <p>Represents the passage of time.</p>
+                            <p>Shows events that occur to an object during the process.</p>
+                            <br>
+                            <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
-                </div> 
-                <!-- Sequence activation selection -->
-                <div id="elementPlacement13" class="diagramIcons toolbarMode"onclick='setElementPlacementType(13); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'> 
-                    <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                    <span class="toolTipText"><b>Sequence activation</b><br>
-                        <p>Creates an activation box.</p>
-                        <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
-                        <br>
-                        <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
-                    </span>
-                </div>
-                 <!-- Sequence diagram option loop selection -->
-                <div id="elementPlacement13" class="diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
-                    <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
-                    <span class="toolTipText"><b>Sequence Object</b><br>
-                        <p>Creates a option loop or alternative.</p><br>
-                        <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                        <div id="togglePlacementTypeButton12" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>    
+                    <div id="diagramPopOut">
+                        <div id="togglePlacementTypeBox12" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFETIME !-->
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="placementTypeToolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
+                                <br>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                            <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
+                                <p>Creates an activation box.</p>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                <br>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                            </span>
+                          </div>     
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
+                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="placementTypeToolTipText"><b>Sequence Object</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>                         
+                        </div>
+                    </div>
+                </div> <!-- SEQUENCE LIFELINE END -->
+                <div> <!-- SEQUENCE ACTIVATION START -->
+                    <div id="elementPlacement13"
+                         class="SEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(13); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp()'
+                         onmousedown="holdPlacementButtonDown(13)">
+                         <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                        <span class="toolTipText"><b>Sequence activation</b><br>
+                            <p>Creates an activation box.</p>
+                            <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                            <br>
+                            <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                         </span>
-                </div>
+                        <div id="togglePlacementTypeButton13" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>    
+                    <div id="diagramPopOut">
+                        <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFETIME !-->
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="placementTypeToolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
+                                <br>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                            <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
+                                <p>Creates an activation box.</p>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                <br>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>     
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
+                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>                         
+                        </div>
+                    </div>
+                </div> <!-- SEQUENCE ACTIVATION END -->
+                <div> <!-- SEQUENCE CONDITION/LOOP START -->
+                    <div id="elementPlacement14"
+                         class="SEButton diagramIcons toolbarMode"
+                         onclick='setElementPlacementType(14); setMouseMode(2);'
+                         onmouseup='holdPlacementButtonUp()'
+                         onmousedown="holdPlacementButtonDown(14)">
+                         <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="toolTipText"><b>Sequence Condition</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                        <div id="togglePlacementTypeButton14" class="placementTypeIcon togglePlacementTypeButton">
+                            <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
+                        </div>
+                    </div>    
+                    <div id="diagramPopOut">
+                        <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFETIME !-->
+                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                            <span class="placementTypeToolTipText"><b>Sequence lifeline</b><br>
+                                <p>Creates a lifeline for a sequnece diagram</p>
+                                <p>Represents the passage of time.</p>
+                                <p>Shows events that occur to an object during the process.</p>
+                                <br>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                            <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
+                                <p>Creates an activation box.</p>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
+                                <br>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>      
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
+                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                            <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
+                                <p>Creates a option loop or alternative.</p><br>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                            </span>
+                            </div>                         
+                        </div>
+                    </div>
+                </div> <!-- SEQUENCE CONDITION/LOOP END -->
+                <!-- SEQUENCE POP-OUT END -->
         </fieldset>
-        <!-- <fieldset>
-            <legend>Zoom</legend>
-            <div class="diagramIcons" onclick='zoomin();'>
-                <img src="../Shared/icons/diagram_zoomin.svg"/>
-                <span class="toolTipText"><b>Zoom IN</b><br>
-                    <p>Zoom in on viewed area</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramIcons" onclick='zoomout();'>
-                <img src="../Shared/icons/diagram_zoomout.svg"/>
-                <span class="toolTipText"><b>Zoom OUT</b><br>
-                    <p>Zoom out on viewed area</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
-                <span class="toolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to 1x</p><br>
-                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-        </fieldset> -->
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
             <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
@@ -695,23 +848,34 @@
                     <p id="tooltip-TOGGLE_ERROR_CHECK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-        </fieldset>   
-        <!-- <fieldset>
-            <legend>Include</legend>
-            <div id="Include" class="diagramIcons" onclick="toggleErTable()">
-                <img src="../Shared/icons/angelBrackets.svg"/>
-                <span class="toolTipText"><b>To use less than</b><br>
-                    <p>To use less than type & #60; <br><strong>"EX: <& #60;Include>>"</STRONG> </p><br>
+        </fieldset>
+        <fieldset id = "localSaveField">
+            <legend aria-hidden="true">Save</legend>
+            <div id="localSave" class="diagramIcons" onclick="storeDiagramInLocalStorage()">
+                <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
+                <span class="toolTipText"><b>Save current diagram</b><br>
+                    <p>Click to save current diagram</p>
+                    <br>
+                    <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
                 </span>
-        </fieldset> -->      
+            </div>
+        </fieldset>
+        <fieldset id = "localLoadField">
+            <legend aria-hidden="true">Load</legend>
+            <div id="localLoad" class="diagramIcons" onclick="loadDiagramFromLocalStorage('CurrentlyActiveDiagram');">
+                <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
+                <span class="toolTipText"><b>Load diagram</b><br>
+                    <p>Click to load a diagram</p>
+                    <br>
+                    <p id="tooltip-Load_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "L"-->
+                </span>
+            </div>
+        </fieldset>
     </div>
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
-
-  <!--  <div id ="zoom-message-box"><img width="25%" height="25%" src="../Shared/icons/zoom-message-icon.svg" alt="An icon depicting a magnifying glass"/><text id ="zoom-message">1x</text></div> -->
-
-
+    
     <!-- Diagram drawing system canvas. -->
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
     <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
@@ -788,11 +952,11 @@
             <fieldset class='options-fieldset options-section'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
-                <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
-                <button id="rulerToggle" class="saveButton" style="background-color:#362049;" onclick="toggleRuler()">Ruler</button><br><br>
-                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
-                <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
-                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
+                <button id="rulerSnapToGrid" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
+                <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
+                <button id="a4TemplateToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleA4Template()">A4 template</button><br><br>
+                <button id="darkmodeToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDarkmode()">Darkmode</button><br><br>
+                <button id="diagramDropDownToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                         <option value="JSON/EMPTYDiagramMockup.json">Empty board</option>
