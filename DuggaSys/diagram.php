@@ -862,7 +862,7 @@
         </fieldset>
         <fieldset id = "localLoadField">
             <legend aria-hidden="true">Load</legend>
-            <div id="localLoad" class="diagramIcons" onclick="loadDiagramFromLocalStorage('CurrentlyActiveDiagram');">
+            <div id="localLoad" class="diagramIcons" onclick="showModal();">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram</p>
@@ -872,6 +872,16 @@
             </div>
         </fieldset>
     </div>
+    
+    <div class="loadModal hiddenLoad">
+        <div id="loadHeader">
+            <p id="loadTitle">Select a load:</p>
+            <button id="closeLoadModal" onclick="closeModal();">&times;</button>
+        </div>
+        <div id="loadContainer"></div>
+        <p id="amountOfLoads"><span id="loadCounter">0</span> saves found</p>
+    </div>
+    <div class="loadModalOverlay hiddenLoad"></div>
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
