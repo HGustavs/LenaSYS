@@ -574,8 +574,9 @@
 }
 
 #loadTitle{
+    width: 90%;
     font-size: 1.2rem;
-    color: white;
+    color: #333;
 }
 
 #loadHeader{
@@ -605,10 +606,8 @@
 }
 
 #closeLoadModal {
-    position: absolute;
-    right: 1rem;
     font-size: 2rem;
-    padding: 0px;
+    width: 10%;
     color: white;
     cursor: pointer;
     border: none;
