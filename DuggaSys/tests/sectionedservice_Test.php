@@ -1,6 +1,6 @@
 <?php
 include "../../Shared/test.php";
-// the services used in test deleteListentries and removeListentries, do not function properly, these test might therefore not work properly.
+// the service used in test removeListentries, is never used 
 
 $testsData = array(
     'getCourseGroupsAndMembers' => array(
@@ -78,49 +78,14 @@ $testsData = array(
             'lid' => '5020'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            'entries' => array(
-                'entryname',
-                //'lid',
-                'pos',
-                'moment',
-                //'link',
-                'visible',
-                'highscoremode',
-                'gradesys',
-                'code_id',
-                'deadline',
-                'relativedeadline',
-                'qrelease',
-                'comments',
-                'qstart',
-                'grptype',
-                'tabs',
-                'feedbackenabled',
-                'feedbackquestion',
-                //'ts'
-            ),
+            'groups',
             'debug',
             'writeaccess',
             'studentteacher',
             'readaccess',
-            'coursename',
-            'coursevers',
+            'coursevers', 
             'coursecode',
-            'courseid',
-            'links',
-            'duggor',
-            'results',
-            'versions',
-            'codeexamples',
-            'unmarked',
-            'startdate',
-            'enddate',
-            'groups',
-            'grpmembershp',
-            'grplst',
-            'userfeedback',
-            'feedbackquestion',
-            'avgfeedbackscore'
+            'courseid'
         )),
     ),
     // This test will test the micro-service removeListentries and its curresponding part in the monolith called DELETED
