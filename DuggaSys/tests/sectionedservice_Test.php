@@ -86,11 +86,11 @@ $testsData = array(
             // 'coursevers', 
             // 'coursecode',
             // 'courseid'
-            
+            	
             'debug',
             'writeaccess',
             'studentteacher',
-            'readaccess',
+            'readaccess', 
             'coursename',
             'coursevers',
             'coursecode',
@@ -109,6 +109,28 @@ $testsData = array(
             'userfeedback',
             'feedbackquestion',
             'avgfeedbackscore'
+            // 'debug',
+            // 'writeaccess',
+            // 'studentteacher',
+            // 'readaccess',
+            // 'coursename',
+            // 'coursevers',
+            // 'coursecode',
+            // 'courseid',
+            // 'links',
+            // 'duggor',
+            // 'results',
+            // 'versions',
+            // 'codeexamples',
+            // 'unmarked',
+            // 'startdate',
+            // 'enddate',
+            // 'groups',
+            // 'grpmembershp',
+            // 'grplst',
+            // 'userfeedback',
+            // 'feedbackquestion',
+            // 'avgfeedbackscore'
 
         )),
     ),
