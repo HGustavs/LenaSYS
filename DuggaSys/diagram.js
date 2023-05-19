@@ -4387,9 +4387,9 @@ function toggleDarkmode()
         btn.style.fontWeight = "bold";
     }
     
-    //if (stylesheet.href.includes('blackTheme')) {
-        //btn.style.backgroundColor ="#614875";
-       // btn.style.color = "#ffffff";
+    if (stylesheet.href.includes('blackTheme')) {
+        btn.style.backgroundColor ="#614875";
+        btn.style.color = "#ffffff";
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
      } else {
