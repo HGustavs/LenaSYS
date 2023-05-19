@@ -10020,6 +10020,8 @@ function drawElement(element, ghosted = false)
             noteFill = `${"#000000"}`;
         }
         
+        var constCut
+
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
@@ -10041,8 +10043,8 @@ function drawElement(element, ghosted = false)
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.5} 
+                    v-${(boxh / 2 + (boxh * (elemAttri+1) / 2) - (linew * 2))-(boxh / 2 + (boxh * 1/ 2) - (linew * 2)) * 0.5}  
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1/ 2) - (linew * 2)) * 0.5} 
                     h-${(boxw - (linew * 2)) * 0.885}
                 "
                 stroke-width='${linew}'
