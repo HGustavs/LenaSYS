@@ -3098,7 +3098,6 @@ let lectureIDs = [];
 function createExamples(dir,momentID) {
   lid = momentID;
   dirname = dir;
-  console.log("The value of lid is: ", lid);
   console.log("The value of all lids is: " + collectedLid);
 
 
@@ -3145,7 +3144,9 @@ $(window).on('focus', function( ) {
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
-      createExamples();
+      for (let i = 0; i < collectedLid.length; i++) {
+        createExamples(dir, collectedLid[i]);
+      }
 
   }
 // When the user stops watching course page, set isActivelyFocused to false
