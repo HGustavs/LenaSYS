@@ -1758,7 +1758,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='github icon' tabIndex="0" id='dorf' title='GitHub repo'
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox("openGitHubBox", this); getLidFromButton("${item['lid']}"); sendLidtoSectionedService(this);'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox("openGitHubBox", this); getLidFromButton("${item['lid']}"); sendLidtoSectionedService("${item['lid']}");'>`;
           str += "</td>";
         }
 
