@@ -3148,15 +3148,6 @@ $(window).on('focus', function() {
   console.log('Window lost focus, isActivelyFocused is now', isActivelyFocused);
 });
 
-
-
-$(document).ready(function(momentID) {
-  let dir = "../courses/1895/Github/Demo/Code-example1/";
-
-  // Start auto-refresh every 10 minutes
-  autoRefreshCodeExample(dir, momentID);
-});
-
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
