@@ -10042,7 +10042,7 @@ function drawElement(element, ghosted = false)
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
                     v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.70}  
-                    l-${(boxw - (linew * 2)) * 0.20},-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.35} 
+                    l-${(boxw - (linew * 2)) * 0.20},-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.30} 
                     h-${(boxw - (linew * 2)) * 0.80}
                 "
                 stroke-width='${linew}'
