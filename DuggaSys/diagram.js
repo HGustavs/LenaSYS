@@ -178,8 +178,7 @@ class StateChangeFactory
     static ElementResized(elementIDs, changeX, changeY)
     {
         var values = {
-            width: changeX,
-            height: changeY
+            width: changeX
         };
 
         return new StateChange(elementIDs, values);
