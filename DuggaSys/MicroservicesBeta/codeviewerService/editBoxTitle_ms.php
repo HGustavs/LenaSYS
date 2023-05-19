@@ -19,7 +19,7 @@
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
-
+	
 	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -63,8 +63,7 @@
 	}
 
 	// TODO: Better handle a situation where there are no examples available
-	//if($exampleCount>0){
-	if(){
+	if($exampleCount>0){
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
