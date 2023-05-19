@@ -13000,7 +13000,7 @@ function showModal(){
     var container = document.querySelector('#loadContainer');
 
     // Array for testing visuals, remove this once once functionality has been finished
-    var testArray = [/*"ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"*/];
+    var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
 
     while (container.firstElementChild){
         container.firstElementChild.remove();
