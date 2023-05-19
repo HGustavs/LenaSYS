@@ -570,6 +570,12 @@
     border: 1px solid #000;
 }
 
+#amountOfLoads{
+    text-align: center;
+    font-size: 10px;
+    font-style: italic;
+}
+
 #loadTitle{
     font-size: 1.2rem;
     color: white;

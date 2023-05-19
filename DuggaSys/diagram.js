@@ -13027,7 +13027,7 @@ function showModal(){
             btn.appendChild(btnText);
             container.appendChild(btn);
 
-            document.getElementById('amountOfLoads').innerHTML = testArray.length;
+            document.getElementById('loadCounter').innerHTML = testArray.length;
 
             console.log("saves");
         }
