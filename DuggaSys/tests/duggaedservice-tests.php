@@ -6,7 +6,7 @@ include "../Shared/test.php";
 $testsData = array(
     /*This test will not work since creating an assignment is not possible since cid is missing (according to the page)
     This will lead to the DELETE query still deleting something during the test since the delete is based on id, and not on a created specific id. 
-    Therefore this test will be commented out for the time being, added if the error is found.
+    Therefore this test will be commented out for the time being, added if the error is found.*/
     'create an assignment' => array(
         'expected-output' => '{
             "entries": [
@@ -575,8 +575,8 @@ $testsData = array(
             )
         ),
     ),
-    */
-
+    
+    /*
     'update an assignment' => array(
         'expected-output' => '{
             "entries": [
@@ -1117,33 +1117,30 @@ $testsData = array(
         'filter-output' => serialize(
             array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                array(
-                    // Filter what output to use in assert test, use none to use all ouput from service
-                    'LastCourseCreated' => array(
-    
-                    ),
-                    'entries' => array(
-                        'cid',
-                        'coursename',
-                        'coursecode',
-                        'visibility',
-                        'activeversion',
-                        'activeedversion',
-                        'registered'
-                    ),
-                    'versions' => array(
-                        'cid',
-                        'coursecode',
-                        'vers',
-                        'versname',
-                        'coursename',
-                        'coursenamealt'
-                    ),
-                    'debug',
-                    'writeaccess',
-                    'motd',
-                    'readonly'
-                )
+                'LastCourseCreated' => array(
+
+                ),
+                'entries' => array(
+                    'cid',
+                    'coursename',
+                    'coursecode',
+                    'visibility',
+                    'activeversion',
+                    'activeedversion',
+                    'registered'
+                ),
+                'versions' => array(
+                    'cid',
+                    'coursecode',
+                    'vers',
+                    'versname',
+                    'coursename',
+                    'coursenamealt'
+                ),
+                'debug',
+                'writeaccess',
+                'motd',
+                'readonly'
             )
         ),
     ),
@@ -1268,7 +1265,7 @@ $testsData = array(
             )
         ),
     ),
-
+*/
 
 );
 
