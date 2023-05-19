@@ -13006,21 +13006,22 @@ function showModal(){
         container.firstElementChild.remove();
     }
 
-    for (let i = 0; i<testArray.length; i++){
-        var btn = document.createElement('button');
-        var btnText = document.createTextNode(testArray[i]);
-
-        // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
-        btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
-
-        btn.appendChild(btnText);
-        container.appendChild(btn);
-    }
-
     // If no items were found for loading in 
     if (!testArray){
         var btn = document.createElement('p');
         var btnText = document.createTextNode('No saves could be found');
+    }
+    else{
+        for (let i = 0; i<testArray.length; i++){
+            var btn = document.createElement('button');
+            var btnText = document.createTextNode(testArray[i]);
+    
+            // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
+            btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
+    
+            btn.appendChild(btnText);
+            container.appendChild(btn);
+        }
     }
 
     modal.classList.remove('hiddenLoad');
