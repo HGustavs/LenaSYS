@@ -3105,6 +3105,7 @@ function createExamples(dir,momentID) {
     success: function(response) {
       console.log("AJAX request succeeded. Response:", response);
       lastUpdatedCodeExampes = Date.now();
+      console.log("Last time code examples updated was: ", lastUpdatedCodeExampes);
     },
     error: function(xhr, status, error) {
       console.log("AJAX request failed. Status:", status);
