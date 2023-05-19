@@ -574,14 +574,13 @@
 
 #loadTitle{
     font-size: 1.2rem;
-    color: white;
+    color: black;
 }
 
 #loadHeader{
-    margin: 0;
     display: flex;
     flex-direction: row;
-    background-color: #815e9d;
+    background-color: white;
 }
 
 #loadContainer{
