@@ -3088,6 +3088,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 
 let isActivelyFocused = false;
 let lastUpdatedCodeExampes = null;
+const updateInterval = 600 * 100; // 1 minutes
 
 //Creates all examples from github that doesnt exists yet
 function createExamples(dir,momentID) {
@@ -3137,7 +3138,7 @@ $(window).on('focus', function() {
   isActivelyFocused = true;
   console.log('Window gained focus, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
-  if (lastUpdated === null || (now - lastUpdated) > updateInterval) {
+  if (lastUpdated === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdated = now;
       createExamples(dir, momentID);
   }
