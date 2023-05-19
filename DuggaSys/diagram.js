@@ -2882,7 +2882,7 @@ function changeState()
         newTypetemp = document.getElementById("typeSelect").value;
     }
 
-    console.log(fromElem, toElem);
+    //console.log(fromElem, toElem);
 
     const element =  context[0],
           oldType = element.type,
