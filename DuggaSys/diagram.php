@@ -44,7 +44,7 @@
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
     
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
+    <div id="diagram-toolbar" onmousedown='mdown' onmouseup='tup();'>
         <fieldset>
             <legend aria-hidden="true" aria-hidden="true">Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
