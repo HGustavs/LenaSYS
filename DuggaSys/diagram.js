@@ -2625,7 +2625,7 @@ function mmoving(event)
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
                 
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
 
