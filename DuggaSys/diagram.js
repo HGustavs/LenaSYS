@@ -13041,6 +13041,19 @@ function hideSavePopout()
     $("#savePopoutContainer").css("display", "none");
 }
 
+function saveDiagramAs()
+{
+    let elem = document.getElementById("saveDiagramAs");
+    let fileName = elem.value;
+    elem.value = "";
+    if (fileName.trim() == "") {
+        // fileName = "Untitled"
+        fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
+    }
+
+    storeDiagramInLocalStorage(fileName);
+}
+
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
 {
     if(temp.historyLog && temp.initialState){
