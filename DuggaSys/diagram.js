@@ -197,9 +197,7 @@ class StateChangeFactory
     {
         var values = {
             x: moveX,
-            y: moveY,
-            width: changeX,
-            height: changeY
+            width: changeX
         };
         return new StateChange(elementIDs, values);
     }
