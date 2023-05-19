@@ -9807,20 +9807,20 @@ function drawElement(element, ghosted = false)
         />`;
         //actor or object is determined via the buttons in the context menu. the default is actor.
         if (element.actorOrObject == "actor") {
-            const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+            let maxLengthOfActorName = Math.floor((boxw / texth)*1.75);
 
-            let splitLengthyLine = (str, max) => {
+            /* let splitLengthyLine = (str, max) => {
                 if (str.length <= max) return str;
                 else {
                     return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
                 }
             }
 
-            let text = element.name(line => {
+            let text = element.attributes.map(line => {
                 return splitLengthyLine(line, maxCharactersPerLine);
-            }).flat();
+            }).flat(); */
 
-            elemAttri = text.length;
+            //elemAttri = text.length;
             //svg for actor.
             str += `<g>`
             str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
