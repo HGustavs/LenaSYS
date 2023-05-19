@@ -955,7 +955,7 @@
                 <button id="rulerSnapToGrid" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleA4Template()">A4 template</button><br><br>
-                <button id="darkmodeToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDarkmode()">Darkmode</button><br><br>
+                <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <button id="diagramDropDownToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
