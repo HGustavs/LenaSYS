@@ -2895,7 +2895,7 @@ function changeState()
         
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
-            
+
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
