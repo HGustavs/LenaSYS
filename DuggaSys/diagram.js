@@ -9851,8 +9851,9 @@ function drawElement(element, ghosted = false)
                     stroke='none'
                     fill='${element.fill}' 
                 />`;
+                str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             }
-            //else just make a boxw width rect.
+            //else just make a boxw width rect. and move the text slightly to fit this new rect better
             else {
                 str += `<rect class='text'
                     x='${linew}'
@@ -9862,9 +9863,9 @@ function drawElement(element, ghosted = false)
                     stroke='none'
                     fill='${element.fill}' 
                 />`;
+                str += `<text class='text' x='${linew}' y='${boxw+(texth/2)+(linew*2)}'>${element.name}</text>`;
             }
             //fill='${element.fill}' 
-            str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
