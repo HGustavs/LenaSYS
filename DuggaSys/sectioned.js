@@ -3091,7 +3091,6 @@ let lastUpdatedCodeExampes = null;
 const updateInterval = 600 * 100; // 1 minutes
 let momentID = lid;
 let dir = "../courses/1895/Github/Demo/Code-example1/";
-let lectureIDs = [];
 
 
 //Creates all examples from github that doesnt exists yet
@@ -3099,8 +3098,6 @@ function createExamples(dir,momentID) {
   lid = momentID;
   dirname = dir;
   console.log("The value of all lids is: " + collectedLid);
-
-
   console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
   console.log("** AJAX START **");
 
@@ -3124,17 +3121,6 @@ function createExamples(dir,momentID) {
 
 }
 
-// Function to start the interval, used to refresh without having to click the button
-function autoRefreshCodeExample(dir, momentID) {
-  setInterval(function() {
-    if (dir !== "" && momentID !== "") {
-      createExamples(dir, momentID);
-      console.log("createExamples() called in the autoRefreshCodeExample function.");
-    } else {
-      console.log("No dir and momentID set yet.");
-    }
-  },  600 * 100); // set to 1 minutes currently
-}
 
 // When the user is watching course page, set isActivelyFocused to true
 $(window).on('focus', function( ) {
