@@ -13013,6 +13013,7 @@ function showModal(){
 
         p.appendChild(pText);
         container.appendChild(p);
+        console.log("no saves");
     }
     else{
         for (let i = 0; i<testArray.length; i++){
@@ -13024,6 +13025,7 @@ function showModal(){
     
             btn.appendChild(btnText);
             container.appendChild(btn);
+            console.log("saves");
         }
     }
 
