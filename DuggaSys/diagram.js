@@ -13031,6 +13031,16 @@ function saveDiagramBeforeUnload() {
     })
 }
 
+function showSavePopout()
+{
+    $("#savePopoutContainer").css("display", "flex");
+}
+
+function hideSavePopout()
+{
+    $("#savePopoutContainer").css("display", "none");
+}
+
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
 {
     if(temp.historyLog && temp.initialState){
