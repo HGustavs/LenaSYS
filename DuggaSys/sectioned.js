@@ -3130,7 +3130,7 @@ function autoRefreshCodeExample(dir, momentID) {
   },  600 * 100); // set to 1 minutes currently
 }
 
-// When the window gains focus, set isActive to true
+// When the window gains focus, set isActivelyFocused to true
 $(window).on('focus', function() {
   isActivelyFocused = true;
   console.log('Window gained focus, isActive is now', isActive);
@@ -3139,7 +3139,7 @@ $(window).on('focus', function() {
       lastUpdated = now;
       createExamples(dir, momentID);
   }
-// When the window loses focus, set isActive to false
+// When the window loses focus, set isActivelyFocused to false
 }).on('blur', function() {
   isActivelyFocused = false;
   console.log('Window lost focus, isActive is now', isActive);
