@@ -3133,7 +3133,7 @@ function autoRefreshCodeExample(dir, momentID) {
 // When the window gains focus, set isActivelyFocused to true
 $(window).on('focus', function() {
   isActivelyFocused = true;
-  console.log('Window gained focus, isActive is now', isActive);
+  console.log('Window gained focus, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdated === null || (now - lastUpdated) > updateInterval) {
       lastUpdated = now;
@@ -3142,7 +3142,7 @@ $(window).on('focus', function() {
 // When the window loses focus, set isActivelyFocused to false
 }).on('blur', function() {
   isActivelyFocused = false;
-  console.log('Window lost focus, isActive is now', isActive);
+  console.log('Window lost focus, isActivelyFocused is now', isActivelyFocused);
 });
 
 
