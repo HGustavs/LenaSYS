@@ -117,31 +117,10 @@ $testsData = array(
             'lid' => '5020'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            'entries' => array(
-                'entryname',
-                //'lid',
-                'pos',
-                'moment',
-                //'link',
-                'visible',
-                'highscoremode',
-                'gradesys',
-                'code_id',
-                'deadline',
-                'relativedeadline',
-                'qrelease',
-                'comments',
-                'qstart',
-                'grptype',
-                'tabs',
-                'feedbackenabled',
-                'feedbackquestion',
-                //'ts'
-            ),
             'debug',
             'writeaccess',
             'studentteacher',
-            'readaccess',
+            'readaccess', 
             'coursename',
             'coursevers',
             'coursecode',
@@ -160,7 +139,7 @@ $testsData = array(
             'userfeedback',
             'feedbackquestion',
             'avgfeedbackscore'
-        )),
+    )),
     ),
     // This test the microservice createListentrie and the part of the monalith called NEW
     'createListentrie' => array(
