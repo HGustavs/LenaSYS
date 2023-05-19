@@ -2881,7 +2881,6 @@ function changeState()
           var newRelation = document.getElementById("propertySelect")?.value || undefined
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
-        https://www.hyundai.se/bilar/ioniq-6
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
         return;
@@ -2890,7 +2889,6 @@ function changeState()
         
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
-
             //Check if type has been changed
             if (oldType != newType) {
                 var newKind = element.kind;
