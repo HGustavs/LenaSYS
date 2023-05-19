@@ -17,6 +17,7 @@
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
     
+    
     require __DIR__ . '../Misc/checkUserStatus.php'; //Need to check user status
     require __DIR__ . '/codeViewerRetriveInformation.php'; //Retrive information, not sure if relevent
     require __DIR__ . '../Misc/checkUserStatus.php'; //Console debug
@@ -25,7 +26,7 @@
     echo consoleDebug("Test");
 
     //Check access
-    if(checklogin() && ($hasWriteAccess==true || $hasSuperAccess==true)){
+    //if(checklogin() && ($hasWriteAccess==true || $hasSuperAccess==true)){
     //if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
         if(strcmp('EDITTITLE',$opt)===0) {
             $exampleid = $_POST['exampleid'];
@@ -41,7 +42,7 @@
             echo json_encode(array('title' => $boxTitle, 'id' => $boxId));
             return;
         }
-    }
+    //}
 
     echo retrieveCodeViewerInformation();
 
