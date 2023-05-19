@@ -118,7 +118,7 @@
 			$updated = $row['updated'];
 		}
 
-		print_r("Debug - updated: ".$updated);
+		print "Debug - updated: ".$updated;
 
 		// Fetching the user priviliges from the MySQL database to see if the user is a superuser
 		$query = $pdo->prepare('SELECT superuser FROM user WHERE username = :username;');
@@ -131,12 +131,12 @@
 			$userPriv = $row['superuser'];
 		}
 
-		print_r("Debug - user priv: ".$userPriv);
+		print "Debug - user priv: ".$userPriv;
 
 		$currentTime = time(); // Get the current time as a Unix timestamp
-		print_r("Debug - current time: ".$currentTime);
+		print "Debug - current time: ".$currentTime;
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
-		print_r("Debug - update time: ".$updateTime);
+		print "Debug - update time: ".$updateTime;
 
 		// Check if the user has superuser priviliges
 		if($userPriv == 1) {
@@ -144,12 +144,12 @@
 				print "Too soon since last update, please wait.";
 			} else {
 				//refreshGithubRepo($cid);
-				print_r("Debug - refreshing...");
+				print "Debug - refreshing...";
 			}
 		} else { 
 			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
 				//refreshGithubRepo($cid);
-				print_r("Debug - refreshing...");
+				print "Debug - refreshing...";
 			} else {
 				print "Too soon since last update, please wait.";
 			}
