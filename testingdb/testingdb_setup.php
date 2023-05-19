@@ -1,6 +1,6 @@
 <?php
-include_once "../../../coursesyspw.php";
-include_once "../../Shared/sessions.php";
+include_once "../../coursesyspw.php";
+include_once "../Shared/sessions.php";
 
 pdoConnect();
 echo "<p>starting testingdb install! </p>";
@@ -68,7 +68,7 @@ function importDatabase($host, $usr, $pwd, $db, $sql)
 
 // Update coursesyspw.php to include testdatabase
 function updateCoursesyspw($name) {
-	$filename = "../../../coursesyspw.php";
+	$filename = "../../coursesyspw.php";
 	if(!file_exists($filename))
 	{
 		echo $filename." doesn't exist<br>";
