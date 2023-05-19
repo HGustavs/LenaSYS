@@ -4379,7 +4379,7 @@ function toggleDarkmode()
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
 
-   if(stylesheet.href.includes('blackTheme') && cssUrl == 'blackTheme.css'){
+   if(stylesheet.href.includes('blackTheme')){
     btn.style.backgroundColor ="#00FFFF";
     btn.style.border = "3px solid #614875";
     btn.style.color = "#614875";
