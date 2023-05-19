@@ -1165,7 +1165,8 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="BOXTITLE"){
 		$.ajax({
 			//url: "codeviewerService.php",
-			url: "../DuggaSys/MicroservicesBeta/codeviewerService/editBoxTitle.php",
+			//url: "../DuggaSys/MicroservicesBeta/codeviewerService/editBoxTitle.php",
+			url: "../DuggaSys/MicroservicesBeta/Misc/checkUserStatus.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
