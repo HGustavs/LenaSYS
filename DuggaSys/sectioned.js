@@ -3100,7 +3100,7 @@ function createExamples(dir,momentID) {
   console.log("The value of all lids is: " + collectedLid);
   console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
   console.log("** AJAX START **");
-
+  //AJAX Request to create all code examples
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
@@ -3128,8 +3128,11 @@ $(window).on('focus', function( ) {
 
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
+  // If the user has been focusing on the course page for more than **UPDATEINTERVAL** minute (data can be found above createCodeExamples function), 
+  //update the code examples or if its first time
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
+      // Call the createExamples function for each lecture/moments
       for (let i = 0; i < collectedLid.length; i++) {
         createExamples(dir, collectedLid[i]);
       }
