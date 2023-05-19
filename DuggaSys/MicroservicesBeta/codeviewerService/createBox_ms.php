@@ -20,6 +20,7 @@
 	session_start();
 
 	// Global variables
+	$exampleCount = 0;
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
 	$templateNumber=getOP('templateno');
