@@ -10038,12 +10038,12 @@ function drawElement(element, ghosted = false)
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
             str += `<defs>`
             str += `<linearGradient>`
+            str += `</linearGradient>`
+            str += `</defs>`
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'"/>`;//stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'   //remove rx="15" and try to get linear-gradient to work here
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
-            str += `</linearGradient>`
-            str += `</defs>`
             //end of svg for background
             str += `</svg>`;
             // Draw note-content if there are no attributes.
