@@ -1157,7 +1157,7 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="BOXCONTENT"){
 		$.ajax({
 			//url: "codeviewerService.php",
-			url : "../DuggaSys/MicroservicesBeta/codeviewerService/createBox.php",
+			url : "../DuggaSys/MicroservicesBeta/codeviewerService/createBox_ms.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
