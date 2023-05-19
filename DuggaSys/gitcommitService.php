@@ -98,6 +98,9 @@
 	 * Eg. it's not done anywhere in the code.
 	*/
 	function refreshCheck($cid, $username) {
+
+		print "Debug - updated: ".$username;
+
 		// Specify deadlines in seconds
 		$shortdeadline = 30; // 300 = 5 minutes
 		$longdeadline = 60; // 600 = 10 minutes
