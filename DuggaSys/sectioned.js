@@ -3086,6 +3086,9 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
 }
 
+let isActivelyFocused = false;
+let lastUpdatedCodeExampes = null;
+
 //Creates all examples from github that doesnt exists yet
 function createExamples(dir,momentID) {
   lid = momentID;
@@ -3111,6 +3114,8 @@ function createExamples(dir,momentID) {
   console.log("** AJAX DONE **");
 
 }
+
+
 
 
 // Function to start the interval, used to refresh without having to click the button
