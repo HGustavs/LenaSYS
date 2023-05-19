@@ -92,18 +92,10 @@
 	// refreshCheck: Decided how often the data can be updated, and if it can be updated again
 	//--------------------------------------------------------------------------------------------------
 
-	// TODO::: Does this mean we need to save the updated time when an update is made?? 
-	/* This does not currently happen.
-	 * I think it updates automatically when the MySQL database is updated. 
-	 * Eg. it's not done anywhere in the code.
-	*/
 	function refreshCheck($cid, $user) {
-
-		print "Debug - user: ".$user;
-
 		// Specify deadlines in seconds
-		$shortdeadline = 30; // 300 = 5 minutes
-		$longdeadline = 60; // 600 = 10 minutes
+		$shortdeadline = 300; // 300 = 5 minutes
+		$longdeadline = 600; // 600 = 10 minutes
 
 		// Connect to database and start session
 		pdoConnect();
@@ -121,25 +113,19 @@
 			$updated = $row['updated'];
 		}
 
-		print "Debug - updated: ".$updated;
-
 		$currentTime = time(); // Get the current time as a Unix timestamp
-		print "Debug - current time: ".$currentTime;
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
-		print "Debug - update time: ".$updateTime;
 
 		// Check if the user has superuser priviliges
 		if($user == 1) { // 1 = superuser
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
 			} else {
-				print "Debug - refreshing...";
 				newUpdateTime($currentTime, $cid);
 				refreshGithubRepo($cid);
 			}
 		} else { 
 			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
-				print "Debug - refreshing...";
 				newUpdateTime($currentTime, $cid);
 				refreshGithubRepo($cid);
 			} else {
@@ -148,11 +134,16 @@
 		}
 	}
 
+	//--------------------------------------------------------------------------------------------------
+	// newUpdateTime: Updates the MySQL database to save the latest update time
+	//--------------------------------------------------------------------------------------------------
+
 	function newUpdateTime ($currentTime, $cid) {
 		// Connect to database and start session
 		pdoConnect();
 		session_start();
 
+		// Formats the UNIX timestamp into datetime
 		$parsedTime = date("Y-m-d H:i:s", $currentTime); 
 
 		// Fetching the latest update of the course from the MySQL database
