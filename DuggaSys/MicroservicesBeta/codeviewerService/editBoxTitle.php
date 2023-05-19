@@ -12,8 +12,8 @@
 	pdoConnect();
 	session_start();
     
-    require '../Misc/checkUserStatus.php'; //Need to check user status
-    require '/codeViewerRetriveInformation.php'; //Retrive information, not sure if relevent
+    include '../Misc/checkUserStatus.php'; //Need to check user status
+    include '/codeViewerRetriveInformation.php'; //Retrive information, not sure if relevent
     include '../Misc/checkUserStatus.php'; //Console debug
 
     echo checkUserStatusTest();
