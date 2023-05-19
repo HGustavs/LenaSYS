@@ -64,7 +64,7 @@
 
 	// TODO: Better handle a situation where there are no examples available
 	//if($exampleCount>0){
-	if($exampleCount>0){
+	if(){
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
