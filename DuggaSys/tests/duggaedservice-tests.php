@@ -1,7 +1,7 @@
 <?php
 
 include "../../Shared/test.php";
-
+include_once "../../../coursesyspw.php";
 
 $testsData = array(
     /*This test will not work since creating an assignment is not possible since cid is missing (according to the page)
