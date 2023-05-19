@@ -12,7 +12,7 @@ $testsData = array(
             "debug": "NONE!",
             "writeaccess": true,
         }',
-        'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
+        //'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
