@@ -54,12 +54,7 @@
 		$exampleId=$row['exampleid'];
 		$exampleName=$row['examplename'];
 		$courseID=$row['cid'];
-		$cversion=$row['cversion'];
-		$beforeId=$row['beforeid'];
-		$afterId=$row['afterid'];
-		$public=$row['public'];
-		$sectionName=$row['sectionname'];
-		$playlink=$row['runlink'];
+		
 	}
 
 	// TODO: Better handle a situation where there are no examples available
