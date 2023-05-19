@@ -541,8 +541,8 @@ $testsData = array(
                 'release' => '2023-04-27 00:00:00',
                 'deadline' => '2023-04-29 00:00:00',
                 'qstart' => '2023-04-17',
-                'username' => '2',
-                'password' => 'Kong'
+                'username' => 'brom',
+                'password' => 'password'
             )
         ),
         'filter-output' => serialize(
