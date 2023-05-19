@@ -284,7 +284,7 @@
             echo json_encode($array);
 
         }
-
+        //This needs to be changed, not sure to what yet
 	    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "codeviewerService.php",$userid,$info);
     }
 
