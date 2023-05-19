@@ -1042,7 +1042,7 @@
                     <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
                 </div>
                 <div class="button-row">
-                    <input type="submit" class="submit-button" onclick="" value="Save"/>
+                    <input type="submit" class="submit-button" onclick="saveDiagramAs(), hideSavePopout()" value="Save"/>
                 </div>
             </div>
         </div>
