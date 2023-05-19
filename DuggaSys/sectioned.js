@@ -3743,6 +3743,7 @@ function refreshMoment(momentID){
   //for loop not yet implemented, waiting for other issues to be completed before
   dirname="../courses/1895/Github/Demo/Code-example1/"
   createExamples(dirname,momentID)
+  
 
 }
 
