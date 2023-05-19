@@ -3141,7 +3141,7 @@ $(window).on('focus', function( ) {
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
-      createExamples(dir, lid);
+      createExamples(dir);
 
   }
 // When the user stops watching course page, set isActivelyFocused to false
