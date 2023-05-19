@@ -789,7 +789,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">History</legend>
-            <div id="erTableToggle" class="diagramIcons" onclick="resetDiagramAlert()">
+            <div id="diagramReset" class="diagramIcons" onclick="resetDiagramAlert()">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
                     <p>Reset diagram to default state</p><br>
@@ -819,7 +819,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">ER-Table</legend>
-            <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
+            <div id="erTableToggle" class="diagramIcons toolbarMode" onclick="toggleErTable()">
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
@@ -829,7 +829,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Testcase</legend>
-            <div id="testCaseToggle" class="diagramIcons" onclick="toggleTestCase()"> <!--add func here later-->
+            <div id="testCaseToggle" class="diagramIcons toolbarMode" onclick="toggleTestCase()"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options</p><br>
