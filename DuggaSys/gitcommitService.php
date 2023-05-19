@@ -97,9 +97,9 @@
 	 * I think it updates automatically when the MySQL database is updated. 
 	 * Eg. it's not done anywhere in the code.
 	*/
-	function refreshCheck($cid, $username) {
+	function refreshCheck($cid, $user) {
 
-		print "Debug - updated: ".$username;
+		print "Debug - user: ".$user;
 
 		// Specify deadlines in seconds
 		$shortdeadline = 30; // 300 = 5 minutes
@@ -123,26 +123,13 @@
 
 		print "Debug - updated: ".$updated;
 
-		// Fetching the user priviliges from the MySQL database to see if the user is a superuser
-		// $query = $pdo->prepare('SELECT superuser FROM user WHERE username = :username;');
-		// $query->bindParam(':username', $username);
-		// $query->execute();
-
-		// // Save the result in a variable
-		// $userPriv = "";
-		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		// 	$userPriv = $row['superuser'];
-		// }
-
-		// print "Debug - user priv: ".$userPriv;
-
 		$currentTime = time(); // Get the current time as a Unix timestamp
 		print "Debug - current time: ".$currentTime;
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
 		print "Debug - update time: ".$updateTime;
 
 		// Check if the user has superuser priviliges
-		if($username) {
+		if($user == 1) { // 1 = superuser
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
 			} else {

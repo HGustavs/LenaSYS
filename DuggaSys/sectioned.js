@@ -440,7 +440,7 @@ function changedType(kind) {
 // refreshGithubRepo: Send course id to function in gitcommitService.php
 //----------------------------------------------------------------------------------
 
-function refreshGithubRepo(courseid, username) 
+function refreshGithubRepo(courseid, user) 
 {
   //Used to return success(true) or error(false) to the calling function
   var dataCheck;
@@ -448,7 +448,7 @@ function refreshGithubRepo(courseid, username)
     async: false,
     url: "../DuggaSys/gitcommitService.php",
     type: "POST",
-    data: {'cid':courseid, 'username':username, 'action':'refreshGithubRepo'},
+    data: {'cid':courseid, 'user':user, 'action':'refreshGithubRepo'},
     success: function(data) { 
       //Returns true if the data and JSON is correct
       alert(data); // Shows if course is up to date or not
@@ -472,26 +472,6 @@ function refreshGithubRepo(courseid, username)
   console.log("ajax done" + courseid);
   return dataCheck;
 }
-
-/*
-var clicks = 0; // Global variable to save number of refresh-attempts
-// Checks refresh attempts to decide if we are going to run the function 
-function refreshTimeout() { 
-	if(clicks >= 5) {
-		return false;
-	} else {
-    clicks++;
-    setTimeout(resetClick, 60000);
-    console.log(clicks);
-		return true;
-	}
-}
-
-// After 1 minute, decrese the number of clicks again
-function resetClick() {
-	clicks--;
-  console.log("click reset, current clicks: " + clicks);
-}*/
 
 //----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog
