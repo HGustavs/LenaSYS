@@ -134,13 +134,13 @@
 				print "Too soon since last update, please wait.";
 			} else {
 				print "Debug - refreshing...";
-				newUpdateTime($currentTime);
+				newUpdateTime($currentTime, $cid);
 				refreshGithubRepo($cid);
 			}
 		} else { 
 			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
 				print "Debug - refreshing...";
-				newUpdateTime($currentTime);
+				newUpdateTime($currentTime, $cid);
 				refreshGithubRepo($cid);
 			} else {
 				print "Too soon since last update, please wait.";
