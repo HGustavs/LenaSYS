@@ -116,8 +116,8 @@ class StateChangeFactory
         // Get the keys of the values that is unique from default
         var uniqueKeysArr = Object.keys(element).filter(key => {
             return (Object.keys(defaults[element.kind]).filter(value => {
-                return defaults[element.kind][value] == element[key];
-            }).length == 0);
+                return defaults[element.kind][value] === element[key];
+            }).length === 0);
         });
 
         // For every unique value set it into the change
