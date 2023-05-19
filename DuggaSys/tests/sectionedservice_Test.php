@@ -149,7 +149,6 @@ $testsData = array(
         'query-after-test-1' =>  "DELETE FROM listentries WHERE lid > 5009;",
         'query-after-test-2' => "DELETE FROM codeexample WHERE exampleid > 9009;",
         'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
-        echo SHILIBIDIBIDI!!!!!!!!;
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
             'username' => 'mestr',
