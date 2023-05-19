@@ -3165,6 +3165,29 @@ function changeLineProperties()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
+    //NOTE line
+    if (line.type == 'NOTE') {
+        // Start label, near side
+        if (line.startLabel != startLabel.value) {
+            startLabel.value = startLabel.value.trim();
+            line.startLabel = startLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        // End label, opposite side
+        if (line.endLabel != endLabel.value) {
+            endLabel.value = endLabel.value.trim();
+            line.endLabel = endLabel.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.startIcon != startIcon.value) {
+            line.startIcon = startIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.endIcon != endIcon.value) {
+            line.endIcon = endIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
     // SD line
     if (line.type == 'SD') {
         if (line.innerType != lineType.value) {
@@ -8158,6 +8181,9 @@ function drawLine(line, targetGhost = false)
     }
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
+    }
+    else if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
+        line.type = 'NOTE';
     }
     else {
         line.type = 'UML';
