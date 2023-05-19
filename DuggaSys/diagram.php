@@ -879,7 +879,7 @@
             <button id="closeLoadModal" onclick="closeModal();">&times;</button>
         </div>
         <div id="loadContainer"></div>
-        <p id="amountOfLoads"><span id="loadCounter">0</span> loads found locally</p>
+        <p id="amountOfLoads"><span id="loadCounter">0</span> saves found</p>
     </div>
     <div class="loadModalOverlay hiddenLoad"></div>
 
