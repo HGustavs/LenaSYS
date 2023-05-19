@@ -449,10 +449,9 @@ function sendLidtoSectionedService(button)
 		type: "POST",
 		data: {'lid':lid},
 		success: function(data) { 
-      alert(data); // Shows if course is up to date or not
+      alert(data); 
 		},
 		error: function(data){
-			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 422:
 					alert(data.responseJSON.message + "\nDid not update course");
@@ -1760,7 +1759,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}")'>`;
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), sendLidtoSectionedService(this);"'>`;
           str += "</td>";
         }
 
