@@ -137,7 +137,6 @@
     box-sizing: border-box;
     overflow: none;
     position: absolute;
-    background: linear-gradient( -135deg, transparent 7px, #000 0);
 }
 
 #pad_lock{
