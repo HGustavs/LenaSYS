@@ -2881,10 +2881,16 @@ function changeState()
           var newRelation = document.getElementById("propertySelect")?.value || undefined
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
+        displayMessage("error", `
+        Can't change type from \"${oldType}\" to \"${newType}\" as
+        different diagrams should not be able to connect to each other.`
+        )
+        return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
         return;
     }
+
     else if (element.type == 'ER') {
         
         //If not attribute, also save the current type and check if kind also should be updated
