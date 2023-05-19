@@ -25,7 +25,7 @@
         $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
         
         //THIS IS WRONG!!!!!!!!!!!!!!!!!!11
-        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
+        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "checkUserStatus.php",$userid,$info);
 
         // This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
         while ($row = $query->fetch(PDO::FETCH_ASSOC)){
@@ -63,5 +63,7 @@
         } else {
             $hasSuperAccess = false;
         }
+
+        return $hasStAccess, $hasRAccess,
     }
 ?>
