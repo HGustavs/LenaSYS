@@ -1026,6 +1026,27 @@
         <h2>Replay mode</h2>
         <p>Press "ESCAPE" to exit the replay-mode.</p>
     </div>
+    <div id="savePopoutContainer" class="loginBoxContainer" style="display:flex">
+        <div class="loginBox">
+            <div class="loginBoxheader">
+                <h3>
+                    Save current diagram as
+                </h3>
+                <div class="cursorPointer" onclick="">
+                    x
+                </div>
+            </div>
+            <div id="savePopout" style="margin-top:15px;display:block">
+                <div class="inputwrapper">
+                    <span style="margin-right:5px">Filename:</span>
+                    <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
+                </div>
+                <div class="button-row">
+                    <input type="submit" class="submit-button" onclick="" value="Save"/>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
