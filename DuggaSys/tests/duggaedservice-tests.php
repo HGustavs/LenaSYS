@@ -585,6 +585,7 @@ $testsData = array(
                 'coursename',
                 'coursecode',
                 'entries' => array(
+                    'variants',
                     'cid',
                     'coursename',
                     'coursecode',
