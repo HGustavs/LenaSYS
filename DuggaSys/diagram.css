@@ -130,15 +130,9 @@
 
 .hide {
     display: none;
-}	
+}
 
 .element {
-    font-size: small;
-    box-sizing: border-box;
-    overflow: none;
-    position:absolute;
-}
-.noteelement {
     font-size: small;
     box-sizing: border-box;
     overflow: none;
