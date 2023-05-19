@@ -1158,7 +1158,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: [''],},  // Note.
+    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -6624,7 +6624,6 @@ function generateContextProperties()
           }
           if (element.type == 'NOTE') {
               for (const property in element) {
-                  console.log("note was made");
                   switch (property.toLowerCase()) {
                       case 'attributes':
                           str += `<div style='color:white'>Attributes </div>`;
@@ -10013,17 +10012,13 @@ function drawElement(element, ghosted = false)
         NOTEHeight.push(NOTEEntityHeight);
         
         
-        if (element.fill == `${"#FFFFFF"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#000000"}`;
-        } else if (element.fill == `${"#000000"}` && theme.href.includes('style')) {
-            element.fill = `${"#FFFFFF"}`;
-        }
+       
 
 
 
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; width:${boxw}px;font-size:${texth}px;`; 
+        style='left:0px; top:0px;margin-top:${((boxh /2))}px; width:${boxw}px;font-size:${texth}px;`; 
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
