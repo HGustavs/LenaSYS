@@ -10022,8 +10022,8 @@ function drawElement(element, ghosted = false)
         
 
         //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; height:${(boxh + (boxh / 2)) / zoomfact}px; width:${boxw}px;font-size:${texth}px;background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${noteFill} 0);`;
+        str += `<div id='${element.id}'	class='noteelement' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        style='left:0px; top:0px;margin-top:${((boxh * -0.25))}px; ; width:${boxw}px;font-size:${texth}px;background: linear-gradient(-135deg, transparent ${boxh / 2}px, ${noteFill} 0);`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
