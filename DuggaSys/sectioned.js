@@ -3130,6 +3130,22 @@ function autoRefreshCodeExample(dir, momentID) {
   },  600 * 100); // set to 1 minutes currently
 }
 
+// When the window gains focus, set isActive to true
+$(window).on('focus', function() {
+  isActive = true;
+  console.log('Window gained focus, isActive is now', isActive);
+  const now = Date.now();
+  if (lastUpdated === null || (now - lastUpdated) > updateInterval) {
+      lastUpdated = now;
+      createExamples(dir, momentID);
+  }
+// When the window loses focus, set isActive to false
+}).on('blur', function() {
+  isActive = false;
+  console.log('Window lost focus, isActive is now', isActive);
+});
+
+
 
 $(document).ready(function(momentID) {
   let dir = "../courses/1895/Github/Demo/Code-example1/";
