@@ -2625,15 +2625,7 @@ function mmoving(event)
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
                 
-                // Fetch original y-position
-                // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
-                tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
-
-                // Deduct the new position, giving us the total change
-                const yChange = -(tmp - elementData.y);
-
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
 
@@ -2644,7 +2636,15 @@ function mmoving(event)
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
 
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                // Fetch original y-position
+                // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
+                tmp = elementData.y;
+                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+
+                // Deduct the new position, giving us the total change
+                const yChange = -(tmp - elementData.y);
+
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
 
             document.getElementById(context[0].id).remove();
