@@ -51,10 +51,6 @@
 
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$exampleCount++;
-		$exampleId=$row['exampleid'];
-		$exampleName=$row['examplename'];
-		$courseID=$row['cid'];
-		
 	}
 
 	// TODO: Better handle a situation where there are no examples available
