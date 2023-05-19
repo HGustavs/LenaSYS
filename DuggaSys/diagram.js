@@ -866,14 +866,13 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML, SD & SE This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of entity, ie ER, IE, UML & SD This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
     ER: "ER",
     IE: "IE",
     SD: "SD",
-    SE: "SE",
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
