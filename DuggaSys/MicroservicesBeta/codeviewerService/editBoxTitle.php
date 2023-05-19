@@ -55,7 +55,7 @@
 
 	$log_uuid = getOP('log_uuid');
 	$info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
-	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "editBoxTitle.php",$userid,$info);
 
 	// Checks and sets user rights
 	if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))){
@@ -623,6 +623,6 @@
 
 	}
 
-	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "codeviewerService.php",$userid,$info);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "editBoxTitle.php",$userid,$info);
 
 ?>

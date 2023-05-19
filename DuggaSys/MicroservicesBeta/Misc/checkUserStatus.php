@@ -23,6 +23,8 @@
 
         $log_uuid = getOP('log_uuid');
         $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
+        
+        //THIS IS WRONG!!!!!!!!!!!!!!!!!!11
         logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
 
         // This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
