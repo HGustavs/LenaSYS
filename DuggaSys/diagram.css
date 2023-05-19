@@ -582,9 +582,9 @@
 }
 
 #loadContainer{
-    margin-top: 3rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
-    padding: 5px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -595,7 +595,6 @@
     background-color: #815e9d;
     color: white;
     padding: 5px;
-    font-size: 1.2rem;
 }
 
 #loadContainer button:hover{
