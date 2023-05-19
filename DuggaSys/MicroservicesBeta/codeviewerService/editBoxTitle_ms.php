@@ -6,6 +6,8 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
+
+	//Remove when ms is working
 	//include_once ("../../../Shared/courses.php");
 	//include_once ("../../../Shared/database.php");
 
@@ -17,15 +19,7 @@
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
-	$courseId=getOP('courseid');
-	$courseVersion=getOP('cvers');
-	$templateNumber=getOP('templateno');
-	$beforeId=getOP('beforeid');
-	$afterId=getOP('afterid');
-	$sectionName=getOP('sectionname');
-	$exampleName=getOP('examplename');
-	$playlink=getOP('playlink');
-	$debug="NONE!";
+	
 	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -60,12 +54,7 @@
 		$exampleId=$row['exampleid'];
 		$exampleName=$row['examplename'];
 		$courseID=$row['cid'];
-		$cversion=$row['cversion'];
-		$beforeId=$row['beforeid'];
-		$afterId=$row['afterid'];
-		$public=$row['public'];
-		$sectionName=$row['sectionname'];
-		$playlink=$row['runlink'];
+		
 	}
 
 	// TODO: Better handle a situation where there are no examples available
