@@ -2874,6 +2874,12 @@ function elementHasLines(element) {
  */
 function changeState() 
 {
+    //"from" and "to" elements
+    let fromElem = context[0][findIndex(context[0], line.fromID)];
+    let toElem = context[0][findIndex(context[0], line.toID)];
+
+    console.log(fromElem, toElem);
+
     const element =  context[0],
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || undefined;
