@@ -2877,52 +2877,15 @@ function changeState()
     const element =  context[0],
           oldType = element.type,
           newType = document.getElementById("typeSelect")?.value || undefined;
-          //newType = newTypetemp;
           var oldRelation = element.state;
           var newRelation = document.getElementById("propertySelect")?.value || undefined
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
-        for (let i = 0; i < lines.length; i++) {
-            if (lines[i].fromID == element.id) {
-                //find the element the line is going to
-                for (let j = 0; j < data.length; j++) {
-                    if (data[j].id == lines[i].toID) {
-                        if (data[j].type == element.type) {
-                            return;
-                        }
-                        else{
-                            displayMessage("error", `
-                            Can't change type from \"${oldType}\" to \"${newType}\" as
-                            different diagrams should not be able to connect to each other.`
-                            )
-                            return;
-                        }
-                    }
-                }
-            }
-            else if (lines[i].toID == element.id) {
-                //find the element the line is going to
-                for (let j = 0; j < data.length; j++) {
-                    if (data[j].id == lines[i].fromID) {
-                        if (data[j].type == element.type) {
-                            return;
-                        }
-                        else{
-                            displayMessage("error", `
-                            Can't change type from \"${oldType}\" to \"${newType}\" as
-                            different diagrams should not be able to connect to each other.`
-                            )
-                            return;
-                        }
-                    }
-                }
-            }
-        }
+        https://www.hyundai.se/bilar/ioniq-6
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
         return;
     }
-
     else if (element.type == 'ER') {
         
         //If not attribute, also save the current type and check if kind also should be updated
