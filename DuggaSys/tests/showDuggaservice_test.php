@@ -94,7 +94,6 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;",
         'query-after-test-2' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-3' => "DELETE FROM course WHERE cid = 9999;",
-        'query-variables' => "moment",
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'SAVDU',
@@ -128,7 +127,6 @@ $testsData = array(
         'query-before-test-3' => "SELECT MAX(lid) FROM listentries",
         'query-after-test-1' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
-        'query-variables' => "moment",
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'moment' => '<!query-before-test3!> <*[0][listentries]*>'
@@ -144,7 +142,6 @@ $testsData = array(
         'query-before-test-3' => "SELECT MAX(lid) FROM listentries",
         'query-after-test-1' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
-        'query-variables' => "moment",
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'moment' => '<!query-before-test3!> <*[0][listentries]*>'
@@ -158,11 +155,11 @@ $testsData = array(
         'query-before-test-1' => "INSERT INTO course(cid, creator) VALUES (9999, 1);",
         'query-before-test-2' => "INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) VALUES (9999, 'Inserttobedeleted', 'UNK', 4, 12, 2, 1, 1337, 1, 1, 0, 'UNK');",
         'query-before-test-3' => "SELECT MAX(lid) FROM listentries",
+        'variables-query-before-test-4' => 'moment',
         'query-before-test-4' => "INSERT INTO userAnswer (cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(9999,52432,1,?,3,'ghj1ghj2','asddasdd', NULL,now());",
         'query-after-test-1' => "DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;",
         'query-after-test-2' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-3' => "DELETE FROM course WHERE cid = 9999;",
-        'query-variables' => "moment",
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'hash' => 'ghj1ghj2',
@@ -182,7 +179,6 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;",
         'query-after-test-2' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-3' => "DELETE FROM course WHERE cid = 9999;",
-        'query-variables' => "moment",
         'service' => 'https://cms.webug.se/root/G2/students/"a21oscgu"/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'courseid' => '9999',
