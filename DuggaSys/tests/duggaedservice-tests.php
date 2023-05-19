@@ -598,7 +598,7 @@ $testsData = array(
                     'coursename',
                     'coursenamealt'
                 ),
-                'debug',
+                
                 'writeaccess',
                 'motd',
                 'readonly'
