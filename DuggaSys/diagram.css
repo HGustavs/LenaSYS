@@ -599,6 +599,11 @@
     font-size: 1.2rem;
 }
 
+#loadContainer button:hover{
+    cursor: pointer;
+    background-color: #614875;
+}
+
 #closeLoadModal {
     position: absolute;
     top: 1rem;
