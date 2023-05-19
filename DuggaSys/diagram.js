@@ -2890,12 +2890,6 @@ function changeState()
           //newType = newTypetemp;
           var oldRelation = element.state;
           var newRelation = document.getElementById("propertySelect")?.value || undefined
-
-    /* let element = context[0];
-    let oldType = element.type;
-    let newType = document.getElementById("typeSelect")?.value || undefined;
-    let oldRelation = element.state;
-    let newRelation = document.getElementById("propertySelect")?.value || undefined; */
     // If we are changing types and the element has lines, we should not change
     if ((elementHasLines(element))){
         for (let i = 0; i < lines.length; i++) {
