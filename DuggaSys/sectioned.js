@@ -3118,9 +3118,6 @@ function createExamples(dir,momentID) {
 
 }
 
-
-
-
 // Function to start the interval, used to refresh without having to click the button
 function autoRefreshCodeExample(dir, momentID) {
   setInterval(function() {
@@ -3136,6 +3133,8 @@ function autoRefreshCodeExample(dir, momentID) {
 // When the window gains focus, set isActivelyFocused to true
 $(window).on('focus', function() {
   isActivelyFocused = true;
+  let momentID;
+  let dir;
   console.log('Window gained focus, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
