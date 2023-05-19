@@ -714,3 +714,60 @@
     width: 25%; 
     height: 27px;
 }
+
+/****************
+   OPTION PANE 
+*****************/
+#rulerSnapToGrid {
+    background-color: transparent; 
+    border: #614875; 
+    border-width: 3px; 
+    border-style: solid; 
+    color: #614875; 
+    font-weight: bold;
+}
+
+#a4TemplateToggle {
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
+#darkmodeToggle {
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
+#diagramDropDownToggle {
+    background-color: transparent;
+    border:#614875;
+    border-width:3px;
+    border-style:solid;
+    color:#614875;
+    font-weight: bold;
+}
+
+#a4options {
+    display: flex;
+}
+
+#a4VerticalButton {
+    display: none;
+    width: 76px;
+    margin-right: 45%;
+}
+
+#a4HorizontalButton {
+    display:none;
+}
+
+#option-import > input {
+    width: 100%;
+}
