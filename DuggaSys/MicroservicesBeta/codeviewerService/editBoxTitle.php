@@ -12,9 +12,9 @@
 	pdoConnect();
 	session_start();
     
-    require __DIR__ '../Misc/checkUserStatus.php'; //Need to check user status
-    require __DIR__ '/codeViewerRetriveInformation.php'; //Retrive information, not sure if relevent
-    require __DIR__ '../Misc/checkUserStatus.php'; //Console debug
+    require '../Misc/checkUserStatus.php'; //Need to check user status
+    require '/codeViewerRetriveInformation.php'; //Retrive information, not sure if relevent
+    include '../Misc/checkUserStatus.php'; //Console debug
 
     echo checkUserStatusTest();
     echo consoleDebug("Test");
