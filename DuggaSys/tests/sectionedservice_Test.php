@@ -368,15 +368,6 @@ $testsData = array(
             'duggor',
             'results',
             'versions',
-            'codeexamples', 
-            // => array(
-            //     //'exampleid',
-            //     'cid', 
-            //     'examplename',
-            //     'sectionname',
-            //     'runlink',
-            //     'cversion'
-            // ),
             'unmarked',
             'startdate',
             'enddate',
