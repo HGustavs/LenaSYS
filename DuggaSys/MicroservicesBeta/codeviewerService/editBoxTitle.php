@@ -17,8 +17,9 @@
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
     
-    require __DIR__ . '../Misc/checkUserStatus.php';
-    require __DIR__ . '/codeViewerRetriveInformation.php';
+    require __DIR__ . '../Misc/checkUserStatus.php'; //Need to check user status
+    require __DIR__ . '/codeViewerRetriveInformation.php'; //Retrive information, not sure if relevent
+    require __DIR__ . '../Misc/checkUserStatus.php'; //Console debug
 
     echo checkUserStatusTest();
 
