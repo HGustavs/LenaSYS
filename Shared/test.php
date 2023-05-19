@@ -101,7 +101,7 @@ function doDBQuery($query, $data, $testsData, $testname){
    
 }
 
-function testHandler($testsData, $prettyPrint){
+function testHandler($testsData, $servicePath, $prettyPrint){
 
     $i = 0;
 
@@ -162,7 +162,7 @@ function testHandler($testsData, $prettyPrint){
         $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
         // Test 2 callService
-        $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
+        $test2Response = json_encode(callServiceTest($servicePath.$testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
         $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
@@ -352,5 +352,5 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 }
 
 
-// Version 1.4.1 (Increment when new change in code)
+// Version 1.4.2 (Increment when new change in code)
 ?>

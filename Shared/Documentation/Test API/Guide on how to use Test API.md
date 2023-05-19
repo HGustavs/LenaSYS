@@ -13,7 +13,7 @@ The test API executes three different tests, the first one making sure that the 
 
 ### How to use it 
 
-The test API aims to be as easy as possible. In figure 2 you can find an example of the code and JSON needed to use the test API, this will be referred to in this guide. First you need to include the test.php file. And the last step in the code should be to call the testHandler() with the JSON data and the second parameter that decides how you want to view the results. The JSON data in $testsData is what controls the testing API. For every outer array you include in this JSON a test will be run for the service, in the example there are currently two tests: create course test and create course test 2. **OBS! All test files needs to be stored in folder DuggaSys/tests otherwise it wont work.**
+The test API aims to be as easy as possible. In figure 2 you can find an example of the code and JSON needed to use the test API, this will be referred to in this guide. First you need to include the test.php file. And the last step in the code should be to call the testHandler() with the JSON data, path (URL to services directory) and the third parameter that decides how you want to view the results. The JSON data in $testsData is what controls the testing API. For every outer array you include in this JSON a test will be run for the service, in the example there are currently two tests: create course test and create course test 2. **OBS! All test files needs to be stored in folder DuggaSys/tests otherwise it wont work.**
 
 - **expected-output:** Data to use in the comparison test. Compares this data to the service output. You will need to find this from the respons when manually do the actions required to execute a service.
 - **query-before-test:** If database query is needed before test (ex insert) insert query here. Add a number to the end in order to execute multiple querys.  
@@ -56,7 +56,7 @@ $testsData = array(
         'query-before-test-3' => "DELETE FROM course WHERE coursecode = 'IT401G' AND cid = ?",
         'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
-        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'courseedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
             'username' => 'usr',
@@ -78,7 +78,7 @@ $testsData = array(
     ),
     'create course test 2' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
-        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'courseedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
             'username' => 'usr',
@@ -93,7 +93,7 @@ $testsData = array(
     ),
 );
  
-testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
+testHandler($testsData, "https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/", true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 ```
 
@@ -228,4 +228,4 @@ Depending on the second argument to testHandler two different outputs will be di
 - **True:** Returns HTML that displays the results.  
 - **False:** Returns all test results as JSON. 
 
-***Guide for Test API version 1.4.1***
+***Guide for Test API version 1.4.2***
