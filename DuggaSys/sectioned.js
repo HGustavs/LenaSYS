@@ -3091,6 +3091,7 @@ let lastUpdatedCodeExampes = null;
 const updateInterval = 600 * 100; // 1 minutes
 let momentID = lid;
 let dir = "../courses/1895/Github/Demo/Code-example1/";
+let lectureIDs = [];
 
 
 //Creates all examples from github that doesnt exists yet
@@ -3098,6 +3099,7 @@ function createExamples(dir,momentID) {
   lid = momentID;
   dirname = dir;
   console.log("The value of lid is: ", lid);
+  console.log(collectedLid);
 
 
   console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
@@ -3743,7 +3745,7 @@ function refreshMoment(momentID){
   //for loop not yet implemented, waiting for other issues to be completed before
   dirname="../courses/1895/Github/Demo/Code-example1/"
   createExamples(dirname,momentID)
-  
+
 
 }
 
