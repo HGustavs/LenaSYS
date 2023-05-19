@@ -573,14 +573,6 @@
     border: 2px solid #000;
 }
 
-#loadTitle{
-    position: absolute;
-    left: 1rem;
-    font-size: 1.2rem;
-    color: white;
-    background-color: #815e9d;
-}
-
 #loadHeader{
     background-color: #815e9d;
 }
@@ -612,7 +604,7 @@
     position: absolute;
     right: 1rem;
     font-size: 2rem;
-    padding: 5px 10px;
+    padding: 0px;
     color: white;
     cursor: pointer;
     border: none;
