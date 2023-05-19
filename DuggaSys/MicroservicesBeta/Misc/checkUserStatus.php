@@ -4,11 +4,8 @@
     // Include basic application services
     include_once "../Shared/sessions.php";
     include_once "../Shared/basic.php";
-    require __DIR__ . '/checkUserStatus.php'; //Console debug
-
-    echo consoleDebug("Test");
+    
     function checkUserStatusTest(){
-        echo consoleDebug("enterTest");
         // Checks user id, if user has none a guest id is set
         if(isset($_SESSION['uid'])){
             $userid=$_SESSION['uid'];
