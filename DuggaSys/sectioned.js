@@ -3134,14 +3134,14 @@ function autoRefreshCodeExample(dir, momentID) {
 }
 
 // When the user is watching course page, set isActivelyFocused to true
-$(window).on('focus', function() {
+$(window).on('focus', function(dir, momentID) {
   isActivelyFocused = true;
 
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
-      createExamples();
+      createExamples(dir, momentID);
       console.log(momentID);
       console.log(dir);
       console.log(lid);
