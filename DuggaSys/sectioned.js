@@ -3127,7 +3127,7 @@ $(window).on('focus', function( ) {
 
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
-  // If the user has been focusing on the course page for more than **UPDATEINTERVAL** minute (data can be found above createCodeExamples function), 
+  // If the user has been focusing on the course page for more than **UPDATEINTERVAL** minute (data varieable can be found above createCodeExamples function), 
   //update the code examples or if its first time
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
