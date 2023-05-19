@@ -3093,9 +3093,9 @@ let dir = "../courses/1895/Github/Demo/Code-example1/";
 
 
 //Creates all examples from github that doesnt exists yet
-function createExamples(dir,momentID) {
+
+function createExamples(momentID) {
   lid = momentID;
-  dirname = dir;
   console.log("The value of all lids is: " + collectedLid);
   console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
   console.log("** AJAX START **");
@@ -3103,7 +3103,7 @@ function createExamples(dir,momentID) {
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
-    data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
+    data: {'lid':lid,'opt':'CREGITEX'},
     dataType: "json",
     success: function(response) {
       console.log("AJAX request succeeded. Response:", response);
@@ -3133,7 +3133,7 @@ $(window).on('focus', function( ) {
       lastUpdatedCodeExampes = now;
       // Call the createExamples function for each lecture/moments
       for (let i = 0; i < collectedLid.length; i++) {
-        createExamples(dir, collectedLid[i]);
+        createExamples(collectedLid[i]);
       }
 
   }
@@ -3732,10 +3732,8 @@ function refreshMoment(momentID){
   //TODO: take input from column/dropdownlist and iterate through and create the codeexample
   //for each codeexample in the moment dir, do create examples on those code-example dir
   //for loop not yet implemented, waiting for other issues to be completed before
-  dirname="../courses/1895/Github/Demo/Code-example1/"
-  createExamples(dirname,momentID)
 
-
+  createExamples(momentID);
 }
 
 //------------------------------------------------------------------------------
