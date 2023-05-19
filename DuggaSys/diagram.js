@@ -10011,11 +10011,6 @@ function drawElement(element, ghosted = false)
         }
         NOTEHeight.push(NOTEEntityHeight);
         
-        
-       
-
-
-
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;margin-top:${((boxh /2))}px; width:${boxw}px;font-size:${texth}px;`; 
@@ -10032,18 +10027,18 @@ function drawElement(element, ghosted = false)
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;    
             //path math to create the note entity
-           str += `<path class="text"
+            str += `<path class="text"
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))-(boxh / 2 + (boxh * 1/ 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1/ 2) - (linew * 2)) * 0.5} 
+                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
                     h-${(boxw - (linew * 2)) * 0.885}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='${element.fill}'
-            />`
+            />`;
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }            
@@ -10054,8 +10049,18 @@ function drawElement(element, ghosted = false)
         } else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-             />`;//stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
+            str += `<path class="text"
+                d="M${linew},${linew}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
+                    h${boxw - (linew * 2)}
+                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    h-${(boxw - (linew * 2)) * 0.885}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
             str += `<text class='text' x='5' y='${(hboxh + boxh / 2)/2}' dominant-baseline='middle' text-anchor='right'> </text>`;
             //end of svg for background
             str += `</svg>`;
