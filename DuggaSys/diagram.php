@@ -1016,7 +1016,7 @@
                     </span>
                 </div>
             </fieldset>
-            <div style="width: 250px">
+            <div id="replay-time-container">
                 <label id="replay-time-label" for="replay-time">Delay (1s)</label>
                 <input id="replay-time" onchange="setReplayDelay(this.value)" class="zoomSlider" type="range" min="1" max="9" value="5">
             </div>
