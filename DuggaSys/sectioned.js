@@ -3089,6 +3089,9 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 let isActivelyFocused = false;
 let lastUpdatedCodeExampes = null;
 const updateInterval = 600 * 100; // 1 minutes
+let momentID = lid;
+let dir = "../courses/1895/Github/Demo/Code-example1/";
+
 
 //Creates all examples from github that doesnt exists yet
 function createExamples(dir,momentID) {
@@ -3132,7 +3135,7 @@ function autoRefreshCodeExample(dir, momentID) {
 
 // When the user is watching course page, set isActivelyFocused to true
 $(window).on('focus', function() {
-  state.isActivelyFocused = true;
+  isActivelyFocused = true;
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
@@ -3141,7 +3144,7 @@ $(window).on('focus', function() {
   }
 // When the user stops watching course page, set isActivelyFocused to false
 }).on('blur', function() {
-  state.isActivelyFocused = false;
+  isActivelyFocused = false;
   console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
 });
 
