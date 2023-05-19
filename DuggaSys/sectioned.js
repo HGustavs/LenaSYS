@@ -3098,6 +3098,7 @@ function createExamples(momentID) {
   lid = momentID;
   console.log("The value of all lids is: " + collectedLid);
   console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
+  console.log(lid);
   console.log("** AJAX START **");
   //AJAX Request to create all code examples
   $.ajax({
