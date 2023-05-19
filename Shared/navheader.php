@@ -201,7 +201,7 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton'>";
             	echo "<span id='refreshBTN' title='Refresh Github repo' value='Refresh' href='#'>";
-             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".$_SESSION['loginname'].");' src='../Shared/icons/refresh.svg'>";
+             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' onclick='refreshGithubRepo(".$_SESSION['courseid'].");' src='../Shared/icons/refresh.svg'>";
 							echo "</span>";
 							echo "</div>";
 							echo "</td>";
