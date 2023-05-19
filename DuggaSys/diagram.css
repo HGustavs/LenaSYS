@@ -606,6 +606,7 @@
 }
 
 #closeLoadModal {
+    display: inline-block;
     font-size: 2rem;
     width: 10%;
     color: white;
