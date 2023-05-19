@@ -575,10 +575,13 @@
 
 #loadTitle{
     position: absolute;
-    top: 1rem;
     left: 1rem;
     font-size: 1.2rem;
-    color: #333;
+    color: white;
+}
+
+#loadHeader{
+    background-color: #815e9d;
 }
 
 #loadContainer{
@@ -606,13 +609,12 @@
 
 #closeLoadModal {
     position: absolute;
-    top: 1rem;
     right: 1rem;
     font-size: 2rem;
     color: #333;
     cursor: pointer;
     border: none;
-    background: none;
+    background: #da2727;
   }
 
 .hiddenLoad{
