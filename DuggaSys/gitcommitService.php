@@ -22,7 +22,7 @@
 		}
 		else if($_POST['action'] == 'refreshGithubRepo') 
 		{
-			refreshCheck($_POST['cid'], $_POST['username']);
+			refreshCheck($_POST['cid'], $_POST['user']);
 		}
 		else if($_POST['action'] == 'updateGithubRepo') 
 		{
