@@ -9059,7 +9059,7 @@ function addNodes(element)
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
