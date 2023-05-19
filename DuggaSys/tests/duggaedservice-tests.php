@@ -575,11 +575,13 @@ $testsData = array(
                 'password' => 'password'
             )
         ),
-        'filter-output' => serialize(
-            array(
+        'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'LastCourseCreated',
-
+                'debug',
+                'writeaccess',
+                'motd',
+                'readonly',
                 'entries' => array(
                     'cid',
                     'coursename',
@@ -597,10 +599,6 @@ $testsData = array(
                     'coursename',
                     'coursenamealt'
                 ),
-                'debug',
-                'writeaccess',
-                'motd',
-                'readonly'
             )
         ),
     ),
