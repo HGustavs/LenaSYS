@@ -21,6 +21,10 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
+$lid = $_POST['lid'];
+echo "<script>console.log('lid:', " . $lid . ");</script>";
+
+
 // Gets username based on uid, USED FOR LOGGING
 $query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
 $query->bindParam(':uid', $userid);
@@ -1177,9 +1181,5 @@ if($gradesys=="UNK") $gradesys=0;
 		echo json_encode($array);
 
 		logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php",$userid,$info);
-
-$lid = $_POST['lid'];
-echo "<script>console.log('lid:', " . $lid . ");</script>";
-
 
 ?>
