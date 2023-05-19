@@ -99,8 +99,8 @@
 	*/
 	function refreshCheck($cid, $username) {
 		// Specify deadlines in seconds
-		$shortdeadline = 300; // 5 minutes
-		$longdeadline = 600; // 10 minutes
+		$shortdeadline = 30; // 300 = 5 minutes
+		$longdeadline = 60; // 600 = 10 minutes
 
 		// Connect to database and start session
 		pdoConnect();
@@ -118,6 +118,8 @@
 			$updated = $row['updated'];
 		}
 
+		print_r("Debug - updated: ".$updated);
+
 		// Fetching the user priviliges from the MySQL database to see if the user is a superuser
 		$query = $pdo->prepare('SELECT superuser FROM user WHERE username = :username;');
 		$query->bindParam(':username', $username);
@@ -129,19 +131,25 @@
 			$userPriv = $row['superuser'];
 		}
 
+		print_r("Debug - user priv: ".$userPriv);
+
 		$currentTime = time(); // Get the current time as a Unix timestamp
+		print_r("Debug - current time: ".$currentTime);
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
+		print_r("Debug - update time: ".$updateTime);
 
 		// Check if the user has superuser priviliges
 		if($userPriv == 1) {
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
 			} else {
-				refreshGithubRepo($cid);
+				//refreshGithubRepo($cid);
+				print_r("Debug - refreshing...");
 			}
 		} else { 
 			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
-				refreshGithubRepo($cid);
+				//refreshGithubRepo($cid);
+				print_r("Debug - refreshing...");
 			} else {
 				print "Too soon since last update, please wait.";
 			}
