@@ -3731,6 +3731,11 @@ function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked!");
 
+  state.dir = "../courses/1895/Github/Demo/Code-example1/";
+  state.momentID = momentID;
+
+  console.log('State updated in refreshMoment:', state); 
+
   //TODO: take input from column/dropdownlist and iterate through and create the codeexample
   //for each codeexample in the moment dir, do create examples on those code-example dir
   //for loop not yet implemented, waiting for other issues to be completed before
