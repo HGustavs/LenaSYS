@@ -10,3 +10,9 @@
 | --- | --- |
 | 1 | Do we set user access level in check user status? | 
 | 2 | Do we go with the file system? |
+
+| No. | What we know|
+| --- | --- |
+| 1 | Need to disact code slow and steady to see what is needed | 
+| 2 | Need to change target in dugga.js to check if it works |
+| 3 | need to understand how to use Dev tool and what to search for |
