@@ -13039,6 +13039,7 @@ function saveDiagramBeforeUnload() {
 function showSavePopout()
 {
     $("#savePopoutContainer").css("display", "flex");
+    document.getElementById("saveDiagramAs").focus();
 }
 
 function hideSavePopout()
