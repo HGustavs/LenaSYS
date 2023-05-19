@@ -1178,8 +1178,8 @@ if($gradesys=="UNK") $gradesys=0;
 
 		logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php",$userid,$info);
 
-$lid = $_POST['lid'];
-echo "<script>console.log('lid:', " . $lid . ");</script>";
+// $lid = $_POST['lid'];
+//echo "<script>console.log('lid:', " . $lid . ");</script>";
 
 
 ?>
