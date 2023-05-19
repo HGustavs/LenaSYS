@@ -166,10 +166,10 @@ $testsData = array(
             'moment' => 'null',
             'grptype' => 'UNK',
             'deadline' => '0:0',
-            'relativedeadline' => '1:1:0:0'
+            'relativedeadline' => '1:1:0:0',
             'visibility' => '0',
             'highscoremode' => '0',
-            'pos' => '5'
+            'pos' => '5',
             'log_uuid' => 'XvH6j8E6SLBWBLP',
             'hash' => 'UNK'
         )),
