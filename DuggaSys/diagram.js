@@ -10041,9 +10041,9 @@ function drawElement(element, ghosted = false)
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.60}  
-                    l-${(boxw - (linew * 2)) * 0.30},-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.40} 
-                    h-${(boxw - (linew * 2)) * 0.70}
+                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.55}  
+                    l-${(boxw - (linew * 2)) * 0.25},-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) * 0.45} 
+                    h-${(boxw - (linew * 2)) * 0.75}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
