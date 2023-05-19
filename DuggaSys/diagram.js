@@ -1609,7 +1609,12 @@ document.addEventListener('keydown', function (e)
                 var propField = document.getElementById("elementProperty_name");
                 if(!!document.getElementById("lineLabel")){
                     changeLineProperties();
-                }else{
+                }
+                else if (document.activeElement.id == "saveDiagramAs") {
+                    saveDiagramAs();
+                    hideSavePopout();
+                }
+                else {
                     changeState();
                     saveProperties(); 
                     propField.blur();
