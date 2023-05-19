@@ -636,7 +636,9 @@
     visibility: visible;
 }
 
-/* SVG GRID */
+/****************
+    SVG GRID 
+*****************/
 #svggrid {
     z-index: -11;
 }
@@ -770,4 +772,11 @@
 
 #option-import > input {
     width: 100%;
+}
+
+/****************
+   REPLAY BOX 
+*****************/
+#replay-time-container {
+    width: 250px;
 }
