@@ -11,7 +11,7 @@
     // Connect to database and start session
 	pdoConnect();
 	session_start();
-
+    
     // Global variables
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
