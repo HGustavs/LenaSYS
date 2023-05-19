@@ -10040,10 +10040,12 @@ function drawElement(element, ghosted = false)
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
-            str += `<defs>`
-            str += `<linearGradient>`
-            str += `</linearGradient>`
-            str += `</defs>`
+            str += `<defs>`;
+            str += `<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">`;
+            str += `<<stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />`;
+            str += `<<stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />`;
+            str += `</linearGradient>`;
+            str += `</defs>`;
             //end of svg for background
             str += `</svg>`;
             // Draw note-content if there are no attributes.
