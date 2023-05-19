@@ -582,6 +582,8 @@ $testsData = array(
                 'writeaccess',
                 'motd',
                 'readonly',
+                'coursename',
+                'coursecode',
                 'entries' => array(
                     'cid',
                     'coursename',
@@ -599,8 +601,8 @@ $testsData = array(
                     'coursename',
                     'coursenamealt'
                 ),
-            ),
-        )
+            )
+        ),
     ),
     
     /*
