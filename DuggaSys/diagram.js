@@ -13009,6 +13009,8 @@ function showModal(){
         var btn = document.createElement('button');
         var btnText = document.createTextNode(testArray[i]);
 
+        btn.onclick = "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();"
+
         btn.appendChild(btnText);
         container.appendChild(btn);
     }
