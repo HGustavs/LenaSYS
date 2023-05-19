@@ -9847,7 +9847,7 @@ function drawElement(element, ghosted = false)
                     x='${xAnchor-(textWidth/2)}'
                     y='${boxw+(linew*2)}'
                     width='${textWidth}'
-                    height='${texth}'
+                    height='${texth-linew}'
                     stroke='none'
                     fill='${element.fill}' 
                 />`;
@@ -9859,7 +9859,7 @@ function drawElement(element, ghosted = false)
                     x='${linew}'
                     y='${boxw+(linew*2)}'
                     width='${boxw-linew}'
-                    height='${texth}'
+                    height='${texth-linew}'
                     stroke='none'
                     fill='${element.fill}' 
                 />`;
