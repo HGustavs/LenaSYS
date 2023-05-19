@@ -21,6 +21,12 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
+if(isset($_POST['lid'])) {
+	$lid = $_POST['lid'];
+	echo "<script>console.log('lid:', " . $lid . ");</script>";
+} else {
+	echo "<script>console.log('error');</script>";
+}
 $lid = $_POST['lid'];
 echo "<script>console.log('lid:', " . $lid . ");</script>";
 
