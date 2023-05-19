@@ -875,11 +875,9 @@
     
     <div class="loadModal hiddenLoad">
         <button id="closeLoadModal" onclick="closeModal();">&times;</button>
-        <fieldset>
-            <legend>Select a load</legend>
-            <div id="loadContainer">
-            </div>
-        </fieldset>
+        <p id="loadTitle">Select a load:</p>
+        <div id="loadContainer">
+        </div>
     </div>
     <div class="loadModalOverlay hiddenLoad"></div>
 
