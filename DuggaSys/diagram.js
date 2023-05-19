@@ -12999,7 +12999,7 @@ function showModal(){
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
 
-    var testArray = ["ERDiagram - 2021-03-13", "StateDiagram - 2021-03-13", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
+    var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
 
     while (container.firstElementChild){
         container.firstElementChild.remove();
@@ -13009,7 +13009,7 @@ function showModal(){
         var btn = document.createElement('button');
         var btnText = document.createTextNode(testArray[i]);
 
-        btn.onclick = "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();"
+        btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
 
         btn.appendChild(btnText);
         container.appendChild(btn);
