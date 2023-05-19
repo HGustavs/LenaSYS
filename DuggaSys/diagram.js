@@ -3499,7 +3499,12 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
-    return document.getElementById(element.id).getBoundingClientRect;
+    return {
+        x: element.x,
+        y: element.y,
+        width: element.width,
+        height: element.height,
+    };
 }
 
 /**
