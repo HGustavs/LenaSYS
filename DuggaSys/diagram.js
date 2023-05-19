@@ -10011,6 +10011,7 @@ function drawElement(element, ghosted = false)
                 height: ((boxh + (boxh / 2)) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
+        /*
         var noteFill = `${"#000000"}`;
         if (element.fill == `${"#FFFFFF"}` && theme.href.includes('blackTheme')) {
             noteFill = `${"#FFFFFF"}`;
@@ -10018,9 +10019,8 @@ function drawElement(element, ghosted = false)
         } else if (element.fill == `${"#000000"}` && theme.href.includes('style')) {
             element.fill = `${"#FFFFFF"}`;
             noteFill = `${"#000000"}`;
-        }
-        
-        var constCut
+        }*/
+
 
 
         //div to encapuslate note element
