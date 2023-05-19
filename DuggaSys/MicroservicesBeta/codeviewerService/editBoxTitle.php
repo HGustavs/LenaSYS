@@ -22,6 +22,7 @@
     require __DIR__ . '../Misc/checkUserStatus.php'; //Console debug
 
     echo checkUserStatusTest();
+    echo consoleDebug("Test");
 
     //Check access
     if(checklogin() && ($hasWriteAccess==true || $hasSuperAccess==true)){
