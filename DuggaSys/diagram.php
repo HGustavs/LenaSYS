@@ -1032,7 +1032,7 @@
                 <h3>
                     Save current diagram as
                 </h3>
-                <div class="cursorPointer" onclick="">
+                <div class="cursorPointer" onclick="hideSavePopout()">
                     x
                 </div>
             </div>
