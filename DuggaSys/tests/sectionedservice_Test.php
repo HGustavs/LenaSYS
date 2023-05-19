@@ -179,6 +179,7 @@ $testsData = array(
                 'entryname',
                 //'lid',
                 'pos',
+                'kind',
                 'moment',
                 //'link',
                 'visible',
