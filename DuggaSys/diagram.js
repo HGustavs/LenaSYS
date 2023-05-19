@@ -10041,9 +10041,9 @@ function drawElement(element, ghosted = false)
             str += `<path class="text"
                 d="M-${boxw - (linew * 2)},0
                     v${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}
-                    h${boxw - (linew * 2)}
-                    v-${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}  
                     h-${boxw - (linew * 2)}
+                    v-${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}  
+                    h${boxw - (linew * 2)}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
