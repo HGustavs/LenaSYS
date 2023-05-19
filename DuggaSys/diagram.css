@@ -578,6 +578,7 @@
     left: 1rem;
     font-size: 1.2rem;
     color: white;
+    background-color: #815e9d;
 }
 
 #loadHeader{
@@ -611,7 +612,7 @@
     position: absolute;
     right: 1rem;
     font-size: 2rem;
-    padding: 10px 5px;
+    padding: 5px 10px;
     color: white;
     cursor: pointer;
     border: none;

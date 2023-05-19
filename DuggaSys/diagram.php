@@ -874,10 +874,8 @@
     </div>
     
     <div class="loadModal hiddenLoad">
-        <div id="loadHeader">
-            <button id="closeLoadModal" onclick="closeModal();">&times;</button>
-            <p id="loadTitle">Select a load:</p>
-        </div>
+        <button id="closeLoadModal" onclick="closeModal();">&times;</button>
+        <p id="loadTitle">Select a load:</p>
         <div id="loadContainer">
         </div>
     </div>
