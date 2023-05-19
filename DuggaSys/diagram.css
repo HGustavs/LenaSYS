@@ -574,10 +574,11 @@
 
 #loadTitle{
     font-size: 1.2rem;
-    color: #333;
+    color: white;
 }
 
 #loadHeader{
+    margin: 0;
     display: flex;
     flex-direction: row;
     background-color: #815e9d;
