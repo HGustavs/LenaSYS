@@ -2936,6 +2936,7 @@ function changeState()
         }
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
+        console.log("its ok");
         return;
     }
 
