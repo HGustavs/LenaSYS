@@ -574,12 +574,13 @@
 }
 
 #loadTitle{
-    width: 90%;
     font-size: 1.2rem;
     color: #333;
 }
 
 #loadHeader{
+    display: flex;
+    flex-direction: row;
     background-color: #815e9d;
 }
 
@@ -606,9 +607,7 @@
 }
 
 #closeLoadModal {
-    display: inline-block;
     font-size: 2rem;
-    width: 10%;
     color: white;
     cursor: pointer;
     border: none;
