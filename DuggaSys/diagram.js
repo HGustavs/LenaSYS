@@ -9863,7 +9863,7 @@ function drawElement(element, ghosted = false)
                     stroke='none'
                     fill='${element.fill}' 
                 />`;
-                str += `<text class='text' x='${linew}' y='${boxw+texth+(linew*2)}'>${element.name}</text>`;
+                str += `<text class='text' x='${linew}' y='${boxw+texth+linew}'>${element.name}</text>`;
             }
             //fill='${element.fill}' 
             str += `</g>`;
