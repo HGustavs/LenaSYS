@@ -9825,8 +9825,8 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //svg for the actor name text
-            //make the rect fit the text if the text isnt too big
+            //svg for the actor name text, it has a background rect for ease of readability.
+            //make the rect fit the text if the text isn't too big
             if (!tooBig) {
                 //rect for sitting behind the actor text
                 str += `<rect class='text'
@@ -9839,8 +9839,9 @@ function drawElement(element, ghosted = false)
                 />`;
                 str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             }
-            //else just make a boxw width rect. and move the text slightly to fit this new rect better
+            //else just make a boxw width rect and adjust the text to fit this new rect better
             else {
+                //rect for sitting behind the actor text
                 str += `<rect class='text'
                     x='${linew}'
                     y='${boxw+(linew*2)}'
@@ -9851,7 +9852,6 @@ function drawElement(element, ghosted = false)
                 />`;
                 str += `<text class='text' x='${linew}' y='${boxw+texth}'>${element.name}</text>`;
             }
-            //fill='${element.fill}' 
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
