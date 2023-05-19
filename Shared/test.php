@@ -101,6 +101,55 @@ function doDBQuery($query, $data, $testsData, $testname){
    
 }
 
+function doDBQuery2($query){
+    $queryString = $query;
+    // $variables = $testsData['variables-' . $testname];
+    // $variablesArray = explode(", ", $variables);
+    // $result = "Error executing query";
+    // DB credentials
+    include_once("../../../coursesyspw.php");
+
+    if ($pdo == null) {
+        // Connect to DB
+        try {
+            $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+            if(!defined("MYSQL_VERSION")) {
+                define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+            }
+        } catch (PDOException $e) {
+            $result = "Failed to get DB handle: " . $e->getMessage() . "</br>";
+            exit;
+        }
+    }
+
+    // DB query to execute
+    if ($query != null) {
+        $query = $pdo->prepare($query);
+        // if (strpos($queryString, '?') !== false) {
+        //     for ($i = 0; $i < count($variablesArray); $i++) {
+        //         $variableToUse = $data[$variablesArray[$i]];
+        //         $query->bindParam($i+1, $variableToUse);
+        //     }
+        // }
+
+        if(!$query->execute()) {
+            $error=$query->errorInfo();
+            $result = "Error updating entries".$error[2];
+        }
+        else{
+            $error=$query->errorInfo();
+            $result = "Succesfully executed query but no return data".$error[2];
+            $resultQuery = $query->fetchAll();
+            if ($resultQuery != null) {
+                $result = $resultQuery;
+            }
+        }
+    }
+
+    return $result;
+   
+}
+
 function testHandler($testsData, $prettyPrint){
 
     $i = 0;
@@ -420,7 +469,6 @@ function assertEqualTestJP($valueExpected, $valueOuput, $prettyPrint){
         'value-output' => $valueOuput
     );
 }
-
 
 // Version 1.4 (Increment when new change in code)
 ?>
