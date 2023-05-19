@@ -2911,6 +2911,7 @@ function changeState()
                             Can't change type from \"${oldType}\" to \"${newType}\" as
                             different diagrams should not be able to connect to each other.`
                             )
+                            return;
                         }
                     }
                 }
@@ -2927,15 +2928,12 @@ function changeState()
                             Can't change type from \"${oldType}\" to \"${newType}\" as
                             different diagrams should not be able to connect to each other.`
                             )
+                            return;
                         }
                     }
                 }
             }
-            //else reversed
-            
         }
-        
-        return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
         return;
