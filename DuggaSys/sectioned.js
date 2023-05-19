@@ -3138,8 +3138,8 @@ $(window).on('focus', function() {
   isActivelyFocused = true;
   console.log('Window gained focus, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
-  if (lastUpdated === null || (now - lastUpdatedCodeExampes) > updateInterval) {
-      lastUpdated = now;
+  if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
+      lastUpdatedCodeExampes = now;
       createExamples(dir, momentID);
   }
 // When the window loses focus, set isActivelyFocused to false
