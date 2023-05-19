@@ -121,17 +121,17 @@
 		print "Debug - updated: ".$updated;
 
 		// Fetching the user priviliges from the MySQL database to see if the user is a superuser
-		$query = $pdo->prepare('SELECT superuser FROM user WHERE username = :username;');
-		$query->bindParam(':username', $username);
-		$query->execute();
+		// $query = $pdo->prepare('SELECT superuser FROM user WHERE username = :username;');
+		// $query->bindParam(':username', $username);
+		// $query->execute();
 
-		// Save the result in a variable
-		$userPriv = "";
-		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			$userPriv = $row['superuser'];
-		}
+		// // Save the result in a variable
+		// $userPriv = "";
+		// foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		// 	$userPriv = $row['superuser'];
+		// }
 
-		print "Debug - user priv: ".$userPriv;
+		// print "Debug - user priv: ".$userPriv;
 
 		$currentTime = time(); // Get the current time as a Unix timestamp
 		print "Debug - current time: ".$currentTime;
@@ -139,7 +139,7 @@
 		print "Debug - update time: ".$updateTime;
 
 		// Check if the user has superuser priviliges
-		if($userPriv == 1) {
+		if($username) {
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
 			} else {
