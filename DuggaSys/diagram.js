@@ -4386,8 +4386,8 @@ function toggleDarkmode()
         btn.style.color = "#614875";
         btn.style.fontWeight = "bold";
     }
-    
-    if (stylesheet.href.includes('blackTheme')) {
+
+    if (stylesheet.href.includes('blackTheme') && localStorage.getItem('diagramTheme') != null) {
         btn.style.backgroundColor ="#614875";
         btn.style.color = "#ffffff";
         btn.style.fontWeight = "normal";
