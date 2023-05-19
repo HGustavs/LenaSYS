@@ -3137,7 +3137,7 @@ $(window).on('focus', function() {
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
-      autoRefreshCodeExample(dir, momentID);
+      autoRefreshCodeExample();
   }
 // When the user stops watching course page, set isActivelyFocused to false
 }).on('blur', function() {
