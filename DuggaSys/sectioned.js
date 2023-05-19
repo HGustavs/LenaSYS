@@ -2417,6 +2417,7 @@ $(document).on('click', '#dorf', function (e) {
   e.stopPropagation();
 });
 
+
 // The event handler returns two elements. The following two if statements gets the element of interest.
 $(document).on('click', '.moment, .section, .statistics', function () {
 
@@ -3109,15 +3110,6 @@ function createExamples(dir,momentID) {
 
   console.log("** AJAX DONE **");
 
-  // Call `createExamples()` every 1 minutes with the latest dir and momentID
-  setInterval(function() {
-    if (dir !== "" && momentID !== "") {
-      createExamples(dir, momentID);
-      console.log("createExamples() called in the setInterval function.");
-    } else {
-      console.log("No dir and momentID set yet.");
-    }
-  }, 600 * 100); // set to 1 minutes currently
 }
 
 
@@ -3130,10 +3122,16 @@ function autoRefreshCodeExample(dir, momentID) {
     } else {
       console.log("No dir and momentID set yet.");
     }
-  },  60 * 100); // set to 1 minutes currently
+  },  600 * 100); // set to 1 minutes currently
 }
 
 
+$(document).ready(function(momentID) {
+  let dir = "../courses/1895/Github/Demo/Code-example1/";
+
+  // Start auto-refresh every 10 minutes
+  autoRefreshCodeExample(dir, momentID);
+});
 
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
@@ -3726,10 +3724,6 @@ function refreshMoment(momentID){
   //for loop not yet implemented, waiting for other issues to be completed before
   dirname="../courses/1895/Github/Demo/Code-example1/"
   createExamples(dirname,momentID)
-
-
-  // Start auto-refresh every 10 minutes
-  autoRefreshCodeExample(dirname, momentID);
 
 }
 
