@@ -7819,7 +7819,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
     
     // Prevent a line to be drawn between elements of different types.
-    if (fromElement.type != toElement.type) {
+    if (fromElement.type == 'NOTE' || toElement.type == 'NOTE') {
+        console.log("connected to a note")
+        return;
+    }
+    else if (fromElement.type != toElement.type ) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
     }
