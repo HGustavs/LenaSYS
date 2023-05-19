@@ -6,6 +6,8 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
+
+	//Remove when ms is working
 	//include_once ("../../../Shared/courses.php");
 	//include_once ("../../../Shared/database.php");
 
@@ -17,7 +19,7 @@
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
-	$courseId=getOP('courseid');
+	//$courseId=getOP('courseid');
 	$courseVersion=getOP('cvers');
 	$templateNumber=getOP('templateno');
 	$beforeId=getOP('beforeid');
