@@ -9807,20 +9807,6 @@ function drawElement(element, ghosted = false)
         />`;
         //actor or object is determined via the buttons in the context menu. the default is actor.
         if (element.actorOrObject == "actor") {
-            let maxLengthOfActorName = Math.floor((boxw / texth)*1.75);
-
-            /* let splitLengthyLine = (str, max) => {
-                if (str.length <= max) return str;
-                else {
-                    return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-                }
-            }
-
-            let text = element.attributes.map(line => {
-                return splitLengthyLine(line, maxCharactersPerLine);
-            }).flat(); */
-
-            //elemAttri = text.length;
             //svg for actor.
             str += `<g>`
             str += `<circle cx="${(boxw/2)+linew}" cy="${(boxw/8)+linew}" r="${boxw/8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
@@ -9839,17 +9825,17 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-
-            //rect for sitting behind the actor text
-            //make the box fit the text if the text isnt too big
+            //svg for the actor name text
+            //make the rect fit the text if the text isnt too big
             if (!tooBig) {
+                //rect for sitting behind the actor text
                 str += `<rect class='text'
                     x='${xAnchor-(textWidth/2)}'
                     y='${boxw+(linew*2)}'
                     width='${textWidth}'
                     height='${texth-linew}'
                     stroke='none'
-                    fill='${element.fill}' 
+                    fill='${element.fill}'
                 />`;
                 str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             }
@@ -9861,7 +9847,7 @@ function drawElement(element, ghosted = false)
                     width='${boxw-linew}'
                     height='${texth-linew}'
                     stroke='none'
-                    fill='${element.fill}' 
+                    fill='${element.fill}'
                 />`;
                 str += `<text class='text' x='${linew}' y='${boxw+texth}'>${element.name}</text>`;
             }
