@@ -4379,13 +4379,13 @@ function toggleDarkmode()
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
 
-   if(stylesheet.href.includes('blackTheme')){
+   if(cssUrl == 'blackTheme.css'){
     btn.style.backgroundColor ="#00FFFF";
     btn.style.border = "3px solid #614875";
     btn.style.color = "#614875";
     btn.style.fontWeight = "bold";
    }
-   else if (cssUrl == 'blackTheme.css'){
+   else if (stylesheet.href.includes('blackTheme')){
     btn.style.backgroundColor ="#FFFFFF";
     btn.style.border = "3px solid #614875";
     btn.style.color = "#614875";
