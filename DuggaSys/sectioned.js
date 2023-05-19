@@ -3104,6 +3104,7 @@ function createExamples(dir,momentID) {
     dataType: "json",
     success: function(response) {
       console.log("AJAX request succeeded. Response:", response);
+      lastUpdatedCodeExampes = Date.now();
     },
     error: function(xhr, status, error) {
       console.log("AJAX request failed. Status:", status);
