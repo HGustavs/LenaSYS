@@ -3097,6 +3097,8 @@ let dir = "../courses/1895/Github/Demo/Code-example1/";
 function createExamples(dir,momentID) {
   lid = momentID;
   dirname = dir;
+  console.log("The value of lid is: ", lid);
+
 
   console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
   console.log("** AJAX START **");
