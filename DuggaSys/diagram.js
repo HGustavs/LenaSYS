@@ -13008,8 +13008,11 @@ function showModal(){
 
     // If no items were found for loading in 
     if (!testArray){
-        var btn = document.createElement('p');
-        var btnText = document.createTextNode('No saves could be found');
+        var p = document.createElement('p');
+        var pText = document.createTextNode('No saves could be found');
+
+        p.appendChild(pText);
+        container.appendChild(p);
     }
     else{
         for (let i = 0; i<testArray.length; i++){
@@ -13018,11 +13021,11 @@ function showModal(){
     
             // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
             btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
+    
+            btn.appendChild(btnText);
+            container.appendChild(btn);
         }
     }
-
-    btn.appendChild(btnText);
-    container.appendChild(btn);
 
     modal.classList.remove('hiddenLoad');
     overlay.classList.remove('hiddenLoad');
