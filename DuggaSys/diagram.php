@@ -875,7 +875,7 @@
     
     <div class="loadModal hiddenLoad">
         <button id="closeLoadModal" onclick="closeModal();">&times;</button>
-        <p>Select a load:</p>
+        <p id="loadTitle">Select a load:</p>
         <div id="loadContainer">
         </div>
     </div>

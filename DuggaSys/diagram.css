@@ -573,7 +573,7 @@
     border: 2px solid #000;
 }
 
-.loadModal p{
+#loadTitle{
     position: absolute;
     top: 1rem;
     left: 1rem;
