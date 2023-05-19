@@ -13018,11 +13018,11 @@ function showModal(){
     
             // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
             btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
-    
-            btn.appendChild(btnText);
-            container.appendChild(btn);
         }
     }
+
+    btn.appendChild(btnText);
+    container.appendChild(btn);
 
     modal.classList.remove('hiddenLoad');
     overlay.classList.remove('hiddenLoad');
