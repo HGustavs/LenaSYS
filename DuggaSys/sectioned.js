@@ -3136,16 +3136,15 @@ function autoRefreshCodeExample(dir, momentID) {
 // When the user is watching course page, set isActivelyFocused to true
 $(window).on('focus', function(dir, momentID) {
   isActivelyFocused = true;
+  let momentID = lid;
+  let dir = "../courses/1895/Github/Demo/Code-example1/";
 
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   const now = Date.now();
   if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
       createExamples(dir, momentID);
-      console.log(momentID);
-      console.log(dir);
-      console.log(lid);
-      console.log(dirname);
+
   }
 // When the user stops watching course page, set isActivelyFocused to false
 }).on('blur', function() {
