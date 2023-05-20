@@ -8187,6 +8187,7 @@ function drawLine(line, targetGhost = false)
         line.type = 'ER';
     }
     else if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
+        console.log("linetype NOTE");
         line.type = 'NOTE';
     }
     else {
@@ -10053,15 +10054,15 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         //div to encapuslate note content
         //Draw note-content if there exist at least one attribute
-        if (elemAttri != 0) {
+        if (elemAttri >= 1 && elemAttri <= 3) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;    
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 3 / 2)} '>`;    
             //path math to create the note entity
             str += `<path class="text"
                 d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
+                    v${(boxh / 2 + (boxh * 3 / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
+                    v-${(boxh / 2 + (boxh * 3 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
                     l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
                     h-${(boxw - (linew * 2)) * 0.885}
                 "
@@ -10076,7 +10077,31 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             str += `</svg>`;
             // Draw note-content if there are no attributes.
-        } else {
+        }
+        else if (elemAttri >= 4) {
+            //svg for background
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
+            //path math to create the note entity
+            str += `<path class="text"
+                d="M${linew},${linew}
+                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
+                    h${boxw - (linew * 2)}
+                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    h-${(boxw - (linew * 2)) * 0.885}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
+            for (var i = 0; i < elemAttri; i++) {
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
+            }
+
+            //end of svg for background
+            str += `</svg>`;
+            // Draw note-content if there are no attributes.
+        }else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<path class="text"
