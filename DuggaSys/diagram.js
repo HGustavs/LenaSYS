@@ -7822,11 +7822,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     if (fromElement.type == 'NOTE' || toElement.type == 'NOTE') {
         console.log("connected to a note")
         return;
-    }*/
+    }
     if (fromElement.type != toElement.type ) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
-    }
+    }*/
     //checks if a line is drawn to UMLInitialState.
     if (toElement.kind == "UMLInitialState") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
