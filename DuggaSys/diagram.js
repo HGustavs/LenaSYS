@@ -8188,7 +8188,7 @@ function drawLine(line, targetGhost = false)
     }
     else if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
         console.log("linetype NOTE");
-        line.type = 'NOTE';
+        line.type = 'UML';
     }
     else {
         line.type = 'UML';
@@ -10058,6 +10058,7 @@ function drawElement(element, ghosted = false)
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;    
             //path math to create the note entity
+            //the 4 sets the vertical size to be the same as having written 4 lines in the element
             str += `<path class="text"
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
@@ -10081,7 +10082,7 @@ function drawElement(element, ghosted = false)
         else if (elemAttri >= 5) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
-            //path math to create the note entity
+            //path math to create the note entity and scale it with every line after the 4th line.
             str += `<path class="text"
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
@@ -10103,7 +10104,8 @@ function drawElement(element, ghosted = false)
             // Draw note-content if there are no attributes.
         }else {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4/ 2)} '>`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
+            //the 4 sets the vertical size to be the same as having written 4 lines in the element
             str += `<path class="text"
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
