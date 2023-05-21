@@ -10013,7 +10013,7 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- Start Note functionality
     else if (element.kind == "NOTE") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-       // const theme = document.getElementById("themeBlack");
+        const theme = document.getElementById("themeBlack");
         const splitLengthyLine = (str, max) => {
             if (str.length <= max) return str;
             else {
@@ -10039,7 +10039,11 @@ function drawElement(element, ghosted = false)
                 height: ((boxh + (boxh / 2)) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
-        
+        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
+            element.stroke = `${"#FFFFFF"}`;
+        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+            element.stroke = `${"#000000"}`;
+        }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;margin-top:${((boxh /2))}px; width:${boxw}px;font-size:${texth}px;`; 
