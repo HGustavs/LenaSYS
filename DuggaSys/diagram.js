@@ -10072,7 +10072,7 @@ function drawElement(element, ghosted = false)
             />`;
             str += `<path class="test"
                 d="M${linew},${linew}                                     
-                    h${(boxw - (linew * 2)) * 0.88}
+                    h${(boxw - (linew * 2)) * 0.885}
                     v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
                     h${(boxw - (linew * 2)) * 0.12}
                     l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
