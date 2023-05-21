@@ -10039,9 +10039,9 @@ function drawElement(element, ghosted = false)
                 height: ((boxh + (boxh / 2)) / zoomfact)   
         }
         NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
+        if (element.fill == `${"#000000"}` ) {
             element.stroke = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+        } else if (element.fill == `${"#FFFFFF"}`) {
             element.stroke = `${"#000000"}`;
         }
         //div to encapuslate note element
