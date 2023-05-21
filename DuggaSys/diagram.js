@@ -10052,7 +10052,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         //div to encapuslate note content
         //Draw note-content if there exist at least one attribute
-        if (elemAttri >= 1 && elemAttri <= 4) {
+        if (elemAttri <= 4) {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;    
             //path math to create the note entity
@@ -10063,10 +10063,12 @@ function drawElement(element, ghosted = false)
                     h${boxw - (linew * 2)}
                     v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
                     l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
-                    h0
+                    h1
+                    h-1
                     v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
                     h${(boxw - (linew * 2)) * 0.12}
-                    v0
+                    v1
+                    v-1
                     l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
                     h-${(boxw - (linew * 2)) * 0.885}
                 "
@@ -10082,7 +10084,7 @@ function drawElement(element, ghosted = false)
             str += `</svg>`;
             // Draw note-content if there are no attributes.
         }
-        else if (elemAttri >= 5) {
+        else{
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
             //path math to create the note entity and scale it with every line after the 4th line.
@@ -10105,25 +10107,6 @@ function drawElement(element, ghosted = false)
             //end of svg for background
             str += `</svg>`;
             // Draw note-content if there are no attributes.
-        }else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
-            //the 4 sets the vertical size to be the same as having written 4 lines in the element
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}    
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            str += `<text class='text' x='5' y='${(hboxh + boxh / 2)/2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
         }
         //end of div for UML content
         str += `</div>`;
