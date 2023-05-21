@@ -10090,10 +10090,17 @@ function drawElement(element, ghosted = false)
             //path math to create the note entity and scale it with every line after the 4th line.
             str += `<path class="text"
                 d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
+                    v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
+                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
                     l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    h1
+                    h-1
+                    v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    h${(boxw - (linew * 2)) * 0.12}
+                    v1
+                    v-1
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
                     h-${(boxw - (linew * 2)) * 0.885}
                 "
                 stroke-width='${linew}'
