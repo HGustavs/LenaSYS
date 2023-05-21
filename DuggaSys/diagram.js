@@ -7818,10 +7818,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         return;
     }
     
-    if (fromElement.type == 'NOTE' || toElement.type == 'NOTE') {
-        console.log("connected to a note")
-        return;
-    }*/
     if (fromElement.type != toElement.type && fromElement.type !== 'NOTE' && toElement.type !== 'NOTE') {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
         return;
