@@ -10013,7 +10013,7 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- Start Note functionality
     else if (element.kind == "NOTE") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-        const theme = document.getElementById("themeBlack");
+       // const theme = document.getElementById("themeBlack");
         const splitLengthyLine = (str, max) => {
             if (str.length <= max) return str;
             else {
@@ -10061,39 +10061,19 @@ function drawElement(element, ghosted = false)
                 d="M${linew},${linew}
                     v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
+                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.485}  
                     l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
                     v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
                     h${(boxw - (linew * 2)) * 0.12}
                     v-2 
                     v2 
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.485}
                     h-${(boxw - (linew * 2)) * 0.885}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            /*
-            str += `<path class=""
-                d="M${linew},${linew}                                     
-                    h${(boxw - (linew * 2)) * 0.88}
-                    v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.117}
-                    v2 
-                    v-2 
-                    l-${(boxw - (linew * 2)) * 0.115},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.88}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            /*
-            v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
-            */
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }            
