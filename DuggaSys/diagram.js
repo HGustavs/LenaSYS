@@ -7817,8 +7817,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
-    /*
-    // Prevent a line to be drawn between elements of different types.
+    
     if (fromElement.type == 'NOTE' || toElement.type == 'NOTE') {
         console.log("connected to a note")
         return;
