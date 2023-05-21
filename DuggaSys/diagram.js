@@ -8187,7 +8187,6 @@ function drawLine(line, targetGhost = false)
         line.type = 'ER';
     }
     else if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
-        console.log("linetype NOTE");
         line.type = 'UML';
     }
     else {
