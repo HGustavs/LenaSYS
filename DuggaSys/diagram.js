@@ -10033,7 +10033,11 @@ function drawElement(element, ghosted = false)
                 NOTEHeight.splice(i, 1);
             }
         }
-
+        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
+            element.fill = `${"#FFFFFF"}`;
+        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+            element.fill = `${"#000000"}`;
+        }
         // Calculate and store the NOTEEntity's real height
         var NOTEEntityHeight = {
             id: element.id,
