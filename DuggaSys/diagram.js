@@ -10033,11 +10033,6 @@ function drawElement(element, ghosted = false)
                 NOTEHeight.splice(i, 1);
             }
         }
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-            element.fill = `${"#000000"}`;
-        }
         // Calculate and store the NOTEEntity's real height
         var NOTEEntityHeight = {
             id: element.id,
@@ -10067,14 +10062,20 @@ function drawElement(element, ghosted = false)
                     v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
                     v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}                    
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    h${(boxw - (linew * 2)) * 0.117}
+                    v2 
+                    v-2 
+                    l-${(boxw - (linew * 2)) * 0.115},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
                     h-${(boxw - (linew * 2)) * 0.885}
                 "
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<path class="test"
+            /*
+            str += `<path class=""
                 d="M${linew},${linew}                                     
                     h${(boxw - (linew * 2)) * 0.88}
                     v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
