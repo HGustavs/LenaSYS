@@ -10074,7 +10074,7 @@ function drawElement(element, ghosted = false)
                 d="M${linew},${linew}                                     
                     h${(boxw - (linew * 2)) * 0.88}
                     v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.118}
+                    h${(boxw - (linew * 2)) * 0.117}
                     v2 
                     v-2 
                     l-${(boxw - (linew * 2)) * 0.115},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
