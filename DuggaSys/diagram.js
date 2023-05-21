@@ -10063,7 +10063,16 @@ function drawElement(element, ghosted = false)
                     v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
                     h${boxw - (linew * 2)}
                     v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}                    
+                    h-${(boxw - (linew * 2)) * 0.885}
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
+            str += `<path class="test"
+                d="M${linew},${linew}                                     
+                    h${(boxw - (linew * 2)) * 0.885}
                     v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
                     h${(boxw - (linew * 2)) * 0.12}
                     l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
@@ -10073,6 +10082,11 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
+            /*
+            v${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5} 
+                    h${(boxw - (linew * 2)) * 0.12}
+                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh * 1 / 2) - (linew * 2)) * 0.5}
+            */
             for (var i = 0; i < elemAttri; i++) {
               str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }            
