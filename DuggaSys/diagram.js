@@ -8406,7 +8406,7 @@ function drawLine(line, targetGhost = false)
                 var iconSizeStart = 20;
 
                 // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT) || (felem.type == 'SE' && elemsAreClose && line.innerType == null) ) {
+                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
                     let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
 
@@ -8641,7 +8641,7 @@ function drawLine(line, targetGhost = false)
                 var iconSizeEnd = 20;
 
                 // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT) || (felem.type == 'SE' && elemsAreClose && line.innerType == null)) {
+                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
                     let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
 
