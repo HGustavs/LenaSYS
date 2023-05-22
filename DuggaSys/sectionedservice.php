@@ -694,7 +694,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$query3->bindParam(":sectionname", $exampleName); 
 							$query3->execute();
 
-							$likePattern = $exampleName .'%';
+							$likePattern = $exampleName .'.%';
 
 							$varname="TESTING likePattern";	
 							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
