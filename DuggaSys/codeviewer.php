@@ -305,6 +305,8 @@ Testing Link:
 							</tr>
 
 							<tr>
+								<td>Before:<select id='before'></select></td>
+								<td>After:<select id='after'></select></td>
 							</tr>
 
 							<tr>
