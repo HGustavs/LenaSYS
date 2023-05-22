@@ -2,7 +2,7 @@
     date_default_timezone_set("Europe/Stockholm");
     pdoConnect();
 	session_start();
-    
+
     // Include basic application services
     include_once ("../../../../coursesyspw.php");
     include_once ("../../../Shared/sessions.php";)
@@ -11,7 +11,7 @@
 	include_once ("../../../Shared/database.php");
 
     function cUS(){
-
+        echo "uwu";
     }
 
     function checkUserStatusTest(){
