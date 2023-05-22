@@ -74,7 +74,6 @@
 		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $url);
-		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];
@@ -93,6 +92,8 @@
 	//--------------------------------------------------------------------------------------------------
 
 	function refreshGithubRepo($cid){
+		clearGitFiles($cid); // Clear the gitfiles table before downloading repo
+
 		// Get old commit and URL from Sqlite 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
@@ -146,7 +147,6 @@
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $repoURL);
 		$query->bindParam(':lastCommit', $lastCommit);
-		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];
@@ -166,7 +166,6 @@
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare("DELETE FROM gitFiles WHERE cid = :cid"); 
 		$query->bindParam(':cid', $cid);
-		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];
