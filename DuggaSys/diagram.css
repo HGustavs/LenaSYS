@@ -216,6 +216,8 @@
 }
 
 .diagramIcons{
+    all: unset;
+    transition: none;
     position: relative;
     margin: auto;
     width: 34px;
@@ -721,8 +723,3 @@
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
-.removeButton {
-    all: unset;
-    cursor: pointer;
-    transition: none;
-  }
