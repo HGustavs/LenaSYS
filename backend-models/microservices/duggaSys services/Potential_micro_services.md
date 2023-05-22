@@ -1,9 +1,9 @@
-# Potetial micro services
+# Potential micro services
 
 This document primaraly focuses on the services provided by the service-files, that does not mean that a complementary document wont be needed for functions that gather information, but we start with this.
 
 ---
-# LIST OF ORIGINAL FILES FILES
+# LIST OF ORIGINAL SERVICE FILES
 ---
 - accessedservice __==finished==__
 - codeviewerService __==finished==__
@@ -18,6 +18,77 @@ This document primaraly focuses on the services provided by the service-files, t
 - profileservice __==finished==__
 - resultedservice __==finished==__
 - showDuggaservice __==finished==__ 
+<br>
+<br>
+<br>
+<br>
+
+
+---
+# LIST OF POTENTIAL SERVICES
+---
+
+- logging
+- getUid
+- isSuperUser
+- hasAccess
+- setUserID
+- setActiveCourseversion
+- updateUserPassword
+- createNewCodeexample
+- createNewListentrie
+- createNewVersionOfCourse
+- setAsActiveCourse
+- UpdateUser
+- updateUsercourse
+- addClass
+- addUser
+- settingCodeexampleTemplate
+- editCodeExample
+- editContentOfCodeExample
+- editBoxTitle
+- deliteExample
+- createNewCourse
+- createCourseVersion
+- updateCourseVersion_courseed
+- changeActiveCourseVersion_courseed
+- copyCourseVersion
+- updateCourse
+- createMOTD
+- deleteCourseMaterial
+- createDugga
+- UpdateDugga
+- createDuggaVariant
+- updateDuggaVariant
+- deleteDuggaVariant
+- deleteFileLink
+- updataFileLink
+- highscoreservice
+- getGroupValues
+- getCourseGroupsAndMembers
+- deleteListentries
+- removeListentries 
+- createListentrie
+- reorderListentries
+- updateListentrie
+- updateQuizDeadline
+- updateListentriesGradesystem
+- updateCourseVersion_sectioned
+- changeActiveCourseVersion_sectioned
+- setVisibleListentrie
+- getCourseVersions
+- getGitReference
+- createGithubCodeexample
+- getUserDuggaFeedback
+- getDeletedListentries
+- changeProfileValues
+- getUserAnswar
+- updateActiveUsers
+- processDuggaFile
+- submitDugga
+- loadDugga
+
+
 
 ---
 ---
