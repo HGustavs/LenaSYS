@@ -721,11 +721,11 @@
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
-button {
+.removeButton {
     all: unset;
     cursor: pointer;
   }
   
-  button:focus {
+  .removeButton:focus {
     outline: black 2px auto;
   }
