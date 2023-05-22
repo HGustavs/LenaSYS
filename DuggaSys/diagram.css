@@ -230,6 +230,7 @@
 .diagramIcons:hover, .active, .diagramIcons:focus{
     background: var(--color-primary-hover);
     border: solid 1px var(--color-primary-light);
+    outline: auto;
 }
 .diagramIcons img{
     width:34px;
