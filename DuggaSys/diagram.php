@@ -48,14 +48,14 @@
         <fieldset>
             <legend aria-hidden="true" aria-hidden="true">Modes</legend>
             
-                <button id="mouseMode0" class="diagramIcons toolbarMode active removeButton" onclick='setMouseMode(0);'>
+                <button id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <p>Allows you to select and move different elements as well as navigate the workspace</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </button>      
-                <button id="mouseMode1" class="diagramIcons toolbarMode removeButton" onclick='setMouseMode(1);'>
+                <button id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                         <p>Click and drag to select multiple elements within the selected area</p><br>
@@ -63,7 +63,7 @@
                     </span>
                 </button>
                 <div>
-                    <div id="elementPlacement0"
+                    <button id="elementPlacement0"
                          class="ERButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(0); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
@@ -76,43 +76,43 @@
                             <br>
                             <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
-                        <div id="togglePlacementTypeButton0" class="placementTypeIcon togglePlacementTypeButton">
+                        <button id="togglePlacementTypeButton0" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
-                        </div>
-                    </div>    
+                        </button>
+                    </button>    
                     <div id="diagramPopOut">
-                        <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
-                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
+                        <button id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
+                            <button class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
                                 </span>
-                            </div>
-                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
+                            </button>
+                            <button class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
                                     <p>Change to UML class</p>
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
                                 </span>
-                            </div>
-                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
+                            </button>
+                            <button class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                     <p>Change to IE entity</p>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
                                 </span>
-                            </div>
-                            <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
+                            </button>
+                            <button class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
                                 </span>
-                            </div>
-                        </div>
+                            </button>
+                        </button>
                     </div>
                 </div>
                 <div>
