@@ -52,7 +52,7 @@
         } 
 
         if(checklogin() && (hasAccess($userid, $courseId, 'sv'))){ //Supervisor
-            $hasSvAccess= true;
+            $hasSvAccess = true;
         } else {
             $hasSvAccess = false;
         } 
@@ -63,6 +63,6 @@
             $hasSuperAccess = false;
         }
 
-        return $hasStAccess, $hasRAccess,
+        return $hasStAccess, $hasRAccess, $hasWAccess, $hasSvAccess, $hasSuperAccess;
     }
 ?>
