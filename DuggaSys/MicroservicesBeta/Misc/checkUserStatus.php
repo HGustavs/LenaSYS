@@ -4,8 +4,8 @@
     // Include basic application services
     include_once ("../../../Shared/sessions.php";)
     include_once ("../../../Shared/basic.php";)
-    include_once ("../../../Shared/courses.php");
-	include_once ("../../../Shared/database.php");
+    //include_once ("../../../Shared/courses.php");
+	//include_once ("../../../Shared/database.php");
 
     function checkUserStatusTest(){
         // Checks user id, if user has none a guest id is set
