@@ -736,7 +736,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 								
 								$visible = 0;
-								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname");
+								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;");
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":cvs", $coursevers);
 								$query->bindParam(":entryname", $exampleName);
