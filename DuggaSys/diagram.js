@@ -13047,7 +13047,7 @@ function showModal(){
     var container = document.querySelector('#loadContainer');
 
     // Array for testing visuals, remove this once once functionality has been finished
-    var testArray = [];
+let names=getAllLocalStorageKeys();
 
     // Remove all elements
     while (container.firstElementChild){
@@ -13055,7 +13055,7 @@ function showModal(){
     }
 
     // If no items were found for loading in 
-    if (testArray.length === 0){
+    if (names.length === 0){
         var p = document.createElement('p');
         var pText = document.createTextNode('No saves could be found');
 
@@ -13064,17 +13064,17 @@ function showModal(){
         console.log("no saves");
     }
     else{
-        for (let i = 0; i<testArray.length; i++){
+        for (let i = 0; i<names.length; i++){
             var btn = document.createElement('button');
-            var btnText = document.createTextNode(testArray[i]);
+            var btnText = document.createTextNode(names[i]);
+            btn.setAttribute("onclick", `(function(name) { loadDiagramFromLocalStorage(name); closeModal(); })('${names[i]}')`);
     
-            // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
-            btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
+            closeModal();
     
             btn.appendChild(btnText);
             container.appendChild(btn);
 
-            document.getElementById('loadCounter').innerHTML = testArray.length;
+            document.getElementById('loadCounter').innerHTML = names.length;
 
             console.log("saves");
         }
