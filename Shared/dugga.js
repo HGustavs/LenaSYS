@@ -1156,8 +1156,8 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="BOXCONTENT"){
 		$.ajax({
-			//url: "codeviewerService.php",
-			url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
+			url: "codeviewerService.php",
+			//url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
@@ -1165,9 +1165,8 @@ function AJAXService(opt,apara,kind)
 		});
 	}else if(kind=="BOXTITLE"){
 		$.ajax({
-			//url: "codeviewerService.php",
-			url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
-			//url: "../DuggaSys/MicroservicesBeta/Misc/checkUserStatus.php",
+			url: "codeviewerService.php",
+			//url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",

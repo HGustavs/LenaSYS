@@ -1,0 +1,123 @@
+
+Disclaimer, this guide serves as a guideline and can not be followed 100% since the structure of all files differ. It's recommended to test after each step which include code changing to so its faster to spot if something goes wrong. When this guide was written no service using retrive information was used, write guide at step 5.
+***
+##Setting up file & folder:
+***
+
+###Step 1
+Locate the folder microservices:
+***DuggaSys -> microservices***
+
+###Step 2
+If a folder named after the monolithic service file exists skip to step 3.
+Else if it does not exist, create a folder named after the service file, for example codeviewerService.php(monolithic) becomes codeviewerService(Folder).
+
+###Step 3
+Create a file with name following the naming convention in Potential_micro_services:
+***Backend-models -> microservices -> duggaSys services***
+
+**Example:**
+| codeviewerService |
+| --- |
+| editBoxTitle_ms.php |
+| createBox_ms.php |
+
+***
+##Converting monolithic to microservice:
+###Step 1
+Copy the entire service file content from the monolithic php to your new made, the purpose of this is to simmer down 
+
+###Step 2
+Remove all the “opt”s that are not relevant to you. If your function is an else if, make it into an If statement. 
+Once all irrelevant code is removed test if it still works (see “How to test: section)
+
+###Step 3
+Remove global variables that your functions do not need.
+For visuall representation, check **codeviewerService** and the microservice **editBoxTitle_ms**
+
+###Step 4
+Add the following include in code example and call getUid(); once the code is added remove code that belongs in getUid(see code example:getUid)
+#####Codeexample: Include
+```
+include ('../shared_microservices/getUid_ms.php');
+getUid();
+```
+#####Codeexample: getUid
+```
+function getUid(){
+        // Checks user id, if user has none a guest id is set
+        if(isset($_SESSION['uid'])){
+            $userid=$_SESSION['uid'];
+        }else{
+            $userid="1";
+        }
+
+        $log_uuid = getOP('log_uuid');
+        $log_timestamp = getOP('log_timestamp');
+
+        $log_uuid = getOP('log_uuid');
+        $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
+        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php",$userid,$info);
+
+        $appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
+
+        return $log_uuid;
+    }
+```
+###step 5
+If retrive information is not needed, remove it
+
+If it is needed (Write guide here :), letting it stay in file is not an solution, need to be made in to microservice)
+
+***
+##How to test:
+
+###Step 1
+First things first we need to navigate through dugga.js and find the relevant function. Easiest way to find this is to search for "url: "yourservicename.php"
+
+Figure out which of the service statements is relevant to your function, then comment out the old url and write the microservice files name(see code example: url). It will look something like this: *url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php"*
+
+
+####example: url
+```
+else if(kind=="BOXCONTENT"){
+		$.ajax({
+			//url: "codeviewerService.php",
+			url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returned
+		});
+	}else if(kind=="BOXTITLE"){
+		$.ajax({
+			//url: "codeviewerService.php",
+			url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
+			//url: "../DuggaSys/MicroservicesBeta/Misc/checkUserStatus.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedTitle
+		});
+```
+###Step 2
+Log in to the webserver through the commandline through the cmc(Will not write a guide on this, sorry people)
+
+###Step 3
+Find on LenaSys where your service is used, this can be found through the website developer tool
+
+How to find:
+ctrl + shift + i -> network -> search for service -> click around on LenaSys until your service file shows up
+
+Select the file: It should now display options
+
+Select "Preview"
+
+The JSoN data should display an “opt”, find the opt that has the same name as your function in the microservice. 
+
+***
+
+
+##Don't forget!:
+It's very important that you swap the url when done, so it doesn't cause error for the other groups, unless the website official transfers to microservices
+***

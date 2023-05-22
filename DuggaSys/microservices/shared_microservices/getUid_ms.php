@@ -19,7 +19,7 @@
 
         $log_uuid = getOP('log_uuid');
         $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
-        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "checkUserStatus.php",$userid,$info);
+        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php",$userid,$info);
 
         $appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
