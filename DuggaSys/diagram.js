@@ -12753,6 +12753,7 @@ function centerCamera()
 {
     // Stops execution if there are no elements to center the camera around.
     if (data.length == 0) {
+        displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
         return;
     }
 
@@ -12805,6 +12806,7 @@ function centerCamera()
     updateA4Pos();
     updateA4Size();
     zoomCenter(centerDiagram);
+    displayMessage(messageTypes.SUCCESS, `Centered the camera.`);
 }
 //#endregion =====================================================================================
 //#region ================================   LOAD AND EXPORTS    ==================================
