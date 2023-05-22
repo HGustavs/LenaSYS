@@ -1,5 +1,7 @@
 <?php
     date_default_timezone_set("Europe/Stockholm");
+    pdoConnect();
+	session_start();
     
     // Include basic application services
     include_once ("../../../../coursesyspw.php");
@@ -7,6 +9,10 @@
     include_once ("../../../Shared/basic.php";)
     include_once ("../../../Shared/courses.php");
 	include_once ("../../../Shared/database.php");
+
+    function cUS(){
+
+    }
 
     function checkUserStatusTest(){
         // Checks user id, if user has none a guest id is set
