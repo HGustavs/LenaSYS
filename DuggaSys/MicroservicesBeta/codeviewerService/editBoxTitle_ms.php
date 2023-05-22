@@ -6,6 +6,7 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
+	require '../Misc/checkUserStatus.php'; //Need to check user status
 
 	//Remove when ms is working
 	//include_once ("../../../Shared/courses.php");
@@ -20,6 +21,10 @@
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
 	
+	$exampleCount = 0;
+
+	checkUserStatusTest();
+	/*
 	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
@@ -33,14 +38,14 @@
 	$log_uuid = getOP('log_uuid');
 	$info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
 	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "editBoxTitle.php",$userid,$info);
-
+	*/
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
-	$exampleCount = 0;
-
+	
+	/*
   	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
   	$query->bindParam(':exampleid', $exampleId);
-	$query->execute();
+	$query->execute();*/
 
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$exampleCount++;
@@ -48,9 +53,7 @@
 
 	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
-		if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
-			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
-
+		if(checklogin() && ($hasWAccess==true || $hasSuperAccess==true)) {
 			if(strcmp('EDITTITLE',$opt)===0) {
 				$exampleid = $_POST['exampleid'];
 				$boxId = $_POST['boxid'];
