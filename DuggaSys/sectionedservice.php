@@ -709,7 +709,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$query3->execute();
 
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE ':fileName';"); 
+							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
 							$query->bindParam(':cid', $courseid);
 							$query->bindParam(':fileName', $likePattern);
 							$query->execute();
