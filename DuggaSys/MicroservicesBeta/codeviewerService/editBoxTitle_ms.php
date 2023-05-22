@@ -6,7 +6,7 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
-	include ('../Misc/checkUserStatus.php'); //Need to check user statuss
+	include ('../Misc/checkUserStatus.php');
 
 	// Connect to database and start session
 	pdoConnect();
@@ -17,7 +17,7 @@
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
 	
-	cUST();
+	checkUuid();
 
 	$exampleCount = 0;
 
@@ -29,7 +29,6 @@
 		$exampleCount++;
 	}
 
-	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
 
