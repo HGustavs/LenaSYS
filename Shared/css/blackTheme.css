@@ -1239,4 +1239,12 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   background-color: #000!important;
   color: #fff;
 }
+
+#darkmodeToggle {
+background-color: #614875;
+color: #ffffff;
+font-weight: normal;
+border: 3px solid #614875;
+}
+
 /*/ END /*/
