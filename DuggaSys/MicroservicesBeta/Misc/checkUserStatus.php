@@ -15,7 +15,7 @@
             $userid="1";
         }
 
-        // Gets username based on uid, USED FOR LOGGING
+        /*// Gets username based on uid, USED FOR LOGGING
         $query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
         $query->bindParam(':uid', $userid);
         $query-> execute();
@@ -32,7 +32,7 @@
         while ($row = $query->fetch(PDO::FETCH_ASSOC)){
             $username = $row['username'];
         }
-        /*
+        
         //Users: superuser, studentteacher, write, read, supervisor 
         // Checks and sets user rights
         if(checklogin() && (hasAccess($userid, $courseId, 'w'))){ //Write
