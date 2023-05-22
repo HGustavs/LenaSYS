@@ -35,7 +35,7 @@
 	$info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
 	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "editBoxTitle.php",$userid,$info);
 
-	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
+	//$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
 	$exampleCount = 0;
 
@@ -50,7 +50,6 @@
 	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
-			
 
 			if(strcmp('EDITTITLE',$opt)===0) {
 				$exampleid = $_POST['exampleid'];
