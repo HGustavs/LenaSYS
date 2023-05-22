@@ -9890,7 +9890,7 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}' 
             />`;
             //define a clip path for text cutoff
-            str += `<defs><clipPath id="objectTextCutOff" clipPathUnits="userSpaceOnUse">
+            /* str += `<defs><clipPath id="objectTextCutOff" clipPathUnits="userSpaceOnUse">
                     <rect y='${linew}' x='${linew}' width='${boxw - (linew * 2)}' height='${(boxw/2) - linew}' />
                 </clipPath></defs>`;
             if (!tooBig) {
@@ -9901,7 +9901,8 @@ function drawElement(element, ghosted = false)
                 //the text has a clip path of the avaliable area, this ensures that it cuts off properly when its too big.
                 str += `<text class='text' id='objectNameClipped' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'/>">${element.name}</text>`;
                 str += `<use clip-path="url(#objectTextCutOff)" xlink:href="#objectNameClipped" fill="red" />`;
-            }
+            } */
+            str += `<text class='text' id='objectNameClipped' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'/>">${element.name}</text>`;
             str += `</g>`;   
         }
         str += `</svg>`;  
