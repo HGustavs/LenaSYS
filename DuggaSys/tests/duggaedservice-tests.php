@@ -136,7 +136,7 @@ $testsData = array(
                 'disabled' => '1',
                 'coursevers' => '97732',
                 'parameter' => '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;&quot;,&quot;gType&quot;:&quot;md&quot;,&quot;gFilelink&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;Test&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
-                'variantanswer' => 'Test text)'
+                'variantanswer' => 'Test text'
             )
         ),
         'filter-output' => serialize(
@@ -151,19 +151,21 @@ $testsData = array(
         ),
     ),
 
-/*
+
     'update a variant' => array(
-        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
+        'query-before-test-1' => "SELECT vid FROM variant WHERE variantanswer = 'Test text'",
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'SAVVARI',
-                'id' => '<!query-before-test-2!> <*[0][quiz]*>',
-                'vid' => '<!query-before-test-4!> <*[0][variant]*>',
-                'disabled' => '1',
-                'param' => '{"type":"md","filelink":"","gType":"md","gFilelink":"","diagram_File":"","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""},{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}',
-                'answer' => 'new text',
+                'cid' => '2',
+                'vid' => '<!query-before-test-1!> <*[0][vid]*>',
+                'disabled' => '0',
+                'parameter' => '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;&quot;,&quot;gType&quot;:&quot;md&quot;,&quot;gFilelink&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;Test&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
+                'variantanswer' => 'Test text updated',
+                'coursevers' => '97732',
                 'username' => 'toddler',
                 'password' => 'Kong'
             )
@@ -175,9 +177,6 @@ $testsData = array(
                 'writeaccess',
                 'coursename',
                 'coursecode',
-                'entries' => array(
-                    'variantanswer'
-                ),
             )
         ),
     ),
