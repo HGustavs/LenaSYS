@@ -635,8 +635,8 @@
     border: solid 1px var(--color-primary);
 }
 .placementTypeBoxIcons:hover, .active{
-    background: var(--color-primary-hover);
-    border: solid 1px var(--color-primary-light);
+    background: var(--color-primary-light);
+    border: solid 1px var(--color-border-2);
 }
 .placementTypeBoxIcons img{
     width:34px;
