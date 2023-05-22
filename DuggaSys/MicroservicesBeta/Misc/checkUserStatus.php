@@ -1,7 +1,5 @@
 <?php
     date_default_timezone_set("Europe/Stockholm");
-    pdoConnect();
-	session_start();
 
     // Include basic application services
     include_once ("../../../../coursesyspw.php");
