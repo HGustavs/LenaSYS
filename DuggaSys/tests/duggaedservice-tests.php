@@ -122,7 +122,7 @@ $testsData = array(
 
     
     'add variant' => array(
-        'expected-output' => '{"debug":"NONE!","writeaccess":true, "entries":[{"variantanswer":"Här har vi en snygg text B)"}]}',
+        'expected-output' => '{"debug":"NONE!","writeaccess":true, "entries":[{"variantanswer":"Test text"}]}',
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
@@ -135,7 +135,7 @@ $testsData = array(
                 'disabled' => '1',
                 'coursevers' => '97732',
                 'parameter' => '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;&quot;,&quot;gType&quot;:&quot;md&quot;,&quot;gFilelink&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;Test&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
-                'variantanswer' => 'Här har vi en snygg text B)'
+                'variantanswer' => 'Test text)'
             )
         ),
         'filter-output' => serialize(
