@@ -51,18 +51,18 @@
       <g
          id="g1425">
         <path
-           style="fill:none;stroke:#ffffff;stroke-width:22.193;stroke-miterlimit:2;stroke-dasharray:none"
+           style="fill:none;stroke:#ffffff;stroke-width:21.7865;stroke-miterlimit:2;stroke-dasharray:none"
            id="path373"
+           d="M 189.10678,99.232414 A 89.104721,89.872826 0 0 1 105.18304,188.95319 89.104721,89.872826 0 0 1 11.499833,109.66601 89.104721,89.872826 0 0 1 84.529191,10.724958"
            sodipodi:type="arc"
-           sodipodi:cx="104.56462"
-           sodipodi:cy="100.00826"
-           sodipodi:rx="93.485001"
-           sodipodi:ry="88.889175"
-           sodipodi:start="0.4195548"
-           sodipodi:end="5.2982331"
            sodipodi:arc-type="arc"
-           d="M 189.9417,136.21762 A 93.485001,88.889175 0 0 1 98.172616,188.68941 93.485001,88.889175 0 0 1 14.790401,124.80374 93.485001,88.889175 0 0 1 49.199858,28.384222 93.485001,88.889175 0 0 1 156.25275,25.941742"
-           sodipodi:open="true" />
+           sodipodi:open="true"
+           sodipodi:start="0"
+           sodipodi:end="4.5378561"
+           sodipodi:ry="89.872826"
+           sodipodi:rx="89.104721"
+           sodipodi:cy="99.232414"
+           sodipodi:cx="100.00206" />
       </g>
     </g>
   </g>
