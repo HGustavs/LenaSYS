@@ -62,15 +62,7 @@
         filter: invert(80%);
         -webkit-filter: invert(80%);
     }
-/*
-    #refreshIMG, .refreshBurgerIMG{
-        cursor: pointer;
-        filter: invert(100%);
-        -webkit-filter: invert(100%);
-    }
-    */
 
-      
 #div2{
 	background-color: var(--color-background);
 }

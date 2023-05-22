@@ -863,7 +863,6 @@ p {
 }
 
 /* Turn the icons white */
-/*#refreshIMG, .refreshBurgerIMG*/
 #Sectionlist .section #dorf {
   cursor: pointer;
    filter: invert(100%); 
