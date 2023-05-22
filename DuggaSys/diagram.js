@@ -2585,7 +2585,7 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = 150; // Declare the minimal height of an object
+            const minHeight = 50; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
             
             // Functionality for the four different nodes
