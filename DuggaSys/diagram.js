@@ -2644,8 +2644,8 @@ function mmoving(event)
                 tmp = elementData.y;
                 if(elementData.kind != "EREntity"){
                     elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
-                }else{//the superstate jumps down 13 pixels when using this node for ER entities.
-                    elementData.y = screenToDiagramCoordinates(0, (startY - deltaY - 13)).y;
+                }else{//the superstate jumps down 12 pixels when using this node for ER entities.
+                    elementData.y = screenToDiagramCoordinates(0, (startY - deltaY - 12)).y;
                 }
                 
                 // Deduct the new position, giving us the total change
