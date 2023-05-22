@@ -182,7 +182,7 @@ $testsData = array(
 
     //Test works, but it is not possible to gather the correct expected output since the array is within an array, and the api is currently unable to handle it properly.
     //Test works meaning that a variant is deleted correctly when checked. All previous tests have been tested thoroughly so we now that they were added to begin with.
-    'delete varient' => array(
+    'delete variant' => array(
         'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
         'query-before-test-1' => "SELECT vid FROM variant WHERE variantanswer = 'Test text updated'",
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
