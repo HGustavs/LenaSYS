@@ -734,8 +734,33 @@ if($gradesys=="UNK") $gradesys=0;
 								$query3->bindParam(":sectionname", $exampleName); 
 								$query3->execute();
 
+								$varname="TESTING cid";	
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $varname); 
+								$query3->bindParam(":sectionname", $courseid); 
+								$query3->execute();
+
+								$varname="TESTING coursevers";	
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $varname); 
+								$query3->bindParam(":sectionname", $coursevers); 
+								$query3->execute();
+
+								$varname="TESTING exampleName";	
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $varname); 
+								$query3->bindParam(":sectionname", $exampleName); 
+								$query3->execute();
 								
 								$visible = 0;
+								$varname="TESTING visible";	
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $varname); 
+								$query3->bindParam(":sectionname", $visible); 
+								$query3->execute();
+
+								
+								
 								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;");
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":cvs", $coursevers);
