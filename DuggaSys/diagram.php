@@ -47,6 +47,7 @@
     <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
         <fieldset>
             <legend aria-hidden="true" aria-hidden="true">Modes</legend>
+            <button>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
@@ -54,6 +55,8 @@
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+            </button>
+            <button>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
@@ -61,6 +64,7 @@
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+            </button>
                 <div>
                     <div id="elementPlacement0"
                          class="ERButton diagramIcons toolbarMode"
