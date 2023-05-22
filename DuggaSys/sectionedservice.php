@@ -528,6 +528,7 @@ if($gradesys=="UNK") $gradesys=0;
 							array_push($allFiles, $temp);
 						}
 					}
+					//Get active version of the course
 					//temp fix since this branch was created after the bugfix pr 14130
 					$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid;");
 					$query->bindParam(":cid", $courseid);
@@ -550,7 +551,6 @@ if($gradesys=="UNK") $gradesys=0;
 
 						//if no codeexample exist create a new one
 						if ($counted == 0) {
-							//Get active version of the course
 							
 
 							//Get the last position in the listenries to add new course at the bottom
@@ -689,101 +689,24 @@ if($gradesys=="UNK") $gradesys=0;
 						} else {
 							//Check for update
 							//TODO: Implement update for already existing code-examples.
-
-							$varname="TESTING ELSE";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $exampleName); 
-							$query3->execute();
-
+							//Check if to be hidden
 							$likePattern = $exampleName .'.%';
-
-							$varname="TESTING likePattern";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $likePattern); 
-							$query3->execute();
-
-							$varname="TESTING cid";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $courseid); 
-							$query3->execute();
-
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
 							$query->bindParam(':cid', $courseid);
 							$query->bindParam(':fileName', $likePattern);
-							$query->execute();
-							//Check if to be hidden
-
+							$query->execute();				
 							$rows = $query->fetchAll();
 							$exampleCount = count($rows);
 							
-
-
-							$varname="TESTING exampleCount";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $exampleCount); 
-							$query3->execute();
-							
-
 							if($exampleCount==0){
-								$varname="TESTING INSIDE COUNT == 0";	
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $exampleName); 
-								$query3->execute();
-
-								$varname="TESTING cid";	
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $courseid); 
-								$query3->execute();
-
-								$varname="TESTING coursevers";	
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $coursevers); 
-								$query3->execute();
-
-								$varname="TESTING exampleName";	
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $exampleName); 
-								$query3->execute();
-
-								$visible = 0;
-								$varname="TESTING visible";	
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $visible); 
-								$query3->execute();
-
-								
-								
+								$visible = 0;																								
 								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;");
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":cvs", $coursevers);
 								$query->bindParam(":entryname", $exampleName);
 								$query->bindParam(":visible", $visible);
-								if (!$query->execute()) {
-									$error = $query->errorInfo();							
-									$varname="TESTING UPDATE ERROR";	
-									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-									$query3->bindParam(":examplename", $varname); 
-									$query3->bindParam(":sectionname", $error); 
-									$query3->execute();
-									$varname="TESTING UPDATE ERROR[2]";	
-									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-									$query3->bindParam(":examplename", $varname); 
-									$query3->bindParam(":sectionname", $error[2]); 
-									$query3->execute();
-								}
-
-									
-							
+								$query->execute();
 							}
 
 							//Check if adding box
