@@ -50,7 +50,7 @@
 	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
-			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
+			
 
 			if(strcmp('EDITTITLE',$opt)===0) {
 				$exampleid = $_POST['exampleid'];
