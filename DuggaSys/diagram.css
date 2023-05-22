@@ -2,6 +2,7 @@
     width: 100vw;
     height: 100vh;
     z-index: 5001;
+    background-color: blue;
 }
 
 #container {
