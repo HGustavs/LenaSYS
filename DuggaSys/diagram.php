@@ -44,7 +44,6 @@
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
     <!-- Toolbar for diagram -->
-    <!-- <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'> -->
     <div id="diagram-toolbar">
         <fieldset>
             <legend aria-hidden="true" aria-hidden="true">Modes</legend>
@@ -879,8 +878,7 @@
     
     <!-- Diagram drawing system canvas. -->
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
-    <!-- <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> --> <!-- Contains all elements (items) -->
-    <div id="container"></div>
+    <div id="container"></div><!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
 
