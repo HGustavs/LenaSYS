@@ -2627,7 +2627,6 @@ function mmoving(event)
                 const heightChange = -(tmp - elementData.height);
                 console.log(heightChange);
 
-                var y = elementData.y;
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
