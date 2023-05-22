@@ -80,7 +80,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </button>
                     </button>    
-                    <div id="diagramPopOut">
+                    <button id="diagramPopOut">
                         <button id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <button class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
@@ -113,7 +113,7 @@
                                 </span>
                             </button>
                         </button>
-                    </div>
+                    </button>
                 </div>
                 <div>
                     <div id="elementPlacement4"
