@@ -9882,7 +9882,7 @@ function drawElement(element, ghosted = false)
             str += `<rect class='text'
             x='${linew/2}'
             y='${linew/2}'
-            width='${boxw - (linew/2)}'
+            width='${boxw - linew}'
             height='${(boxw/2) - linew}'
             rx='${sequenceCornerRadius}'
             stroke-width='${linew}'
