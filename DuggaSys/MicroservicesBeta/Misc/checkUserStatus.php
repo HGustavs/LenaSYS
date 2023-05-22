@@ -8,7 +8,7 @@
     include_once ("../../../Shared/courses.php");
 	include_once ("../../../Shared/database.php");
 
-    function cUST($log_uuid){
+    function cUST(){
         // Checks user id, if user has none a guest id is set
         if(isset($_SESSION['uid'])){
             $userid=$_SESSION['uid'];
