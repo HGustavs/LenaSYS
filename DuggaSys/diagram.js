@@ -12862,7 +12862,34 @@ function exportWithHistory()
             historyLog: stateMachine.historyLog,
             initialState: stateMachine.initialState
         };
-        localStorage.setItem(key,JSON.stringify(objToSave));
+
+        // Sets the autosave diagram first, if it is not already set.
+        if (!localStorage.getItem("diagrams")) {
+            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`
+            localStorage.setItem("diagrams", s);
+        }
+
+        if (localStorage.getItem("diagrams")) {
+            let local = localStorage.getItem("diagrams");
+            local = (local[0] == "{") ? local : `{${local}}`;
+
+            let localDiagrams = JSON.parse(local);
+            let keys = Object.keys(localDiagrams);
+            for (let i = 0; i < keys.length; i++) {
+                if (key == keys[i]) {
+                    localDiagrams[keys[i]] = objToSave;
+                    localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+                    return;
+                }
+            }
+            localDiagrams[key] = objToSave;
+            localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+        }
+        else {
+            let t = `"${key}": ${JSON.stringify(objToSave)}`;
+            localStorage.setItem("diagrams", t);
+        }
+
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
 }
@@ -13045,9 +13072,15 @@ function showModal(){
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
+    let diagramKeys;
+    let localDiagrams;
 
-    // Array for testing visuals, remove this once once functionality has been finished
-    var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
+    let local = localStorage.getItem("diagrams");
+    if (local != null) {
+        local = (local[0] == "{") ? local : `{${local}}`;
+        localDiagrams = JSON.parse(local);
+        diagramKeys = Object.keys(localDiagrams);
+    }
 
     // Remove all elements
     while (container.firstElementChild){
@@ -13055,28 +13088,23 @@ function showModal(){
     }
 
     // If no items were found for loading in 
-    if (testArray.length === 0){
+    if (diagramKeys === undefined || diagramKeys.length === 0){
         var p = document.createElement('p');
         var pText = document.createTextNode('No saves could be found');
 
         p.appendChild(pText);
         container.appendChild(p);
-        console.log("no saves");
     }
     else{
-        for (let i = 0; i<testArray.length; i++){
+        for (let i = 0; i < diagramKeys.length; i++){
             var btn = document.createElement('button');
-            var btnText = document.createTextNode(testArray[i]);
-    
-            // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
-            btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
-    
+            var btnText = document.createTextNode(diagramKeys[i]);
+
+            btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
             container.appendChild(btn);
 
-            document.getElementById('loadCounter').innerHTML = testArray.length;
-
-            console.log("saves");
+            document.getElementById('loadCounter').innerHTML = diagramKeys.length;
         }
     }
 
@@ -13095,9 +13123,14 @@ function closeModal(){
  function loadDiagramFromLocalStorage(key)
 {
     // Check whether there is a diagram saved in localstorage and load it. key for current diagram is CurrentlyActiveDiagram
-    if (localStorage.getItem(key)) {
-        var diagramFromLocalStorage = localStorage.getItem(key);
-        loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
+    if (localStorage.getItem("diagrams")) {
+        var diagramFromLocalStorage = localStorage.getItem("diagrams");
+        diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage: `{${diagramFromLocalStorage}}`;
+        let obj = JSON.parse(diagramFromLocalStorage);
+        if (obj[key] === undefined) {
+            return;
+        }
+        loadDiagramFromString(obj[key]);
     } else {
         // Failed to load content
         console.error("No content to load")
@@ -13109,7 +13142,7 @@ function saveDiagramBeforeUnload() {
     window.addEventListener("beforeunload", (e) => {
         e.preventDefault();
         e.returnValue = "";
-        storeDiagramInLocalStorage("CurrentlyActiveDiagram");
+        storeDiagramInLocalStorage("AutoSave");
     })
 }
 
@@ -13130,8 +13163,7 @@ function saveDiagramAs()
     let fileName = elem.value;
     elem.value = "";
     if (fileName.trim() == "") {
-        // fileName = "Untitled"
-        fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
+        fileName = "Untitled";
     }
 
     storeDiagramInLocalStorage(fileName);
