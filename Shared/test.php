@@ -164,7 +164,7 @@ function testHandler($testsData, $prettyPrint){
 
         // Test 2 callService
         $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
-        $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true, );
+        $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
 
         // Test 3 assertEqual
