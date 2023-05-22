@@ -1402,8 +1402,8 @@ function getData()
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
 
-    document.getElementById("diagram-toolbar").addEventListener("onmousedown", mdown(this));
-    document.getElementById("diagram-toolbar").addEventListener("onmouseup", tup());
+    document.getElementById("diagram-toolbar").addEventListener("onmousedown", mdown);
+    document.getElementById("diagram-toolbar").addEventListener("onmouseup", tup);
     // onSetup();
     //debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
