@@ -201,7 +201,7 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton'>";
             	echo "<span id='refreshBTN' title='Refresh Github repo' value='Refresh' href='#'>";
-             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' onclick='refreshGithubRepo(".$_SESSION['courseid'].");' src='../Shared/icons/refresh.svg'>";
+             	echo "<img alt='refresh icon' id='refreshIMG' class='navButt whiteIcon' onclick='refreshGithubRepo(".$_SESSION['courseid'].");' src='../Shared/icons/gitrefresh.svg'>";
 							echo "</span>";
 							echo "</div>";
 							echo "</td>";
@@ -247,7 +247,7 @@
 							// Refresh button for Github repo in hamburger menu
 							echo "<div id='refreshBurger 'onclick='refreshGithubRepo(".$_SESSION['courseid'].");' style ='cursor:pointer;'>";
             	echo "<span id='refreshBTN' title='Refresh Github Repo' value='Refresh' href='#'>";
-							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' src='../Shared/icons/refresh.svg'>";
+							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' src='../Shared/icons/gitrefresh.svg'>";
 							echo "</span";
 							echo "<a class='burgerButtText' href='#' >Refresh github repo</a></div>";
 					
