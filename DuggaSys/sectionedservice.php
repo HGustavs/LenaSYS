@@ -528,6 +528,12 @@ if($gradesys=="UNK") $gradesys=0;
 							array_push($allFiles, $temp);
 						}
 					}
+					//temp fix since this branch was created after the bugfix pr 14130
+					$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid;");
+					$query->bindParam(":cid", $courseid);
+					$query->execute();
+					$e = $query->fetchAll();
+					$coursevers = $e[0]['activeversion'];
 					
 
 					foreach($allFiles as $groupedFiles){	
@@ -545,11 +551,7 @@ if($gradesys=="UNK") $gradesys=0;
 						//if no codeexample exist create a new one
 						if ($counted == 0) {
 							//Get active version of the course
-							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid;");
-							$query->bindParam(":cid", $courseid);
-							$query->execute();
-							$e = $query->fetchAll();
-							$coursevers = $e[0]['activeversion'];
+							
 
 							//Get the last position in the listenries to add new course at the bottom
 							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
@@ -751,7 +753,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query3->bindParam(":examplename", $varname); 
 								$query3->bindParam(":sectionname", $exampleName); 
 								$query3->execute();
-								
+
 								$visible = 0;
 								$varname="TESTING visible";	
 								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
