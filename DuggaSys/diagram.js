@@ -8171,6 +8171,7 @@ function drawLine(line, targetGhost = false)
     //gives the lines the correct type based on the from and to element.
     if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
         line.type = 'UML';
+        var strokeDash = "10";
     }
     else if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
