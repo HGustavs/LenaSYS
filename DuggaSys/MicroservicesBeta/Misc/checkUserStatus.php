@@ -2,11 +2,9 @@
     date_default_timezone_set("Europe/Stockholm");
     
     // Include basic application services
-    include_once ("../../../Shared/sessions.php");
     include_once ("../../../../coursesyspw.php");
+    include_once ("../../../Shared/sessions.php");
     include_once ("../../../Shared/basic.php");
-    //include_once ("../../../Shared/courses.php");
-	//include_once ("../../../Shared/database.php");
 
     function checkUuid(){
         // Checks user id, if user has none a guest id is set
