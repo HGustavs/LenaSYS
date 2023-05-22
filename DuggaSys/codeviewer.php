@@ -305,7 +305,6 @@ Testing Link:
 							</tr>
 
 							<tr>
-								<td>After:<select id='after'></select></td>
 							</tr>
 
 							<tr>
