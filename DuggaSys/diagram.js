@@ -13138,7 +13138,15 @@ function saveDiagramAs()
     if (fileName.trim() == "") {
         fileName = "Untitled";
     }
-
+    const names=getAllLocalStorageKeys();
+    for(let i=0; i<names.length; i++)
+    {
+        if(names[i]==fileName)
+        {
+            alert("about to override");
+            break;
+        }
+    }
     storeDiagramInLocalStorage(fileName);
 }
 
