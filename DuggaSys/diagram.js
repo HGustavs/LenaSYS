@@ -9902,7 +9902,7 @@ function drawElement(element, ghosted = false)
                 str += `<text class='text' id='objectNameClipped' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'/>">${element.name}</text>`;
                 str += `<use clip-path="url(#objectTextCutOff)" xlink:href="#objectNameClipped" fill="red" />`;
             } */
-            str += `<text class='text' id='objectNameClipped' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'/>">${element.name}</text>`;
+            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `</g>`;   
         }
         str += `</svg>`;  
