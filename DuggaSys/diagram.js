@@ -9891,8 +9891,8 @@ function drawElement(element, ghosted = false)
             />`;
             //define a clip path for text cutoff
             str += `<clipPath id="objectTextCutOff" clipPathUnits="objectBoundingBox">
-                    <rect y="'${linew}'" x="'${linew}'" width="'${boxw - (linew * 2)}'" height="'${(boxw/2) - linew}'" />
-                </clipPath>`;
+                    <rect y='${linew}' x='${linew}' width='${boxw - (linew * 2)}' height='${(boxw/2) - linew}' />
+                </clipPath>`
             if (!tooBig) {
                 str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             }
