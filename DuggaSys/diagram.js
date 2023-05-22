@@ -6918,7 +6918,7 @@ function generateContextProperties()
 
         value = Object.values(lineKind);
         //this creates line kinds for UML IE AND ER
-        if(contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER') {
+          if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER' || contextLine[0].type == 'NOTE') {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
             for(var i = 0; i < value.length; i++){
                 if(i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null){
@@ -6953,7 +6953,7 @@ function generateContextProperties()
                 }
             }
         }
-        if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD')) {
+          if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD' || contextLine[0].type == 'NOTE')) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
             str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6967,7 +6967,7 @@ function generateContextProperties()
             if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
             str += `/>`;
         }
-        if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' ) {
+        if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE'  ) {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
@@ -8170,7 +8170,7 @@ function drawLine(line, targetGhost = false)
     } */
     //gives the lines the correct type based on the from and to element.
     if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
-        line.type = 'UML';
+        line.type = 'NOTE';
         var strokeDash = "10";
     }
     else if ((felem.type == 'SD') || (telem.type == 'SD')) {
