@@ -714,10 +714,13 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->bindParam(':fileName', $likePattern);
 							$query->execute();
 							//Check if to be hidden
-							$exampleCount = $query->rowCount();
+
+							$rows = $query->fetchAll();
+							$exampleCount = count($rows);
+							
 
 
-							$varname="TESTING rowCount";	
+							$varname="TESTING exampleCount";	
 							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 							$query3->bindParam(":examplename", $varname); 
 							$query3->bindParam(":sectionname", $exampleCount); 
