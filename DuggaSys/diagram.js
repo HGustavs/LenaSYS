@@ -8169,7 +8169,10 @@ function drawLine(line, targetGhost = false)
         line.type = 'ER';
     } */
     //gives the lines the correct type based on the from and to element.
-    if ((felem.type == 'SD') || (telem.type == 'SD')) {
+    if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
+        line.type = 'UML';
+    }
+    else if ((felem.type == 'SD') || (telem.type == 'SD')) {
         line.type = 'SD';
         if (targetGhost) {
             line.endIcon = "ARROW";
@@ -8181,9 +8184,7 @@ function drawLine(line, targetGhost = false)
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
     }
-    else if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
-        line.type = 'UML';
-    }
+    
     else {
         line.type = 'UML';
     }
