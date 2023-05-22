@@ -1403,12 +1403,12 @@ function getData()
     DiagramResponse = fetchDiagram();
 
     //add event listeners 
-    document.getElementById("diagram-toolbar").addEventListener("onmousedown", mdown);
-    document.getElementById("diagram-toolbar").addEventListener("onmouseup", tup);
-    document.getElementById("container").addEventListener("onmousedown", mdown);
-    document.getElementById("container").addEventListener("onmouseup", mup);
-    document.getElementById("container").addEventListener("onmousemove", mmoving);
-    document.getElementById("container").addEventListener("onwheel", mwheel);
+    document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
+    document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
+    document.getElementById("container").addEventListener("mousedown", mdown);
+    document.getElementById("container").addEventListener("mouseup", mup);
+    document.getElementById("container").addEventListener("mousemove", mmoving);
+    document.getElementById("container").addEventListener("wheel", mwheel);
     // onSetup();
     //debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
