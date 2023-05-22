@@ -3146,7 +3146,7 @@ function changeLineProperties()
         }
     }
     // SD line
-    if (line.type == 'SD' || line.type == 'SE') {
+    if (line.type == 'SD') {
         if (line.innerType != lineType.value) {
             lineType.value = lineType.value.trim();
             line.innerType = lineType.value
