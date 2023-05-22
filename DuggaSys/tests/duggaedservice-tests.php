@@ -49,8 +49,8 @@ $testsData = array(
     
     'update an assignment' => array(
         'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"AutomaticTest"}]}',
-        'query-before-test-1' => "INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline) 
-         VALUES (1885, 0, 1, 'AutomaticTest', 'Quiz', '2023-04-27 00:00:00', '2023-04-29 00:00:00', 2, '1337', '2023-04-17', '{&quot;deadline1&quot;:&quot;2023-04-27 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;&quot;,&quot;comment3&quot;:&quot;&quot;}', 0);",
+        'query-before-test-1' => "INSERT INTO quiz(cid,qid,autograde,gradesys,qname,qrelease,deadline,vers,qstart,jsondeadline,quizfile) 
+         VALUES (2, 'UNK', 0, 1, 'TestDugga3', '2023-05-26 0:0', '2023-05-24 0:0', '97732', '2023-05-23 0:0', '{&quot;deadline1&quot;:&quot;2023-05-24 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;2023-05-24 0:0&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;2023-05-25 0:0&quot;,&quot;comment3&quot;:&quot;&quot;}', '3d-dugga');",
         'query-before-test-2' => "SELECT MAX(id) FROM quiz",
         'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
@@ -60,7 +60,7 @@ $testsData = array(
                 'opt' => 'SAVDUGGA',
                 'qid' => '<!query-before-test-2!> <*[0][quiz]*>',
                 'cid' => '2',
-                'nme' => 'TestDugga3',
+                'nme' => 'TestDugga4',
 
                 // this is automatically added depending on what session is active (if any), we want the value to be 2
                 'coursevers' => '97732',
