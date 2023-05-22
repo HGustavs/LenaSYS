@@ -217,7 +217,6 @@
 
 .diagramIcons{
     all: unset;
-    transition: none;
     position: relative;
     margin: auto;
     width: 34px;
