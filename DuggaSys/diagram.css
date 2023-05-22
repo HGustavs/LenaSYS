@@ -3,7 +3,7 @@
     height: 100vh;
     z-index: 9999;
     display: flex;
-    background: no-repeat center/80% url("../Shared/icons/diagram_lifeline.svg");
+    background: no-repeat center center url("../Shared/icons/diagram_lifeline.svg");
 }
 /* #loadingSpinner img{
     width: 50vh;
