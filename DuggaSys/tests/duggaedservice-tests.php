@@ -123,21 +123,18 @@ $testsData = array(
     
     'add variant' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
-        'query-before-test-1' => "INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,group) VALUES(1885, 0, 1, 'AutomaticTest', 'Quiz', '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot,deadline1&quot,:&quot,2023-04-27 0:0&quot,,&quot,comment1&quot,:&quot,&quot,,&quot,deadline2&quot,:&quot,&quot,,&quot,comment2&quot,:&quot,&quot,,&quot,deadline3&quot,:&quot,&quot,,&quot,comment3&quot,:&quot,&quot,}', 0);",
-        'query-before-test-2' => "SELECT MAX(id) FROM quiz",
-        //'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1;",
         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'ADDVARI',
-                'username' => 'toddler',
-                'password' => 'Kong',
-                'qid' => '<!query-before-test-2!> <*[0][id]*>',
-                'userid' => '2',
+                'username' => 'brom',
+                'password' => 'password',
+                'qid' => '12',
+                'cid' => '2',
                 'disabled' => '1',
-                'param' => '{"type":"md","filelink":"md","gType":"","diagram_File":"Empty canvas","diagram_type":{"ER":true,"UML":false,"IE":false},"extraparam":"","notes":"","submissions":[{"type":"pdf","fieldname":"","instruction":""}],"errorActive":false}',
-                'answer' => 'Bara Text'
+                'parameter' => '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;&quot;,&quot;gType&quot;:&quot;md&quot;,&quot;gFilelink&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;Test&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
+                'variantanswer' => 'Här har vi en snygg text B)'
             )
         ),
         'filter-output' => serialize(
