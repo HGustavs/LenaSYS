@@ -1159,10 +1159,9 @@ var defaultLine = { kind: "Normal" };
 //#region ================================ INIT AND SETUP       ================================
 //an event listener for when the window is loaded, this hides the loading spinner.
 window.addEventListener("DOMContentLoaded", (event) => {
-    console.log(event);
-    document.getElementById("loadingSpinner").style.display="none";
     getData();
     addAlertOnUnload();
+    document.getElementById("loadingSpinner").style.display="none";
 });
 /**
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
