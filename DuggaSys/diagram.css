@@ -227,10 +227,7 @@
     
    
 }
-.toolbarMode:focus {
-    outline:auto;
-}
-.diagramIcons:hover, .active{
+.diagramIcons:hover, .active, .diagramIcons:focus{
     background: var(--color-primary-hover);
     border: solid 1px var(--color-primary-light);
 }
