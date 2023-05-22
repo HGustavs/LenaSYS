@@ -8,7 +8,11 @@
     include_once ("../../../Shared/courses.php");
 	include_once ("../../../Shared/database.php");
 
-    function checkUserStatusTest(){
+    function cUST(){
+        echo "uwu";
+    }
+
+    /*function checkUserStatusTest(){
         // Checks user id, if user has none a guest id is set
         if(isset($_SESSION['uid'])){
             $userid=$_SESSION['uid'];
@@ -67,5 +71,5 @@
         }
 
         return $hasStAccess, $hasRAccess, $hasWAccess, $hasSvAccess, $hasSuperAccess;
-    }
+    }*/
 ?>
