@@ -610,9 +610,7 @@
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
 									// Creates an option for each directory containing the string "Examples". 
-									if(strstr($dirname, 'Examples')) {
-										echo "<option value='$dirname'>$dirname</option>";
-									}		
+									echo "<option value='$dirname'>$dirname</option>";	
 								}			
 							?>
 						</select>
