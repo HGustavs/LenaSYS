@@ -5,7 +5,7 @@ include "../../Shared/test.php";
 
 $testsData = array(
     // Test 1
-    'create access test' => array(
+    'update firstname test' => array(
         'expected-output' => '', // Look up output
         'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -13,7 +13,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array( // The data that the service needs to execute
-            'opt' => 'UPDAT', // May change UPDAT to UPDATE
+            'opt' => 'UPDATE',
             'prop' => 'firstname',
             'val' => 'test',
             'uid' => 'testuser1',
@@ -24,7 +24,7 @@ $testsData = array(
         )),
     ),
     // Test 2
-    'create access test 2' => array(
+    'update lastname test 2' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -32,7 +32,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array( 
-            'opt' => 'UPDAT',
+            'opt' => 'UPDATE',
             'prop' => 'lastname',
             'val' => 'test',
             'uid' => 'testuser1',
@@ -43,7 +43,7 @@ $testsData = array(
         )),
     ),
     // Test 3
-    'create access test 3' => array(
+    'update ssn test 3' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -51,7 +51,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
-            'opt' => 'UPDAT',
+            'opt' => 'UPDATE',
             'prop' => 'ssn',
             'val' => 'test',
             'uid' => 'testuser1',
@@ -62,7 +62,7 @@ $testsData = array(
         )),
     ),
     // Test 4
-    'create access test 4' => array(
+    'update username test 4' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -70,7 +70,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
-            'opt' => 'UPDAT',
+            'opt' => 'UPDATE',
             'prop' => 'username',
             'val' => 'test',
             'uid' => 'testuser1',
@@ -81,7 +81,7 @@ $testsData = array(
         )),
     ),
     // Test 5
-    'create access test 5' => array(
+    'update class test 5' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'", 
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -89,7 +89,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
-            'opt' => 'UPDAT',
+            'opt' => 'UPDATE',
             'prop' => 'class',
             'val' => 'test',
             'uid' => 'testuser1',
@@ -100,7 +100,7 @@ $testsData = array(
         )),
     ),
     // Test 6
-    'create access test 6' => array(
+    'update examiner test 6' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -108,7 +108,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM course WHERE cid = 'testtest'",
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(array(
-            'opt' => 'UPDAT',
+            'opt' => 'UPDATE',
             'prop' => 'examiner',
             'val' => 'test',
             'uid' => '2',
@@ -120,8 +120,7 @@ $testsData = array(
         )),
     ),
     // Test 7
-    // Part of Test 6 when the examiner value is NONE!
-    'create access test 7' => array(
+    'update none examiner test 7' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -129,7 +128,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'testtest'", 
         'service' => 'https://cms.webug.se/root/G2/a20fanma/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' =>serialize(array(
-            'opt' => 'UPDAT',
+            'opt' => 'UPDATE',
             'prop' => 'examiner',
             'val' => 'None',
             'uid' => '2',
@@ -141,7 +140,7 @@ $testsData = array(
         )),
     ),
     // Test 8
-    'create access test 8' => array(
+    'update version test 8' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -163,7 +162,7 @@ $testsData = array(
         )),
     ),
     // Test 9
-    'create access test 9' => array(
+    'update access test 9' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         'variables-query-before-test-2' => "variableSave", // Save query output 
@@ -185,7 +184,7 @@ $testsData = array(
         )),
     ),
     // Test 10
-    'creat access test 10' => array(
+    'update group test 10' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'", 
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -207,7 +206,7 @@ $testsData = array(
         )),
     ),
     // Test 11
-    'create access test 11' => array(
+    'add class test 11' => array(
         'expected-output' => '',
         'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2, 'testClassName', 12345678, '87654321', 7.5, 100, 1.5)",
         'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass'",
@@ -228,7 +227,7 @@ $testsData = array(
         )),
     ),
     // Test 12
-    'create access test 12' => array(
+    'change password test 12' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-2' => "variableSave", // Save query output
@@ -246,7 +245,7 @@ $testsData = array(
         )),
     ),
     // Test 13
-    'create access test 13' => array(
+    'add user test 13' => array(
         'expected-output' => '',
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')",
         'query-before-test-2' => "INSERT INTO class(class, responsible, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2,'testClassName', 12345678, '87654321', 7.5, 100, 1.5)",
@@ -268,7 +267,7 @@ $testsData = array(
         )),
     ),
     // Test 14
-    'create access test 14' => array(
+    'add user none exist class test 14' => array(
         'expected-output' => '',
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')",
         'query-before-test-2' => "INSERT INTO class(class, responsible, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2,'testClassName', 12345678, '87654321', 7.5, 100, 1.5)",
@@ -292,7 +291,7 @@ $testsData = array(
         )),
     ),
     // Test 15
-    'create access test 15' => array(
+    'connect user to user_course test 15' => array(
         'expected-output' => '',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         'variables-query-before-test-2' => "variableSave", // Save query output
