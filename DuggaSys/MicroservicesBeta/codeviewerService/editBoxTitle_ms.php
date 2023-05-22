@@ -6,11 +6,7 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
-	//include ('../Misc/checkUserStatus.php'); //Need to check user status
-
-	//Remove when ms is working
-	//include_once ("../../../Shared/courses.php");
-	//include_once ("../../../Shared/database.php");
+	//include ('../Misc/checkUserStatus.php'); //Need to check user statuss
 
 	// Connect to database and start session
 	pdoConnect();
