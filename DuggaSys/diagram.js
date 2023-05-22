@@ -13131,6 +13131,14 @@ function hideSavePopout()
     $("#savePopoutContainer").css("display", "none");
 }
 
+function showOverridePopout() {
+    $("#overrideContainer").css("display", "flex");
+}
+
+function closeOverridePopout() {
+    $("#overrideContainer").css("display", "none");
+}
+
 function saveDiagramAs()
 {
     let elem = document.getElementById("saveDiagramAs");
@@ -13152,8 +13160,8 @@ function saveDiagramAs()
     {
         if(names[i]==fileName)
         {
-            alert("about to override");
-            break;
+            hideSavePopout();
+            showOverridePopout()
         }
     }
     storeDiagramInLocalStorage(fileName);

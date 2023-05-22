@@ -883,6 +883,28 @@
     </div>
     <div class="loadModalOverlay hiddenLoad"></div>
 
+    <div id="overrideContainer" class="loginBoxContainer" style="display:none">
+        <div class="loginBox">
+            <div class="loginBoxheader">
+                <h3>
+                    Filename already exists
+                </h3>
+                <div class="cursorPointer" onclick="closeOverridePopout()">
+                    x
+                </div>
+            </div>
+            <div id="savePopout" style="margin-top:15px;display:block">
+                <div>
+                    <p>Do you want to overwrite the existing file?</p>
+                </div>
+                <div class="button-row">
+                    <button class="submit-button" onclick="closeOverridePopout(), showSavePopout()">Cancel</button>
+                    <button class="submit-button" onclick="saveDiagramAs(), closeOverridePopout()">Overwrite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Message prompt -->
     <div id="diagram-message"></div>
     
