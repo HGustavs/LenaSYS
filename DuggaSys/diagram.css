@@ -1,3 +1,9 @@
+#loadingSpinner{
+    width: 100vw;
+    height: 100vh;
+    z-index: 5001;
+}
+
 #container {
     position:absolute;
     left:0;

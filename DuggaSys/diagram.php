@@ -33,7 +33,12 @@
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
 <body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
-        
+    
+    <div id="loadingSpinner">
+        <!-- temporary image -->
+        <img src="../Shared/icons/diagram_entity.svg"/>
+    </div>
+
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">
 
