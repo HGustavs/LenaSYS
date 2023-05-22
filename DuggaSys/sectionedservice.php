@@ -544,12 +544,12 @@ if($gradesys=="UNK") $gradesys=0;
 
 						//if no codeexample exist create a new one
 						if ($counted == 0) {
-							//Get active version of the course
-							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
-							$query->bindParam(":cid", $courseid);
+							//Get the version of the course from where the button was pressed
+							$query = $pdo->prepare("SELECT vers FROM listentries WHERE lid=:lid");
+							$query->bindParam(":lid", $lid);
 							$query->execute();
 							$e = $query->fetchAll();
-							$coursevers = $e[0]['activeversion'];
+							$coursevers = $e[0]['vers'];
 
 							//Get the last position in the listenries to add new course at the bottom
 							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
