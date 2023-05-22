@@ -9879,17 +9879,17 @@ function drawElement(element, ghosted = false)
         else if (element.actorOrObject == "object") {
             //svg for object.
             str += `<g>`;
-            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `<rect class='text'
-                x='${linew/2}'
-                y='${linew/2}'
-                width='${boxw - (linew/2)}'
-                height='${(boxw/2) - linew}'
-                rx='${sequenceCornerRadius}'
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}' 
+            x='${linew/2}'
+            y='${linew/2}'
+            width='${boxw - (linew/2)}'
+            height='${(boxw/2) - linew}'
+            rx='${sequenceCornerRadius}'
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}' 
             />`;
+            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             //define a clip path for text cutoff
             /* str += `<defs><clipPath id="objectTextCutOff" clipPathUnits="userSpaceOnUse">
                     <rect y='${linew}' x='${linew}' width='${boxw - (linew * 2)}' height='${(boxw/2) - linew}' />
