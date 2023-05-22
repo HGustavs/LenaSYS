@@ -2641,7 +2641,11 @@ function mmoving(event)
                 // Fetch original y-position
                 // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
                 tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+                if(elementData.kind != "EREntity"){
+                    elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+                }else{//the superstate jumps down 30 pixels when using this node for ER entities.
+                    elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 30)).y;
+                }
                 
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
