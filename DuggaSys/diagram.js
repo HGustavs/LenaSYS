@@ -3085,12 +3085,14 @@ function changeLineProperties()
     var line = contextLine[0];
 
     if (radio1) {
+        console.log("r1");
         if (radio1.checked && line.kind != radio1.value) {
             line.kind = radio1.value;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     } 
     else if(radio2){
+        console.log("r2");
         if(radio2.checked && line.kind != radio2.value){
             line.kind = radio2.value;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
