@@ -300,7 +300,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         echo "<br>";
         echo "<strong>sent data: </strong>".json_encode($data,true);
         echo "<br>";
-        echo "<strong>respons: </strong>".json_encode($curlResponseJSON, true);
+        echo "<strong>respons: </strong>".json_encode($curlResponseJSONFiltered, true);
         echo "<br>";
         echo "<br>";
     }
