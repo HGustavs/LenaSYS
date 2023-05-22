@@ -48,20 +48,20 @@
         <fieldset>
             <legend aria-hidden="true" aria-hidden="true">Modes</legend>
             
-                <div tabindex="0" id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
+                <button id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <p>Allows you to select and move different elements as well as navigate the workspace</p><br>
                         <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>      
-                <div tabindex="1" id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
+                </button>      
+                <button id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                         <p>Click and drag to select multiple elements within the selected area</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
-                </div>
+                </button>
                 <div>
                     <div id="elementPlacement0"
                          class="ERButton diagramIcons toolbarMode"

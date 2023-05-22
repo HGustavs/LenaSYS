@@ -721,3 +721,11 @@
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
+button {
+    all: unset;
+    cursor: pointer;
+  }
+  
+  button:focus {
+    outline: black 2px auto;
+  }
