@@ -584,7 +584,6 @@
     display: flex;
     flex-direction: row;
     background-color: #eb4;
-    max-height: 30px;
 }
 
 #loadContainer{
