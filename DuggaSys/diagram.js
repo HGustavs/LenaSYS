@@ -9879,10 +9879,11 @@ function drawElement(element, ghosted = false)
         else if (element.actorOrObject == "object") {
             //svg for object.
             str += `<g>`;
+            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw - (linew * 2)}'
+                x='${linew/2}'
+                y='${linew/2}'
+                width='${boxw - (linew/2)}'
                 height='${(boxw/2) - linew}'
                 rx='${sequenceCornerRadius}'
                 stroke-width='${linew}'
@@ -9902,7 +9903,6 @@ function drawElement(element, ghosted = false)
                 str += `<text class='text' id='objectNameClipped' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'/>">${element.name}</text>`;
                 str += `<use clip-path="url(#objectTextCutOff)" xlink:href="#objectNameClipped" fill="red" />`;
             } */
-            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `</g>`;   
         }
         str += `</svg>`;  
