@@ -9889,8 +9889,13 @@ function drawElement(element, ghosted = false)
             stroke='${element.stroke}'
             fill='${element.fill}' 
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            //define a clip path for text cutoff
+            if (!tooBig) {
+                str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            }
+            else{
+                str += `<text class='text' x='${linew}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle'>${element.name}</text>`;
+            }
+                //define a clip path for text cutoff
             /* str += `<defs><clipPath id="objectTextCutOff" clipPathUnits="userSpaceOnUse">
                     <rect y='${linew}' x='${linew}' width='${boxw - (linew * 2)}' height='${(boxw/2) - linew}' />
                 </clipPath></defs>`;
