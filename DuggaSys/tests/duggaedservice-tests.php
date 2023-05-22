@@ -141,8 +141,7 @@ $testsData = array(
         'filter-output' => serialize(
             array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                'debug',
-                'readonly'
+                'none'
             )
         ),
     ),
@@ -195,7 +194,7 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM variant ORDER BY quizID DESC LIMIT 1;",
         'query-after-test-2' => "DELETE FROM listentries WHERE cid = 1885;",
         'query-after-test-3' => "DELETE FROM quiz ORDER BY ?;",
-        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/duggaedservice.php',
+        'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
