@@ -144,7 +144,9 @@ $testsData = array(
                 'debug',
                 'writeaccess',
                 'entries' => array(
-                    'variantanswer'
+                    'variant' => array(
+                        'variantanswer'
+                    ),
                 ),
             )
         ),
