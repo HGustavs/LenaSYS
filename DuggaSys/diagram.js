@@ -7931,7 +7931,7 @@ function preProcessLine(line) {
     telem = data[findIndex(data, line.toID)];
 
     //Sets the endIcon of the to-be-created line, if it an State entity
-    if ((felem.type === 'SD') && (telem.type === 'SD') || (felem.type === 'SE') && (telem.type === 'SE') ) {
+    if ((felem.type === 'SD') && (telem.type === 'SD')) {
         if (line.kind === 'Recursive') {
             line.endIcon = '';
         } else {
@@ -7946,6 +7946,9 @@ function preProcessLine(line) {
         }
         
         
+    }
+    if((felem.type === 'SE') && (telem.type === 'SE')) {
+        line.endIcon = 'ARROW';
     }
 }
 //#endregion =====================================================================================
