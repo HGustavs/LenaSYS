@@ -1157,6 +1157,10 @@ var defaults = {
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP       ================================
+//an event listener for when the window is loaded, this hides the loading spinner.
+window.addEventListener("DOMContentLoaded", (event) => {
+    document.getElementById("loadingSpinner").style.display="none";
+});
 /**
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
