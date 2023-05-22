@@ -1,9 +1,22 @@
+@keyframes loadingSpin {
+    0%{
+        rotate: 0deg;
+    }
+    100%{
+        rotate: 360deg;
+    }
+}
 #loadingSpinner{
     width: 100vw;
     height: 100vh;
     z-index: 9999;
     display: flex;
-    background: no-repeat center center url("../Shared/icons/diagram_lifeline.svg");
+}
+#spinneTMPPlaceholder{
+    width: 50vh;
+    height: 50vh;
+    background-color: #FFFFFF;
+    animation: 4s linear 0s infinite loadingSpin;
 }
 /* #loadingSpinner img{
     width: 50vh;

@@ -37,7 +37,7 @@
     
     <div id="loadingSpinner">
         <!-- temporary image -->
-        <!-- <img src="../Shared/icons/diagram_entity.svg"/> -->
+        <div id="spinneTMPPlaceholder"></div>
     </div>
 
     <!-- Markdown document with keybinds -->
