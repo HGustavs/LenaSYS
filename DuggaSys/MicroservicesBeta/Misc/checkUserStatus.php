@@ -2,11 +2,11 @@
     date_default_timezone_set("Europe/Stockholm");
     
     // Include basic application services
-    include_once ("../../../../coursesyspw.php");
     include_once ("../../../Shared/sessions.php";)
+    include_once ("../../../../coursesyspw.php");
     include_once ("../../../Shared/basic.php";)
-    //include_once ("../../../Shared/courses.php");
-	//include_once ("../../../Shared/database.php");
+    include_once ("../../../Shared/courses.php");
+	include_once ("../../../Shared/database.php");
 
     function checkUserStatusTest(){
         // Checks user id, if user has none a guest id is set
@@ -16,7 +16,7 @@
             $userid="1";
         }
 
-        /*// Gets username based on uid, USED FOR LOGGING
+        // Gets username based on uid, USED FOR LOGGING
         $query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
         $query->bindParam(':uid', $userid);
         $query-> execute();
@@ -66,6 +66,6 @@
             $hasSuperAccess = false;
         }
 
-        return $hasStAccess, $hasRAccess, $hasWAccess, $hasSvAccess, $hasSuperAccess; */
+        return $hasStAccess, $hasRAccess, $hasWAccess, $hasSvAccess, $hasSuperAccess;
     }
 ?>
