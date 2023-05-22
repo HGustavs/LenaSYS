@@ -4,9 +4,7 @@ include "../../Shared/test.php";
 include_once "../../../coursesyspw.php";
 
 $testsData = array(
-    /*This test will not work since creating an assignment is not possible since cid is missing (according to the page)
-    This will lead to the DELETE query still deleting something during the test since the delete is based on id, and not on a created specific id. 
-    Therefore this test will be commented out for the time being, added if the error is found.*/
+
     'create an assignment' => array(
         'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         //'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
