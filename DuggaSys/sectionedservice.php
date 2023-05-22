@@ -695,6 +695,13 @@ if($gradesys=="UNK") $gradesys=0;
 							$query3->execute();
 
 							$likePattern = $exampleName .'%';
+
+							$varname="TESTING likePattern";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $likePattern); 
+							$query3->execute();
+
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
 							$query->bindParam(':cid', $cid);
@@ -715,7 +722,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$varname="TESTING INSIDE COUNT == 0";	
 								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $e); 
+								$query3->bindParam(":sectionname", $examplename); 
 								$query3->execute();
 
 								$visible=0;
