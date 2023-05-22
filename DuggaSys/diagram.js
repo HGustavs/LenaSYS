@@ -370,9 +370,9 @@ class StateMachine
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
-    save (stateChangeArray, changeType)
+    save (stateChangeArray, newChangeType)
     {
-        
+        let currentChangedType;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (var i = 0; i < stateChangeArray.length; i++) {
@@ -410,14 +410,14 @@ class StateMachine
                             if (lastLog.id != stateChange.id) sameElements = false;
                         }
 
-                        if (Array.isArray(changeType)){
-                            for (var index = 0; index < changeType.length && isSoft; index++) {
-                                isSoft = changeType[index].isSoft;
+                        if (Array.isArray(newChangeType)){
+                            for (var index = 0; index < newChangeType.length && isSoft; index++) {
+                                isSoft = newChangeType[index].isSoft;
                             }
-                            var changeTypes = changeType;
+                            var changeTypes = newChangeType;
                         }else {
-                            isSoft = changeType.isSoft;
-                            var changeTypes = [changeType];
+                            isSoft = newChangeType.isSoft;
+                            var changeTypes = [newChangeType];
                         }
 
                     // Find last change with the same ids
@@ -452,16 +452,16 @@ class StateMachine
                 if (!isSoft || !sameElements) {
 
                     this.historyLog.push(stateChange);
-                    this.lastFlag = changeType;
+                    this.lastFlag = newChangeType;
                     this.currentHistoryIndex = this.historyLog.length -1;
 
                 } else { // Otherwise, simply modify the last entry.
 
                     for (var index = 0; index < changeTypes.length; index++) {
 
-                        var changeType = changeTypes[index];
+                        currentChangedType = changeTypes[index];
 
-                        switch (changeType) {
+                        switch (currentChangeType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
@@ -479,7 +479,7 @@ class StateMachine
                 }
             } else {
                 this.historyLog.push(stateChange);
-                this.lastFlag = changeType;
+                this.lastFlag = currentChangedType;
                 this.currentHistoryIndex = this.historyLog.length -1;
             }
         } else {
