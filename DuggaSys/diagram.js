@@ -7947,6 +7947,9 @@ function preProcessLine(line) {
         
         
     }
+    if((felem.type === 'SE') && (telem.type === 'SE')) {
+        line.endIcon = 'ARROW';
+    }
 }
 //#endregion =====================================================================================
 //#region ================================ DRAWING FUNCTIONS    ==================================
