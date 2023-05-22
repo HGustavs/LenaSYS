@@ -24,12 +24,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-//if(isset($_POST['lid'])) {
-//	$lid = $_POST['lid'];
-//	echo "<script>console.log('lid:', " . $lid . ");</script>";
-// } else {
-//	echo "<script>console.log('error');</script>";
-// }
+if(isset($_POST['lid'])) {
+	$fetchedLid = $_POST['lid'];
+	echo "<script>console.log('lid:', " . $fetchedLid . ");</script>";
+ } else {
+	echo "<script>console.log('error');</script>";
+ }
 
 
 // Gets username based on uid, USED FOR LOGGING
