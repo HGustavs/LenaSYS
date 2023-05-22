@@ -688,7 +688,7 @@ if($gradesys=="UNK") $gradesys=0;
 							//Check for update
 							//TODO: Implement update for already existing code-examples.
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-							$query = $pdolite->prepare("SELECT gitFiles WHERE cid = :cid AND fileName=:fileName;"); 
+							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName=:fileName;"); 
 							$query->bindParam(':cid', $cid);
 							$query->bindParam(':fileName', $exampleName);
 							$query->execute();
