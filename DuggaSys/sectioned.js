@@ -3122,28 +3122,32 @@ function createExamples(momentID) {
 }
 
 
-// When the user is watching course page, set isActivelyFocused to true
+// When the user is watching the course page, set isActivelyFocused to true
 $(window).on('focus', function( ) {
   isActivelyFocused = true;
-
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
-  const now = Date.now();
-  // If the user has been focusing on the course page for more than **UPDATEINTERVAL** minute (data variable can be found above createCodeExamples function), 
-  //update the code examples or if its first time
-  if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
-      lastUpdatedCodeExampes = now;
-      // Call the createExamples function for each lecture/moments
-      for (let i = 0; i < collectedLid.length; i++) {
-        createExamples(collectedLid[i]);
-      }
+});
 
-  }
-// When the user stops watching course page, set isActivelyFocused to false
-}).on('blur', function() {
+// When the user stops watching the course page, set isActivelyFocused to false
+$(window).on('blur', function() {
   isActivelyFocused = false;
   console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
 });
 
+// Create an interval that checks if the window is focused and the updateInterval has passed, 
+// then updates the code examples if the conditions are met.
+setInterval(function() {
+    if (isActivelyFocused) {
+        const now = Date.now();
+        if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
+            lastUpdatedCodeExampes = now;
+            // Call the createExamples function for each lecture/moments
+            for (let i = 0; i < collectedLid.length; i++) {
+                createExamples(collectedLid[i]);
+            }
+        }
+    }
+}, 1000);
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
