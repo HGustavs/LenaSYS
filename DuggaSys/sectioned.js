@@ -2417,6 +2417,7 @@ $(document).on('click', '#dorf', function (e) {
   e.stopPropagation();
 });
 
+
 // The event handler returns two elements. The following two if statements gets the element of interest.
 $(document).on('click', '.moment, .section, .statistics', function () {
 
@@ -3085,20 +3086,68 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
 }
 
+let isActivelyFocused = false; // If the user is actively focusing on the course page
+let lastUpdatedCodeExampes = null; // Last time code examples was updated
+const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+let dir = "../courses/1895/Github/Demo/Code-example1/";
+
+
 //Creates all examples from github that doesnt exists yet
-function createExamples(momentID) {//TODO HERE
-  lid= momentID;
-  console.log("* AJAX START ");
+
+function createExamples(momentID) {
+  lid = momentID;
+  console.log("The value of all lids is: " + collectedLid);
+  console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
+  console.log(lid);
+  console.log("** AJAX START **");
+  //AJAX Request to create all code examples
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
     data: {'lid':lid,'opt':'CREGITEX'},
     dataType: "json",
-    //TODO: reload back to coursepage
+    success: function(response) {
+      console.log("AJAX request succeeded. Response:", response);
+      lastUpdatedCodeExampes = Date.now();
+      console.log("Last time code examples updated was: ", lastUpdatedCodeExampes);
+    },
+    error: function(xhr, status, error) {
+      console.log("AJAX request failed. Status:", status);
+      console.log("Error:", error);
+    }
   });
+
   console.log("** AJAX DONE **");
+
 }
 
+
+// When the user is watching the course page, set isActivelyFocused to true
+$(window).on('focus', function( ) {
+  isActivelyFocused = true;
+  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
+});
+
+// When the user stops watching the course page, set isActivelyFocused to false
+$(window).on('blur', function() {
+  isActivelyFocused = false;
+  console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
+});
+
+// Create an interval that checks if the window is focused and the updateInterval has passed, 
+// then updates the code examples if the conditions are met.
+setInterval(function() {
+    if (isActivelyFocused) {
+        const now = Date.now();
+        if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
+            lastUpdatedCodeExampes = now;
+            // Call the createExamples function for each lecture/moments
+            for (let i = 0; i < collectedLid.length; i++) {
+                createExamples(collectedLid[i]);
+            }
+        }
+    }
+}, 1000);
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
@@ -3688,6 +3737,7 @@ function refreshMoment(momentID){
   //TODO: take input from column/dropdownlist and iterate through and create the codeexample
   //for each codeexample in the moment dir, do create examples on those code-example dir
   //for loop not yet implemented, waiting for other issues to be completed before
+
   createExamples(momentID);
 }
 
