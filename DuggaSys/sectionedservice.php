@@ -734,21 +734,28 @@ if($gradesys=="UNK") $gradesys=0;
 								$query3->bindParam(":sectionname", $exampleName); 
 								$query3->execute();
 
-								try {
-									$visible = 0;
-									$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname");
-									$query->bindParam(":cid", $courseid);
-									$query->bindParam(":cvs", $coursevers);
-									$query->bindParam(":entryname", $exampleName);
-									$query->bindParam(":visible", $visible);
-									$query->execute();
-								} catch (PDOException $e) {
-									$e->getMessage();
-									$varname="TESTING UPDATE";	
+								
+								$visible = 0;
+								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":cvs", $coursevers);
+								$query->bindParam(":entryname", $exampleName);
+								$query->bindParam(":visible", $visible);
+								if (!$query->execute()) {
+									$error = $query->errorInfo();							
+									$varname="TESTING UPDATE ERROR";	
 									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 									$query3->bindParam(":examplename", $varname); 
-									$query3->bindParam(":sectionname", $e); 
+									$query3->bindParam(":sectionname", $error); 
 									$query3->execute();
+									$varname="TESTING UPDATE ERROR[2]";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $error[2]); 
+									$query3->execute();
+								}
+
+									
 								}
 							}
 
