@@ -35,9 +35,10 @@
 <!-- <body onload="getData();addAlertOnUnload();" style="overflow: hidden;"> -->
 <body style="overflow: hidden;">
     
+    <!-- loading spinner -->
     <div id="loadingSpinner">
         <!-- temporary image -->
-        <div id="spinneTMPPlaceholder"></div>
+        <div id="spinnerTMPPlaceholder"></div>
     </div>
 
     <!-- Markdown document with keybinds -->
