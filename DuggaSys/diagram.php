@@ -779,7 +779,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
-            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
+            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera();">
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 <span class="toolTipText"><b>Reset view</b><br>
                     <p>Reset view to show all elements</p><br>
