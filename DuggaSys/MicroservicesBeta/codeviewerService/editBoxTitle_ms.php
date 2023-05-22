@@ -6,7 +6,7 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
-	//include ('../Misc/checkUserStatus.php'); //Need to check user statuss
+	include ('../Misc/checkUserStatus.php'); //Need to check user statuss
 
 	// Connect to database and start session
 	pdoConnect();
