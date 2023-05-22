@@ -726,7 +726,3 @@
     cursor: pointer;
     transition: none;
   }
-  
-  .removeButton:focus {
-    outline: black 2px auto;
-  }
