@@ -756,7 +756,7 @@ if($gradesys=="UNK") $gradesys=0;
 								}
 
 									
-								}
+							
 							}
 
 							//Check if adding box
