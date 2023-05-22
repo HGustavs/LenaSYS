@@ -122,7 +122,7 @@ $testsData = array(
 
     
     'add variant' => array(
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"entries":[{"variant":["variantanswer":"Test text"]}]}',
+        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"variantanswer":"Test text"}]}',
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
@@ -143,6 +143,8 @@ $testsData = array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'debug',
                 'writeaccess',
+                'coursename',
+                'coursecode',
                 'entries' => array(
                     'variant' => array(
                         'variantanswer'
@@ -186,7 +188,7 @@ $testsData = array(
         ),
     ),
 
-    'create course test' => array(
+    'delete varient' => array(
         'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
         'query-before-test-1' => "INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES(1885, 0, 1, 'AutomaticTest', 'Quiz', '2023-04-27 00:00:00', '2023-04-28 00:00:00', 2, '1337', '2023-04-17', '{&quot,deadline1&quot,:&quot,2023-04-27 0:0&quot,,&quot,comment1&quot,:&quot,&quot,,&quot,deadline2&quot,:&quot,&quot,,&quot,comment2&quot,:&quot,&quot,,&quot,deadline3&quot,:&quot,&quot,,&quot,comment3&quot,:&quot,&quot,}', 0);",
         'query-before-test-2' => "SELECT MAX(id) from quiz",
