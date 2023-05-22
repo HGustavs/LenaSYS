@@ -8410,7 +8410,8 @@ function drawLine(line, targetGhost = false)
                 }
                 else {
                     if (line.ctype == 'TB') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy + zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                        fy = fy + 1 * zoomfact;
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     }
                     else if (line.ctype == 'BT') {
                         fy = fy - 5 * zoomfact
@@ -8647,6 +8648,7 @@ function drawLine(line, targetGhost = false)
                 // If the line is segmented draw the arrow on a 90 degree angle matching the line.
                 else {
                     if (line.ctype == 'BT') {
+                        ty = ty + 1 * zoomfact
                         str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     }
                     else if(line.ctype == 'TB'){
