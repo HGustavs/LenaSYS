@@ -6,7 +6,7 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
-	//include_once ("../Misc/consoleDebug");
+	include_once ("../Misc/consoleDebug.php");
 	//require '../Misc/checkUserStatus.php'; //Need to check user status
 
 	//Remove when ms is working
@@ -16,7 +16,7 @@
 	// Connect to database and start session
 	pdoConnect();
 	session_start();
-	//consoleDebug("uwu");
+	consoleDebug("uwu");
 
 	// Global variables
 	$exampleId=getOP('exampleid');
