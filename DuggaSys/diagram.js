@@ -2626,6 +2626,8 @@ function mmoving(event)
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
                 console.log(heightChange);
+
+                var y = elementData.y;
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
@@ -2640,8 +2642,12 @@ function mmoving(event)
                 // Fetch original y-position
                 // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
                 tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
-
+                if(elementData.kind != "EREntity"){
+                    elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+                }else{//the superstate jumps down 75 pixels when using this node for ER entities.
+                    elementData.y = screenToDiagramCoordinates(0, (startY - deltaY - 75)).y;
+                }
+                
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
 
