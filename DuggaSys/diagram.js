@@ -3074,8 +3074,9 @@ function changeLineProperties()
     // Set lineKind
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
-    var label = document.getElementById("lineLabel");
     var radio3 = document.getElementById("lineRadio3");
+    var radio4 = document.getElementById("lineRadio4");
+    var label = document.getElementById("lineLabel");
     var startLabel = document.getElementById("lineStartLabel");
     var endLabel = document.getElementById("lineEndLabel");
     var startIcon= document.getElementById("lineStartIcon");
@@ -3099,6 +3100,12 @@ function changeLineProperties()
         if(radio3.checked && line.kind != radio3.value){
             line.kind = radio3.value;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
+    else if(radio4){
+        if(radio4.checked && line.kind != radio4.value){
+            line.kind = radio4.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio4.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
     
@@ -3173,6 +3180,7 @@ function changeLineProperties()
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
+    displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     showdata();
 }
 
@@ -7112,7 +7120,7 @@ function generateContextProperties()
             });
             str += `</select>`; 
         }
-        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
       }
 
       //If more than one element is selected
