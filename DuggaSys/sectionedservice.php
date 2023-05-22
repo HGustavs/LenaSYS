@@ -687,6 +687,13 @@ if($gradesys=="UNK") $gradesys=0;
 						} else {
 							//Check for update
 							//TODO: Implement update for already existing code-examples.
+
+							$varname="TESTING ELSE";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $exampleName); 
+							$query3->execute();
+
 							$likePattern = $exampleName .'%';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
@@ -695,7 +702,26 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->execute();
 							//Check if to be hidden
 							$e = $query->fetchAll();
+
+							$varname="TESTING E";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $e); 
+							$query3->execute();
+							$f = count($e);
+							$varname="TESTING count E";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $f); 
+							$query3->execute();
+
 							if(count($e)==0){
+								$varname="TESTING INSIDE e";	
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $varname); 
+								$query3->bindParam(":sectionname", $e); 
+								$query3->execute();
+
 								$visible=0;
 								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;");
 								$query->bindParam(":cid", $courseid);
