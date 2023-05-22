@@ -122,7 +122,7 @@ $testsData = array(
 
     
     'add variant' => array(
-        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'expected-output' => '{"debug":"NONE!","readonly":0}',
         'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(
             array(
