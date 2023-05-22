@@ -513,6 +513,13 @@ if($gradesys=="UNK") $gradesys=0;
 					$githubDir = $e[0]['githubDir'];
 					$dirPath = "../courses/".$courseid."/Github/" . $githubDir;	
 
+					//Get the version of the course from where the button was pressed
+					$query = $pdo->prepare("SELECT vers FROM listentries WHERE lid=:lid");
+					$query->bindParam(":lid", $lid);
+					$query->execute();
+					$e = $query->fetchAll();
+					$coursevers = $e[0]['vers'];
+
 					$allFiles = array();
 					$files = scandir($dirPath);
 					foreach($files as $file) {
@@ -534,22 +541,18 @@ if($gradesys=="UNK") $gradesys=0;
 						//get the correct examplename
 						$explodeFiles = explode('.',$groupedFiles[0]);
 						$exampleName = $explodeFiles[0];
-						//count if there is already a codeexample or if we should create a new one.
-						$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename;");
+						//count if there is already a codeexample or if we should create a new one on the current coursevers where the button was pressed.
+						$query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;");
 						$query1->bindParam(":cid", $courseid);
 						$query1->bindParam(":examplename", $exampleName);
+						$query1->bindParam(":vers", $coursevers);
 						$query1->execute();
 						$result = $query1->fetch(PDO::FETCH_OBJ);
 						$counted = $result->count;
 
 						//if no codeexample exist create a new one
 						if ($counted == 0) {
-							//Get active version of the course
-							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
-							$query->bindParam(":cid", $courseid);
-							$query->execute();
-							$e = $query->fetchAll();
-							$coursevers = $e[0]['activeversion'];
+							
 
 							//Get the last position in the listenries to add new course at the bottom
 							$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
