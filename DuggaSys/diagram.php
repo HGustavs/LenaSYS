@@ -82,13 +82,13 @@
                     </button>    
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
-                            <button class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
+                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
                                 </span>
-                            </button>
+                            </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
