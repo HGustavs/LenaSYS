@@ -48,7 +48,7 @@ $testsData = array(
     
     
     'update an assignment' => array(
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"TestDugga4"}]}',
+        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"TestDugga5"}]}',
         //'query-before-test-1' => "INSERT INTO quiz(cid,qid,autograde,gradesys,qname,qrelease,deadline,vers,qstart,jsondeadline,template) 
         // VALUES (2, 'UNK', 0, 1, 'TestDugga3', '2023-05-26 0:0', '2023-05-24 0:0', '97732', '2023-05-23 0:0', '{&quot;deadline1&quot;:&quot;2023-05-24 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;2023-05-24 0:0&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;2023-05-25 0:0&quot;,&quot;comment3&quot;:&quot;&quot;}', '3d-dugga');",
         'query-before-test-1' => "SELECT MAX(id) FROM quiz",
