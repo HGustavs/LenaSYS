@@ -9880,14 +9880,14 @@ function drawElement(element, ghosted = false)
             //svg for object.
             str += `<g>`;
             str += `<rect class='text'
-            x='${linew/2}'
-            y='${linew/2}'
-            width='${boxw - linew}'
-            height='${(boxw/2) - linew}'
-            rx='${sequenceCornerRadius}'
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}' 
+                x='${linew/2}'
+                y='${linew/2}'
+                width='${boxw - linew}'
+                height='${(boxw/2) - linew}'
+                rx='${sequenceCornerRadius}'
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}' 
             />`;
             str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             str += `</g>`;   
