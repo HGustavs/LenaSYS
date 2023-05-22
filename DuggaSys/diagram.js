@@ -3083,11 +3083,6 @@ function changeLineProperties()
     var endIcon= document.getElementById("lineEndIcon");
     var lineType = document.getElementById("lineType");
     var line = contextLine[0];
-
-    console.log(radio1
-                ,radio2, radio3, radio4);
-    console.log(line.kind);
-
    
     if (radio1.checked && line.kind != radio1.value) {
         line.kind = radio1.value;
@@ -3095,22 +3090,24 @@ function changeLineProperties()
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     }
 
-    if(radio2.checked && line.kind != radio2.value){
+    else if(radio2.checked && line.kind != radio2.value){
         line.kind = radio2.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     }
 
-    if(radio3.checked && line.kind != radio3.value){
+    else if(radio3.checked && line.kind != radio3.value){
         line.kind = radio3.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     }
 
-    if(radio4.checked && line.kind != radio4.value){
+    else if(radio4.checked && line.kind != radio4.value){
         line.kind = radio4.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio4.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
+    } else{
+        displayMessage(messageTypes.ERROR, `Can't switch to selected kind`);
     }
     
     
