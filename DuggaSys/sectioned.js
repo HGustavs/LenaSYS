@@ -1392,6 +1392,7 @@ function returnedSection(data) {
 
             }
           }
+          
           if (retdata['writeaccess']) {
           if (itemKind === 3) {
             if(isLoggedIn){
