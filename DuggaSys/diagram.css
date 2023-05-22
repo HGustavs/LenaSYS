@@ -3,14 +3,12 @@
     height: 100vh;
     z-index: 9999;
     display: flex;
-    background-color: var(--color-primary);
-    justify-content: center;
-    align-items: center;
+    background: no-repeat center/80% url("../Shared/icons/diagram_entity.svg");
 }
-#loadingSpinner img{
+/* #loadingSpinner img{
     width: 50vh;
     height: 50vh;
-}
+} */
 
 #container {
     position:absolute;
