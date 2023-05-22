@@ -3088,7 +3088,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 
 let isActivelyFocused = false; // If the user is actively focusing on the course page
 let lastUpdatedCodeExampes = null; // Last time code examples was updated
-const updateInterval = 600 * 1000; // Timerintervall for code to be updated (10 minutes)
+const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
 let dir = "../courses/1895/Github/Demo/Code-example1/";
 
 
