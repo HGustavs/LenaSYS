@@ -6,6 +6,7 @@
 	include_once ("../../../../coursesyspw.php");
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
+
 	require '../Misc/checkUserStatus.php'; //Need to check user status
 
 	//Remove when ms is working
@@ -20,7 +21,7 @@
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
-	
+	checkUserStatusTest();
 	/*
 	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
