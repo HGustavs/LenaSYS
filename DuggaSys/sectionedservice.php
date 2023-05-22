@@ -701,28 +701,18 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->bindParam(':fileName', $likePattern);
 							$query->execute();
 							//Check if to be hidden
-							$e = $query->fetchAll();
+							$exampleCount = $query->rowCount();
 
-							$varname="TESTING E";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $e); 
-							$query3->execute();
-							$f = count($e);
-							$varname="TESTING count E";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $f); 
-							$query3->execute();
-							$g=$e[0];
-							$varname="TESTING what is inside E";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $g); 
-							$query3->execute();
 
-							if(count($e)==0){
-								$varname="TESTING INSIDE e count 0";	
+							$varname="TESTING rowCount";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $exampleCount); 
+							$query3->execute();
+							
+
+							if($exampleCount==0){
+								$varname="TESTING INSIDE COUNT == 0";	
 								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 								$query3->bindParam(":examplename", $varname); 
 								$query3->bindParam(":sectionname", $e); 
