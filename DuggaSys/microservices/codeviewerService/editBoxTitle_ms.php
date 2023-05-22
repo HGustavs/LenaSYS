@@ -3,7 +3,7 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services
-	include ('../Misc/checkUserStatus.php');
+	include ('../shared_microservices/getUid_ms.php');
 
 	// Connect to database and start session
 	pdoConnect();
@@ -14,7 +14,7 @@
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
 	
-	checkUuid();
+	getUid();
 
 	$exampleCount = 0;
 

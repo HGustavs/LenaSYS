@@ -6,7 +6,7 @@
     include_once ("../../../Shared/sessions.php");
     include_once ("../../../Shared/basic.php");
 
-    function checkUuid(){
+    function getUid(){
         // Checks user id, if user has none a guest id is set
         if(isset($_SESSION['uid'])){
             $userid=$_SESSION['uid'];
