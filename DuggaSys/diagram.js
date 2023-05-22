@@ -9890,7 +9890,7 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}' 
             />`;
             //define a clip path for text cutoff
-            str += `<clipPath id="objectTextCutOff" clipPathUnits="objectBoundingBox">
+            str += `<clipPath id="objectTextCutOff" clipPathUnits="userSpaceOnUse">
                     <rect y='${linew}' x='${linew}' width='${boxw - (linew * 2)}' height='${(boxw/2) - linew}' />
                 </clipPath>`
             if (!tooBig) {
