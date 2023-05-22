@@ -13047,7 +13047,7 @@ function showModal(){
     var container = document.querySelector('#loadContainer');
 
     // Array for testing visuals, remove this once once functionality has been finished
-    var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
+    var testArray = [];
 
     // Remove all elements
     while (container.firstElementChild){
@@ -13091,6 +13091,13 @@ function closeModal(){
     modal.classList.add('hiddenLoad');
     overlay.classList.add('hiddenLoad');
 }
+function getAllLocalStorageKeys()
+{
+    let keys=[];
+    for(let i=0; i<localStorage.length; i++)
+    keys.push(localStorage.key(i));
+    return keys;
+}
 
  function loadDiagramFromLocalStorage(key)
 {
@@ -13128,10 +13135,8 @@ function saveDiagramAs()
 {
     let elem = document.getElementById("saveDiagramAs");
     let fileName = elem.value;
-    elem.value = "";
     if (fileName.trim() == "") {
-        // fileName = "Untitled"
-        fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
+        fileName = "Untitled";
     }
 
     storeDiagramInLocalStorage(fileName);
