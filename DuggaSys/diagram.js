@@ -2837,7 +2837,7 @@ function makeGhost()
  */
 function constructElementOfType(type)
 {
-    var typeName = undefined;
+    let typeName = undefined;
     for (const name in elementTypes) {
         if (elementTypes[name] == type) {
             typeName = name;
@@ -2845,14 +2845,13 @@ function constructElementOfType(type)
         }
     }
     if (typeName) {
-        var defaultElement = defaults[typeName];
-        var newElement = {};
+        let defaultElement = defaults[typeName];
+        let newElement = {};
         for (const property in defaultElement) {
             newElement[property] = defaultElement[property];
         }
         return newElement;
     }
-
     return undefined;
 }
 
