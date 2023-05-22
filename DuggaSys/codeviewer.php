@@ -304,10 +304,6 @@ Testing Link:
 								<td>Title:<input class='form-control textinput' type='text' placeholder='Title' id='title' value='&lt;Title&gt;' /></td>
 							</tr>
 
-							<tr>
-								<td>Before:<select id='before'></select></td>
-								<td>After:<select id='after'></select></td>
-							</tr>
 
 							<tr>
 								<td>Play Link:<select id='playlink'></select></td>
