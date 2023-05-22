@@ -4390,6 +4390,8 @@ function toggleDarkmode()
         btn.style.color = "#614875";
         btn.style.fontWeight = "bold";
     }
+    
+    //if(cssUrl == 'blackTheme.css'){
 
 
     showdata();

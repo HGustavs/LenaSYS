@@ -646,3 +646,12 @@
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
+
+#darkmodeToggle {
+background-color: transparent;
+border: #614875;
+border-width: 3px;
+border-style: solid;
+color: #614875;
+font-weight: bold;
+}
