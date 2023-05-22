@@ -23,7 +23,7 @@
 	$opt=getOP('opt');
 	checkUserStatusTest();
 
-	echo $hasStAccess. $hasRAccess. $hasWAccess. $hasSvAccess. $hasSuperAccess;
+	echo "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG".$hasStAccess. $hasRAccess. $hasWAccess. $hasSvAccess. $hasSuperAccess;
 	/*
 	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
