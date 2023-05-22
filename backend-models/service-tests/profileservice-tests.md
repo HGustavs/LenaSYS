@@ -1,7 +1,6 @@
 profileservice-tests.txt
 
 
-
 ------------------------------------------------------------------
 Row : 46 Check if it blocks teacher, send parameters as an teacher
 ------------------------------------------------------------------
@@ -27,7 +26,15 @@ send {
 	$action = "challenge";
 }
 
+*********
+Service output-
+*********
 
+{
+  "success": false,
+  "status": "teacher",
+  "debug": "NONE!"
+}
 
 -----------------------------------------
 Row : 46 Check if methods work if student
@@ -56,6 +63,16 @@ End pre-
 	}
 
 
+*********
+Service output-
+*********
+
+{
+  "success": true,
+  "status": "",
+  "debug": "NONE!"
+}
+
 ----------------------------------
 Row 62: Check if passwords matches
 ----------------------------------
@@ -79,11 +96,20 @@ End pre-
 
 	send {
 
-		$password = "Kong";
-		$result = "Kong"; 	
+		$password = "Hejsansvejsan2";
+		$result = "Hejsansvejsan2"; 	
 	}
-	
 
+*********
+Service output-
+*********
+
+{
+  "success": false,
+  "status": "wrongpassword",
+  "debug": "NONE!"
+}
+	
 ------------------------------------------------------------------------
 Row 64: Methods for changing challenge and passwords of a student user. 
 ------------------------------------------------------------------------
@@ -108,6 +134,14 @@ Sql-query: "UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer
 
 Sql-query: "UPDATE user SET password=:PW WHERE uid=:userid";
 
-
- 
 // Test as student user, check data in database. If password and challenge changed, it's correct.
+
+*********
+Service output-
+*********
+
+{
+  "success": true,
+  "status": "",
+  "debug": "NONE!"
+}
