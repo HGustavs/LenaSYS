@@ -1,7 +1,7 @@
 #loadingSpinner{
     width: 100vw;
     height: 100vh;
-    z-index: 5001;
+    z-index: 9999;
     background-color: blue;
 }
 
