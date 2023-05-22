@@ -228,7 +228,7 @@
    
 }
 .diagramIcons:focus {
-    outline: #000 1px;
+    outline:auto;
 }
 .diagramIcons:hover, .active{
     background: var(--color-primary-hover);
