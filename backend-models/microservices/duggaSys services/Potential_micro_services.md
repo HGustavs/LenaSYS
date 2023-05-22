@@ -42,6 +42,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - UpdateUser
 - updateUsercourse
 - addClass
+- changeUserPassword_accessed
 - addUser
 - settingCodeexampleTemplate
 - editCodeExample
@@ -58,6 +59,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - deleteCourseMaterial
 - createDugga
 - UpdateDugga
+- deleteDugga
 - createDuggaVariant
 - updateDuggaVariant
 - deleteDuggaVariant
@@ -352,7 +354,7 @@ Uses service __insertIntoTableClass__ to makes _inserts_ into the table __class_
 <br>
 
 
-#### changeUserPassword_accessed
+### changeUserPassword_accessed
 Uses service __updateUserPassword__ to _update_ the column "_password_" in the table __user__. 
 
 
@@ -649,6 +651,7 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 ---
 
 <br>
+
 ### deleteDugga
 Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 
