@@ -8008,19 +8008,19 @@ function drawLine(line, targetGhost = false)
    // Collect coordinates
    if (line.ctype == "BT"){
         fy = felem.y2;
-        if (felem.kind == "EREntity" || felem.type == "SE") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
+        if (felem.kind == "EREntity" || felem.kind == "sequenceActorAndObject") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
     }else if (line.ctype == "TB"){
         fy = felem.y1;
-        if (felem.kind == "EREntity" || felem.type == "SE") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
+        if (felem.kind == "EREntity" || felem.kind == "sequenceActorAndObject") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
         ty = telem.y2;
     }else if (line.ctype == "RL"){
         fx = felem.x2;
-        if (felem.kind == "EREntity" || felem.type == "SE") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
+        if (felem.kind == "EREntity" || felem.kind == "sequenceActorAndObject") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
         tx = telem.x1;
     }else if (line.ctype == "LR"){
         fx = felem.x1;
-        if (felem.kind == "EREntity" || felem.type == "SE") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
+        if (felem.kind == "EREntity" || felem.kind == "sequenceActorAndObject") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
         tx = telem.x2;
     }
 
