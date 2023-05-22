@@ -1778,8 +1778,8 @@ function returnedSection(data) {
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}")'>`;
+          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), getLocalStorage();'>`;
           str += "</td>";
         }
 
@@ -3828,4 +3828,26 @@ function changetemplate(templateno)
         boxes = 1;
         break;
     }
+}
+
+// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
+function getLidFromButton(lid) {
+  document.getElementById('lidInput').value = lid;
+}
+
+// Saves the chosen value to localStorage after a choice is made in the dropdown menu
+function saveLocalStorage(selectedValue) {
+  var setLocalStorageLid = document.getElementById('lidInput').value;
+  var value = selectedValue.value;
+  localStorage.setItem(setLocalStorageLid, value);
+}
+
+// Sets the chosen value from localStorage to the dropdown if a value is saved in localStorage
+function getLocalStorage() {
+  var getLocalStorageLid = document.getElementById('lidInput').value;
+  var selectedValue = localStorage.getItem(getLocalStorageLid);
+  if(selectedValue) {
+    var dropdown = document.querySelector('select[name="githubDir"]');
+    dropdown.value = selectedValue;
+  }
 }
