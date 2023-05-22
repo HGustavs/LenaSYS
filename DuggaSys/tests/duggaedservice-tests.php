@@ -146,9 +146,7 @@ $testsData = array(
                 'coursename',
                 'coursecode',
                 'entries' => array(
-                    'variant' => array(
-                        'variantanswer'
-                    ),
+                    'variantanswer'
                 ),
             )
         ),
