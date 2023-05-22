@@ -58,7 +58,7 @@ $testsData = array(
             array(
                 // Data that service needs to execute function
                 'opt' => 'SAVDUGGA',
-                'qid' => '72',
+                'qid' => '<!query-before-test-1!> <*[0][quiz]*>',
                 'cid' => '2',
                 'nme' => 'TestDugga5',
 
