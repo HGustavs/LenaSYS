@@ -13050,11 +13050,9 @@ function showModal(){
     var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
 
     // Remove all elements
-    /*
     while (container.firstElementChild){
         container.firstElementChild.remove();
     }
-    */
 
     // If no items were found for loading in 
     if (testArray.length === 0){
