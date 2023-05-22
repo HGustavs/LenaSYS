@@ -499,14 +499,14 @@ if($gradesys=="UNK") $gradesys=0;
 					
 				} else if(strcmp($opt,"CREGITEX")===0) {
 					//Get cid
-					$query = $pdo->prepare("SELECT cid FROM listentries WHERE lid=:lid");
+					$query = $pdo->prepare("SELECT cid FROM listentries WHERE lid=:lid;");
 					$query->bindParam(":lid", $lid);
 					$query->execute();
 					$e = $query->fetchAll();
 					$courseid = $e[0]['cid'];
 
 					//Get dir from the listentrie that was clicked
-					$query = $pdo->prepare("SELECT githubDir FROM listentries WHERE lid=:lid");
+					$query = $pdo->prepare("SELECT githubDir FROM listentries WHERE lid=:lid;");
 					$query->bindParam(":lid", $lid);
 					$query->execute();
 					$e = $query->fetchAll();
@@ -545,7 +545,7 @@ if($gradesys=="UNK") $gradesys=0;
 						//if no codeexample exist create a new one
 						if ($counted == 0) {
 							//Get active version of the course
-							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
+							$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid;");
 							$query->bindParam(":cid", $courseid);
 							$query->execute();
 							$e = $query->fetchAll();
@@ -668,7 +668,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$groupkind = null;
 								//add the codeexample to listentries
 								$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
-																									VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+																									VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind);");
 								$query->bindParam(":cid", $courseid);
 								$query->bindParam(":cvs", $coursevers);
 								$query->bindParam(":entryname", $examplename);
@@ -687,6 +687,30 @@ if($gradesys=="UNK") $gradesys=0;
 						} else {
 							//Check for update
 							//TODO: Implement update for already existing code-examples.
+							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+							$query = $pdolite->prepare("SELECT gitFiles WHERE cid = :cid AND fileName=:fileName;"); 
+							$query->bindParam(':cid', $cid);
+							$query->bindParam(':fileName', $exampleName);
+							$query->execute();
+							//Check if to be hidden
+							$e = $query->fetchAll();
+							if(count($e)==0){
+								$visible=0;
+								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;");
+								$query->bindParam(":cid", $courseid);
+								$query->bindParam(":cvs", $coursevers);
+								$query->bindParam(":entryname", $examplename);
+								$query->bindParam(":visible", $visible);
+								$query->execute();
+							}
+
+							//Check if adding box
+
+							//Check if remove box
+							
+							
+							
+						
 						} 
 					}
 				
