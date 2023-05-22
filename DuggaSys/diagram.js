@@ -10043,7 +10043,7 @@ function drawElement(element, ghosted = false)
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -1))}px; width:${boxw}px;font-size:${texth}px;`; 
+        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`; 
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
