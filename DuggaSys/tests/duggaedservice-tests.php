@@ -52,7 +52,7 @@ $testsData = array(
         'query-before-test-1' => "INSERT INTO quiz(cid,qid,autograde,gradesys,qname,qrelease,deadline,vers,qstart,jsondeadline,template) 
          VALUES (2, 'UNK', 1, 1, 'TestDugga5', '2023-05-26 0:0', '2023-05-24 0:0', '97732', '2023-05-23 0:0', '{&quot;deadline1&quot;:&quot;2023-05-24 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;2023-05-24 0:0&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;2023-05-25 0:0&quot;,&quot;comment3&quot;:&quot;&quot;}', '3d-dugga');",
         'query-before-test-2' => "SELECT MAX(id) FROM quiz",
-        'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
+        //'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
