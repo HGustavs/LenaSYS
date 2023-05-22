@@ -3775,16 +3775,16 @@ function getLidFromButton(lid) {
 
 // Saves the chosen value to localStorage after a choice is made in the dropdown menu
 function saveLocalStorage(selectedValue) {
-  var lid = document.getElementById('lidInput').value;
+  var setLocalStorageLid = document.getElementById('lidInput').value;
   var value = selectedValue.value;
-  localStorage.setItem(lid, value);
+  localStorage.setItem(setLocalStorageLid, value);
   console.log(localStorage);
 }
 
 // Sets the chosen value from localStorage to the dropdown if a value is saved in localStorage
 function getLocalStorage() {
-  var lid = document.getElementById('lidInput').value;
-  var selectedValue = localStorage.getItem(lid.value);
+  var getLocalStorageLid = document.getElementById('lidInput').value;
+  var selectedValue = localStorage.getItem(getLocalStorageLid);
   if(selectedValue) {
     var dropdown = document.querySelector('select[name="githubDir"]');
     dropdown.value = selectedValue;
