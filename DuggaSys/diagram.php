@@ -37,8 +37,7 @@
     
     <!-- loading spinner -->
     <div id="loadingSpinner">
-        <!-- temporary image -->
-        <div id="spinnerTMPPlaceholder"></div>
+        <img id="spinnerTMPPlaceholder" src="../Shared/icons/spinner.svg" alt="loading"/>
     </div>
 
     <!-- Markdown document with keybinds -->
