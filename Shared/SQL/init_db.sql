@@ -18,7 +18,7 @@ CREATE TABLE user(
 	securityquestionanswer	VARCHAR(256) DEFAULT NULL,
 	requestedpasswordchange	TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
 
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1); /* Password is Kong */
@@ -34,7 +34,7 @@ CREATE TABLE git_user(
 	addedtime  				DATETIME,
 	lastvisit				DATETIME,
 	PRIMARY KEY (git_uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
 
 
 /**
@@ -59,7 +59,7 @@ CREATE TABLE course(
 	courseGitURL				VARCHAR(1024),
 	PRIMARY KEY (cid),
 	FOREIGN KEY (creator) REFERENCES user (uid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
 
 /* This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
 CREATE TABLE course_req(
@@ -68,7 +68,7 @@ CREATE TABLE course_req(
 	PRIMARY KEY (cid, req_cid),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (req_cid) REFERENCES course(cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
 
 /**
  * This table represents a many-to-many relation between users and courses. That is,
@@ -94,7 +94,7 @@ CREATE TABLE user_course(
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=INNODB;
 
 CREATE TABLE listentries (
 	lid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,

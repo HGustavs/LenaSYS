@@ -261,6 +261,7 @@ $sql3 = '
 		cid INTEGER,
 		fileName VARCHAR(50), 
     fileType VARCHAR(50),
+		lenasysFileName VARCHAR(50),
 		fileURL VARCHAR(255),
     downloadURL VARCHAR(255), 
     fileSHA VARCHAR(255), 
