@@ -227,7 +227,7 @@
     
    
 }
-.diagramIcons:focus {
+.toolbarMode:focus {
     outline:auto;
 }
 .diagramIcons:hover, .active{
