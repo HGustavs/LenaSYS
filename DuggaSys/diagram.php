@@ -10,7 +10,7 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
     <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
@@ -851,7 +851,7 @@
         </fieldset>
         <fieldset id = "localSaveField">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="storeDiagramInLocalStorage('CurrentlyActiveDiagram')">
+            <div id="localSave" class="diagramIcons" onclick="showSavePopout()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
@@ -862,7 +862,7 @@
         </fieldset>
         <fieldset id = "localLoadField">
             <legend aria-hidden="true">Load</legend>
-            <div id="localLoad" class="diagramIcons" onclick="loadDiagramFromLocalStorage('CurrentlyActiveDiagram');">
+            <div id="localLoad" class="diagramIcons" onclick="showModal();">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram</p>
@@ -872,6 +872,16 @@
             </div>
         </fieldset>
     </div>
+    
+    <div class="loadModal hiddenLoad">
+        <div id="loadHeader">
+            <p id="loadTitle">Select a load:</p>
+            <button id="closeLoadModal" onclick="closeModal();">&times;</button>
+        </div>
+        <div id="loadContainer"></div>
+        <p id="amountOfLoads"><span id="loadCounter">0</span> saves found</p>
+    </div>
+    <div class="loadModalOverlay hiddenLoad"></div>
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
@@ -1025,6 +1035,27 @@
     <div id="diagram-replay-message">
         <h2>Replay mode</h2>
         <p>Press "ESCAPE" to exit the replay-mode.</p>
+    </div>
+    <div id="savePopoutContainer" class="loginBoxContainer" style="display:none">
+        <div class="loginBox">
+            <div class="loginBoxheader">
+                <h3>
+                    Save current diagram as
+                </h3>
+                <div class="cursorPointer" onclick="hideSavePopout()">
+                    x
+                </div>
+            </div>
+            <div id="savePopout" style="margin-top:15px;display:block">
+                <div class="inputwrapper">
+                    <span style="margin-right:5px">Filename:</span>
+                    <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
+                </div>
+                <div class="button-row">
+                    <input type="submit" class="submit-button" onclick="saveDiagramAs(), hideSavePopout()" value="Save"/>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- content END -->
     <?php
