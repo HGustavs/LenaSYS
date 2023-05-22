@@ -3087,6 +3087,8 @@ function changeLineProperties()
     console.log(radio1
                 ,radio2, radio3, radio4);
 
+    console.log(line.kind);
+
     if (radio1) {
         if (radio1.checked && line.kind != radio1.value) {
             line.kind = radio1.value;
