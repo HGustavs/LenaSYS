@@ -9895,6 +9895,18 @@ function drawElement(element, ghosted = false)
     }
     // Sequence activation 
     else if (element.kind == 'sequenceActivation') {
+
+        // The element coordinates with snap point
+        var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
+        var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+
+        // Add the scroll values
+        left = Math.round((((objX - zoomOrigo.x) + (settings.grid.gridSize * 5)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+        top = Math.round((((objY - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
+        // Set the new snap point to center of element
+        left -= ((elementData.width * zoomfact) / 2);
+        top -= ((elementData.height * zoomfact) / 2);
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
