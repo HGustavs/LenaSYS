@@ -5,6 +5,7 @@
     background-color: blue;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 #loadingSpinner img{
     width: 50vh;
