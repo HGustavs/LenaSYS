@@ -9889,11 +9889,17 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='${element.fill}' 
             />`;
+            //define a clip path for text cutoff
+            str += `<clipPath id="objectTextCutOff">
+                    <rect y="'${linew}'" x="'${linew}'" width="'${boxw - (linew * 2)}'" height="'${(boxw/2) - linew}'" />
+                </clipPath></defs>`;
             if (!tooBig) {
                 str += `<text class='text' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             }
             else{
-                str += `<text class='text' x='${linew}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle'>${element.name}</text>`;
+                //str += `<text class='text' x='${linew}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle'>${element.name}</text>`;
+                //the text has a clip path of the avaliable area, this ensures that it cuts off properly when its too big.
+                str += `<text class='text' id='objectClippedName' x='${xAnchor}' y='${((boxw/2) - linew)/2}' dominant-baseline='middle' text-anchor='${vAlignment}' clip-path=<rect y="'${linew}'" x="'${linew}'" width="'${boxw - (linew * 2)}'" height="'${(boxw/2) - linew}'" />">${element.name}</text>`;
             }
             str += `</g>`;   
         }
