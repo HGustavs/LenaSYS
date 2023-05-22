@@ -32,7 +32,8 @@
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
-<body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
+<!-- <body onload="getData();addAlertOnUnload();" style="overflow: hidden;"> -->
+<body style="overflow: hidden;">
     
     <div id="loadingSpinner">
         <!-- temporary image -->
