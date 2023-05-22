@@ -705,12 +705,12 @@ if($gradesys=="UNK") $gradesys=0;
 							$varname="TESTING cid";	
 							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
 							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $cid); 
+							$query3->bindParam(":sectionname", $courseid); 
 							$query3->execute();
 
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
-							$query->bindParam(':cid', $cid);
+							$query->bindParam(':cid', $courseid);
 							$query->bindParam(':fileName', $likePattern);
 							$query->execute();
 							//Check if to be hidden
