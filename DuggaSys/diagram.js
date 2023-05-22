@@ -3106,10 +3106,7 @@ function changeLineProperties()
         line.kind = radio4.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio4.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } else{
-        displayMessage(messageTypes.ERROR, `Can't switch to selected kind`);
-    }
-    
+    } 
     
     // Check if this element exists
     if (!!document.getElementById('propertyCardinality')){
