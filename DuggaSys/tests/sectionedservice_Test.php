@@ -638,7 +638,7 @@ $testsData = array(
                 'tabs',
                 'feedbackenabled',
                 'feedbackquestion',
-                //'ts'
+                
             ),
             'debug',
             'writeaccess',
@@ -649,14 +649,12 @@ $testsData = array(
             'coursecode',
             'courseid',
             'links',
-            'duggor',
             'results',
             'versions',
             'codeexamples',
             'unmarked',
             'startdate',
             'enddate',
-            'groups',
             'grpmembershp',
             'grplst',
             'userfeedback',
