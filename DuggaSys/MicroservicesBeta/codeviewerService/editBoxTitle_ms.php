@@ -34,13 +34,6 @@
 	$info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
 	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "editBoxTitle.php",$userid,$info);
 
-	// Checks and sets user rights
-	if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))){
-		$writeAccess="w";
-	}else{
-		$writeAccess="s";
-	}
-
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
 	$exampleCount = 0;
