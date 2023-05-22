@@ -3778,6 +3778,7 @@ function saveLocalStorage(selectedValue) {
   var lid = document.getElementById('lidInput').value;
   var value = selectedValue.value;
   localStorage.setItem(lid, value);
+  console.log(localStorage);
 }
 
 // Sets the chosen value from localStorage to the dropdown if a value is saved in localStorage
@@ -3788,4 +3789,5 @@ function getLocalStorage() {
     var dropdown = document.querySelector('select[name="githubDir"]');
     dropdown.value = selectedValue;
   }
+  console.log(localStorage);
 }
