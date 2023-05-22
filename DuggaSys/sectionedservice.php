@@ -687,10 +687,11 @@ if($gradesys=="UNK") $gradesys=0;
 						} else {
 							//Check for update
 							//TODO: Implement update for already existing code-examples.
+							$likePattern = $exampleName .'%';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName=:fileName;"); 
+							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
 							$query->bindParam(':cid', $cid);
-							$query->bindParam(':fileName', $exampleName);
+							$query->bindParam(':fileName', $likePattern);
 							$query->execute();
 							//Check if to be hidden
 							$e = $query->fetchAll();
