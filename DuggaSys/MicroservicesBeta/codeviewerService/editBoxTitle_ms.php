@@ -7,7 +7,7 @@
 	include_once ("../../../Shared/sessions.php");
 	include_once ("../../../Shared/basic.php");
 
-	include ('../Misc/checkUserStatus.php'); //Need to check user status
+	//include ('../Misc/checkUserStatus.php'); //Need to check user status
 
 	//Remove when ms is working
 	//include_once ("../../../Shared/courses.php");

@@ -63,6 +63,6 @@
             $hasSuperAccess = false;
         }
 
-        return $hasStAccess, $hasRAccess, $hasWAccess, $hasSvAccess, $hasSuperAccess;
+        //return $hasStAccess, $hasRAccess, $hasWAccess, $hasSvAccess, $hasSuperAccess;
     }
 ?>
