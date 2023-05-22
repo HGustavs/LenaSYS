@@ -708,8 +708,8 @@ function displayEditExample() {
 			afstr += "<option value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
 		}
 	}
-	document.getElementById("before").innerHTML += bestr;
-	document.getElementById("after").innerHTML += afstr;
+	// document.getElementById("before").innerHTML += bestr;
+	// document.getElementById("after").innerHTML += afstr;
 	document.getElementById("editExampleContainer").style.display = "flex";
 }
 
