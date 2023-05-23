@@ -61,9 +61,9 @@ function getURL($serviceName){
 
     foreach ($urlplode as $part){
         
-        echo str_starts_with($serviceName, $part);
+        echo strpos($serviceName, $part);
         
-        if((strcmp($part,"tests") != 0)){
+        if((strpos($serviceName, $part)==false) && (strcmp($part,"tests") != 0)){
             // echo $part;
             $url .= $part.'/';
         }
