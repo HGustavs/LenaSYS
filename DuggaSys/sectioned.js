@@ -3133,6 +3133,8 @@ $(window).on('blur', function() {
 // then updates the code examples if the conditions are met.
 setInterval(function() {
   var itemKind = parseInt(item['kind']);
+  console.log(itemKind);
+  
   if (isActivelyFocused && itemKind === 4) {
     const now = Date.now();
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
