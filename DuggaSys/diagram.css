@@ -15,15 +15,8 @@
     align-items: center;
 }
 #spinnerTMPPlaceholder{
-    /* width: 50vh;
-    height: 50vh;
-    background-color: #FFFFFF; */
     animation: 1s linear 0s infinite loadingSpin;
 }
-/* #loadingSpinner img{
-    width: 50vh;
-    height: 50vh;
-} */
 
 #container {
     position:absolute;
