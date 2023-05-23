@@ -3096,8 +3096,6 @@ const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 
 function createExamples(momentID, isManual) {
   lid = momentID;
   // AJAX Request to create all code examples
-  console.log("Creating examples for moment ID: " + lid);
-
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
