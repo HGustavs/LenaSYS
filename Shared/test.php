@@ -63,7 +63,7 @@ function getURL($serviceName){
         
         echo str_starts_with($serviceName, $part);
         
-        if((str_starts_with($serviceName, $part)==false) && (strcmp($part,"tests") != 0)){
+        if((strcmp($part,"tests") != 0)){
             // echo $part;
             $url .= $part.'/';
         }
