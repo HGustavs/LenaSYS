@@ -3094,9 +3094,6 @@ const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 m
 
 function createExamples(momentID) {
   lid = momentID;
-  console.log("The value of all lids is: " + collectedLid);
-  console.log(lid);
-  console.log("** AJAX START **");
   //AJAX Request to create all code examples
   $.ajax({
     url: "sectionedservice.php",
