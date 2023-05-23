@@ -349,7 +349,7 @@
                          onclick='setElementPlacementType(5); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
                          onmousedown="holdPlacementButtonDown(5)">
-                        <img src="../Shared/icons/diagram_inheritance.svg"alt="UML inheritance"/>
+                        <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p>
                             <p>A relation between a superclass and subclasses.</p>
