@@ -460,7 +460,7 @@ class StateMachine
                     for (var index = 0; index < changeTypes.length; index++) {
 
                         currentChangedType = changeTypes[index];
-
+                        console.log(currentChangedType);
                         switch (currentChangeType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
