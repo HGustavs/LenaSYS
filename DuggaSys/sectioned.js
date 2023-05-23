@@ -1199,7 +1199,7 @@ function duggaRowClick(rowElement){
     }
   }
 }
-
+var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
@@ -1349,6 +1349,9 @@ function returnedSection(data) {
 
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
+        itemKinds[i] = itemKind;
+
+
         if (itemKind === 3 || itemKind === 4) {
 
           // If there exists atleast one test or moment swimlanes shall be hidden
@@ -3086,21 +3089,14 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
 }
 
-let isActivelyFocused = false; // If the user is actively focusing on the course page
-let lastUpdatedCodeExampes = null; // Last time code examples was updated
-const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
-let dir = "../courses/1895/Github/Demo/Code-example1/";
+var isActivelyFocused = false; // If the user is actively focusing on the course page
+var lastUpdatedCodeExampes = null; // Last time code examples was updated
+const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
 
-
-//Creates all examples from github that doesnt exists yet
-
-function createExamples(momentID) {
+// Function to fetch code examples for a specific lecture/moment
+function createExamples(momentID, isManual) {
   lid = momentID;
-  console.log("The value of all lids is: " + collectedLid);
-  console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
-  console.log(lid);
-  console.log("** AJAX START **");
-  //AJAX Request to create all code examples
+  // AJAX Request to create all code examples
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
@@ -3109,45 +3105,63 @@ function createExamples(momentID) {
     success: function(response) {
       console.log("AJAX request succeeded. Response:", response);
       lastUpdatedCodeExampes = Date.now();
-      console.log("Last time code examples updated was: ", lastUpdatedCodeExampes);
+      if (isManual) {
+      alert("Code examples have been manually updated successfully!");
+      }
     },
     error: function(xhr, status, error) {
-      console.log("AJAX request failed. Status:", status);
-      console.log("Error:", error);
+      console.error("AJAX request failed. Status:", status);
+      console.error("Error:", error);
+      alert("Failed to manually update code examples!");
     }
   });
-
-  console.log("** AJAX DONE **");
-
 }
-
 
 // When the user is watching the course page, set isActivelyFocused to true
 $(window).on('focus', function( ) {
   isActivelyFocused = true;
   console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
+
 });
 
 // When the user stops watching the course page, set isActivelyFocused to false
 $(window).on('blur', function() {
   isActivelyFocused = false;
   console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
+
 });
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
 // then updates the code examples if the conditions are met.
+
 setInterval(function() {
-    if (isActivelyFocused) {
-        const now = Date.now();
-        if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
-            lastUpdatedCodeExampes = now;
-            // Call the createExamples function for each lecture/moments
-            for (let i = 0; i < collectedLid.length; i++) {
-                createExamples(collectedLid[i]);
-            }
+  if (isActivelyFocused) {
+    const now = Date.now();
+    if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
+      lastUpdatedCodeExampes = now;
+      var hasUpdatedAllCodeExamples = false;
+      console.log("Time to update the code examples.");
+
+      // Call the createExamples function for each lecture/moments
+      for (let i = 0; i < itemKinds.length; i++) {
+        if(itemKinds[i] === 4){
+          for (let i = 0; i < collectedLid.length; i++) {
+            createExamples(collectedLid[i], false);
+            hasUpdatedAllCodeExamples = true;
+          }
         }
+      }
+
+      // The alert for automated fetching of code examples
+      if (hasUpdatedAllCodeExamples) {
+        alert("Code examples have been automatically updated successfully!");
+      }
     }
-}, 1000);
+  }
+  
+}, 1000); // this checks every second  if UPDATE_INTERVAL_FETCH_CODE_EXAMPLES has passed 10 minutes mark
+
+
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
   //Regex for letters, numbers, and dashes
@@ -3734,11 +3748,7 @@ function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked!");
 
-  //TODO: take input from column/dropdownlist and iterate through and create the codeexample
-  //for each codeexample in the moment dir, do create examples on those code-example dir
-  //for loop not yet implemented, waiting for other issues to be completed before
-
-  createExamples(momentID);
+  createExamples(momentID,true);
 }
 
 //------------------------------------------------------------------------------
