@@ -788,7 +788,8 @@ if($gradesys=="UNK") $gradesys=0;
 											$query3->bindParam(":examplename", $varname); 
 											$query3->bindParam(":sectionname", $error[2]); 
 											$query3->execute();
-									}
+										}
+									}	
 								}
 								switch ($exampleCount) {
 									case 1:
