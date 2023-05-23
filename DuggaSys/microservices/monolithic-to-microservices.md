@@ -1,18 +1,18 @@
 
 Disclaimer, this guide serves as a guideline and can not be followed 100% since the structure of all files differ. It's recommended to test after each step which include code changing to so its faster to spot if something goes wrong. When this guide was written no service using retrive information was used, write guide at step 5.
 ***
-##Setting up file & folder:
+## Setting up file & folder:
 ***
 
-###Step 1
+### Step 1
 Locate the folder microservices:
 ***DuggaSys -> microservices***
 
-###Step 2
+### Step 2
 If a folder named after the monolithic service file exists skip to step 3.
 Else if it does not exist, create a folder named after the service file, for example codeviewerService.php(monolithic) becomes codeviewerService(Folder).
 
-###Step 3
+### Step 3
 Create a file with name following the naming convention in Potential_micro_services:
 ***Backend-models -> microservices -> duggaSys services***
 
@@ -23,27 +23,63 @@ Create a file with name following the naming convention in Potential_micro_servi
 | createBox_ms.php |
 
 ***
-##Converting monolithic to microservice:
-###Step 1
+## Converting monolithic to microservice:
+### Step 1
 Copy the entire service file content from the monolithic php to your new made, the purpose of this is to simmer down 
 
-###Step 2
-Remove all the “opt”s that are not relevant to you. If your function is an else if, make it into an If statement. 
+### Step 2
+Remove all the “opt”s(Example of opts below) that are not relevant to you. If your function is an else if, make it into an If statement. 
 Once all irrelevant code is removed test if it still works (see “How to test: section)
 
-###Step 3
+##### Codeexample: Opt
+
+```php
+if(strcmp('EDITTITLE',$opt)===0) {
+	$exampleid = $_POST['exampleid'];
+	$boxId = $_POST['boxid'];
+	$boxTitle = $_POST['boxtitle'];
+
+	$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;");
+	$query->bindParam(':boxtitle', $boxTitle);
+	$query->bindValue(':exampleid', $exampleId);
+	$query->bindParam(':boxid', $boxId);
+	$query->execute();
+
+	echo json_encode(array('title' => $boxTitle, 'id' => $boxId));
+	return;
+} else if (strcmp('DELEXAMPLE', $opt) === 0) {
+
+	$query1 = $pdo->prepare("DELETE FROM box WHERE exampleid=:exampleid;");
+	$query1->bindValue(':exampleid', $exampleId);				
+
+	$query2 = $pdo->prepare("DELETE FROM improw WHERE exampleid=:exampleid;");
+	$query2->bindValue(':exampleid', $exampleId);				
+
+	$query3 = $pdo->prepare("DELETE FROM impwordlist WHERE exampleid=:exampleid;");
+	$query3->bindValue(':exampleid', $exampleId);				
+
+	$query4 = $pdo->prepare("DELETE FROM codeexample WHERE exampleid=:exampleid;");
+	$query4->bindValue(':exampleid', $exampleId);
+        ...
+        ...
+        ...
+			
+```
+
+### Step 3
 Remove global variables that your functions do not need.
 For visuall representation, check **codeviewerService** and the microservice **editBoxTitle_ms**
 
-###Step 4
-Add the following include in code example and call getUid(); once the code is added remove code that belongs in getUid(see code example:getUid)
-#####Codeexample: Include
-```
+### Step 4
+Add "codeexample: Include" to the code, include should be where the other includes are and getUid(); should be called short after. 
+ once the code is added remove code that belongs in getUid(see code example:getUid)
+##### Codeexample: Include
+```php
 include ('../shared_microservices/getUid_ms.php');
 getUid();
 ```
-#####Codeexample: getUid
-```
+##### Codeexample: getUid
+```php
 function getUid(){
         // Checks user id, if user has none a guest id is set
         if(isset($_SESSION['uid'])){
@@ -64,22 +100,22 @@ function getUid(){
         return $log_uuid;
     }
 ```
-###step 5
+### step 5
 If retrive information is not needed, remove it
 
 If it is needed (Write guide here :), letting it stay in file is not an solution, need to be made in to microservice)
 
 ***
-##How to test:
+## How to test:
 
-###Step 1
+### Step 1
 First things first we need to navigate through dugga.js and find the relevant function. Easiest way to find this is to search for "url: "yourservicename.php"
 
 Figure out which of the service statements is relevant to your function, then comment out the old url and write the microservice files name(see code example: url). It will look something like this: *url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php"*
 
 
-####example: url
-```
+#### example: url
+```php
 else if(kind=="BOXCONTENT"){
 		$.ajax({
 			//url: "codeviewerService.php",
@@ -100,10 +136,10 @@ else if(kind=="BOXCONTENT"){
 			success: returnedTitle
 		});
 ```
-###Step 2
+### Step 2
 Log in to the webserver through the commandline through the cmc(Will not write a guide on this, sorry people)
 
-###Step 3
+### Step 3
 Find on LenaSys where your service is used, this can be found through the website developer tool
 
 How to find:
@@ -118,6 +154,6 @@ The JSoN data should display an “opt”, find the opt that has the same name a
 ***
 
 
-##Don't forget!:
+## Don't forget!:
 It's very important that you swap the url when done, so it doesn't cause error for the other groups, unless the website official transfers to microservices
 ***
