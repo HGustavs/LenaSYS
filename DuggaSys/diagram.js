@@ -2622,11 +2622,9 @@ function mmoving(event)
                 var tmp = elementData.height;
                 elementData.height = (startHeight - (deltaY / zoomfact));
 
-                console.log(heightChange);
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
-                console.log(heightChange);
-
+                
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
@@ -2634,10 +2632,10 @@ function mmoving(event)
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight + (deltaY / zoomfact));
-                console.log(heightChange);
+
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
-                console.log(heightChange);
+
                 // Fetch original y-position
                 // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
                 tmp = elementData.y;
