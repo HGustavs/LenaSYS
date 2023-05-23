@@ -1199,7 +1199,7 @@ function duggaRowClick(rowElement){
     }
   }
 }
-
+var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
@@ -1349,6 +1349,10 @@ function returnedSection(data) {
 
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
+        for (i = 0; i < data['entries'].length; i++) {
+          var item = data['entries'][i];
+          itemKinds[i] = parseInt(item['kind']); 
+        }
         if (itemKind === 3 || itemKind === 4) {
 
           // If there exists atleast one test or moment swimlanes shall be hidden
@@ -3131,10 +3135,9 @@ $(window).on('blur', function() {
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
 // then updates the code examples if the conditions are met.
-setInterval(function(item) {
-  console.log(item);
-  var itemKind = parseInt(item['kind']);
-  if (isActivelyFocused && itemKind === 4) {
+setInterval(function() {
+  console.log(itemKinds);
+  if (isActivelyFocused) {
     const now = Date.now();
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
       lastUpdatedCodeExampes = now;
