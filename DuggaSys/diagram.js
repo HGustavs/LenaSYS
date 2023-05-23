@@ -3646,6 +3646,7 @@ function entityIsOverlapping(id, x, y)
     const foundIndex = findIndex(data, id);
     if(foundIndex > -1){
         const element = data[foundIndex];
+        const element = context[0];
         let targetX;
         let targetY;
         var elementHeight = element.height;
