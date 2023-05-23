@@ -3085,8 +3085,8 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
 }
 
-let isActivelyFocused = false; // If the user is actively focusing on the course page
-let lastUpdatedCodeExampes = null; // Last time code examples was updated
+var isActivelyFocused = false; // If the user is actively focusing on the course page
+var lastUpdatedCodeExampes = null; // Last time code examples was updated
 const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
 
 // Function to fetch code examples for a specific lecture/moment
