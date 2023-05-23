@@ -25,12 +25,12 @@ $getURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "h
 $urlplode = explode('/', $getURL);
 
 foreach ($urlplode as $part){
-    if($part != $serviceFileName){
+    if(($part != $serviceFileName) && ($part != "test")){
         // echo $part;
         $url .= $part.'/';
     }
-    else{
-
+    else if($part != "test"){
+        $url .= $serviceFileName; 
     } 
 };
 
