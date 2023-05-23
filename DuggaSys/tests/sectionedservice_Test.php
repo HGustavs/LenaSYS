@@ -23,11 +23,11 @@ $urlplode = explode('/', $url);
 echo $urlplode[4];
 
 
-foreach($urlplode as $i){
-    echo $i;
-    echo '</br>';
-}
-//echo $url;
+// foreach($urlplode as $i){
+//     echo $i;
+//     echo '</br>';
+// }
+
 
 // $testsData = array(
 //     //------------------------------------------------------------------------------------------
