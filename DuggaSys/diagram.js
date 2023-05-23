@@ -3712,12 +3712,11 @@ function entityIsOverlapping(id, x, y)
               //if its overlapping with a super state, just break since that is allowed.
               if (data[i].kind == "UMLSuperState") {
                 break;
-                }
+              }
                 
-              
-                if (data[0].kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
-                console.log("Activation overlap with ActorAndObject")
-                break;
+              if (data[i].kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
+               console.log("Activation overlap with ActorAndObject")
+               break;
               }
               //if its overlapping with a sequence actor, just break since that is allowed.
               else if (data[i].kind == "sequenceActorAndObject") {
