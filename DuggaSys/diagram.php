@@ -37,7 +37,16 @@
     
     <!-- loading spinner -->
     <div id="loadingSpinner">
-        <img id="spinnerTMPPlaceholder" src="../Shared/icons/spinner.svg" alt="loading"/>
+        <!-- <img id="spinnerTMPPlaceholder" src="../Shared/icons/spinner.svg" alt="loading"/> -->
+        <svg width="200" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <mask id="spinnerMask">
+                <!-- Everything under a white pixel will be visible -->
+                <rect x="0" y="0" width="200" height="200" fill="white" />
+                <!-- Everything under a black pixel will be invisible -->
+                <rect x="100" y="-100" width="200" height="200" fill="black" />
+            </mask>
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#775886" stroke-width="10" mask="url(#spinnerMask)"/>
+        </svg>
     </div>
 
     <!-- Markdown document with keybinds -->
