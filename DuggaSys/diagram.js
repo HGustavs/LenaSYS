@@ -13114,6 +13114,12 @@ function saveDiagramBeforeUnload() {
     })
 }
 
+function disableIfDataEmpty(){
+    if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
+        document.getElementById('localSaveField').disabled = true;
+    }
+}
+
 function showSavePopout()
 {
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
