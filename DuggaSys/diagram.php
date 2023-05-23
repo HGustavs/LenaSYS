@@ -38,9 +38,9 @@
     <!-- loading spinner -->
     <div id="loadingSpinner">
         <!-- <img id="spinnerTMPPlaceholder" src="../Shared/icons/spinner.svg" alt="loading"/> -->
-        <svg width="200" height="250" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <svg width="200" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <!-- <rect x="10" y="10" width="30" height="30" stroke="white" fill="transparent" stroke-width="5"/> -->
-            <path d="M 0,0 A 0 0 0 0 0 14,10" fill="none" stroke="blue" stroke-width="5"/>
+            <path d="M 100,0 A 200 200 90 0 0 200,100" fill="none" stroke="blue" stroke-width="5"/>
         </svg>
     </div>
 
