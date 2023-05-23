@@ -182,4 +182,4 @@ $testsData = array(
 
 );
 
-testHandler($testsData, false);
+testHandler($testsData, true);
