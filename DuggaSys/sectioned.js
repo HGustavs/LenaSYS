@@ -3152,7 +3152,7 @@ setInterval(function() {
         createExamples(collectedLid[i], false);
         hasUpdatedAllCodeExamples = true;
       }
-      if (hasUpdatedAllCodeExamples && !isManual) {
+      if (hasUpdatedAllCodeExamples) {
         alert("Code examples have been automatically updated successfully!");
       }
     }
