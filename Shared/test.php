@@ -61,11 +61,11 @@ function getURL($serviceName){
 
     foreach ($urlplode as $part){
         echo strpos($serviceName, $part);
-        if((strpos($serviceName, $part)==false) && ($part != "tests")){
+        if((strpos($serviceName, $part)==false) && (strcmp($part,"tests") != 0)){
             // echo $part;
             $url .= $part.'/';
         }
-        else if($part != "tests"){
+        else if(strcmp($part,"tests") == 0){
             $url .= $serviceName.'.php'; 
         } 
     };
