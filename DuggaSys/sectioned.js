@@ -3087,7 +3087,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 
 var isActivelyFocused = false; // If the user is actively focusing on the course page
 var lastUpdatedCodeExampes = null; // Last time code examples was updated
-const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
 
 // Function to fetch code examples for a specific lecture/moment
 function createExamples(momentID, isManual) {
@@ -3134,7 +3134,7 @@ $(window).on('blur', function() {
 setInterval(function() {
   if (isActivelyFocused) {
     const now = Date.now();
-    if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
+    if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
       lastUpdatedCodeExampes = now;
       var hasUpdatedAllCodeExamples = false;
       console.log("Time to update the code examples.");
@@ -3149,7 +3149,7 @@ setInterval(function() {
       }
     }
   }
-}, 1000); // this checks every second  if updateInterval has passed 10 minutes mark
+}, 1000); // this checks every second  if UPDATE_INTERVAL_FETCH_CODE_EXAMPLES has passed 10 minutes mark
 
 
 // ------ Validates all versionnames ------
