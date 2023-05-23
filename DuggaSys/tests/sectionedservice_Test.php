@@ -33,6 +33,8 @@ foreach ($urlplode as $part){
     } 
 };
 
+echo $url; 
+
 $testsData = array(
     //------------------------------------------------------------------------------------------
     // This test the microservice getCourseGroupsAndMembers and the part of the monalith called "GRP" 
