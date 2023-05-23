@@ -707,8 +707,6 @@ if($gradesys=="UNK") $gradesys=0;
 							$result = $query1->fetch(PDO::FETCH_OBJ);
 							$boxCount = $result->boxCount;
 
-
-
 							$likePattern = $exampleName .'.%';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
@@ -726,9 +724,9 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":entryname", $exampleName);
 								$query->bindParam(":visible", $visible);
 								$query->execute();
-
-							//Check if remove box
+							
 							}else if ($boxCount > $exampleCount){
+								//Check if remove box
 								$query = $pdolite->prepare("SELECT fileName FROM box WHERE exampleid = :eid;"); 
 								$query->bindParam(':eid', $eid);
 								$query->execute();				
@@ -770,9 +768,9 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":templateid", $templateNumber);
 								$query->bindParam(":eid", $eid);
 								$query->execute();
-								
-							//Check if adding box
+														
 							}else if ($boxCount < $exampleCount){
+								//Check if adding box
 
 							}
 
