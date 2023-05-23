@@ -749,6 +749,27 @@ if($gradesys=="UNK") $gradesys=0;
 										$query->execute();
 									}
 								}
+								switch ($exampleCount) {
+									case 1:
+										$templateNumber = 10;
+										break;
+									case 2:
+										$templateNumber = 1;
+										break;
+									case 3:
+										$templateNumber = 3;
+										break;
+									case 4:
+										$templateNumber = 5;
+										break;
+									case 5:
+										$templateNumber = 9;
+										break;
+								}
+								$query = $pdo->prepare("UPDATE codeexample SET templateid=:templateid WHERE eid=:eid;");
+								$query->bindParam(":templateid", $templateNumber);
+								$query->bindParam(":eid", $eid);
+								$query->execute();
 								
 							//Check if adding box
 							}else if ($boxCount < $exampleCount){
