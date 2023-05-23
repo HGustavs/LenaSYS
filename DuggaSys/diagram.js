@@ -515,7 +515,8 @@ class StateMachine
         showdata();
         this.scrubHistory(this.currentHistoryIndex);
         updatepos(0, 0);
-        displayMessage(messageTypes.SUCCESS, "Changes reverted!")
+        displayMessage(messageTypes.SUCCESS, "Changes reverted!");
+        disableIfDataEmpty();
     }
     stepForward()
     {
@@ -13117,7 +13118,6 @@ function saveDiagramBeforeUnload() {
 }
 
 function disableIfDataEmpty(){
-    console.log("hello");
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
         document.getElementById('localSaveField').classList.add('disabledIcon');
     }
