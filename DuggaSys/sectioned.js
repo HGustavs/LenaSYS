@@ -3143,7 +3143,7 @@ setInterval(function() {
             lastUpdatedCodeExampes = now;
             // Call the createExamples function for each lecture/moments
             for (let i = 0; i < collectedLid.length; i++) {
-                createExamples(collectedLid[i]);
+                //createExamples(collectedLid[i]);
             }
         }
     }
