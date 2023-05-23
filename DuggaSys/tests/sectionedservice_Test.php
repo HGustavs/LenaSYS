@@ -26,6 +26,7 @@ $urlplode = explode('/', $url);
 
 foreach ($urlplode as $part){
     if($part != $serviceFileName){
+        echo $part;
         $url .= $part;
     }
     else{
