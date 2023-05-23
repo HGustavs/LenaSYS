@@ -745,10 +745,22 @@ if($gradesys=="UNK") $gradesys=0;
 							
 							}else if ($boxCount > $exampleCount){
 								//Check if remove box
+								$varname="INSIDE BOX > EXAMPLE";	
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $varname); 
+								$query3->bindParam(":sectionname", $exampleName); 
+								$query3->execute();
+								
 								$query = $pdolite->prepare("SELECT fileName FROM box WHERE exampleid = :eid;"); 
 								$query->bindParam(':eid', $eid);
 								$query->execute();				
 								$boxRows = $query->fetchAll();
+
+								$varname="AFTER FETCH ALL";	
+								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+								$query3->bindParam(":examplename", $varname); 
+								$query3->bindParam(":sectionname", $exampleName); 
+								$query3->execute();
 								foreach($boxRows as $bRow){
 									$boxName = $bRow['filename'];
 
