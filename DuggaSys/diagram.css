@@ -832,6 +832,10 @@
     font-weight: bold;
 }
 
+.disabled{
+    background-color: #888;
+}
+
 #a4options {
     display: flex;
 }

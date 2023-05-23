@@ -13118,10 +13118,10 @@ function saveDiagramBeforeUnload() {
 function disableIfDataEmpty(){
     console.log("hello");
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
-        document.getElementById('localSaveField').disabled = true;
+        document.getElementById('localSaveField').classList.add('disabled');
     }
     else{
-        document.getElementById('localSaveField').disabled = false;
+        document.getElementById('localSaveField').classList.remove('disabled');
     }
 }
 
