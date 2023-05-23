@@ -24,7 +24,7 @@ $testsData = array(
 			'lfiles',
 			'access',
 			'studentteacher',
-			'supeuser',
+			'superuser',
 			'waccess',
 			'supervisor'
 		)),
