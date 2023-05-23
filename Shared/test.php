@@ -69,7 +69,7 @@ function getURL($serviceName){
             $url .= $serviceName.'.php'; 
         } 
     };
-
+    echo $url; 
     return $url;
 }
 
