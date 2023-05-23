@@ -861,7 +861,7 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 
 <br>
 
-### updateListentriesGradesystem
+### updateListentriesTabs
 Uses the services __updateTableListentries__ to change the content of these columns:
 - gradesystem
 
