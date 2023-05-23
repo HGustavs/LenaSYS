@@ -17,7 +17,12 @@
 include "../../Shared/test.php";
 
 
-$url = 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php';
+//$url = 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php';
+
+$url = $_SERVER;
+echo $url;
+echo '</br>'; 
+
 $urlplode = explode('/', $url);
 
 echo $urlplode[6];
