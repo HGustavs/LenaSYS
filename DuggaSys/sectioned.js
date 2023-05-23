@@ -3090,7 +3090,7 @@ let lastUpdatedCodeExampes = null; // Last time code examples was updated
 const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
 
 
-//Creates all examples from github that doesnt exists yet
+//Creates all examples from github that doesnt exists yet, manually(meaning user has to click button)
 function createExamplesButton(momentID) {
   lid = momentID;
   // AJAX Request to create all code examples
@@ -3108,7 +3108,7 @@ function createExamplesButton(momentID) {
     }
   });
 }
-
+// Creates all examples from github that doesnt exists yet, automated(meaning user doesnt have to click button)
 function createExamplesAuto(momentID) {
   lid = momentID;
   // AJAX Request to create all code examples
@@ -3144,10 +3144,18 @@ setInterval(function() {
     const now = Date.now();
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
+
+      let ajaxCalls = []; // Array to store the $.ajax promises
+
       // Call the createExamplesAuto function for each lecture/moments
       for (let i = 0; i < collectedLid.length; i++) {
-        createExamplesAuto(collectedLid[i]);
+        ajaxCalls.push(createExamplesAuto(collectedLid[i])); // Push the $.ajax promise to the array
       }
+
+      // Use $.when to wait for all the AJAX requests to finish, then show the alert
+      $.when.apply($, ajaxCalls).then(function() {
+        alert("Code examples have been automatically updated successfully!");
+      });
     }
   }
 }, 1000);
@@ -3739,7 +3747,7 @@ function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked!");
 
-  createExamples(momentID);
+  createExamplesButton(momentID);
 }
 
 //------------------------------------------------------------------------------
