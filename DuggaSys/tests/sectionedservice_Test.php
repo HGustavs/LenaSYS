@@ -19,7 +19,10 @@ include "../../Shared/test.php";
 
 //$url = 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php';
 
-$url = $_SERVER;
+$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
+                === 'on' ? "https" : "http") .
+                "://" . $_SERVER['HTTP_HOST'] .
+                $_SERVER['REQUEST_URI'];
 echo $url;
 echo '</br>'; 
 
