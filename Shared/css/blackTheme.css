@@ -1258,4 +1258,8 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   background-color: #000!important;
   color: #fff;
 }
+
+.boxSelectionLines {
+    stroke:#fff;
+}
 /*/ END /*/

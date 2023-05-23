@@ -116,8 +116,8 @@ class StateChangeFactory
         // Get the keys of the values that is unique from default
         var uniqueKeysArr = Object.keys(element).filter(key => {
             return (Object.keys(defaults[element.kind]).filter(value => {
-                return defaults[element.kind][value] == element[key];
-            }).length == 0);
+                return defaults[element.kind][value] === element[key];
+            }).length === 0);
         });
 
         // For every unique value set it into the change
@@ -370,9 +370,9 @@ class StateMachine
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
-    save (stateChangeArray, changeType)
+    save (stateChangeArray, newChangeType)
     {
-        
+        let currentChangedType;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (var i = 0; i < stateChangeArray.length; i++) {
@@ -410,14 +410,14 @@ class StateMachine
                             if (lastLog.id != stateChange.id) sameElements = false;
                         }
 
-                        if (Array.isArray(changeType)){
-                            for (var index = 0; index < changeType.length && isSoft; index++) {
-                                isSoft = changeType[index].isSoft;
+                        if (Array.isArray(newChangeType)){
+                            for (var index = 0; index < newChangeType.length && isSoft; index++) {
+                                isSoft = newChangeType[index].isSoft;
                             }
-                            var changeTypes = changeType;
+                            var changeTypes = newChangeType;
                         }else {
-                            isSoft = changeType.isSoft;
-                            var changeTypes = [changeType];
+                            isSoft = newChangeType.isSoft;
+                            var changeTypes = [newChangeType];
                         }
 
                     // Find last change with the same ids
@@ -452,16 +452,16 @@ class StateMachine
                 if (!isSoft || !sameElements) {
 
                     this.historyLog.push(stateChange);
-                    this.lastFlag = changeType;
+                    this.lastFlag = newChangeType;
                     this.currentHistoryIndex = this.historyLog.length -1;
 
                 } else { // Otherwise, simply modify the last entry.
 
-                    for (var index = 0; index < changeTypes.length; index++) {
+                    for (let i = 0; i < changeTypes.length; i++) {
 
-                        var changeType = changeTypes[index];
+                        const currentChangedType = changeTypes[i];
 
-                        switch (changeType) {
+                        switch (currentChangedType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
@@ -479,7 +479,7 @@ class StateMachine
                 }
             } else {
                 this.historyLog.push(stateChange);
-                this.lastFlag = changeType;
+                this.lastFlag = currentChangedType;
                 this.currentHistoryIndex = this.historyLog.length -1;
             }
         } else {
@@ -4126,11 +4126,11 @@ function boxSelect_Draw(str)
         var strokeWidth = 2;
 
         // Draw lines between all neighbours
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke-width='${strokeWidth}' />`;
 
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke-width='${strokeWidth}' />`;
     }
     
     return str;
@@ -9314,6 +9314,7 @@ function drawElement(element, ghosted = false)
     if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
     else nonFilledElementPartStrokeColor = '#383737';
 
+    //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
     //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
     //replace this with nonFilledElementPartStroke when it gets merged.
     var actorFontColor;
@@ -9879,9 +9880,9 @@ function drawElement(element, ghosted = false)
             //svg for object.
             str += `<g>`;
             str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw - (linew * 2)}'
+                x='${linew/2}'
+                y='${linew/2}'
+                width='${boxw - linew}'
                 height='${(boxw/2) - linew}'
                 rx='${sequenceCornerRadius}'
                 stroke-width='${linew}'
@@ -12849,6 +12850,7 @@ function exportWithHistory()
 }
 /**
  * @description Stores the current diagram as JSON in localstorage
+ * @param {string} key The name/key of the diagram
  */
  function storeDiagramInLocalStorage(key){
 
@@ -12862,7 +12864,20 @@ function exportWithHistory()
             historyLog: stateMachine.historyLog,
             initialState: stateMachine.initialState
         };
-        localStorage.setItem(key,JSON.stringify(objToSave));
+
+        // Sets the autosave diagram first, if it is not already set.
+        if (!localStorage.getItem("diagrams")) {
+            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`
+            localStorage.setItem("diagrams", s);
+        }
+        // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
+        let local = localStorage.getItem("diagrams");
+        local = (local[0] == "{") ? local : `{${local}}`;
+
+        let localDiagrams = JSON.parse(local);
+        localDiagrams[key] = objToSave;
+        localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
 }
@@ -13045,9 +13060,16 @@ function showModal(){
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
+    let diagramKeys;
+    let localDiagrams;
 
-    // Array for testing visuals, remove this once once functionality has been finished
-let names=getAllLocalStorageKeys();
+    let local = localStorage.getItem("diagrams");
+    if (local != null) {
+        local = (local[0] == "{") ? local : `{${local}}`;
+        localDiagrams = JSON.parse(local);
+        diagramKeys = Object.keys(localDiagrams);
+    }
+
 
     // Remove all elements
     while (container.firstElementChild){
@@ -13055,28 +13077,23 @@ let names=getAllLocalStorageKeys();
     }
 
     // If no items were found for loading in 
-    if (names.length === 0){
+    if (diagramKeys === undefined || diagramKeys.length === 0){
         var p = document.createElement('p');
         var pText = document.createTextNode('No saves could be found');
 
         p.appendChild(pText);
         container.appendChild(p);
-        console.log("no saves");
     }
     else{
-        for (let i = 0; i<names.length; i++){
+        for (let i = 0; i < diagramKeys.length; i++){
             var btn = document.createElement('button');
-            var btnText = document.createTextNode(names[i]);
-            btn.setAttribute("onclick", `(function(name) { loadDiagramFromLocalStorage(name); closeModal(); })('${names[i]}')`);
-    
-            closeModal();
-    
+            var btnText = document.createTextNode(diagramKeys[i]);
+
+            btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
             container.appendChild(btn);
 
-            document.getElementById('loadCounter').innerHTML = names.length;
-
-            console.log("saves");
+            document.getElementById('loadCounter').innerHTML = diagramKeys.length;
         }
     }
 
@@ -13091,20 +13108,22 @@ function closeModal(){
     modal.classList.add('hiddenLoad');
     overlay.classList.add('hiddenLoad');
 }
-function getAllLocalStorageKeys()
-{
-    let keys=[];
-    for(let i=0; i<localStorage.length; i++)
-    keys.push(localStorage.key(i));
-    return keys;
-}
-
+/**
+ * @description Check whether there is a diagram saved in localstorage and load it.
+ * @param {string} key The name/key of the diagram to load.
+ */
  function loadDiagramFromLocalStorage(key)
 {
-    // Check whether there is a diagram saved in localstorage and load it. key for current diagram is CurrentlyActiveDiagram
-    if (localStorage.getItem(key)) {
-        var diagramFromLocalStorage = localStorage.getItem(key);
-        loadDiagramFromString(JSON.parse(diagramFromLocalStorage));
+    if (localStorage.getItem("diagrams")) {
+        var diagramFromLocalStorage = localStorage.getItem("diagrams");
+        diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage: `{${diagramFromLocalStorage}}`;
+        let obj = JSON.parse(diagramFromLocalStorage);
+        if (obj[key] === undefined) {
+            console.error("Undefined key")
+        }
+        else {
+            loadDiagramFromString(obj[key]);
+        }
     } else {
         // Failed to load content
         console.error("No content to load")
@@ -13116,7 +13135,7 @@ function saveDiagramBeforeUnload() {
     window.addEventListener("beforeunload", (e) => {
         e.preventDefault();
         e.returnValue = "";
-        storeDiagramInLocalStorage("CurrentlyActiveDiagram");
+        storeDiagramInLocalStorage("AutoSave");
     })
 }
 
@@ -13162,7 +13181,16 @@ function saveDiagramAs()
     if (fileName.trim() == "") {
         fileName = "diagram "+formattedDate+formattedTime;
     }
-    const names=getAllLocalStorageKeys();
+    let names;
+    let localDiagrams;
+
+    let local = localStorage.getItem("diagrams");
+    if (local != null) {
+        local = (local[0] == "{") ? local : `{${local}}`;
+        localDiagrams = JSON.parse(local);
+     names = Object.keys(localDiagrams);
+    }
+
     for(let i=0; i<names.length; i++)
     {
         if(names[i]==fileName)
