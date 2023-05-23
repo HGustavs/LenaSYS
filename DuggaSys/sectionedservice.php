@@ -701,11 +701,23 @@ if($gradesys=="UNK") $gradesys=0;
 							$result = $query1->fetch(PDO::FETCH_OBJ);
 							$eid = $result->eid;
 
+							$varname="eid";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $eid); 
+							$query3->execute();
+
 							$query1 = $pdo->prepare("SELECT COUNT(*) AS boxCount FROM box WHERE exampleid=:eid;");
 							$query1->bindParam(":eid", $eid);
 							$query1->execute();
 							$result = $query1->fetch(PDO::FETCH_OBJ);
 							$boxCount = $result->boxCount;
+
+							$varname="boxCount";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $boxCount); 
+							$query3->execute();
 
 							$likePattern = $exampleName .'.%';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
@@ -715,6 +727,12 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->execute();				
 							$rows = $query->fetchAll();
 							$exampleCount = count($rows);
+
+							$varname="exampleCount";	
+							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+							$query3->bindParam(":examplename", $varname); 
+							$query3->bindParam(":sectionname", $exampleCount); 
+							$query3->execute();
 							//Check if to be hidden
 							if($exampleCount==0){
 								$visible = 0;																								
@@ -733,9 +751,23 @@ if($gradesys=="UNK") $gradesys=0;
 								$boxRows = $query->fetchAll();
 								foreach($boxRows as $bRow){
 									$boxName = $bRow['filename'];
+
+									$varname="boxName";	
+									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+									$query3->bindParam(":examplename", $varname); 
+									$query3->bindParam(":sectionname", $boxName); 
+									$query3->execute();
+
 									$exist = false;
 									foreach ($rows as $row) {
 										$fileName = $row['fileName'];
+
+										$varname="fileName";	
+										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+										$query3->bindParam(":examplename", $varname); 
+										$query3->bindParam(":sectionname", $fileName); 
+										$query3->execute();
+
 										if(strcmp($boxName,$fileName)==0){
 											$exist = true;
 										}	
@@ -744,7 +776,18 @@ if($gradesys=="UNK") $gradesys=0;
 										$query = $pdolite->prepare("DELETE FROM box WHERE exampleid = :eid AND filename=:boxName;");
 										$query->bindParam(':eid', $eid); 
 										$query->bindParam(':boxName', $boxName);
-										$query->execute();
+										if (!$query->execute()) {
+											$error = $query->errorInfo();							
+											$varname="TESTING DELETE ERROR";	
+											$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+											$query3->bindParam(":examplename", $varname); 
+											$query3->bindParam(":sectionname", $error); 
+											$query3->execute();
+											$varname="TESTING DELETE ERROR[2]";	
+											$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
+											$query3->bindParam(":examplename", $varname); 
+											$query3->bindParam(":sectionname", $error[2]); 
+											$query3->execute();
 									}
 								}
 								switch ($exampleCount) {
