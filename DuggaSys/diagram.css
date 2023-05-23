@@ -1,3 +1,21 @@
+@keyframes loadingSpin {
+    0%{
+        rotate: 0deg;
+    }
+    100%{
+        rotate: 360deg;
+    }
+}
+#loadingSpinner{
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: 1s linear 0s infinite loadingSpin;
+}
+
 #container {
     position:absolute;
     left:0;
