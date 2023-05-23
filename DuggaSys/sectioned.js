@@ -3136,7 +3136,8 @@ $(window).on('blur', function() {
 // then updates the code examples if the conditions are met.
 setInterval(function() {
   console.log(itemKinds);
-  if (isActivelyFocused) {
+  console.log(itemKinds[i] === 4)
+  if (isActivelyFocused && itemKinds[i] === 4) {
     const now = Date.now();
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
       lastUpdatedCodeExampes = now;
