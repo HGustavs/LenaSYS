@@ -3520,14 +3520,6 @@ function getRectFromElement (element)
             elementHeight = SDHeight[i].height;
         }
     }
-    if(elementHeight!=element.height){
-        return {
-            x: element.x,
-            y: element.y,
-            width: element.width,
-            height: elementHeight
-        };
-    }
     return {
         x: element.x,
         y: element.y,
