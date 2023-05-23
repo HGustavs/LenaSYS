@@ -2644,6 +2644,23 @@ function mmoving(event)
                 
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
+                
+                let foundID = false;
+                if(resizedY == undefined){
+                    elementData.y -= heightChange/2;
+                    resizedY.push(elementData);
+                }else{
+                    for (var i = 0; i < resizedY.length; i++) {
+                        if (elementData.id == resizedY[i].id) {
+                            resizedY[i].y -= heightChange/2;
+                            foundID = true;
+                        }
+                    }
+                    if(!foundID){
+                        elementData.y -= heightChange/2;
+                        resizedY.push(elementData);
+                    }
+                }
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
@@ -3500,6 +3517,16 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
+    for (var i = 0; i < resizedY.length; i++) {
+        if (element.id == resizedY[i].id) {
+            return {
+                x: element.x,
+                y: resizedY[i].y,
+                width: element.width,
+                height: element.height
+            };
+        }
+    }
     return {
         x: element.x,
         y: element.y,
