@@ -3486,7 +3486,7 @@ function getRectFromPoints(topLeft, bottomRight)
 {
     return {
         x: topLeft.x,
-        y: screenToDiagramCoordinates(topleft.x, topleft.y).y,
+        y: topLeft.y,
         width: bottomRight.x - topLeft.x,
         height: bottomRight.y - topLeft.y,
     };
@@ -3499,7 +3499,6 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
-
     return {
         x: element.x,
         y: element.y,
