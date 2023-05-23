@@ -1952,7 +1952,6 @@ function mdown(event)
             startY = event.clientY;
         }
     }
-    disableIfDataEmpty();
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
 }
@@ -2212,6 +2211,8 @@ function mup(event)
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
+
+    disableIfDataEmpty();
 }
 
 /**
