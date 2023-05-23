@@ -60,7 +60,7 @@ function getURL($serviceName){
     $urlplode = explode('/', $getURL);
 
     foreach ($urlplode as $part){
-       // echo strpos($serviceName, $part);
+        echo strpos($serviceName, $part);
         if((strpos($serviceName, $part)==false) && ($part != "tests")){
             // echo $part;
             $url .= $part.'/';
