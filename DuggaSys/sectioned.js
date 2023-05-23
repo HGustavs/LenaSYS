@@ -3134,11 +3134,13 @@ $(window).on('blur', function() {
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
 // then updates the code examples if the conditions are met.
+
 setInterval(function() {
   console.log(itemKinds);
-  console.log(itemKinds[i] === 4)
-  if (isActivelyFocused && itemKinds[i] === 4) {
+  for (let i = 0; i < itemKinds.length; i++) {
+  if (itemKinds[i] === 4 && isActivelyFocused) {
     const now = Date.now();
+    console.log(itemKinds[i] === 4);
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
       lastUpdatedCodeExampes = now;
       var hasUpdatedAllCodeExamples = false;
@@ -3152,6 +3154,7 @@ setInterval(function() {
         alert("Code examples have been automatically updated successfully!");
       }
     }
+  }
   }
 }, 1000); // this checks every second  if UPDATE_INTERVAL_FETCH_CODE_EXAMPLES has passed 10 minutes mark
 
