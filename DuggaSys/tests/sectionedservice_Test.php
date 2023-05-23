@@ -40,9 +40,9 @@ $link .= $_SERVER['HTTP_HOST'];
 // Display the link
 echo $link;
 
-foreach ($urlplode as ){
+// foreach ($urlplode as ){
 
-};
+// };
 
 $testsData = array(
     //------------------------------------------------------------------------------------------
