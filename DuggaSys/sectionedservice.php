@@ -785,22 +785,31 @@ if($gradesys=="UNK") $gradesys=0;
 										}	
 									}
 									if($exist==false){
+										
+										$query = $pdo->prepare("SELECT boxid AS bid WHERE exampleid = :eid AND filename=:boxName;");
+										$query->bindParam(':eid', $eid); 
+										$query->bindParam(':boxName', $boxName);
+										$query->execute();
+										$result = $query->fetch(PDO::FETCH_OBJ);
+										$bid = $result->bid;
+
 										$query = $pdo->prepare("DELETE FROM box WHERE exampleid = :eid AND filename=:boxName;");
 										$query->bindParam(':eid', $eid); 
 										$query->bindParam(':boxName', $boxName);
-										if (!$query->execute()) {
-											$error = $query->errorInfo();							
-											$varname="TESTING DELETE ERROR";	
-											$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-											$query3->bindParam(":examplename", $varname); 
-											$query3->bindParam(":sectionname", $error); 
-											$query3->execute();
-											$varname="TESTING DELETE ERROR[2]";	
-											$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-											$query3->bindParam(":examplename", $varname); 
-											$query3->bindParam(":sectionname", $error[2]); 
-											$query3->execute();
+										$query->execute();
+										
+										for ($i =$bid; $i<$boxCount;$i++){
+											$boxid = $i+1;
+											$query = $pdo->prepare("UPDATE box SET boxid=:countBoxID WHERE exampleid = :eid AND boxid=:boxid;");
+											$query->bindParam(':countBoxID', $i); 
+											$query->bindParam(':eid', $eid); 
+											$query->bindParam(':boxid', $boxid);
+											$query->execute();
+											
 										}
+										$boxCount--;
+
+
 									}	
 								}
 								switch ($exampleCount) {
