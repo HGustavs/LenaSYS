@@ -10,55 +10,17 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-// Include basic application services!
-include_once "../Shared/basic.php";
-include_once "../Shared/sessions.php";
+include ('../shared_microservices/getUid_ms.php');
 
+getUid();
 
 // Connect to database and start session
 pdoConnect();
 session_start();
 
-$opt=getOP('opt');
-$cid=getOP('cid');
 $coursename=getOP('coursename');
-$visibility=getOP('visib');
-$activevers=getOP('activevers');
-$activeedvers=getOP('activeedvers');
-$versid=getOP('versid');
-$versname=getOP('versname');
-$coursenamealt=getOP('coursenamealt');
 $coursecode=getOP('coursecode');
-$copycourse=getOP('copycourse');
-$startdate=getOP('startdate');
-$enddate=getOP('enddate');
-$makeactive=getOP('makeactive');
-$motd=getOP('motd');
-$readonly=getOP('readonly');
 $courseGitURL=getOP('courseGitURL'); // for github url
-$LastCourseCreated=array();
-
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="UNK";
-}
-$ha=null;
-$debug="NONE!";
-
-// Gets username based on uid, USED FOR LOGGING
-$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
-$query->bindParam(':uid', $userid);
-$query-> execute();
-
-// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
-while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-	$username = $row['username'];
-}
-
-$log_uuid = getOP('log_uuid');
-$info="opt: ".$opt." cid: ".$cid." coursename: ".$coursename." versid: ".$versid." visibility: ".$visibility;
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
 // Services
