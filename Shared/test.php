@@ -65,9 +65,9 @@ function getURL($serviceName){
             // echo $part;
             $url .= $part.'/';
         }
-        else if(strcmp($part,"tests") == 0){
-            $url .= $serviceName.'.php'; 
-        } 
+        // else if(strcmp($part,"tests") == 0){
+        //     $url .= $serviceName.'.php'; 
+        // } 
     };
     echo $url; 
     return $url;
