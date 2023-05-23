@@ -1161,7 +1161,7 @@ var defaultLine = { kind: "Normal" };
 window.addEventListener("DOMContentLoaded", (event) => {
     getData();
     addAlertOnUnload();
-    document.getElementById("loadingSpinner").style.display="none";
+    //document.getElementById("loadingSpinner").style.display="none";
 });
 /**
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
