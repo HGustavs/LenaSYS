@@ -504,7 +504,6 @@ class StateMachine
         if (this.currentHistoryIndex == -1) {return;}
         else {
             this.currentHistoryIndex--;
-            console.log(this.currentHistoryIndex);
         }
 
         // Remove ghost only if stepBack while creating edge
