@@ -3147,9 +3147,10 @@ setInterval(function(momentID) {
       // Call the createExamples function for each lecture/moments
       for (let i = 0; i < itemKinds.length; i++) {
         if(itemKinds[i] === 4){
-          createExamples(momentID, false);
-          hasUpdatedAllCodeExamples = true;
-          console.log("Updated code examples for moment ID: " + momentID);
+          for (let i = 0; i < collectedLid.length; i++) {
+            createExamples(collectedLid[i], false);
+            hasUpdatedAllCodeExamples = true;
+          }
         }
       }
 
