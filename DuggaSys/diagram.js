@@ -9925,7 +9925,6 @@ function drawElement(element, ghosted = false)
             element.x = data[i].x + (data[i].width / 2);
             element.y = data[i].y + data[i].height;
             console.log("test");
-            break;
         }
 
         if (context.includes(element)) {
