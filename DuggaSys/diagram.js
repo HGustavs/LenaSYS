@@ -13106,18 +13106,22 @@ function closeModal(){
     modal.classList.add('hiddenLoad');
     overlay.classList.add('hiddenLoad');
 }
-
+/**
+ * @description Check whether there is a diagram saved in localstorage and load it.
+ * @param {string} key The name/key of the diagram to load.
+ */
  function loadDiagramFromLocalStorage(key)
 {
-    // Check whether there is a diagram saved in localstorage and load it. key for current diagram is CurrentlyActiveDiagram
     if (localStorage.getItem("diagrams")) {
         var diagramFromLocalStorage = localStorage.getItem("diagrams");
         diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage: `{${diagramFromLocalStorage}}`;
         let obj = JSON.parse(diagramFromLocalStorage);
         if (obj[key] === undefined) {
-            return;
+            console.error("Undefined key")
         }
-        loadDiagramFromString(obj[key]);
+        else {
+            loadDiagramFromString(obj[key]);
+        }
     } else {
         // Failed to load content
         console.error("No content to load")
