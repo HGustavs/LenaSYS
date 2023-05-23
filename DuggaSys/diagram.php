@@ -903,70 +903,75 @@
     </div>
     
     <!-- Diagram grid -->
-    <div id="svggrid" style="z-index:-11">
+    <div id="svggrid">
         <svg id="svgbacklayer" class="svgbacklayer-background">
             <defs>
-            <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-
-                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke="0.8 0.8" stroke-width="1"/>
-            </pattern>
+                <pattern id="grid" patternUnits="userSpaceOnUse">
+                    <path d="M 100 0 L 0 0 0 100"/>
+                </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
-            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
+            <rect id="grid_rect"/>
+            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" />
+            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" />
         </svg>  
     </div>
     <!-- A4 template -->
-    <div id="a4Template" style="z-index:-11">
+    <div id="a4Template">
         <svg id="svgA4Template">
-            <rect id="a4Rect" x="100" y="100" width="794" height="1122" style="stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
-            <rect id="vRect" x="100" y="100" width="1122" height="794" style=" display:none; stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
+            <rect id="a4Rect" x="100" y="100" />
+            <rect id="vRect" x="100" y="100"/>
             <text id="a4Text" x="880" y="90">A4</text>
         </svg>  
     </div>  
     <div id="zoom-container">
-            <div id="zoom-message-box"><img width="25%" height="27px" src="../Shared/icons/zoom-message-icon.svg"/> <text id ="zoom-message">1x</text></div>
-            <div class="diagramZoomIcons" onclick='zoomin();'>
-                <img src="../Shared/icons/diagram_zoomin.svg"/>
-                <span class="zoomToolTipText"><b>Zoom IN</b><br>
-                    <p>Zoom in on viewed area</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick='zoomout();'>
-                <img src="../Shared/icons/diagram_zoomout.svg"/>
-                <span class="zoomToolTipText"><b>Zoom OUT</b><br>
-                    <p>Zoom out on viewed area</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
-                <span class="zoomToolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to 1x</p><br>
-                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
+        <div id="zoom-message-box">
+            <img src="../Shared/icons/zoom-message-icon.svg"/> 
+            <text id ="zoom-message">1x</text>
         </div>
+        <div class="diagramZoomIcons" onclick='zoomin();'>
+            <img src="../Shared/icons/diagram_zoomin.svg"/>
+            <span class="zoomToolTipText">
+                <b>Zoom IN</b><br>
+                <p>Zoom in on viewed area</p><br>
+                <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+        <div class="diagramZoomIcons" onclick='zoomout();'>
+            <img src="../Shared/icons/diagram_zoomout.svg"/>
+            <span class="zoomToolTipText">
+                <b>Zoom OUT</b><br>
+                <p>Zoom out on viewed area</p><br>
+                <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+        <div class="diagramZoomIcons" onclick="zoomreset()">
+            <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
+            <span class="zoomToolTipText">
+                <b>Zoom RESET</b><br>
+                <p>Reset the zoom to 1x</p><br>
+                <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+    </div>
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
-        <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
+        <div id="options-pane-button" onclick="toggleOptionsPane();">
+            <span id='optmarker'>&#9660;Options</span>
             <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
                 <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
             </span>
         </div>
         <div id ="fieldsetBox">
-            <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden'>
-            </fieldset>
+            <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden'></fieldset>
 
             <fieldset class='options-fieldset options-section'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
-                <button id="rulerSnapToGrid" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
+                <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
-                <button id="a4TemplateToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleA4Template()">A4 template</button><br><br>
-                <button id="darkmodeToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDarkmode()">Darkmode</button><br><br>
-                <button id="diagramDropDownToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
+                <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
+                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                         <option value="JSON/EMPTYDiagramMockup.json">Empty board</option>
@@ -977,9 +982,9 @@
                     <button class="saveButton" id="diagramLoad" onclick="loadMockupDiagram();">Load</button>
                 </div>
 
-                <div id="a4Options" style="display:flex;">
-                    <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
-                    <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
+                <div id="a4Options">
+                    <button id="a4VerticalButton" onclick="toggleA4Vertical()">Vertical</button>
+                    <button id="a4HorizontalButton" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
             </fieldset>
             <fieldset class='options-fieldset options-section'>
@@ -987,9 +992,9 @@
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
-            <fieldset class='options-fieldset options-section'>
+            <fieldset id="option-import" class='options-fieldset options-section'>
                 <legend>Import</legend>
-                <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
+                <input id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
             </fieldset>
         </div>
@@ -1021,7 +1026,7 @@
                     </span>
                 </div>
             </fieldset>
-            <div style="width: 250px">
+            <div id="replay-time-container">
                 <label id="replay-time-label" for="replay-time">Delay (1s)</label>
                 <input id="replay-time" onchange="setReplayDelay(this.value)" class="zoomSlider" type="range" min="1" max="9" value="5">
             </div>
