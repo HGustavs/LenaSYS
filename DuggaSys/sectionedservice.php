@@ -701,11 +701,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$result = $query1->fetch(PDO::FETCH_OBJ);
 							$eid = $result->eid;
 
-							$varname="eid";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $eid); 
-							$query3->execute();
+
 
 							$query1 = $pdo->prepare("SELECT COUNT(*) AS boxCount FROM box WHERE exampleid=:eid;");
 							$query1->bindParam(":eid", $eid);
@@ -713,11 +709,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$result = $query1->fetch(PDO::FETCH_OBJ);
 							$boxCount = $result->boxCount;
 
-							$varname="boxCount";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $boxCount); 
-							$query3->execute();
+							
 
 							$likePattern = $exampleName .'.%';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
@@ -728,11 +720,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$rows = $query->fetchAll();
 							$exampleCount = count($rows);
 
-							$varname="exampleCount";	
-							$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-							$query3->bindParam(":examplename", $varname); 
-							$query3->bindParam(":sectionname", $exampleCount); 
-							$query3->execute();
+							
 							//Check if to be hidden
 							if($exampleCount==0){
 								$visible = 0;																								
@@ -743,42 +731,26 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":visible", $visible);
 								$query->execute();
 							
+							//Check if remove box
 							}else if ($boxCount > $exampleCount){
-								//Check if remove box
-								$varname="INSIDE BOX > EXAMPLE";	
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $exampleName); 
-								$query3->execute();
+								
 								
 								$query = $pdo->prepare("SELECT filename FROM box WHERE exampleid = :eid;"); 
 								$query->bindParam(':eid', $eid);				
 								$query->execute();
 								$boxRows = $query->fetchAll();
 
-								$varname="AFTER FETCH ALL";	
-								$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-								$query3->bindParam(":examplename", $varname); 
-								$query3->bindParam(":sectionname", $exampleName); 
-								$query3->execute();
+								
 								foreach($boxRows as $bRow){
 									$boxName = $bRow['filename'];
 
-									$varname="boxName";	
-									$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-									$query3->bindParam(":examplename", $varname); 
-									$query3->bindParam(":sectionname", $boxName); 
-									$query3->execute();
+									
 
 									$exist = false;
 									foreach ($rows as $row) {
 										$fileName = $row['fileName'];
 
-										$varname="fileName";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $fileName); 
-										$query3->execute();
+										
 
 										if(strcmp($boxName,$fileName)==0){
 											$exist = true;
@@ -832,8 +804,111 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":eid", $eid);
 								$query->execute();
 														
+							//Check if adding box
 							}else if ($boxCount < $exampleCount){
-								//Check if adding box
+
+								$query = $pdo->prepare("SELECT filename FROM box WHERE exampleid = :eid;"); 
+								$query->bindParam(':eid', $eid);				
+								$query->execute();
+								$boxRows = $query->fetchAll();
+
+								foreach ($rows as $row) {
+									$fileName = $row['fileName'];
+									$exist=false;
+									foreach($boxRows as $bRow){
+										$boxName = $bRow['filename'];
+										if(strcmp($boxName,$fileName)==0){
+											$exist = true;
+										}	
+
+									}
+									if($exist==false){
+
+										$parts = explode('.', $fileName);
+										$filetype = "CODE";
+										$wlid = 0;
+										switch ($parts[1]) {
+											case "js":
+												$filetype = "CODE";
+												$wlid = 1;
+												break;
+											case "php":
+												$filetype = "CODE";
+												$wlid = 2;
+												break;
+											case "html":
+												$filetype = "CODE";
+												$wlid = 3;
+												break;
+											case "txt":
+												$filetype = "DOCUMENT";
+												$wlid = 4;
+												break;
+											case "md":
+												$filetype = "DOCUMENT";
+												$wlid = 4;
+												break;
+											case "java":
+												$filetype = "CODE";
+												$wlid = 5;
+												break;
+											case "sr":
+												$filetype = "CODE";
+												$wlid = 6;
+												break;
+											case "sql":
+												$filetype = "CODE";
+												$wlid = 7;
+												break;
+											default:
+												$filetype = "DOCUMENT";
+												$wlid = 4;
+												break;
+										}	
+
+										$query = $pdo->prepare("SELECT MAX(boxid) FROM box WHERE exampleid = :eid;"); 
+										$query->bindParam(':eid', $eid);				
+										$query->execute();
+										$boxid = $query->fetchAll();
+										$boxid = $boxid + 1;
+										$fontsize = 9;
+										$setting = "[viktig=1]";
+										$boxtitle = substr($fileName, 0, 20);
+										$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
+										$query->bindParam(":boxid", $boxid);
+										$query->bindParam(":exampleid", $exampleid);
+										$query->bindParam(":boxtitle", $boxtitle);
+										$query->bindParam(":boxcontent", $filetype);
+										$query->bindParam(":filename", $fileName);
+										$query->bindParam(":settings", $setting);
+										$query->bindParam(":wordlistid", $wlid);
+										$query->bindParam(":fontsize", $fontsize);
+										$query->execute();
+
+									}
+								}
+
+								switch ($exampleCount) {
+									case 1:
+										$templateNumber = 10;
+										break;
+									case 2:
+										$templateNumber = 1;
+										break;
+									case 3:
+										$templateNumber = 3;
+										break;
+									case 4:
+										$templateNumber = 5;
+										break;
+									case 5:
+										$templateNumber = 9;
+										break;
+								}
+								$query = $pdo->prepare("UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;");
+								$query->bindParam(":templateid", $templateNumber);
+								$query->bindParam(":eid", $eid);
+								$query->execute();
 
 							}
 
