@@ -144,11 +144,7 @@ $testsData = array(
                 'writeaccess',
                 'coursename',
                 'coursecode',
-                'entries' => array(
-                    
-                        'variantanswer'
-                    
-                ),
+                'variantanswer'
             )
         ),
     ),
