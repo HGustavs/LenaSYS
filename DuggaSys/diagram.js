@@ -13127,15 +13127,21 @@ function hideSavePopout()
 
 function saveDiagramAs()
 {
-    let elem = document.getElementById("saveDiagramAs");
-    let fileName = elem.value;
-    elem.value = "";
-    if (fileName.trim() == "") {
-        // fileName = "Untitled"
-        fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
-    }
 
-    storeDiagramInLocalStorage(fileName);
+    if (stateMachine.currentHistoryIndex === -1){
+        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+    }
+    else{
+        let elem = document.getElementById("saveDiagramAs");
+        let fileName = elem.value;
+        elem.value = "";
+        if (fileName.trim() == "") {
+            // fileName = "Untitled"
+            fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
+        }
+    
+        storeDiagramInLocalStorage(fileName);
+    }
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
