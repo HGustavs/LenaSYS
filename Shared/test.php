@@ -60,14 +60,17 @@ function getURL($serviceName){
     $urlplode = explode('/', $getURL);
 
     foreach ($urlplode as $part){
+        
         echo strpos($serviceName, $part);
-        if((strpos($serviceName, $part)==false) && (strcmp($part,"tests") != 0)){
+        
+        if((str_contains($serviceName, $part)==false) && (strcmp($part,"tests") != 0)){
             // echo $part;
             $url .= $part.'/';
         }
-        // else if(strcmp($part,"tests") == 0){
-        //     $url .= $serviceName.'.php'; 
-        // } 
+        else if(strcmp($part,"tests") == 0){
+            $url .= $serviceName.'.php'; 
+        } 
+   
     };
     echo $url; 
     return $url;
