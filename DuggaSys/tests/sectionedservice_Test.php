@@ -17,22 +17,23 @@
 include "../../Shared/test.php";
 $serviceFileName = 'sectionedservice.php';
 
+getURL($serviceFileName);
 
-// saves the complete URL of the current page
-$getURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+// // saves the complete URL of the current page
+// $getURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-// Saves the URL values as an array, $urlplode[6] is the one we use, it contains the value of the current user 
-$urlplode = explode('/', $getURL);
+// // Saves the URL values as an array, $urlplode[6] is the one we use, it contains the value of the current user 
+// $urlplode = explode('/', $getURL);
 
-foreach ($urlplode as $part){
-    if(($part != $serviceFileName) && ($part != "tests")){
-        // echo $part;
-        $url .= $part.'/';
-    }
-    // else if($part != "tests"){
-    //     $url .= $serviceFileName; 
-    // } 
-};
+// foreach ($urlplode as $part){
+//     if(($part != $serviceFileName) && ($part != "tests")){
+//         // echo $part;
+//         $url .= $part.'/';
+//     }
+//     else if($part != "tests"){
+//         $url .= $serviceFileName; 
+//     } 
+// };
 
 echo $url; 
 
