@@ -32,7 +32,7 @@
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
-<!-- <body onload="getData();addAlertOnUnload();" style="overflow: hidden;"> -->
+<!-- instead of onload on body there is an event listener for loaded in diagram.js at the top of the INIT AND SETUP REGION -->
 <body style="overflow: hidden;">
     
     <!-- loading spinner -->
