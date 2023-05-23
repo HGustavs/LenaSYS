@@ -1018,7 +1018,8 @@ function AJAXService(opt,apara,kind)
 
 	if(kind=="COURSE"){
 			$.ajax({
-				url: "courseedservice.php",
+				//url : "courseedservice.php",
+				url : "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",

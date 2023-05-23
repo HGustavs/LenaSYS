@@ -62,7 +62,7 @@ if(checklogin()){
 				$debug="Error updating entries\n".$error[2];
 			} 
 
-			echo json_encode(array('code' => $coursecode, 'name' => $coursename));
+			echo json_encode(array('code' => $coursecode, 'name' => $coursename, 'debug' => $debug));
 			return;
 			/*
 			// Logging for creating new course
