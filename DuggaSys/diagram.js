@@ -461,7 +461,7 @@ class StateMachine
 
                         currentChangedType = changeTypes[index];
 
-                        switch (currentChangeType) {
+                        switch (currentChangedType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
