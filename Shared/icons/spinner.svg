@@ -1,69 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="200"
-   height="200"
-   viewBox="0 0 200 200"
-   version="1.1"
-   id="SVGRoot"
-   sodipodi:docname="spinner.svg"
-   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+<svg version="1.1"
+   width="200" height="200"
+   baseProfile="full"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview137"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="px"
-     showgrid="true"
-     inkscape:zoom="3.0346668"
-     inkscape:cx="76.614672"
-     inkscape:cy="115.99297"
-     inkscape:window-width="1920"
-     inkscape:window-height="1027"
-     inkscape:window-x="-8"
-     inkscape:window-y="222"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g1425"
-     inkscape:lockguides="false">
-    <inkscape:grid
-       type="xygrid"
-       id="grid260"
-       originx="0"
-       originy="0" />
-  </sodipodi:namedview>
-  <defs
-     id="defs132" />
-  <g
-     inkscape:label="Lager 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <g
-       id="g1430">
-      <g
-         id="g1425">
-        <path
-           style="fill:none;stroke:#ffffff;stroke-width:21.7865;stroke-miterlimit:2;stroke-dasharray:none"
-           id="path373"
-           d="M 189.10678,99.232414 A 89.104721,89.872826 0 0 1 105.18304,188.95319 89.104721,89.872826 0 0 1 11.499833,109.66601 89.104721,89.872826 0 0 1 84.529191,10.724958"
-           sodipodi:type="arc"
-           sodipodi:arc-type="arc"
-           sodipodi:open="true"
-           sodipodi:start="0"
-           sodipodi:end="4.5378561"
-           sodipodi:ry="89.872826"
-           sodipodi:rx="89.104721"
-           sodipodi:cy="99.232414"
-           sodipodi:cx="100.00206" />
-      </g>
-    </g>
-  </g>
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:ev="http://www.w3.org/2001/xml-events">
+
+   <path d="M0,0 a200,200,200,0,0" fill="transparent" stroke-width="5"/>
 </svg>
