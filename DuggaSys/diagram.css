@@ -343,17 +343,6 @@
     background-color: #FEEFB3;
 }
 
-#zoom-message-box{
-    width: 75px;
-    left: 100px;
-    bottom: 5px;
-    color: white;
-    border-radius: 5px;
-    text-align: center;
-    z-index: 100;
-    pointer-events: none;
-}
-
 /*tooltip*/
 
 .toolTipText{
@@ -546,6 +535,82 @@
 .hiddenToolTiptext{
     visibility:hidden;
 }
+
+.loadModalOverlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    width: 100%;
+    height: 100%;
+    filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.loadModal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    z-index: 999;
+    background-color: white;
+    color: black;
+    border: 1px solid #000;
+}
+
+#amountOfLoads{
+    text-align: center;
+    font-size: 12px;
+    font-style: italic;
+}
+
+#loadTitle{
+    font-size: 1.2rem;
+    color: #815e9d;
+}
+
+#loadHeader{
+    display: flex;
+    flex-direction: row;
+    background-color: #eb4;
+}
+
+#loadContainer{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#loadContainer button{
+    border-style: none;
+    background-color: #815e9d;
+    color: white;
+    padding: 5px;
+}
+
+#loadContainer button:hover{
+    cursor: pointer;
+    background-color: #614875;
+}
+
+#closeLoadModal {
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-color: #da2727;
+  }
+
+.hiddenLoad{
+    display: none;
+}
+
 .placementTypeIcon img{
     position: absolute;
     top: 0px;
@@ -647,4 +712,149 @@
 
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
+}
+
+/****************
+    SVG GRID 
+*****************/
+#svggrid {
+    z-index: -11;
+}
+
+#grid {
+    width: 100;
+    height: 100;
+}
+
+#grid > path {
+    fill: none;
+    stroke: gray;
+    stroke: 0.8 0.8;
+    stroke-width: 1;
+}
+
+#grid_rect {
+    width: 100%;
+    height: 100%;
+    fill: url(#grid);
+}
+
+#origoX, #origoY {
+    stroke: rgb(105, 105, 105);
+    stroke-width: 8;
+}
+
+/****************
+   A4 TEMPLATE 
+*****************/
+#a4template {
+    z-index: -11;
+}
+
+#a4rect {
+    width: 794;
+    height: 1122;
+    stroke:rgb(50, 50, 50);
+    stroke-width:2;
+    stroke-dasharray: 5 3;
+    fill: #ffffee;
+    fill-opacity: 0.4;
+}
+
+#vRect {
+    width: 1133;
+    height: 794;
+    display:none; 
+    stroke:rgb(50, 50, 50);
+    stroke-width:2; 
+    stroke-dasharray: 5 3; 
+    fill: #ffffee;
+    fill-opacity: 0.4;
+}
+
+#a4Text {
+ /* no styling yet */
+}
+
+/****************
+  ZOOM CONTAINER 
+*****************/
+#zoom-message-box{
+    width: 75px;
+    left: 100px;
+    bottom: 5px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 100;
+    pointer-events: none;
+}
+
+#zoom-message-box > img {
+    width: 25%; 
+    height: 27px;
+}
+
+/****************
+   OPTION PANE 
+*****************/
+#rulerSnapToGrid {
+    background-color: transparent; 
+    border: #614875; 
+    border-width: 3px; 
+    border-style: solid; 
+    color: #614875; 
+    font-weight: bold;
+}
+
+#a4TemplateToggle {
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
+#darkmodeToggle {
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
+#diagramDropDownToggle {
+    background-color: transparent;
+    border:#614875;
+    border-width:3px;
+    border-style:solid;
+    color:#614875;
+    font-weight: bold;
+}
+
+#a4options {
+    display: flex;
+}
+
+#a4VerticalButton {
+    display: none;
+    width: 76px;
+    margin-right: 45%;
+}
+
+#a4HorizontalButton {
+    display:none;
+}
+
+#option-import > input {
+    width: 100%;
+}
+
+/****************
+   REPLAY BOX 
+*****************/
+#replay-time-container {
+    width: 250px;
 }

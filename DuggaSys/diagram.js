@@ -116,8 +116,8 @@ class StateChangeFactory
         // Get the keys of the values that is unique from default
         var uniqueKeysArr = Object.keys(element).filter(key => {
             return (Object.keys(defaults[element.kind]).filter(value => {
-                return defaults[element.kind][value] == element[key];
-            }).length == 0);
+                return defaults[element.kind][value] === element[key];
+            }).length === 0);
         });
 
         // For every unique value set it into the change
@@ -370,9 +370,9 @@ class StateMachine
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
-    save (stateChangeArray, changeType)
+    save (stateChangeArray, newChangeType)
     {
-        
+        let currentChangedType;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (var i = 0; i < stateChangeArray.length; i++) {
@@ -410,14 +410,14 @@ class StateMachine
                             if (lastLog.id != stateChange.id) sameElements = false;
                         }
 
-                        if (Array.isArray(changeType)){
-                            for (var index = 0; index < changeType.length && isSoft; index++) {
-                                isSoft = changeType[index].isSoft;
+                        if (Array.isArray(newChangeType)){
+                            for (var index = 0; index < newChangeType.length && isSoft; index++) {
+                                isSoft = newChangeType[index].isSoft;
                             }
-                            var changeTypes = changeType;
+                            var changeTypes = newChangeType;
                         }else {
-                            isSoft = changeType.isSoft;
-                            var changeTypes = [changeType];
+                            isSoft = newChangeType.isSoft;
+                            var changeTypes = [newChangeType];
                         }
 
                     // Find last change with the same ids
@@ -452,16 +452,16 @@ class StateMachine
                 if (!isSoft || !sameElements) {
 
                     this.historyLog.push(stateChange);
-                    this.lastFlag = changeType;
+                    this.lastFlag = newChangeType;
                     this.currentHistoryIndex = this.historyLog.length -1;
 
                 } else { // Otherwise, simply modify the last entry.
 
                     for (var index = 0; index < changeTypes.length; index++) {
 
-                        var changeType = changeTypes[index];
+                        currentChangedType = changeTypes[index];
 
-                        switch (changeType) {
+                        switch (currentChangeType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
@@ -479,7 +479,7 @@ class StateMachine
                 }
             } else {
                 this.historyLog.push(stateChange);
-                this.lastFlag = changeType;
+                this.lastFlag = currentChangedType;
                 this.currentHistoryIndex = this.historyLog.length -1;
             }
         } else {
@@ -1418,7 +1418,7 @@ function getData()
     drawRulerBars(scrollx,scrolly);
     setContainerStyles(mouseMode);
     generateKeybindList();
-    setPreviewValues();
+    //setPreviewValues();
     saveDiagramBeforeUnload();
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
@@ -1631,7 +1631,12 @@ document.addEventListener('keydown', function (e)
                 var propField = document.getElementById("elementProperty_name");
                 if(!!document.getElementById("lineLabel")){
                     changeLineProperties();
-                }else{
+                }
+                else if (document.activeElement.id == "saveDiagramAs") {
+                    saveDiagramAs();
+                    hideSavePopout();
+                }
+                else {
                     changeState();
                     saveProperties(); 
                     propField.blur();
@@ -1753,7 +1758,7 @@ document.addEventListener('keyup', function (e)
         if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
         if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
         if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) storeDiagramInLocalStorage();
+        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
         //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
 
         if (isKeybindValid(e, keybinds.COPY)){
@@ -4602,6 +4607,14 @@ function setReplayRunning(state)
  */
 function toggleErTable()
 {
+        // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+    // Add the diagramActive to current diagramIcon
+    document.getElementById("erTableToggle").classList.add("active");
+
     if(erTableToggle == false){
         erTableToggle = true;
         testCaseToggle = false;
@@ -4624,6 +4637,14 @@ function toggleErTable()
  */
 function toggleTestCase()
 {
+    // Remove all "active" classes in nav bar
+    var navButtons = document.getElementsByClassName("toolbarMode");
+    for (var i = 0; i < navButtons.length; i++) {
+        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
+    }
+    // Add the diagramActive to current diagramIcon
+    document.getElementById("testCaseToggle").classList.add("active");
+    
     if (testCaseToggle == false) {
         testCaseToggle = true;
         erTableToggle = false;
@@ -9360,6 +9381,7 @@ function drawElement(element, ghosted = false)
     if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
     else nonFilledElementPartStrokeColor = '#383737';
 
+    //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
     //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
     //replace this with nonFilledElementPartStroke when it gets merged.
     var actorFontColor;
@@ -9850,9 +9872,9 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
     else if (element.kind == 'sequenceActorAndObject') {
-        //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+        //div to encapsulate sequence actor/object and its lifeline.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9892,7 +9914,33 @@ function drawElement(element, ghosted = false)
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw}' dominant-baseline='middle' text-anchor='${vAlignment}' fill='${nonFilledElementPartStrokeColor}'>${element.name}</text>`;
+            //svg for the actor name text, it has a background rect for ease of readability.
+            //make the rect fit the text if the text isn't too big
+            if (!tooBig) {
+                //rect for sitting behind the actor text
+                str += `<rect class='text'
+                    x='${xAnchor-(textWidth/2)}'
+                    y='${boxw+(linew*2)}'
+                    width='${textWidth}'
+                    height='${texth-linew}'
+                    stroke='none'
+                    fill='${element.fill}'
+                />`;
+                str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            }
+            //else just make a boxw width rect and adjust the text to fit this new rect better
+            else {
+                //rect for sitting behind the actor text
+                str += `<rect class='text'
+                    x='${linew}'
+                    y='${boxw+(linew*2)}'
+                    width='${boxw-linew}'
+                    height='${texth-linew}'
+                    stroke='none'
+                    fill='${element.fill}'
+                />`;
+                str += `<text class='text' x='${linew}' y='${boxw+texth}'>${element.name}</text>`;
+            }
             str += `</g>`;
         }
         else if (element.actorOrObject == "object") {
@@ -12983,7 +13031,7 @@ function exportWithHistory()
 /**
  * @description Stores the current diagram as JSON in localstorage
  */
- function storeDiagramInLocalStorage(){
+ function storeDiagramInLocalStorage(key){
 
     if (stateMachine.currentHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
@@ -12995,7 +13043,7 @@ function exportWithHistory()
             historyLog: stateMachine.historyLog,
             initialState: stateMachine.initialState
         };
-        localStorage.setItem("CurrentlyActiveDiagram",JSON.stringify(objToSave));
+        localStorage.setItem(key,JSON.stringify(objToSave));
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
 }
@@ -13174,6 +13222,57 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 }
 
+function showModal(){
+    var modal = document.querySelector('.loadModal');
+    var overlay = document.querySelector('.loadModalOverlay');
+    var container = document.querySelector('#loadContainer');
+
+    // Array for testing visuals, remove this once once functionality has been finished
+    var testArray = ["ERDiagram - 2021-03-12", "StateDiagram - 2021-03-11", "SequenceDiagram - 2021-03-13", "IE Diagram - 2021-03-13"];
+
+    // Remove all elements
+    while (container.firstElementChild){
+        container.firstElementChild.remove();
+    }
+
+    // If no items were found for loading in 
+    if (testArray.length === 0){
+        var p = document.createElement('p');
+        var pText = document.createTextNode('No saves could be found');
+
+        p.appendChild(pText);
+        container.appendChild(p);
+        console.log("no saves");
+    }
+    else{
+        for (let i = 0; i<testArray.length; i++){
+            var btn = document.createElement('button');
+            var btnText = document.createTextNode(testArray[i]);
+    
+            // NOTE: This needs to be changed to load in the correct diagramload-object i from localstorage, it is currently set to 'CurrentlyActiveDiagram'.
+            btn.setAttribute("onclick", "loadDiagramFromLocalStorage('CurrentlyActiveDiagram');closeModal();");
+    
+            btn.appendChild(btnText);
+            container.appendChild(btn);
+
+            document.getElementById('loadCounter').innerHTML = testArray.length;
+
+            console.log("saves");
+        }
+    }
+
+    modal.classList.remove('hiddenLoad');
+    overlay.classList.remove('hiddenLoad');
+}
+
+function closeModal(){
+    var modal = document.querySelector('.loadModal');
+    var overlay = document.querySelector('.loadModalOverlay');
+
+    modal.classList.add('hiddenLoad');
+    overlay.classList.add('hiddenLoad');
+}
+
  function loadDiagramFromLocalStorage(key)
 {
     // Check whether there is a diagram saved in localstorage and load it. key for current diagram is CurrentlyActiveDiagram
@@ -13191,8 +13290,32 @@ function saveDiagramBeforeUnload() {
     window.addEventListener("beforeunload", (e) => {
         e.preventDefault();
         e.returnValue = "";
-        storeDiagramInLocalStorage();
+        storeDiagramInLocalStorage("CurrentlyActiveDiagram");
     })
+}
+
+function showSavePopout()
+{
+    $("#savePopoutContainer").css("display", "flex");
+    document.getElementById("saveDiagramAs").focus();
+}
+
+function hideSavePopout()
+{
+    $("#savePopoutContainer").css("display", "none");
+}
+
+function saveDiagramAs()
+{
+    let elem = document.getElementById("saveDiagramAs");
+    let fileName = elem.value;
+    elem.value = "";
+    if (fileName.trim() == "") {
+        // fileName = "Untitled"
+        fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
+    }
+
+    storeDiagramInLocalStorage(fileName);
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
@@ -13276,11 +13399,13 @@ function resetDiagram(){
     */
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
+
 /**
+ * this function is commented out because it is unknown at this time what value is expected and it throws an error. It also appears that this does not really surve any purpose.
  *
  *  @description Function to set the values of the current variant in the preivew
  *  @throws error If "window.parent.parameterArray" is not set or null.
- */
+ 
 function setPreviewValues(){
     try {
         if (!window.parent.parameterArray) throw new Error("\"window.parent.parameterArray\" is not set or empty!");
@@ -13293,4 +13418,5 @@ function setPreviewValues(){
         console.error(e);
     }
 }
+*/
 //#endregion =====================================================================================
