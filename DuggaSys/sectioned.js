@@ -3135,8 +3135,7 @@ $(window).on('blur', function() {
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
 // then updates the code examples if the conditions are met.
 
-setInterval(function(momentID) {
-  console.log(itemKinds);
+setInterval(function() {
   if (isActivelyFocused) {
     const now = Date.now();
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
