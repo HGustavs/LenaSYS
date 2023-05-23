@@ -3091,7 +3091,7 @@ const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 m
 
 
 //Creates all examples from github that doesnt exists yet, manually(meaning user has to click button)
-function createExamplesButton(momentID) {
+function createExamples(momentID, isManual) {
   lid = momentID;
   // AJAX Request to create all code examples
   $.ajax({
@@ -3101,7 +3101,9 @@ function createExamplesButton(momentID) {
     dataType: "json",
     success: function(response) {
       lastUpdatedCodeExampes = Date.now();
+      if (isManual) {
       alert("Code examples have been manually updated successfully!");
+      }
     },
     error: function(xhr, status, error) {
       alert("Failed to manually update code examples!");
@@ -3144,18 +3146,15 @@ setInterval(function() {
     const now = Date.now();
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
-
-      let ajaxCalls = []; // Array to store the $.ajax promises
-
+      var hasUpdatedAllCodeExamples = false;
       // Call the createExamplesAuto function for each lecture/moments
       for (let i = 0; i < collectedLid.length; i++) {
-        ajaxCalls.push(createExamplesAuto(collectedLid[i])); // Push the $.ajax promise to the array
+        createExamples(collectedLid[i], false);
+        hasUpdatedAllCodeExamples = true;
       }
-
-      // Use $.when to wait for all the AJAX requests to finish, then show the alert
-      $.when.apply($, ajaxCalls).then(function() {
+      if (hasUpdatedAllCodeExamples && !isManual) {
         alert("Code examples have been automatically updated successfully!");
-      });
+      }
     }
   }
 }, 1000);
@@ -3747,7 +3746,7 @@ function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked!");
 
-  createExamplesButton(momentID);
+  createExamples(momentID,true);
 }
 
 //------------------------------------------------------------------------------
