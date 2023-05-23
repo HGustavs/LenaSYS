@@ -34,8 +34,8 @@ $link .= "://";
 $link .= $_SERVER['HTTP_HOST'];
  
 // Append the requested resource
-// location to the URL
-//$link .= $_SERVER['PHP_SELF'];
+location to the URL
+$link .= $_SERVER['PHP_SELF'];
  
 // Display the link
 echo $link;
