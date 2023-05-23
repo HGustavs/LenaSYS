@@ -56,23 +56,20 @@ function getURL($serviceName){
     // saves the complete URL of the current page
     $getURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-    // Saves the URL values as an array, $urlplode[6] is the one we use, it contains the value of the current user 
+    // Saves the URL values as an array
     $urlplode = explode('/', $getURL);
 
+    // Builds the URL
     foreach ($urlplode as $part){
         
-        echo strpos($serviceName, $part);
-        
         if((strstr($part, $serviceName)==false) && (strcmp($part,"tests") != 0)){
-            // echo $part;
             $url .= $part.'/';
         }
         else if(strcmp($part,"tests") == 0){
             $url .= $serviceName.'.php'; 
         } 
-   
     };
-    echo $url; 
+    
     return $url;
 }
 

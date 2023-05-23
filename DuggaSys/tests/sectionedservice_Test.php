@@ -17,7 +17,7 @@
 include "../../Shared/test.php";
 $serviceFileName = 'sectionedservice';
 
-getURL($serviceFileName);
+$serviceURL = getURL($serviceFileName);
 
 // // saves the complete URL of the current page
 // $getURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -48,7 +48,7 @@ $testsData = array(
         'query-before-test-2' => "INSERT INTO codeexample (exampleid, cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, uid, templateid) VALUE (9021, 1, 'New Group', 'New Group9021', NULL, NULL, NULL, 45656, 0, 1, 0);",
         'query-after-test-1' => "DELETE FROM listentries WHERE lid > 5009;",
         'query-after-test-2' => "DELETE FROM codeexample WHERE exampleid > 9009;",
-        'service' => 'https://cms.webug.se/root/G2/students/'.$urlplode[6].'/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => $serviceURL,
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'GRP',
             'username' => 'mestr',
