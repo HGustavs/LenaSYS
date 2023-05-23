@@ -3715,7 +3715,6 @@ function entityIsOverlapping(id, x, y)
               //if its overlapping with a sequence actor, just break since that is allowed.
                 if (element.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
                     console.log("test")
-                    isOverlapping = true;
                     break;
                 }
               else if (data[i].kind == "sequenceActorAndObject") {
