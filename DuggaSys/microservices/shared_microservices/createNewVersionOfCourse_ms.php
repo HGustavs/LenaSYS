@@ -2,6 +2,9 @@
 
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
+include ('../shared_microservices/getUid_ms.php');
+
+getUid();
 
 $opt=getOP('opt');
 $cid=getOP('cid');
