@@ -3132,9 +3132,8 @@ $(window).on('blur', function() {
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
 // then updates the code examples if the conditions are met.
 setInterval(function() {
+  console.log(item);
   var itemKind = parseInt(item['kind']);
-  console.log(itemKind);
-  
   if (isActivelyFocused && itemKind === 4) {
     const now = Date.now();
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
@@ -3144,6 +3143,7 @@ setInterval(function() {
 
       // Call the createExamples function for each lecture/moments
       createExamples(lid, false);
+      hasUpdatedAllCodeExamples = true;
       // The alert for automated fetching of code examples
       if (hasUpdatedAllCodeExamples) {
         alert("Code examples have been automatically updated successfully!");
