@@ -3646,7 +3646,6 @@ function entityIsOverlapping(id, x, y)
     const foundIndex = findIndex(data, id);
     if(foundIndex > -1){
         const element = data[foundIndex];
-        
         let targetX;
         let targetY;
         var elementHeight = element.height;
@@ -3712,11 +3711,10 @@ function entityIsOverlapping(id, x, y)
               //if its overlapping with a super state, just break since that is allowed.
               if (data[i].kind == "UMLSuperState") {
                 break;
-              }
-                
+              }      
               //if its overlapping with a sequence actor, just break since that is allowed.
               if (data[i].kind == "sequenceActorAndObject") {
-                    break;
+                break;
               }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                 (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
