@@ -3713,14 +3713,14 @@ function entityIsOverlapping(id, x, y)
                 break;
               }      
               //if its overlapping with a sequence actor, just break since that is allowed.
-               /* if (element.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject" && (targetX < compX2) && (targetX + element.width) > data[i].x &&
+                if (element.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject" && (targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
-                    element.y = data[i].y;
+                    element.x = data[i].x + (data[i].width / 2);
                     element.y = data[i].y + data[i].height;
                     console.log("test");
                     break;
-                }*/
-                if (data[i].kind == "sequenceActorAndObject" || element.kind == "sequenceActorAndObject") {
+                }
+                else if (data[i].kind == "sequenceActorAndObject" || element.kind == "sequenceActorAndObject") {
                   console.log("else if test")
                 break;
               }
@@ -9906,26 +9906,6 @@ function drawElement(element, ghosted = false)
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
-        /*
-        const element = data[foundIndex];
-        let targetX;
-        let targetY;
-
-        targetX = x //(x / zoomfact);
-        targetY = y//(y / zoomfact);
-
-
-
-        const compX2 = data[i].x + data[i].width;
-        var compY2 = data[i].y + data[i].height;
-        
-        if (element.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject" && (targetX < compX2) && (targetX + element.width) > data[i].x &&
-            (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
-            //element.y = data[i].y;
-            element.x = data[i].x + (data[i].width / 2);
-            element.y = data[i].y + data[i].height;
-            console.log("test");
-        }*/
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
