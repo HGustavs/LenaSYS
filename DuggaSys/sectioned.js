@@ -3117,8 +3117,9 @@ function createExamples(momentID, isManual) {
 
 // When the user is watching the course page, set isActivelyFocused to true
 $(window).on('focus', function( ) {
-  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   isActivelyFocused = true;
+  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
+
 });
 
 // When the user stops watching the course page, set isActivelyFocused to false
