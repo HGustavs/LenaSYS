@@ -751,7 +751,7 @@ if($gradesys=="UNK") $gradesys=0;
 								$query3->bindParam(":sectionname", $exampleName); 
 								$query3->execute();
 								
-								$query = $pdo->prepare("SELECT fileName FROM box WHERE exampleid = :eid;"); 
+								$query = $pdo->prepare("SELECT filename FROM box WHERE exampleid = :eid;"); 
 								$query->bindParam(':eid', $eid);				
 								$query->execute();
 								$boxRows = $query->fetchAll();
