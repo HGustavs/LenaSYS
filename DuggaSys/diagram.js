@@ -13138,6 +13138,13 @@ function showOverridePopout() {
 function closeOverridePopout() {
     $("#overrideContainer").css("display", "none");
 }
+//get the current file name that the user wants to use for saving to local storage.
+function getCurrentFileName()
+{
+    let elem = document.getElementById("saveDiagramAs");
+    let fileName = elem.value;
+    return fileName;
+}
 
 function saveDiagramAs()
 {
@@ -13162,6 +13169,7 @@ function saveDiagramAs()
         {
             hideSavePopout();
             showOverridePopout()
+            return;
         }
     }
     storeDiagramInLocalStorage(fileName);
