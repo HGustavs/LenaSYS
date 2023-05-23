@@ -2871,6 +2871,7 @@ function getElementLines(element) {
  * @returns {boolean} result
  */
 function elementHasLines(element) {
+    console.log(getElementLines(element))
     return (getElementLines(element).length > 0);
 }
 /** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
@@ -2880,24 +2881,24 @@ function elementHasLines(element) {
 function changeState() 
 {
     const element =  context[0],
-          oldType = element.type,
-          newType = document.getElementById("typeSelect")?.value || undefined;
-          var oldRelation = element.state;
-          var newRelation = document.getElementById("propertySelect")?.value || undefined
+        oldType = element.type,
+        newType = document.getElementById("typeSelect")?.value || undefined;
+    var oldRelation = element.state;
+    var newRelation = document.getElementById("propertySelect")?.value || undefined;
+    
     // If we are changing types and the element has lines, we should not change
-    if ((elementHasLines(element))){
+    if (oldType !== newType && elementHasLines(element)){
         displayMessage("error", `
-        Can't change type from \"${oldType}\" to \"${newType}\" as
-        different diagrams should not be able to connect to each other.`
+            Can't change type from \"${oldType}\" to \"${newType}\" as
+            different diagrams should not be able to connect to each other.`
         )
         return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
         return;
     }
-
     else if (element.type == 'ER') {
-        
+        console.log("er")
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
 
@@ -2994,8 +2995,7 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
-    
-    generateContextProperties();
+
     displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
 }
