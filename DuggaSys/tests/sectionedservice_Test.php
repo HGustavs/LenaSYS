@@ -18,8 +18,8 @@ include "../../Shared/test.php";
 
 
 $url = 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php';
-explode('/', $url);
-foreach($url as $i){
+$urlplode = explode('/', $url);
+foreach($urlplode as $i){
     echo $i;
     echo '</br>';
 }
