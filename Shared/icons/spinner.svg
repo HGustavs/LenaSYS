@@ -5,5 +5,5 @@
          <!-- Everything under a black pixel will be invisible -->
          <rect x="100" y="-100" width="200" height="200" fill="black" />
    </mask>
-   <circle cx="100" cy="100" r="90" fill="none" stroke="blue" stroke-width="10" mask="url(#spinnerMask)"/>
+   <circle cx="100" cy="100" r="90" fill="none" stroke="#775886" stroke-width="10" mask="url(#spinnerMask)"/>
 </svg>
