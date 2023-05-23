@@ -29,9 +29,9 @@ foreach ($urlplode as $part){
         // echo $part;
         $url .= $part.'/';
     }
-    else if($part != "tests"){
-        $url .= $serviceFileName; 
-    } 
+    // else if($part != "tests"){
+    //     $url .= $serviceFileName; 
+    // } 
 };
 
 echo $url; 
