@@ -52,6 +52,7 @@ $testsData = array(
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 */
 function getURL($serviceName){
+
     // saves the complete URL of the current page
     $getURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
@@ -59,16 +60,16 @@ function getURL($serviceName){
     $urlplode = explode('/', $getURL);
 
     foreach ($urlplode as $part){
-        if(($part != $serviceFileName) && ($part != "tests")){
+        if((strpos($serviceFileName, $part)==false) && ($part != "tests")){
             // echo $part;
             $url .= $part.'/';
         }
         else if($part != "tests"){
-            $url .= $serviceFileName; 
+            $url .= $serviceFileName.'.php'; 
         } 
     };
 
-    echo $url;
+    return $url;
 }
 
 function doDBQuery($query, $data, $testsData, $testname){

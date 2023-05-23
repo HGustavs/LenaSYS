@@ -15,7 +15,7 @@
 */
  
 include "../../Shared/test.php";
-$serviceFileName = 'sectionedservice.php';
+$serviceFileName = 'sectionedservice';
 
 getURL($serviceFileName);
 
