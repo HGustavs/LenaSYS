@@ -82,7 +82,7 @@ $testsData = array(
 		)),
 	),
 	'Delete file - Course local file test' => array(
-		'expected-output' => '{"debug":"NONE!","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
+		'expected-output' => '{"debug":"The file was deleted.","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
 		'service' => 'https://cms.webug.se/root/G2/students/b21kurar/LenaSYS/DuggaSys/fileedservice.php',
 		'service-data' => serialize(array( // Data that service needs to execute function
 			'username' => 'brom',
