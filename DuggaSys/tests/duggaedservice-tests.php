@@ -121,7 +121,7 @@ $testsData = array(
     //Test works, but it is not possible to gather the correct expected output since the array is within an array, and the api is currently unable to handle it properly. (,"entries":[{"variantanswer":"Test text"}])
     //Test works meaning that a variant is added correctly when checked without following deletes.
     'add variant' => array(
-    'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"variant":[{"variantanswer":"Test text"}]}]}',
+    'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries": [{"variant": [{"variantanswer":"Test text"}]}]}',
         'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
