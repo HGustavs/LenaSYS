@@ -701,15 +701,11 @@ if($gradesys=="UNK") $gradesys=0;
 							$result = $query1->fetch(PDO::FETCH_OBJ);
 							$eid = $result->eid;
 
-
-
 							$query1 = $pdo->prepare("SELECT COUNT(*) AS boxCount FROM box WHERE exampleid=:eid;");
 							$query1->bindParam(":eid", $eid);
 							$query1->execute();
 							$result = $query1->fetch(PDO::FETCH_OBJ);
 							$boxCount = $result->boxCount;
-
-							
 
 							$likePattern = $exampleName .'.%';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
@@ -719,7 +715,6 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->execute();				
 							$rows = $query->fetchAll();
 							$exampleCount = count($rows);
-
 							
 							//Check if to be hidden
 							if($exampleCount==0){
@@ -732,32 +727,22 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->execute();
 							
 							//Check if remove box
-							}else if ($boxCount > $exampleCount){
-								
-								
+							}else if ($boxCount > $exampleCount){		
 								$query = $pdo->prepare("SELECT filename FROM box WHERE exampleid = :eid;"); 
 								$query->bindParam(':eid', $eid);				
 								$query->execute();
 								$boxRows = $query->fetchAll();
-
-								
+	
 								foreach($boxRows as $bRow){
 									$boxName = $bRow['filename'];
-
-									
-
 									$exist = false;
 									foreach ($rows as $row) {
 										$fileName = $row['fileName'];
-
-										
-
 										if(strcmp($boxName,$fileName)==0){
 											$exist = true;
 										}	
 									}
-									if($exist==false){
-										
+									if($exist==false){										
 										$query = $pdo->prepare("SELECT boxid AS bid WHERE exampleid = :eid AND filename=:boxName;");
 										$query->bindParam(':eid', $eid); 
 										$query->bindParam(':boxName', $boxName);
@@ -823,13 +808,6 @@ if($gradesys=="UNK") $gradesys=0;
 
 									}
 									if($exist==false){
-
-										$varname="exist == False";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $exist); 
-										$query3->execute();
-
 										$parts = explode('.', $fileName);
 										$filetype = "CODE";
 										$wlid = 0;
@@ -876,59 +854,12 @@ if($gradesys=="UNK") $gradesys=0;
 										$query->bindParam(':eid', $eid);				
 										$query->execute();
 										$boxid = $query->fetchColumn();
-
-										
-
+							
 										$boxid = $boxid + 1;
 										$fontsize = 9;
 										$setting = "[viktig=1]";
 										$boxtitle = substr($fileName, 0, 20);
-
-										$varname="boxid";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $boxid); 
-										$query3->execute();
-										$varname="exampleid";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $eid); 
-										$query3->execute();
-										$varname="boxid";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $boxid); 
-										$query3->execute();
-										$varname="boxtitle";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $boxtitle); 
-										$query3->execute();
-										$varname="filetype";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $filetype); 
-										$query3->execute();
-										$varname="fileName";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $fileName); 
-										$query3->execute();
-										$varname="setting";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $setting); 
-										$query3->execute();
-										$varname="wlid";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $wlid); 
-										$query3->execute();
-										$varname="fontsize";	
-										$query3 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (1,:examplename,:sectionname,1,45656,1);");
-										$query3->bindParam(":examplename", $varname); 
-										$query3->bindParam(":sectionname", $fontsize); 
-										$query3->execute();
+										
 										$query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
 										$query->bindParam(":boxid", $boxid);
 										$query->bindParam(":exampleid", $eid);
@@ -964,7 +895,6 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":templateid", $templateNumber);
 								$query->bindParam(":eid", $eid);
 								$query->execute();
-
 							}
 						} 
 					}
