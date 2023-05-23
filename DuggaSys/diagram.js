@@ -4126,11 +4126,11 @@ function boxSelect_Draw(str)
         var strokeWidth = 2;
 
         // Draw lines between all neighbours
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
-        str += `<line x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeStart.x}' y1='${nodeStart.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke-width='${strokeWidth}' />`;
 
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
-        str += `<line x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke='#000' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeX.x}' y2='${nodeX.y}' stroke-width='${strokeWidth}' />`;
+        str += `<line class='boxSelectionLines' x1='${nodeXY.x}' y1='${nodeXY.y}' x2='${nodeY.x}' y2='${nodeY.y}' stroke-width='${strokeWidth}' />`;
     }
     
     return str;
