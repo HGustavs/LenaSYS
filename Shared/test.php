@@ -261,7 +261,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     // Only include JSON same as filter
     foreach($filter as $option => $optionArray){
         // If none do not filter
-        if ($option === "none") {
+        if ($option == "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
         }
         else{
