@@ -9018,14 +9018,14 @@ function drawLine(line, targetGhost = false)
         //Add label with styling based on selection.
         if (contextLine.includes(line)) {
             if (line.kind === "Recursive") {
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(labelPositionX + textWidth/2 + 2 * zoomfact)*1.3}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(labelPositionX + textWidth/2)*1.3 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             } else {
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             }
         }
         else {
             if (line.kind === "Recursive") {
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(labelPositionX + textWidth/2 + 2 * zoomfact)*1.3}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(labelPositionX + textWidth/2)*1.3 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             } else {
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             }
