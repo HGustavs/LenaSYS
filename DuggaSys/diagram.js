@@ -3714,13 +3714,8 @@ function entityIsOverlapping(id, x, y)
                 break;
               }
                 
-              if (data[i].kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
-               console.log("Activation overlap with ActorAndObject")
-               isOverlapping = true;
-               break;
-              }
               //if its overlapping with a sequence actor, just break since that is allowed.
-              else if (data[i].kind == "sequenceActorAndObject") {
+              if (data[i].kind == "sequenceActorAndObject") {
                     break;
               }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
@@ -9084,7 +9079,7 @@ function addNodes(element)
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
