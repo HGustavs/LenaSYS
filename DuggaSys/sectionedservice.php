@@ -799,17 +799,15 @@ if($gradesys=="UNK") $gradesys=0;
 										$query->execute();
 										
 										for ($i =$bid; $i<$boxCount;$i++){
-											$boxid = $i+1;
-											$query = $pdo->prepare("UPDATE box SET boxid=:countBoxID WHERE exampleid = :eid AND boxid=:boxid;");
-											$query->bindParam(':countBoxID', $i); 
+											$oldBoxID = $i+1;
+											$query = $pdo->prepare("UPDATE box SET boxid=:newBoxID WHERE exampleid = :eid AND boxid=:oldBoxID;");
+											$query->bindParam(':newBoxID', $i); 
 											$query->bindParam(':eid', $eid); 
-											$query->bindParam(':boxid', $boxid);
+											$query->bindParam(':oldBoxID', $oldBoxID);
 											$query->execute();
 											
 										}
 										$boxCount--;
-
-
 									}	
 								}
 								switch ($exampleCount) {
