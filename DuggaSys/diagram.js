@@ -9019,7 +9019,7 @@ function drawLine(line, targetGhost = false)
             if (line.kind === "Recursive") {
                 //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
                 str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (40 * zoomfact)))-textWidth/2}" y="${labelPositionY-((textheight/2))*zoomfact}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(fx + length + (40 * zoomfact))}" y="${labelPositionY+((textheight/2)*zoomfact)}">${line.label}</text>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(fx + length + (40 * zoomfact))}" y="${labelPositionY+((textheight/4)*zoomfact)}">${line.label}</text>`;
             } else {
                 str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
@@ -9028,7 +9028,7 @@ function drawLine(line, targetGhost = false)
         else {
             if (line.kind === "Recursive") {
                 str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (40 * zoomfact)))-textWidth/2}" y="${labelPositionY-((textheight/2))*zoomfact}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(fx + length + (40 * zoomfact))}" y="${labelPositionY+((textheight/2)*zoomfact)}">${line.label}</text>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${(fx + length + (40 * zoomfact))}" y="${labelPositionY+((textheight/4)*zoomfact)}">${line.label}</text>`;
             } else {
                 str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
