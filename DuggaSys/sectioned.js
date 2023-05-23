@@ -3088,7 +3088,6 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 let isActivelyFocused = false; // If the user is actively focusing on the course page
 let lastUpdatedCodeExampes = null; // Last time code examples was updated
 const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
-let dir = "../courses/1895/Github/Demo/Code-example1/";
 
 
 //Creates all examples from github that doesnt exists yet
@@ -3096,7 +3095,6 @@ let dir = "../courses/1895/Github/Demo/Code-example1/";
 function createExamples(momentID) {
   lid = momentID;
   console.log("The value of all lids is: " + collectedLid);
-  console.log("Function createExamples called with parameters: " + dir + " and " + momentID);
   console.log(lid);
   console.log("** AJAX START **");
   //AJAX Request to create all code examples
@@ -3732,10 +3730,6 @@ async function refreshCodeExample(exampleid) {
 function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked!");
-
-  //TODO: take input from column/dropdownlist and iterate through and create the codeexample
-  //for each codeexample in the moment dir, do create examples on those code-example dir
-  //for loop not yet implemented, waiting for other issues to be completed before
 
   createExamples(momentID);
 }
