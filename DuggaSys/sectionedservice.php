@@ -536,12 +536,7 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					}
 					//Get active version of the course
-					//temp fix since this branch was created after the bugfix pr 14130
-					$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid;");
-					$query->bindParam(":cid", $courseid);
-					$query->execute();
-					$e = $query->fetchAll();
-					$coursevers = $e[0]['activeversion'];
+					
 					
 
 					foreach($allFiles as $groupedFiles){	
@@ -697,7 +692,23 @@ if($gradesys=="UNK") $gradesys=0;
 						} else {
 							//Check for update
 							//TODO: Implement update for already existing code-examples.
-							//Check if to be hidden
+							
+							$query1 = $pdo->prepare("SELECT exampleid AS eid FROM codeexample  WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;");
+							$query1->bindParam(":cid", $courseid);
+							$query1->bindParam(":examplename", $exampleName);
+							$query1->bindParam(":vers", $coursevers);
+							$query1->execute();
+							$result = $query1->fetch(PDO::FETCH_OBJ);
+							$eid = $result->eid;
+
+							$query1 = $pdo->prepare("SELECT COUNT(*) AS boxCount FROM box WHERE exampleid=:eid;");
+							$query1->bindParam(":eid", $eid);
+							$query1->execute();
+							$result = $query1->fetch(PDO::FETCH_OBJ);
+							$boxCount = $result->boxCount;
+
+
+
 							$likePattern = $exampleName .'.%';
 							$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 							$query = $pdolite->prepare("SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;"); 
@@ -706,7 +717,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$query->execute();				
 							$rows = $query->fetchAll();
 							$exampleCount = count($rows);
-							
+							//Check if to be hidden
 							if($exampleCount==0){
 								$visible = 0;																								
 								$query = $pdo->prepare("UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;");
@@ -715,11 +726,44 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->bindParam(":entryname", $exampleName);
 								$query->bindParam(":visible", $visible);
 								$query->execute();
-							}
-
-							//Check if adding box
 
 							//Check if remove box
+							}else if ($boxCount > $exampleCount){
+								$query = $pdolite->prepare("SELECT fileName FROM box WHERE exampleid = :eid;"); 
+								$query->bindParam(':eid', $eid);
+								$query->execute();				
+								$boxRows = $query->fetchAll();
+								foreach($boxRows as $bRow){
+									$boxName = $bRow['filename'];
+									$exist = false;
+									foreach ($rows as $row) {
+										$fileName = $row['fileName'];
+										if(strcmp($boxName,$fileName)==0){
+											$exist = true;
+										}	
+									}
+									if($exist==false){
+										$query = $pdolite->prepare("DELETE FROM box WHERE exampleid = :eid AND filename=:boxName;");
+										$query->bindParam(':eid', $eid); 
+										$query->bindParam(':boxName', $boxName);
+										$query->execute();
+									}
+								}
+								
+							//Check if adding box
+							}else if ($boxCount < $exampleCount){
+
+							}
+
+							
+
+							
+
+							//counts how many files in moment dir with same name 
+							
+							//counts how many files in sqlite with same name
+							
+							
 							
 							
 							
