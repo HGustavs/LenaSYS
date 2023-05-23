@@ -785,7 +785,7 @@ if($gradesys=="UNK") $gradesys=0;
 										}	
 									}
 									if($exist==false){
-										$query = $pdolite->prepare("DELETE FROM box WHERE exampleid = :eid AND filename=:boxName;");
+										$query = $pdo->prepare("DELETE FROM box WHERE exampleid = :eid AND filename=:boxName;");
 										$query->bindParam(':eid', $eid); 
 										$query->bindParam(':boxName', $boxName);
 										if (!$query->execute()) {
