@@ -3646,7 +3646,7 @@ function entityIsOverlapping(id, x, y)
     const foundIndex = findIndex(data, id);
     if(foundIndex > -1){
         const element = data[foundIndex];
-        const element = context[0];
+        
         let targetX;
         let targetY;
         var elementHeight = element.height;
@@ -3715,7 +3715,7 @@ function entityIsOverlapping(id, x, y)
                 }
                 
               
-              if (context[0].kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
+                if (data[0].kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
                 console.log("Activation overlap with ActorAndObject")
                 break;
               }
