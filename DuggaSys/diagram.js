@@ -3712,7 +3712,7 @@ function entityIsOverlapping(id, x, y)
               if (data[i].kind == "UMLSuperState") {
                 break;
                 }
-              if (elemnt.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
+              if (element.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject") {
                     console.log("Activation overlap with ActorAndObject")
                     break;
               }
