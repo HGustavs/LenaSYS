@@ -832,8 +832,8 @@
     font-weight: bold;
 }
 
-.disabled{
-    color: red;
+.disabledIcon{
+    border-color: #da2727;
 }
 
 #a4options {
