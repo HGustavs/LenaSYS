@@ -827,7 +827,7 @@ if($gradesys=="UNK") $gradesys=0;
 										$templateNumber = 9;
 										break;
 								}
-								$query = $pdo->prepare("UPDATE codeexample SET templateid=:templateid WHERE eid=:eid;");
+								$query = $pdo->prepare("UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;");
 								$query->bindParam(":templateid", $templateNumber);
 								$query->bindParam(":eid", $eid);
 								$query->execute();
