@@ -457,11 +457,11 @@ class StateMachine
 
                 } else { // Otherwise, simply modify the last entry.
 
-                    for (var index = 0; index < changeTypes.length; index++) {
+                    for (let i = 0; i < changeTypes.length; i++) {
 
-                        currentChangedType = changeTypes[index];
+                        const currentChangedType = changeTypes[i];
 
-                        switch (currentChangeType) {
+                        switch (currentChangedType) {
                             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                             case StateChange.ChangeTypes.ELEMENT_MOVED:
                             case StateChange.ChangeTypes.ELEMENT_RESIZED:
