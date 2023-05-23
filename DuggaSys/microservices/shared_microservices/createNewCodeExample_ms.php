@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Handles creation of new items on a coursepage.
+ */
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -24,10 +26,28 @@ $visibility = getOP('visibility');
 $highscoremode = getOP('highscoremode');
 $pos = getOP('pos');
 $grptype = getOP('grptype');
+$gradesys=getOP('gradesys');
+$tabs=getOP('tabs');
 
 
 getUid(); // call to microservice getUid_ms.php
 $userid = $_SESSION['uid'];
+
+
+// the following will be changed to a microservice, as such this should be updated to a microservice call
+
+// *********************** vvvv CHANGE TO MICROSERVICE CALL vvvv ***********************************
+// Gets username based on uid, USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+// *********************** ^^^^ CHANGE TO MICROSERVICE CALL ^^^^ ***********************************
+
 
 if (strcmp($opt, "NEW") === 0) {
 
@@ -38,9 +58,11 @@ if (strcmp($opt, "NEW") === 0) {
 			$error = $query1->errorInfo();
 			$debug = "Error reading entries" . $error[2];
 		}
+
 		foreach ($query1->fetchAll() as $row) {
 			$sname = $row['exampleid'] + 1;
 		}
+
 		$sname = $sectname . $sname;
 		$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 
@@ -83,7 +105,7 @@ if (strcmp($opt, "NEW") === 0) {
 		$query->bindValue(':groupkind', null, PDO::PARAM_STR);
 
 		// Logging for newly added items
-		$description = $sectname;
+		//$description = $sectname; // this isn't used
 		logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 	}
 
