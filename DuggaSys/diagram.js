@@ -9918,14 +9918,14 @@ function drawElement(element, ghosted = false)
 
         const compX2 = data[i].x + data[i].width;
         var compY2 = data[i].y + data[i].height;
-
+        /*
         if (element.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject" && (targetX < compX2) && (targetX + element.width) > data[i].x &&
             (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
             //element.y = data[i].y;
             element.x = data[i].x + (data[i].width / 2);
             element.y = data[i].y + data[i].height;
             console.log("test");
-        }
+        }*/
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
