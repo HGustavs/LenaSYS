@@ -91,7 +91,7 @@ $testsData = array(
         'query-before-test-1' => "INSERT INTO listentries (lid, cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind)   
                                   VALUES(5020,1,45656,'New Group',9021,6,5,0,22,'TOP', 0, 0, null);",
         'query-after-test-1' =>  "DELETE FROM listentries WHERE lid > 5009;",
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'DEL',
             'username' => 'mestr',
@@ -131,7 +131,7 @@ $testsData = array(
         'query-before-test-1' => "INSERT INTO listentries (lid, cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind)   
                                   VALUES(5020,1,45656,'New Group',9021,6,5,0,22,'TOP', 0, 0, null);",
         'query-after-test-1' =>  "DELETE FROM listentries WHERE lid > 5009;",
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'DELETED',
             'username' => 'mestr',
@@ -171,7 +171,7 @@ $testsData = array(
 
         'query-after-test-1' =>  "DELETE FROM listentries WHERE lid > 5009;",
         'query-after-test-2' => "DELETE FROM codeexample WHERE exampleid > 9009;",
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
             'username' => 'mestr',
@@ -253,7 +253,7 @@ $testsData = array(
 
         'query-after-test-1' => "UPDATE listentries SET pos=1 WHERE lid=1002;",
         'query-after-test-2' => "UPDATE listentries SET pos=2 WHERE lid=1003;",
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'REORDER',
             'username' => 'mestr',
@@ -321,7 +321,7 @@ $testsData = array(
 
         'query-after-test-1' => "UPDATE listentries SET highscoremode = 0, gradesystem = null, moment= null, entryname = 'JavaScript-Code:', kind = 1, link = 1, visible = 1, comments = null, groupKind = null, feedbackenabled = 0, feedbackquestion = null WHERE lid = 1;",
     
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'UPDATE',
             'username' => 'mestr',
@@ -401,7 +401,7 @@ $testsData = array(
 
         'query-after-test-1' => "UPDATE quiz SET deadline='2015-01-25 15:30:00', relativedeadline=null WHERE id=2;",
     
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'UPDATEDEADLINE',
             'username' => 'mestr',
@@ -636,7 +636,7 @@ $testsData = array(
 
         'query-after-test-1' => "UPDATE listentries SET visible=1 WHERE lid=2008;",
     
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'HIDDEN',
             'username' => 'mestr',
@@ -702,7 +702,7 @@ $testsData = array(
         'query-before-test-1' => "UPDATE listentries SET visible=0 WHERE lid=2008;",
         'query-after-test-1' => "UPDATE listentries SET visible=1 WHERE lid=2008;",
     
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => 'sectionedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'PUBLIC',
             'username' => 'mestr',
