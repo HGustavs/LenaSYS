@@ -13,6 +13,7 @@ session_start();
 $opt=getOP('opt');
 $cid=getOP('cid');
 $coursename=getOP('coursename');
+$coursecode=getOP('coursecode');
 $versid=getOP('versid');
 $versname=getOP('versname');
 
