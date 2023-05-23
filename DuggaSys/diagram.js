@@ -13116,7 +13116,7 @@ function saveDiagramBeforeUnload() {
 
 function showSavePopout()
 {
-    if (stateMachine.currentHistoryIndex === -1 || (stateMachine.ElementsDeleted).length === (stateMachine.ElementsAndLinesCreated).length){
+    if (stateMachine.currentHistoryIndex === -1 || data === 0){
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     }
     else{
