@@ -869,7 +869,7 @@ if($gradesys=="UNK") $gradesys=0;
 										$query = $pdo->prepare("SELECT MAX(boxid) FROM box WHERE exampleid = :eid;"); 
 										$query->bindParam(':eid', $eid);				
 										$query->execute();
-										$boxid = $query->fetchAll();
+										$boxid = $query->fetchColumn();
 										$boxid = $boxid + 1;
 										$fontsize = 9;
 										$setting = "[viktig=1]";
@@ -911,20 +911,6 @@ if($gradesys=="UNK") $gradesys=0;
 								$query->execute();
 
 							}
-
-							
-
-							
-
-							//counts how many files in moment dir with same name 
-							
-							//counts how many files in sqlite with same name
-							
-							
-							
-							
-							
-						
 						} 
 					}
 				
