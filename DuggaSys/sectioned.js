@@ -457,7 +457,7 @@ function refreshGithubRepo(courseid, user)
       dataCheck = true;
     },
     error: function(data){
-      //Check FetchGithubRepo for the meaning of the error code.
+      //Check gitfetchService for the meaning of the error code.
       switch(data.status){
         case 422:
           alert(data.responseJSON.message + "\nDid not update course");

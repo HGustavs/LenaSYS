@@ -9,7 +9,7 @@
 	// Include basic application services!
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
-	include_once "../recursivetesting/FetchGithubRepo.php";
+	include_once "../DuggaSys/gitfetchService.php";
 
 	global $pdo;
 
