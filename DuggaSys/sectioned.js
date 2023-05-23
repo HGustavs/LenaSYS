@@ -3087,56 +3087,45 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 
 let isActivelyFocused = false; // If the user is actively focusing on the course page
 let lastUpdatedCodeExampes = null; // Last time code examples was updated
-const updateInterval = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+const updateInterval = 600 * 1000; // Timerintervall for code to be updated (10 minutes)
 
-
-//Creates all examples from github that doesnt exists yet, manually(meaning user has to click button)
+// Function to fetch code examples for a specific lecture/moment
 function createExamples(momentID, isManual) {
   lid = momentID;
   // AJAX Request to create all code examples
+  console.log("Creating examples for moment ID: " + lid);
+
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
     data: {'lid':lid,'opt':'CREGITEX'},
     dataType: "json",
     success: function(response) {
+      console.log("AJAX request succeeded. Response:", response);
       lastUpdatedCodeExampes = Date.now();
       if (isManual) {
       alert("Code examples have been manually updated successfully!");
       }
     },
     error: function(xhr, status, error) {
+      console.error("AJAX request failed. Status:", status);
+      console.error("Error:", error);
       alert("Failed to manually update code examples!");
-    }
-  });
-}
-// Creates all examples from github that doesnt exists yet, automated(meaning user doesnt have to click button)
-function createExamplesAuto(momentID) {
-  lid = momentID;
-  // AJAX Request to create all code examples
-  $.ajax({
-    url: "sectionedservice.php",
-    type: "POST",
-    data: {'lid':lid,'opt':'CREGITEX'},
-    dataType: "json",
-    success: function(response) {
-      lastUpdatedCodeExampes = Date.now();
-      alert("Code examples have been automatically updated successfully!");
-    },
-    error: function(xhr, status, error) {
-      alert("Failed to automatically update code examples!");
     }
   });
 }
 
 // When the user is watching the course page, set isActivelyFocused to true
 $(window).on('focus', function( ) {
+  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
   isActivelyFocused = true;
 });
 
 // When the user stops watching the course page, set isActivelyFocused to false
 $(window).on('blur', function() {
   isActivelyFocused = false;
+  console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
+
 });
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
@@ -3147,6 +3136,8 @@ setInterval(function() {
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > updateInterval) {
       lastUpdatedCodeExampes = now;
       var hasUpdatedAllCodeExamples = false;
+      console.log("Time to update the code examples.");
+
       // Call the createExamplesAuto function for each lecture/moments
       for (let i = 0; i < collectedLid.length; i++) {
         createExamples(collectedLid[i], false);
@@ -3157,7 +3148,7 @@ setInterval(function() {
       }
     }
   }
-}, 1000);
+}, 1000); // this checks every second  if updateInterval has passed 10 minutes mark
 
 
 // ------ Validates all versionnames ------
