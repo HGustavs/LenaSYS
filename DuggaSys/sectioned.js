@@ -3137,25 +3137,28 @@ $(window).on('blur', function() {
 
 setInterval(function() {
   console.log(itemKinds);
-  for (let i = 0; i < itemKinds.length; i++) {
-  if (itemKinds[i] === 4 && isActivelyFocused) {
+  if (isActivelyFocused) {
     const now = Date.now();
-    console.log(itemKinds[i] === 4);
     if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
       lastUpdatedCodeExampes = now;
       var hasUpdatedAllCodeExamples = false;
       console.log("Time to update the code examples.");
 
       // Call the createExamples function for each lecture/moments
-      createExamples(lid, false);
-      hasUpdatedAllCodeExamples = true;
+      for (let i = 0; i < itemKinds.length; i++) {
+        if(itemKinds[i] === 4){
+          createExamples(lid, false);
+          hasUpdatedAllCodeExamples = true;
+        }
+      }
+
       // The alert for automated fetching of code examples
       if (hasUpdatedAllCodeExamples) {
         alert("Code examples have been automatically updated successfully!");
       }
     }
   }
-  }
+  
 }, 1000); // this checks every second  if UPDATE_INTERVAL_FETCH_CODE_EXAMPLES has passed 10 minutes mark
 
 
