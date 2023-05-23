@@ -1158,7 +1158,7 @@ var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP       ================================
 //an event listener for when the window is loaded, this hides the loading spinner and calls start up functions
-window.addEventListener("DOMContentLoaded", (event) => {
+window.addEventListener("DOMContentLoaded", () => {
     getData();
     addAlertOnUnload();
     document.getElementById("loadingSpinner").style.display="none";
