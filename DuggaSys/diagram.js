@@ -3501,7 +3501,7 @@ function getRectFromElement (element)
 {
     return {
         x: element.x,
-        y: screenToDiagramCoordinates(element.x, element.y).y,
+        y: element.y,
         width: element.width,
         height: element.height,
     };
