@@ -13116,6 +13116,7 @@ function saveDiagramBeforeUnload() {
 }
 
 function disableIfDataEmpty(){
+    console.log("hello");
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
         document.getElementById('localSaveField').disabled = true;
     }
