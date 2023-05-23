@@ -12849,6 +12849,7 @@ function exportWithHistory()
 }
 /**
  * @description Stores the current diagram as JSON in localstorage
+ * @param {string} key The name/key of the diagram
  */
  function storeDiagramInLocalStorage(key){
 
@@ -12868,27 +12869,13 @@ function exportWithHistory()
             let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`
             localStorage.setItem("diagrams", s);
         }
+        // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
+        let local = localStorage.getItem("diagrams");
+        local = (local[0] == "{") ? local : `{${local}}`;
 
-        if (localStorage.getItem("diagrams")) {
-            let local = localStorage.getItem("diagrams");
-            local = (local[0] == "{") ? local : `{${local}}`;
-
-            let localDiagrams = JSON.parse(local);
-            let keys = Object.keys(localDiagrams);
-            for (let i = 0; i < keys.length; i++) {
-                if (key == keys[i]) {
-                    localDiagrams[keys[i]] = objToSave;
-                    localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
-                    return;
-                }
-            }
-            localDiagrams[key] = objToSave;
-            localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
-        }
-        else {
-            let t = `"${key}": ${JSON.stringify(objToSave)}`;
-            localStorage.setItem("diagrams", t);
-        }
+        let localDiagrams = JSON.parse(local);
+        localDiagrams[key] = objToSave;
+        localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
