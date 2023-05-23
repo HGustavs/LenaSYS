@@ -9314,6 +9314,7 @@ function drawElement(element, ghosted = false)
     if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
     else nonFilledElementPartStrokeColor = '#383737';
 
+    //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
     //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
     //replace this with nonFilledElementPartStroke when it gets merged.
     var actorFontColor;
@@ -9879,9 +9880,9 @@ function drawElement(element, ghosted = false)
             //svg for object.
             str += `<g>`;
             str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw - (linew * 2)}'
+                x='${linew/2}'
+                y='${linew/2}'
+                width='${boxw - linew}'
                 height='${(boxw/2) - linew}'
                 rx='${sequenceCornerRadius}'
                 stroke-width='${linew}'
