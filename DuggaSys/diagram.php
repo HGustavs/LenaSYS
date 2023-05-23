@@ -849,7 +849,7 @@
                 </span>
             </div>
         </fieldset>
-        <fieldset id="localSaveField" onload="disableIfDataEmpty()">
+        <fieldset id="localSaveField">
             <legend aria-hidden="true">Save</legend>
             <div id="localSave" class="diagramIcons" onclick="showSavePopout()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>

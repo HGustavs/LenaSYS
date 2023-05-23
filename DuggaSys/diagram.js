@@ -1952,6 +1952,7 @@ function mdown(event)
             startY = event.clientY;
         }
     }
+    disableIfDataEmpty();
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
 }
@@ -13117,6 +13118,9 @@ function saveDiagramBeforeUnload() {
 function disableIfDataEmpty(){
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
         document.getElementById('localSaveField').disabled = true;
+    }
+    else{
+        document.getElementById('localSaveField').disabled = false;
     }
 }
 
