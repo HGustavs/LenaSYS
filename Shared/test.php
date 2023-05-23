@@ -61,7 +61,7 @@ function getURL($serviceName){
 
     foreach ($urlplode as $part){
         
-        echo strpos($serviceName, $part);
+        echo str_starts_with($serviceName, $part);
         
         if((str_starts_with($serviceName, $part)==false) && (strcmp($part,"tests") != 0)){
             // echo $part;
