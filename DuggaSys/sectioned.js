@@ -3149,7 +3149,7 @@ setInterval(function(momentID) {
         if(itemKinds[i] === 4){
           createExamples(momentID, false);
           hasUpdatedAllCodeExamples = true;
-          console.log("Updated code examples for moment ID: " + lid);
+          console.log("Updated code examples for moment ID: " + momentID);
         }
       }
 
