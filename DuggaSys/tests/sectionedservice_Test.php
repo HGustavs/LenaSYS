@@ -111,7 +111,7 @@ $testsData = array(
         'query-before-test-1' => "INSERT INTO listentries (lid, cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind)   
                                   VALUES(5020,1,45656,'New Group',9021,6,5,0,22,'TOP', 0, 0, null);",
         'query-after-test-1' =>  "DELETE FROM listentries WHERE lid > 5009;",
-        'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+        'service' => $serviceURL,
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'DEL',
             'username' => 'mestr',
