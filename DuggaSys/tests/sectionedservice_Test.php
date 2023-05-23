@@ -19,6 +19,10 @@ include "../../Shared/test.php";
 
 $url = 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php';
 $urlplode = explode('/', $url);
+
+echo $urlplode[4];
+
+
 foreach($urlplode as $i){
     echo $i;
     echo '</br>';
