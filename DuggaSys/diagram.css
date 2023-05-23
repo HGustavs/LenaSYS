@@ -130,14 +130,15 @@
 
 .hide {
     display: none;
-}	
+}
 
 .element {
     font-size: small;
     box-sizing: border-box;
     overflow: none;
-    position:absolute;
+    position: absolute;
 }
+
 #pad_lock{
     top: -45%;
     display: block;
@@ -707,6 +708,7 @@
     position: absolute;
     z-index: 20;
 }
+
 
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;

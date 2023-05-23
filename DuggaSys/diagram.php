@@ -776,6 +776,14 @@
                     </div>
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
+                <!-- NOTE -->
+                <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_note.svg"/>
+                    <span class="toolTipText"><b>Note</b><br>
+                        <p>Creates a note</p><br>
+                        <p id="tooltip-NOTE_ENTITY" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
