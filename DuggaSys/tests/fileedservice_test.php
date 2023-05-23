@@ -3,6 +3,32 @@ include "../../Shared/test.php";
 include_once "../../../coursesyspw.php";
 
 $testsData = array(
+	'Edit file test' => array(
+		'expected-output' => '{"debug":"NONE!","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
+		'service' => 'https://cms.webug.se/root/G2/students/b21kurar/LenaSYS/DuggaSys/fileedservice.php',
+		'service-data' => serialize(array( // Data that service needs to execute function
+			'username' => 'brom',
+			'password' => 'password',
+			'cid' => '1894',
+			'coursevers' => '52432',
+			'opt' => 'SAVEFILE',
+			'cid' => '1894',
+			'contents' => "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!!!</div>",
+			'filename' => 'helloWorld.html',
+			'filepath' => '../courses/global/helloWorld.html', 
+			'kind' => '2'
+		)),
+		'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+			'debug',
+			'gfiles',
+			'lfiles',
+			'access',
+			'studentteacher',
+			'supeuser',
+			'waccess',
+			'supervisor'
+		)),
+	),
 	'Delete file - Global test' => array(
 		'expected-output' => '{"debug":"The file was deleted.","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
 		'service' => 'https://cms.webug.se/root/G2/students/b21kurar/LenaSYS/DuggaSys/fileedservice.php',
@@ -51,32 +77,6 @@ $testsData = array(
 			'access',
 			'studentteacher',
 			'superuser',
-			'waccess',
-			'supervisor'
-		)),
-	),
-	'Edit file test' => array(
-		'expected-output' => '{"debug":"NONE!","gfiles":[],"lfiles":[],"access":true,"studentteacher":false,"superuser":true,"waccess":false,"supervisor":false}',
-		'service' => 'https://cms.webug.se/root/G2/students/b21kurar/LenaSYS/DuggaSys/fileedservice.php',
-		'service-data' => serialize(array( // Data that service needs to execute function
-			'username' => 'brom',
-			'password' => 'password',
-			'cid' => '1894',
-			'coursevers' => '52432',
-			'opt' => 'SAVEFILE',
-			'cid' => '1894',
-			'contents' => "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!!!</div>",
-			'filename' => 'helloWorld.html',
-			'filepath' => '../courses/global/helloWorld.html', 
-			'kind' => '2'
-		)),
-		'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-			'debug',
-			'gfiles',
-			'lfiles',
-			'access',
-			'studentteacher',
-			'supeuser',
 			'waccess',
 			'supervisor'
 		)),
