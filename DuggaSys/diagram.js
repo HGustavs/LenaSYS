@@ -3501,21 +3501,21 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
-    var elementHeight = element.height;
+    let elementHeight = element.height;
     // Change height if element is an UML Entity
-    for (var i = 0; i < UMLHeight.length; i++) {
+    for (let i = 0; i < UMLHeight.length; i++) {
         if (element.id == UMLHeight[i].id) {
             elementHeight = UMLHeight[i].height;
         }
     }
     // Change height if element is an IE Entity
-    for (var i = 0; i < IEHeight.length; i++) {
+    for (let i = 0; i < IEHeight.length; i++) {
         if (element.id == IEHeight[i].id) {
             elementHeight = IEHeight[i].height;
         }
     }
     // Change height if element is an SD Entity
-    for (var i = 0; i < SDHeight.length; i++) {
+    for (let i = 0; i < SDHeight.length; i++) {
         if (element.id == SDHeight[i].id) {
             elementHeight = SDHeight[i].height;
         }
