@@ -2898,7 +2898,6 @@ function changeState()
         return;
     }
     else if (element.type == 'ER') {
-        console.log("er")
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
 
