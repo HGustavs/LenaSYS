@@ -1349,10 +1349,9 @@ function returnedSection(data) {
 
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
-        for (i = 0; i < data['entries'].length; i++) {
-          var item = data['entries'][i];
-          itemKinds[i] = parseInt(item['kind']); 
-        }
+        itemKinds[i] = itemKind;
+
+
         if (itemKind === 3 || itemKind === 4) {
 
           // If there exists atleast one test or moment swimlanes shall be hidden
