@@ -13,8 +13,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-#spinnerTMPPlaceholder{
     animation: 1s linear 0s infinite loadingSpin;
 }
 
