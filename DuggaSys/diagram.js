@@ -3716,8 +3716,9 @@ function entityIsOverlapping(id, x, y)
                 if (element.kind == "sequenceActivation" && data[i].kind == "sequenceActorAndObject" && (targetX <= compX2) && (targetX + element.width) >= data[i].x &&
                     (targetY <= compY2) && (targetY + elementHeight) >= data[i].y) {
                     //element.x = data[i].x + (data[i].width / 2);
-                    element.y = data[i].y + data[i].height;
-                    element.top = data[i].bottom;
+                    //element.y = data[i].y + data[i].height;
+                    element.top = data[i].top + 130;
+                    element.left = data[i].left + 30;
                     console.log("test");
                     break;
                 }
