@@ -13116,8 +13116,13 @@ function saveDiagramBeforeUnload() {
 
 function showSavePopout()
 {
-    $("#savePopoutContainer").css("display", "flex");
-    document.getElementById("saveDiagramAs").focus();
+    if (stateMachine.currentHistoryIndex === -1){
+        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+    }
+    else{
+        $("#savePopoutContainer").css("display", "flex");
+        document.getElementById("saveDiagramAs").focus();
+    }
 }
 
 function hideSavePopout()
@@ -13127,21 +13132,14 @@ function hideSavePopout()
 
 function saveDiagramAs()
 {
-
-    if (stateMachine.currentHistoryIndex === -1){
-        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+    let elem = document.getElementById("saveDiagramAs");
+    let fileName = elem.value;
+    elem.value = "";
+    if (fileName.trim() == "") {
+        // fileName = "Untitled"
+        fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
     }
-    else{
-        let elem = document.getElementById("saveDiagramAs");
-        let fileName = elem.value;
-        elem.value = "";
-        if (fileName.trim() == "") {
-            // fileName = "Untitled"
-            fileName = "CurrentlyActiveDiagram"; // Since it is currently not possible to load any other diagram, it must default to "CurrentlyActiveDiagram".
-        }
-    
-        storeDiagramInLocalStorage(fileName);
-    }
+    storeDiagramInLocalStorage(fileName);
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
