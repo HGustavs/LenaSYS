@@ -7624,6 +7624,7 @@ function multipleColorsTest()
             }
             // Checks if there are varying stroke colors, but not if varying colors have already been detected
             if (stroke != context[i].stroke && !varyingStrokes) {
+                console.log("more stroke colours");
                 var button = document.getElementById("colorMenuButton2");
                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
                 var textNode = document.createTextNode("Multiple Color Values");
