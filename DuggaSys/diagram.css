@@ -852,6 +852,10 @@
     font-weight: bold;
 }
 
+.disabledIcon{
+    background-color: #8d68ab;
+}
+
 #a4options {
     display: flex;
 }

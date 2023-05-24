@@ -504,7 +504,6 @@ class StateMachine
         if (this.currentHistoryIndex == -1) {return;}
         else {
             this.currentHistoryIndex--;
-            console.log(this.currentHistoryIndex);
         }
 
         // Remove ghost only if stepBack while creating edge
@@ -515,7 +514,8 @@ class StateMachine
         showdata();
         this.scrubHistory(this.currentHistoryIndex);
         updatepos(0, 0);
-        displayMessage(messageTypes.SUCCESS, "Changes reverted!")
+        displayMessage(messageTypes.SUCCESS, "Changes reverted!");
+        disableIfDataEmpty();
     }
     stepForward()
     {
@@ -2250,6 +2250,8 @@ function mup(event)
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
+
+    disableIfDataEmpty();
 }
 
 /**
@@ -13327,6 +13329,7 @@ function closeModal(){
         // Failed to load content
         console.error("No content to load")
     }
+    disableIfDataEmpty();
 } 
 
 // Save current diagram when user leaves the page
@@ -13338,10 +13341,24 @@ function saveDiagramBeforeUnload() {
     })
 }
 
+function disableIfDataEmpty(){
+    if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
+        document.getElementById('localSaveField').classList.add('disabledIcon');
+    }
+    else{
+        document.getElementById('localSaveField').classList.remove('disabledIcon');
+    }
+}
+
 function showSavePopout()
 {
-    $("#savePopoutContainer").css("display", "flex");
-    document.getElementById("saveDiagramAs").focus();
+    if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
+        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+    }
+    else{
+        $("#savePopoutContainer").css("display", "flex");
+        document.getElementById("saveDiagramAs").focus();
+    }
 }
 
 function hideSavePopout()
