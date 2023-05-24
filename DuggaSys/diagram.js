@@ -6025,7 +6025,7 @@ function toggleA4Template()
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
         document.getElementById("a4TemplateToggle").style.backgroundColor ="#614875";
-        document.getElementById("a4TemplateToggle").style.color = "#614875";
+        document.getElementById("a4TemplateToggle").style.color = "#ffffff";
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
         document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
    }
