@@ -177,7 +177,7 @@ if(checklogin()){
 				}
 		}else if(strcmp($opt,"CHGVERS")===0){
 			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
-			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':cid', $cid);
 			$query->bindParam(':vers', $versid);
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
