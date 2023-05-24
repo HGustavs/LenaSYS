@@ -887,6 +887,14 @@ const entityState = {
 };
 
 /**
+ * @description Available types of relations, ie ER, IE & UML This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ */
+const relationType = {
+    UML: "UML",
+    ER: "ER",
+    IE: "IE"
+};
+/**
  * @description Available types of the relation element. This will alter how the relation is drawn onto the screen.
  */
 const relationState = {
