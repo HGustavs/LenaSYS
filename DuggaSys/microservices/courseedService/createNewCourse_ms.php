@@ -47,9 +47,6 @@ if(checklogin()){
 
 	if($ha){
 
-
-		// The code for modification using sessions
-		
 			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
 
 			$query->bindParam(':usrid', $userid);
@@ -64,36 +61,11 @@ if(checklogin()){
 
 			echo json_encode(array('code' => $coursecode, 'name' => $coursename, 'debug' => $debug));
 			return;
-			/*
-			// Logging for creating new course
-			$description=$coursename." ".$coursecode." "."Hidden";
-			logUserEvent($userid, $username, EventTypes::AddCourse, $description);
-
 			
-			//////////////////////////////
-			// Gets username based on uid, USED FOR LOGGING
-			$query_1 = $pdo->prepare( "SELECT cid FROM course ORDER BY cid DESC LIMIT 1");
-			$query_1-> execute();
-
-			if(!$query_1->execute()) {
-				$error=$query_1->errorInfo();
-				$debug="Error reading courses\n".$error[2];
-			}else{
-				foreach($query_1->fetchAll(PDO::FETCH_ASSOC) as $row){
-					array_push(
-						$LastCourseCreated,
-						array(
-							'LastCourseCreatedId' => $row['cid'],
-						)
-					);
-				}
-			}
-			/////////////////////////////////
-			*/
 		
 	}
 }
-/*
+
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
@@ -174,7 +146,7 @@ $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversio
 2 == login
 3 == deleted
 
-
+*/
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
@@ -260,5 +232,5 @@ $array = array(
 	'motd' => $motd,
 	'readonly' => $readonly
 	);
-*/
+
 ?>
