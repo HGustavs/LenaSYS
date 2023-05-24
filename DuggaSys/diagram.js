@@ -2911,24 +2911,23 @@ function elementHasLines(element) {
 function changeState() 
 {
     const element =  context[0],
-          oldType = element.type,
-          newType = document.getElementById("typeSelect")?.value || undefined;
-          var oldRelation = element.state;
-          var newRelation = document.getElementById("propertySelect")?.value || undefined
+        oldType = element.type,
+        newType = document.getElementById("typeSelect")?.value || undefined;
+    var oldRelation = element.state;
+    var newRelation = document.getElementById("propertySelect")?.value || undefined;
+    
     // If we are changing types and the element has lines, we should not change
-    if ((elementHasLines(element))){
+    if (oldType !== newType && newType !== undefined && oldType !== undefined && elementHasLines(element)){
         displayMessage("error", `
-        Can't change type from \"${oldType}\" to \"${newType}\" as
-        different diagrams should not be able to connect to each other.`
+            Can't change type from \"${oldType}\" to \"${newType}\" as
+            different diagrams should not be able to connect to each other.`
         )
         return;
     // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation){
         return;
     }
-
     else if (element.type == 'ER') {
-        
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
 
@@ -3025,8 +3024,7 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
-    
-    generateContextProperties();
+
     displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
 }
