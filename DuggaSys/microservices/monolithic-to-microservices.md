@@ -72,7 +72,7 @@ For visuall representation, check **codeviewerService** and the microservice **e
 
 ### Step 4
 Add "codeexample: Include" to the code, include should be where the other includes are and getUid(); should be called short after. 
- once the code is added remove code that belongs in getUid(see code example:getUid)
+ once the code is added remove code from your microservice that has the same functionality as getUid(see code example:getUid)
 ##### Codeexample: Include
 ```php
 include ('../shared_microservices/getUid_ms.php');
@@ -166,7 +166,7 @@ The JSoN data should display an “opt”, find the opt that has the same name a
 
 ***
 ## Creation of retriveInformation_ms:
-**Disclaimer:** This method is flawed, better methods exist. This was created on last day before end of course. This guide will use courseedservice as example, you will need to change things according to what is needed in your file
+**Disclaimer:** This method is flawed, better methods exist. This was created on last day before end of course. This guide will use courseedservice as example, you will need to change things according to what is needed in your file. Creating this file is best to test in the monolithic system by commenting out the old retrive information code and implement function from done above.
 
 ### Step 1:
 Create a retrieve(servicename)_ms.php in your service name folder
@@ -175,9 +175,26 @@ Create a retrieve(servicename)_ms.php in your service name folder
 Folder: courseedService
 Files: retrieveCourseedService_ms.php
 ### Step 2:
+Copy and paste the code below in to the new retrive file created. 
+Change params to needed params for your service to work.
+```php
+<?php
+    include_once "../../../Shared/basic.php";
+    function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated){
+        // Include basic application services! Include more if needed
+        date_default_timezone_set("Europe/Stockholm");
+        include_once "../../../Shared/sessions.php";
+
+        pdoConnect();
+    }
+?>
+
+```
 
 ### Step 3:
+Copy ret
 
+### Step 4:
 
 ***
 ## Don't forget!:
