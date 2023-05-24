@@ -3517,6 +3517,7 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
+    console.log("getRectFromElement");
     for (var i = 0; i < resizedY.length; i++) {
         if (element.id == resizedY[i].id) {
             console.log("resizedY "+resizedY[i].y);
