@@ -8226,23 +8226,23 @@ function drawLine(line, targetGhost = false) {
         line.type = 'NOTE';
         var strokeDash = "10";
     }
-    else if ((felem.type != 'NOTE') && (telem.type != 'NOTE')){
-        if ((felem.type == 'SD') || (telem.type == 'SD')) {
-            line.type = 'SD';
-          if (targetGhost) {
+    else if ((felem.type == 'SD') || (telem.type == 'SD')) {
+        line.type = 'SD';
+        if (targetGhost) {
             line.endIcon = "ARROW";
-          }
         }
-        else if ((felem.type == "IE") || (telem.type == 'IE')) {
-            line.type = "IE"
-        }
-        else if ((felem.type == 'ER') || (telem.type == 'ER')) {
-            line.type = 'ER';
-        }
+    }
+    else if ((felem.type == "IE") || (telem.type == 'IE')) {
+        line.type = "IE"
+    }
+    else if ((felem.type == 'ER') || (telem.type == 'ER')) {
+        line.type = 'ER';
+    }
 
-        else {
-            line.type = 'UML';
-        }
+    else {
+        line.type = 'UML';
+    }
+        
 }
     // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
