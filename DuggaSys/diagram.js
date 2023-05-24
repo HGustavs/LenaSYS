@@ -10254,7 +10254,7 @@ function drawElement(element, ghosted = false)
                         Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
             }    
-            else{
+            else if (element.state == "normal") {
                 str += `<path d="M${linew},${hboxh} 
                                 Q${linew},${linew} ${hboxw},${linew} 
                                 Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
