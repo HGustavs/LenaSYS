@@ -1,3 +1,21 @@
+@keyframes loadingSpin {
+    0%{
+        rotate: 0deg;
+    }
+    100%{
+        rotate: 360deg;
+    }
+}
+#loadingSpinner{
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: 1s linear 0s infinite loadingSpin;
+}
+
 #container {
     position:absolute;
     left:0;
@@ -130,14 +148,15 @@
 
 .hide {
     display: none;
-}	
+}
 
 .element {
     font-size: small;
     box-sizing: border-box;
     overflow: none;
-    position:absolute;
+    position: absolute;
 }
+
 #pad_lock{
     top: -45%;
     display: block;
@@ -708,6 +727,7 @@
     z-index: 20;
 }
 
+
 .diagramZoomIcons:hover .zoomToolTipText {
     visibility: visible;
 }
@@ -749,7 +769,7 @@
     z-index: -11;
 }
 
-#a4rect {
+#a4Rect {
     width: 794;
     height: 1122;
     stroke:rgb(50, 50, 50);
