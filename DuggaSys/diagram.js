@@ -2658,8 +2658,8 @@ function mmoving(event)
                         }
                     }
                     if(!foundID){
-                        resizedElement.y -= heightChange/2;
-                        resizedY.push(resizedElement.y);
+                        resizedElement.y = elementData.y - heightChange/2;
+                        resizedY.push(resizedElement);
                     }
                 }
 
