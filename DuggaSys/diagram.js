@@ -13105,6 +13105,7 @@ function closeModal(){
         // Failed to load content
         console.error("No content to load")
     }
+    disableIfDataEmpty();
 } 
 
 // Save current diagram when user leaves the page
