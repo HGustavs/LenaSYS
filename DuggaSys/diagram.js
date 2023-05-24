@@ -13282,6 +13282,14 @@ function showModal(){
     else {
         displayMessage(messageTypes.ERROR, "There is nothing to load");
     }
+    function checkLoadButton() {
+        if (localStorage !== null) {
+            document.getElementById("localLoad").addEventListener("click", showModal);
+        }
+        else{
+            document.getElementById("localLoad").removeEventListener("click", showModal);
+        }
+    }
 
 
     // Remove all elements
