@@ -33,6 +33,9 @@ if(strcmp($opt,"UPDATEVRS")===0){
             $error=$query->errorInfo();
             $debug="Error updating entries\n".$error[2];
     }
+
+    echo json_encode(array('cid' => $cid, 'coursecode' => $coursecode, 'vers' => $versid, 'versname' => $versname));
+    return;
 }
 
 ?>
