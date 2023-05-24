@@ -3519,6 +3519,7 @@ function getRectFromElement (element)
 {
     for (var i = 0; i < resizedY.length; i++) {
         if (element.id == resizedY[i].id) {
+            console.log("resizedY "+resizedY[i].y);
             return {
                 x: element.x,
                 y: resizedY[i].y,
