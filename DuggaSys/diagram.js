@@ -9018,20 +9018,24 @@ function drawLine(line, targetGhost = false)
         const labelPositionX = labelPosX+lineLabel.labelMovedX+lineLabel.displacementX + 1 * zoomfact
         const labelPositionY = labelPosY+lineLabel.labelMovedY+lineLabel.displacementY - 1 * zoomfact
 
-        //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
+        
         //Add label with styling based on selection.
         if (contextLine.includes(line)) {
             if (line.kind === "Recursive") {
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+                //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact)))-textWidth/2}" y="${(labelPositionY-70*zoomfact)-((textheight/4)*zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY-70*zoomfact)+((textheight/4)*zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
             } else {
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             }
         }
         else {
             if (line.kind === "Recursive") {
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact)))-textWidth/2}" y="${(labelPositionY-70*zoomfact)-((textheight/4)*zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY-70*zoomfact)+((textheight/4)*zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
             } else {
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             }
         }
