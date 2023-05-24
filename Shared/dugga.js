@@ -1018,8 +1018,8 @@ function AJAXService(opt,apara,kind)
 
 	if(kind=="COURSE"){
 			$.ajax({
-				//url: "courseedservice.php",
-				url: "createCourseVersion_ms.php",
+				url: "courseedservice.php",
+				// url: "createCourseVersion_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
@@ -1075,7 +1075,8 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="SECTION"){
     $.ajax({
-      url: "sectionedservice.php",
+    //   url: "sectionedservice.php",
+	  url : "createCourseVersion_ms.php",
       type: "POST",
       data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
       dataType: "json",
