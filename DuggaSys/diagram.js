@@ -6691,18 +6691,7 @@ function generateContextProperties()
               }
               str += '</select>'; 
           }
-          if (element.type == 'NOTE') {
-              for (const property in element) {
-                  switch (property.toLowerCase()) {
-                      case 'attributes':
-                          str += `<div style='color:white'>Attributes </div>`;
-                          str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                          break;
-                      default:
-                          break;
-                  }
-              }
-          }
+          
           //Selected ER type
           if (element.type == 'ER') {
               //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -6742,7 +6731,18 @@ function generateContextProperties()
               }
               str += '</select>'; 
           }
-
+          else if (element.type == 'NOTE') {
+              for (const property in element) {
+                  switch (property.toLowerCase()) {
+                      case 'attributes':
+                          str += `<div style='color:white'>Attributes </div>`;
+                          str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                          break;
+                      default:
+                          break;
+                  }
+              }
+          }
           //Selected UML type
           else if (element.type == 'UML') {
               //If UML entity
@@ -7239,7 +7239,7 @@ function generateContextProperties()
       }
       propSet.innerHTML = str;
 
-    //multipleColorsTest();
+    multipleColorsTest();
 
     }
 
