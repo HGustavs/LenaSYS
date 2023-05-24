@@ -7616,6 +7616,7 @@ function multipleColorsTest()
 
             // Checks if there are varying fill colors, but not if varying colors have already been detected
             if (fill != context[i].fill && !varyingFills) {
+                console.log("fill colours");
                 var button = document.getElementById("colorMenuButton1");
                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
                 var textNode = document.createTextNode("Multiple Color Values");
