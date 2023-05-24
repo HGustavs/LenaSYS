@@ -13258,6 +13258,7 @@ function showModal(){
         diagramKeys = Object.keys(localDiagrams);
     }
 
+
     // Remove all elements
     while (container.firstElementChild){
         container.firstElementChild.remove();
@@ -13337,15 +13338,56 @@ function hideSavePopout()
     $("#savePopoutContainer").css("display", "none");
 }
 
+function showOverridePopout() {
+    $("#overrideContainer").css("display", "flex");
+}
+
+function closeOverridePopout() {
+    $("#overrideContainer").css("display", "none");
+}
+//get the current file name that the user wants to use for saving to local storage.
+function getCurrentFileName()
+{
+    let elem = document.getElementById("saveDiagramAs");
+    let fileName = elem.value;
+    return fileName;
+}
+
 function saveDiagramAs()
 {
     let elem = document.getElementById("saveDiagramAs");
     let fileName = elem.value;
-    elem.value = "";
+    const currentDate=new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // Note: January is month 0
+    const day = currentDate.getDate();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds();
+    const formattedDate = year + "-" + month + "-" + day+' ';
+    const formattedTime = hours + ":" + minutes + ":" + seconds;
     if (fileName.trim() == "") {
-        fileName = "Untitled";
+        fileName = "diagram "+formattedDate+formattedTime;
+    }
+    let names;
+    let localDiagrams;
+
+    let local = localStorage.getItem("diagrams");
+    if (local != null) {
+        local = (local[0] == "{") ? local : `{${local}}`;
+        localDiagrams = JSON.parse(local);
+     names = Object.keys(localDiagrams);
     }
 
+    for(let i=0; i<names.length; i++)
+    {
+        if(names[i]==fileName)
+        {
+            hideSavePopout();
+            showOverridePopout()
+            return;
+        }
+    }
     storeDiagramInLocalStorage(fileName);
 }
 
