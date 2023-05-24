@@ -5,6 +5,7 @@
 	// Include basic application services!
 	include_once "../../../Shared/basic.php";
 	include_once "../../../Shared/sessions.php";
+	include_once "../shared_microservices/getUid_ms.php";
 
 	// Connect to database and start session
 	pdoConnect();
@@ -14,6 +15,8 @@
 	$cid=getOP('cid');
 	$versid=getOP('versid');
 	$makeactive=getOP('makeactive');
+
+	getUid();
 
 	if($makeactive==3){
 		$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
