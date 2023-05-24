@@ -5,7 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
-include ('../shared_microservices/getUid_ms.php');
+// include ('../shared_microservices/getUid_ms.php');
 
 // Connect to database and start session
 pdoConnect();
@@ -19,15 +19,13 @@ $coursecode=getOP('coursecode');
 $versid=getOP('versid');
 $versname=getOP('versname');
 
-getUid();
+// getUid();
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
 	$userid="UNK";
 }
-$ha=null;
-$debug="NONE!";
 
 // Gets username based on uid, USED FOR LOGGING
 $query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
