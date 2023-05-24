@@ -804,7 +804,7 @@ const elementTypes = {
     sequenceLoopOrAlt: 14,
 
 
-    NOTE: 15,
+    note: 15,
     
 };
 
@@ -831,7 +831,7 @@ const elementTypesNames = {
     sequenceActorAndObject: "sequenceActorAndObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
-    NOTE: "Note",
+    note: "Note",
 }
 
 /**
@@ -878,7 +878,7 @@ const entityType = {
     IE: "IE",
     SD: "SD",
     SE: "SE",
-    NOTE: "NOTE",
+    note: "NOTE",
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -1158,7 +1158,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
+    note: { name: "Note", kind: "note", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -10072,7 +10072,7 @@ function drawElement(element, ghosted = false)
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start Note functionality
-    else if (element.kind == "NOTE") {
+    else if (element.kind == "note") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
         const theme = document.getElementById("themeBlack");
         const splitLengthyLine = (str, max) => {
