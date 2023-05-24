@@ -2648,14 +2648,14 @@ function mmoving(event)
                 let foundID = false;
                 if(resizedY == undefined){
                     let resizedElement = structuredClone(elementData);
-                    resizedElement.y = elementData.y - heightChange * 0.45;
+                    resizedElement.y = elementData.y - heightChange * 0.48;
                     resizedElement['elementY'] = elementData.y;
                     resizedY.push(resizedElement);
                 }else{
                     for (var i = 0; i < resizedY.length; i++) {
                         if (elementData.id == resizedY[i].id) {
                             console.log(resizedY[i].y);
-                            resizedY[i].y -= heightChange * 0.45;
+                            resizedY[i].y -= heightChange * 0.48;
                             resizedY[i].elementY = elementData.y;
                             console.log(resizedY[i].y);
                             foundID = true;
@@ -2664,7 +2664,7 @@ function mmoving(event)
                     }
                     if(!foundID){
                         let resizedElement = structuredClone(elementData);
-                        resizedElement.y = elementData.y - heightChange * 0.45;
+                        resizedElement.y = elementData.y - heightChange * 0.48;
                         resizedElement['elementY'] = elementData.y;
                         resizedY.push(resizedElement);
                     }
