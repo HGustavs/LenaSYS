@@ -577,6 +577,15 @@
     border: 1px solid #000;
 }
 
+.deleteLocalDiagram{
+    margin-left: 10px;
+    background-color: #DF2727 !important;
+}
+
+.deleteLocalDiagram:hover {
+    background-color: #961a1a !important;
+}
+
 #amountOfLoads{
     text-align: center;
     font-size: 12px;

@@ -13285,7 +13285,7 @@ function showModal(){
             let wrapper = document.createElement('div');
             var btn = document.createElement('button');
             var btnText = document.createTextNode(diagramKeys[i]);
-
+            
             btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
             wrapper.appendChild(btn);
