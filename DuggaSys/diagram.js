@@ -2902,7 +2902,6 @@ function getElementLines(element) {
  * @returns {boolean} result
  */
 function elementHasLines(element) {
-    console.log(getElementLines(element))
     return (getElementLines(element).length > 0);
 }
 /** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
@@ -2918,7 +2917,7 @@ function changeState()
     var newRelation = document.getElementById("propertySelect")?.value || undefined;
     
     // If we are changing types and the element has lines, we should not change
-    if (oldType !== newType && elementHasLines(element)){
+    if (oldType !== newType && newType !== undefined && oldType !== undefined && elementHasLines(element)){
         displayMessage("error", `
             Can't change type from \"${oldType}\" to \"${newType}\" as
             different diagrams should not be able to connect to each other.`
