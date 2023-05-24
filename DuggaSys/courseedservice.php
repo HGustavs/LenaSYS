@@ -675,9 +675,10 @@ $array = array(
 	);
 
 echo json_encode($array);
-
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseedservice.php",$userid,$info);
 */
-
 retrieveCourseedService();
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseedservice.php",$userid,$info);
+
+
+
 ?>
