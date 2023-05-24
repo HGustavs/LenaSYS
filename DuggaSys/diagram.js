@@ -2638,7 +2638,7 @@ function mmoving(event)
                 const heightChange = -(tmp - elementData.height);
 
                 // Fetch original y-position
-                // "+ 15" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
+                // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
                 elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
                 
