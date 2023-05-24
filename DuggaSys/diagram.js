@@ -7636,7 +7636,7 @@ function multipleColorsTest()
             }
             // If varying colors have been detected in both of the above, there is no reason to continue the test
         if (varyingFills && varyingStrokes) {
-            console.log("more stroke colours");
+            console.log("break");
             break;
         }
     }
