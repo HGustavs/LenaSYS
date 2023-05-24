@@ -101,9 +101,22 @@ function getUid(){
     }
 ```
 ### step 5
-If retrive information is not needed, remove it
+If retrive information file does not exist, check ***Creation of retriveInformation_ms***
 
-If it is needed (Write guide here :), letting it stay in file is not an solution, need to be made in to microservice)
+If retrive information exist call the function by making include (servicename)" and before the end "?>" tag write a echo json_encode("your service file"($Needed params)); see example below
+
+#### Codeexample: courseedservice retrive information
+
+```php
+//Below the other includes
+include_once ("../DuggaSys/microservices/courseedservice/retrieveCourseedService_ms.php");
+...
+...
+
+//End of code
+echo json_encode(retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated));
+?>
+```
 
 ***
 ## How to test:
@@ -152,8 +165,21 @@ Select "Preview"
 The JSoN data should display an “opt”, find the opt that has the same name as your function in the microservice. 
 
 ***
+## Creation of retriveInformation_ms:
+**Disclaimer:** This method is flawed, better methods exist. This was created on last day before end of course. This guide will use courseedservice as example, you will need to change things according to what is needed in your file
+
+### Step 1:
+Create a retrieve(servicename)_ms.php in your service name folder
+
+***Example***
+Folder: courseedService
+Files: retrieveCourseedService_ms.php
+### Step 2:
+
+### Step 3:
 
 
+***
 ## Don't forget!:
 It's very important that you swap the url when done, so it doesn't cause error for the other groups, unless the website official transfers to microservices
 ***
