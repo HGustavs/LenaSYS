@@ -2656,7 +2656,7 @@ function mmoving(event)
                         if (elementData.id == resizedY[i].id) {
                             console.log(resizedY[i].y);
                             resizedY[i].y += heightChange;
-                            resizedY[i].resizedDifference = resizedY[i].y - elementData.y - resizedDifference;
+                            resizedY[i].resizedDifference = resizedY[i].y - elementData.y - resizedY[i].resizedDifference;
                             console.log(resizedY[i].y);
                             foundID = true;
                             console.log("found ID"+ foundID);
