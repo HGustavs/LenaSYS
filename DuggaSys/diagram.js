@@ -10254,7 +10254,7 @@ function drawElement(element, ghosted = false)
                         Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
             }    
-            else if (element.state == "normal") {
+            else if ((element.state == "normal") || (element.state == "weakKey") || (element.state == "candidate") || (element.state == "primary") || (element.state == "computed")) {
                 str += `<path d="M${linew},${hboxh} 
                                 Q${linew},${linew} ${hboxw},${linew} 
                                 Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
