@@ -13452,6 +13452,22 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
     }
 }
 
+function removeLocalDiagram(item)
+{
+    let local = localStorage.getItem("diagrams");
+    local = (local[0] == "{") ? local : `{${local}}`;
+    let localDiagrams = JSON.parse(local);
+
+    if (item !== 'AutoSave') {
+        delete localDiagrams[item];
+    }
+    else {
+        displayMessage(messageTypes.ERROR, "Error, unable to delete 'AutoSave'");
+    }
+
+    localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+}
+
 //Alert function to give user a warning/choice before reseting diagram data.
 function resetDiagramAlert(){
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
