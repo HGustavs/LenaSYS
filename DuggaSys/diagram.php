@@ -32,8 +32,25 @@
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
-<body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
-        
+<!-- instead of onload on body there is an event listener for loaded in diagram.js at the top of the INIT AND SETUP REGION -->
+<body style="overflow: hidden;">
+    
+    <!-- loading spinner -->
+    <div id="loadingSpinner">
+        <!-- this svg is here instaed of in its own file since, during development, -->
+        <!-- this proved to load faster meaning the user spend less time staring at nothing -->
+        <svg width="200" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <mask id="spinnerMask">
+                <!-- Everything under a white pixel will be visible -->
+                <rect x="0" y="0" width="200" height="200" fill="white" />
+                <!-- Everything under a black pixel will be invisible -->
+                <rect x="100" y="-100" width="200" height="200" fill="black" />
+            </mask>
+            <!-- its just a circle with a mask -->
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#775886" stroke-width="10" mask="url(#spinnerMask)"/>
+        </svg>
+    </div>
+
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">
 
@@ -332,7 +349,7 @@
                          onclick='setElementPlacementType(5); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
                          onmousedown="holdPlacementButtonDown(5)">
-                        <img src="../Shared/icons/diagram_inheritance.svg"alt="UML inheritance"/>
+                        <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p>
                             <p>A relation between a superclass and subclasses.</p>
@@ -776,6 +793,14 @@
                     </div>
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
+                <!-- NOTE -->
+                <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_note.svg"/>
+                    <span class="toolTipText"><b>Note</b><br>
+                        <p>Creates a note</p><br>
+                        <p id="tooltip-NOTE_ENTITY" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
