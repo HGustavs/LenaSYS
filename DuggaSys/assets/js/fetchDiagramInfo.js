@@ -39,9 +39,7 @@
                                async: false,
                                method: "GET",
                                url: `diagramservice.php?courseid=${courseId}&did=${did}`,
-                               //>>>>>>> g1-2023-v5
                            }).done((res) => {
-                               console.log(res)
                                response = res;
                            })
            

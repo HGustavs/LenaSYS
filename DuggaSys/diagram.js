@@ -115,6 +115,7 @@ class StateChangeFactory
 
         // Get the keys of the values that is unique from default
         var uniqueKeysArr = Object.keys(element).filter(key => {
+            if (key === 'x' || key === 'y') return true;
             return (Object.keys(defaults[element.kind]).filter(value => {
                 return defaults[element.kind][value] === element[key];
             }).length === 0);
@@ -292,6 +293,7 @@ class StateChangeFactory
             var values = { kind: elem.kind };
 
             var uniqueKeysArr = Object.keys(elem).filter(key => {
+                if (key === 'x' || key === 'y') return true;
                 return (Object.keys(defaults[elem.kind]).filter(value => {
                     return defaults[elem.kind][value] == elem[key];
                 }).length == 0);
@@ -504,7 +506,6 @@ class StateMachine
         if (this.currentHistoryIndex == -1) {return;}
         else {
             this.currentHistoryIndex--;
-            console.log(this.currentHistoryIndex);
         }
 
         // Remove ghost only if stepBack while creating edge
@@ -515,7 +516,8 @@ class StateMachine
         showdata();
         this.scrubHistory(this.currentHistoryIndex);
         updatepos(0, 0);
-        displayMessage(messageTypes.SUCCESS, "Changes reverted!")
+        displayMessage(messageTypes.SUCCESS, "Changes reverted!");
+        disableIfDataEmpty();
     }
     stepForward()
     {
@@ -804,7 +806,7 @@ const elementTypes = {
     sequenceLoopOrAlt: 14,
 
 
-    NOTE: 15,
+    note: 15,
     
 };
 
@@ -831,7 +833,7 @@ const elementTypesNames = {
     sequenceActorAndObject: "sequenceActorAndObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
-    NOTE: "Note",
+    note: "Note",
 }
 
 /**
@@ -877,6 +879,8 @@ const entityType = {
     ER: "ER",
     IE: "IE",
     SD: "SD",
+    SE: "SE",
+    note: "NOTE",
 };
 /**
  * @description Available types of the entity element. This will alter how the entity is drawn onto the screen.
@@ -1164,7 +1168,7 @@ var defaults = {
     sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE", canChangeTo: null }, // Sequence Activation.
     sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt", canChangeTo: null }, // Sequence Loop or Alternative.
 
-    NOTE: { name: "Note", kind: "NOTE", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
+    note: { name: "Note", kind: "note", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -2256,6 +2260,8 @@ function mup(event)
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
+
+    disableIfDataEmpty();
 }
 
 /**
@@ -3116,33 +3122,39 @@ function changeLineProperties()
     // Set lineKind
     var radio1  = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
-    var label = document.getElementById("lineLabel");
     var radio3 = document.getElementById("lineRadio3");
+    var radio4 = document.getElementById("lineRadio4");
+    var label = document.getElementById("lineLabel");
     var startLabel = document.getElementById("lineStartLabel");
     var endLabel = document.getElementById("lineEndLabel");
     var startIcon= document.getElementById("lineStartIcon");
     var endIcon= document.getElementById("lineEndIcon");
     var lineType = document.getElementById("lineType");
     var line = contextLine[0];
+   
+    if (radio1 != null && radio1.checked && line.kind != radio1.value) {
+        line.kind = radio1.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
+    }
 
-    if (radio1) {
-        if (radio1.checked && line.kind != radio1.value) {
-            line.kind = radio1.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
+    else if(radio2 != null && radio2.checked && line.kind != radio2.value){
+        line.kind = radio2.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
+    }
+
+    else if(radio3 != null && radio3.checked && line.kind != radio3.value){
+        line.kind = radio3.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
+    }
+
+    else if(radio4 != null && radio4.checked && line.kind != radio4.value){
+        line.kind = radio4.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio4.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     } 
-    else if(radio2){
-        if(radio2.checked && line.kind != radio2.value){
-            line.kind = radio2.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    }
-    else if(radio3){
-        if(radio3.checked && line.kind != radio3.value){
-            line.kind = radio3.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    }
     
     // Check if this element exists
     if (!!document.getElementById('propertyCardinality')){
@@ -7213,7 +7225,7 @@ function generateContextProperties()
             });
             str += `</select>`; 
         }
-        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();displayMessage(messageTypes.SUCCESS, 'Successfully saved')">`;
+        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
       }
 
       //If more than one element is selected
@@ -9045,20 +9057,24 @@ function drawLine(line, targetGhost = false)
         const labelPositionX = labelPosX+lineLabel.labelMovedX+lineLabel.displacementX + 1 * zoomfact
         const labelPositionY = labelPosY+lineLabel.labelMovedY+lineLabel.displacementY - 1 * zoomfact
 
-        //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-        str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
+        
         //Add label with styling based on selection.
         if (contextLine.includes(line)) {
             if (line.kind === "Recursive") {
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+                //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact)))-textWidth/2}" y="${(labelPositionY-70*zoomfact)-((textheight/4)*zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY-70*zoomfact)+((textheight/4)*zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
             } else {
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             }
         }
         else {
             if (line.kind === "Recursive") {
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${labelPositionX + textWidth/2 + 2 * zoomfact}" y="${labelPositionY + ((textheight/2 + 2) * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact)))-textWidth/2}" y="${(labelPositionY-70*zoomfact)-((textheight/4)*zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY-70*zoomfact)+((textheight/4)*zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
             } else {
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             }
         }
@@ -10098,7 +10114,7 @@ function drawElement(element, ghosted = false)
     }
     //=============================================== <-- End of Sequnece functionality
     //=============================================== <-- Start Note functionality
-    else if (element.kind == "NOTE") {
+    else if (element.kind == "note") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
         const theme = document.getElementById("themeBlack");
         const splitLengthyLine = (str, max) => {
@@ -10286,17 +10302,17 @@ function drawElement(element, ghosted = false)
                         Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
             }    
-
-            str += `<path d="M${linew},${hboxh} 
-                            Q${linew},${linew} ${hboxw},${linew} 
-                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
-                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
-                        
-                        ${multi}
-                        <text x='${xAnchor}' y='${hboxh}' `;
-            
+            if (element.state != undefined) {
+                str += `<path d="M${linew},${hboxh} 
+                                Q${linew},${linew} ${hboxw},${linew} 
+                                Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
+                                Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
+                                Q${linew},${boxh - linew} ${linew},${hboxh}" 
+                            stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
+                            
+                            ${multi}
+                            <text x='${xAnchor}' y='${hboxh}' `;
+            }
             if(element.state == "candidate" || element.state == 'primary') {
                 str += `class='underline'`;
             }             
@@ -13350,6 +13366,7 @@ function closeModal(){
         // Failed to load content
         console.error("No content to load")
     }
+    disableIfDataEmpty();
 } 
 
 // Save current diagram when user leaves the page
@@ -13361,10 +13378,24 @@ function saveDiagramBeforeUnload() {
     })
 }
 
+function disableIfDataEmpty(){
+    if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
+        document.getElementById('localSaveField').classList.add('disabledIcon');
+    }
+    else{
+        document.getElementById('localSaveField').classList.remove('disabledIcon');
+    }
+}
+
 function showSavePopout()
 {
-    $("#savePopoutContainer").css("display", "flex");
-    document.getElementById("saveDiagramAs").focus();
+    if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
+        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+    }
+    else{
+        $("#savePopoutContainer").css("display", "flex");
+        document.getElementById("saveDiagramAs").focus();
+    }
 }
 
 function hideSavePopout()
