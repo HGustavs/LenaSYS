@@ -7225,12 +7225,8 @@ function generateContextProperties()
       }
       propSet.innerHTML = str;
 
-    if (contextLine[0].type == 'NOTE') {
-        
-    }
-    else { 
     multipleColorsTest();
-    }
+
     }
 
 /**
