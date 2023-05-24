@@ -96,6 +96,7 @@
 	//--------------------------------------------------------------------------------------------------
 
 	function refreshCheck($cid, $user) {
+		global $shortdeadline, $longdeadline;
 		// Connect to database and start session
 		pdoConnect();
 		session_start();
