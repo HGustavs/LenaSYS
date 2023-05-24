@@ -2649,12 +2649,14 @@ function mmoving(event)
                 if(resizedY == undefined){
                     let resizedElement = structuredClone(elementData);
                     resizedElement.y = elementData.y + heightChange;
+                    resizedElement['resizedDifference'] = resizedElement.y - elementData.y;
                     resizedY.push(resizedElement);
                 }else{
                     for (var i = 0; i < resizedY.length; i++) {
                         if (elementData.id == resizedY[i].id) {
                             console.log(resizedY[i].y);
                             resizedY[i].y += heightChange;
+                            resizedY[i].resizedDifference = resizedY[i].y - elementData.y - resizedDifference;
                             console.log(resizedY[i].y);
                             foundID = true;
                             console.log("found ID"+ foundID);
@@ -2663,6 +2665,7 @@ function mmoving(event)
                     if(!foundID){
                         let resizedElement = structuredClone(elementData);
                         resizedElement.y = elementData.y + heightChange;
+                        resizedElement['resizedDifference'] = resizedElement.y - elementData.y;
                         resizedY.push(resizedElement);
                     }
                 }
