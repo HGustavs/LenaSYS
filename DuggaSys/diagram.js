@@ -4436,7 +4436,6 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
-
     if (stylesheet.href.includes('blackTheme')) {
         btn.style.backgroundColor ="#614875";
         btn.style.color = "#ffffff";
@@ -4448,8 +4447,6 @@ function toggleDarkmode()
         btn.style.color = "#614875";
         btn.style.fontWeight = "bold";
     }
-    
-    //if(cssUrl == 'blackTheme.css'){
 
 
     showdata();
