@@ -11,6 +11,7 @@ include_once "../../../../coursesyspw.php";
 pdoConnect();
 session_start();
 
+$opt=getOP('opt');
 $cid=getOP('cid');
 $coursename=getOP('coursename');
 $visibility=getOP('visib');
