@@ -1814,6 +1814,7 @@ function mwheel(event) {
 
 function mdown(event)
 {
+    console.log("mdown");
     mouseButtonDown = true;
 
     // Mouse pressed over delete button for multiple elements
@@ -2119,6 +2120,7 @@ function mouseMode_onMouseUp(event)
 
  function tup(event) 
  {
+    console.log("tup");
     mouseButtonDown = false;
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
