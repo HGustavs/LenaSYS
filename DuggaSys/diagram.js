@@ -2646,9 +2646,10 @@ function mmoving(event)
                 const yChange = -(tmp - elementData.y);
                 
                 let foundID = false;
+                let resizedElement = elementData;
                 if(resizedY == undefined){
-                    elementData.y -= heightChange/2;
-                    resizedY.push(elementData);
+                    resizedElement.y = elementData.y - heightChange/2;
+                    resizedY.push(resizedElement);
                 }else{
                     for (var i = 0; i < resizedY.length; i++) {
                         if (elementData.id == resizedY[i].id) {
@@ -2657,8 +2658,8 @@ function mmoving(event)
                         }
                     }
                     if(!foundID){
-                        elementData.y -= heightChange/2;
-                        resizedY.push(elementData);
+                        resizedElement.y -= heightChange/2;
+                        resizedY.push(resizedElement.y);
                     }
                 }
 
