@@ -49,7 +49,7 @@ if(checklogin()){
 
 
 		// The code for modification using sessions
-		if(strcmp($opt,"NEW")===0){
+		
 			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
 
 			$query->bindParam(':usrid', $userid);
@@ -90,7 +90,7 @@ if(checklogin()){
 			}
 			/////////////////////////////////
 			*/
-		}
+		
 	}
 }
 /*
