@@ -9,7 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 
-function retrieveCourseedService(){
+function retrieveCourseedService($info){
     $entries=array();
 
     $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
