@@ -175,7 +175,7 @@ function retrieveCourseedService(){
 
     echo json_encode($array);
 
-    //logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCourseedService_ms.php",$userid,$info);
+    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCourseedService_ms.php",$userid,$info);
 
     return $array;
 }
