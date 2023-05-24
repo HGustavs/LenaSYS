@@ -3084,37 +3084,29 @@ function changeLineProperties()
     var lineType = document.getElementById("lineType");
     var line = contextLine[0];
    
-    if(radio1){
-        if (radio1.checked && line.kind != radio1.value) {
-            line.kind = radio1.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
+    if (radio1 != null && radio1.checked && line.kind != radio1.value) {
+        line.kind = radio1.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     }
 
-    else if(radio2){
-        if(radio2.checked && line.kind != radio2.value){
-            line.kind = radio2.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
+    else if(radio1 != null && radio2.checked && line.kind != radio2.value){
+        line.kind = radio2.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     }
-    
-    else if(radio3){
-        if(radio3.checked && line.kind != radio3.value){
-            line.kind = radio3.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
+
+    else if(radio1 != null && radio3.checked && line.kind != radio3.value){
+        line.kind = radio3.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     }
-    
-    else if(radio4){
-        if(radio4.checked && line.kind != radio4.value){
-            line.kind = radio4.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio4.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
-    }
+
+    else if(radio1 != null && radio4.checked && line.kind != radio4.value){
+        line.kind = radio4.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio4.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
+    } 
     
     // Check if this element exists
     if (!!document.getElementById('propertyCardinality')){
