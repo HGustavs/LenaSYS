@@ -1029,7 +1029,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedCourse
 			});
-		}/*else{
+		}else{
 			$.ajax({
 				url : "courseedservice.php",
 				type: "POST",
@@ -1037,7 +1037,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedCourse
 			});
-		}*/
+		}
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
