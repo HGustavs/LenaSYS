@@ -10253,6 +10253,9 @@ function drawElement(element, ghosted = false)
                         Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                         Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
+
+                str += `${multi}
+                            <text x='${xAnchor}' y='${hboxh}' `;
             }    
             else if (element.state != undefined) {
                 str += `<path d="M${linew},${hboxh} 
