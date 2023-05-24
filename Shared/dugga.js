@@ -1017,6 +1017,10 @@ function AJAXService(opt,apara,kind)
 	}
 
 	if(kind=="COURSE"){
+		// Call microservice to create new course 
+		// TODO: This is probably not a very good solution, this is done with the opt comparison
+		// For now this is usable, but should be remade when all microservices related 
+		// to courseedservice.php are implemented
 		if(opt === "NEW"){
 			$.ajax({
 				url : "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
