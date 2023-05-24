@@ -13277,6 +13277,10 @@ function showModal(){
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
         diagramKeys = Object.keys(localDiagrams);
+        displayMessage(messageTypes.SUCCESS, "Diagram Loaded");
+    }
+    else {
+        displayMessage(messageTypes.ERROR, "There is nothing to load");
     }
 
 
