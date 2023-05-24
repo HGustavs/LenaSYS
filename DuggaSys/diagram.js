@@ -8049,7 +8049,8 @@ function preProcessLine(line) {
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line an ghost line
  */
-function drawLine(line, targetGhost = false) {
+function drawLine(line, targetGhost = false)
+{
     var felem, telem, dx, dy;
     var str = "";
 
@@ -8061,11 +8062,11 @@ function drawLine(line, targetGhost = false) {
     var y2Offset = 0;
 
 
-    if (line.kind == "Dashed") {
-        var strokeDash = "10";
+    if (line.kind=="Dashed") {
+        var strokeDash="10";
     }
-    else {
-        var strokeDash = "0";
+    else{
+        var strokeDash="0";
     }
 
     if (isDarkTheme()) {
@@ -8090,7 +8091,7 @@ function drawLine(line, targetGhost = false) {
     tx = telem.cx;
     ty = telem.cy;
 
-    const elemsAreClose = isClose(
+    const elemsAreClose = isClose (
         (fx + x1Offset),
         (tx + x2Offset),
         (fy + y1Offset),
@@ -8099,29 +8100,29 @@ function drawLine(line, targetGhost = false) {
     );
 
     // Collect coordinates
-    if (line.ctype == "BT") {
+    if (line.ctype == "BT"){
         fy = felem.y2;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
-    } else if (line.ctype == "TB") {
+    }else if (line.ctype == "TB"){
         fy = felem.y1;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
         ty = telem.y2;
-    } else if (line.ctype == "RL") {
+    }else if (line.ctype == "RL"){
         fx = felem.x2;
         if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
         tx = telem.x1;
-    } else if (line.ctype == "LR") {
+    }else if (line.ctype == "LR"){
         fx = felem.x1;
         if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
         tx = telem.x2;
     }
 
     // Set line end-point in center of UMLRelations.
-    if (felem.kind == "UMLRelation") {
+    if (felem.kind == "UMLRelation"){
         fx = felem.cx;
         fy = felem.cy;
-    } else if (telem.kind == "UMLRelation") {
+    } else if (telem.kind == "UMLRelation"){
         tx = telem.cx;
         ty = telem.cy;
     }
@@ -8136,17 +8137,17 @@ function drawLine(line, targetGhost = false) {
         if (fromRelation) {
             if (line.ctype == "BT") {
                 fy = felem.cy;
-                fx = (isFirst) ? felem.x1 : felem.x2;
+                fx = (isFirst) ? felem.x1: felem.x2;
 
             } else if (line.ctype == "TB") {
                 fy = felem.cy;
-                fx = (isFirst) ? felem.x1 : felem.x2;
+                fx = (isFirst) ? felem.x1: felem.x2;
             } else if (line.ctype == "RL") {
                 fx = felem.cx;
-                fy = (isFirst) ? felem.y1 : felem.y2;
+                fy = (isFirst) ? felem.y1: felem.y2;
             } else if (line.ctype == "LR") {
                 fx = felem.cx;
-                fy = (isFirst) ? felem.y1 : felem.y2;
+                fy = (isFirst) ? felem.y1: felem.y2;
             }
 
             if (isFirst) {
@@ -8160,16 +8161,16 @@ function drawLine(line, targetGhost = false) {
         } else {
             if (line.ctype == "BT") {
                 ty = telem.cy;
-                tx = (isFirst) ? telem.x1 : telem.x2;
+                tx = (isFirst) ? telem.x1: telem.x2;
             } else if (line.ctype == "TB") {
                 ty = telem.cy;
-                tx = (isFirst) ? telem.x1 : telem.x2;
+                tx = (isFirst) ? telem.x1: telem.x2;
             } else if (line.ctype == "RL") {
                 tx = telem.cx;
-                ty = (isFirst) ? telem.y1 : telem.y2;
+                ty = (isFirst) ? telem.y1: telem.y2;
             } else if (line.ctype == "LR") {
                 tx = telem.cx;
-                ty = (isFirst) ? telem.y1 : telem.y2;
+                ty = (isFirst) ? telem.y1: telem.y2;
             }
 
             if (isFirst) {
@@ -8182,23 +8183,23 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
-    // Used to draw the lines a bit longer to get rid of white-spaces.
-    if ((fx > tx) && (line.ctype == "LR")) {
+     // Used to draw the lines a bit longer to get rid of white-spaces.
+    if ((fx > tx) && (line.ctype == "LR")){
         x1Offset = lengthConstant;
         x2Offset = -lengthConstant;
-    } else if ((fx < tx) && (line.ctype == "RL")) {
+    } else if ((fx < tx) && (line.ctype == "RL")){
         x1Offset = -lengthConstant;
         x2Offset = lengthConstant;
-    } else if ((fy > ty) && (line.ctype == "TB")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
+    } else if ((fy > ty) && (line.ctype == "TB") ){
+        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE'){
             y1Offset = lengthConstantSD_Y;
-            y2Offset = -lengthConstantSD_Y;
+            y2Offset = -lengthConstantSD_Y; 
         }else{
             y1Offset = lengthConstant;
             y2Offset = -lengthConstant; 
         }
     } else if ((fy < ty) && (line.ctype == "BT") ){
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
+        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE'){
             y1Offset = -lengthConstantSD_Y;
             y2Offset = lengthConstantSD_Y; 
         }else{
