@@ -7624,7 +7624,7 @@ function multipleColorsTest()
                 varyingFills = true;
             }
             // Checks if there are varying stroke colors, but not if varying colors have already been detected
-            /*
+           
             if (stroke != context[i].stroke && !varyingStrokes) {
                 console.log("more stroke colours");
                 var button = document.getElementById("colorMenuButton2");
@@ -7632,10 +7632,12 @@ function multipleColorsTest()
                 var textNode = document.createTextNode("Multiple Color Values");
                 button.insertBefore(textNode, button.firstChild);
                 varyingStrokes = true;
-                */
+               
             }
             // If varying colors have been detected in both of the above, there is no reason to continue the test
-            if (varyingFills && varyingStrokes) break;
+        if (varyingFills && varyingStrokes) {
+            console.log("more stroke colours");
+            break;
         }
     }
 }
