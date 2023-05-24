@@ -1,7 +1,9 @@
 <?php
 /**
- * Handles creation of new items on a coursepage.
+ * Handles creation of new items on a course, not just for code examples (as the name would suggest)
+ * I presume that the title of the file is for consistency with the legacy system... Hey, I just work here....
  */
+
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -34,7 +36,7 @@ getUid(); // call to microservice getUid_ms.php
 $userid = $_SESSION['uid'];
 
 
-// the following will be changed to a microservice, as such this should be updated to a microservice call
+// TODO: the following will be changed to a microservice, as such this should be updated to a microservice call
 
 // *********************** vvvv CHANGE TO MICROSERVICE CALL vvvv ***********************************
 // Gets username based on uid, USED FOR LOGGING
