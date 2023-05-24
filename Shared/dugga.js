@@ -1022,21 +1022,21 @@ function AJAXService(opt,apara,kind)
 		// For now this is usable, but should be remade when all microservices related 
 		// to courseedservice.php are implemented
 		// if(opt === "NEW"){
-		// 	$.ajax({
-		// 		url : "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
-		// 		type: "POST",
-		// 		data: "opt="+opt+para,
-		// 		dataType: "json",
-		// 		success: returnedCourse
-		// 	});
-		// }else{
 			$.ajax({
-				url : "courseedservice.php",
+				url : "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: returnedCourse
 			});
+		// }else{
+		// 	$.ajax({
+		// 		url : "courseedservice.php",
+		// 		type: "POST",
+		// 		data: "opt="+opt+para,
+		// 		dataType: "json",
+		// 		success: returnedCourse
+		// 	});
 		// }
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
