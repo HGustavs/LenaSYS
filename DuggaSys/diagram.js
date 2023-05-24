@@ -8241,7 +8241,7 @@ function drawLine(line, targetGhost = false) {
 
     else {
         line.type = 'UML';
-    }
+    
         
 }
     // If element is UML, IE or SD (use straight line segments instead)
