@@ -2,18 +2,23 @@
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
-include ('../shared_microservices/getUid_ms.php');
 include_once "../../../Shared/basic.php";
-include_once "../../../Shared/sessions.php";
 
-function retrieveCourseedService(){
+
+function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated){
     // Include basic application services!
     date_default_timezone_set("Europe/Stockholm");
+    include_once "../../../Shared/sessions.php";
     
     pdoConnect();
     $entries=array();
+    // TODO change later to microservice when php isn't shit
+    if(isset($_SESSION['uid'])){
+        $userid=$_SESSION['uid'];
+    }else{
+        $userid="UNK";
+    }
 
-    getUid();
 
     $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
     $queryreg->bindParam(':uid', $userid);
@@ -176,10 +181,12 @@ function retrieveCourseedService(){
         'readonly' => $readonly
         );
 
-    echo json_encode($array);
+    //echo json_encode($array);
 
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCourseedService_ms.php",$userid,$info);
 
     return $array;
 }
+
+
 ?>

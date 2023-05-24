@@ -13,8 +13,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
-include_once "/microservices/courseedservice/retrieveCourseedService_ms.php";
-
+include_once ("../DuggaSys/microservices/courseedservice/retrieveCourseedService_ms.php");
 
 // Connect to database and start session
 pdoConnect();
@@ -679,5 +678,9 @@ echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseedservice.php",$userid,$info);
 */
 
-retrieveCourseedService();
+
+echo json_encode(retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated));
+
+
+
 ?>
