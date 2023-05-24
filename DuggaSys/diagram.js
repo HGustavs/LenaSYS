@@ -2648,17 +2648,17 @@ function mmoving(event)
                 let foundID = false;
                 let resizedElement = elementData;
                 if(resizedY == undefined){
-                    resizedElement.y = elementData.y - heightChange/2;
+                    resizedElement.y = elementData.y - heightChange;
                     resizedY.push(resizedElement);
                 }else{
                     for (var i = 0; i < resizedY.length; i++) {
                         if (elementData.id == resizedY[i].id) {
-                            resizedY[i].y -= heightChange/2;
+                            resizedY[i].y -= heightChange;
                             foundID = true;
                         }
                     }
                     if(!foundID){
-                        resizedElement.y = elementData.y - heightChange/2;
+                        resizedElement.y = elementData.y - heightChange;
                         resizedY.push(resizedElement);
                     }
                 }
