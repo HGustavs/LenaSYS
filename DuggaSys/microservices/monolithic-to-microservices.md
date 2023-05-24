@@ -1,5 +1,5 @@
 
-Disclaimer, this guide serves as a guideline and can not be followed 100% since the structure of all files differ. It's recommended to test after each step which include code changing to so its faster to spot if something goes wrong. When this guide was written no service using retrive information was used, write guide at step 5.
+Disclaimer, this guide serves as a guideline and can not be followed 100% since the structure of all files differ. It's recommended to test after each step which include code changing to so its faster to spot if something goes wrong.
 ***
 ## Setting up file & folder:
 ***
@@ -100,10 +100,10 @@ function getUid(){
         return $log_uuid;
     }
 ```
-### step 5
-If retrive information file does not exist, check ***Creation of retriveInformation_ms***
+### Step 5
+If retrieve information file does not exist, check ***Creation of retriveInformation_ms.php***
 
-If retrive information exist call the function by making include (servicename)" and before the end "?>" tag write a echo json_encode("your service file"($Needed params)); see example below
+If retrive information exist, call the function by writing **include_once "servicename"**. Before the end "?>" tag write **echo json_encode("your service file"($Needed params));**. See example below:
 
 #### Codeexample: courseedservice retrive information
 
@@ -166,7 +166,9 @@ The JSoN data should display an “opt”, find the opt that has the same name a
 
 ***
 ## Creation of retriveInformation_ms:
-**Disclaimer:** This method is flawed, better methods exist. This was created on last day before end of course. This guide will use courseedservice as example, you will need to change things according to what is needed in your file. Creating this file is best to test in the monolithic system by commenting out the old retrive information code and implement function from done above.
+**Disclaimer:** This method is flawed, better methods exist. This was created on last day before end of course. This guide will use courseedservice as example, you will need to change things according to what is needed in your file. Creating this file is best to test in the monolithic system by commenting out the old retrieve information code and implement function from done above.
+
+An example file exist under ***microservices -> courseedservice -> retrieveCourseedService_ms.php***
 
 ### Step 1:
 Create a retrieve(servicename)_ms.php in your service name folder
@@ -176,11 +178,11 @@ Folder: courseedService
 Files: retrieveCourseedService_ms.php
 ### Step 2:
 Copy and paste the code below in to the new retrive file created. 
-Change params to needed params for your service to work.
+Change params and service name to the ones needed for your service to work.
 ```php
 <?php
     include_once "../../../Shared/basic.php";
-    function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated){
+    function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated){//CHANGE HERE
         // Include basic application services! Include more if needed
         date_default_timezone_set("Europe/Stockholm");
         include_once "../../../Shared/sessions.php";
@@ -192,10 +194,36 @@ Change params to needed params for your service to work.
 ```
 
 ### Step 3:
-Copy ret
+Copy everything under:
+//------------------------------------------------------------------------------------------------
+// Retrieve Information
+//------------------------------------------------------------------------------------------------
+Paste the copied code under pdoConnect();
+
 
 ### Step 4:
+At the end of the code an array with values should exist(see code example: array). If echo json_encode($array); exist, you can comment it out.
 
+Add at the end of the function a ***Return $array;***
+
+**Codeexample**
+```php
+    $array = array(
+            'LastCourseCreated' => $LastCourseCreated,
+            'entries' => $entries,
+            'versions' => $versions,
+            "debug" => $debug,
+            'writeaccess' => $ha,
+            'motd' => $motd,
+            'readonly' => $readonly
+            );
+    //echo json_encode($array);
+
+    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCourseedService_ms.php",$userid,$info);
+
+    return $array;
+}
+```
 ***
 ## Don't forget!:
 It's very important that you swap the url when done, so it doesn't cause error for the other groups, unless the website official transfers to microservices
