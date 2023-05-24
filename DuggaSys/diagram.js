@@ -7616,7 +7616,6 @@ function multipleColorsTest()
 
             // Checks if there are varying fill colors, but not if varying colors have already been detected
             if (fill != context[i].fill && !varyingFills) {
-                console.log("fill colours");
                 var button = document.getElementById("colorMenuButton1");
                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
                 var textNode = document.createTextNode("Multiple Color Values");
@@ -8194,25 +8193,25 @@ function drawLine(line, targetGhost = false) {
         if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
             y1Offset = lengthConstantSD_Y;
             y2Offset = -lengthConstantSD_Y;
-        } else {
+        }else{
             y1Offset = lengthConstant;
-            y2Offset = -lengthConstant;
+            y2Offset = -lengthConstant; 
         }
-    } else if ((fy < ty) && (line.ctype == "BT")) {
+    } else if ((fy < ty) && (line.ctype == "BT") ){
         if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
             y1Offset = -lengthConstantSD_Y;
-            y2Offset = lengthConstantSD_Y;
-        } else {
+            y2Offset = lengthConstantSD_Y; 
+        }else{
             y1Offset = -lengthConstant;
-            y2Offset = lengthConstant;
+            y2Offset = lengthConstant; 
         }
     }
 
     // Do not draw the lines longer for UMLRelations.
-    if (felem.kind == "UMLRelation") {
+    if (felem.kind == "UMLRelation"){
         x1Offset = 0;
         y1Offset = 0;
-    } else if (telem.kind == "UMLRelation") {
+    } else if(telem.kind == "UMLRelation"){
         x2Offset = 0;
         y2Offset = 0;
     }
@@ -8238,11 +8237,8 @@ function drawLine(line, targetGhost = false) {
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
     }
-
     else {
-        line.type = 'UML';
-    
-        
+        line.type = 'UML';       
 }
     // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
