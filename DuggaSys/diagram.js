@@ -6999,7 +6999,7 @@ function generateContextProperties()
             if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
             str += `/>`;
         }
-        if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE'  ) {
+          if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'NOTE') {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
