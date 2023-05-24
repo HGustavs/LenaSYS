@@ -10253,17 +10253,17 @@ function drawElement(element, ghosted = false)
                         Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                         Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
-                        
-                        str += `<path d="M${linew},${hboxh} 
-                        Q${linew},${linew} ${hboxw},${linew} 
-                        Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                        Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
-                        Q${linew},${boxh - linew} ${linew},${hboxh}" 
+            }    
+
+            str += `<path d="M${linew},${hboxh} 
+                            Q${linew},${linew} ${hboxw},${linew} 
+                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
+                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
+                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
                         
                         ${multi}
                         <text x='${xAnchor}' y='${hboxh}' `;
-            }    
             
             if(element.state == "candidate" || element.state == 'primary') {
                 str += `class='underline'`;
