@@ -509,7 +509,7 @@ if(checklogin()){
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
-/*
+
 $entries=array();
 
 $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
@@ -579,14 +579,14 @@ if(!$query->execute()) {
 
 $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 
+/*
 
+0 == hidden
+1 == public
+2 == login
+3 == deleted
 
-//0 == hidden
-//1 == public
-//2 == login
-//3 == deleted
-
-
+*/
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
@@ -676,6 +676,5 @@ $array = array(
 echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseedservice.php",$userid,$info);
-*/
 
 ?>
