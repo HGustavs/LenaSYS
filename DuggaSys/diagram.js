@@ -7239,7 +7239,7 @@ function generateContextProperties()
       }
       propSet.innerHTML = str;
 
-    multipleColorsTest();
+    //multipleColorsTest();
 
     }
 
