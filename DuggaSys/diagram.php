@@ -943,7 +943,7 @@
     <!-- A4 template -->
     <div id="a4Template">
         <svg id="svgA4Template" class="a4rect">
-            <rect id="a4Rect" x="100" y="100" width="794" height="1122" style="stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
+            <rect id="a4Rect" x="100" y="100" />
             <rect id="vRect" x="100" y="100"/>
             <text id="a4Text" x="880" y="90">A4</text>
         </svg>  
