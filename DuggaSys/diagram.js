@@ -7240,7 +7240,6 @@ function generateContextProperties()
       propSet.innerHTML = str;
 
     multipleColorsTest();
-
     }
 
 /**
@@ -8099,8 +8098,8 @@ function drawLine(line, targetGhost = false)
         zoomfact
     );
 
-    // Collect coordinates
-    if (line.ctype == "BT"){
+   // Collect coordinates
+   if (line.ctype == "BT"){
         fy = felem.y2;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
