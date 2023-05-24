@@ -1413,6 +1413,14 @@ function getData()
 { 
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
+
+    //add event listeners 
+    document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
+    document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
+    document.getElementById("container").addEventListener("mousedown", mdown);
+    document.getElementById("container").addEventListener("mouseup", mup);
+    document.getElementById("container").addEventListener("mousemove", mmoving);
+    document.getElementById("container").addEventListener("wheel", mwheel);
     // onSetup();
     //debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
