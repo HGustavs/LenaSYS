@@ -2640,7 +2640,10 @@ function mmoving(event)
                 // Fetch original y-position
                 // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
                 tmp = elementData.y;
-                let screenY = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+                let screenTmp = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
+                
+                // Deduct the new position, giving us the total change
+                const yChange = -(tmp - screenTmp);
                 
                 let foundID = false;
                 let resizedElement = elementData;
@@ -2660,7 +2663,7 @@ function mmoving(event)
                     }
                 }
 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, screenY, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
 
             document.getElementById(context[0].id).remove();
