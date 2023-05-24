@@ -2646,8 +2646,8 @@ function mmoving(event)
                 const yChange = -(tmp - elementData.y);
                 
                 let foundID = false;
-                let resizedElement = elementData;
                 if(resizedY == undefined){
+                    let resizedElement = structuredClone(elementData);
                     resizedElement.y = elementData.y + heightChange;
                     resizedY.push(resizedElement);
                 }else{
@@ -2661,6 +2661,7 @@ function mmoving(event)
                         }
                     }
                     if(!foundID){
+                        let resizedElement = structuredClone(elementData);
                         resizedElement.y = elementData.y + heightChange;
                         resizedY.push(resizedElement);
                     }
