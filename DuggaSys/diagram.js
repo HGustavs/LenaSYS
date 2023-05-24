@@ -3531,7 +3531,7 @@ function getRectFromElement (element)
             console.log("resizedY "+resizedY[i].y);
             return {
                 x: element.x,
-                y: resizedY[i].y * 2 - element.x - resizedY[i].resizedDifference,
+                y: resizedY[i].y * 2 - element.y - resizedY[i].resizedDifference,
                 width: element.width,
                 height: element.height
             };
