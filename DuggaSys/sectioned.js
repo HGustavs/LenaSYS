@@ -28,10 +28,7 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 
-// Globals for the automatic refresh (github)
-var isActivelyFocused = false; // If the user is actively focusing on the course page
-var lastUpdatedCodeExampes = null; // Last time code examples was updated
-const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+
 
 
 function IsLoggedIn(bool){
@@ -3134,6 +3131,11 @@ $(window).on('blur', function() {
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
 // then updates the code examples if the conditions are met.
+
+// Globals for the automatic refresh (github)
+var isActivelyFocused = false; // If the user is actively focusing on the course page
+var lastUpdatedCodeExampes = null; // Last time code examples was updated
+const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
 
 setInterval(function() {
   if (isActivelyFocused) {
