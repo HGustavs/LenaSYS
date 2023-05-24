@@ -2,6 +2,13 @@
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
+
+date_default_timezone_set("Europe/Stockholm");
+
+// Include basic application services!
+include_once "../Shared/basic.php";
+include_once "../Shared/sessions.php";
+
 function retrieveCourseedService(){
     $entries=array();
 
