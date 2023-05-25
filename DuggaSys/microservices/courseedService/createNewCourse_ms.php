@@ -45,7 +45,7 @@ if (checklogin()) {
 
 	$ha = $isSuperUserVar;
 
-	if ($ha) {
+	if(isSuperUser(getUid())) {
 
 		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
 
