@@ -179,7 +179,8 @@ class StateChangeFactory
     static ElementResized(elementIDs, changeX, changeY)
     {
         var values = {
-            width: changeX
+            width: changeX,
+            height: changeY
         };
 
         return new StateChange(elementIDs, values);
@@ -197,7 +198,9 @@ class StateChangeFactory
     {
         var values = {
             x: moveX,
-            width: changeX
+            y: moveY,
+            width: changeX,
+            height: changeY
         };
         return new StateChange(elementIDs, values);
     }
@@ -1136,6 +1139,8 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
+
+var preResizeHeight = []; // List with elements' and their starting height for box selection due to problems with resizing height
 var NOTEHeight = [];// List with NOTE Entities' real height
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
@@ -2419,7 +2424,7 @@ function mmoving(event)
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = 150; // Declare the minimal height of an object
+            const minHeight = 50; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
             
             // Functionality for the four different nodes
@@ -2458,8 +2463,25 @@ function mmoving(event)
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
+
+                // Adds a deep clone of the element to preResizeHeight if it isn't in it
+                let foundID = false;
+                if(preResizeHeight == undefined){
+                    let resizedElement = structuredClone(elementData);
+                    preResizeHeight.push(resizedElement);
+                }else{
+                    for (let i = 0; i < preResizeHeight.length; i++) {
+                        if (elementData.id == preResizeHeight[i].id) {
+                            foundID = true;
+                        }
+                    }
+                    if(!foundID){
+                        let resizedElement = structuredClone(elementData);
+                        preResizeHeight.push(resizedElement);
+                    }
+                }
                 
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], heightChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
 
@@ -2471,12 +2493,29 @@ function mmoving(event)
                 const heightChange = -(tmp - elementData.height);
 
                 // Fetch original y-position
-                // "+ 15" hardcoded, for some reason the superstate jumps up 15 pixels when using this node.
+                // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 15)).y;
-
+                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
+                
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
+                
+                // Adds a deep clone of the element to preResizeHeight if it isn't in it
+                let foundID = false;
+                if(preResizeHeight == undefined){
+                    let resizedElement = structuredClone(elementData);
+                    preResizeHeight.push(resizedElement);
+                }else{
+                    for (let i = 0; i < preResizeHeight.length; i++) {
+                        if (elementData.id == preResizeHeight[i].id) {
+                            foundID = true;
+                        }
+                    }
+                    if(!foundID){
+                        let resizedElement = structuredClone(elementData);
+                        preResizeHeight.push(resizedElement);
+                    }
+                }
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
@@ -3373,9 +3412,35 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
+    // Corrects returned y position due to problems with resizing vertically
+    for (let i = 0; i < preResizeHeight.length; i++) {
+        if (element.id == preResizeHeight[i].id) {
+            let resizedY = element.y;
+            if(preResizeHeight[i].height < element.height){
+                resizedY += (element.height - preResizeHeight[i].height)/2
+            }
+            // Corrects returned y position due to problems with SE types
+            let elementY = resizedY;
+            if(element.type == "SE"){
+                elementY += preResizeHeight[i].height/3;
+            }
+            return {
+                x: element.x,
+                y: elementY,
+                width: element.width,
+                height: element.height
+            };
+        }
+    }
+    
+    // Corrects returned y position due to problems with resizing vertically
+    let elementY = element.y;
+    if(element.type == "SE"){
+        elementY += element.height/3;
+    }
     return {
         x: element.x,
-        y: element.y,
+        y: elementY,
         width: element.width,
         height: element.height,
     };
@@ -3434,7 +3499,7 @@ function rectsIntersect (left, right)
                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
              }
              // Set the new snap point to center of element
-             obj.x -= obj.width / 2
+             obj.x -= obj.width / 2;
              obj.y -= obj.height / 2;
 
            } else {
@@ -8988,10 +9053,8 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    //vertical resizing
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
-        nodes += "<span id='md' class='node md'></span>";
-    }
+    nodes += "<span id='md' class='node md'></span>";
+    nodes += "<span id='mu' class='node mu'></span>";
 
     if (element.kind == "UMLSuperState") {
         nodes += "<span id='md' class='node md'></span>";
@@ -9001,7 +9064,7 @@ function addNodes(element)
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt")) {
+    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
