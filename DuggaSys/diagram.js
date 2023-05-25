@@ -3684,7 +3684,6 @@ function rectsIntersect (left, right)
              // Set the new snap point to center of element
              obj.x -= obj.width / 2;
              obj.y -= obj.height / 2;
-             console.log(obj.width, obj.height, "tester");
 
            } else {
              obj.x += (targetDelta.x / zoomfact);
