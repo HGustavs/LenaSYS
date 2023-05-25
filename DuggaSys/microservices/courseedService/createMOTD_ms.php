@@ -25,7 +25,7 @@ $motd=getOP('motd');
 $readonly=getOP('readonly');
 
 $isSuperUserVar=false; 
-$isSuperUserVar=isSuperUser($userid);
+$isSuperUserVar=isSuperUser(getUid());
 
 // Updates the message of the day 
 if(checklogin() && $isSuperUserVar == true) {
