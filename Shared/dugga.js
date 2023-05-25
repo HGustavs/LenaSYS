@@ -1017,27 +1017,13 @@ function AJAXService(opt,apara,kind)
 	}
 
 	if(kind=="COURSE"){
-		// Call microservice to update course version 
-		// TODO: This is probably not a very good solution, this is done with the opt comparison
-		// For now this is usable, but should be remade when all microservices related 
-		// to courseedservice.php are implemented
-		if(opt === "UPDATE"){
-			$.ajax({
-				url : "../DuggaSys/microservices/courseedService/updateCourseVersion_courseed_ms.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-			});
-		}else{
-			$.ajax({
-				url : "courseedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-			});
-		}
+		$.ajax({
+			url : "courseedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedCourse
+		});
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
