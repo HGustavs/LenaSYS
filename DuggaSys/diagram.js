@@ -1124,7 +1124,7 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
-var resizedY = []; // List with elements' different y position for box selection due to problems with resizing height
+var preResizeHeight = []; // List with elements' and their starting height for box selection due to problems with resizing height
 
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
@@ -2646,27 +2646,18 @@ function mmoving(event)
                 const yChange = -(tmp - elementData.y);
                 
                 let foundID = false;
-                if(resizedY == undefined){
+                if(preResizeHeight == undefined){
                     let resizedElement = structuredClone(elementData);
-                    resizedElement.y = elementData.y - heightChange * 0.49;
-                    resizedElement['elementY'] = elementData.y;
-                    resizedY.push(resizedElement);
+                    preResizeHeight.push(resizedElement);
                 }else{
-                    for (var i = 0; i < resizedY.length; i++) {
-                        if (elementData.id == resizedY[i].id) {
-                            console.log(resizedY[i].y);
-                            resizedY[i].y -= heightChange * 0.49;
-                            resizedY[i].elementY = elementData.y;
-                            console.log(resizedY[i].y);
+                    for (var i = 0; i < preResizeHeight.length; i++) {
+                        if (elementData.id == preResizeHeight[i].id) {
                             foundID = true;
-                            console.log("found ID"+ foundID);
                         }
                     }
                     if(!foundID){
                         let resizedElement = structuredClone(elementData);
-                        resizedElement.y = elementData.y - heightChange * 0.49;
-                        resizedElement['elementY'] = elementData.y;
-                        resizedY.push(resizedElement);
+                        preResizeHeight.push(resizedElement);
                     }
                 }
 
@@ -3526,12 +3517,15 @@ function getRectFromPoints(topLeft, bottomRight)
 function getRectFromElement (element)
 {
     console.log("getRectFromElement");
-    for (var i = 0; i < resizedY.length; i++) {
-        if (element.id == resizedY[i].id) {
-            console.log("resizedY "+resizedY[i].y);
+    for (var i = 0; i < preResizeHeight.length; i++) {
+        if (element.id == preResizeHeight[i].id) {
+            let resizedY = element.y;
+            if(preResizeHeight[i].height < element.height){
+                resizedY -= (element.height - preResizeHeight[i].height)/4
+            }
             return {
                 x: element.x,
-                y: resizedY[i].y + element.y - resizedY[i].elementY,
+                y: resizedY,
                 width: element.width,
                 height: element.height
             };
