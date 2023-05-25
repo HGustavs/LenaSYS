@@ -33,7 +33,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 //I dont know why but this is needed for something :^)
 $isSuperUserVar = false;
 
-if (checklogin()) {
+if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
 	if (isset($_SESSION['uid'])) {
 		$userid = $_SESSION['uid'];
 	} else {
