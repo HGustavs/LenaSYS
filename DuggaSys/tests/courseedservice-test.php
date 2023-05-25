@@ -83,8 +83,8 @@ $testsData = array(
             'coursename' => 'Testing-Course',
             'coursenamealt' => 'Course for testing codeviewer',
             'motd' => 'Code examples shows both templateid and boxid!',
-            'startdate' => '2020-05-01 00:00:00',
-            'enddate' => '2020-06-30 00:00:00',
+            'startdate' => '',
+            'enddate' => '',
 	    'blop' => '<!query-before-test-1!> <*[0][cid]*>'
         )),
         'filter-output' => serialize(array(
@@ -236,8 +236,8 @@ $testsData = array(
                 'coursename' => 'testCourseName',
                 'coursenamealt' => 'testCourseNameAlt',
                 'motd' => 'testMotd',
-                'startdate' => '2020-05-01 00:00:00',
-                'enddate' => '2020-06-30 00:00:00',
+                'startdate' => '',
+                'enddate' => '',
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
@@ -281,8 +281,8 @@ $testsData = array(
                 'coursename' => 'testCourseName',
                 'coursenamealt' => 'testCourseNameAlt',
                 'motd' => 'testMotd',
-                'startdate' => '2020-05-01 00:00:00',
-                'enddate' => '2020-06-30 00:00:00',
+                'startdate' => '',
+                'enddate' => '',
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
