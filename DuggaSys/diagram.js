@@ -13295,12 +13295,24 @@ function showModal(){
     }
     else{
         for (let i = 0; i < diagramKeys.length; i++){
+            let wrapper = document.createElement('div');
             var btn = document.createElement('button');
             var btnText = document.createTextNode(diagramKeys[i]);
-
+            
             btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
-            container.appendChild(btn);
+            wrapper.appendChild(btn);
+            wrapper.style.display = "flex";
+            btn.style.width = '100%';
+
+            if (btnText.textContent !== 'AutoSave') {
+                let delBtn = document.createElement('button');
+                delBtn.classList.add('deleteLocalDiagram');
+                delBtn.setAttribute("onclick", `removeLocalDiagram('${diagramKeys[i]}');showModal();`);
+                delBtn.appendChild(document.createTextNode('Delete'));
+                wrapper.appendChild(delBtn);
+            }
+            container.appendChild(wrapper);
 
             document.getElementById('loadCounter').innerHTML = diagramKeys.length;
         }
@@ -13478,6 +13490,22 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
     }else{
         if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Error, cant load the given file");
     }
+}
+
+function removeLocalDiagram(item)
+{
+    let local = localStorage.getItem("diagrams");
+    local = (local[0] == "{") ? local : `{${local}}`;
+    let localDiagrams = JSON.parse(local);
+
+    if (item !== 'AutoSave') {
+        delete localDiagrams[item];
+    }
+    else {
+        displayMessage(messageTypes.ERROR, "Error, unable to delete 'AutoSave'");
+    }
+
+    localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 }
 
 //Alert function to give user a warning/choice before reseting diagram data.
