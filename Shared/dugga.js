@@ -1021,9 +1021,9 @@ function AJAXService(opt,apara,kind)
 		// TODO: This is probably not a very good solution, this is done with the opt comparison
 		// For now this is usable, but should be remade when all microservices related 
 		// to courseedservice.php are implemented
-		if(opt === "NEW"){
+		if(opt === "SETTINGS"){
 			$.ajax({
-				url : "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
+				url : "../DuggaSys/microservices/courseedService/ccreateMOTD_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
