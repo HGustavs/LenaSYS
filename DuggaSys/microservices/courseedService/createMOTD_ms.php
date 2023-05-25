@@ -3,7 +3,8 @@ date_default_timezone_set("Europe/Stockholm");
 
 include('../shared_microservices/getUid_ms.php');
 
-echo getUid();
+echo isSuperUser(getUid()); 
+getUid();
 
 // Connect to database and start session
 pdoConnect();
