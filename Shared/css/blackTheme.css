@@ -665,6 +665,25 @@ body {
 } 
 /* END */
 
+.loadModal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    z-index: 999;
+    overflow-y: auto;
+    background-color: #333;
+    border: 1px solid #000;
+}
+
+#amountOfLoads{
+    text-align: center;
+    font-size: 12px;
+    font-style: italic;
+    color: white;
+}
+
 /* ***Style for "Submission Input Table"*** */
 
 /* In "createSmallerViewportForm" */
@@ -1238,5 +1257,34 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 #motd {
   background-color: #000!important;
   color: #fff;
+}
+
+#darkmodeToggle {
+    background-color: #614875;
+    color: #ffffff;
+    font-weight: normal;
+    border: 3px solid #614875;
+}
+
+#a4TemplateToggle { 
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
+#diagramDropDownToggle { 
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
+.boxSelectionLines {
+    stroke:#fff;
 }
 /*/ END /*/

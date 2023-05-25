@@ -10,7 +10,7 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
     <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
@@ -32,8 +32,25 @@
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
-<body onload="getData();addAlertOnUnload();" style="overflow: hidden;">
-        
+<!-- instead of onload on body there is an event listener for loaded in diagram.js at the top of the INIT AND SETUP REGION -->
+<body style="overflow: hidden;">
+    
+    <!-- loading spinner -->
+    <div id="loadingSpinner">
+        <!-- this svg is here instaed of in its own file since, during development, -->
+        <!-- this proved to load faster meaning the user spend less time staring at nothing -->
+        <svg width="200" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <mask id="spinnerMask">
+                <!-- Everything under a white pixel will be visible -->
+                <rect x="0" y="0" width="200" height="200" fill="white" />
+                <!-- Everything under a black pixel will be invisible -->
+                <rect x="100" y="-100" width="200" height="200" fill="black" />
+            </mask>
+            <!-- its just a circle with a mask -->
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#775886" stroke-width="10" mask="url(#spinnerMask)"/>
+        </svg>
+    </div>
+
     <!-- Markdown document with keybinds -->
     <div id="markdownKeybinds" style="display: none">
 
@@ -44,14 +61,14 @@
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
     <!-- Toolbar for diagram -->
-    <div id="diagram-toolbar" onmousedown='mdown(event)' onmouseup='tup();'>
+    <div id="diagram-toolbar">
         <fieldset>
-            <legend aria-hidden="true" aria-hidden="true">Modes</legend>
+            <legend aria-hidden="true">Modes</legend>
                 <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
-                        <p>Allows you to select and move different elements as well as navigate the workspace</p><br>
-                        <p id="tooltip-POINTER" class="key_tooltip">Keybinding:</p>
+                        <span>Allows you to select and move different elements as well as navigate the workspace</span><br>
+                        <span id="tooltip-POINTER" class="key_tooltip">Keybinding:</span>
                     </span>
                 </div>
                 <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
@@ -332,7 +349,7 @@
                          onclick='setElementPlacementType(5); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
                          onmousedown="holdPlacementButtonDown(5)">
-                        <img src="../Shared/icons/diagram_inheritance.svg"alt="UML inheritance"/>
+                        <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p>
                             <p>A relation between a superclass and subclasses.</p>
@@ -776,6 +793,14 @@
                     </div>
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
+                <!-- NOTE -->
+                <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
+                    <img src="../Shared/icons/diagram_note.svg"/>
+                    <span class="toolTipText"><b>Note</b><br>
+                        <p>Creates a note</p><br>
+                        <p id="tooltip-NOTE_ENTITY" class="key_tooltip">Keybinding:</p>
+                    </span>
+                </div>
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
@@ -789,7 +814,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">History</legend>
-            <div id="erTableToggle" class="diagramIcons" onclick="resetDiagramAlert()">
+            <div id="diagramReset" class="diagramIcons" onclick="resetDiagramAlert()">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
                     <p>Reset diagram to default state</p><br>
@@ -819,7 +844,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">ER-Table</legend>
-            <div id="erTableToggle" class="diagramIcons" onclick="toggleErTable()">
+            <div id="erTableToggle" class="diagramIcons toolbarMode" onclick="toggleErTable()">
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
@@ -829,7 +854,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Testcase</legend>
-            <div id="testCaseToggle" class="diagramIcons" onclick="toggleTestCase()"> <!--add func here later-->
+            <div id="testCaseToggle" class="diagramIcons toolbarMode" onclick="toggleTestCase()"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options</p><br>
@@ -849,9 +874,9 @@
                 </span>
             </div>
         </fieldset>
-        <fieldset id = "localSaveField">
+        <fieldset id="localSaveField" class="disabledIcon">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="storeDiagramInLocalStorage()">
+            <div id="localSave" class="diagramIcons" onclick="showSavePopout()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
@@ -860,9 +885,9 @@
                 </span>
             </div>
         </fieldset>
-        <fieldset id = "localLoadField">
+        <fieldset id="localLoadField">
             <legend aria-hidden="true">Load</legend>
-            <div id="localLoad" class="diagramIcons" onclick="loadDiagramFromLocalStorage('CurrentlyActiveDiagram');">
+            <div id="localLoad" class="diagramIcons" onclick="showModal();">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram</p>
@@ -872,13 +897,45 @@
             </div>
         </fieldset>
     </div>
+    
+    <div class="loadModal hiddenLoad">
+        <div id="loadHeader">
+            <p id="loadTitle">Select a load:</p>
+            <button id="closeLoadModal" onclick="closeModal();">&times;</button>
+        </div>
+        <div id="loadContainer"></div>
+        <p id="amountOfLoads"><span id="loadCounter">0</span> saves found</p>
+    </div>
+    <div class="loadModalOverlay hiddenLoad"></div>
+
+    <div id="overrideContainer" class="loginBoxContainer" style="display:none">
+        <div class="loginBox">
+            <div class="loginBoxheader">
+                <h3>
+                    Filename already exists
+                </h3>
+                <div class="cursorPointer" onclick="closeOverridePopout()">
+                    x
+                </div>
+            </div>
+            <div id="savePopout" style="margin-top:15px;display:block">
+                <div>
+                    <p>Do you want to overwrite the existing file?</p>
+                </div>
+                <div class="button-row">
+                    <button class="submit-button" onclick="closeOverridePopout(), showSavePopout()">Cancel</button>
+                    <button class="submit-button" onclick="    storeDiagramInLocalStorage(getCurrentFileName()), closeOverridePopout()">Overwrite</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Message prompt -->
     <div id="diagram-message"></div>
     
     <!-- Diagram drawing system canvas. -->
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
-    <div id="container" onmousedown='mdown(event)' onmouseup='mup(event)' onmousemove='mmoving(event)' onwheel='mwheel(event)'></div> <!-- Contains all elements (items) -->
+    <div id="container"></div><!-- Contains all elements (items) -->
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
 
@@ -893,74 +950,79 @@
     </div>
     
     <!-- Diagram grid -->
-    <div id="svggrid" style="z-index:-11">
+    <div id="svggrid">
         <svg id="svgbacklayer" class="svgbacklayer-background">
             <defs>
-            <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-
-                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke="0.8 0.8" stroke-width="1"/>
-            </pattern>
+                <pattern id="grid" patternUnits="userSpaceOnUse">
+                    <path d="M 100 0 L 0 0 0 100"/>
+                </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
-            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" style="stroke:rgb(105, 105, 105);stroke-width:8;"/>
+            <rect id="grid_rect"/>
+            <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" />
+            <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" />
         </svg>  
     </div>
     <!-- A4 template -->
-    <div id="a4Template" style="z-index:-11">
+    <div id="a4Template">
         <svg id="svgA4Template">
-            <rect id="a4Rect" x="100" y="100" width="794" height="1122" style="stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
-            <rect id="vRect" x="100" y="100" width="1122" height="794" style=" display:none; stroke:rgb(50, 50, 50);stroke-width:2" stroke-dasharray="5 3" fill="#ffffee" fill-opacity="0.4"/>
+            <rect id="a4Rect" x="100" y="100" />
+            <rect id="vRect" x="100" y="100"/>
             <text id="a4Text" x="880" y="90">A4</text>
         </svg>  
     </div>  
     <div id="zoom-container">
-            <div id="zoom-message-box"><img width="25%" height="27px" src="../Shared/icons/zoom-message-icon.svg"/> <text id ="zoom-message">1x</text></div>
-            <div class="diagramZoomIcons" onclick='zoomin();'>
-                <img src="../Shared/icons/diagram_zoomin.svg"/>
-                <span class="zoomToolTipText"><b>Zoom IN</b><br>
-                    <p>Zoom in on viewed area</p><br>
-                    <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick='zoomout();'>
-                <img src="../Shared/icons/diagram_zoomout.svg"/>
-                <span class="zoomToolTipText"><b>Zoom OUT</b><br>
-                    <p>Zoom out on viewed area</p><br>
-                    <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
-            <div class="diagramZoomIcons" onclick="zoomreset()">
-                <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
-                <span class="zoomToolTipText"><b>Zoom RESET</b><br>
-                    <p>Reset the zoom to 1x</p><br>
-                    <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
-                </span>
-            </div>
+        <div id="zoom-message-box">
+            <img src="../Shared/icons/zoom-message-icon.svg"/> 
+            <text id ="zoom-message">1x</text>
         </div>
+        <div class="diagramZoomIcons" onclick='zoomin();'>
+            <img src="../Shared/icons/diagram_zoomin.svg"/>
+            <span class="zoomToolTipText">
+                <b>Zoom IN</b><br>
+                <p>Zoom in on viewed area</p><br>
+                <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+        <div class="diagramZoomIcons" onclick='zoomout();'>
+            <img src="../Shared/icons/diagram_zoomout.svg"/>
+            <span class="zoomToolTipText">
+                <b>Zoom OUT</b><br>
+                <p>Zoom out on viewed area</p><br>
+                <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+        <div class="diagramZoomIcons" onclick="zoomreset()">
+            <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
+            <span class="zoomToolTipText">
+                <b>Zoom RESET</b><br>
+                <p>Reset the zoom to 1x</p><br>
+                <p id="tooltip-ZOOM_RESET" class="key_tooltip">Keybinding:</p>
+            </span>
+        </div>
+    </div>
     <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
-        <div id="options-pane-button" onclick="toggleOptionsPane();"><span id='optmarker'>&#9660;Options</span>
+        <div id="options-pane-button" onclick="toggleOptionsPane();">
+            <span id='optmarker'>&#9660;Options</span>
             <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
                 <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
             </span>
         </div>
         <div id ="fieldsetBox">
-            <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden'>
-            </fieldset>
+            <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden'></fieldset>
 
             <fieldset class='options-fieldset options-section'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
-                <button id="rulerSnapToGrid" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
+                <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
-                <button id="a4TemplateToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleA4Template()">A4 template</button><br><br>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
                 <div id="a4Options" style="display:flex;">
                     <button id="a4VerticalButton" style="display:none; width:76px; margin-right:45%;" onclick="toggleA4Vertical()">Vertical</button>
                     <button id="a4HorizontalButton" style="display:none;" onclick="toggleA4Horizontal()">Horizontal</button>
                 </div>
-                <button id="darkmodeToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDarkmode()">Darkmode</button><br><br>
-                <button id="diagramDropDownToggle" class="saveButton" style="background-color: transparent; border:#614875; border-width:3px; border-style:solid; color:#614875; font-weight: bold;" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
+                <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
+                <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
                         <option value="JSON/EMPTYDiagramMockup.json">Empty board</option>
@@ -976,9 +1038,9 @@
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
-            <fieldset class='options-fieldset options-section'>
+            <fieldset id="option-import" class='options-fieldset options-section'>
                 <legend>Import</legend>
-                <input style="width: 100%" id="importDiagramFile" type="file"><br><br>
+                <input id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
             </fieldset>
         </div>
@@ -1010,7 +1072,7 @@
                     </span>
                 </div>
             </fieldset>
-            <div style="width: 250px">
+            <div id="replay-time-container">
                 <label id="replay-time-label" for="replay-time">Delay (1s)</label>
                 <input id="replay-time" onchange="setReplayDelay(this.value)" class="zoomSlider" type="range" min="1" max="9" value="5">
             </div>
@@ -1024,6 +1086,27 @@
     <div id="diagram-replay-message">
         <h2>Replay mode</h2>
         <p>Press "ESCAPE" to exit the replay-mode.</p>
+    </div>
+    <div id="savePopoutContainer" class="loginBoxContainer" style="display:none">
+        <div class="loginBox">
+            <div class="loginBoxheader">
+                <h3>
+                    Save current diagram as
+                </h3>
+                <div class="cursorPointer" onclick="hideSavePopout()">
+                    x
+                </div>
+            </div>
+            <div id="savePopout" style="margin-top:15px;display:block">
+                <div class="inputwrapper">
+                    <span style="margin-right:5px">Filename:</span>
+                    <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
+                </div>
+                <div class="button-row">
+                    <input type="submit" class="submit-button" onclick="saveDiagramAs(), hideSavePopout()" value="Save"/>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- content END -->
     <?php
