@@ -12,6 +12,8 @@ date_default_timezone_set("Europe/Stockholm");
 
 include('../shared_microservices/getUid_ms.php');
 
+getUid();
+
 // Connect to database and start session
 pdoConnect();
 session_start();
@@ -21,6 +23,8 @@ $coursename = getOP('coursename');
 $coursecode = getOP('coursecode');
 $courseGitURL = getOP('courseGitURL'); // for github url
 
+$ha = null;
+
 $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
 $query->bindParam(':uid', $userid);
 $query->execute();
@@ -29,7 +33,19 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	$username = $row['username'];
 }
 
-	if(isSuperUser(getUid())) {
+$isSuperUserVar = false;
+
+if (checklogin()) {
+	if (isset($_SESSION['uid'])) {
+		$userid = $_SESSION['uid'];
+	} else {
+		$userid = "UNK";
+	}
+	$isSuperUserVar = isSuperUser($userid);
+
+	$ha = $isSuperUserVar;
+
+	if ($ha) {
 
 		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
 
@@ -48,5 +64,5 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 
 
 	}
-
+}
 ?>
