@@ -127,7 +127,7 @@ function fetchGitHubRepo(gitHubURL)
 	var dataCheck;
 	$.ajax({
 		async: false,
-		url: "../recursivetesting/FetchGithubRepo.php",
+		url: "gitfetchService.php",
 		type: "POST",
 		data: {'githubURL':regexURL, 'action':'getNewCourseGitHub'},
 		success: function() { 

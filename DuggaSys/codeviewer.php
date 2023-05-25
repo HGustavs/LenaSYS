@@ -304,12 +304,10 @@ Testing Link:
 								<td>Title:<input class='form-control textinput' type='text' placeholder='Title' id='title' value='&lt;Title&gt;' /></td>
 							</tr>
 
-							<tr>
+							<!-- <tr>
 								<td>Before:<select id='before'></select></td>
 								<td>After:<select id='after'></select></td>
-							</tr>
-
-							<tr>
+							<tr> -->
 								<td>Play Link:<select id='playlink'></select></td>
 								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>
 							</tr>

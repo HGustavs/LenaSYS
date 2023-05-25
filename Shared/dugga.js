@@ -1017,13 +1017,13 @@ function AJAXService(opt,apara,kind)
 	}
 
 	if(kind=="COURSE"){
-			$.ajax({
-				url: "courseedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-			});
+		$.ajax({
+			url : "courseedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedCourse
+		});
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
@@ -1072,14 +1072,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedAccess
 			});
-	}else if(kind=="SECTION"){
-    $.ajax({
-      url: "sectionedservice.php",
-      type: "POST",
-      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-      dataType: "json",
-      success: returnedSection
-    });
+	}else if(kind=="SECTION"){		
+		$.ajax({
+		url: "sectionedservice.php",
+		type: "POST",
+		data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+		dataType: "json",
+		success: returnedSection
+		});
   }else if(kind=="GRP"){
     $.ajax({
       url: "sectionedservice.php",
@@ -1157,6 +1157,7 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="BOXCONTENT"){
 		$.ajax({
 			url: "codeviewerService.php",
+			//url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
@@ -1165,6 +1166,7 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="BOXTITLE"){
 		$.ajax({
 			url: "codeviewerService.php",
+			//url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",

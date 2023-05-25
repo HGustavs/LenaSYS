@@ -52,6 +52,9 @@
         --color-fill: #fff;
         --color-stroke: #fff;
         --color-table: #212121;
+
+        --color-fileLink-table-1: #2d3133;
+        --color-fileLink-table-2: #242729;
     }
 
     #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
@@ -60,13 +63,6 @@
         -webkit-filter: invert(80%);
     }
 
-    #refreshIMG, .refreshBurgerIMG{
-        cursor: pointer;
-        filter: invert(100%);
-        -webkit-filter: invert(100%);
-    }
-
-      
 #div2{
 	background-color: var(--color-background);
 }
@@ -904,12 +900,7 @@ input{
 /* END */
 
 /* Style for "Date Picker" START:    */
-::-webkit-calendar-picker-indicator:hover {
-    filter: invert(1) ; 
-}
-
-/* Style for "Date Picker" START:    */
-::-webkit-calendar-picker-indicator:hover {
+::-webkit-calendar-picker-indicator {
     filter: invert(1) ; 
 }
 
@@ -1026,7 +1017,11 @@ input{
     -moz-appearance: none;
     vertical-align: text-top;
     color: white;
-  }
+}
+
+.course-dropdown > option {
+	background-color: #212121;
+}
 
 #motdArea {
     background-color: var(--color-accent);
@@ -1094,7 +1089,8 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
 #tabElement {
-    filter: invert(0.2);
+    filter: invert(0.8);
+    cursor: pointer;
 }
 
 .code #NewTabLink {
@@ -1290,5 +1286,10 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 #a4Text {
     fill: white;
+
+.date-interval-selector, #searchbar, #highlight-entry {
+    background-color: #212121;
+    color: white;
+
 }
 /*/ END /*/

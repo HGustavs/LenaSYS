@@ -600,19 +600,17 @@
 				</div>
 				<div class='inputwrapper'>
 					<span>Github Directory:</span>
-						<select name="githubDir" placeholder='Github Folder'>
+						<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
 							<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
 							<?php
 								// Gets "cid" via getOPG.
 								$cid = getOPG('courseid');
-								// Traverses the github map for the respective course, only fetches directories. 
+								// Traverses the github map for the respective course, only fetches directories.
 								$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
 								foreach ($dirs as $dir) {
 									$dirname = basename($dir);
 									// Creates an option for each directory containing the string "Examples". 
-									if(strstr($dirname, 'Examples')) {
-										echo "<option value='$dirname'>$dirname</option>";
-									}		
+									echo "<option value='$dirname'>$dirname</option>";	
 								}			
 							?>
 						</select>
@@ -620,12 +618,6 @@
 				<input type="hidden" name="lid" id="lidInput">
 				<!-- Hidden input using the "lid" from "getLidFromButton" -->
 				<input type="submit" name="githubInsert" value="Submit!">
-				<script>
-					// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
-					function getLidFromButton(lid) {
-						document.getElementById('lidInput').value = lid;
-					}
-				</script>
 			</div>
 		</div>
 	</form>

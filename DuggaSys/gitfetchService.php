@@ -1,4 +1,7 @@
 <?php
+
+// Note: A lot of the references in issues and commentation mentions FetchGithubRepo.php, this was the first name of this file before refactoring was done.
+
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";    
 session_start();

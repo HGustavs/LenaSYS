@@ -28,9 +28,16 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 
+// Globals for the automatic refresh (github)
+var isActivelyFocused = false; // If the user is actively focusing on the course page
+var lastUpdatedCodeExampes = null; // Last time code examples was updated
+const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+
+
 function IsLoggedIn(bool){
   bool ? isLoggedIn = true : isLoggedIn = false ;
 }
+
 
 /*navburger*/
 function navBurgerChange(operation = 'click') {
@@ -440,37 +447,37 @@ function changedType(kind) {
 // refreshGithubRepo: Send course id to function in gitcommitService.php
 //----------------------------------------------------------------------------------
 
-function refreshGithubRepo(courseid) 
+function refreshGithubRepo(courseid, user) 
 {
-	//Used to return success(true) or error(false) to the calling function
-	var dataCheck;
-	$.ajax({
-		async: false,
-		url: "../DuggaSys/gitcommitService.php",
-		type: "POST",
-		data: {'cid':courseid, 'action':'refreshGithubRepo'},
-		success: function(data) { 
-			//Returns true if the data and JSON is correct
+  //Used to return success(true) or error(false) to the calling function
+  var dataCheck;
+  $.ajax({
+    async: false,
+    url: "../DuggaSys/gitcommitService.php",
+    type: "POST",
+    data: {'cid':courseid, 'user':user, 'action':'refreshGithubRepo'},
+    success: function(data) { 
+      //Returns true if the data and JSON is correct
       alert(data); // Shows if course is up to date or not
-			dataCheck = true;
-		},
-		error: function(data){
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch(data.status){
-				case 422:
-					alert(data.responseJSON.message + "\nDid not update course");
-					break;
-				case 503:
-					alert(data.responseJSON.message + "\nDid not update course");
-					break;
-				default:
-					alert("Something went wrong...");
-			}
-		 	dataCheck = false;
-		}
-	});
+      dataCheck = true;
+    },
+    error: function(data){
+      //Check gitfetchService for the meaning of the error code.
+      switch(data.status){
+        case 422:
+          alert(data.responseJSON.message + "\nDid not update course");
+          break;
+        case 503:
+          alert(data.responseJSON.message + "\nDid not update course");
+          break;
+        default:
+          alert("Something went wrong...");
+      }
+      dataCheck = false;
+    }
+  });
   console.log("ajax done" + courseid);
-	return dataCheck;
+  return dataCheck;
 }
 
 //----------------------------------------------------------------------------------
@@ -555,16 +562,18 @@ function confirmBox(operation, item = null) {
   }else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
       $("#tabConfirmBox").css("display", "none");
-  }else if (operation == "openGitHubBox") {
-    console.log("testworkornah2?");
+  }
+  // Responsible for opening github moment
+  else if (operation == "openGitHubBox") {
     $("#gitHubBox").css("display", "flex");
   }
+  else if (operation == "saveGitHubBox") {
+  }
+
   //ändra 
   else if (operation == "openGitHubTemplate") {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
-
-
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
@@ -745,6 +754,10 @@ async function createFABItem(kind, itemtitle, comment) {
     console.log(numberOfItems + " " + itemtitle + "(s) created");
     numberOfItems = 1; // Reset number of items to create
   }
+  console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
+  console.log(selectItem);
+  console.log("newItem function:", newItem.toString());
+
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
@@ -861,6 +874,48 @@ function cancelDelete() {
     deletedElements[i].classList.remove("deleted");
   }
   location.reload();
+}
+
+// update selected directory
+function updateSelectedDir() {
+  var selectedDir = $('#selectDir').val();
+  $.ajax({
+    url: "./sectioned.php",
+    type: "POST",
+    data: {
+      action: "updateSelectedDir",
+      selectedDir: selectedDir,
+      cid: cidFromServer
+    },
+    success: function(data) {
+      console.log('POST-request call successful');
+      console.log("Response: ", data);
+      alert('Directory has been updated succesfully')
+
+      // Parse the JSON response
+      var response;
+      try {
+        response = JSON.parse(data);
+      } catch (e) {
+        console.error('Failed to parse JSON:', e);
+        return;
+      }
+
+      // Handle the response
+      //TODO:: Server is sending html response instead of JSON
+      if (response.status === "success") {
+        console.log('Update successful');
+      } else {
+        console.error('Update failed:', response.message);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error('Update failed:', error);
+      console.log("Status: ", status);
+      console.log("Error: ", error);
+      alert('Directory update failed')
+    }
+  });
 }
 
 //----------------------------------------------------------------------------------
@@ -1149,7 +1204,7 @@ function duggaRowClick(rowElement){
     }
   }
 }
-
+var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
@@ -1299,6 +1354,9 @@ function returnedSection(data) {
 
         // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
         var itemKind = parseInt(item['kind']);
+        itemKinds[i] = itemKind;
+
+
         if (itemKind === 3 || itemKind === 4) {
 
           // If there exists atleast one test or moment swimlanes shall be hidden
@@ -1342,7 +1400,7 @@ function returnedSection(data) {
 
             }
           }
-
+          
           if (retdata['writeaccess']) {
           if (itemKind === 3) {
             if(isLoggedIn){
@@ -1728,8 +1786,8 @@ function returnedSection(data) {
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher'])  {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section", 
           "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo' class='' 
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}")'>`;
+          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
+          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), getLocalStorage();'>`;
           str += "</td>";
         }
 
@@ -2366,6 +2424,7 @@ $(document).on('click', '#corf', function (e) {
 $(document).on('click', '#dorf', function (e) {
   e.stopPropagation();
 });
+
 
 // The event handler returns two elements. The following two if statements gets the element of interest.
 $(document).on('click', '.moment, .section, .statistics', function () {
@@ -3035,20 +3094,74 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
 }
 
-//Creates all examples from github that doesnt exists yet
-function createExamples(dir,momentID) {//TODO HERE
-  lid= momentID;
-  dirname = dir;
-  console.log("* AJAX START ");
+// Function to fetch code examples for a specific lecture/moment
+function createExamples(momentID, isManual) {
+  lid = momentID;
+  // AJAX Request to create all code examples
   $.ajax({
     url: "sectionedservice.php",
     type: "POST",
-    data: {'lid':lid,'dirname':dirname , 'opt':'CREGITEX'},
+    data: {'lid':lid,'opt':'CREGITEX'},
     dataType: "json",
-    //TODO: reload back to coursepage
+    success: function(response) {
+      console.log("AJAX request succeeded. Response:", response);
+      lastUpdatedCodeExampes = Date.now();
+      if (isManual) {
+      alert("Code examples have been manually updated successfully!");
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error("AJAX request failed. Status:", status);
+      console.error("Error:", error);
+      alert("Failed to manually update code examples!");
+    }
   });
-  console.log("** AJAX DONE **");
 }
+
+// When the user is watching the course page, set isActivelyFocused to true
+$(window).on('focus', function( ) {
+  isActivelyFocused = true;
+  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
+
+});
+
+// When the user stops watching the course page, set isActivelyFocused to false
+$(window).on('blur', function() {
+  isActivelyFocused = false;
+  console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
+
+});
+
+// Create an interval that checks if the window is focused and the updateInterval has passed, 
+// then updates the code examples if the conditions are met.
+
+setInterval(function() {
+  if (isActivelyFocused) {
+    const now = Date.now();
+    if (lastUpdatedCodeExampes === null || (now - lastUpdatedCodeExampes) > UPDATE_INTERVAL) {
+      lastUpdatedCodeExampes = now;
+      var hasUpdatedAllCodeExamples = false;
+      console.log("Time to update the code examples.");
+
+      // Call the createExamples function for each lecture/moments
+      for (let i = 0; i < itemKinds.length; i++) {
+        if(itemKinds[i] === 4){
+          for (let i = 0; i < collectedLid.length; i++) {
+            createExamples(collectedLid[i], false);
+            hasUpdatedAllCodeExamples = true;
+          }
+        }
+      }
+
+      // The alert for automated fetching of code examples
+      if (hasUpdatedAllCodeExamples) {
+        alert("Code examples have been automatically updated successfully!");
+      }
+    }
+  }
+  
+}, 1000); // this checks every second  if UPDATE_INTERVAL_FETCH_CODE_EXAMPLES has passed 10 minutes mark
+
 
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
@@ -3563,6 +3676,20 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+    // validates the github moment from github integration (the github icon)
+    if (formid === 'saveGithubMoment') {
+      var selectedDir = document.getElementById('selectDir').value;
+
+      // Validate fields here. For example, check if fields are not empty
+      if (selectedDir == "" || selectedDir == null) {
+        alert("Pick directory");
+        return;
+      }
+
+      updateSelectedDir();
+      // If validation passes, submit the form
+      document.getElementById('githubForm').submit();
+    }
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
@@ -3622,11 +3749,7 @@ function refreshMoment(momentID){
   //Iterate all entries in the sectionlist of the course
   console.log("RefreshButton Clicked!");
 
-  //TODO: take input from column/dropdownlist and iterate through and create the codeexample
-  //for each codeexample in the moment dir, do create examples on those code-example dir
-  //for loop not yet implemented, waiting for other issues to be completed before
-  dirname="../courses/1895/Github/Demo/Code-example1/"
-  createExamples(dirname,momentID)
+  createExamples(momentID,true);
 }
 
 //------------------------------------------------------------------------------
@@ -3766,4 +3889,26 @@ function changetemplate(templateno)
         boxes = 1;
         break;
     }
+}
+
+// In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
+function getLidFromButton(lid) {
+  document.getElementById('lidInput').value = lid;
+}
+
+// Saves the chosen value to localStorage after a choice is made in the dropdown menu
+function saveLocalStorage(selectedValue) {
+  var setLocalStorageLid = document.getElementById('lidInput').value;
+  var value = selectedValue.value;
+  localStorage.setItem(setLocalStorageLid, value);
+}
+
+// Sets the chosen value from localStorage to the dropdown if a value is saved in localStorage
+function getLocalStorage() {
+  var getLocalStorageLid = document.getElementById('lidInput').value;
+  var selectedValue = localStorage.getItem(getLocalStorageLid);
+  if(selectedValue) {
+    var dropdown = document.querySelector('select[name="githubDir"]');
+    dropdown.value = selectedValue;
+  }
 }
