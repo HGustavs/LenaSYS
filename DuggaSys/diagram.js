@@ -2675,6 +2675,7 @@ function mmoving(event)
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
 
+                // Adds a deep clone of the element to preResizeHeight if it isn't in it
                 let foundID = false;
                 if(preResizeHeight == undefined){
                     let resizedElement = structuredClone(elementData);
@@ -2710,6 +2711,7 @@ function mmoving(event)
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
                 
+                // Adds a deep clone of the element to preResizeHeight if it isn't in it
                 let foundID = false;
                 if(preResizeHeight == undefined){
                     let resizedElement = structuredClone(elementData);
@@ -3607,15 +3609,16 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
+    // Corrects returned y position due to problems with resizing vertically
     for (let i = 0; i < preResizeHeight.length; i++) {
         if (element.id == preResizeHeight[i].id) {
             let resizedY = element.y;
             if(preResizeHeight[i].height < element.height){
                 resizedY += (element.height - preResizeHeight[i].height)/2
             }
+            // Corrects returned y position due to problems with SE types
             let elementY = resizedY;
             if(element.type == "SE"){
-                console.log("SE resized");
                 elementY += preResizeHeight[i].height/3;
             }
             return {
@@ -3626,9 +3629,10 @@ function getRectFromElement (element)
             };
         }
     }
+    
+    // Corrects returned y position due to problems with resizing vertically
     let elementY = element.y;
     if(element.type == "SE"){
-        console.log("SE normal");
         elementY += element.height/3;
     }
     return {
