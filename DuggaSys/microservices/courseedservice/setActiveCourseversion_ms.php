@@ -5,7 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
-include '../shared_microservices/getUid_ms.php';
+include_once '../shared_microservices/getUid_ms.php';
 
 // Connect to database and start session
 pdoConnect();
@@ -14,6 +14,7 @@ session_start();
 // Global variables
 $opt=getOP('opt');
 $cid=getOP('cid');
+$versid=getOP('versid');
 $makeactive=getOP('makeactive');
 
 getUid();
