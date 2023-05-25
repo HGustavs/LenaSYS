@@ -32,7 +32,7 @@ if(checklogin() && $isSuperUserVar == true) {
 
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
-    $query->bindParam(':motd', isSuperUser(getUid()));
+    $query->bindParam(':motd', $motd);
     if($readonly == "UNK") {$readonly=0;}
     $query->bindParam(':readonly', $readonly);
 
