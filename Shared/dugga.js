@@ -1017,10 +1017,13 @@ function AJAXService(opt,apara,kind)
 	}
 
 	if(kind=="COURSE"){
-		// This if statement is temporery and will be removed upon approval of the issue
+		// Call microservice to create new course 
+		// TODO: This is probably not a very good solution, this is done with the opt comparison
+		// For now this is usable, but should be remade when all microservices related 
+		// to courseedservice.php are implemented
 		if(opt === "SETTINGS"){
 			$.ajax({
-				url : "../DuggaSys/microservices/courseedService/createMOTD_ms.php",
+				url : "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
