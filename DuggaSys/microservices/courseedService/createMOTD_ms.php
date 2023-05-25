@@ -25,11 +25,11 @@ $motd=getOP('motd');
 $readonly=getOP('readonly');
 
 // Updates the message of the day 
-if(checklogin() && isSuperUser(getUid())) {
+//if(checklogin() && isSuperUser(getUid())) {
 
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
-    $query->bindParam(':motd', $motd);
+    $query->bindParam(':motd', isSuperUser(getUid()));
     if($readonly == "UNK") {$readonly=0;}
     $query->bindParam(':readonly', $readonly);
 
@@ -37,6 +37,6 @@ if(checklogin() && isSuperUser(getUid())) {
         $error=$query->errorInfo();
         $debug="Error updating entries\n".$error[2];
     }
-}
+//}
 ?>
 
