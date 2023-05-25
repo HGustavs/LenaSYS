@@ -1287,4 +1287,8 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 .boxSelectionLines {
     stroke:#fff;
 }
+
+#a4Text {
+    fill: white;
+}
 /*/ END /*/
