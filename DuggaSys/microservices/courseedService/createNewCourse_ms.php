@@ -12,8 +12,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include('../shared_microservices/getUid_ms.php');
 
-getUid();
-
 // Connect to database and start session
 pdoConnect();
 session_start();
@@ -23,7 +21,6 @@ $coursename = getOP('coursename');
 $coursecode = getOP('coursecode');
 $courseGitURL = getOP('courseGitURL'); // for github url
 
-$ha = null;
 
 $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
 $query->bindParam(':uid', $userid);
@@ -41,9 +38,6 @@ if (checklogin()) {
 	} else {
 		$userid = "UNK";
 	}
-	$isSuperUserVar = isSuperUser($userid);
-
-	$ha = $isSuperUserVar;
 
 	if(isSuperUser(getUid())) {
 
