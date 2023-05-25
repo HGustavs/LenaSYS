@@ -872,7 +872,7 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML, SD & SE This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of entity, ie ER, IE, UML & SD This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
@@ -890,6 +890,14 @@ const entityState = {
     WEAK: "weak",
 };
 
+/**
+ * @description Available types of relations, ie ER, IE & UML This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ */
+const relationType = {
+    UML: "UML",
+    ER: "ER",
+    IE: "IE"
+};
 /**
  * @description Available types of the relation element. This will alter how the relation is drawn onto the screen.
  */
@@ -1141,24 +1149,24 @@ var ghostLine = null;
  */
 var defaults = {
 
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'] },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal' },
+    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },
+    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal', canChangeTo: Object.values(relationType) },
     ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
     Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
 
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'] },     //<-- UML functionality
-    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML" }, //<-- UML functionality
-    IEEntity: {name: "IEEntity", kind: "IEEntity", stroke: "#000000", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'] },     //<-- IE functionality
-    IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE" }, //<-- IE inheritence functionality
-    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'] }, //<-- SD functionality
+    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- UML functionality
+    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML", canChangeTo: Object.values(relationType) }, //<-- UML functionality
+    IEEntity: {name: "IEEntity", kind: "IEEntity", stroke: "#000000", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- IE functionality
+    IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE", canChangeTo: Object.values(relationType) }, //<-- IE inheritence functionality
+    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD" }, // UML Final state.
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD" },  // UML Super State.
+    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Final state.
+    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD", canChangeTo: null },  // UML Super State.
 
-    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor" }, // sequence actor and object
-    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE" }, // Sequence Activation.
-    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt"}, // Sequence Loop or Alternative.
+    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor", canChangeTo: null }, // sequence actor and object
+    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE", canChangeTo: null }, // Sequence Activation.
+    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt", canChangeTo: null }, // Sequence Loop or Alternative.
 
     note: { name: "Note", kind: "note", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
 }
@@ -6466,21 +6474,42 @@ function generateContextProperties()
           //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
           //TODO: Find a way to do this dynamically as new diagram types are added
           if (element.kind != 'ERAttr') {
-              str += `<div style='color:white'>Type</div>`;
+              var typesToChangeTo = [];
 
-              //Create a dropdown menu for diagram type
-              var value = Object.values(entityType);
-              var selected = context[0].type;
-
-              str += '<select id="typeSelect">';
-              for (i = 0; i < value.length; i++) {
-                  if (selected != value[i]) {
-                      str += '<option value='+value[i]+'>'+ value[i] +'</option>';   
-                  } else if(selected == value[i]) {
-                      str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                  }
+              // If property canChangeTo is not set, or set to null, assign empty array
+              if (element.canChangeTo === undefined || element.canChangeTo === null) {
+                typesToChangeTo = []
               }
-              str += '</select>'; 
+              // If canChangeTo is set and containts any value, assign canChangeTo
+              else if (element.canChangeTo && element.canChangeTo.length > 0) {
+                typesToChangeTo = element.canChangeTo
+              } 
+              // If canChangeTo is set but is empty, assign all types
+              else {
+                typesToChangeTo = Object.values(entityType);
+              }
+
+              // Create a dropdown menu for diagram type, if typesToChangeTo has any value(s)
+              if (typesToChangeTo.length > 0) {
+                var selected = context[0].type;
+                str += `<div style='color:white'>Type</div>`;
+
+                str += '<select id="typeSelect">';
+
+                //Only displays selected element in dropdown if it has any lines
+                if (elementHasLines(element)){
+                    str += '<option selected ="selected" value='+selected+'>'+ selected +'</option>';
+                }else{
+                    for (i = 0; i < typesToChangeTo.length; i++) {
+                        if (selected != typesToChangeTo[i]) {
+                            str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;   
+                        } else if(selected == typesToChangeTo[i]) {
+                            str +=  `<option selected="selected" value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
+                        }
+                    }
+                }
+                str += '</select>'; 
+              }
           }
           
           //Selected ER type
