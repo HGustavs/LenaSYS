@@ -1017,23 +1017,13 @@ function AJAXService(opt,apara,kind)
 	}
 
 	if(kind=="COURSE"){
-		if(opt==="UPDATEVRS"){
-			$.ajax({
-				url: "../DuggaSys/microservices/courseedservice/setActiveCourseversion_ms.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-			});
-		}else{
-			$.ajax({
-				url: "courseedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-			});
-		}		
+		$.ajax({
+			url: "courseedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedCourse
+		});		
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
