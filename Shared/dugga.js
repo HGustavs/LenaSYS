@@ -1087,13 +1087,30 @@ function AJAXService(opt,apara,kind)
 				success: returnedAccess
 			});
 	}else if(kind=="SECTION"){
-    $.ajax({
-      url: "sectionedservice.php",
-      type: "POST",
-      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-      dataType: "json",
-      success: returnedSection
-    });
+		// Call microservice to create new items 
+		// TODO: This is probably not a very good solution, this is done with the opt comparison
+		// because the microservices are added incrementally, and the SECTION kind is used by many
+		// AJAXService calls inside sectioned.js
+		// For now this is usable, but should be remade when all microservices related 
+		// to sectionedservice.php are implemented
+		if(opt === "NEW"){
+			$.ajax({
+				url: "../DuggaSys/microservices/shared_microservices/createNewCodeExample_ms.php",
+				type: "POST",
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+				dataType: "json",
+				success: returnedSection
+			});
+		// otherwise call monolith
+		}else{
+			$.ajax({
+			url: "sectionedservice.php",
+			type: "POST",
+			data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+			dataType: "json",
+			success: returnedSection
+			});
+		}
   }else if(kind=="GRP"){
     $.ajax({
       url: "sectionedservice.php",
