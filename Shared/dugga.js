@@ -1023,7 +1023,7 @@ function AJAXService(opt,apara,kind)
 		// to courseedservice.php are implemented
 		if(opt === "SETTINGS"){
 			$.ajax({
-				url : "../DuggaSys/microservices/courseedService/ccreateMOTD_ms.php",
+				url : "../DuggaSys/microservices/courseedService/createMOTD_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
