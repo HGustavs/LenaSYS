@@ -9366,4 +9366,7 @@ margin:2px;
   fill: #000;
 }
 
+.boxSelectionLines {
+  stroke:#000;
+}
 /* END */
