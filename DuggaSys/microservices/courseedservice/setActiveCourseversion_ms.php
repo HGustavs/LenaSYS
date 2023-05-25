@@ -3,8 +3,8 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
-include_once "../Shared/basic.php";
-include_once "../Shared/sessions.php";
+//include_once "../Shared/basic.php";
+//include_once "../Shared/sessions.php";
 include_once '../shared_microservices/getUid_ms.php';
 
 // Connect to database and start session
@@ -20,8 +20,6 @@ $versname=getOP('versname');
 $makeactive=getOP('makeactive');
 
 getUid();
-
-//$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 
 if(strcmp($opt,"UPDATEVRS")===0){
     $query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
@@ -45,6 +43,5 @@ if(strcmp($opt,"UPDATEVRS")===0){
             }	
     }
 }
-
 
 ?>
