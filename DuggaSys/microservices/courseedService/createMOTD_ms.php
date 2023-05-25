@@ -32,11 +32,11 @@ $readonly=getOP('readonly');
 // $courseGitURL=getOP('courseGitURL'); // for github url
 // $LastCourseCreated=array();
 
-//if(checklogin() && ($writeAccess=="w" || isSuperUser(getUid()))) {
+// if(checklogin() && (hasAccess(getUid())=="w" || isSuperUser(getUid()))) {
 // if(strcmp($opt,"SETTINGS")===0){
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
-    $query->bindParam(':motd', getUid());
+    $query->bindParam(':motd', hasAccess(getUid()));
     if($readonly == "UNK") {$readonly=0;}
     $query->bindParam(':readonly', $readonly);
 
@@ -45,5 +45,5 @@ $readonly=getOP('readonly');
         $debug="Error updating entries\n".$error[2];
     }
 // }
-//}
+// }
 ?>
