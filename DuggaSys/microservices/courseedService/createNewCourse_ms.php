@@ -21,8 +21,6 @@ $coursename = getOP('coursename');
 $coursecode = getOP('coursecode');
 $courseGitURL = getOP('courseGitURL'); // for github url
 
-$ha = null;
-
 $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
 $query->bindParam(':uid', $userid);
 $query->execute();
