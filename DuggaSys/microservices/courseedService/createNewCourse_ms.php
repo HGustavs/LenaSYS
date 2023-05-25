@@ -30,6 +30,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	$username = $row['username'];
 }
 
+//I dont know why but this is needed for something :^)
 $isSuperUserVar = false;
 
 if (checklogin()) {
