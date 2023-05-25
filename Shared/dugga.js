@@ -1018,8 +1018,8 @@ function AJAXService(opt,apara,kind)
 
 	if(kind=="COURSE"){
 			$.ajax({
-				url: "courseedservice.php",
-				// url: "createCourseVersion_ms.php",
+				//url: "courseedservice.php",
+				url: "newCourseVersion_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
