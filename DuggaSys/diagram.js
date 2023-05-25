@@ -4252,18 +4252,18 @@ function toggleDarkmode()
         stylesheet.href = "../Shared/css/blackTheme.css";
         localStorage.setItem('diagramTheme',stylesheet.href)
     }
-    
     if (stylesheet.href.includes('blackTheme')) {
         btn.style.backgroundColor ="#614875";
         btn.style.color = "#ffffff";
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
-     } else {
+    } else {
         btn.style.backgroundColor ="transparent";
         btn.style.border = "3px solid #614875";
         btn.style.color = "#614875";
         btn.style.fontWeight = "bold";
-   }
+    }
+
 
     showdata();
 

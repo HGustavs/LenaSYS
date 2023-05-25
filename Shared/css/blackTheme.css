@@ -1259,6 +1259,31 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   color: #fff;
 }
 
+#darkmodeToggle {
+    background-color: #614875;
+    color: #ffffff;
+    font-weight: normal;
+    border: 3px solid #614875;
+}
+
+#a4TemplateToggle { 
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
+#diagramDropDownToggle { 
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
+    font-weight: bold;
+}
+
 .boxSelectionLines {
     stroke:#fff;
 }
