@@ -1,6 +1,10 @@
 <?php 
 	// -------------==============######## Setup ###########==============-------------
 
+	// Variables for the refresh button, deadlines specified in seconds
+	$shortdeadline = 300; // 300 = 5 minutes
+	$longdeadline = 600; // 600 = 10 minutes
+
 	// Used to display errors on screen since PHP doesn't do that automatically.
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
@@ -92,10 +96,7 @@
 	//--------------------------------------------------------------------------------------------------
 
 	function refreshCheck($cid, $user) {
-		// Specify deadlines in seconds
-		$shortdeadline = 300; // 300 = 5 minutes
-		$longdeadline = 600; // 600 = 10 minutes
-
+		global $shortdeadline, $longdeadline;
 		// Connect to database and start session
 		pdoConnect();
 		session_start();

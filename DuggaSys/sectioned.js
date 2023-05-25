@@ -28,6 +28,11 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 
+// Globals for the automatic refresh (github)
+var isActivelyFocused = false; // If the user is actively focusing on the course page
+var lastUpdatedCodeExampes = null; // Last time code examples was updated
+const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+
 
 function IsLoggedIn(bool){
   bool ? isLoggedIn = true : isLoggedIn = false ;
@@ -3088,10 +3093,6 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
     return false;
   }
 }
-
-var isActivelyFocused = false; // If the user is actively focusing on the course page
-var lastUpdatedCodeExampes = null; // Last time code examples was updated
-const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
 
 // Function to fetch code examples for a specific lecture/moment
 function createExamples(momentID, isManual) {
