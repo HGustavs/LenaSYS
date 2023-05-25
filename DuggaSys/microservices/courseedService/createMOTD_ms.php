@@ -36,7 +36,7 @@ $readonly=getOP('readonly');
 // if(strcmp($opt,"SETTINGS")===0){
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
-    $query->bindParam(':motd', isSuperUser(getUid()));
+    $query->bindParam(':motd', getUid());
     if($readonly == "UNK") {$readonly=0;}
     $query->bindParam(':readonly', $readonly);
 
