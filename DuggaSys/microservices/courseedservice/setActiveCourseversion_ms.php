@@ -19,6 +19,8 @@ $makeactive=getOP('makeactive');
 
 getUid();
 
+$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
+
 if($makeactive==3){
     $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
     $query->bindParam(':cid', $cid);
