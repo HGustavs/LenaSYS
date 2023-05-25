@@ -3613,17 +3613,27 @@ function getRectFromElement (element)
             if(preResizeHeight[i].height < element.height){
                 resizedY += (element.height - preResizeHeight[i].height)/2
             }
+            let elementY = resizedY;
+            if(element.type == "SE"){
+                console.log("SE resized");
+                elementY += preResizeHeight[i].height/3;
+            }
             return {
                 x: element.x,
-                y: resizedY,
+                y: elementY,
                 width: element.width,
                 height: element.height
             };
         }
     }
+    let elementY = element.y;
+    if(element.type == "SE"){
+        console.log("SE normal");
+        elementY += element.height/3;
+    }
     return {
         x: element.x,
-        y: element.y,
+        y: elementY,
         width: element.width,
         height: element.height,
     };
