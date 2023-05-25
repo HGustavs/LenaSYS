@@ -836,7 +836,7 @@ const elementTypesNames = {
     sequenceActorAndObject: "sequenceActorAndObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
-    note: "Note",
+    note: "NOTE",
 }
 
 /**
