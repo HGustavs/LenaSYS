@@ -19,16 +19,30 @@ $makeactive=getOP('makeactive');
 
 getUid();
 
-$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
+//$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 
-if($makeactive==3){
-    $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
-    $query->bindParam(':cid', $cid);
+if(strcmp($opt,"UPDATEVRS")===0){
+    $query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+    $query->bindParam(':cid', $courseid);
+    $query->bindParam(':coursecode', $coursecode);
     $query->bindParam(':vers', $versid);
+    $query->bindParam(':versname', $versname);
+
     if(!$query->execute()) {
             $error=$query->errorInfo();
             $debug="Error updating entries\n".$error[2];
-    }	
+    }
+    if($makeactive==3){
+            $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+            $query->bindParam(':cid', $courseid);
+            $query->bindParam(':vers', $versid);
+
+            if(!$query->execute()) {
+                    $error=$query->errorInfo();
+                    $debug="Error updating entries\n".$error[2];
+            }	
+    }
 }
+
 
 ?>
