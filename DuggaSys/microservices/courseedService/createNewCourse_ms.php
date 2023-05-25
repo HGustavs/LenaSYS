@@ -30,6 +30,8 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	$username = $row['username'];
 }
 
+$isSuperUserVar = false;
+
 if (checklogin()) {
 	if (isset($_SESSION['uid'])) {
 		$userid = $_SESSION['uid'];
