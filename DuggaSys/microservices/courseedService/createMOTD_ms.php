@@ -16,7 +16,7 @@ date_default_timezone_set("Europe/Stockholm");
 include ("../../../Shared/sessions.php");     
 include('../shared_microservices/getUid_ms.php');
 
-// Connect to database and start session
+// Connect to database and start session.
 pdoConnect();
 session_start();
 
