@@ -1,9 +1,7 @@
 <?php
 date_default_timezone_set("Europe/Stockholm");
-
+include ("../../../Shared/sessions.php");
 include('../shared_microservices/getUid_ms.php');
-
-getUid();
 
 // Connect to database and start session
 pdoConnect();
