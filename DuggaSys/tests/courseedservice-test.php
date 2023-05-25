@@ -13,7 +13,15 @@ $testsData = array(
     /* Insert into course */
 
     'Insert into course test' => array(
-        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'expected-output' => '{
+            "LastCourseCreated": [],
+            "entries": [],
+            "versions": [],
+            "debug": "NONE!",
+            "writeaccess": null,
+            "motd": "UNK",
+            "readonly": 0
+          }',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'G1337' ORDER BY coursecode DESC LIMIT 1",
         'query-before-test-2' => "INSERT INTO course (coursecode,coursename,visibility) VALUES('G1337','Testing-Course',1)",
         'query-before-test-3' => "DELETE FROM course WHERE coursecode = 'G1337' AND cid = ?",
@@ -34,15 +42,31 @@ $testsData = array(
 	    'blop' => '<!query-before-test-1!> <*[0][cid]*>'
         )),
         'filter-output' => serialize(array(
-            'debug',
-            'readonly'
+            'cid',
+            'coursecode',
+            'vers',
+            'versname',
+            'coursename',
+            'coursenamealt',
+            'opt',
+            'activeversion',
+            'activeedversion',
+            'registered'
         )),
     ),
 
     /* Insert into vers */
 
     'Insert into course test' => array(
-        'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+        'expected-output' => '{
+            "LastCourseCreated": [],
+            "entries": [],
+            "versions": [],
+            "debug": "NONE!",
+            "writeaccess": null,
+            "motd": "UNK",
+            "readonly": 0
+          }',
         'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'G1337' ORDER BY coursecode DESC LIMIT 1",
         'query-before-test-2' => "INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1])",
         'query-before-test-3' => "DELETE FROM course WHERE coursecode = 'G1337' AND cid = ?",
@@ -64,15 +88,31 @@ $testsData = array(
 	    'blop' => '<!query-before-test-1!> <*[0][cid]*>'
         )),
         'filter-output' => serialize(array(
-            'debug',
-            'readonly'
+            'cid',
+            'coursecode',
+            'vers',
+            'versname',
+            'coursename',
+            'coursenamealt',
+            'opt',
+            'motd',
+            'startdate',
+            'enddate'
         )),
     ),
 
         /* Update course */
 
         'Update course test' => array(
-            'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+            'expected-output' => '{
+                "LastCourseCreated": [],
+                "entries": [],
+                "versions": [],
+                "debug": "NONE!",
+                "writeaccess": null,
+                "motd": "UNK",
+                "readonly": 0
+              }',
             'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'G1337' ORDER BY coursecode DESC LIMIT 1",
             'query-before-test-2' => "INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);",
             'query-before-test-3' => "DELETE FROM course WHERE coursecode = 'G1337' AND cid = ?",
@@ -89,15 +129,26 @@ $testsData = array(
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
-                'debug',
-                'readonly'
+                'cid',
+                'coursecode',
+                'versid',
+                'versname',
+                'coursename'
             )),
         ),
 
         /* Update vers */
 
         'Update vers test' => array(
-            'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+            'expected-output' => '{
+                "LastCourseCreated": [],
+                "entries": [],
+                "versions": [],
+                "debug": "NONE!",
+                "writeaccess": null,
+                "motd": "UNK",
+                "readonly": 0
+              }',
             'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testCourseCode' ORDER BY coursecode DESC LIMIT 1",
             'query-before-test-2' => "INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);",
             'query-before-test-3' => "INSERT INTO vers(cid, vers, versname, coursecode, coursename, coursenamealt, startdate, enddate, motd) VALUES ($preValuesVers[0], $preValuesVers[1], $preValuesVers[2], $preValuesVers[3], $preValuesVers[4], $preValuesVers[5]);",
@@ -114,15 +165,26 @@ $testsData = array(
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
-                 'debug',
-                'readonly'
+                'opt',
+                'courseid',
+                'coursecode',
+                'versid',
+                'versname'
              )),
         ),
 
         /* Update course */
 
         'Update course test' => array(
-            'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+            'expected-output' => '{
+                "LastCourseCreated": [],
+                "entries": [],
+                "versions": [],
+                "debug": "NONE!",
+                "writeaccess": null,
+                "motd": "UNK",
+                "readonly": 0
+              }',
             'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testCourseCode' ORDER BY coursecode DESC LIMIT 1",
             'query-before-test-2' => "INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);",
             'query-after-test-1' => "DELETE FROM vers WHERE cid = 9999;",
@@ -138,15 +200,26 @@ $testsData = array(
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
-                 'debug',
-                'readonly'
+                'opt',
+                'courseid',
+                'coursecode',
+                'versid',
+                'versname'
              )),
         ),
 
         /* INSERT INTO VERS */
 
         'Insert into vers test' => array(
-            'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+            'expected-output' => '{
+                "LastCourseCreated": [],
+                "entries": [],
+                "versions": [],
+                "debug": "NONE!",
+                "writeaccess": null,
+                "motd": "UNK",
+                "readonly": 0
+              }',
             'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testCourseCode' ORDER BY coursecode DESC LIMIT 1",
             'query-before-test-2' => "INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);",
             'query-before-test-3' => "INSERT INTO vers(cid, vers, versname, coursecode, coursename, coursenamealt, startdate, enddate, motd) VALUES ($preValuesVers[0], $preValuesVers[1], $preValuesVers[2], $preValuesVers[3], $preValuesVers[4], $preValuesVers[5], $preValuesVers[6], $preValuesVers[7], $preValuesVers[8]);",
@@ -168,15 +241,31 @@ $testsData = array(
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
-                 'debug',
-                'readonly'
+                'cid',
+                'coursecode',
+                'vers',
+                'versname',
+                'coursename',
+                'coursenamealt',
+                'opt',
+                'motd',
+                'startdate',
+                'enddate'
              )),
         ),
 
         /* Update course */
 
         'Update course test' => array(
-            'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+            'expected-output' => '{
+                "LastCourseCreated": [],
+                "entries": [],
+                "versions": [],
+                "debug": "NONE!",
+                "writeaccess": null,
+                "motd": "UNK",
+                "readonly": 0
+              }',
             'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testCourseCode' ORDER BY coursecode DESC LIMIT 1",
             'query-before-test-2' => "INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);",
             'query-after-test-1' => "DELETE FROM vers WHERE cid = 9999;",
@@ -197,15 +286,31 @@ $testsData = array(
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
-                 'debug',
-                'readonly'
+                'cid',
+                'coursecode',
+                'vers',
+                'versname',
+                'coursename',
+                'coursenamealt',
+                'opt',
+                'motd',
+                'startdate',
+                'enddate'
              )),
         ),
 
         /* Update course */
 
         'Update course test' => array(
-            'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+            'expected-output' => '{
+                "LastCourseCreated": [],
+                "entries": [],
+                "versions": [],
+                "debug": "NONE!",
+                "writeaccess": null,
+                "motd": "UNK",
+                "readonly": 0
+              }',
             'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testCourseCode' ORDER BY coursecode DESC LIMIT 1",
             'query-before-test-2' => "INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);",
             'query-after-test-1' => "DELETE FROM vers WHERE cid = 9999;",
@@ -222,15 +327,28 @@ $testsData = array(
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
-                 'debug',
-                'readonly'
+                'readonly',
+                'opt',
+                'courseid',
+                'coursecode',
+                'coursename',
+                'courseGitURL',
+                'visibility'
              )),
         ),
 
         /* SETTINGS test */
 
         'SETTINGS test' => array(
-            'expected-output' => '{"debug":"NONE!","motd":"UNK"}',
+            'expected-output' => '{
+                "LastCourseCreated": [],
+                "entries": [],
+                "versions": [],
+                "debug": "NONE!",
+                "writeaccess": null,
+                "motd": "UNK",
+                "readonly": 0
+              }',
             'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testCourseCode' ORDER BY coursecode DESC LIMIT 1",
             'query-after-test-1' => "DELETE FROM settings ORDER BY sid DESC LIMIT 1;'",
         'query-variables' => "blop",
@@ -242,8 +360,9 @@ $testsData = array(
             'blop' => '<!query-before-test-1!> <*[0][cid]*>'
             )),
             'filter-output' => serialize(array(
-                 'debug',
-                'readonly'
+                'readonly',
+                'opt',
+                'motd',
              )),
         ),
 
