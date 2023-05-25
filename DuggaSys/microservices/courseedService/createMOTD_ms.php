@@ -1,6 +1,19 @@
 <?php
+/********************************************************************************
+
+   CreateMOTD_ms.php
+
+*********************************************************************************
+
+    This micro service is called upon when the message of the day is changed in the page associated with courseed.
+    The user must be a super user to be able to do this!
+
+-------------==============######## Documentation End ###########==============-------------
+*/
+
+
 date_default_timezone_set("Europe/Stockholm");
-include ("../../../Shared/sessions.php");           // this include is just temporery, and might be changed at a later date. 
+include ("../../../Shared/sessions.php");     
 include('../shared_microservices/getUid_ms.php');
 
 // Connect to database and start session
@@ -11,27 +24,9 @@ $opt=getOP('opt');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
 
-
-// $cid=getOP('cid');
-// $coursename=getOP('coursename');
-// $visibility=getOP('visib');
-// $activevers=getOP('activevers');
-// $activeedvers=getOP('activeedvers');
-// $versid=getOP('versid');
-// $versname=getOP('versname');
-// $coursenamealt=getOP('coursenamealt');
-// $coursecode=getOP('coursecode');
-// $copycourse=getOP('copycourse');
-// $startdate=getOP('startdate');
-// $enddate=getOP('enddate');
-// $makeactive=getOP('makeactive');
-
-
-// $courseGitURL=getOP('courseGitURL'); // for github url
-// $LastCourseCreated=array();
-
+// Updates the message of the day 
 if(checklogin() && isSuperUser(getUid())) {
-// if(strcmp($opt,"SETTINGS")===0){
+
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
     $query->bindParam(':motd', $motd);
@@ -42,6 +37,5 @@ if(checklogin() && isSuperUser(getUid())) {
         $error=$query->errorInfo();
         $debug="Error updating entries\n".$error[2];
     }
-// }
 }
 ?>
