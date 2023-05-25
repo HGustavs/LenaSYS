@@ -5,7 +5,7 @@
 include_once "../../../Shared/basic.php";
 
 
-function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated){
+function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated, $isSuperUserVar){
     // Include basic application services!
     date_default_timezone_set("Europe/Stockholm");
     include_once "../../../Shared/sessions.php";
