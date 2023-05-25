@@ -2816,6 +2816,20 @@ function changeState()
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     }
+    else if (element.type == 'NOTE') {
+        //Check if type has been changed
+        if (oldType != newType) {
+            var newKind = element.kind;
+            newKind = newKind.replace(oldType, newType);
+            //Update element kind
+            element.kind = newKind;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        //Update element type
+        element.type = newType;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    }
 
     displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 
@@ -6468,18 +6482,7 @@ function generateContextProperties()
               }
               str += '</select>'; 
           }
-          if (element.type == 'NOTE') {
-              for (const property in element) {
-                  switch (property.toLowerCase()) {
-                      case 'attributes':
-                          str += `<div style='color:white'>Attributes </div>`;
-                          str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                          break;
-                      default:
-                          break;
-                  }
-              }
-          }
+          
           //Selected ER type
           if (element.type == 'ER') {
               //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
@@ -6519,7 +6522,18 @@ function generateContextProperties()
               }
               str += '</select>'; 
           }
-
+          else if (element.type == 'NOTE') {
+              for (const property in element) {
+                  switch (property.toLowerCase()) {
+                      case 'attributes':
+                          str += `<div style='color:white'>Attributes </div>`;
+                          str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
+                          break;
+                      default:
+                          break;
+                  }
+              }
+          }
           //Selected UML type
           else if (element.type == 'UML') {
               //If UML entity
@@ -6790,7 +6804,7 @@ function generateContextProperties()
             if(contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
             str += `/>`;
         }
-        if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE'  ) {
+          if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'NOTE') {
             str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
             str  += `<option value=''>None</option>`;
             //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
@@ -7016,7 +7030,7 @@ function generateContextProperties()
       }
       propSet.innerHTML = str;
 
-      multipleColorsTest();
+    multipleColorsTest();
     }
 
 /**
@@ -7398,16 +7412,22 @@ function multipleColorsTest()
                 button.insertBefore(textNode, button.firstChild);
                 varyingFills = true;
             }
-            // Checks if there are varying stroke colors, but not if varying colors have already been detected
+            
+           /*
+           // Checks if there are varying stroke colors, but not if varying colors have already been detected
             if (stroke != context[i].stroke && !varyingStrokes) {
                 var button = document.getElementById("colorMenuButton2");
                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
                 var textNode = document.createTextNode("Multiple Color Values");
                 button.insertBefore(textNode, button.firstChild);
                 varyingStrokes = true;
+               
             }
             // If varying colors have been detected in both of the above, there is no reason to continue the test
-            if (varyingFills && varyingStrokes) break;
+            if (varyingFills && varyingStrokes) {
+                break;
+            }
+            */
         }
     }
 }
@@ -7820,7 +7840,7 @@ function preProcessLine(line) {
  * @param {boolean} targetGhost Is the targeted line an ghost line
  */
 function drawLine(line, targetGhost = false)
-{   
+{
     var felem, telem, dx, dy;
     var str = "";
 
@@ -7847,7 +7867,7 @@ function drawLine(line, targetGhost = false)
 
     //ineColor = '#000000';
 
-    if(contextLine.includes(line)){
+    if (contextLine.includes(line)) {
         lineColor = selectedColor;
     }
     felem = data[findIndex(data, line.fromID)];
@@ -7889,7 +7909,7 @@ function drawLine(line, targetGhost = false)
     }
 
     // Set line end-point in center of UMLRelations.
-    if(felem.kind == "UMLRelation"){
+    if (felem.kind == "UMLRelation"){
         fx = felem.cx;
         fy = felem.cy;
     } else if (telem.kind == "UMLRelation"){
@@ -7904,11 +7924,11 @@ function drawLine(line, targetGhost = false)
         var fromRelation = felem.kind === "ERRelation";
         lengthConstant = 0;
 
-        if (fromRelation) {            
+        if (fromRelation) {
             if (line.ctype == "BT") {
                 fy = felem.cy;
                 fx = (isFirst) ? felem.x1: felem.x2;
-                
+
             } else if (line.ctype == "TB") {
                 fy = felem.cy;
                 fx = (isFirst) ? felem.x1: felem.x2;
@@ -8008,11 +8028,9 @@ function drawLine(line, targetGhost = false)
     else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
     }
-    
     else {
-        line.type = 'UML';
-    }
-
+        line.type = 'UML';       
+}
     // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
 
