@@ -3521,7 +3521,7 @@ function getRectFromElement (element)
         if (element.id == preResizeHeight[i].id) {
             let resizedY = element.y;
             if(preResizeHeight[i].height < element.height){
-                resizedY += (element.height - preResizeHeight[i].height)/4
+                resizedY -= (element.height - preResizeHeight[i].height)/4
             }
             return {
                 x: element.x,
