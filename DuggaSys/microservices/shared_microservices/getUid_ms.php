@@ -23,6 +23,6 @@
 
         $appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
-        return $log_uuid;
+        return $userid;
     }
 ?>
