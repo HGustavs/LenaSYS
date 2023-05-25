@@ -3532,7 +3532,6 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
-    console.log("getRectFromElement");
     for (var i = 0; i < preResizeHeight.length; i++) {
         if (element.id == preResizeHeight[i].id) {
             let resizedY = element.y;
