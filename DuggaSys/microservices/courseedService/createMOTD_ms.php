@@ -24,11 +24,11 @@ $opt=getOP('opt');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
 
-$isSuperUserVar=false; 
-$isSuperUserVar=isSuperUser(getUid());
+// $isSuperUserVar=false; 
+// $isSuperUserVar=isSuperUser(getUid());
 
 // Updates the message of the day 
-if(checklogin() && $isSuperUserVar == true) {
+if(checklogin() && isSuperUser(getUid()) == true) {
 
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
