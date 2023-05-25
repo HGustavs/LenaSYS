@@ -156,15 +156,26 @@ function testHandler($testsData, $prettyPrint){
             echo "<h2>{$testData['name']} </h2>";
         }
 
+        if (!(strpos($testData['service'], "/"))) {
+            echo $testData['service'];
+            $dirname = dirname(dirname(__FILE__));
+            $urlpath = strstr($dirname, '/root');
+            $serviceURL = "https://cms.webug.se/".$urlpath."/DuggaSys/".$testData['service'];
+        }
+        else{
+            $serviceURL = $testData['service'];
+        }
+
         // Test 1 login
         $serviceData = unserialize($testData['service-data']);
         $test1Response = json_encode(loginTest($serviceData['username'], $serviceData['password'], $prettyPrint));
         $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
         // Test 2 callService
-        $test2Response = json_encode(callServiceTest($testData['service'], $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
+        $test2Response = json_encode(callServiceTest($serviceURL, $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
         $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
+
 
         // Test 3 assertEqual
         $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
@@ -260,7 +271,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     // Only include JSON same as filter
     foreach($filter as $option => $optionArray){
         // If none do not filter
-        if ($option === "none") {
+        if ($optionArray === "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
         }
         else{
@@ -278,6 +289,13 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
                         foreach($optionArray as $insideFilter){
                             if ($inside2 == $insideFilter) {
                               $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
+                          }
+                            foreach(json_decode($insideValue2) as $inside3 => $insideValue3){
+                                foreach($insideFilter as $insideFilter2){
+                                    if ($inside3 == $insideFilter2) {
+                                        $curlResponseJSONFiltered[$key][$inside][$inside2][$inside3] = $insideValue3;
+                                    }
+                                }
                             }
                         }
                     }
@@ -299,7 +317,9 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         echo "<br>";
         echo "<strong>sent data: </strong>".json_encode($data,true);
         echo "<br>";
-        echo "<strong>respons: </strong>".json_encode($curlResponseJSONFiltered, true);
+        echo "<strong>respons (no filter): </strong>".json_encode($curlResponseJSON, true);
+        echo "<br>";
+        echo "<strong>respons (filtered): </strong>".json_encode($curlResponseJSONFiltered, true);
         echo "<br>";
         echo "<br>";
     }
@@ -317,6 +337,10 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 
     // Expected value is JSON
     $valueExpected = json_decode($valueExpected, true);
+
+    // Handle bad unicode in service files
+    //$valueOuput = json_encode($valueExpected, true, JSON_UNESCAPED_UNICODE);
+    //$valueOuput = json_decode($valueOuput, true);
 
     if (($valueExpected != null) && ($valueOuput != null)){
         $equalTest = ($valueExpected == $valueOuput);
@@ -347,5 +371,5 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint){
 }
 
 
-// Version 1.4.1 (Increment when new change in code)
+// Version 1.5 (Increment when new change in code)
 ?>
