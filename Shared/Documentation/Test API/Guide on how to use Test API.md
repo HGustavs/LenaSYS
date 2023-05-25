@@ -13,15 +13,15 @@ The test API executes three different tests, the first one making sure that the 
 
 ### How to use it 
 
-The test API aims to be as easy as possible. In figure 2 you can find an example of the code and JSON needed to use the test API, this will be referred to in this guide. First you need to include the test.php file. And the last step in the code should be to call the testHandler() with the JSON data and the second parameter that decides how you want to view the results. The JSON data in $testsData is what controls the testing API. For every outer array you include in this JSON a test will be run for the service, in the example there are currently two tests: create course test and create course test 2. **OBS! All test files needs to be stored in folder DuggaSys/tests otherwise it wont work.**
+The test API aims to be as easy as possible. In figure 2 you can find an example of the code and JSON needed to use the test API, this will be referred to in this guide. First you need to include the test.php file. And the last step in the code should be to call the testHandler() with the JSON data, path (URL to services directory) and the third parameter that decides how you want to view the results. The JSON data in $testsData is what controls the testing API. For every outer array you include in this JSON a test will be run for the service, in the example there are currently two tests: create course test and create course test 2. **OBS! All test files needs to be stored in folder DuggaSys/tests otherwise it wont work.**
 
 - **expected-output:** Data to use in the comparison test. Compares this data to the service output. You will need to find this from the respons when manually do the actions required to execute a service.
 - **query-before-test:** If database query is needed before test (ex insert) insert query here. Add a number to the end in order to execute multiple querys.  
 - **query-after-test:** If database query is needed after test (ex delete) insert query here. Add a number to the end in order to execute multiple querys.   
-- **service:** This should be the URL to the file that contains the service you are going to test. 
+- **service:** This should be the URL to the file that contains the service you are going to test. You can use either a relative URl (only filename) or a static URL. If realtive same URL as the Test API will be used.  
 - **service-data**: Include here all data that are needed to execute the specific service. The monolithic services use the opt to decide which service to execute. But each service also needs other parameters to be able to execute the service. In the example all parameters to create a new course is defined. This is something you need to find out, and there should be test descriptions on GitHub that describes all these needed parameters. 
 
-- **filter-option:** This decides what JSON output to use in the comparison test that will be performed later. This should be the same as the expected output if used. And it is also the displayed repones from the test. If none is used as the only value in the array all output data from the service will be used. You can also make an array to specify what values in the array of a respons field to include, in the example only coursename, cousecode and visibility will be saved. If there is no array like this alla data will be used (no filter will be applied to the specific field)
+- **filter-option:** This decides what JSON output to use in the comparison test that will be performed later. This should be the same as the expected output if used. And it is also the displayed repones from the test. If none is used as the only value in the array all output data from the service will be used. You can also make an array to specify what values in the array of a respons field to include, in the example only coursename, cousecode and visibility will be saved. Maximum nested array is 3 as example. If there is no array like this alla data will be used (no filter will be applied to the specific field)
 
 #### Save query output
 You can save the output from a "query-before-test" and use the value in the service data as the example in figure 2 shows. Soround the name of the query you want to save with "<!" before and  "!> after (ex !query-before-test-1!) and then you can specify a path to the exact value (optional) to save, for example [0][coursename], do this "<* .... *>".
@@ -56,7 +56,7 @@ $testsData = array(
         'query-before-test-3' => "DELETE FROM course WHERE coursecode = 'IT401G' AND cid = ?",
         'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
         'query-after-test-2' => "DELETE FROM course WHERE coursecode = 'IT478G' AND coursename = 'APICreateCourseTestQuery'",
-        'service' => 'https://cms.webug.se/root/G2/students/c21alest/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'courseedservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
             'opt' => 'NEW',
             'username' => 'usr',
@@ -70,7 +70,9 @@ $testsData = array(
             'debug',
             'readonly',
             'entries' => array( // if not specified all data in array is used otherwise filtered with defined values
-                'coursename',
+                'coursename' => array(
+		     'shortname'
+		),
                 'coursecode',
                 'visibility'
             ),
@@ -93,7 +95,7 @@ $testsData = array(
     ),
 );
  
-testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
+testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 ```
 
@@ -228,4 +230,4 @@ Depending on the second argument to testHandler two different outputs will be di
 - **True:** Returns HTML that displays the results.  
 - **False:** Returns all test results as JSON. 
 
-***Guide for Test API version 1.4.1***
+***Guide for Test API version 1.5***
