@@ -3613,9 +3613,6 @@ function getRectFromElement (element)
             if(preResizeHeight[i].height < element.height){
                 resizedY += (element.height - preResizeHeight[i].height)/2
             }
-            if(element.type == "SE"){
-                resizedY += (element.height - preResizeHeight[i].height)/8
-            }
             return {
                 x: element.x,
                 y: resizedY,
