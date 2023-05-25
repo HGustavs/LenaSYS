@@ -2680,7 +2680,7 @@ function mmoving(event)
                     let resizedElement = structuredClone(elementData);
                     preResizeHeight.push(resizedElement);
                 }else{
-                    for (var i = 0; i < preResizeHeight.length; i++) {
+                    for (let i = 0; i < preResizeHeight.length; i++) {
                         if (elementData.id == preResizeHeight[i].id) {
                             foundID = true;
                         }
@@ -2715,7 +2715,7 @@ function mmoving(event)
                     let resizedElement = structuredClone(elementData);
                     preResizeHeight.push(resizedElement);
                 }else{
-                    for (var i = 0; i < preResizeHeight.length; i++) {
+                    for (let i = 0; i < preResizeHeight.length; i++) {
                         if (elementData.id == preResizeHeight[i].id) {
                             foundID = true;
                         }
@@ -3607,15 +3607,14 @@ function getRectFromPoints(topLeft, bottomRight)
  */
 function getRectFromElement (element)
 {
-    for (var i = 0; i < preResizeHeight.length; i++) {
+    for (let i = 0; i < preResizeHeight.length; i++) {
         if (element.id == preResizeHeight[i].id) {
             let resizedY = element.y;
             if(preResizeHeight[i].height < element.height){
                 resizedY += (element.height - preResizeHeight[i].height)/2
             }
             if(element.type == "SE"){
-                resizedY -= (element.height - preResizeHeight[i].height)/4
-                resizedY += 100;
+                resizedY += 300;
             }
             return {
                 x: element.x,
