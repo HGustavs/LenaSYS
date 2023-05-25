@@ -1076,7 +1076,7 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="SECTION"){
     $.ajax({
     //   url: "sectionedservice.php",
-	  url : "createCourseVersion_ms.php",
+	  url : "newCourseVersion_ms.php",
       type: "POST",
       data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
       dataType: "json",
