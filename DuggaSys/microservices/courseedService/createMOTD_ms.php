@@ -3,7 +3,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include('../shared_microservices/getUid_ms.php');
 
-echo isSuperUser(getUid()); 
 getUid();
 
 // Connect to database and start session
@@ -37,7 +36,7 @@ $readonly=getOP('readonly');
 // if(strcmp($opt,"SETTINGS")===0){
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
-    $query->bindParam(':motd', $motd);
+    $query->bindParam(':motd', isSuperUser(getUid()));
     if($readonly == "UNK") {$readonly=0;}
     $query->bindParam(':readonly', $readonly);
 
