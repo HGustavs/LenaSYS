@@ -195,9 +195,11 @@ Change params and service name to the ones needed for your service to work.
 
 ### Step 3:
 Copy everything under:
+```
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
+```
 Paste the copied code under pdoConnect();
 
 
