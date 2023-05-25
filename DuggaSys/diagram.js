@@ -2625,6 +2625,22 @@ function mmoving(event)
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
+
+                let foundID = false;
+                if(preResizeHeight == undefined){
+                    let resizedElement = structuredClone(elementData);
+                    preResizeHeight.push(resizedElement);
+                }else{
+                    for (var i = 0; i < preResizeHeight.length; i++) {
+                        if (elementData.id == preResizeHeight[i].id) {
+                            foundID = true;
+                        }
+                    }
+                    if(!foundID){
+                        let resizedElement = structuredClone(elementData);
+                        preResizeHeight.push(resizedElement);
+                    }
+                }
                 
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
