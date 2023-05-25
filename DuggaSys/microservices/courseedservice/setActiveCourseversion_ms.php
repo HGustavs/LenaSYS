@@ -14,7 +14,9 @@ session_start();
 // Global variables
 $opt=getOP('opt');
 $cid=getOP('cid');
+$coursecode=getOP('coursecode');
 $versid=getOP('versid');
+$versname=getOP('versname');
 $makeactive=getOP('makeactive');
 
 getUid();
