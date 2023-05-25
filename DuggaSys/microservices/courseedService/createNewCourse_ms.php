@@ -30,15 +30,14 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	$username = $row['username'];
 }
 
-/*
 if (checklogin()) {
 	if (isset($_SESSION['uid'])) {
 		$userid = $_SESSION['uid'];
 	} else {
 		$userid = "UNK";
 	}
-*/
-	if(checklogin() && isSuperUser(getUid())) {
+
+	if(isSuperUser(getUid())) {
 
 		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
 
@@ -57,5 +56,5 @@ if (checklogin()) {
 
 
 	}
-
+}
 ?>
