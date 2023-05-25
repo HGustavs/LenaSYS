@@ -11,7 +11,7 @@
         if(isset($_SESSION['uid'])){
             $userid=$_SESSION['uid'];
         }else{
-            $userid="guests";
+            $userid="guest";
         }
 
         $log_uuid = getOP('log_uuid');
