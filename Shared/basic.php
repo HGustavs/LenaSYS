@@ -248,14 +248,14 @@ try {
 $sql2 = '
 	CREATE TABLE IF NOT EXISTS gitRepos ( 
 		cid INTEGER,
-	  repoName VARCHAR(50), 
-    repoURL VARCHAR(255), 
-	  lastCommit VARCHAR(50),
-	  PRIMARY KEY (cid)
+		repoName VARCHAR(50), 
+    	repoURL VARCHAR(255), 
+		lastCommit VARCHAR(50),
+		PRIMARY KEY (cid)
 	);
 '; 
 $metadata_db->exec($sql2);
-
+// The indentation is really weird down below, i tried to make it normal but it just broke the code.
 $sql3 = '
 	CREATE TABLE IF NOT EXISTS gitFiles ( 
 		cid INTEGER,
@@ -265,10 +265,13 @@ $sql3 = '
     downloadURL VARCHAR(255), 
     fileSHA VARCHAR(255), 
     filePath VARCHAR(255),
+	templateID INTEGER, 
+	selectedDir VARCHAR(255),
 		PRIMARY KEY (cid, fileName)
 	);
 '; 
 $metadata_db->exec($sql3);
+
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site

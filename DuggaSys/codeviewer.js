@@ -708,8 +708,8 @@ function displayEditExample() {
 			afstr += "<option value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
 		}
 	}
-	document.getElementById("before").innerHTML += bestr;
-	document.getElementById("after").innerHTML += afstr;
+	// document.getElementById("before").innerHTML += bestr;
+	// document.getElementById("after").innerHTML += afstr;
 	document.getElementById("editExampleContainer").style.display = "flex";
 }
 
@@ -719,14 +719,14 @@ function displayEditExample() {
 
 function updateExample() {
 	// Set beforeid if set
-	var beforeid = "UNK";
-	if (retData['before'].length != 0) {
-		beforeid = retData['before'][0][0];
-	}
-	var afterid = "UNK";
-	if (retData['after'].length != 0) {
-		afterid = retData['after'][0][0];
-	}
+	// var beforeid = "UNK";
+	// if (retData['before'].length != 0) {
+	// 	beforeid = retData['before'][0][0];
+	// }
+	// var afterid = "UNK";
+	// if (retData['after'].length != 0) {
+	// 	afterid = retData['after'][0][0];
+	// }
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
 	if ((removedWords.length > 0) || (addedWords.length > 0) || ($("#before option:selected").val() != beforeid && beforeid != "UNK") || ($("#after option:selected").val() != afterid && afterid != "UNK") || ($("#playlink").val() != retData['playlink']) || ($("#title").val() != retData['examplename']) || ($("#secttitle").val() != retData['sectionname'])) {

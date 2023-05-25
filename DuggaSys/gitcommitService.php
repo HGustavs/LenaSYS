@@ -1,6 +1,10 @@
 <?php 
 	// -------------==============######## Setup ###########==============-------------
 
+	// Variables for the refresh button, deadlines specified in seconds
+	$shortdeadline = 300; // 300 = 5 minutes
+	$longdeadline = 600; // 600 = 10 minutes
+
 	// Used to display errors on screen since PHP doesn't do that automatically.
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
@@ -9,7 +13,7 @@
 	// Include basic application services!
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
-	include_once "../recursivetesting/FetchGithubRepo.php";
+	include_once "../DuggaSys/gitfetchService.php";
 
 	global $pdo;
 
@@ -22,7 +26,7 @@
 		}
 		else if($_POST['action'] == 'refreshGithubRepo') 
 		{
-			refreshGithubRepo($_POST['cid']);
+			refreshCheck($_POST['cid'], $_POST['user']);
 		}
 		else if($_POST['action'] == 'updateGithubRepo') 
 		{
@@ -74,7 +78,6 @@
 		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $url);
-		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];
@@ -89,10 +92,75 @@
 	// -------------==============######## Refresh Github Repo in Course ###########==============-------------
 
 	//--------------------------------------------------------------------------------------------------
+	// refreshCheck: Decided how often the data can be updated, and if it can be updated again
+	//--------------------------------------------------------------------------------------------------
+
+	function refreshCheck($cid, $user) {
+		global $shortdeadline, $longdeadline;
+		// Connect to database and start session
+		pdoConnect();
+		session_start();
+
+		// Fetching the latest update of the course from the MySQL database
+		global $pdo;
+		$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+
+		// Save the result in a variable
+		$updated = "";
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$updated = $row['updated'];
+		}
+
+		$currentTime = time(); // Get the current time as a Unix timestamp
+		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
+
+		// Check if the user has superuser priviliges
+		if($user == 1) { // 1 = superuser
+			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
+				print "Too soon since last update, please wait.";
+			} else {
+				newUpdateTime($currentTime, $cid);
+				refreshGithubRepo($cid);
+			}
+		} else { 
+			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
+				newUpdateTime($currentTime, $cid);
+				refreshGithubRepo($cid);
+			} else {
+				print "Too soon since last update, please wait.";
+			}
+		}
+	}
+
+	//--------------------------------------------------------------------------------------------------
+	// newUpdateTime: Updates the MySQL database to save the latest update time
+	//--------------------------------------------------------------------------------------------------
+
+	function newUpdateTime ($currentTime, $cid) {
+		// Connect to database and start session
+		pdoConnect();
+		session_start();
+
+		// Formats the UNIX timestamp into datetime
+		$parsedTime = date("Y-m-d H:i:s", $currentTime); 
+
+		// Fetching the latest update of the course from the MySQL database
+		global $pdo;
+		$query = $pdo->prepare('UPDATE course SET updated = :parsedTime WHERE cid = :cid;');
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':parsedTime', $parsedTime);
+		$query->execute();
+	}
+
+	//--------------------------------------------------------------------------------------------------
 	// refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit
 	//--------------------------------------------------------------------------------------------------
 
 	function refreshGithubRepo($cid){
+		clearGitFiles($cid); // Clear the gitfiles table before downloading repo
+
 		// Get old commit and URL from Sqlite 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
@@ -146,7 +214,6 @@
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $repoURL);
 		$query->bindParam(':lastCommit', $lastCommit);
-		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];
@@ -166,7 +233,6 @@
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$query = $pdolite->prepare("DELETE FROM gitFiles WHERE cid = :cid"); 
 		$query->bindParam(':cid', $cid);
-		$query->execute();
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];

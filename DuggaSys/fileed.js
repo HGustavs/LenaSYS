@@ -515,11 +515,20 @@ function filterFilesByKind(kind){
     counterElements.each(function (index) {
         this.firstChild.innerHTML = ++i;
     });
+    setBackgroundForOddEvenRows();
 }
-function setBackgroundForOddEvenRows(){
-	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
-    $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
+
+function setBackgroundForOddEvenRows() {
+    const rows = document.querySelectorAll('#fileLink table tbody tr');
+    for (let i = 0; i < rows.length; i++) {
+      if (i % 2 == 0) {
+        rows[i].style.background = 'var(--color-fileLink-table-1)';
+      } else {
+        rows[i].style.background = 'var(--color-fileLink-table-2)';
+      }
+    }
 }
+
 //Sort files by alphabetical order after sorting by kind
 function sortFiles(asc){
     var rows, switching, i, x, y, shouldSwitch;
@@ -561,6 +570,7 @@ function sortFiles(asc){
     counterElements.each(function (index) {
         this.firstChild.innerHTML = ++i;
     });
+    setBackgroundForOddEvenRows();
 }
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
