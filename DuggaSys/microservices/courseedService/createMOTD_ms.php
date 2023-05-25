@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set("Europe/Stockholm");
-include ("../../../Shared/sessions.php");
+include ("../../../Shared/sessions.php");           // this include is just temporery, and might be changed at a later date. 
 include('../shared_microservices/getUid_ms.php');
 
 // Connect to database and start session
@@ -30,11 +30,11 @@ $readonly=getOP('readonly');
 // $courseGitURL=getOP('courseGitURL'); // for github url
 // $LastCourseCreated=array();
 
-// if(checklogin() && (hasAccess(getUid())=="w" || isSuperUser(getUid()))) {
+if(/*checklogin() && (hasAccess(getUid())=="w" ||*/ isSuperUser(getUid())){ //) {
 // if(strcmp($opt,"SETTINGS")===0){
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
-    $query->bindParam(':motd', isSuperUser(getUid()));
+    $query->bindParam(':motd', $motd);
     if($readonly == "UNK") {$readonly=0;}
     $query->bindParam(':readonly', $readonly);
 
@@ -43,5 +43,5 @@ $readonly=getOP('readonly');
         $debug="Error updating entries\n".$error[2];
     }
 // }
-// }
+}
 ?>
