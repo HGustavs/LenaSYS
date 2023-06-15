@@ -2493,9 +2493,8 @@ function mmoving(event)
                 const heightChange = -(tmp - elementData.height);
 
                 // Fetch original y-position
-                // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
+                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY)).y;
                 
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
@@ -9065,10 +9064,8 @@ function addNodes(element)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
-    nodes += "<span id='md' class='node md'></span>";
-    nodes += "<span id='mu' class='node mu'></span>";
 
-    if (element.kind == "UMLSuperState") {
+    if (element.kind == "UMLSuperState" || element.type == 'SE') {
         nodes += "<span id='md' class='node md'></span>";
         nodes += "<span id='mu' class='node mu'></span>";
     }
