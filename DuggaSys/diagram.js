@@ -2686,17 +2686,16 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     redrawArrows();
 }
 /**
- * @description Generatesa a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
+ * @description Generates a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
  * @see ghostElement
  */
 function makeGhost()
 {
     ghostElement = constructElementOfType(elementTypeSelected);
-    var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
+    let lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
     ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
     ghostElement.id = makeRandomID();
-
     showdata();
 }
 
