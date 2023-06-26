@@ -86,7 +86,8 @@ if(!$query->execute()) {
     $debug="Error updating entries".$error[2];
 }
 
-echo json_encode(array('code' => $coursecode, 'name' => $coursename, 'debug' => $debug));
-		return;
+echo json_encode(array('courseid' => $courseid, 'coursevers' => $coursevers, 'sectname' => $sectname, 'kind' => $kind, 'link' => $link, 'visibility' => $visibility, 'gradesys' => $gradesys, 'highscoremode' => $highscoremode, 'comments' => $comments, 'grptype' => $grptype, 'pos' => $pos, 'tabs' => $tabs, 'debug' => $debug));
+
+return;
 
 ?>
