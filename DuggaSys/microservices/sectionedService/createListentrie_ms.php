@@ -33,20 +33,20 @@ if($link==-1) {
     foreach($queryz2->fetchAll() as $row) {
         $sname=$row['exampleid'] + 1;
     }
-        $sname = $sectname . $sname;
-        $query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+    $sname = $sectname . $sname;
+    $query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 
-        $query2->bindParam(':cid', $courseid);
-        $query2->bindParam(':cversion', $coursevers);
-        $query2->bindParam(':ename', $sectname);
-        $query2->bindParam(':sname', $sname);
+    $query2->bindParam(':cid', $courseid);
+    $query2->bindParam(':cversion', $coursevers);
+    $query2->bindParam(':ename', $sectname);
+    $query2->bindParam(':sname', $sname);
 
-        if(!$query2->execute()) {
-            $error=$query2->errorInfo();
-            $debug="Error updating entries".$error[2];
-        }
+    if(!$query2->execute()) {
+        $error=$query2->errorInfo();
+        $debug="Error updating entries".$error[2];
+    }
 
-        $link=$pdo->lastInsertId();
+    $link=$pdo->lastInsertId();
 }
 
 $query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
@@ -77,7 +77,6 @@ if ($grptype != "UNK") {
     // Logging for newly added items
     $description=$sectname;
      logUserEvent($userid, $username, EventTypes::SectionItems,$sectname);
-
 }
 
 
