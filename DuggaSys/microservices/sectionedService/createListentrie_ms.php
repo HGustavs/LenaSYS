@@ -1,48 +1,27 @@
 <?php
 
+date_default_timezone_set("Europe/Stockholm");
+
+include_once "../Shared/sessions.php";
+include_once "../Shared/basic.php";
+include('../shared_microservices/getUid_ms.php');
+
 pdoConnect();
 session_start();
 
-$opt=getOP('opt');
+$opt=getOP('opt'); 
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
-$moment=getOP('moment');
-$sectid=getOP('lid');
 $sectname=getOP('sectname');
 $kind=getOP('kind');
 $link=getOP('link');
 $visibility=getOP('visibility');
-$order=getOP('order');
 $gradesys=getOP('gradesys');
 $highscoremode=getOP('highscoremode');
-$versid=getOP('versid');
-$coursename=getOP('coursename');
-$versname=getOP('versname');
-$coursecode=getOP('coursecode');
-$coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
-$makeactive=getOP('makeactive');
-$startdate=getOP('startdate');
-$enddate=getOP('enddate');
-$showgrps=getOP('showgrp');
 $grptype=getOP('grptype');
-$deadline=getOP('deadline');
-$relativedeadline=getOP('relativedeadline');
 $pos=getOP('pos');
-$jsondeadline = getOP('jsondeadline');
-$studentTeacher = false;
-$feedbackenabled =getOP('feedback');
-$feedbackquestion =getOP('feedbackquestion');
-$motd=getOP('motd');
 $tabs=getOP('tabs');
-$exampelid=getOP('exampleid');
-$url=getOP('url');
-
-date_default_timezone_set("Europe/Stockholm");
-
-include('../shared_microservices/getUid_ms.php');
-
-else if(strcmp($opt,"NEW")===0) {
 
 // Insert a new code example and update variables accordingly.
 if($link==-1) {
