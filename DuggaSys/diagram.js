@@ -12865,10 +12865,10 @@ function showdata()
 function centerCamera()
 {
     // Stops execution if there are no elements to center the camera around.
-    if (data.length == 0) {
-        displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
-        return;
-    }
+    //if (data.length == 0) {
+    //    displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
+    //  return;
+    //}
 
     //desiredZoomfact = zoomfact;
     zoomfact = 1;
