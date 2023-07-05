@@ -13426,18 +13426,20 @@ function resetDiagramAlert(){
  */
 function resetDiagram(){
     
-    //Goto the beginning of the diagram
-    //NOTE: stateMachine should be StateMachine, but this had no effect
-    //on functionality.
-    
+    // Goto the beginning of the diagram
+        // NOTE: stateMachine should be StateMachine, but this had no effect
+        // on functionality.
+    /*
     stateMachine.gotoInitialState();
 
-    //Remove the previous history
+    // Remove the previous history
     stateMachine.currentHistoryIndex = -1;
     stateMachine.lastFlag = {};
     stateMachine.removeFutureStates();
-    localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
-    fetchDiagramFileContentOnLoad();
+    //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
+    //fetchDiagramFileContentOnLoad();
+    */
+    zoomreset()
     
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
