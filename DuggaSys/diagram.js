@@ -12865,10 +12865,10 @@ function showdata()
 function centerCamera()
 {
     // Stops execution if there are no elements to center the camera around.
-    //if (data.length == 0) {
-    //    displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
-    //  return;
-    //}
+    if (data.length == 0) {
+        displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
+        return;
+    }
 
     //desiredZoomfact = zoomfact;
     zoomfact = 1;
@@ -13439,8 +13439,32 @@ function resetDiagram(){
     //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
     */
+   
+    // Set the default zoom factor
+    var defaultZoomFactor = 1;
 
-    centerCamera();
+    // Set the default scroll coordinates
+    var defaultScrollX = 0;
+    var defaultScrollY = 0;
+
+    // Reset the zoom factor
+    zoomfact = defaultZoomFactor;
+
+    // Reset the scroll coordinates
+    scrollx = defaultScrollX;
+    scrolly = defaultScrollY;
+
+    // Update screen elements
+    showdata();
+    updatepos();
+    updateGridPos();
+    updateGridSize();
+    drawRulerBars(scrollx, scrolly);
+    updateA4Pos();
+    updateA4Size();
+    zoomCenter(); // Assuming this function is responsible for handling zoom centering
+    displayMessage(messageTypes.SUCCESS, "Camera view reset to default.");
+
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 
