@@ -13439,14 +13439,8 @@ function resetDiagram(){
     //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
     */
-    // Goto the beginning of the diagram
-    stateMachine.gotoInitialState();
 
-    // Remove the previous history
-    stateMachine.currentHistoryIndex = -1;
-    stateMachine.lastFlag = {};
-    stateMachine.removeFutureStates();
-
+    centerCamera();
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 
