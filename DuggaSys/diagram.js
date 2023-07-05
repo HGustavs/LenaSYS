@@ -13439,8 +13439,9 @@ function resetDiagram(){
     //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
     */
-    zoomreset()
-    
+    zoomreset();
+    zoomCenter();
+
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 
