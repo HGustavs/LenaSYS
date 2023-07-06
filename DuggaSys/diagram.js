@@ -13442,9 +13442,7 @@ function resetDiagram(){
    
 
     // Set the default scroll coordinates
-    clearContext();
-    showdata();
-    updatepos(0, 0);
+    centerCamera();
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
