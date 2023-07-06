@@ -13457,7 +13457,7 @@ function resetDiagram(){
     updateA4Size();
 
     //Reset the zoomCenter
-    zoomCenter({ x: 0, y: 0 });
+    zoomCenter(centerDiagram);
 
     // Display success message
     displayMessage(messageTypes.SUCCESS, "Diagram reset to default.");
