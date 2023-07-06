@@ -13444,8 +13444,12 @@ function resetDiagram(){
     zoomfact = 1;
 
     // Reset the scroll coordinates to (0, 0)
-    scrollx = window.innerWidth / (2 * zoomfact);
-    scrolly = window.innerHeight / (2 * zoomfact);
+    centerX = 0;
+    centery = 0;
+    centerScreenX = window.innerWidth / (2 * zoomfact);
+    centerScreenY = window.innerHeight / (2 * zoomfact);
+    scrollx = (centerX * zoomfact) - centerScreenX;
+    scrolly = (centerY * zoomfact) - centerScreenY;
 
     // Update the elements of the screen
     showdata();
