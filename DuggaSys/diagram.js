@@ -13454,8 +13454,10 @@ function resetDiagram(){
     updateA4Pos();
     updateA4Size();
 
+    zoomCenter({ x: 0, y: 0 });
+
     // Display success message
-    displayMessage(messageTypes.SUCCESS, "Camera view reset to default.");
+    displayMessage(messageTypes.SUCCESS, "Diagram reset to default.");
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
