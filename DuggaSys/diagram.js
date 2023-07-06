@@ -13440,29 +13440,23 @@ function resetDiagram(){
     //fetchDiagramFileContentOnLoad();
     */
    
-    // Set the default zoom factor
-    var defaultZoomFactor = 1;
 
     // Set the default scroll coordinates
     var defaultScrollX = 0;
     var defaultScrollY = 0;
 
-    // Reset the zoom factor
-    zoomfact = defaultZoomFactor;
 
     // Reset the scroll coordinates
     scrollx = defaultScrollX;
     scrolly = defaultScrollY;
 
     // Update screen elements
-    showdata();
     updatepos();
     updateGridPos();
     updateGridSize();
     drawRulerBars(scrollx, scrolly);
     updateA4Pos();
     updateA4Size();
-    displayMessage(messageTypes.SUCCESS, "Camera view reset to default.");
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
