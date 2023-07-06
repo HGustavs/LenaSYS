@@ -13439,6 +13439,12 @@ function resetDiagram(){
     //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
     */
+   
+
+ 
+
+    // Update screen elements
+    drawRulerBars(scrollx, scrolly);
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
