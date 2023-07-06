@@ -13451,12 +13451,7 @@ function resetDiagram(){
     scrolly = defaultScrollY;
 
     // Update screen elements
-    updatepos();
-    updateGridPos();
-    updateGridSize();
     drawRulerBars(scrollx, scrolly);
-    updateA4Pos();
-    updateA4Size();
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
