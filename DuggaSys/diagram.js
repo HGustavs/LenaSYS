@@ -13442,7 +13442,12 @@ function resetDiagram(){
    
 
     // Set the default scroll coordinates
-    centerCamera();
+    toggleGrid();
+    updateGridPos();
+    updateA4Pos();
+    updateGridSize();
+    showdata();
+    drawRulerBars(scrollx,scrolly);
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
