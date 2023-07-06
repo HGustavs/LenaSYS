@@ -13440,18 +13440,12 @@ function resetDiagram(){
     //fetchDiagramFileContentOnLoad();
     */
 
-    // Reset the zoom factor to its default value
+    // Reset the zoom factor and the scroll coordinates to its default value
     zoomfact = 1;
 
-    // Calculate the center of the diagram
-    var centerDiagram = {
-        x: (minX + maxX) / 2,
-        y: (minY + maxY) / 2
-    };
-
-    // Move camera to center of diagram
-    scrollx = centerDiagram.x * zoomfact;
-    scrolly = centerDiagram.y * zoomfact;
+    // Reset the scroll coordinates to (0, 0)
+    scrollx = window.innerWidth / (2 * zoomfact);
+    scrolly = window.innerHeight / (2 * zoomfact);
 
     // Update the elements of the screen
     showdata();
