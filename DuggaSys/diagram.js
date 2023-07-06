@@ -13439,19 +13439,6 @@ function resetDiagram(){
     //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
     */
-   
-
-    // Set the default scroll coordinates
-    var defaultScrollX = 0;
-    var defaultScrollY = 0;
-
-
-    // Reset the scroll coordinates
-    scrollx = defaultScrollX;
-    scrolly = defaultScrollY;
-
-    // Update screen elements
-    drawRulerBars(scrollx, scrolly);
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
