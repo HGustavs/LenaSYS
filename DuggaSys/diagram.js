@@ -13440,10 +13440,18 @@ function resetDiagram(){
     //fetchDiagramFileContentOnLoad();
     */
 
-    // Reset the zoom factor and the scroll coordinates to its default value
+    // Reset the zoom factor to its default value
     zoomfact = 1;
-    scrollx = 0;
-    scrolly = 0;
+
+    // Calculate the center of the diagram
+    var centerDiagram = {
+        x: (minX + maxX) / 2,
+        y: (minY + maxY) / 2
+    };
+
+    // Move camera to center of diagram
+    scrollx = centerDiagram.x * zoomfact;
+    scrolly = centerDiagram.y * zoomfact;
 
     // Update the elements of the screen
     showdata();
@@ -13454,6 +13462,7 @@ function resetDiagram(){
     updateA4Pos();
     updateA4Size();
 
+    //Reset the zoomCenter
     zoomCenter({ x: 0, y: 0 });
 
     // Display success message
