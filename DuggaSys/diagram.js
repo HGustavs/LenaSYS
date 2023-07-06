@@ -13462,7 +13462,6 @@ function resetDiagram(){
     drawRulerBars(scrollx, scrolly);
     updateA4Pos();
     updateA4Size();
-    zoomCenter(); // Assuming this function is responsible for handling zoom centering
     displayMessage(messageTypes.SUCCESS, "Camera view reset to default.");
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
