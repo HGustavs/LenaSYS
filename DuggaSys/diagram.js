@@ -13439,9 +13439,25 @@ function resetDiagram(){
     //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
     */
-    loadDiagram();
 
-    //loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
+    // Reset the zoom factor and the scroll coordinates to its default value
+    zoomfact = 1;
+    scrollx = 0;
+    scrolly = 0;
+
+    // Update the elements of the screen
+    showdata();
+    updatepos();
+    updateGridPos();
+    updateGridSize();
+    drawRulerBars(scrollx, scrolly);
+    updateA4Pos();
+    updateA4Size();
+
+    // Display success message
+    displayMessage(messageTypes.SUCCESS, "Camera view reset to default.");
+
+    loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 
 /**
