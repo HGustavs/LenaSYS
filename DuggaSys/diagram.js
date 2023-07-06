@@ -13444,9 +13444,9 @@ function resetDiagram(){
     zoomfact = 1;
 
     // Reset the scroll coordinates to center the camera at 0, 0
-    scrollx = -(window.innerWidth / 2);
-    scrolly = -(window.innerHeight / 2);
-    
+    scrollx = -(window.innerWidth / (2 * zoomfact));
+    scrolly = -(window.innerHeight / (2 * zoomfact));
+
     // Update the elements of the screen
     showdata();
     updatepos();
