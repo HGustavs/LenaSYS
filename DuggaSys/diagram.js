@@ -13443,30 +13443,10 @@ function resetDiagram(){
     // Reset the zoom factor and the scroll coordinates to its default value
     zoomfact = 1;
 
-
-    // Center of screen in pixels
-    var centerScreen = {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2
-    };
-
-    // Center of diagram in coordinates
-    var centerDiagram = {
-        x: minX + (maxX - minX) / 2,
-        y: minY + (maxY - minY) / 2
-    };
-
-    // Move camera to center of diagram
-    scrollx = centerDiagram.x * zoomfact;
-    scrolly = centerDiagram.y * zoomfact;
-
-    var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
-
-
-    scrollx = middleCoordinate.x;
-    scrolly = middleCoordinate.y;
-
+    // Reset the scroll coordinates to center the camera at 0, 0
+    scrollx = -(window.innerWidth / 2);
+    scrolly = -(window.innerHeight / 2);
+    
     // Update the elements of the screen
     showdata();
     updatepos();
