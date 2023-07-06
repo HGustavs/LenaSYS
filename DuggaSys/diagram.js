@@ -29,7 +29,7 @@ class Point {
 
 /** 
  * @description Represents a change stored in the StateMachine. StateChange contains a list of StateChange.ChangeTypes in the local property stateChanges, that in turn contains a flag to describe each change. The getFlags() can be used to get the sum of all these stateChanges. 
- */
+ */ 
 class StateChange {
     /**
      * @description ChangeType containing all information about a certain change. Several instances of ChangeType can exist inside a StateChange.
@@ -13442,16 +13442,9 @@ function resetDiagram(){
    
 
     // Set the default scroll coordinates
-    var defaultScrollX = 0;
-    var defaultScrollY = 0;
-
-
-    // Reset the scroll coordinates
-    scrollx = defaultScrollX;
-    scrolly = defaultScrollY;
-
-    // Update screen elements
-    drawRulerBars(scrollx, scrolly);
+    clearContext();
+    showdata();
+    updatepos(0, 0);
 
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
