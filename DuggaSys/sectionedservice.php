@@ -191,7 +191,7 @@ if($gradesys=="UNK") $gradesys=0;
 			
 			if($ha || $studentTeacher) {
 				// The code for modification using sessions
-				/*if(strcmp($opt,"DEL")===0) {
+				if(strcmp($opt,"DEL")===0) {
 					$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
 					$query->bindParam(':lid', $sectid);
 
@@ -202,7 +202,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$debug = "The item could not be deleted.";
 						}
 					}
-				}*/
+				}
 
 				//This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
 				if(strcmp($opt,"DELETED")===0) {

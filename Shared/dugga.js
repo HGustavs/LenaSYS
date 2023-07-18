@@ -1073,15 +1073,6 @@ function AJAXService(opt,apara,kind)
 				success: returnedAccess
 			});
 	}else if(kind=="SECTION"){
-		if (opt === "DEL") {
-			$.ajax({
-				url: "../DuggaSys/microservices/sectionedService/removeListentries_ms.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-				dataType: "json",
-				success: returnedSection
-			});
-		} else {
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
@@ -1089,10 +1080,6 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedSection
 			});
-		}
-
-
-		
   }else if(kind=="GRP"){
     $.ajax({
       url: "sectionedservice.php",
