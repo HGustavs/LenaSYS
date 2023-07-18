@@ -13446,6 +13446,7 @@ function resetDiagram(){
     // Reset the scroll coordinates to center the camera at 0, 0
     scrollx = 0;
     scrolly = 0;
+    centerDiagram = 0;
 
 
     // Update the elements of the screen
@@ -13456,9 +13457,7 @@ function resetDiagram(){
     drawRulerBars(scrollx, scrolly);
     updateA4Pos();
     updateA4Size();
-
-    //Reset the zoomCenter
-    zoomCenter({ x: 0, y: 0 });
+    zoomCenter(centerDiagram);
 
     // Display success message
     displayMessage(messageTypes.SUCCESS, "Diagram reset to default.");
