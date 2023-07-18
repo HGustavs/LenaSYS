@@ -202,8 +202,8 @@ if($gradesys=="UNK") $gradesys=0;
 							$debug = "The item could not be deleted.";
 						}
 					}
-
 				}
+
 				//This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
 				if(strcmp($opt,"DELETED")===0) {
 					$query = $pdo->prepare("UPDATE listentries SET visible = '3' WHERE lid=:lid");
