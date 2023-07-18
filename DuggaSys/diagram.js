@@ -29,7 +29,7 @@ class Point {
 
 /** 
  * @description Represents a change stored in the StateMachine. StateChange contains a list of StateChange.ChangeTypes in the local property stateChanges, that in turn contains a flag to describe each change. The getFlags() can be used to get the sum of all these stateChanges. 
- */
+ */ 
 class StateChange {
     /**
      * @description ChangeType containing all information about a certain change. Several instances of ChangeType can exist inside a StateChange.
@@ -13439,6 +13439,30 @@ function resetDiagram(){
     //localStorage.setItem("CurrentlyActiveDiagram","");// Emptying the currently active diagram
     //fetchDiagramFileContentOnLoad();
     */
+
+    // Reset the zoom factor and the scroll coordinates to its default value
+    zoomfact = 1;
+
+    // Reset the scroll coordinates to center the camera at 0, 0
+    scrollx = 0;
+    scrolly = 0;
+
+
+    // Update the elements of the screen
+    showdata();
+    updatepos();
+    updateGridPos();
+    updateGridSize();
+    drawRulerBars(scrollx, scrolly);
+    updateA4Pos();
+    updateA4Size();
+
+    //Reset the zoomCenter
+    zoomCenter({ x: 0, y: 0 });
+
+    // Display success message
+    displayMessage(messageTypes.SUCCESS, "Diagram reset to default.");
+
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 
