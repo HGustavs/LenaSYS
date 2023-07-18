@@ -1075,7 +1075,7 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="SECTION"){
 		if (opt === "DEL") {
 			$.ajax({
-				url: "DuggaSys/microservices/sectionedService/removeListentries_ms.php",
+				url: "../DuggaSys/microservices/sectionedService/removeListentries_ms.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
 				dataType: "json",
