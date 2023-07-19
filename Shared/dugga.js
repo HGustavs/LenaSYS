@@ -1081,15 +1081,6 @@ function AJAXService(opt,apara,kind)
 		success: returnedSection
 		});
   }else if(kind=="GRP"){
-		if(opt === "GRP") {
-			$.ajax({
-				url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
-				dataType: "json",
-				success: returnedGroups
-			});
-		} else {
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
@@ -1097,8 +1088,6 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedGroups
 			});
-		}
-
   }else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
