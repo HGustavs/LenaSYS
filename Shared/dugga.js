@@ -1083,7 +1083,7 @@ function AJAXService(opt,apara,kind)
   }else if(kind=="GRP"){
 		if(opt === "GRP") {
 			$.ajax({
-				url: "../DuggaSys/microservices/sectionedService/getCourseGroupAndMembers_ms.php",
+				url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
 				dataType: "json",
