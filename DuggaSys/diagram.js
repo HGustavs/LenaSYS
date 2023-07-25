@@ -13174,7 +13174,7 @@ function showModal(){
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
-    let diagramKeys = 0;
+    let diagramKeys;
     let localDiagrams;
 
     let local = localStorage.getItem("diagrams");
@@ -13191,7 +13191,7 @@ function showModal(){
     }
 
     // If no items were found for loading in 
-    if (diagramKeys === undefined || diagramKeys.length === 0){
+    if (diagramKeys === undefined || diagramKeys.length === 1){
         var p = document.createElement('p');
         var pText = document.createTextNode('No saves could be found');
 
