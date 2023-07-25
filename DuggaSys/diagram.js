@@ -13184,6 +13184,11 @@ function showModal(){
         diagramKeys = Object.keys(localDiagrams);
     }
 
+    if (diagramKeys == undefined || diagramKeys-length == 0) {
+        console.log("No saves found!")
+        return;
+    }
+
 
     // Remove all elements
     while (container.firstElementChild){
