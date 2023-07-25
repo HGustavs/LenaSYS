@@ -13174,7 +13174,7 @@ function showModal(){
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
-    let diagramKeys;
+    let diagramKeys = 0;
     let localDiagrams;
 
     let local = localStorage.getItem("diagrams");
@@ -13182,11 +13182,6 @@ function showModal(){
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
         diagramKeys = Object.keys(localDiagrams);
-    }
-
-    if (diagramKeys == undefined || diagramKeys-length == 0) {
-        console.log("No saves found!")
-        return;
     }
 
 
