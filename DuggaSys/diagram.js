@@ -12980,17 +12980,17 @@ function exportWithHistory()
         };
 
         // Sets the autosave diagram first, if it is not already set.
-        //if (!localStorage.getItem("diagrams")) {
-        //    let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`
-        //    localStorage.setItem("diagrams", s);
-        //}
+        if (!localStorage.getItem("diagrams")) {
+            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`
+            localStorage.setItem("diagrams", s);
+        }
         // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
-        //let local = localStorage.getItem("diagrams");
-        //local = (local[0] == "{") ? local : `{${local}}`;
+        let local = localStorage.getItem("diagrams");
+        local = (local[0] == "{") ? local : `{${local}}`;
 
-        //let localDiagrams = JSON.parse(local);
-        //localDiagrams[key] = objToSave;
-        //localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+        let localDiagrams = JSON.parse(local);
+        localDiagrams[key] = objToSave;
+        localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
