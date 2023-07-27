@@ -582,10 +582,6 @@
     background-color: #DF2727 !important;
 }
 
-#localLoadField{
-    display: none;
-}
-
 .deleteLocalDiagram:hover {
     background-color: #961a1a !important;
 }
