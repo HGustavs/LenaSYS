@@ -13227,6 +13227,25 @@ function showModal(){
     overlay.classList.remove('hiddenLoad');
 }
 
+function checkAndShowModal() {
+    let diagramKeys;
+    let localDiagrams;
+
+    let local = localStorage.getItem("diagrams");
+    if (local != null) {
+        local = (local[0] == "{") ? local : `{${local}}`;
+        localDiagrams = JSON.parse(local);
+        diagramKeys = Object.keys(localDiagrams);
+    }
+
+    if (diagramKeys.length === 1) {
+        showModal();
+    } else {
+        console.log("You have no saves");
+        return;
+    }
+}
+
 function closeModal(){
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
