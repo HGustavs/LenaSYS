@@ -13241,7 +13241,7 @@ function checkAndShowModal() {
     if (diagramKeys.length >= 2) {
         showModal();
     } else {
-        console.log("You have no saves");
+        displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
         return;
     }
 }
