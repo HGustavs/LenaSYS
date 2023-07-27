@@ -13238,7 +13238,7 @@ function checkAndShowModal() {
         diagramKeys = Object.keys(localDiagrams);
     }
 
-    if (diagramKeys.length >= 1) {
+    if (diagramKeys.length >= 2) {
         showModal();
     } else {
         console.log("You have no saves");
