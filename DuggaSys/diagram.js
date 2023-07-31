@@ -12968,8 +12968,6 @@ function exportWithHistory()
  */
  function storeDiagramInLocalStorage(key){
 
-    let diagramCount = 0; // Variable to keep track of the count of saved diagrams
-
     if (stateMachine.currentHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
@@ -12994,9 +12992,6 @@ function exportWithHistory()
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
-        // Update and show the count of diagrams on the button "Load"
-        diagramCount++;
-        document.getElementById("diagramCountButton").innerText = "Saved Diagrams: " + diagramCount;
 
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
@@ -13225,6 +13220,7 @@ function showModal(){
             }
             container.appendChild(wrapper);
 
+            document.getElementById('diagramCountSaves').innerHTML = diagramKeys.length;
             document.getElementById('loadCounter').innerHTML = diagramKeys.length;
         }
     }
