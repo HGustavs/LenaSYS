@@ -13327,6 +13327,7 @@ function getCurrentFileName()
 
 function saveDiagramAs()
 {
+    let diagramCount = 0; // Variable to keep track of the count of saved diagrams
     let elem = document.getElementById("saveDiagramAs");
     let fileName = elem.value;
     const currentDate=new Date();
@@ -13361,6 +13362,10 @@ function saveDiagramAs()
         }
     }
     storeDiagramInLocalStorage(fileName);
+
+    // Update and show the count of diagrams on the button "Load"
+    diagramCount++;
+    document.getElementById("diagramCountButton").innerText = "Saved Diagrams: " + diagramCount;
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
