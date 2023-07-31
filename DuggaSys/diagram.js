@@ -12968,6 +12968,8 @@ function exportWithHistory()
  */
  function storeDiagramInLocalStorage(key){
 
+    let diagramCount = 0; // Variable to keep track of the count of saved diagrams
+
     if (stateMachine.currentHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
@@ -12991,6 +12993,10 @@ function exportWithHistory()
         let localDiagrams = JSON.parse(local);
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+
+        // Update and show the count of diagrams on the button "Load"
+        diagramCount++;
+        document.getElementById("diagramCountButton").innerText = "Saved Diagrams: " + diagramCount;
 
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
@@ -13327,7 +13333,6 @@ function getCurrentFileName()
 
 function saveDiagramAs()
 {
-    let diagramCount = 0; // Variable to keep track of the count of saved diagrams
     let elem = document.getElementById("saveDiagramAs");
     let fileName = elem.value;
     const currentDate=new Date();
@@ -13349,7 +13354,7 @@ function saveDiagramAs()
     if (local != null) {
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
-     names = Object.keys(localDiagrams);
+        names = Object.keys(localDiagrams);
     }
 
     for(let i=0; i<names.length; i++)
@@ -13362,10 +13367,6 @@ function saveDiagramAs()
         }
     }
     storeDiagramInLocalStorage(fileName);
-
-    // Update and show the count of diagrams on the button "Load"
-    diagramCount++;
-    document.getElementById("diagramCountButton").innerText = "Saved Diagrams: " + diagramCount;
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true)
