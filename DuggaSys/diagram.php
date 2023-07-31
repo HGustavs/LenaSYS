@@ -887,7 +887,7 @@
         </fieldset>
         <fieldset id="localLoadField">
             <legend aria-hidden="true">Load</legend>
-            <legend id="diagramCountSaves">Saved Diagrams: 0</legend>
+            <legend id="diagramCountSaves">0</legend>
             <div id="localLoad" class="diagramIcons" onclick="checkAndShowModal();">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
                 <span class="toolTipText"><b>Load diagram</b><br>
