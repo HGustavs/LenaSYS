@@ -13310,12 +13310,12 @@ function saveDiagramAs()
 {
     let elem = document.getElementById("saveDiagramAs");
     let fileName = elem.value;
-    const currentDate=new Date();
+    const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1; // Note: January is month 0
     const day = currentDate.getDate();
     const hours = currentDate.getHours();
-    const minutes = currentDate.getMinutes();
+    const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
     const seconds = currentDate.getSeconds();
     const formattedDate = year + "-" + month + "-" + day+' ';
     const formattedTime = hours + ":" + minutes + ":" + seconds;
