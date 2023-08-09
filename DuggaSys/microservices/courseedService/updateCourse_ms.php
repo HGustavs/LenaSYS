@@ -15,9 +15,10 @@ session_start();
 
 $cid = getOP('cid');
 $coursename = getOP('coursename');
-$visibility = getOP('visibility');
+$visibility = getOP('visib');
 $coursecode = getOP('coursecode');
 $courseGitURL = getOP('courseGitURL');
+
 
 if(checklogin()){
 	if(isset($_SESSION['uid'])){
@@ -42,24 +43,6 @@ if(checklogin()){
       $error=$query->errorInfo();
       $debug="Error updating entries\n".$error[2];
     }
-
-    // Belongs to Logging 
-    if($visibility==0){
-      $visibilityName = "Hidden";
-    }
-    else if($visibility==1){
-      $visibilityName = "Public";
-    }
-    else if($visibility==2){
-      $visibilityName = "Login";
-    }
-    else if($visibility==3){
-      $visibilityName = "Deleted";
-    }
-
-    // Logging for editing of course
-    $description=$coursename." ".$coursecode." ".$visibilityName;
-    logUserEvent($userid, $username, EventTypes::EditCourse, $description);
   }
 }
 ?>
