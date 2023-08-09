@@ -6,16 +6,17 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include('../shared_microservices/getUid_ms.php');
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
 
-$opt = getOP('opt');
-
 $query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
 
+$opt=getOP('opt');
+$cid=getOP('cid');
 $query->bindParam(':cid', $cid);
 $query->bindParam(':coursename', $coursename);
 $query->bindParam(':visibility', $visibility);
@@ -40,6 +41,8 @@ else if($visibility==2){
 else if($visibility==3){
   $visibilityName = "Deleted";
 }
+
+echo "hej";
 
 // Logging for editing of course
 $description=$coursename." ".$coursecode." ".$visibilityName;
