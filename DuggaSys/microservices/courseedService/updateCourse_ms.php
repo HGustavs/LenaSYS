@@ -13,39 +13,53 @@ include_once "../../../Shared/sessions.php";
 pdoConnect();
 session_start();
 
-$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
+$cid = getOP('cid');
+$coursename = getOP('coursename');
+$visibility = getOP('visibility');
+$coursecode = getOP('coursecode');
+$courseGitURL = getOP('courseGitURL');
 
-$opt=getOP('opt');
-$cid=getOP('cid');
-$query->bindParam(':cid', $cid);
-$query->bindParam(':coursename', $coursename);
-$query->bindParam(':visibility', $visibility);
-$query->bindParam(':coursecode', $coursecode);
-$query->bindParam(':courseGitURL', $courseGitURL);
+if(checklogin()){
+	if(isset($_SESSION['uid'])){
+		$userid=$_SESSION['uid'];
+	}else{
+		$userid="UNK";
+	}
+	$isSuperUserVar=isSuperUser($userid);
 
-if(!$query->execute()) {
-  $error=$query->errorInfo();
-  $debug="Error updating entries\n".$error[2];
+	$ha = $isSuperUserVar;
+
+	if($ha){
+    $query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
+
+    $query->bindParam(':cid', $cid);
+        $query->bindParam(':coursename', $coursename);
+        $query->bindParam(':visibility', $visibility);
+        $query->bindParam(':coursecode', $coursecode);
+        $query->bindParam(':courseGitURL', $courseGitURL);
+
+    if(!$query->execute()) {
+      $error=$query->errorInfo();
+      $debug="Error updating entries\n".$error[2];
+    }
+
+    // Belongs to Logging 
+    if($visibility==0){
+      $visibilityName = "Hidden";
+    }
+    else if($visibility==1){
+      $visibilityName = "Public";
+    }
+    else if($visibility==2){
+      $visibilityName = "Login";
+    }
+    else if($visibility==3){
+      $visibilityName = "Deleted";
+    }
+
+    // Logging for editing of course
+    $description=$coursename." ".$coursecode." ".$visibilityName;
+    logUserEvent($userid, $username, EventTypes::EditCourse, $description);
+  }
 }
-
-// Belongs to Logging 
-if($visibility==0){
-  $visibilityName = "Hidden";
-}
-else if($visibility==1){
-  $visibilityName = "Public";
-}
-else if($visibility==2){
-  $visibilityName = "Login";
-}
-else if($visibility==3){
-  $visibilityName = "Deleted";
-}
-
-echo "hej";
-
-// Logging for editing of course
-$description=$coursename." ".$coursecode." ".$visibilityName;
-logUserEvent($userid, $username, EventTypes::EditCourse, $description);
-
 ?>
