@@ -12992,6 +12992,7 @@ function exportWithHistory()
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
+
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
 }
@@ -13219,12 +13220,32 @@ function showModal(){
             }
             container.appendChild(wrapper);
 
+            document.getElementById('diagramCountSaves').innerHTML = diagramKeys.length;
             document.getElementById('loadCounter').innerHTML = diagramKeys.length;
         }
     }
 
     modal.classList.remove('hiddenLoad');
     overlay.classList.remove('hiddenLoad');
+}
+
+function checkAndShowModal() {
+    let diagramKeys;
+    let localDiagrams;
+
+    let local = localStorage.getItem("diagrams");
+    if (local != null) {
+        local = (local[0] == "{") ? local : `{${local}}`;
+        localDiagrams = JSON.parse(local);
+        diagramKeys = Object.keys(localDiagrams);
+    }
+
+    if (diagramKeys.length >= 2) {
+        showModal();
+    } else {
+        displayMessage(messageTypes.SUCCESS, "You have no saves (1 by default)");
+        return;
+    }
 }
 
 function closeModal(){
@@ -13329,7 +13350,7 @@ function saveDiagramAs()
     if (local != null) {
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
-     names = Object.keys(localDiagrams);
+        names = Object.keys(localDiagrams);
     }
 
     for(let i=0; i<names.length; i++)
