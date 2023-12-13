@@ -1392,38 +1392,50 @@ function returnedSection(data) {
    data[overview][4]=occurance //(count of how many times each file occurs in Blame grouped by Blame.Blameuser)
       */
 function renderOverview(data){
-  var values = Array()
+  //used this tutorial to create tag cloud https://css-tricks.com/create-a-tag-cloud-with-some-simple-css-and-even-simpler-javascript/
   var picketuser = localStorage.getItem('GitHubUser');
+  str = "";
+
+  var maxFontSizeForTag = 48;
+  var dataCloud = Array();
+  //Only display contribution for the selected GitHubUser
+  data['overview'].forEach(element =>{
+    if(picketuser == element[3])dataCloud.push(Array(element[0], element[1], element[2], element[3], element[4]));
+  });  
+  //If the there are no contributions for the user then don't render the overview
+  if(dataCloud.length == 0){
+    return str;
+  } 
   
-    var total = 0;
-
-    //count total for each user
-    data['overview'].forEach(element =>{
-      if(picketuser == element[3]) total =  total + parseInt(element[4]);
-    });  
-    
-    //calculate % and place in array
-    data['overview'].forEach(element =>{
-      if(picketuser == element[3]) values.push(Array((parseInt(element[4]) / total), element[2], element[1], element[3]));
-    });
-  values.forEach(element =>{
-    // console.log(element);
-    // console.log(element.length);
+  str+= "<h2>Contribution overview</h2>";
+  str+= "<ul class='contribtags'>";
+  //Sort data in order to find the greatest value.
+  let orderedData = dataCloud.map((x) => x);
+  orderedData.sort(function(a, b){
+    return a[4] - b[4];
   });
+  orderedData = orderedData.reverse();
+  var highestValue = orderedData[0][4];
+  //Add each file to tag cloud
+  dataCloud.forEach((result) => {
+    var fileCount = result[4];
+    var name = result[1];
+    let fontSize = fileCount / highestValue * maxFontSizeForTag;
+    fontSize = fontSize.toFixed();
 
-  var str = "<div class='container_overview' > ";
-
-  values.forEach(element =>{
-    console.log("element[2]:"+ element[2]);
-    str += "<span  class='box_overview ";
-    if((Math.floor(Math.random()*10) %4)==0) {
-      str+="vertical_text";
+    // Make sure the font size will be at readable
+    if (fontSize < 10) {
+      fontSize = 10;
     }
-    str+= "' style='font-size:"+element[0]*5000+"%; width:fit-content; height: fit-content;'>"+element[2]+"</span>";
+    var fontSizeProperty = `${fontSize}px`;
+    var extenstion = result[1].split(".");
+    
+    str+= "<li class='contribtag'>";
+    str+= `<span class="contribtag__text" id="contrib${extenstion[1]}" style="font-size: ${fontSizeProperty}">${name} (${fileCount})</span>`;
+    str+= "</li>";
   });
-
-  str += "</div> ";
-
+  
+  str+= "</ul>";
   return str;
 }
 
