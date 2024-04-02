@@ -737,6 +737,9 @@
     function deleteMetadataDB(){
       //Find all files ending with .db inside the directory
       $dir = '../../githubMetadata';
+      if(!is_dir($dir)){
+        return;
+      }
       $metadata_db_files = preg_grep( '~\.db$~',scandir($dir));
 
       //Iterate and delete above files in the same directory
