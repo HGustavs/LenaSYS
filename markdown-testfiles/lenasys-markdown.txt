@@ -6,7 +6,6 @@ __this is italic__
 **this is italic**
 ***this is italic***
 
-
 Bold
 **this is bold**
 ***this is bold***
