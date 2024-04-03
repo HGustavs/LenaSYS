@@ -253,7 +253,7 @@ function createVersion()
 	resetinputs();
 }
 
-function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
+function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl)
 {
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
@@ -273,6 +273,8 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$("#cid").val(cid);
 	// Set Code
 	$("#coursecode").val(coursecode);
+	// Set github url
+	$("#editcoursegit-url").val(gitHubUrl);
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);
@@ -542,6 +544,7 @@ function createVersion(){
 
 function returnedCourse(data)
 {
+	console.log(data);
 	versions = data['versions'];
 	entries = data['entries'];
 	if(data['LastCourseCreated'][0] != undefined){
@@ -570,7 +573,7 @@ function returnedCourse(data)
 	if (data['entries'].length > 0) {
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
-
+			console.log(data);
 			// Do not show courses the user does not have access to.
 			if (!data['writeaccess'] && !item['registered'] && uname !="Guest" && uname)
 				continue;
@@ -603,7 +606,8 @@ function returnedCourse(data)
         		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
         		str += "<span style='margin-bottom: 0px'>";
 
-				    str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+					str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+
         
         		str += "</span>";
       		} else {
@@ -896,5 +900,5 @@ function localStorageCourse(){
 }
 
 function glowNewCourse(courseid){
-    document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
+   // document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
 }

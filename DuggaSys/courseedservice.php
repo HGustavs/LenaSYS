@@ -95,7 +95,7 @@ if(checklogin()){
 			} 
 
 			// Logging for creating new course
-			$description=$coursename." ".$coursecode." "."Hidden";
+			$description=$coursename." ".$coursecode." ".$courseGitURL." "."Hidden";
 			logUserEvent($userid, $username, EventTypes::AddCourse, $description);
 
 			//////////////////////////////
@@ -487,7 +487,7 @@ if(checklogin()){
 			}
 			
 			// Logging for editing of course
-			$description=$coursename." ".$coursecode." ".$visibilityName;
+			$description=$coursename." ".$coursecode." ".$visibilityName." ".$courseGitURL;
 			logUserEvent($userid, $username, EventTypes::EditCourse, $description);
 
 		}else if(strcmp($opt,"SETTINGS")===0){
@@ -592,6 +592,8 @@ if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading courses\n".$error[2];
 }else{
+
+	
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$writeAccess = false;
 			if (isset ($userCourse[$row['cid']])){
@@ -617,7 +619,8 @@ if(!$query->execute()) {
 						'visibility' => $row['visibility'],
 						'activeversion' => $row['activeversion'],
 						'activeedversion' => $row['activeedversion'],
-						'registered' => $isRegisteredToCourse
+						'registered' => $isRegisteredToCourse,
+						'courseGitURL' => $row['courseGitURL']
 						)
 					);
 			}
