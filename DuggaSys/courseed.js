@@ -40,25 +40,27 @@ function updateCourse()
 	// Show dialog
 	$("#editCourse").css("display", "none");
 	
+	// Updates the course (except the course GitHub repo. 
+	// Course GitHub repo is updated in the next block of code)
+	$("#overlay").css("display", "none");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+	localStorage.setItem('courseid', courseid);
+	localStorage.setItem('updateCourseName', true);
+
 	//Check if courseGitURL has a value
 	if(courseGitURL) {
 		//Check if fetchGitHubRepo returns true
 		if(fetchGitHubRepo(courseGitURL)) {
-			$("#overlay").css("display", "none");
-			AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-			localStorage.setItem('courseid', courseid);
-			localStorage.setItem('updateCourseName', true);
+			localStorage.setItem('courseGitHubRepo', courseGitURL);
+			//If courseGitURL has a value, display a message stating the update (with github-link) worked
 			alert("Course " + coursename + " updated with new GitHub-link!"); 
 			updateGithubRepo(courseGitURL, cid);
 		}
 		//Else: get error message from the fetchGitHubRepo function.
 
 	} else {
-		//If courseGitURL has no value, update the course as usual.
-		$("#overlay").css("display", "none");
-		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-		localStorage.setItem('courseid', courseid);
-		localStorage.setItem('updateCourseName', true);
+		localStorage.setItem('courseGitHubRepo', " ");
+		//If courseGitURL has no value, display an update message
 		alert("Course " + coursename + " updated!"); 
 	}
 }
@@ -196,6 +198,7 @@ function updateGithubRepo(githubURL, cid) {
 		success: function() { 
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
+			alert("Something went right! Supposedly the github url has been saved to the database!");
 		},
 		error: function(data){
 			//Check FetchGithubRepo for the meaning of the error code.
