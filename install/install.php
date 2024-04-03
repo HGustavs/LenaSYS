@@ -277,7 +277,7 @@
     # Installer
     if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
       $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
-      ob_end_clean(); // Remove form and start installation.
+      ob_clean(); // Clear form and start installation.
 
       //---------------------------------------------------------------------------------------------------
       // Header - Contains title, progress bar and restart-button.
