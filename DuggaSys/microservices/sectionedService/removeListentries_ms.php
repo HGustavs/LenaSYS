@@ -9,18 +9,27 @@ include('../shared_microservices/getUid_ms.php');
 pdoConnect();
 session_start();
 
-$sectid=getOP('lid');
+if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
+	if (isset($_SESSION['uid'])) {
+		$userid = $_SESSION['uid'];
+	} else {
+		$userid = "UNK";
+	}
 
-echo($sectid);
+	if(isSuperUser(getUid())) {
+        $sectid=getOP('lid');
 
-$query = $pdo->prepare("UPDATE listentries SET visible = '3' WHERE lid=:lid");
-$query->bindParam(':lid', $sectid);
 
-if(!$query->execute()) {
-    if($query->errorInfo()[0] == 23000) {
-        $debug = "foreign key constraint.";
-    } else {
-        $debug = "Error.";
+        $query = $pdo->prepare("UPDATE listentries SET visible = '3' WHERE lid=:lid");
+        $query->bindParam(':lid', $sectid);
+
+        if(!$query->execute()) {
+            if($query->errorInfo()[0] == 23000) {
+                $debug = "foreign key constraint.";
+            } else {
+                $debug = "Error.";
+            }
+        }
     }
 }
 
