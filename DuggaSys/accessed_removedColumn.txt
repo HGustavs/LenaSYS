@@ -1,7 +1,0 @@
-The following columns aren't used anymore by the accessed.js file:
-SSN
-Class
-Examiner
-Vers
-Access
-Groups
