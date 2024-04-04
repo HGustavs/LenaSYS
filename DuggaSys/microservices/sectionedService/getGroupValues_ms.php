@@ -2,8 +2,8 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
 include('../shared_microservices/getUid_ms.php');
 
 // Connect to database and start session
@@ -13,6 +13,8 @@ session_start();
 $opt = getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
+
+$grplst=array();
 
 if(checklogin()){
 	if(isset($_SESSION['uid'])){
