@@ -2677,7 +2677,6 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     }
 
     if (stateMachineShouldSave && anyRemoved) {
-        console.log("Removed lines!");
         stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
 
