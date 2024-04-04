@@ -6263,14 +6263,11 @@ function zoomin(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.25) zoomfact = 0.5;
-    else if (zoomfact == 0.5) zoomfact = 0.75;
-    else if (zoomfact == 0.75) zoomfact = 1.0;
-    else if (zoomfact == 1.0) zoomfact = 1.25;
-    else if (zoomfact == 1.25) zoomfact = 1.5;
-    else if (zoomfact == 1.5) zoomfact = 2.0;
-    else if (zoomfact == 2.0) zoomfact = 4.0;
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+    // Update zoomfact
+    if (zoomfact < 4.0) zoomfact += 0.1;
+    if (zoomfact > 4.0) zoomfact = 4.0; // Ensure zoomfact does not exceed 4.0
+
+    document.getElementById("zoom-message").innerHTML = zoomfact.toFixed(1) + "x";
 
     
     scrollx = scrollx * zoomfact;
@@ -6349,14 +6346,10 @@ function zoomout(scrollEvent = undefined)
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
 
-    if (zoomfact == 0.5)zoomfact = 0.25;
-    else if (zoomfact == 0.75)zoomfact = 0.5;
-    else if (zoomfact == 1.0)zoomfact = 0.75;
-    else if (zoomfact == 1.25)zoomfact = 1.0;
-    else if (zoomfact == 1.5)zoomfact = 1.25;
-    else if (zoomfact == 2.0)zoomfact = 1.5;
-    else if (zoomfact == 4.0) zoomfact = 2.0;
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+    if (zoomfact > 0.1) zoomfact -= 0.1;
+    if (zoomfact < 0.1) zoomfact = 0.1; // Ensure zoomfact does not go below 0.1
+
+    document.getElementById("zoom-message").innerHTML = zoomfact.toFixed(1) + "x";
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
