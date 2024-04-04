@@ -12,4 +12,5 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 )
 
 // test
+testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 ?>
