@@ -38,7 +38,7 @@ $groups = array();
 $gid = getOP('gid');
 $queryResult = 'NONE!';
 $prop=getOP('prop');
-$val=getOP('val');
+$val=getOP('val');  // DUPLICATE CODE??? ROW
 $access = false;
 
 $debug="NONE!";
