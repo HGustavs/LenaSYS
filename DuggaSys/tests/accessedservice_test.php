@@ -12,23 +12,27 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'opt' => 'SAVDUGGA',
-                'qid' => 'UNK',
-                'cid' => '2',
-                'nme' => 'test',
+                'pw' => 'password',
+                'cid' => 'IT119G',
+                'opt' => 'ADDCLASS',
+                'uid' => 'c22abcef',
 
                 // this is automatically added depending on what session is active (if any), we want the value to be 2
-                'coursevers' => '97732',
+                'className' => '97732',
                 //'qname' => 'TestQuiz',
-                'autograde' => '0',
-                'gradesys' => '1',
-                'template' => '3d-dugga',
-                'jsondeadline' => '{&quot;deadline1&quot;:&quot;2023-05-02 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;2023-05-02 0:0&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;2023-05-03 0:0&quot;,&quot;comment3&quot;:&quot;&quot;}',
-                'release' => '2023-05-04 0:0',
-                'deadline' => '2023-05-02 0:0',
-                'qstart' => '2023-05-01 0:0',
-                'username' => 'brom',
-                'password' => 'password'
+                'username' => '0',
+                'addedtime' => '1',
+                'val' => '3d-dugga',
+                'newusers' => '{&quot;deadline1&quot;:&quot;2023-05-02 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;2023-05-02 0:0&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;2023-05-03 0:0&quot;,&quot;comment3&quot;:&quot;&quot;}',
+                'newclass' => '2023-05-04 0:0',
+                'coursevers' => '2023-05-02 0:0',
+                'teacher' => '2023-05-01 0:0',
+                'vers' => 'brom',
+                'requestedpasswordchange' => 'password'
+                'groups' => 'password' // ARRAY???
+                'gid' => 'password'
+                'NONE!' => 'password'
+                'prop' => 'password'
             )
         ),
         'filter-output' => serialize(array(
