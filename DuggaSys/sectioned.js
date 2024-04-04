@@ -458,8 +458,21 @@ function refreshGithubRepo(courseid, user)
     data: {'cid':courseid, 'user':user, 'action':'refreshGithubRepo'},
     success: function(data) { 
       //Returns true if the data and JSON is correct
-      alert(data); // Shows if course is up to date or not
-      dataCheck = true;
+      //alert(data); // Shows if course is up to date or not
+      //dataCheck = true;
+      //note that the previous success is simply if the data could be sent to the function, the next is the return
+      if(data.status=="success"){
+
+      }
+      else{
+      
+        //this shows the popup window - located in sectioned.php line 626
+        var githubRepoWindow = document.getElementById("github-popup-window")
+        githubRepoWindow.style.display = "block";
+        document.getElementById("github-popup-button").addEventListener("click", function() {
+          githubRepoWindow.style.display = "none";
+        });
+      }
     },
     error: function(data){
       //Check gitfetchService for the meaning of the error code.
@@ -474,7 +487,9 @@ function refreshGithubRepo(courseid, user)
           alert("Something went wrong...");
       }
       dataCheck = false;
-    }
+    },
+    //this is what makes it await a response
+    dataType: "json"
   });
   console.log("ajax done" + courseid);
   return dataCheck;

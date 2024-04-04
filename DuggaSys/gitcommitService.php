@@ -2,8 +2,8 @@
 	// -------------==============######## Setup ###########==============-------------
 
 	// Variables for the refresh button, deadlines specified in seconds
-	$shortdeadline = 300; // 300 = 5 minutes
-	$longdeadline = 600; // 600 = 10 minutes
+	$shortdeadline = 000; // 300 = 5 minutes
+	$longdeadline = 000; // 600 = 10 minutes
 
 	// Used to display errors on screen since PHP doesn't do that automatically.
 	ini_set('display_errors', 1);
@@ -176,8 +176,13 @@
 
 		//If both values are valid
 		if($commit == "" && $url == "") {
-			print_r("Error! Couldn't get url and commit from SQLite db");
-		} else {
+			//print_r("Error!");
+			//Sends response to refereshgithubrepo() in sectioned.js indicating an error is present.
+			$response = array('status'=>'error');
+			header('Content-Type:application/json;');
+    		echo json_encode($response);
+			
+		} /*else {
 			// Get the latest commit from the URL
 			$latestCommit = getCommit($url);
 
@@ -195,7 +200,7 @@
 			} else {
 				print "The course is already up to date!";
 			}
-		}
+		}*/
 	}
 
 	// -------------==============######## Update Github Repo in Course ###########==============-------------
