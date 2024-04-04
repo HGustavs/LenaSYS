@@ -625,31 +625,23 @@
 	<!--error window opened when github repo not found VERY PLACEHOLDER CODE BTW
 		this is the window, it is kinda bad right now cause idk what css file to put styling in
 		also didnt add the form yet-->
-	<div id="github-popup-window" style="
-		position: fixed;
-		width: 300px;
-		height: 200px;
-		background: white;
-		border: 1px solid black;
-		padding: 10px;
-		margin: auto;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		z-index: 10;
-		display: none;">
-		<div class="loginBoxheader">
+	<div id="githubPopupWindow" class="loginBoxContainer" style="display: none;">
+	<div class="loginBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
+	<div class loginBoxheader>
   			<h3>Github repo</h3>
-			<div class="cursorPointer" onclick="closeWindows();">x</div>
+		  	<div class='cursorPointer'	onclick='closeWindows();'>x</div>
 		</div>
-  		<p>There is currently no valid github repo. Add one?</p>
+		<div style="padding:5px;">
+  		<span>There is currently no valid github repo. Add one?</span>
+		  	
 		<form action="" method="POST" id="repoLink">
-			<input type="text" id="reponame" name="reponame">
-			<input type='submit' value='Submit'>
+			<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="reponame" name="reponame"/></div>
 		</form><br>
-		<input id='saveRepo' class='submit-button' type='button' value='Save' title='Save Changes' onclick="validateForm('github-popup-window')" />
-  		<button id="github-popup-button">Close</button>
+		</div>
+		<div style='float:right; padding-top:20px; width: 464px;' >
+		<input id='saveRepo' class='submit-button' type='button' value='Save' title='Save Changes' onclick="" />
+		</div>
+		</div>
 	</div>
 
 	<!-- github template  -->

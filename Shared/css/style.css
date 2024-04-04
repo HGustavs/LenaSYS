@@ -5541,8 +5541,9 @@ only screen and (max-device-width: 568px) {
     display: block;
   }
 
+
   #versionCog, #versionPlus, #editStudent,
-  #testsBTN, #editFiles, #courseIMG,
+  #githubPopupWindow,#testsBTN, #editFiles, #courseIMG,
   #editCourse, #announcement, #messagedialog, #refreshIMG{
     display: none;
   }

@@ -465,13 +465,10 @@ function refreshGithubRepo(courseid, user)
 
       }
       else{
-      
+        $('#githubPopupWindow').css("display", "flex");
         //this shows the popup window - located in sectioned.php line 626
-        var githubRepoWindow = document.getElementById("github-popup-window")
-        githubRepoWindow.style.display = "block";
-        document.getElementById("github-popup-button").addEventListener("click", function() {
-          githubRepoWindow.style.display = "none";
-        });
+        //var githubRepoWindow = document.getElementById("github-popup-window")
+        //githubRepoWindow.style.display = "flex";
       }
     },
     error: function(data){
