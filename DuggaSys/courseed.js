@@ -198,7 +198,6 @@ function updateGithubRepo(githubURL, cid) {
 		success: function() { 
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
-			alert("Something went right! Supposedly the github url has been saved to the database!");
 		},
 		error: function(data){
 			//Check FetchGithubRepo for the meaning of the error code.
@@ -570,7 +569,6 @@ function returnedCourse(data)
 	str+="</div>";
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
-		console.log(data['entries']);
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 			// Do not show courses the user does not have access to.
