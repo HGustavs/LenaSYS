@@ -622,25 +622,24 @@
 		</div>
 	</form>
 	
-	<!--error window opened when github repo not found VERY PLACEHOLDER CODE BTW
-		this is the window, it is kinda bad right now cause idk what css file to put styling in
-		also didnt add the form yet-->
+	<!--error window opened when github repo not found-->
 	<div id="githubPopupWindow" class="loginBoxContainer" style="display: none;">
-	<div class="loginBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
-	<div class loginBoxheader>
-  			<h3>Github repo</h3>
-		  	<div class='cursorPointer'	onclick='closeWindows();'>x</div>
-		</div>
-		<div style="padding:5px;">
-  		<span>There is currently no valid github repo. Add one?</span>
-		  	
-		<form action="" method="POST" id="repoLink">
-			<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="reponame" name="reponame"/></div>
-		</form><br>
-		</div>
-		<div style='float:right; padding-top:20px; width: 464px;' >
-		<input id='saveRepo' class='submit-button' type='button' value='Save' title='Save Changes' onclick="" />
-		</div>
+		<div class="loginBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
+			<div class= "loginBoxheader">
+  					<h3>Github repo</h3>
+		  			<div class='cursorPointer'	onclick='closeWindows();'>x</div>
+			</div>
+			<div style="padding:5px; padding-top:20px;">
+  				<span>There is currently no valid github repo. Add one?</span>
+			</div>
+			<div style='padding:5px;'>
+				<form action="" method="POST" id="repoLink">
+					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="reponame" name="reponame"/></div>
+				</form>
+			</div>
+			<div style='padding-top:15px; width: 464px;'>
+				<input id='saveRepo' class='submit-button' style='float:right; margin-right:5px;' type='button' value='Save' title='Save Changes' onclick="" />
+			</div>
 		</div>
 	</div>
 
