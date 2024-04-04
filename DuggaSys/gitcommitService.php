@@ -166,7 +166,7 @@
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
-
+		
 		$commmit = "";
 		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -176,10 +176,7 @@
 
 		//If both values are valid
 		if($commit == "" && $url == "") {
-			//Sends response to refereshGithubRepo() in sectioned.js indicating an error is present.
-			$response = array('status'=>'error');
-			header('Content-Type:application/json;');
-    		echo json_encode($response);
+			print_r("No repo");
 		} 
 		else {
 			// Get the latest commit from the URL

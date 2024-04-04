@@ -456,14 +456,14 @@ function refreshGithubRepo(courseid, user)
     url: "../DuggaSys/gitcommitService.php",
     type: "POST",
     data: {'cid':courseid, 'user':user, 'action':'refreshGithubRepo'},
-    success: function(data) { 
-      //note that the previous success is simply if the data could be sent to the function, the next is the return
-      if(data.status=="success"){
-        
+    success: function(data) {
+      if(data == "No repo"){
+        $("#githubPopupWindow").css("display", "flex");
       }
       else{
-        $('#githubPopupWindow').css("display", "flex");
+        alert(data);
       }
+      dataCheck = true;
     },
     error: function(data){
       //Check gitfetchService for the meaning of the error code.
@@ -478,8 +478,7 @@ function refreshGithubRepo(courseid, user)
           alert("Something went wrong...");
       }
       dataCheck = false;
-    },
-    dataType: "json"
+    }
   });
   console.log("ajax done" + courseid);
   return dataCheck;
