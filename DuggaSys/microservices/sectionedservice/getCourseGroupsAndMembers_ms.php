@@ -1,7 +1,8 @@
 <?php
 
 //---------------------------------------------------------------------------------------------------------------
-// editorService - Saves and Reads content for Code Editor
+// Microservice getCourseGroupsAndMembers, returns a list of group member related to the provided 
+// course id and course version
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
@@ -24,18 +25,8 @@ if(isset($_SESSION['uid'])){
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
-$coursename=getOP('coursename');
-$versid=getOP('versid');
-$showgrps=getOP('showgrp');
-$studentTeacher = false;
 
-$groups=array();
 $grplst=array();
-
-$isSuperUserVar=false;
-$hasread=hasAccess($userid, $courseid, 'r');
-$studentTeacher=hasAccess($userid, $courseid, 'st');
-$haswrite=hasAccess($userid, $courseid, 'w');
 
 if(checklogin()){
 	if(isset($_SESSION['uid'])){
@@ -47,26 +38,17 @@ if(checklogin()){
 		$userid="guest";
 	}
 
-	$ha = $haswrite || isSuperUser($userid);
 	if(strcmp($opt,"GRP")===0) {
-		$query = $pdo->prepare("SELECT user.uid,user.username,/*user.firstname,user.lastname,*/user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers;");
+		$query = $pdo->prepare("SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid and user_course.cid=:cid AND user_course.vers=:vers;");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':vers', $coursevers);
 		if($query->execute()) {
-			$showgrps=explode(',',$showgrps);
-			$showgrp=$showgrps[0];
-			if($ha || $studentTeacher)$showgrp=explode('_',$showgrp)[0];
 			foreach($query->fetchAll() as $row) {
-				$grpmembershp=$row['groups'];
-				$idx=strpos($grpmembershp,$showgrp);
-				while($idx!==false){
-					$grp=substr($grpmembershp,$idx,strpos($grpmembershp,' ',$idx)-$idx);
-					$email=$row['email'];
-					if(is_null($email)){
-						$email=$row['username']."@student.his.se";
-					}
-					$idx=strpos($grpmembershp,$showgrp,$idx+1);
+				$email=$row['email'];
+				if(is_null($email)){
+					$email=$row['username']."@student.his.se";
 				}
+				array_push($grplst, array($row['groups'],$row['firstname'],$row['lastname'],$email));
 			}
 			sort($grplst);
 		}else{
@@ -74,7 +56,6 @@ if(checklogin()){
 		}
 	} 	
 }
-//echo json_encode($grplst); <- use this ?
-echo json_encode(array('grplst' => $grplst));
+echo json_encode(array('debug'=> "NONE!",'grplst' => $grplst));
 return;
 ?>
