@@ -638,14 +638,17 @@
   left: 0;
   z-index: 10;
   display: none;">
-  		<h1>Pop-up Window</h1>
-  		<p>This is a pop-up window.</p>
+  		<h3>Github repo</h3>
+  		<p>There is currently no valid github repo. Add one?</p>
+		<form action="" method="POST" id="repoLink">
+			<input type="text" id="reponame" name="reponame">
+			<input type='submit' value='Submit'>
+		</form><br>
+		<input id='saveRepo' class='submit-button' type='button' value='Save' title='Save Changes' onclick="validateForm('github-popup-window')" />
   		<button id="github-popup-button">Close</button>
 	</div>
 
 	<!-- github template  -->
-
-
 		<div id='gitHubTemplate' class="loginBoxContainer" style="display:none;">
 				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>
