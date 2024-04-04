@@ -544,7 +544,6 @@ function createVersion(){
 
 function returnedCourse(data)
 {
-	console.log(data);
 	versions = data['versions'];
 	entries = data['entries'];
 	if(data['LastCourseCreated'][0] != undefined){
@@ -571,9 +570,9 @@ function returnedCourse(data)
 	str+="</div>";
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
+		console.log(data['entries']);
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
-			console.log(data);
 			// Do not show courses the user does not have access to.
 			if (!data['writeaccess'] && !item['registered'] && uname !="Guest" && uname)
 				continue;
@@ -710,7 +709,10 @@ function elementIsValid(element) {
 	element.classList.add("bg-color-change-invalid");
 	$(messageElement.firstChild.id).fadeIn();
 	//messageElement.style.display = "block";
-
+		// The inputs for the git URLs are valid even when they're empty, since they're optional
+		if(element.name === "courseGitURL") {
+			return true;
+		}
 	//Check if value of element matches regex based on name attribute same as key for regex object
 	if(element.value.match(regex[element.name])) {
 		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
@@ -739,10 +741,7 @@ function elementIsValid(element) {
 		//messageElement.style.display = "none";
 		element.classList.remove("bg-color-change-invalid");
 
-		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		if(element.name === "courseGitURL") {
-			return true;
-		}
+
 		return false;
 	}
 
