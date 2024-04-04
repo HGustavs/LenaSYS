@@ -272,8 +272,13 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 	$("#cid").val(cid);
 	// Set Code
 	$("#coursecode").val(coursecode);
-	// Set github url
-	$("#editcoursegit-url").val(gitHubUrl);
+	// Set github url. If there is no github url then the field should be left empty. 
+	if(gitHubUrl!="null" && gitHubUrl!="UNK"){
+		$("#editcoursegit-url").val(gitHubUrl);
+	}else{
+		$("#editcoursegit-url").val("");
+	}
+	
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);
