@@ -289,16 +289,22 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
                     }
                 }
                 // Check what to save in array
-                foreach($curlResponseJSON[$key] as $inside => $insideValue){
-                    foreach($insideValue as $inside2 => $insideValue2){
-                        foreach($optionArray as $insideFilter){
-                            if ($inside2 == $insideFilter) {
-                              $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
-                          }
-                            foreach(json_decode($insideValue2) as $inside3 => $insideValue3){
-                                foreach($insideFilter as $insideFilter2){
-                                    if ($inside3 == $insideFilter2) {
-                                        $curlResponseJSONFiltered[$key][$inside][$inside2][$inside3] = $insideValue3;
+                    if (is_array($curlResponseJSON[$key])){
+                    foreach($curlResponseJSON[$key] as $inside => $insideValue){
+                        foreach($insideValue as $inside2 => $insideValue2){
+                            if (is_array($optionArray)){
+                                foreach($optionArray as $insideFilter){
+                                    if ($inside2 == $insideFilter) {
+                                        $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
+                                    }
+                                    if (is_array($insideValue2)){
+                                        foreach($insideValue2 as $inside3 => $insideValue3){
+                                            foreach($insideFilter as $insideFilter2){
+                                                if ($inside3 == $insideFilter2) {
+                                                    $curlResponseJSONFiltered[$key][$inside][$inside2][$inside3] = $insideValue3;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -308,6 +314,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
             }
         }
     }
+
 
     if ($curl) {
         $callServiceTestResult = "passed";
