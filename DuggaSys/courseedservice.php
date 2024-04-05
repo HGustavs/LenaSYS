@@ -57,7 +57,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 }
 
 $log_uuid = getOP('log_uuid');
-$info="opt: ".$opt." cid: ".$cid." coursename: ".$coursename." versid: ".$versid." visibility: ".$visibility;
+$info="opt: ".$opt." cid: ".$cid." coursename: ".$coursename." versid: ".$versid." visibility: ".$visibility." courseGitUrl: ".$courseGitURL;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ if(checklogin()){
 			} 
 
 			// Logging for creating new course
-			$description=$coursename." ".$coursecode." "."Hidden";
+			$description=$coursename." ".$coursecode." ".$courseGitURL." "."Hidden";
 			logUserEvent($userid, $username, EventTypes::AddCourse, $description);
 
 			//////////////////////////////
@@ -487,7 +487,7 @@ if(checklogin()){
 			}
 			
 			// Logging for editing of course
-			$description=$coursename." ".$coursecode." ".$visibilityName;
+			$description=$coursename." ".$coursecode." ".$visibilityName." ".$courseGitURL;
 			logUserEvent($userid, $username, EventTypes::EditCourse, $description);
 
 		}else if(strcmp($opt,"SETTINGS")===0){
@@ -577,7 +577,7 @@ if(!$query->execute()) {
 }
 
 
-$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
+$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion,courseGitURL FROM course ORDER BY coursename");
 
 /*
 
@@ -592,6 +592,8 @@ if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading courses\n".$error[2];
 }else{
+
+	
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$writeAccess = false;
 			if (isset ($userCourse[$row['cid']])){
@@ -617,7 +619,8 @@ if(!$query->execute()) {
 						'visibility' => $row['visibility'],
 						'activeversion' => $row['activeversion'],
 						'activeedversion' => $row['activeedversion'],
-						'registered' => $isRegisteredToCourse
+						'registered' => $isRegisteredToCourse,
+						'courseGitURL' => $row['courseGitURL']
 						)
 					);
 			}

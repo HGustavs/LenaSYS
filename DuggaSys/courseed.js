@@ -40,25 +40,27 @@ function updateCourse()
 	// Show dialog
 	$("#editCourse").css("display", "none");
 	
+	// Updates the course (except the course GitHub repo. 
+	// Course GitHub repo is updated in the next block of code)
+	$("#overlay").css("display", "none");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+	localStorage.setItem('courseid', courseid);
+	localStorage.setItem('updateCourseName', true);
+
 	//Check if courseGitURL has a value
 	if(courseGitURL) {
 		//Check if fetchGitHubRepo returns true
 		if(fetchGitHubRepo(courseGitURL)) {
-			$("#overlay").css("display", "none");
-			AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-			localStorage.setItem('courseid', courseid);
-			localStorage.setItem('updateCourseName', true);
+			localStorage.setItem('courseGitHubRepo', courseGitURL);
+			//If courseGitURL has a value, display a message stating the update (with github-link) worked
 			alert("Course " + coursename + " updated with new GitHub-link!"); 
 			updateGithubRepo(courseGitURL, cid);
 		}
 		//Else: get error message from the fetchGitHubRepo function.
 
 	} else {
-		//If courseGitURL has no value, update the course as usual.
-		$("#overlay").css("display", "none");
-		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-		localStorage.setItem('courseid', courseid);
-		localStorage.setItem('updateCourseName', true);
+		localStorage.setItem('courseGitHubRepo', " ");
+		//If courseGitURL has no value, display an update message
 		alert("Course " + coursename + " updated!"); 
 	}
 }
@@ -250,7 +252,7 @@ function createVersion()
 	resetinputs();
 }
 
-function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
+function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl)
 {
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
@@ -270,6 +272,13 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$("#cid").val(cid);
 	// Set Code
 	$("#coursecode").val(coursecode);
+	// Set github url. If there is no github url then the field should be left empty. 
+	if(gitHubUrl!="null" && gitHubUrl!="UNK"){
+		$("#editcoursegit-url").val(gitHubUrl);
+	}else{
+		$("#editcoursegit-url").val("");
+	}
+	
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);
@@ -567,7 +576,6 @@ function returnedCourse(data)
 	if (data['entries'].length > 0) {
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
-
 			// Do not show courses the user does not have access to.
 			if (!data['writeaccess'] && !item['registered'] && uname !="Guest" && uname)
 				continue;
@@ -600,7 +608,8 @@ function returnedCourse(data)
         		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
         		str += "<span style='margin-bottom: 0px'>";
 
-				    str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+					str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+
         
         		str += "</span>";
       		} else {
@@ -703,7 +712,10 @@ function elementIsValid(element) {
 	element.classList.add("bg-color-change-invalid");
 	$(messageElement.firstChild.id).fadeIn();
 	//messageElement.style.display = "block";
-
+		// The inputs for the git URLs are valid even when they're empty, since they're optional
+		if(element.name === "courseGitURL") {
+			return true;
+		}
 	//Check if value of element matches regex based on name attribute same as key for regex object
 	if(element.value.match(regex[element.name])) {
 		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
@@ -732,10 +744,7 @@ function elementIsValid(element) {
 		//messageElement.style.display = "none";
 		element.classList.remove("bg-color-change-invalid");
 
-		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		if(element.name === "courseGitURL") {
-			return true;
-		}
+
 		return false;
 	}
 
@@ -893,5 +902,5 @@ function localStorageCourse(){
 }
 
 function glowNewCourse(courseid){
-    document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
+   // document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
 }
