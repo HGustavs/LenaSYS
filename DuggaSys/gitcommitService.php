@@ -166,7 +166,7 @@
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
-
+		
 		$commmit = "";
 		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -176,8 +176,9 @@
 
 		//If both values are valid
 		if($commit == "" && $url == "") {
-			print_r("Error! Couldn't get url and commit from SQLite db");
-		} else {
+			print_r("No repo");
+		} 
+		else {
 			// Get the latest commit from the URL
 			$latestCommit = getCommit($url);
 

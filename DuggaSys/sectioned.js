@@ -456,9 +456,13 @@ function refreshGithubRepo(courseid, user)
     url: "../DuggaSys/gitcommitService.php",
     type: "POST",
     data: {'cid':courseid, 'user':user, 'action':'refreshGithubRepo'},
-    success: function(data) { 
-      //Returns true if the data and JSON is correct
-      alert(data); // Shows if course is up to date or not
+    success: function(data) {
+      if(data == "No repo"){
+        $("#githubPopupWindow").css("display", "flex");
+      }
+      else{
+        alert(data);
+      }
       dataCheck = true;
     },
     error: function(data){
