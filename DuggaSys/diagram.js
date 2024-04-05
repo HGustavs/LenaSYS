@@ -3432,10 +3432,12 @@ function getRectFromElement (element)
                 resizedY += (element.height - preResizeHeight[i].height)/2
             }
             // Corrects returned y position due to problems with SE types
+            
             let elementY = resizedY;
             if(element.type == "SE"){
                 elementY += preResizeHeight[i].height/3;
             }
+
             return {
                 x: element.x,
                 y: elementY,
@@ -3467,10 +3469,11 @@ function getRectFromElement (element)
 function rectsIntersect (left, right)
 {
     return (
-        (left.x + left.width >= right.x + right.width) && 
-        (left.x <= right.x) &&
-        (left.y + left.height + (right.height/2) >= right.y + right.height) &&
-        (left.y + (right.height/2) <= right.y )
+
+        ((left.x + left.width) >= ((right.x) + (right.width * 0.75))) &&
+        ((left.y + left.height) > (right.y + right.height * 0.75)) &&
+        (left.x < right.x + 0.25 * right.width) && (left.y < right.y + 0.25 * right.height)
+
     );
 }
 
