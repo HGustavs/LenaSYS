@@ -2,6 +2,7 @@
 
 include "../../Shared/test.php";   // Include the test file where this is sent to
 include_once "../../../coursesyspw.php";
+include_once "../../Shared/sessions.php";
 
 $testsData = array(   // Test-data is saved on this array that is then tested in test.php file
 
