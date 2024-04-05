@@ -1362,6 +1362,11 @@ function showDiagramTypes(){
 //#endregion ===================================================================================
 //#region ================================ EVENTS               ================================
 // --------------------------------------- Window Events    --------------------------------
+document.addEventListener('contextmenu', event =>
+{
+    event.preventDefault();
+});
+
 document.addEventListener('keydown', function (e)
 {
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
