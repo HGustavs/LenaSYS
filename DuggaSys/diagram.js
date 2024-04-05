@@ -739,12 +739,10 @@ const keybinds = {
         BOX_SELECTION: {key: "2", ctrl: false},
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
-        PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
-        EDGE_CREATION: {key: "7", ctrl: false},
-        PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
-        IE_INHERITANCE: { key: "9", ctrl: false },  //<-- IE inheritance functionality
-        PLACE_SDENTITY: { key: "1", ctrl: true },   //<-- SD functionality
+        EDGE_CREATION: {key: "5", ctrl: false},
+        STATE_INITIAL: { key: "6" , ctrl: false },
+        SEQ_LIFELINE: { key: "7", ctrl: false },
+        NOTE_ENTITY: { key: "8", ctrl: false },
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -768,12 +766,8 @@ const keybinds = {
         TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
-        STATE_INITIAL: { key: "<" , ctrl: false },
-        STATE_FINAL: { key: "f" , ctrl: false },
-        STATE_SUPER: { key: ">", ctrl: false },
-        SAVE_DIAGRAM: { key: "s", ctrl: true }, 
+        SAVE_DIAGRAM: { key: "s", ctrl: true },
         LOAD_DIAGRAM: { key: "l", ctrl: true }, 
-        NOTE_ENTITY: { key: "n", ctrl: false }
 };
 
 /** 
@@ -810,7 +804,7 @@ const elementTypes = {
 
 
     note: 15,
-    
+
 };
 
 /**
@@ -1089,18 +1083,29 @@ var mouseMode = mouseModes.POINTER;
 var previousMouseMode;
 
 // Sub menu items used in item cycling
-let subMenuEntityElement = [
+const subMenuEntity = [
     elementTypes.EREntity,
     elementTypes.UMLEntity,
     elementTypes.IEEntity,
     elementTypes.SDEntity,
 ]
-let subMenuEntityKeybinds = [
-    keybinds.PLACE_ENTITY,
-    keybinds.PLACE_UMLENTITY,
-    keybinds.PLACE_IEENTITY,
-    keybinds.PLACE_SDENTITY,
+const subMenuRelation = [
+    elementTypes.ERRelation,
+    elementTypes.UMLRelation,
+    elementTypes.IERelation,
+    elementTypes.ERAttr,
 ]
+const subMenuUMLstate = [
+    elementTypes.UMLInitialState,
+    elementTypes.UMLFinalState,
+    elementTypes.UMLSuperState,
+]
+const subMenuSequence = [
+    elementTypes.sequenceActorAndObject,
+    elementTypes.sequenceActivation,
+    elementTypes.sequenceLoopOrAlt,
+]
+
 // All different element types that can be placed by the user.
 var elementTypeSelected = elementTypes.EREntity;
 var pointerState = pointerStates.DEFAULT;
@@ -1506,78 +1511,36 @@ document.addEventListener('keyup', function (e)
     if (isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
     if (isKeybindValid(e, keybinds.EDGE_CREATION)) setMouseMode(mouseModes.EDGE_CREATION); clearContext();
 
+    // Entity / Class / State
     if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
-        // Cycle through sub menu items
-        if (mouseMode == mouseModes.PLACING_ELEMENT && n.includes(elementTypeSelected)) {
-            for (let i = 0; i < n.length; i++) {
-                if (elementTypeSelected == n[i]) {
-                    setElementPlacementType(n[(i+1) % n.length]);
-                    setMouseMode(mouseModes.PLACING_ELEMENT);
-                    break;
-                }
-            }
-            return;
-        }
+        if (subMenuCycling(subMenuEntity)) return;
         setElementPlacementType(elementTypes.EREntity);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
+    // Relation / Inheritance
     if (isKeybindValid(e, keybinds.PLACE_RELATION)){
+        if (subMenuCycling(subMenuRelation)) return;
         setElementPlacementType(elementTypes.ERRelation);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
-    if (isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
-        setElementPlacementType(elementTypes.ERAttr);
-        setMouseMode(mouseModes.PLACING_ELEMENT);
-    }
-
-    // IE inheritance keybind
-    if (isKeybindValid(e, keybinds.IE_INHERITANCE)){
-        setElementPlacementType(elementTypes.IERelation);
-        setMouseMode(mouseModes.PLACING_ELEMENT);
-    }
-
-    //=================================================== //<-- UML functionality
-    //Temp for UML class
-    if (isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
-        setElementPlacementType(elementTypes.UMLEntity);
-        setMouseMode(mouseModes.PLACING_ELEMENT);
-    }
-    //======================================================
-
-    //=================================================== //<-- IE functionality
-    //Temp for IE entity
-    if (isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
-        setElementPlacementType(elementTypes.IEEntity)
-        setMouseMode(mouseModes.PLACING_ELEMENT);
-    }
-    //======================================================
-
-
-    //=================================================== //<-- SD functionality
-    //Temp for SD entity
-    if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
-        setElementPlacementType(elementTypes.SDEntity)
-        setMouseMode(mouseModes.PLACING_ELEMENT);
-    }
-    //======================================================
-
+    // UML states
     if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
+        if (subMenuCycling(subMenuUMLstate)) return;
         setElementPlacementType(elementTypes.UMLInitialState);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
-    if (isKeybindValid(e, keybinds.STATE_FINAL)) {
-        setElementPlacementType(elementTypes.UMLFinalState);
+    // Sequence
+    if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
+        if (subMenuCycling(subMenuSequence)) return;
+        setElementPlacementType(elementTypes.sequenceActorAndObject);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
-    if (isKeybindValid(e, keybinds.STATE_SUPER)) {
-        setElementPlacementType(elementTypes.UMLSuperState);
-        setMouseMode(mouseModes.PLACING_ELEMENT);
-    }
+
     if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
-        setElementPlacementType(elementTypes.NOTE); //link note keybindhere
+        setElementPlacementType(elementTypes.NOTE);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
@@ -3690,6 +3653,24 @@ function entityIsOverlapping(id, x, y)
             }
         }
         return isOverlapping;
+    }
+}
+
+/**
+ * @description Cycles to the next item in a submenu when the same keybind is pressed again.
+ * @param {Array} subMenu What sub menu array to get elementType from
+ */
+function subMenuCycling(subMenu) {
+    // Cycle through sub menu items
+    if (mouseMode == mouseModes.PLACING_ELEMENT && subMenu.includes(elementTypeSelected)) {
+        for (let i = 0; i < subMenu.length; i++) {
+            if (elementTypeSelected == subMenu[i]) {
+                setElementPlacementType(subMenu[(i+1) % subMenu.length]);
+                setMouseMode(mouseModes.PLACING_ELEMENT);
+                break;
+            }
+        }
+        return true;
     }
 }
 
