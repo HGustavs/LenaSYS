@@ -634,7 +634,7 @@
 			</div>
 			<div style='padding:5px;'>
 				<form action="" method="POST" id="repoLink">
-					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="reponame" name="reponame"/></div>
+					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="reponame" name="reponame" placeholder="https://github.com/username/repository"/></div>
 				</form>
 			</div>
 			<div style='padding-top:15px; width: 464px;'>
