@@ -1085,12 +1085,23 @@ var boxSelectionInUse = false;
 var propFieldState = false;
 
 // What kind of input mode that user is uing the cursor for.
-
 var mouseMode = mouseModes.POINTER;
 var previousMouseMode;
 
+// Sub menu items used in item cycling
+let subMenuEntityElement = [
+    elementTypes.EREntity,
+    elementTypes.UMLEntity,
+    elementTypes.IEEntity,
+    elementTypes.SDEntity,
+]
+let subMenuEntityKeybinds = [
+    keybinds.PLACE_ENTITY,
+    keybinds.PLACE_UMLENTITY,
+    keybinds.PLACE_IEENTITY,
+    keybinds.PLACE_SDENTITY,
+]
 // All different element types that can be placed by the user.
-
 var elementTypeSelected = elementTypes.EREntity;
 var pointerState = pointerStates.DEFAULT;
 
@@ -1459,157 +1470,158 @@ document.addEventListener('keydown', function (e)
 document.addEventListener('keyup', function (e)
 {
     var pressedKey = e.key.toLowerCase();
-  
+
+    // Toggle modifiers when released
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) {
-          setTimeout(() => {
-              ctrlPressed = false;
-          }, 1000);
-      }
+          setTimeout(() => { ctrlPressed = false; }, 1000);
+    }
 
-    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
-        if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
-        if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
-        if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
-            
-            if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
-            if (context.length > 0) {
-                removeElements(context);
-            } else if (contextLine.length > 0) {
-                 removeLines(contextLine);
-            }            
-    
-            updateSelection();
-            
-        }
-        
-        if(isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
-        if(isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
-        
-        if(isKeybindValid(e, keybinds.EDGE_CREATION)){
-            setMouseMode(mouseModes.EDGE_CREATION);
-            clearContext();
-        }
-
-        if(isKeybindValid(e, keybinds.PLACE_ENTITY)){
-            setElementPlacementType(elementTypes.EREntity);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if(isKeybindValid(e, keybinds.PLACE_RELATION)){
-            setElementPlacementType(elementTypes.ERRelation);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if(isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
-            setElementPlacementType(elementTypes.ERAttr);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        // IE inheritance keybind
-        if(isKeybindValid(e, keybinds.IE_INHERITANCE)){
-            setElementPlacementType(elementTypes.IERelation);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        //=================================================== //<-- UML functionality
-        //Temp for UML class
-        if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
-            setElementPlacementType(elementTypes.UMLEntity);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        //======================================================
-
-        //=================================================== //<-- IE functionality
-        //Temp for IE entity
-        if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
-            setElementPlacementType(elementTypes.IEEntity)
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        //======================================================
-
-
-        //=================================================== //<-- SD functionality
-        //Temp for SD entity
-        if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
-            setElementPlacementType(elementTypes.SDEntity)
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        //======================================================
-
-        if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
-            setElementPlacementType(elementTypes.UMLInitialState);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if (isKeybindValid(e, keybinds.STATE_FINAL)) {
-            setElementPlacementType(elementTypes.UMLFinalState);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        if (isKeybindValid(e, keybinds.STATE_SUPER)) {
-            setElementPlacementType(elementTypes.UMLSuperState);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
-            setElementPlacementType(elementTypes.NOTE); //link note keybindhere
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
-        if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
-        if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
-        if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
-        if(isKeybindValid(e, keybinds.TOGGLE_DARKMODE)) toggleDarkmode();
-        if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
-        if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
-        if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
-        if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
-        //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
-
-        if (isKeybindValid(e, keybinds.COPY)){
-            // Remove the preivous copy-paste data from localstorage.
-            if(localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
-            if(localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
-
-            if (context.length !== 0){
-                
-                // Filter - keeps only the lines that are connectet to and from selected elements.
-                var contextConnectedLines = lines.filter(line => {
-                    return (context.filter(element => {
-                        return line.toID == element.id || line.fromID == element.id
-                    })).length > 1
-                });
-
-                // Store new copy-paste data in local storage
-                localStorage.setItem('copiedElements', JSON.stringify(context));
-                localStorage.setItem('copiedLines', JSON.stringify(contextConnectedLines));
-                
-                displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
-            }else {
-                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
-            }
-        }
-
-        if (isKeybindValid(e, keybinds.TOGGLE_KEYBINDLIST)) {
-            e.preventDefault();
-            toggleKeybindList();
-        }
-
-    } else {
-        if(document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)){
-            if(context.length == 1){
+    // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
+    if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+        if (document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)) {
+            if (context.length == 1) {
                 document.activeElement.value = context[0].name;
                 document.activeElement.blur();
                 toggleOptionsPane();
             }
-        }   
+        }
+        return;
     }
-});
+
+    if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
+    if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
+    if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
+    if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
+        if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
+        if (context.length > 0) {
+            removeElements(context);
+        } else if (contextLine.length > 0) {
+             removeLines(contextLine);
+        }
+        updateSelection(null);
+    }
+    if (isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
+    if (isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
+    if (isKeybindValid(e, keybinds.EDGE_CREATION)) setMouseMode(mouseModes.EDGE_CREATION); clearContext();
+
+    if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
+        // Cycle through sub menu items
+        if (mouseMode == mouseModes.PLACING_ELEMENT && n.includes(elementTypeSelected)) {
+            for (let i = 0; i < n.length; i++) {
+                if (elementTypeSelected == n[i]) {
+                    setElementPlacementType(n[(i+1) % n.length]);
+                    setMouseMode(mouseModes.PLACING_ELEMENT);
+                    break;
+                }
+            }
+            return;
+        }
+        setElementPlacementType(elementTypes.EREntity);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    if (isKeybindValid(e, keybinds.PLACE_RELATION)){
+        setElementPlacementType(elementTypes.ERRelation);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    if (isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
+        setElementPlacementType(elementTypes.ERAttr);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    // IE inheritance keybind
+    if (isKeybindValid(e, keybinds.IE_INHERITANCE)){
+        setElementPlacementType(elementTypes.IERelation);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    //=================================================== //<-- UML functionality
+    //Temp for UML class
+    if (isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
+        setElementPlacementType(elementTypes.UMLEntity);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+    //======================================================
+
+    //=================================================== //<-- IE functionality
+    //Temp for IE entity
+    if (isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
+        setElementPlacementType(elementTypes.IEEntity)
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+    //======================================================
+
+
+    //=================================================== //<-- SD functionality
+    //Temp for SD entity
+    if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
+        setElementPlacementType(elementTypes.SDEntity)
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+    //======================================================
+
+    if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
+        setElementPlacementType(elementTypes.UMLInitialState);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    if (isKeybindValid(e, keybinds.STATE_FINAL)) {
+        setElementPlacementType(elementTypes.UMLFinalState);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+    if (isKeybindValid(e, keybinds.STATE_SUPER)) {
+        setElementPlacementType(elementTypes.UMLSuperState);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+    if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
+        setElementPlacementType(elementTypes.NOTE); //link note keybindhere
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    if (isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
+    if (isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
+    if (isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
+    if (isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
+    if (isKeybindValid(e, keybinds.TOGGLE_DARKMODE)) toggleDarkmode();
+    if (isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
+    if (isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
+    if (isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
+    if (isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
+    if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
+    //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
+
+    if (isKeybindValid(e, keybinds.COPY)){
+        // Remove the preivous copy-paste data from localstorage.
+        if(localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
+        if(localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
+
+        if (context.length !== 0){
+
+            // Filter - keeps only the lines that are connectet to and from selected elements.
+            var contextConnectedLines = lines.filter(line => {
+                return (context.filter(element => {
+                    return line.toID == element.id || line.fromID == element.id
+                })).length > 1
+            });
+
+            // Store new copy-paste data in local storage
+            localStorage.setItem('copiedElements', JSON.stringify(context));
+            localStorage.setItem('copiedLines', JSON.stringify(contextConnectedLines));
+
+            displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
+        }else {
+            displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
+        }
+    }
+    if (isKeybindValid(e, keybinds.TOGGLE_KEYBINDLIST)) {
+        e.preventDefault();
+        toggleKeybindList();
+    }
+})
 
 window.addEventListener("resize", () => {
     updateContainerBounds();
