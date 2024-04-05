@@ -55,7 +55,6 @@ testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprin
 function doDBQuery($query, $data, $testsData, $testname){
     $queryString = $query;
     if(!$testname == "UNK"){
-
         echo $testsData['variables-' . $testname];
         $variables = $testsData['variables-' . $testname];
         $variablesArray = explode(", ", $variables);
@@ -264,6 +263,11 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
     $curlResponse = curl_exec($curl);
+
+    if(curl_errno($curl)) {
+        $error_message = curl_error($curl);
+        echo $error_message;
+    }
 
     curl_close($curl);
 
