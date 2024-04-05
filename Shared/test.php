@@ -170,6 +170,7 @@ function testHandler($testsData, $prettyPrint){
 
         // Test 1 login
         $serviceData = unserialize($testData['service-data']);
+        echo '<pre>'; print_r($serviceData); echo '</pre>';
         $test1Response = json_encode(loginTest($serviceData['username'], $serviceData['password'], $prettyPrint));
         $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
