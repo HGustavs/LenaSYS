@@ -12,10 +12,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'pw' => 'password',
+                'pw' => 'testpwd',
                 'cid' => 'IT119G',
                 'opt' => 'ADDCLASS',
-                'uid' => 'c22abcef',
+                'uid' => 'testuser1',
 
                 'className' => 'webug',
                 'username' => 'c123korv',
