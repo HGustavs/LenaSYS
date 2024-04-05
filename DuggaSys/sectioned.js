@@ -60,11 +60,11 @@ function burgerToggleDarkmode(operation = 'click'){
     const themeToggle = document.getElementById('theme-toggle');
     // if it's light -> go dark
     if(themeStylesheet.href.includes('blackTheme')){
-      themeStylesheet.href = "../Shared/css/whiteTheme.css";
+      themeStylesheet.href = "../Shared/css/style.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
       backgroundColorTheme = "#121212";
     }
-    else if(themeStylesheet.href.includes('whiteTheme')) {
+    else if(themeStylesheet.href.includes('style')) {
       // if it's dark -> go light
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href)
