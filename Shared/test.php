@@ -316,6 +316,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         }
     }
 
+
     if ($curl) {
         $callServiceTestResult = "passed";
     }
