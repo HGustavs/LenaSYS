@@ -3097,24 +3097,28 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 // Function to fetch code examples for a specific lecture/moment
 function createExamples(momentID, isManual) {
   lid = momentID;
-  // AJAX Request to create all code examples
-  $.ajax({
-    url: "sectionedservice.php",
-    type: "POST",
-    data: {'lid':lid,'opt':'CREGITEX'},
-    dataType: "json",
-    success: function(response) {
-      console.log("AJAX request succeeded. Response:", response);
-      lastUpdatedCodeExampes = Date.now();
-      if (isManual) {
-      alert("Code examples have been manually updated successfully!");
+
+  //wrapped ajax in promise in order to return promise to the function that called it. see setInterval
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: "sectionedservice.php",
+      type: "POST",
+      data: { 'lid': lid, 'opt': 'CREGITEX' },
+      dataType: "json",
+      success: function (response) {
+        console.log("AJAX request succeeded. Response:", response);
+        lastUpdatedCodeExampes = Date.now();
+        if (isManual) {
+          console.log("Code examples have been manually updated successfully!");
+        }
+        resolve(response);
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX request failed. Status:", status);
+        console.error("Error:", error);
+        console.log("Failed to manually update code examples!");
       }
-    },
-    error: function(xhr, status, error) {
-      console.error("AJAX request failed. Status:", status);
-      console.error("Error:", error);
-      alert("Failed to manually update code examples!");
-    }
+    });
   });
 }
 
@@ -3143,25 +3147,25 @@ setInterval(function() {
       var hasUpdatedAllCodeExamples = false;
       console.log("Time to update the code examples.");
 
-      // Call the createExamples function for each lecture/moments
+      let returnedPromises = [];
       for (let i = 0; i < itemKinds.length; i++) {
         if(itemKinds[i] === 4){
           for (let i = 0; i < collectedLid.length; i++) {
-            createExamples(collectedLid[i], false);
-            hasUpdatedAllCodeExamples = true;
+            returnedPromises.push(createExamples(collectedLid[i], false));
           }
         }
       }
 
-      // The alert for automated fetching of code examples
-      if (hasUpdatedAllCodeExamples) {
-        alert("Code examples have been automatically updated successfully!");
-      }
+      //since createExamples returns a promise. We can let the async call complete entirely before logging.
+      Promise.all(returnedPromises).then(() => {
+        console.log("All code examples have been automatically updated successfully!");
+      }).catch(error => {
+        console.error("An error occurred while updating code examples:", error);
+      });
     }
   }
-  
-}, 1000); // this checks every second  if UPDATE_INTERVAL_FETCH_CODE_EXAMPLES has passed 10 minutes mark
 
+}, 1000); // this checks every second  if UPDATE_INTERVAL_FETCH_CODE_EXAMPLES has passed 10 minutes mark
 
 // ------ Validates all versionnames ------
 function validateVersionName(versionName, dialogid) {
