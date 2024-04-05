@@ -54,8 +54,12 @@ testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprin
 
 function doDBQuery($query, $data, $testsData, $testname){
     $queryString = $query;
-    $variables = $testsData['variables-' . $testname];
-    $variablesArray = explode(", ", $variables);
+    if(!$testname == "UNK"){
+
+        echo $testsData['variables-' . $testname];
+        $variables = $testsData['variables-' . $testname];
+        $variablesArray = explode(", ", $variables);
+    }
     $result = "Error executing query";
     // DB credentials
     include_once("../../../coursesyspw.php");
@@ -164,11 +168,8 @@ function testHandler($testsData, $prettyPrint){
             $serviceURL = $testData['service'];
         }
 
-        echo"<h1>{$serviceURL}</h1>";
-
         // Test 1 login
         $serviceData = unserialize($testData['service-data']);
-        echo '<pre>'; print_r($serviceData); echo '</pre>';
         $test1Response = json_encode(loginTest($serviceData['username'], $serviceData['password'], $prettyPrint));
         $TestsReturnJSON['Test 1 (Login)'] = json_decode($test1Response, true);
 
@@ -176,7 +177,6 @@ function testHandler($testsData, $prettyPrint){
         $test2Response = json_encode(callServiceTest($serviceURL, $testData['service-data'], $filter, $QueryReturnJSONbefore, $prettyPrint));
         $TestsReturnJSON['Test 2 (callService)'] = json_decode($test2Response, true);
         $serviceRespone = $TestsReturnJSON['Test 2 (callService)']['respons'];
-
 
         // Test 3 assertEqual
         $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
@@ -187,7 +187,7 @@ function testHandler($testsData, $prettyPrint){
             // if query-before-start-
             if (strpos($option, 'query-after-test') === 0) {
                $QueryReturnJSON[$option] = doDBQuery($value, "UNK", "UNK", "UNK");
-           }
+            }
         }
 
         $TestsReturnJSON['querys-after-test'] = $QueryReturnJSON;
