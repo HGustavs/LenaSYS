@@ -236,6 +236,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
 
     $data = unserialize($data);
 
+    $queryReturnPathAndDataJSON = array();
     // If service data !query-test! replace with actual query output
     foreach($data as $sInput => $sValue){
         foreach($QueryReturnJSON as $oneQuery => $queryValue){
@@ -289,7 +290,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
                     }
                 }
                 // Check what to save in array
-                    if (is_array($curlResponseJSON[$key])){
+                if (is_array($curlResponseJSON[$key])){
                     foreach($curlResponseJSON[$key] as $inside => $insideValue){
                         foreach($insideValue as $inside2 => $insideValue2){
                             if (is_array($optionArray)){
