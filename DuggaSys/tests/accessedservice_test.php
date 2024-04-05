@@ -21,16 +21,16 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'username' => 'c123korv',
                 'addedtime',  // Ska denna vara med?
                 'val' => '3d-dugga',
-                'newusers' => '{&quot;deadline1&quot;:&quot;2023-05-02 0:0&quot;,&quot;comment1&quot;:&quot;&quot;,&quot;deadline2&quot;:&quot;2023-05-02 0:0&quot;,&quot;comment2&quot;:&quot;&quot;,&quot;deadline3&quot;:&quot;2023-05-03 0:0&quot;,&quot;comment3&quot;:&quot;&quot;}',
+                'newusers' => 'a22bagge',
                 'newclass' => 'webug',
                 'coursevers' => 'A1',
                 'teacher' => 'brom',
                 'vers' => '1',
                 'requestedpasswordchange' => '0',
                 'groups' => array(
-                    'groupval',
-                    'groupkind',
-                    'groupint',
+                    'groupval' => 'abc',
+                    'groupkind' => 'abcd',
+                    'groupint' => '2',
                 ), // ARRAY???
                 'gid' => '1',
                 'prop' => 'password',
