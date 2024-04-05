@@ -9,4 +9,10 @@
   //connect to database and start session
   pdoConnect();
   session_start();
+
+  //global variables
+  $cid = hetOP('cid');
+  $versid = getOP ('versid');
+  $makeActive = getOP('makeActive');
+
 ?>
