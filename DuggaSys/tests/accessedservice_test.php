@@ -8,7 +8,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'create data' => array(  
         'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         //'query-after-test-1' => "DELETE FROM quiz ORDER BY id DESC LIMIT 1",
-        'service' => 'https://cms.webug.se/root/G2/students/c21axepe/LenaSYS/DuggaSys/duggaedservice.php',
+        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
