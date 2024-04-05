@@ -162,11 +162,13 @@ function testHandler($testsData, $prettyPrint){
             echo $testData['service'];
             $dirname = dirname(dirname(__FILE__));
             $urlpath = strstr($dirname, '/root');
-            $serviceURL = "https://cms.webug.se/".$urlpath."/DuggaSys/".$testData['service'];
+            $serviceURL = $dirname.$urlpath."/DuggaSys/".$testData['service'];
         }
         else{
             $serviceURL = $testData['service'];
         }
+
+        echo"<h1>{$serviceURL}</h1>";
 
         // Test 1 login
         $serviceData = unserialize($testData['service-data']);
