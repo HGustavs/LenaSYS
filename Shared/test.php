@@ -60,6 +60,7 @@ function doDBQuery($query, $data, $testsData, $testname){
     // DB credentials
     include_once("../../../coursesyspw.php");
 
+    $pdo = null;
     if ($pdo == null) {
         // Connect to DB
         try {
@@ -124,6 +125,8 @@ function testHandler($testsData, $prettyPrint){
             // if query-before-start
             if (strpos($option, 'query-before-test') === 0) {
 
+                $QueryReturnJSONbefore = array();
+                $QueryReturnJSONbefore[$option] = doDBQuery($value, $data, $testData, $option);
                 // If service data !query-test! replace with actual query output
                 foreach($data as $sInput => $sValue){
                     foreach($QueryReturnJSONbefore as $oneQuery => $queryValue){
@@ -143,7 +146,6 @@ function testHandler($testsData, $prettyPrint){
                         }
                     }
                 }
-               $QueryReturnJSONbefore[$option] = doDBQuery($value, $data, $testData, $option);
            }
         }
 
