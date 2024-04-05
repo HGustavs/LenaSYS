@@ -154,10 +154,6 @@ function testHandler($testsData, $prettyPrint){
         // Output filter
         $filter = unserialize($testData['filter-output']);
 
-        if ($prettyPrint) {
-            echo "<h2>{$testData['name']} </h2>";
-        }
-
         if (!(strpos($testData['service'], "/"))) {
             echo $testData['service'];
             $dirname = dirname(dirname(__FILE__));
