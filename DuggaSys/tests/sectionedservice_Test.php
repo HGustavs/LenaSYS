@@ -491,7 +491,7 @@ $testsData = array(
 
     //     'query-after-test-1' => "UPDATE listentries SET tabs=null, gradesystem=0 WHERE lid=2008;",
     
-    //     'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+    //     'service' => 'sectionedservice.php',
     //     'service-data' => serialize(array( // Data that service needs to execute function
     //         'opt' => 'UPDATEVRS',
     //         'username' => 'mestr',
@@ -568,7 +568,7 @@ $testsData = array(
 
     //     'query-after-test-1' => "UPDATE listentries SET tabs=null, gradesystem=0 WHERE lid=2008;",
     
-    //     'service' => 'https://cms.webug.se/root/G2/students/a21jeaha/LenaSYS/DuggaSys/sectionedservice.php',
+    //     'service' => 'sectionedservice.php',
     //     'service-data' => serialize(array( // Data that service needs to execute function
     //         'opt' => 'UPDATETABS',
     //         'username' => 'mestr',
