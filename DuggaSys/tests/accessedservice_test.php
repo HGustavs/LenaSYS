@@ -19,10 +19,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'pw' => 'testpwd',
-                'cid' => 'IT119G',
-                'opt' => 'ADDCLASS',
-                'uid' => 'testuser1',
+                'opt' => 'UPDATE',
+                'prop' => 'firstname',
+                'val' => 'test',
+                'uid' => 'VALUE FROM PREVIOUS QUERY',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
