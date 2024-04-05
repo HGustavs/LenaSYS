@@ -138,7 +138,7 @@ function testHandler($testsData, $prettyPrint){
                                 $data[$sInput] = $queryValue;
                             }
                             else{
-                                $dataN[$sInput] = $queryValue;
+                                $data[$sInput] = $queryValue;
                             }
                         }
                     }
