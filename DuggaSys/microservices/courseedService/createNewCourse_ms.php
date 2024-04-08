@@ -1,5 +1,4 @@
 <?php
-
 //---------------------------------------------------------------------------------------------------------------
 // editorService - Saves and Reads content for Code Editor
 //---------------------------------------------------------------------------------------------------------------
@@ -7,6 +6,7 @@
 // Missing Functionality
 //		New Code Example + New Dugga
 //		Graying link accordingly
+
 
 date_default_timezone_set("Europe/Stockholm");
 

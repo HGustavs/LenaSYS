@@ -1017,17 +1017,32 @@ function AJAXService(opt,apara,kind)
 	}
 
 	if(kind=="COURSE"){
-		$.ajax({
-		//	url : "courseedservice.php",
-			url : "./microservices/courseedService/createNewCourse_msTest.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedCourse
-		});
+
+		if(opt === "NEW"){
+			$.ajax({
+				url : "./microservices/courseedService/createNewCourse_msTest.php",
+				//url : "courseedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedCourse
+			});
+		}else{
+
+			$.ajax({
+					url : "courseedservice.php",
+				//	url : "./microservices/courseedService/createNewCourse_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returnedCourse
+				});
+
+		}
+
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
-			url: "showDuggaservice.php",
+		 	url: "showDuggaservice.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
