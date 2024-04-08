@@ -1379,85 +1379,75 @@ document.addEventListener('keydown', function (e)
         clearInterval(stateMachine.replayTimer);
     }
 
+    if (isKeybindValid(e, keybinds.ENTER) && /INPUT|SELECT/.test(document.activeElement.nodeName.toUpperCase())) {
+        if (!!document.getElementById("lineLabel")) {
+            changeLineProperties();
+        } else if (document.activeElement.id == "saveDiagramAs") {
+            saveDiagramAs();
+            hideSavePopout();
+        } else {
+            let propField = document.getElementById("elementProperty_name");
+            changeState();
+            saveProperties();
+            propField.blur();
+        }
+    }
+
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
-            escPressed = true;
-            if(context.length > 0 || contextLine.length > 0) {
-                clearContext();
-                clearContextLine();
-            } else {
-                ghostElement = null;
-                setMouseMode(mouseModes.POINTER);
-            }
-            if (movingContainer) {
-                scrollx = sscrollx;
-                scrolly = sscrolly;
-            }
-            ghostLine = null;
-            pointerState = pointerStates.DEFAULT;
-            showdata();
-        }
+    if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) return;
 
-        if (isKeybindValid(e, keybinds.ZOOM_IN)){
-            e.preventDefault();
-            zoomin();
-        } 
-        if (isKeybindValid(e, keybinds.ZOOM_OUT)){
-            e.preventDefault();
-            zoomout();
-        } 
+    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
+        escPressed = true;
+        if(context.length > 0 || contextLine.length > 0) {
+            clearContext();
+            clearContextLine();
+        } else {
+            ghostElement = null;
+            setMouseMode(mouseModes.POINTER);
+        }
+        if (movingContainer) {
+            scrollx = sscrollx;
+            scrolly = sscrolly;
+        }
+        ghostLine = null;
+        pointerState = pointerStates.DEFAULT;
+        showdata();
+    }
 
-        if (isKeybindValid(e, keybinds.ZOOM_RESET)){
-            e.preventDefault();
-            zoomreset();
-        }
+    if (isKeybindValid(e, keybinds.ZOOM_IN)){
+        e.preventDefault();
+        zoomin();
+    }
+    if (isKeybindValid(e, keybinds.ZOOM_OUT)){
+        e.preventDefault();
+        zoomout();
+    }
 
-        if (isKeybindValid(e, keybinds.SELECT_ALL)){
-            if(mouseMode == mouseModes.EDGE_CREATION){
-                e.preventDefault();
-                return false;
-            } else {
-                e.preventDefault();
-                selectAll();
-            }
-        }
-        if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
-            e.preventDefault();
-        }
+    if (isKeybindValid(e, keybinds.ZOOM_RESET)){
+        e.preventDefault();
+        zoomreset();
+    }
 
-        // Moving object with arrows
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
-            setPos(context, 0, 1);
-        }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
-            setPos(context, 0, -1);
-        }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
-            setPos(context, 1, 0);
-        }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
-            setPos(context, -1, 0);
-        }
+    if (isKeybindValid(e, keybinds.SELECT_ALL)){
+        e.preventDefault();
+        if (mouseMode != mouseModes.EDGE_CREATION) selectAll();
+    }
+    if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
+        e.preventDefault();
+    }
 
-    } else { 
-        if (isKeybindValid(e, keybinds.ENTER)) { 
-            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
-                var propField = document.getElementById("elementProperty_name");
-                if(!!document.getElementById("lineLabel")){
-                    changeLineProperties();
-                }
-                else if (document.activeElement.id == "saveDiagramAs") {
-                    saveDiagramAs();
-                    hideSavePopout();
-                }
-                else {
-                    changeState();
-                    saveProperties(); 
-                    propField.blur();
-                }
-            }
-        }
+    // Moving object with arrows
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
+        setPos(context, 0, 1);
+    }
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
+        setPos(context, 0, -1);
+    }
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
+        setPos(context, 1, 0);
+    }
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
+        setPos(context, -1, 0);
     }
 });
 
@@ -1830,38 +1820,38 @@ function ddown(event)
 
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
-if(!hasPressedDelete){
-    switch (mouseMode) {
-        case mouseModes.POINTER:
-        case mouseModes.BOX_SELECTION:
-        case mouseModes.PLACING_ELEMENT:
-            startX = event.clientX;
-            startY = event.clientY;
+    if(!hasPressedDelete){
+        switch (mouseMode) {
+            case mouseModes.POINTER:
+            case mouseModes.BOX_SELECTION:
+            case mouseModes.PLACING_ELEMENT:
+                startX = event.clientX;
+                startY = event.clientY;
 
-            if (!altPressed) {
-                pointerState = pointerStates.CLICKED_ELEMENT;
-                targetElement = event.currentTarget;
-                targetElementDiv = document.getElementById(targetElement.id);
-            }
+                if (!altPressed) {
+                    pointerState = pointerStates.CLICKED_ELEMENT;
+                    targetElement = event.currentTarget;
+                    targetElementDiv = document.getElementById(targetElement.id);
+                }
 
-        case mouseModes.EDGE_CREATION:
-            if(event.button == 2) return;
-            const element = data[findIndex(data, event.currentTarget.id)];
-            // If element not in context, update selection on down click
-            if (element != null && !context.includes(element)){
-                pointerState = pointerStates.CLICKED_ELEMENT;
-                updateSelection(element);
-                lastClickedElement = null;
-            } else if(element != null){
-                lastClickedElement = element;
-            }
-            break;
-            
-        default:
-            console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
-            break;
+            case mouseModes.EDGE_CREATION:
+                if(event.button == 2) return;
+                const element = data[findIndex(data, event.currentTarget.id)];
+                // If element not in context, update selection on down click
+                if (element != null && !context.includes(element)){
+                    pointerState = pointerStates.CLICKED_ELEMENT;
+                    updateSelection(element);
+                    lastClickedElement = null;
+                } else if(element != null){
+                    lastClickedElement = element;
+                }
+                break;
+
+            default:
+                console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
+                break;
+        }
     }
-}
     dblPreviousTime = new Date().getTime(); // Update dblClick-timer.
     wasDblClicked = false; // Reset the bool.
 }
