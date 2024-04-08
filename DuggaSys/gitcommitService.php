@@ -32,6 +32,9 @@
 		{
 			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
 		}
+		else if($_POST['action'] == 'directInsert'){
+			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
+		}
 	};
 
 	// -------------==============######## Creating New Course ###########==============-------------

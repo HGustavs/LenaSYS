@@ -493,7 +493,7 @@ function updateGithubRepo(githubURL, cid) {
 		async: false,
 		url: "../DuggaSys/gitcommitService.php",
 		type: "POST",
-		data: {'githubURL':regexURL, 'cid':cid, 'action':'updateGithubRepo'},
+		data: {'githubURL':regexURL, 'cid':cid, 'action':'directInsert'},
 		success: function() { 
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
