@@ -5970,7 +5970,7 @@ function setA4SizeFactor(e){
 function toggleA4Horizontal()
 {
     document.getElementById("vRect").style.display = "block";
-    if(document.getElementById("a4Rect").style.display = "block"){
+    if(document.getElementById("a4Rect").style.display == "block"){
         document.getElementById("a4Rect").style.display = "none";
     }
 }
@@ -5978,7 +5978,7 @@ function toggleA4Horizontal()
 function toggleA4Vertical()
 {
     document.getElementById("a4Rect").style.display = "block";
-    if(document.getElementById("vRect").style.display = "block"){
+    if(document.getElementById("vRect").style.display == "block"){
         document.getElementById("vRect").style.display = "none";
     }
 }
@@ -6665,7 +6665,7 @@ function generateContextProperties()
                   }
               }
               //If UML inheritance
-              else if (element.kind = 'UMLRelation') {
+              else if (element.kind == 'UMLRelation') {
                 //ID MUST START WITH "elementProperty_"!!!!!
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6720,7 +6720,7 @@ function generateContextProperties()
                     }
                 }
             }
-            else if(element.kind = 'IERelation') {
+            else if(element.kind == 'IERelation') {
               //ID MUST START WITH "elementProperty_"!!!!!
               for (const property in element) {
                   switch (property.toLowerCase()) {
