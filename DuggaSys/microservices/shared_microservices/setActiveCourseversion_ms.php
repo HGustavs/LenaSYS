@@ -11,7 +11,7 @@
   session_start();
 
   //global variables
-  $cid = hetOP('cid');
+  $cid = getOP('cid');
   $versid = getOP ('versid');
   $makeActive = getOP('makeActive');
 
@@ -32,7 +32,7 @@
 
     if (!$updateResult){
       $debug = "Error updating entries";  //Handle updates faliure
-      
+
     }
   }
 ?>
