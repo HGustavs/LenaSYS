@@ -3811,8 +3811,8 @@ function validateForm(formid) {
 
     if(repoLink){
       if(fetchGitHubRepo(repoLink)){
-        $("#githubPopupWindow").css("display", "none");
-        //alert("Updated Course with new GitHub-link!"); 
+        localStorage.setItem('courseGitHubRepo', repoLink);
+        $("#githubPopupWindow").css("display", "none"); 
         updateGithubRepo(repoLink, cid);
       }
     }

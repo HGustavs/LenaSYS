@@ -26,7 +26,7 @@
 		}
 		else if($_POST['action'] == 'refreshGithubRepo') 
 		{
-			refreshCheck($_POST['cid'], $_POST['user']);
+			refreshGithubRepo($_POST['cid']);
 		}
 		else if($_POST['action'] == 'updateGithubRepo') 
 		{
@@ -123,16 +123,18 @@
 		if($user == 1) { // 1 = superuser
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
+				return false;
 			} else {
 				newUpdateTime($currentTime, $cid);
-				refreshGithubRepo($cid);
+				return true;
 			}
 		} else { 
 			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
 				newUpdateTime($currentTime, $cid);
-				refreshGithubRepo($cid);
+				return true;
 			} else {
 				print "Too soon since last update, please wait.";
+				return false;
 			}
 		}
 	}
@@ -182,22 +184,24 @@
 			print_r("No repo");
 		} 
 		else {
-			// Get the latest commit from the URL
-			$latestCommit = getCommit($url);
+			if(refreshCheck($_POST['cid'], $_POST['user'])){
+				// Get the latest commit from the URL
+				$latestCommit = getCommit($url);
 
-			// Compare old commit in db with the new one from the url
-			if($latestCommit != $commit) {
-				// Update the SQLite db with the new commit
-				$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
-				$query->bindParam(':cid', $cid);
-				$query->bindParam(':latestCommit', $latestCommit);
-				$query->execute();
+				// Compare old commit in db with the new one from the url
+				if($latestCommit != $commit) {
+					// Update the SQLite db with the new commit
+					$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
+					$query->bindParam(':cid', $cid);
+					$query->bindParam(':latestCommit', $latestCommit);
+					$query->execute();
 
-				// Download files and metadata
-				bfs($url, $cid, "DOWNLOAD");
-				print "The course has been updated, files have been downloaded!";
-			} else {
-				print "The course is already up to date!";
+					// Download files and metadata
+					bfs($url, $cid, "DOWNLOAD");
+					print "The course has been updated, files have been downloaded!";
+				} else {
+					print "The course is already up to date!";
+				}
 			}
 		}
 	}
