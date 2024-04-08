@@ -1374,7 +1374,6 @@ document.addEventListener('keydown', function (e)
         clearInterval(stateMachine.replayTimer);
     }
 
-
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
@@ -4319,7 +4318,6 @@ function toggleGrid()
    }
 }
 
-document.addEventListener()
 
 /**
  * @description Toggles the darkmode for svgbacklayer ON/OFF.
