@@ -238,21 +238,25 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
 
     $queryReturnPathAndDataJSON = array();
     // If service data !query-test! replace with actual query output
-    foreach($data as $sInput => $sValue){
-        foreach($QueryReturnJSON as $oneQuery => $queryValue){
-            // Check if service data uses query output (!*******!)
-            $queryName = substr(strstr($sValue, "<!"), 2);
-            $queryName = substr($queryName, 0, strpos($queryName, "!>"));
-            $queryPath = substr(strstr($sValue, "<*"), 2);
-            $queryPath = substr($queryPath, 0, strpos($queryPath, "*>"));
-            if ($queryName == $oneQuery) {
-                if ($queryPath != null) {
-                    eval('$queryValue = $queryValue' . $queryPath . ';');
-                    $queryReturnPathAndDataJSON[$queryName . $queryPath] = $queryValue;
-                    $data[$sInput] = $queryValue;
-                }
-                else{
-                    $data[$sInput] = $queryValue;
+    if ((is_array($data))) {
+        foreach($data as $sInput => $sValue){
+            if ((is_array($QueryReturnJSON))) {
+                foreach($QueryReturnJSON as $oneQuery => $queryValue){
+                    // Check if service data uses query output (!*******!)
+                    $queryName = substr(strstr($sValue, "<!"), 2);
+                    $queryName = substr($queryName, 0, strpos($queryName, "!>"));
+                    $queryPath = substr(strstr($sValue, "<*"), 2);
+                    $queryPath = substr($queryPath, 0, strpos($queryPath, "*>"));
+                    if ($queryName == $oneQuery) {
+                        if ($queryPath != null) {
+                            eval('$queryValue = $queryValue' . $queryPath . ';');
+                            $queryReturnPathAndDataJSON[$queryName . $queryPath] = $queryValue;
+                            $data[$sInput] = $queryValue;
+                        }
+                        else{
+                            $data[$sInput] = $queryValue;
+                        }
+                    }
                 }
             }
         }
@@ -292,17 +296,21 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
                 // Check what to save in array
                 if (is_array($curlResponseJSON[$key])){
                     foreach($curlResponseJSON[$key] as $inside => $insideValue){
-                        foreach($insideValue as $inside2 => $insideValue2){
-                            if (is_array($optionArray)){
-                                foreach($optionArray as $insideFilter){
-                                    if ($inside2 == $insideFilter) {
-                                        $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
-                                    }
-                                    if (is_array($insideValue2)){
-                                        foreach($insideValue2 as $inside3 => $insideValue3){
-                                            foreach($insideFilter as $insideFilter2){
-                                                if ($inside3 == $insideFilter2) {
-                                                    $curlResponseJSONFiltered[$key][$inside][$inside2][$inside3] = $insideValue3;
+                        if ((is_array($insideValue))) {
+                            foreach($insideValue as $inside2 => $insideValue2){
+                                if (is_array($optionArray)){
+                                    foreach($optionArray as $insideFilter){
+                                        if ($inside2 == $insideFilter) {
+                                            $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
+                                        }
+                                        if (is_array($insideValue2)){
+                                            foreach($insideValue2 as $inside3 => $insideValue3){
+                                                if ((is_array($insideFilter))) {
+                                                    foreach($insideFilter as $insideFilter2){
+                                                        if ($inside3 == $insideFilter2) {
+                                                            $curlResponseJSONFiltered[$key][$inside][$inside2][$inside3] = $insideValue3;
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
