@@ -30,6 +30,7 @@ if(isset($_SESSION['uid'])){
 	<title>Course Editor</title>
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet"> <!-- This code must be open. If users/students use an old version of lenays (version manager), it should not destroy anything else. -->
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 
 	<script src="darkmodeToggle.js"></script>
@@ -79,16 +80,16 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
+					<div class="formDialog" style="display: block;left:50px; top:-8px;"><span id="courseNameError" style="display: none; left:0px; bottom:-10px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
+					<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
 					<input oninput="quickValidateForm('newCourse','createCourse')"  class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 				</div>
-				<div class="formDialog" style="display: block;left:50px; top:-8px;"><span id="courseNameError" style="display: none; left:0px; bottom:-10px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
-				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
+					<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px; bottom:5px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+					<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
 					<input oninput="quickValidateForm('newCourse','createCourse')"  class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 				</div>
-				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px; bottom:5px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
-				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
 				<!-- Input field to Github repository START-->
 				<div style="padding:5px;">
@@ -118,22 +119,22 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
+					<div class="formDialog" style="display: block; left:50px; top:-10px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
+					<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
-				<div class="formDialog" style="display: block; left:50px; top:-10px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
-				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
+					<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+					<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
 				</div>
-				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
-				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
     			<div class="inputwrapper">
 					<span>GitHub URL:</span>
+					<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
+					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..."/>
 				</div>
-				<div class="formDialog" style="display: block; left:50px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
-				<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 				<div class='inputwrapper'>
 					<span>Visibility:</span>
 					<select class='selectinput' id='visib'></select>
