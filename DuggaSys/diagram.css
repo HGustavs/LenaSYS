@@ -75,7 +75,7 @@
     height:100%;
     pointer-events: none;
     z-index: 10;
-}		
+}       
 
 #fab {
     position: fixed;
@@ -115,6 +115,7 @@
     vertical-align: top;
     transform-origin: top left;            
     transform: translate(20px,0px) rotate(90deg);
+    padding: 6px;
     cursor: pointer;
     width: 780px;
 }
@@ -889,3 +890,4 @@
 #replay-time-container {
     width: 250px;
 }
+
