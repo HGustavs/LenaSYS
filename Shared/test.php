@@ -123,12 +123,12 @@ function testHandler($testsData, $prettyPrint){
             echo "<h2>{$name} </h2>";
         }
 
+        $QueryReturnJSONbefore = array();
         // If query to execute before start
         foreach ($testData as $option => $value) {
             // if query-before-start
             if (strpos($option, 'query-before-test') === 0) {
 
-                $QueryReturnJSONbefore = array();
                 $QueryReturnJSONbefore[$option] = doDBQuery($value, $data, $testData, $option);
                 // If service data !query-test! replace with actual query output
                 foreach($data as $sInput => $sValue){
