@@ -152,6 +152,7 @@ function testHandler($testsData, $prettyPrint){
            }
         }
 
+        $TestsReturnJSON = array();
         $TestsReturnJSON['querys-before-test'] = $QueryReturnJSONbefore;
         
         // Output filter
@@ -181,6 +182,7 @@ function testHandler($testsData, $prettyPrint){
         $test3Response = json_encode(assertEqualTest($testData['expected-output'], $serviceRespone, $prettyPrint));
         $TestsReturnJSON['Test 3 (assertEqual)'] = json_decode($test3Response, true);
 
+        $QueryReturnJSON = array();
         // If query to execute after test
         foreach ($testData as $option => $value) {
             // if query-before-start-
@@ -191,6 +193,7 @@ function testHandler($testsData, $prettyPrint){
 
         $TestsReturnJSON['querys-after-test'] = $QueryReturnJSON;
 
+        $TestsReturnJSONWithName = array();
         $TestsReturnJSONWithName[$name] = $TestsReturnJSON;
 
         next($testsData);
