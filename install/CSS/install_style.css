@@ -148,6 +148,15 @@ input[type="text"], input[type="password"] {
     display: none;
 }
 
+/* Info icon for "Using distributed environment" label*/
+.material-symbols-outlined{
+   font-size:15px !important;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
 
 /* Show the first input page at start */
 #td1 {

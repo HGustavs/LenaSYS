@@ -5,6 +5,7 @@
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
   <script src="install_entry.js"></script>
   <script src="install_defer.js" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
   <!-- Config Section -->
@@ -186,7 +187,7 @@
         echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
         echo 'Enter hostname (e.g localhost). <br>';
         echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
-        echo '<br><label for="usingDocker">Using distributed environment: </label><input id="usingDocker" name="usingDocker" type="checkbox" ' . ($usingDocker == "on" ? 'checked' : '') . '><br>';
+        echo '<br><span class="material-symbols-outlined">info</span><label for="usingDocker">Using distributed environment: </label><input id="usingDocker" name="usingDocker" type="checkbox" ' . ($usingDocker == "on" ? 'checked' : '') . '><br>';
         echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
           if($dbUsername || $dbHostname || $dbName || $dbPassword || $usingDocker){
             echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
