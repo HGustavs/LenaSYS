@@ -707,15 +707,13 @@ const regex = {
 
 //Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
-	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
+	const inputwrapper = element.closest('.inputwrapper'); // Element where dialog and validation messages are.
+	const messageElement = inputwrapper.querySelector('.formDialogText'); //The dialog to show validation messages in
 	//Standard styling for a failed validation that will be changed if element passes validation
 	element.classList.add("bg-color-change-invalid");
-	$(messageElement.firstChild.id).fadeIn();
-	//messageElement.style.display = "block";
-		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		if(element.name === "courseGitURL") {
-			return true;
-		}
+	//element.style.display = "block";
+	$(messageElement.id).fadeIn();
+
 	//Check if value of element matches regex based on name attribute same as key for regex object
 	if(element.value.match(regex[element.name])) {
 		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
@@ -724,7 +722,7 @@ function elementIsValid(element) {
 			//This prevents it from being impossible to save course code without changing it
 			if(element.value !== element.dataset.origincode) {
 				if(activeCodes.includes(element.value)) {
-					messageElement.firstChild.innerHTML = `${element.value} is already in use. Choose another.`;
+					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
 					return false;
 				}
 			}
@@ -733,26 +731,29 @@ function elementIsValid(element) {
 		//Setting the style of the element represent being valid and not show
 		element.classList.remove("bg-color-change-invalid");
 		element.style.borderColor = "#383";
-		$(messageElement.firstChild).fadeOut();
+		$(messageElement).fadeOut();
 		//messageElement.style.display = "none";
 		return true;
 	} else if(element.value.trim() === "") {
 		//If empty string or ettempty of only spaces remove styling and spaces and hide validation message
-		$(messageElement.firstChild).fadeOut();
+		$(messageElement).fadeOut();
 		element.removeAttribute("style");
 		element.value = "";
 		//messageElement.style.display = "none";
 		element.classList.remove("bg-color-change-invalid");
 
-
+		// The inputs for the git URLs are valid even when they're empty, since they're optional
+		if(element.name === "courseGitURL") {
+			return true;
+		}
 		return false;
 	}
 
 	//Change back to original validation error message if it has been changed when knowing course code is not duplicate
 	if(element.name === "coursecode") {
-		messageElement.firstChild.innerHTML = "2 Letters, 3 digits, 1 letter";
+		messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
 	}
-	$(messageElement.firstChild).hide().fadeIn();
+	$(messageElement).hide().fadeIn();
 	//Validation falied if getting here without returning
 	return false;
 }
