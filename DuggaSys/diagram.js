@@ -4318,7 +4318,6 @@ function toggleGrid()
    }
 }
 
-
 /**
  * @description Toggles the darkmode for svgbacklayer ON/OFF.
  */
