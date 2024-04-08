@@ -26,5 +26,13 @@
     $updateCondition = array(
       'cid' => $cid  //condition to identify the course
     );
+    
+    //call the updateTableCourse service
+    $updateResult = updateTableCourse ($updateData,$updateCondition);
+
+    if (!$updateResult){
+      $debug = "Error updating entries";  //Handle updates faliure
+      
+    }
   }
 ?>
