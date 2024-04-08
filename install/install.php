@@ -187,10 +187,10 @@
         echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
         echo 'Enter hostname (e.g localhost). <br>';
         echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
-        echo '<br><span class="material-symbols-outlined tooltipInfo">info
+        echo '<br><div class="tooltipInfo"><span class="material-symbols-outlined">info
         <span class="tooltipInfoText">
-          Tooltip text yes boss lmao ok
-        </span></span><label for="usingDocker">Using distributed environment: </label><input id="usingDocker" name="usingDocker" type="checkbox" ' . ($usingDocker == "on" ? 'checked' : '') . '><br>';
+          Tooltip text yes boss lmao ok test gjroingiior girgrgghuhr grughrugh hgrughrhgurhug hgurhguhgrhug bgurgrubgru bgurbgrubg nrbgurb ugbrbgrbu
+        </span></span></div><label for="usingDocker">Using distributed environment: </label><input id="usingDocker" name="usingDocker" type="checkbox" ' . ($usingDocker == "on" ? 'checked' : '') . '><br>';
         echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
           if($dbUsername || $dbHostname || $dbName || $dbPassword || $usingDocker){
             echo "<br><b>Values from existing coursesyspw.php were used </b><br>";

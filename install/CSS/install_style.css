@@ -160,35 +160,29 @@ input[type="text"], input[type="password"] {
 .tooltipInfo {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
   }
   
   .tooltipInfo .tooltipInfoText {
+    font-family: Arial, Helvetica, sans-serif;
     visibility: hidden;
-    width: 120px;
+    width: 400px;
     background-color: rgb(240,240,240);
+    color:black;
     text-align: center;
+    white-space:wrap;
+    border:rgb(146, 124, 157) solid 2px;
     border-radius: 6px;
-    padding: 5px 0;
+    padding: 15px;
     position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -10px;
     z-index: 1;
-    top: -5px;
-    left: 110%;
   }
-  
-  .tooltipInfo .tooltipInfoText::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 100%;
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent black transparent transparent;
-  }
-  .tooltipInfo:hover .tooltipInfoText {
+
+    .tooltipInfo:hover .tooltipInfoText {
     visibility: visible;
-  }
+    }
 
 /* Show the first input page at start */
 #td1 {
