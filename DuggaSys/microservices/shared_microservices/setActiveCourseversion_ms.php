@@ -15,4 +15,16 @@
   $versid = getOP ('versid');
   $makeActive = getOP('makeActive');
 
+  getUid();
+
+  if ($makeActive == 3){
+    //update the active version using the updateTableCourse service
+    $updateData = array(
+      'activeversion' => $versid  //data to update
+    );
+
+    $updateCondition = array(
+      'cid' => $cid  //condition to identify the course
+    );
+  }
 ?>
