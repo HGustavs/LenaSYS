@@ -1026,7 +1026,7 @@
                 <div class="dropdownContent">
                     <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
 			<option value="JSON/EMPTYDiagramMockup.json">Empty board</option>
-                        <option value="JSON/StateDiagramMockup.json">State diagrams</option>
+                        <option value="JSON/StateChartDiagramMockup.json">State chart diagrams</option>
                         <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
                         <option value="JSON/UMLDiagramMockup.json">UML diagrams</option>
                         <option value="JSON/ERDiagramMockup.json">ER diagrams </option>
