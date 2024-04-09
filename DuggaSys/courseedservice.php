@@ -502,6 +502,32 @@ if(checklogin()){
 			$debug="Error updating entries\n".$error[2];
 		}
 	}
+		else if(strcmp($opt,"SPECIALUPDATE")===0){
+			$query = $pdo->prepare("SELECT * from course WHERE cid=:cid;");
+					$query->bindParam(':cid', $cid);
+					if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$allOperationsSucceeded = false;
+							$debug="Error finding course specifics\n".$error[2];
+					}else{
+							$momentlist=array();
+							foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+								$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
+
+								print_r($row['coursename'].$row['visibility'].$row['coursecode']);
+								$query->bindParam(':cid', $cid);
+								$query->bindParam(':coursename', $row['coursename']);
+								$query->bindParam(':visibility', $row['visibility']);
+								$query->bindParam(':coursecode', $row['coursecode']);
+								$query->bindParam(':courseGitURL', $courseGitURL);
+					
+								if(!$query->execute()) {
+									$error=$query->errorInfo();
+									$debug="Error updating entries\n".$error[2];
+								}
+							}
+						}
+		}
 
 
 	}

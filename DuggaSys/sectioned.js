@@ -3811,7 +3811,7 @@ function validateForm(formid) {
 
     if(repoLink){
       if(fetchGitHubRepo(repoLink)){
-        AJAXService("UPDATE", {	cid : cid, coursename : '', visib : '', coursecode : '', courseGitURL : repoLink }, "COURSE");
+        AJAXService("SPECIALUPDATE", {	cid : cid, courseGitURL : repoLink }, "COURSE");
         //AJAXService("UPDATE", {	cid : cid, courseGitURL : repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
         $("#githubPopupWindow").css("display", "none"); 
