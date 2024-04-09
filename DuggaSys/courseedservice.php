@@ -459,75 +459,36 @@ if(checklogin()){
 			$debug = "Error duplicate course name\n" . $error[2];
 		}
 			}else if(strcmp($opt,"UPDATE")===0){
-				$querystring = "";
+			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
 
-				if($coursename != "UNK"){
-					if($querystring != ""){
-						$querystring .= ", ";	
-					}
-					$querystring .= " coursename=:coursename";
-				}
-				if($visibility != "UNK"){
-					if($querystring != ""){
-						$querystring .= ", ";	
-					}
-					$querystring .= " visibility=:visibility";
-				}
-				if($coursecode != "UNK"){
-					if($querystring != ""){
-						$querystring .= ", ";	
-					}
-					$querystring .= " coursecode=:coursecode";
-				}
-				if($courseGitURL != "UNK"){
-					if($querystring != ""){
-						$querystring .= ", ";	
-					}
-					$querystring .= " courseGitURL=:courseGitURL";
-				}
-				$querystring = "UPDATE course SET " . $querystring . " WHERE cid=:cid;";
-				$query = $pdo->prepare($querystring);
-				//"UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;"
-				$query->bindParam(':cid', $cid);
-				if($coursename != "UNK"){
-					$query->bindParam(':coursename', $coursename);
-				}
-				if($visibility != "UNK"){
-					$query->bindParam(':visibility', $visibility);	
-				}
-				if($coursecode != "UNK"){
-					$query->bindParam(':coursecode', $coursecode);	
-				}
-				if($courseGitURL != "UNK"){
-					$query->bindParam(':courseGitURL', $courseGitURL);	
-				}
-				
-				
-				
-				
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':coursename', $coursename);
+			$query->bindParam(':visibility', $visibility);
+			$query->bindParam(':coursecode', $coursecode);
+			$query->bindParam(':courseGitURL', $courseGitURL);
 
-				if(!$query->execute()) {
-					$error=$query->errorInfo();
-					$debug="Error updating entries\n".$error[2];
-				}
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries\n".$error[2];
+			}
 
-				// Belongs to Logging 
-				if($visibility==0){
-					$visibilityName = "Hidden";
-				}
-				else if($visibility==1){
-					$visibilityName = "Public";
-				}
-				else if($visibility==2){
-					$visibilityName = "Login";
-				}
-				else if($visibility==3){
-					$visibilityName = "Deleted";
-				}
-				
-				// Logging for editing of course
-				$description=$coursename." ".$coursecode." ".$visibilityName." ".$courseGitURL;
-				logUserEvent($userid, $username, EventTypes::EditCourse, $description);
+			// Belongs to Logging 
+			if($visibility==0){
+				$visibilityName = "Hidden";
+			}
+			else if($visibility==1){
+				$visibilityName = "Public";
+			}
+			else if($visibility==2){
+				$visibilityName = "Login";
+			}
+			else if($visibility==3){
+				$visibilityName = "Deleted";
+			}
+			
+			// Logging for editing of course
+			$description=$coursename." ".$coursecode." ".$visibilityName." ".$courseGitURL;
+			logUserEvent($userid, $username, EventTypes::EditCourse, $description);
 
 		}else if(strcmp($opt,"SETTINGS")===0){
 		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
