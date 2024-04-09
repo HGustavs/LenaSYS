@@ -23,7 +23,7 @@
  | FR9 | Log in on any type of user and see if they can display course information. This might be considered non-functional. |
  | NOTE: | FR1-FR8 Can also be tested for other users to make sure only super users can access these features. |
 
- | FN No: | F1 |
+ | FN No: | FR1 |
  | --- | --- |
  | Shall | User shall be able to create new course |
  | While | While the user is super |
@@ -31,7 +31,7 @@
  | Where | Where courses are displayed |
  | If Then | If a new course was created then log this |
  
- | FN No: | F2 |
+ | FN No: | FR2 |
  | --- | --- |
  | Shall | User shall be able to create new course version |
  | While | While the user is super |
@@ -39,21 +39,21 @@
  | Where | Where courses are displayed |
  | If Then | If a new course version was created then log this |
  
- | FN No: | F3 |
+ | FN No: | FR3 |
  | --- | --- |
  | Shall | User shall be able to update course version |
  | While | While the user is super |
  | When | When user clicks save button |
  | Where | Where courses are displayed |
  
- | FN No: | F4 |
+ | FN No: | FR4 |
  | --- | --- |
  | Shall | User shall be able to change a course version |
  | While | While the user is super |
  | When | When user clicks save button |
  | Where | Where courses are displayed |
  
- | FN No: | F5 |
+ | FN No: | FR5 |
  | --- | --- |
  | Shall | User shall be able to copy a course version |
  | While | While the user is super |
@@ -61,28 +61,28 @@
  | Where | Where courses are displayed |
  | If Then | If a course was copyed then log this |
  
- | FN No: | F6 |
+ | FN No: | FR6 |
  | --- | --- |
  | Shall | User shall be able to update name and or visibility of course |
  | While | While the user is super |
  | When | When user clicks save button |
  | Where | Where courses are displayed |
  
- | FN No: | F7 |
+ | FN No: | FR7 |
  | --- | --- |
  | Shall | User shall be able to set the message of the day |
  | While | While the user is super |
  | When | When user clicks save button |
  | Where | Where server settings are edited |
  
- | FN No: | F8 |
+ | FN No: | FR8 |
  | --- | --- |
  | Shall | User shall be able to set courseed to read only |
  | While | While the user is super |
  | When | When user clicks save button |
  | Where | Where server settings are edited |
  
- | FN No: | F9 |
+ | FN No: | FR9 |
  | --- | --- |
  | Shall | User shall be able to gather all their courses |
  | While | While the user is logged in |
