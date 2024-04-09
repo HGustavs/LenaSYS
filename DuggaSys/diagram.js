@@ -739,12 +739,10 @@ const keybinds = {
         BOX_SELECTION: {key: "2", ctrl: false},
         PLACE_ENTITY: {key: "3", ctrl: false},
         PLACE_RELATION: {key: "4", ctrl: false},
-        PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
-        EDGE_CREATION: {key: "7", ctrl: false},
-        PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
-        IE_INHERITANCE: { key: "9", ctrl: false },  //<-- IE inheritance functionality
-        PLACE_SDENTITY: { key: "1", ctrl: true },   //<-- SD functionality
+        EDGE_CREATION: {key: "5", ctrl: false},
+        STATE_INITIAL: { key: "6" , ctrl: false },
+        SEQ_LIFELINE: { key: "7", ctrl: false },
+        NOTE_ENTITY: { key: "8", ctrl: false },
         ZOOM_IN: {key: "+", ctrl: true, meta: true},
         ZOOM_OUT: {key: "-", ctrl: true, meta: true},
         ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -768,12 +766,8 @@ const keybinds = {
         TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
         TOGGLE_ER_TABLE: {key: "e", ctrl: false},
         TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
-        STATE_INITIAL: { key: "<" , ctrl: false },
-        STATE_FINAL: { key: "f" , ctrl: false },
-        STATE_SUPER: { key: ">", ctrl: false },
-        SAVE_DIAGRAM: { key: "s", ctrl: true }, 
+        SAVE_DIAGRAM: { key: "s", ctrl: true },
         LOAD_DIAGRAM: { key: "l", ctrl: true }, 
-        NOTE_ENTITY: { key: "n", ctrl: false }
 };
 
 /** 
@@ -810,7 +804,7 @@ const elementTypes = {
 
 
     note: 15,
-    
+
 };
 
 /**
@@ -1085,12 +1079,34 @@ var boxSelectionInUse = false;
 var propFieldState = false;
 
 // What kind of input mode that user is uing the cursor for.
-
 var mouseMode = mouseModes.POINTER;
 var previousMouseMode;
 
-// All different element types that can be placed by the user.
+// Sub menu items used in item cycling
+const subMenuEntity = [
+    elementTypes.EREntity,
+    elementTypes.UMLEntity,
+    elementTypes.IEEntity,
+    elementTypes.SDEntity,
+]
+const subMenuRelation = [
+    elementTypes.ERRelation,
+    elementTypes.UMLRelation,
+    elementTypes.IERelation,
+    elementTypes.ERAttr,
+]
+const subMenuUMLstate = [
+    elementTypes.UMLInitialState,
+    elementTypes.UMLFinalState,
+    elementTypes.UMLSuperState,
+]
+const subMenuSequence = [
+    elementTypes.sequenceActorAndObject,
+    elementTypes.sequenceActivation,
+    elementTypes.sequenceLoopOrAlt,
+]
 
+// All different element types that can be placed by the user.
 var elementTypeSelected = elementTypes.EREntity;
 var pointerState = pointerStates.DEFAULT;
 
@@ -1362,6 +1378,11 @@ function showDiagramTypes(){
 //#endregion ===================================================================================
 //#region ================================ EVENTS               ================================
 // --------------------------------------- Window Events    --------------------------------
+document.addEventListener('contextmenu', event =>
+{
+    event.preventDefault();
+});
+
 document.addEventListener('keydown', function (e)
 {
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
@@ -1374,242 +1395,191 @@ document.addEventListener('keydown', function (e)
         clearInterval(stateMachine.replayTimer);
     }
 
+    if (isKeybindValid(e, keybinds.ENTER) && /INPUT|SELECT/.test(document.activeElement.nodeName.toUpperCase())) {
+        if (!!document.getElementById("lineLabel")) {
+            changeLineProperties();
+        } else if (document.activeElement.id == "saveDiagramAs") {
+            saveDiagramAs();
+            hideSavePopout();
+        } else {
+            let propField = document.getElementById("elementProperty_name");
+            changeState();
+            saveProperties();
+            propField.blur();
+        }
+    }
+
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
-            escPressed = true;
-            if(context.length > 0 || contextLine.length > 0) {
-                clearContext();
-                clearContextLine();
-            } else {
-                ghostElement = null;
-                setMouseMode(mouseModes.POINTER);
-            }
-            if (movingContainer) {
-                scrollx = sscrollx;
-                scrolly = sscrolly;
-            }
-            ghostLine = null;
-            pointerState = pointerStates.DEFAULT;
-            showdata();
-        }
+    if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) return;
 
-        if (isKeybindValid(e, keybinds.ZOOM_IN)){
-            e.preventDefault();
-            zoomin();
-        } 
-        if (isKeybindValid(e, keybinds.ZOOM_OUT)){
-            e.preventDefault();
-            zoomout();
-        } 
+    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
+        escPressed = true;
+        if(context.length > 0 || contextLine.length > 0) {
+            clearContext();
+            clearContextLine();
+        } else {
+            ghostElement = null;
+            setMouseMode(mouseModes.POINTER);
+        }
+        if (movingContainer) {
+            scrollx = sscrollx;
+            scrolly = sscrolly;
+        }
+        ghostLine = null;
+        pointerState = pointerStates.DEFAULT;
+        showdata();
+    }
 
-        if (isKeybindValid(e, keybinds.ZOOM_RESET)){
-            e.preventDefault();
-            zoomreset();
-        }
+    if (isKeybindValid(e, keybinds.ZOOM_IN)){
+        e.preventDefault();
+        zoomin();
+    }
+    if (isKeybindValid(e, keybinds.ZOOM_OUT)){
+        e.preventDefault();
+        zoomout();
+    }
 
-        if (isKeybindValid(e, keybinds.SELECT_ALL)){
-            if(mouseMode == mouseModes.EDGE_CREATION){
-                e.preventDefault();
-                return false;
-            } else {
-                e.preventDefault();
-                selectAll();
-            }
-        }
-        if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
-            e.preventDefault();
-        }
+    if (isKeybindValid(e, keybinds.ZOOM_RESET)){
+        e.preventDefault();
+        zoomreset();
+    }
 
-        // Moving object with arrows
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
-            setPos(context, 0, 1);
-        }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
-            setPos(context, 0, -1);
-        }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
-            setPos(context, 1, 0);
-        }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
-            setPos(context, -1, 0);
-        }
+    if (isKeybindValid(e, keybinds.SELECT_ALL)){
+        e.preventDefault();
+        if (mouseMode != mouseModes.EDGE_CREATION) selectAll();
+    }
+    if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
+        e.preventDefault();
+    }
 
-    } else { 
-        if (isKeybindValid(e, keybinds.ENTER)) { 
-            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
-                var propField = document.getElementById("elementProperty_name");
-                if(!!document.getElementById("lineLabel")){
-                    changeLineProperties();
-                }
-                else if (document.activeElement.id == "saveDiagramAs") {
-                    saveDiagramAs();
-                    hideSavePopout();
-                }
-                else {
-                    changeState();
-                    saveProperties(); 
-                    propField.blur();
-                }
-            }
-        }
+    // Moving object with arrows
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
+        setPos(context, 0, 1);
+    }
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
+        setPos(context, 0, -1);
+    }
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
+        setPos(context, 1, 0);
+    }
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
+        setPos(context, -1, 0);
     }
 });
 
 document.addEventListener('keyup', function (e)
 {
     var pressedKey = e.key.toLowerCase();
-  
+
+    // Toggle modifiers when released
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) {
-          setTimeout(() => {
-              ctrlPressed = false;
-          }, 1000);
-      }
+          setTimeout(() => { ctrlPressed = false; }, 1000);
+    }
 
-    // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
-        if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
-        if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
-        if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
-            
-            if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
-            if (context.length > 0) {
-                removeElements(context);
-            } else if (contextLine.length > 0) {
-                 removeLines(contextLine);
-            }            
-    
-            updateSelection();
-            
-        }
-        
-        if(isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
-        if(isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
-        
-        if(isKeybindValid(e, keybinds.EDGE_CREATION)){
-            setMouseMode(mouseModes.EDGE_CREATION);
-            clearContext();
-        }
-
-        if(isKeybindValid(e, keybinds.PLACE_ENTITY)){
-            setElementPlacementType(elementTypes.EREntity);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if(isKeybindValid(e, keybinds.PLACE_RELATION)){
-            setElementPlacementType(elementTypes.ERRelation);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if(isKeybindValid(e, keybinds.PLACE_ATTRIBUTE)){
-            setElementPlacementType(elementTypes.ERAttr);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        // IE inheritance keybind
-        if(isKeybindValid(e, keybinds.IE_INHERITANCE)){
-            setElementPlacementType(elementTypes.IERelation);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        //=================================================== //<-- UML functionality
-        //Temp for UML class
-        if(isKeybindValid(e, keybinds.PLACE_UMLENTITY)) {
-            setElementPlacementType(elementTypes.UMLEntity);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        //======================================================
-
-        //=================================================== //<-- IE functionality
-        //Temp for IE entity
-        if(isKeybindValid(e, keybinds.PLACE_IEENTITY)) {
-            setElementPlacementType(elementTypes.IEEntity)
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        //======================================================
-
-
-        //=================================================== //<-- SD functionality
-        //Temp for SD entity
-        if (isKeybindValid(e, keybinds.PLACE_SDENTITY)) {
-            setElementPlacementType(elementTypes.SDEntity)
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        //======================================================
-
-        if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
-            setElementPlacementType(elementTypes.UMLInitialState);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if (isKeybindValid(e, keybinds.STATE_FINAL)) {
-            setElementPlacementType(elementTypes.UMLFinalState);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        if (isKeybindValid(e, keybinds.STATE_SUPER)) {
-            setElementPlacementType(elementTypes.UMLSuperState);
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-        if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
-            setElementPlacementType(elementTypes.NOTE); //link note keybindhere
-            setMouseMode(mouseModes.PLACING_ELEMENT);
-        }
-
-        if(isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
-        if(isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
-        if(isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
-        if(isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
-        if(isKeybindValid(e, keybinds.TOGGLE_DARKMODE)) toggleDarkmode();
-        if(isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
-        if(isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
-        if(isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
-        if(isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
-        if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-        if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
-        //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
-
-        if (isKeybindValid(e, keybinds.COPY)){
-            // Remove the preivous copy-paste data from localstorage.
-            if(localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
-            if(localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
-
-            if (context.length !== 0){
-                
-                // Filter - keeps only the lines that are connectet to and from selected elements.
-                var contextConnectedLines = lines.filter(line => {
-                    return (context.filter(element => {
-                        return line.toID == element.id || line.fromID == element.id
-                    })).length > 1
-                });
-
-                // Store new copy-paste data in local storage
-                localStorage.setItem('copiedElements', JSON.stringify(context));
-                localStorage.setItem('copiedLines', JSON.stringify(contextConnectedLines));
-                
-                displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
-            }else {
-                displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
-            }
-        }
-
-        if (isKeybindValid(e, keybinds.TOGGLE_KEYBINDLIST)) {
-            e.preventDefault();
-            toggleKeybindList();
-        }
-
-    } else {
-        if(document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)){
-            if(context.length == 1){
+    // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
+    if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+        if (document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)) {
+            if (context.length == 1) {
                 document.activeElement.value = context[0].name;
                 document.activeElement.blur();
                 toggleOptionsPane();
             }
-        }   
+        }
+        return;
     }
-});
+
+    if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
+    if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
+    if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
+    if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
+        if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
+        if (context.length > 0) {
+            removeElements(context);
+        } else if (contextLine.length > 0) {
+             removeLines(contextLine);
+        }
+        updateSelection(null);
+    }
+    if (isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
+    if (isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
+    if (isKeybindValid(e, keybinds.EDGE_CREATION)) setMouseMode(mouseModes.EDGE_CREATION); clearContext();
+
+    // Entity / Class / State
+    if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
+        if (subMenuCycling(subMenuEntity)) return;
+        setElementPlacementType(elementTypes.EREntity);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    // Relation / Inheritance
+    if (isKeybindValid(e, keybinds.PLACE_RELATION)){
+        if (subMenuCycling(subMenuRelation)) return;
+        setElementPlacementType(elementTypes.ERRelation);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    // UML states
+    if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
+        if (subMenuCycling(subMenuUMLstate)) return;
+        setElementPlacementType(elementTypes.UMLInitialState);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    // Sequence
+    if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
+        if (subMenuCycling(subMenuSequence)) return;
+        setElementPlacementType(elementTypes.sequenceActorAndObject);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
+        setElementPlacementType(elementTypes.NOTE);
+        setMouseMode(mouseModes.PLACING_ELEMENT);
+    }
+
+    if (isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
+    if (isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
+    if (isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
+    if (isKeybindValid(e, keybinds.TOGGLE_SNAPGRID)) toggleSnapToGrid();
+    if (isKeybindValid(e, keybinds.TOGGLE_DARKMODE)) toggleDarkmode();
+    if (isKeybindValid(e, keybinds.OPTIONS)) toggleOptionsPane();
+    if (isKeybindValid(e, keybinds.PASTE)) pasteClipboard(JSON.parse(localStorage.getItem('copiedElements') || "[]"), JSON.parse(localStorage.getItem('copiedLines') || "[]"));
+    if (isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
+    if (isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
+    if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
+    //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
+
+    if (isKeybindValid(e, keybinds.COPY)){
+        // Remove the preivous copy-paste data from localstorage.
+        if(localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
+        if(localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
+
+        if (context.length !== 0){
+
+            // Filter - keeps only the lines that are connectet to and from selected elements.
+            var contextConnectedLines = lines.filter(line => {
+                return (context.filter(element => {
+                    return line.toID == element.id || line.fromID == element.id
+                })).length > 1
+            });
+
+            // Store new copy-paste data in local storage
+            localStorage.setItem('copiedElements', JSON.stringify(context));
+            localStorage.setItem('copiedLines', JSON.stringify(contextConnectedLines));
+
+            displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
+        }else {
+            displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
+        }
+    }
+    if (isKeybindValid(e, keybinds.TOGGLE_KEYBINDLIST)) {
+        e.preventDefault();
+        toggleKeybindList();
+    }
+})
 
 window.addEventListener("resize", () => {
     updateContainerBounds();
@@ -1825,38 +1795,38 @@ function ddown(event)
 
     // If the right mouse button is pressed => return
     if(event.button == 2) return;
-if(!hasPressedDelete){
-    switch (mouseMode) {
-        case mouseModes.POINTER:
-        case mouseModes.BOX_SELECTION:
-        case mouseModes.PLACING_ELEMENT:
-            startX = event.clientX;
-            startY = event.clientY;
+    if(!hasPressedDelete){
+        switch (mouseMode) {
+            case mouseModes.POINTER:
+            case mouseModes.BOX_SELECTION:
+            case mouseModes.PLACING_ELEMENT:
+                startX = event.clientX;
+                startY = event.clientY;
 
-            if (!altPressed) {
-                pointerState = pointerStates.CLICKED_ELEMENT;
-                targetElement = event.currentTarget;
-                targetElementDiv = document.getElementById(targetElement.id);
-            }
+                if (!altPressed) {
+                    pointerState = pointerStates.CLICKED_ELEMENT;
+                    targetElement = event.currentTarget;
+                    targetElementDiv = document.getElementById(targetElement.id);
+                }
 
-        case mouseModes.EDGE_CREATION:
-            if(event.button == 2) return;
-            const element = data[findIndex(data, event.currentTarget.id)];
-            // If element not in context, update selection on down click
-            if (element != null && !context.includes(element)){
-                pointerState = pointerStates.CLICKED_ELEMENT;
-                updateSelection(element);
-                lastClickedElement = null;
-            } else if(element != null){
-                lastClickedElement = element;
-            }
-            break;
-            
-        default:
-            console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
-            break;
+            case mouseModes.EDGE_CREATION:
+                if(event.button == 2) return;
+                const element = data[findIndex(data, event.currentTarget.id)];
+                // If element not in context, update selection on down click
+                if (element != null && !context.includes(element)){
+                    pointerState = pointerStates.CLICKED_ELEMENT;
+                    updateSelection(element);
+                    lastClickedElement = null;
+                } else if(element != null){
+                    lastClickedElement = element;
+                }
+                break;
+
+            default:
+                console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
+                break;
+        }
     }
-}
     dblPreviousTime = new Date().getTime(); // Update dblClick-timer.
     wasDblClicked = false; // Reset the bool.
 }
@@ -2677,7 +2647,6 @@ function removeLines(linesArray, stateMachineShouldSave = true)
     }
 
     if (stateMachineShouldSave && anyRemoved) {
-        console.log("Removed lines!");
         stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
 
@@ -3678,6 +3647,24 @@ function entityIsOverlapping(id, x, y)
             }
         }
         return isOverlapping;
+    }
+}
+
+/**
+ * @description Cycles to the next item in a submenu when the same keybind is pressed again.
+ * @param {Array} subMenu What sub menu array to get elementType from
+ */
+function subMenuCycling(subMenu) {
+    // Cycle through sub menu items
+    if (mouseMode == mouseModes.PLACING_ELEMENT && subMenu.includes(elementTypeSelected)) {
+        for (let i = 0; i < subMenu.length; i++) {
+            if (elementTypeSelected == subMenu[i]) {
+                setElementPlacementType(subMenu[(i+1) % subMenu.length]);
+                setMouseMode(mouseModes.PLACING_ELEMENT);
+                break;
+            }
+        }
+        return true;
     }
 }
 
@@ -9381,7 +9368,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9463,7 +9450,7 @@ function drawElement(element, ghosted = false)
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}" 
+                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9489,7 +9476,7 @@ function drawElement(element, ghosted = false)
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
                      class="element uml-state"
-                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                     style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}"
                      onmousedown='ddown(event);' 
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
@@ -9562,7 +9549,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9654,7 +9641,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh / 3))}px;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh / 3))}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9715,7 +9702,7 @@ function drawElement(element, ghosted = false)
 
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9768,7 +9755,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxh / 1.5))}px; width:${boxw}px;height:${boxh / 2}px;`;
+        style='left:0px; top:0px; margin-top:${((boxh / 1.5))}px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9806,7 +9793,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceActorAndObject') {
         //div to encapsulate sequence actor/object and its lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9897,7 +9884,7 @@ function drawElement(element, ghosted = false)
     else if (element.kind == 'sequenceActivation') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -13310,13 +13297,13 @@ function saveDiagramAs()
 {
     let elem = document.getElementById("saveDiagramAs");
     let fileName = elem.value;
-    const currentDate=new Date();
+    const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1; // Note: January is month 0
-    const day = currentDate.getDate();
-    const hours = currentDate.getHours();
-    const minutes = currentDate.getMinutes();
-    const seconds = currentDate.getSeconds();
+    const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth()+1}` :  currentDate.getMonth()+1; // Note: January is month 0
+    const day = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` :  currentDate.getDate();
+    const hours = currentDate.getHours()< 10 ? `0${currentDate.getHours()}` :  currentDate.getHours();
+    const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
+    const seconds = currentDate.getSeconds()< 10 ? `0${currentDate.getSeconds()}` :  currentDate.getSeconds();
     const formattedDate = year + "-" + month + "-" + day+' ';
     const formattedTime = hours + ":" + minutes + ":" + seconds;
     if (fileName.trim() == "") {

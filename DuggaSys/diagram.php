@@ -804,7 +804,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
-            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); centerCamera();">
+            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera();">
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 <span class="toolTipText"><b>Reset view</b><br>
                     <p>Reset view to show all elements</p><br>
@@ -1103,7 +1103,7 @@
                     <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
                 </div>
                 <div class="button-row">
-                    <input type="submit" class="submit-button" onclick="saveDiagramAs(), hideSavePopout()" value="Save"/>
+                    <input type="submit" class="submit-button" onclick="saveDiagramAs(); hideSavePopout();" value="Save"/>
                 </div>
             </div>
         </div>
