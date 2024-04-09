@@ -1,7 +1,7 @@
 // =============================================================================================
 //#region ================================ CLASSES =============================================
 
-/** 
+/**
  * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector.
  */
 class Point {
@@ -9,29 +9,27 @@ class Point {
     y = 0;
 
     /**
-     * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector. 
+     * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector.
      * @param {number} startX
-     * @param {number} startY 
+     * @param {number} startY
      */
-    constructor(startX = 0, startY = 0)
-    {
+    constructor(startX = 0, startY = 0) {
         this.x = startX;
         this.y = startY;
     }
 
-    /** 
+    /**
      * @description Adds x and y of another point to this point.
      * @param {Point} other Point that should be appended to this.
      */
-    add(other)
-    {
+    add(other) {
         this.x += other.x;
         this.y += other.y;
     }
 }
 
-/** 
- * @description Represents a change stored in the StateMachine. StateChange contains a list of StateChange.ChangeTypes in the local property stateChanges, that in turn contains a flag to describe each change. The getFlags() can be used to get the sum of all these stateChanges. 
+/**
+ * @description Represents a change stored in the StateMachine. StateChange contains a list of StateChange.ChangeTypes in the local property stateChanges, that in turn contains a flag to describe each change. The getFlags() can be used to get the sum of all these stateChanges.
  */
 class StateChange {
     /**
@@ -41,18 +39,18 @@ class StateChange {
      * @member canAppendTo Boolean deciding if a soft change is allowd to merge into this change.
      */
     static ChangeTypes = {
-        ELEMENT_CREATED:            { flag: 1, isSoft: false, canAppendTo: true },
-        ELEMENT_DELETED:            { flag: 2, isSoft: false, canAppendTo: false },
-        ELEMENT_MOVED:              { flag: 4, isSoft: true, canAppendTo: true },
-        ELEMENT_RESIZED:            { flag: 8, isSoft: true, canAppendTo: true },
-        ELEMENT_ATTRIBUTE_CHANGED:  { flag: 16, isSoft: true, canAppendTo: true },
-        LINE_CREATED:               { flag: 32, isSoft: false, canAppendTo: true },
-        LINE_DELETED:               { flag: 64, isSoft: false, canAppendTo: false },
+        ELEMENT_CREATED: {flag: 1, isSoft: false, canAppendTo: true},
+        ELEMENT_DELETED: {flag: 2, isSoft: false, canAppendTo: false},
+        ELEMENT_MOVED: {flag: 4, isSoft: true, canAppendTo: true},
+        ELEMENT_RESIZED: {flag: 8, isSoft: true, canAppendTo: true},
+        ELEMENT_ATTRIBUTE_CHANGED: {flag: 16, isSoft: true, canAppendTo: true},
+        LINE_CREATED: {flag: 32, isSoft: false, canAppendTo: true},
+        LINE_DELETED: {flag: 64, isSoft: false, canAppendTo: false},
 
         // Combined flags
-        ELEMENT_MOVED_AND_RESIZED:  { flag: 4|8, isSoft: true, canAppendTo: true },
-        ELEMENT_AND_LINE_DELETED:   { flag: 2|64, isSoft: false, canAppendTo: false },
-        ELEMENT_AND_LINE_CREATED:   { flag: 1|32, isSoft: false, canAppendTo: false },
+        ELEMENT_MOVED_AND_RESIZED: {flag: 4 | 8, isSoft: true, canAppendTo: true},
+        ELEMENT_AND_LINE_DELETED: {flag: 2 | 64, isSoft: false, canAppendTo: false},
+        ELEMENT_AND_LINE_CREATED: {flag: 1 | 32, isSoft: false, canAppendTo: false},
     };
 
     /**
@@ -61,8 +59,7 @@ class StateChange {
      * @param {Array<String>} id_list Array of all elements affected by this state change. This is used for merging changes on the same elements.
      * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
      */
-    constructor(id, values, timestamp)
-    {
+    constructor(id, values, timestamp) {
         if (id != null) this.id = id;
 
         if (values != undefined) {
@@ -86,8 +83,7 @@ class StateChange {
      * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
      * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
      */
-    appendValuesFrom(changes)
-    {
+    appendValuesFrom(changes) {
         var propertys = Object.getOwnPropertyNames(changes);
 
         // For every value in change
@@ -97,7 +93,7 @@ class StateChange {
              * If the key is not blacklisted, set to the new value
              */
             if (key == "id") return; // Ignore this keys.
-                this[key] = changes[key];
+            this[key] = changes[key];
         });
 
     }
@@ -107,15 +103,13 @@ class StateChange {
  * @description Constructs state changes with appropriate values set for each situation.
  * This factory will also map passed argument into correct properties in the valuesPassed object.
  */
-class StateChangeFactory
-{
+class StateChangeFactory {
     /**
      * @param {Object} element The new element that has been created.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementCreated(element)
-    {
-        var values = { kind: element.kind };
+    static ElementCreated(element) {
+        var values = {kind: element.kind};
 
         // Get the keys of the values that is unique from default
         var uniqueKeysArr = Object.keys(element).filter(key => {
@@ -136,8 +130,7 @@ class StateChangeFactory
      * @param {Array<Object>} elements The elements that has been/are going to be deleted.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementsDeleted(elements)
-    {
+    static ElementsDeleted(elements) {
         var ids = [];
 
         // For every object in the array, get id and add it to the array ids
@@ -154,8 +147,7 @@ class StateChangeFactory
      * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
      * @returns {Array<StateChange>} A new instance of the StateChange class.
      */
-    static ElementsMoved(elementIDs, moveX, moveY)
-    {
+    static ElementsMoved(elementIDs, moveX, moveY) {
         var changesArr = [];
         var timeStamp = new Date().getTime();
 
@@ -180,8 +172,7 @@ class StateChangeFactory
      * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementResized(elementIDs, changeX, changeY)
-    {
+    static ElementResized(elementIDs, changeX, changeY) {
         var values = {
             width: changeX,
             height: changeY
@@ -198,8 +189,7 @@ class StateChangeFactory
      * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY)
-    {
+    static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY) {
         var values = {
             x: moveX,
             y: moveY,
@@ -213,9 +203,8 @@ class StateChangeFactory
      * @param {Array<String>} elementID ID for element that has been changed.
      * @param {Object} changeList Object containing changed attributes for the element. Each property represents each attribute changed.
      * @returns {StateChange} A new instance of the StateChange class.
-     */ 
-    static ElementAttributesChanged(elementID, changeList)
-    {
+     */
+    static ElementAttributesChanged(elementID, changeList) {
         var values = {};
         // For every attribut in changeList, add it to values
         Object.keys(changeList).forEach(key => {
@@ -228,8 +217,7 @@ class StateChangeFactory
      * @param {Object} line New line that has been created.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static LineAdded(line)
-    {
+    static LineAdded(line) {
         var values = {};
 
         // Get the keys of the values that is unique from default
@@ -251,8 +239,7 @@ class StateChangeFactory
      * @param {Array<object>} lines List of all lines that have been / are going to be removed.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static LinesRemoved(lines)
-    {
+    static LinesRemoved(lines) {
         var lineIDs = [];
 
         // For every object in the lines array, add them to lineIDs
@@ -268,8 +255,7 @@ class StateChangeFactory
      * @param {Array<object>} lines All lines that have been / are going to be removed.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementsAndLinesDeleted(elements, lines)
-    {
+    static ElementsAndLinesDeleted(elements, lines) {
         var allIDs = [];
 
         // Add all element IDs to the id-list
@@ -281,7 +267,7 @@ class StateChangeFactory
         lines.forEach(line => {
             allIDs.push(line.id)
         });
-        
+
         return new StateChange(allIDs);
     }
 
@@ -290,14 +276,13 @@ class StateChangeFactory
      * @param {Array<object>} lines All lines that have been created.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementsAndLinesCreated(elements, lines)
-    {
+    static ElementsAndLinesCreated(elements, lines) {
         var changesArr = [];
         var timeStamp = new Date().getTime();
 
         // Filter out defaults from each element and add them to allObj
         elements.forEach(elem => {
-            var values = { kind: elem.kind };
+            var values = {kind: elem.kind};
 
             var uniqueKeysArr = Object.keys(elem).filter(key => {
                 if (key === 'x' || key === 'y') return true;
@@ -331,15 +316,13 @@ class StateChangeFactory
 /**
  * @description Handles storage and retrieval of usage history allowing undoing and redoing changes. Internal data should ONLY be modified through class methods to prevent weird behaviour.
  */
-class StateMachine
-{
+class StateMachine {
     /**
      * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
      * @param {Array<Object>} initialElements All elements that should be stored in the initial state.
      * @param {*} initialLines All lines that should be stored in the initial state.
      */
-    constructor (initialElements, initialLines)
-    {
+    constructor(initialElements, initialLines) {
         /**
          * @type Array<StateChange>
          */
@@ -366,11 +349,11 @@ class StateMachine
         /**
          * @type StateChange.ChangeTypes
          */
-        this.lastFlag = { };
+        this.lastFlag = {};
 
         /**
          * Interger of the currentIndex position of historyLog
-        */
+         */
         this.currentHistoryIndex = -1;
     }
 
@@ -380,8 +363,7 @@ class StateMachine
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
-    save (stateChangeArray, newChangeType)
-    {
+    save(stateChangeArray, newChangeType) {
         let currentChangedType;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
@@ -407,7 +389,7 @@ class StateMachine
                     if (stateChange.created != undefined) {
                         sameElements = false;
                     } else { // Perform history comparisions
-                        if (Array.isArray(lastLog.id)){
+                        if (Array.isArray(lastLog.id)) {
                             if (stateChange.id.length != lastLog.id.length) sameElements = false;
                             for (var index = 0; index < lastLog.id.length && sameElements; index++) {
                                 var id_found = lastLog.id[index];
@@ -418,7 +400,7 @@ class StateMachine
                             if (lastLog.id != stateChange.id) sameElements = false;
                         }
 
-                        if (Array.isArray(newChangeType)){
+                        if (Array.isArray(newChangeType)) {
                             for (var index = 0; index < newChangeType.length && isSoft; index++) {
                                 isSoft = newChangeType[index].isSoft;
                             }
@@ -435,7 +417,7 @@ class StateMachine
                             if (this.historyLog[index].created != undefined) continue;
 
                             var sameIds = true;
-                            if(stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
+                            if (stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
 
                             for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
                                 if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
@@ -458,7 +440,7 @@ class StateMachine
                     if (!isSoft || !sameElements) {
                         this.historyLog.push(stateChange);
                         this.lastFlag = newChangeType;
-                        this.currentHistoryIndex = this.historyLog.length -1;
+                        this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
                         for (let i = 0; i < changeTypes.length; i++) {
                             const currentChangedType = changeTypes[i];
@@ -470,7 +452,7 @@ class StateMachine
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                     lastLog.appendValuesFrom(stateChange);
                                     this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
-                                    this.currentHistoryIndex = this.historyLog.length -1;
+                                    this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
                                     console.error(`Missing implementation for soft state change: ${stateChange}!`);
@@ -481,7 +463,7 @@ class StateMachine
                 } else {
                     this.historyLog.push(stateChange);
                     this.lastFlag = currentChangedType;
-                    this.currentHistoryIndex = this.historyLog.length -1;
+                    this.currentHistoryIndex = this.historyLog.length - 1;
                 }
             } else {
                 console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
@@ -489,7 +471,7 @@ class StateMachine
         }
     }
 
-    removeFutureStates(){
+    removeFutureStates() {
         // Remove the history entries that are after current index
         if (this.currentHistoryIndex != this.historyLog.length - 1) {
             this.historyLog.splice(this.currentHistoryIndex + 1, (this.historyLog.length - this.currentHistoryIndex - 1));
@@ -500,8 +482,7 @@ class StateMachine
      * @description Undoes the last stored history log changes. Determines what should be looked for by reading the state change flags.
      * @see StateChange For available flags.
      */
-    stepBack () 
-    {
+    stepBack() {
         // If there is no history => return
         if (this.currentHistoryIndex == -1) {
             return;
@@ -521,10 +502,9 @@ class StateMachine
         disableIfDataEmpty();
     }
 
-    stepForward()
-    {
+    stepForward() {
         // If there is not anything to restore => return
-        if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length -1)) return;
+        if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length - 1)) return;
 
         // Go one step forward, if the next state in the history has the same time, do that too
         do {
@@ -532,10 +512,10 @@ class StateMachine
             this.restoreState(this.historyLog[this.currentHistoryIndex]);
 
             var doNextState = false;
-            if (this.historyLog[this.currentHistoryIndex + 1]){
+            if (this.historyLog[this.currentHistoryIndex + 1]) {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
             }
-        } while(doNextState);
+        } while (doNextState);
 
         // Update diagram
         clearContext();
@@ -544,8 +524,7 @@ class StateMachine
         displayMessage(messageTypes.SUCCESS, "Changes reverse reverted!")
     }
 
-    scrubHistory(endIndex)
-    {
+    scrubHistory(endIndex) {
         this.gotoInitialState();
 
         for (var i = 0; i <= endIndex; i++) {
@@ -563,8 +542,7 @@ class StateMachine
      * @description Restore an given state
      * @param {StateChange} state The state that should be restored
      */
-    restoreState(state)
-    {
+    restoreState(state) {
         // Get all keys from the state.
         var keys = Object.keys(state);
 
@@ -578,7 +556,7 @@ class StateMachine
 
             // For every id, find the object and add to the corresponding array
             state.id.forEach(objID => {
-                if (data[findIndex(data, objID)] != undefined){
+                if (data[findIndex(data, objID)] != undefined) {
                     elementsToRemove.push(data[findIndex(data, objID)]);
                 } else {
                     linesToRemove.push(lines[findIndex(lines, objID)]);
@@ -592,18 +570,18 @@ class StateMachine
 
         if (!Array.isArray(state.id)) state.id = [state.id];
 
-        for (var i = 0; i < state.id.length; i++){
+        for (var i = 0; i < state.id.length; i++) {
             // Find object
             var object;
             if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
             else if (lines[findIndex(lines, state.id[i])] != undefined) object = lines[findIndex(lines, state.id[i])];
 
             // If an object was found
-            if (object){
+            if (object) {
                 // For every key, apply the changes
                 keys.forEach(key => {
                     if (key == "id" || key == "time") return; // Ignore this keys.
-                        object[key] = state[key];
+                    object[key] = state[key];
                 });
             } else { // If no object was found - create one
                 var temp = {};
@@ -614,7 +592,7 @@ class StateMachine
                 });
 
                 // If the object got x, y and a kind, apply the default for the kind and create a element
-                if (temp.x && temp.y && temp.kind){
+                if (temp.x && temp.y && temp.kind) {
                     Object.keys(defaults[temp.kind]).forEach(key => {
                         if (!temp[key]) temp[key] = defaults[temp.kind][key];
                     });
@@ -633,8 +611,7 @@ class StateMachine
     /**
      * @description Go back to the inital state in the diagram
      */
-    gotoInitialState()
-    {
+    gotoInitialState() {
         // Set initial values to data and lines.
         data = [];
         lines = [];
@@ -658,8 +635,7 @@ class StateMachine
      * @description Create a timers and go-through all states grouped by time.
      * @param {Number} cri The starting index of timestamp-map to start on.
      */
-    replay(cri = parseInt(document.getElementById("replay-range").value))
-    {
+    replay(cri = parseInt(document.getElementById("replay-range").value)) {
         // If no history exists => return
         if (this.historyLog.length == 0) return;
 
@@ -668,7 +644,7 @@ class StateMachine
         clearInterval(this.replayTimer);
 
         // If cri (CurrentReplayIndex) is the last set to beginning
-        if(cri == tsIndexArr.length -1) cri = -1;
+        if (cri == tsIndexArr.length - 1) cri = -1;
 
         setReplayRunning(true);
         document.getElementById("replay-range").value = cri.toString();
@@ -685,20 +661,20 @@ class StateMachine
             var stopStateIndex;
 
             if (tsIndexArr.length - 1 == cri) {
-                stopStateIndex = self.historyLog.length -1;
-            } else if(tsIndexArr[cri+1] - 1 == tsIndexArr[cri]) {
+                stopStateIndex = self.historyLog.length - 1;
+            } else if (tsIndexArr[cri + 1] - 1 == tsIndexArr[cri]) {
                 stopStateIndex = startStateIndex;
             } else {
-                stopStateIndex = tsIndexArr[cri+1] -1;
-            } 
+                stopStateIndex = tsIndexArr[cri + 1] - 1;
+            }
             if (stopStateIndex == -1) {
-                stopStateIndex = 0; 
-            } 
+                stopStateIndex = 0;
+            }
 
             for (var i = startStateIndex; i <= stopStateIndex; i++) {
                 self.restoreState(self.historyLog[i]);
 
-                if (settings.replay.delay != startDelay){
+                if (settings.replay.delay != startDelay) {
                     clearInterval(self.replayTimer);
                     this.replay();
                 }
@@ -709,10 +685,10 @@ class StateMachine
             showdata();
             updatepos(0, 0);
 
-            
+
             document.getElementById("replay-range").value = cri;
 
-            if (tsIndexArr.length -1 == cri) {
+            if (tsIndexArr.length - 1 == cri) {
                 clearInterval(self.replayTimer);
                 setReplayRunning(false);
             }
@@ -727,55 +703,55 @@ class StateMachine
  * @description Keybinds that are used in the system. This is used to generate tooltips and for determining keyboard input logic.
  */
 const keybinds = {
-        LEFT_CONTROL: {key: "control", ctrl: true},
-        ALT: {key: "alt", ctrl: false},
-        META: {key: "meta", ctrl: false},
-        HISTORY_STEPBACK: {key: "z", ctrl: true},
-        HISTORY_STEPFORWARD: {key: "y", ctrl: true},
-        DELETE: {key: "delete", ctrl: false},
-        ESCAPE: {key: "escape", ctrl: false},
-        POINTER: {key: "1", ctrl: false},
-        BOX_SELECTION: {key: "2", ctrl: false},
-        PLACE_ENTITY: {key: "3", ctrl: false},
-        PLACE_RELATION: {key: "4", ctrl: false},
-        PLACE_ATTRIBUTE: {key: "5", ctrl: false},
-        PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
-        EDGE_CREATION: {key: "7", ctrl: false},
-        PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
-        IE_INHERITANCE: { key: "9", ctrl: false },  //<-- IE inheritance functionality
-        PLACE_SDENTITY: { key: "1", ctrl: true },   //<-- SD functionality
-        ZOOM_IN: {key: "+", ctrl: true, meta: true},
-        ZOOM_OUT: {key: "-", ctrl: true, meta: true},
-        ZOOM_RESET: {key: "0", ctrl: true, meta: true},
-        TOGGLE_A4: {key: "p", ctrl: false, meta: false},
-        TOGGLE_GRID: {key: "g", ctrl: false},
-        TOGGLE_RULER: {key: "t", ctrl: false},
-        TOGGLE_SNAPGRID: {key: "s", ctrl: false},
-        TOGGLE_DARKMODE: {key: "d", ctrl: false},
-        CENTER_CAMERA: {key:"home", ctrl: false},
-        OPTIONS: {key: "o", ctrl: false},
-        ENTER: {key: "enter", ctrl: false},
-        COPY: {key: "c", ctrl: true, meta: true},
-        PASTE: {key: "v", ctrl: true, meta: true},
-        SELECT_ALL: {key: "a", ctrl: true},
-        DELETE_B: {key: "backspace", ctrl: false},
-        MOVING_OBJECT_UP: {key: "ArrowUp", ctrl: false},
-        MOVING_OBJECT_DOWN: {key: "ArrowDown", ctrl: false},
-        MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
-        MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
-        TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
-        TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
-        TOGGLE_ER_TABLE: {key: "e", ctrl: false},
-        TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
-        STATE_INITIAL: { key: "<" , ctrl: false },
-        STATE_FINAL: { key: "f" , ctrl: false },
-        STATE_SUPER: { key: ">", ctrl: false },
-        SAVE_DIAGRAM: { key: "s", ctrl: true }, 
-        LOAD_DIAGRAM: { key: "l", ctrl: true }, 
-        NOTE_ENTITY: { key: "n", ctrl: false }
+    LEFT_CONTROL: {key: "control", ctrl: true},
+    ALT: {key: "alt", ctrl: false},
+    META: {key: "meta", ctrl: false},
+    HISTORY_STEPBACK: {key: "z", ctrl: true},
+    HISTORY_STEPFORWARD: {key: "y", ctrl: true},
+    DELETE: {key: "delete", ctrl: false},
+    ESCAPE: {key: "escape", ctrl: false},
+    POINTER: {key: "1", ctrl: false},
+    BOX_SELECTION: {key: "2", ctrl: false},
+    PLACE_ENTITY: {key: "3", ctrl: false},
+    PLACE_RELATION: {key: "4", ctrl: false},
+    PLACE_ATTRIBUTE: {key: "5", ctrl: false},
+    PLACE_UMLENTITY: {key: "6", ctrl: false},       //<-- UML functionality
+    EDGE_CREATION: {key: "7", ctrl: false},
+    PLACE_IEENTITY: {key: "8", ctrl: false},       //<-- IE functionality
+    IE_INHERITANCE: {key: "9", ctrl: false},  //<-- IE inheritance functionality
+    PLACE_SDENTITY: {key: "1", ctrl: true},   //<-- SD functionality
+    ZOOM_IN: {key: "+", ctrl: true, meta: true},
+    ZOOM_OUT: {key: "-", ctrl: true, meta: true},
+    ZOOM_RESET: {key: "0", ctrl: true, meta: true},
+    TOGGLE_A4: {key: "p", ctrl: false, meta: false},
+    TOGGLE_GRID: {key: "g", ctrl: false},
+    TOGGLE_RULER: {key: "t", ctrl: false},
+    TOGGLE_SNAPGRID: {key: "s", ctrl: false},
+    TOGGLE_DARKMODE: {key: "d", ctrl: false},
+    CENTER_CAMERA: {key: "home", ctrl: false},
+    OPTIONS: {key: "o", ctrl: false},
+    ENTER: {key: "enter", ctrl: false},
+    COPY: {key: "c", ctrl: true, meta: true},
+    PASTE: {key: "v", ctrl: true, meta: true},
+    SELECT_ALL: {key: "a", ctrl: true},
+    DELETE_B: {key: "backspace", ctrl: false},
+    MOVING_OBJECT_UP: {key: "ArrowUp", ctrl: false},
+    MOVING_OBJECT_DOWN: {key: "ArrowDown", ctrl: false},
+    MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
+    MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
+    TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
+    TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
+    TOGGLE_ER_TABLE: {key: "e", ctrl: false},
+    TOGGLE_ERROR_CHECK: {key: "h", ctrl: false},
+    STATE_INITIAL: {key: "<", ctrl: false},
+    STATE_FINAL: {key: "f", ctrl: false},
+    STATE_SUPER: {key: ">", ctrl: false},
+    SAVE_DIAGRAM: {key: "s", ctrl: true},
+    LOAD_DIAGRAM: {key: "l", ctrl: true},
+    NOTE_ENTITY: {key: "n", ctrl: false}
 };
 
-/** 
+/**
  * @description Represents the current input mode the end user is currently in. */
 const mouseModes = {
     POINTER: 0,
@@ -784,7 +760,7 @@ const mouseModes = {
     EDGE_CREATION: 3,
 };
 
-/** 
+/**
  * @description All different types of elements that can be constructed.
  * @see constructElementOfType() For creating elements out dof this enum.
  */
@@ -801,7 +777,7 @@ const elementTypes = {
     UMLInitialState: 9,
     UMLFinalState: 10,
     UMLSuperState: 11,
-    sequenceActorAndObject:12,
+    sequenceActorAndObject: 12,
     sequenceActivation: 13,
     sequenceLoopOrAlt: 14,
     note: 15,
@@ -904,7 +880,7 @@ const relationState = {
 /**
  * @description State of inheritance between UML entities. <-- UML functionality
  */
- const inheritanceState = {
+const inheritanceState = {
     DISJOINT: "disjoint",
     OVERLAPPING: "overlapping",
 };
@@ -912,7 +888,7 @@ const relationState = {
 /**
  * @description State of inheritance between IE entities. <-- IE functionality
  */
- const inheritanceStateIE = {
+const inheritanceStateIE = {
     DISJOINT: "disjoint",
     OVERLAPPING: "overlapping",
 };
@@ -963,7 +939,7 @@ const IELineIcons = {//TODO: Replace with actual icons for the dropdown
 /**
  * @description Available options of icons to display at the end of lines connecting two SD elements.
  */
- const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
+const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
     ARROW: "ARROW"
 };
 
@@ -999,7 +975,7 @@ var startNodeRight = false;
 var startNodeDown = false;
 var startNodeUp = false;
 var containerStyle;
-var lastMousePos = getPoint(0,0);
+var lastMousePos = getPoint(0, 0);
 var dblPreviousTime = new Date().getTime(); // Used when determining if an element was doubleclicked.
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
@@ -1092,13 +1068,13 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER:false,UML:false,IE:false,SD:false,NOTE:false};
+var diagramType = {ER: false, UML: false, IE: false, SD: false, NOTE: false};
 
 //Grid Settings
 var settings = {
     ruler: {
         ZF: 100 * zoomfact,
-        zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact)),
+        zoomX: Math.round(((0 - zoomOrigo.x) * zoomfact) + (1.0 / zoomfact)),
         zoomY: Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact)),
         isRulerActive: true,
     },
@@ -1150,29 +1126,176 @@ var ghostLine = null;
  */
 var defaults = {
 
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal', canChangeTo: Object.values(relationType) },
-    ERAttr: { name: "Attribute", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
-    Ghost: { name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
+    EREntity: {
+        name: "Entity",
+        kind: "EREntity",
+        fill: "#ffffff",
+        stroke: "#000000",
+        width: 200,
+        height: 50,
+        type: "ER",
+        state: 'normal',
+        attributes: ['-attribute'],
+        functions: ['+function'],
+        canChangeTo: ["UML", "ER", "IE", "SD"]
+    },
+    ERRelation: {
+        name: "Relation",
+        kind: "ERRelation",
+        fill: "#ffffff",
+        stroke: "#000000",
+        width: 60,
+        height: 60,
+        type: "ER",
+        state: 'normal',
+        canChangeTo: Object.values(relationType)
+    },
+    ERAttr: {
+        name: "Attribute",
+        kind: "ERAttr",
+        fill: "#ffffff",
+        stroke: "#000000",
+        width: 90,
+        height: 45,
+        type: "ER",
+        state: 'normal'
+    },
+    Ghost: {name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER"},
 
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- UML functionality
-    UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML", canChangeTo: Object.values(relationType) }, //<-- UML functionality
-    IEEntity: {name: "IEEntity", kind: "IEEntity", stroke: "#000000", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- IE functionality
-    IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE", canChangeTo: Object.values(relationType) }, //<-- IE inheritence functionality
-    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] }, //<-- SD functionality
+    UMLEntity: {
+        name: "Class",
+        kind: "UMLEntity",
+        fill: "#ffffff",
+        stroke: "#000000",
+        width: 200,
+        height: 50,
+        type: "UML",
+        attributes: ['-Attribute'],
+        functions: ['+Function'],
+        canChangeTo: ["UML", "ER", "IE", "SD"]
+    },     //<-- UML functionality
+    UMLRelation: {
+        name: "Inheritance",
+        kind: "UMLRelation",
+        fill: "#ffffff",
+        stroke: "#000000",
+        width: 60,
+        height: 60,
+        type: "UML",
+        canChangeTo: Object.values(relationType)
+    }, //<-- UML functionality
+    IEEntity: {
+        name: "IEEntity",
+        kind: "IEEntity",
+        stroke: "#000000",
+        fill: "#ffffff",
+        width: 200,
+        height: 50,
+        type: "IE",
+        attributes: ['-Attribute'],
+        functions: ['+function'],
+        canChangeTo: ["UML", "ER", "IE", "SD"]
+    },     //<-- IE functionality
+    IERelation: {
+        name: "Inheritance",
+        kind: "IERelation",
+        fill: "#ffffff",
+        stroke: "#000000",
+        width: 50,
+        height: 50,
+        type: "IE",
+        canChangeTo: Object.values(relationType)
+    }, //<-- IE inheritence functionality
+    SDEntity: {
+        name: "State",
+        kind: "SDEntity",
+        fill: "#ffffff",
+        stroke: "#000000",
+        width: 200,
+        height: 50,
+        type: "SD",
+        attributes: ['do: func'],
+        functions: ['+function'],
+        canChangeTo: ["UML", "ER", "IE", "SD"]
+    }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Final state.
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD", canChangeTo: null },  // UML Super State.
+    UMLInitialState: {
+        name: "UML Initial State",
+        kind: "UMLInitialState",
+        fill: "#000000",
+        stroke: "#000000",
+        width: 60,
+        height: 60,
+        type: "SD",
+        canChangeTo: null
+    }, // UML Initial state.
+    UMLFinalState: {
+        name: "UML Final State",
+        kind: "UMLFinalState",
+        fill: "#000000",
+        stroke: "#000000",
+        width: 60,
+        height: 60,
+        type: "SD",
+        canChangeTo: null
+    }, // UML Final state.
+    UMLSuperState: {
+        name: "UML Super State",
+        kind: "UMLSuperState",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 500,
+        height: 500,
+        type: "SD",
+        canChangeTo: null
+    },  // UML Super State.
 
-    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor", canChangeTo: null }, // sequence actor and object
-    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE", canChangeTo: null }, // Sequence Activation.
-    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt", canChangeTo: null }, // Sequence Loop or Alternative.
+    sequenceActorAndObject: {
+        name: "name",
+        kind: "sequenceActorAndObject",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 100,
+        height: 150,
+        type: "SE",
+        actorOrObject: "actor",
+        canChangeTo: null
+    }, // sequence actor and object
+    sequenceActivation: {
+        name: "Activation",
+        kind: "sequenceActivation",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 30,
+        height: 300,
+        type: "SE",
+        canChangeTo: null
+    }, // Sequence Activation.
+    sequenceLoopOrAlt: {
+        kind: "sequenceLoopOrAlt",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 750,
+        height: 300,
+        type: "SE",
+        alternatives: ["alternative1", "alternative2", "alternative3"],
+        altOrLoop: "Alt",
+        canChangeTo: null
+    }, // Sequence Loop or Alternative.
 
-    note: { name: "Note", kind: "note", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
+    note: {
+        name: "Note",
+        kind: "note",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 200,
+        height: 50,
+        type: "NOTE",
+        attributes: ['Note'],
+    },  // Note.
 }
 
-var defaultLine = { kind: "Normal" };
+var defaultLine = {kind: "Normal"};
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP ======================================
 
@@ -1180,7 +1303,7 @@ var defaultLine = { kind: "Normal" };
 window.addEventListener("DOMContentLoaded", () => {
     getData();
     addAlertOnUnload();
-    document.getElementById("loadingSpinner").style.display="none";
+    document.getElementById("loadingSpinner").style.display = "none";
 });
 
 /**
@@ -1206,8 +1329,7 @@ stateMachine = new StateMachine(data, lines);
 /**
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
-function getData()
-{ 
+function getData() {
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
 
@@ -1226,7 +1348,7 @@ function getData()
     updateA4Pos();
     updateGridSize();
     showdata();
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
     setContainerStyles(mouseMode);
     generateKeybindList();
     //setPreviewValues();
@@ -1234,16 +1356,16 @@ function getData()
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
-    togglePlacementType(0,0)
-    togglePlacementType(1,1)
-    togglePlacementType(9,9)
-    togglePlacementType(12,12)
+    togglePlacementType(0, 0)
+    togglePlacementType(1, 1)
+    togglePlacementType(9, 9)
+    togglePlacementType(12, 12)
 }
 
 /**
  * @description Used to determine the tools shown depending on diagram type.
  */
-function showDiagramTypes(){
+function showDiagramTypes() {
     var firstShown = false; // used to not hide the first button in either category
 
     // ER buttons
@@ -1359,23 +1481,22 @@ function showDiagramTypes(){
 
 // --------------------------------------- Window Events    --------------------------------
 
-document.addEventListener('keydown', function (e)
-{
+document.addEventListener('keydown', function (e) {
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
 
-    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true && settings.replay.active){
+    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true && settings.replay.active) {
         toggleReplay();
         setReplayRunning(false);
         clearInterval(stateMachine.replayTimer);
     }
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+    if (!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
             escPressed = true;
-            if(context.length > 0 || contextLine.length > 0) {
+            if (context.length > 0 || contextLine.length > 0) {
                 clearContext();
                 clearContextLine();
             } else {
@@ -1391,22 +1512,22 @@ document.addEventListener('keydown', function (e)
             showdata();
         }
 
-        if (isKeybindValid(e, keybinds.ZOOM_IN)){
+        if (isKeybindValid(e, keybinds.ZOOM_IN)) {
             e.preventDefault();
             zoomin();
-        } 
-        if (isKeybindValid(e, keybinds.ZOOM_OUT)){
+        }
+        if (isKeybindValid(e, keybinds.ZOOM_OUT)) {
             e.preventDefault();
             zoomout();
-        } 
+        }
 
-        if (isKeybindValid(e, keybinds.ZOOM_RESET)){
+        if (isKeybindValid(e, keybinds.ZOOM_RESET)) {
             e.preventDefault();
             zoomreset();
         }
 
-        if (isKeybindValid(e, keybinds.SELECT_ALL)){
-            if(mouseMode == mouseModes.EDGE_CREATION){
+        if (isKeybindValid(e, keybinds.SELECT_ALL)) {
+            if (mouseMode == mouseModes.EDGE_CREATION) {
                 e.preventDefault();
                 return false;
             } else {
@@ -1414,35 +1535,35 @@ document.addEventListener('keydown', function (e)
                 selectAll();
             }
         }
-        if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
+        if (isKeybindValid(e, keybinds.CENTER_CAMERA)) {
             e.preventDefault();
         }
 
         // Moving object with arrows
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid) {
             setPos(context, 0, 1);
         }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid) {
             setPos(context, 0, -1);
         }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid) {
             setPos(context, 1, 0);
         }
-        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
+        if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid) {
             setPos(context, -1, 0);
         }
     } else {
-        if (isKeybindValid(e, keybinds.ENTER)) { 
-            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())){
+        if (isKeybindValid(e, keybinds.ENTER)) {
+            if (!/TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
                 var propField = document.getElementById("elementProperty_name");
-                if(!!document.getElementById("lineLabel")){
+                if (!!document.getElementById("lineLabel")) {
                     changeLineProperties();
                 } else if (document.activeElement.id == "saveDiagramAs") {
                     saveDiagramAs();
                     hideSavePopout();
                 } else {
                     changeState();
-                    saveProperties(); 
+                    saveProperties();
                     propField.blur();
                 }
             }
@@ -1450,39 +1571,38 @@ document.addEventListener('keydown', function (e)
     }
 });
 
-document.addEventListener('keyup', function (e)
-{
+document.addEventListener('keyup', function (e) {
     var pressedKey = e.key.toLowerCase();
-  
+
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) {
-          setTimeout(() => {
-              ctrlPressed = false;
-          }, 1000);
-      }
+        setTimeout(() => {
+            ctrlPressed = false;
+        }, 1000);
+    }
 
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
-    if( !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+    if (!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) toggleStepBack();
         if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
         if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
         if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
-            
+
             if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
             if (context.length > 0) {
                 removeElements(context);
             } else if (contextLine.length > 0) {
-                 removeLines(contextLine);
-            }            
-    
+                removeLines(contextLine);
+            }
+
             updateSelection();
-            
+
         }
-        
+
         if (isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
         if (isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
-        
+
         if (isKeybindValid(e, keybinds.EDGE_CREATION)) {
             setMouseMode(mouseModes.EDGE_CREATION);
             clearContext();
@@ -1571,7 +1691,7 @@ document.addEventListener('keyup', function (e)
             if (localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
 
             if (context.length !== 0) {
-                
+
                 // Filter - keeps only the lines that are connectet to and from selected elements.
                 var contextConnectedLines = lines.filter(line => {
                     return (context.filter(element => {
@@ -1582,7 +1702,7 @@ document.addEventListener('keyup', function (e)
                 // Store new copy-paste data in local storage
                 localStorage.setItem('copiedElements', JSON.stringify(context));
                 localStorage.setItem('copiedLines', JSON.stringify(contextConnectedLines));
-                
+
                 displayMessage(messageTypes.SUCCESS, `You have copied ${context.length} elements and its inner connected lines.`);
             } else {
                 displayMessage(messageTypes.SUCCESS, `Clipboard cleared.`);
@@ -1594,28 +1714,27 @@ document.addEventListener('keyup', function (e)
             toggleKeybindList();
         }
     } else {
-        if(document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)){
-            if(context.length == 1){
+        if (document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)) {
+            if (context.length == 1) {
                 document.activeElement.value = context[0].name;
                 document.activeElement.blur();
                 toggleOptionsPane();
             }
-        }   
+        }
     }
 });
 
 window.addEventListener("resize", () => {
     updateContainerBounds();
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
 });
 
-window.onfocus = function()
-{
-    altPressed=false;
-    ctrlPressed=false;
+window.onfocus = function () {
+    altPressed = false;
+    ctrlPressed = false;
 }
 
-document.addEventListener("mouseleave", function(event){
+document.addEventListener("mouseleave", function (event) {
     if (event.toElement == null && event.relatedTarget == null) {
         pointerState = pointerStates.DEFAULT;
     }
@@ -1636,17 +1755,19 @@ function mwheel(event) {
             zoomout(event);
         }
         zoomAllowed = false;
-        setTimeout(function(){zoomAllowed = true}, 75); // This number decides the time between each zoom tick, in ms.
+        setTimeout(function () {
+            zoomAllowed = true
+        }, 75); // This number decides the time between each zoom tick, in ms.
     }
 }
 
 var mouseButtonDown = false;
+
 /**
  * @description Event function triggered when any mouse button is pressed down on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
-function mdown(event)
-{
+function mdown(event) {
     mouseButtonDown = true;
 
     // Mouse pressed over delete button for multiple elements
@@ -1657,15 +1778,15 @@ function mdown(event)
     }
 
     // Prevent middle mouse panning when moving an object
-    if(event.button == 1) {
+    if (event.button == 1) {
         if (movingObject) {
             event.preventDefault();
             return;
-        } 
+        }
     }
 
     // If the middle mouse button (mouse3) is pressed OR replay-mode is active, set scroll start values
-    if (event.button == 1  || settings.replay.active) {
+    if (event.button == 1 || settings.replay.active) {
         pointerState = pointerStates.CLICKED_CONTAINER;
         sscrollx = scrollx;
         sscrolly = scrolly;
@@ -1685,17 +1806,17 @@ function mdown(event)
         determinedLines = determineLineSelect(event.clientX, event.clientY);
 
         // If a line was clicked, determine if the label or line was clicked.
-        if (determinedLines){
+        if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
                 pointerState = pointerStates.CLICKED_LINE;
-    
+
                 // If double click, open option pane
                 if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                     wasDblClicked = true;
                     document.getElementById('optmarker').innerHTML = "&#9650;Options";
                     document.getElementById("options-pane").className = "show-options-pane";
                 }
-            } else if(determinedLines.id.length > 6) { // LABEL
+            } else if (determinedLines.id.length > 6) { // LABEL
                 targetLabel = lineLabelList[findIndex(lineLabelList, determinedLines.id)];
                 startX = event.clientX;
                 startY = event.clientY;
@@ -1761,7 +1882,7 @@ function mdown(event)
                 default:
                     break;
             }
-        // If node is clicked, determine start point for resize
+            // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
             startWidth = data[findIndex(data, context[0].id)].width;
@@ -1785,18 +1906,17 @@ function mdown(event)
  * @description Event function triggered when any mouse button is pressed down on top of any element.
  * @param {MouseEvent} event Triggered mouse event.
  */
-function ddown(event)
-{
+function ddown(event) {
     // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
         hasPressedDelete = checkDeleteBtn();
     }
-    
+
     // Used when determining time between clicks.
     if ((new Date().getTime() - dblPreviousTime) < dblClickInterval && event.button == 0) {
 
         wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
-        
+
         const element = data[findIndex(data, event.currentTarget.id)];
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0) {
             event.preventDefault(); // Needed in order for focus() to work properly 
@@ -1808,45 +1928,45 @@ function ddown(event)
             document.getElementById('optmarker').innerHTML = "&#9650;Options";
             document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
-    }   
+    }
 
     // If the middle mouse button (mouse3) is pressed OR replay-mode is active => return
     if (event.button == 1 || settings.replay.active) return;
 
     // If the right mouse button is pressed => return
     if (event.button == 2) return;
-if (!hasPressedDelete){
-    switch (mouseMode) {
-        case mouseModes.POINTER:
-        case mouseModes.BOX_SELECTION:
-        case mouseModes.PLACING_ELEMENT:
-            startX = event.clientX;
-            startY = event.clientY;
+    if (!hasPressedDelete) {
+        switch (mouseMode) {
+            case mouseModes.POINTER:
+            case mouseModes.BOX_SELECTION:
+            case mouseModes.PLACING_ELEMENT:
+                startX = event.clientX;
+                startY = event.clientY;
 
-            if (!altPressed) {
-                pointerState = pointerStates.CLICKED_ELEMENT;
-                targetElement = event.currentTarget;
-                targetElementDiv = document.getElementById(targetElement.id);
-            }
+                if (!altPressed) {
+                    pointerState = pointerStates.CLICKED_ELEMENT;
+                    targetElement = event.currentTarget;
+                    targetElementDiv = document.getElementById(targetElement.id);
+                }
 
-        case mouseModes.EDGE_CREATION:
-            if (event.button == 2) return;
-            const element = data[findIndex(data, event.currentTarget.id)];
-            // If element not in context, update selection on down click
-            if (element != null && !context.includes(element)){
-                pointerState = pointerStates.CLICKED_ELEMENT;
-                updateSelection(element);
-                lastClickedElement = null;
-            } else if (element != null) {
-                lastClickedElement = element;
-            }
-            break;
-            
-        default:
-            console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
-            break;
+            case mouseModes.EDGE_CREATION:
+                if (event.button == 2) return;
+                const element = data[findIndex(data, event.currentTarget.id)];
+                // If element not in context, update selection on down click
+                if (element != null && !context.includes(element)) {
+                    pointerState = pointerStates.CLICKED_ELEMENT;
+                    updateSelection(element);
+                    lastClickedElement = null;
+                } else if (element != null) {
+                    lastClickedElement = element;
+                }
+                break;
+
+            default:
+                console.error(`State ${mouseMode} missing implementation at switch-case in ddown()!`);
+                break;
+        }
     }
-}
     dblPreviousTime = new Date().getTime(); // Update dblClick-timer.
     wasDblClicked = false; // Reset the bool.
 }
@@ -1856,8 +1976,7 @@ if (!hasPressedDelete){
  * @param {MouseEvent} event Triggered mouse event.
  * @see mup() For event triggering mouse down.
  */
-function mouseMode_onMouseUp(event)
-{
+function mouseMode_onMouseUp(event) {
     if (!hasPressedDelete) {
         switch (mouseMode) {
             case mouseModes.PLACING_ELEMENT:
@@ -1871,7 +1990,7 @@ function mouseMode_onMouseUp(event)
                             console.error("Failed to create an element as it overlaps other element(s)")
 
                             // Remove added element from data as it should remain
-                            data.splice(data.length-1, 1)
+                            data.splice(data.length - 1, 1)
 
                             makeGhost();
                             showdata();
@@ -1896,13 +2015,13 @@ function mouseMode_onMouseUp(event)
                     ghostLine = null;
 
                     showdata();
-                    updatepos(0,0);
+                    updatepos(0, 0);
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
                         elementTypeSelected = elementTypes.Ghost;
                         makeGhost();
                         // Create ghost line
-                        ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                        ghostLine = {id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal"};
                     } else if (ghostElement !== null) {
 
                         // create a line from the element to itself
@@ -1942,12 +2061,11 @@ function mouseMode_onMouseUp(event)
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
  */
- function tup(event) 
- {
-     mouseButtonDown = false;
-     pointerState = pointerStates.DEFAULT;
-     deltaExceeded = false;
- }
+function tup(event) {
+    mouseButtonDown = false;
+    pointerState = pointerStates.DEFAULT;
+    deltaExceeded = false;
+}
 
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
@@ -1955,8 +2073,7 @@ function mouseMode_onMouseUp(event)
  * @see pointerStates For all available states.
  */
 
-function mup(event)
-{
+function mup(event) {
     if (!mouseOverLine && !mouseOverElement) {
         setContainerStyles(mouseMode);
     }
@@ -1966,13 +2083,13 @@ function mup(event)
     deltaY = startY - event.clientY;
 
     switch (pointerState) {
-        case pointerStates.DEFAULT: 
+        case pointerStates.DEFAULT:
             mouseMode_onMouseUp(event);
-        break;
+            break;
         case pointerStates.CLICKED_CONTAINER:
             if (event.target.id == "container") {
                 movingContainer = false;
-                
+
                 if (!deltaExceeded) {
                     if (mouseMode == mouseModes.EDGE_CREATION) {
                         clearContext();
@@ -1982,7 +2099,7 @@ function mup(event)
                     if (!ctrlPressed) clearContextLine();
                 }
             }
-            
+
             break;
         case pointerStates.CLICKED_LINE:
             if (!deltaExceeded) {
@@ -2005,7 +2122,7 @@ function mup(event)
             if (mouseMode == mouseModes.EDGE_CREATION) {
                 mouseMode_onMouseUp(event);
 
-            // Normal mode
+                // Normal mode
             } else if (deltaExceeded) {
                 if (context.length > 0) setPos(context, deltaX, deltaY);
             }
@@ -2021,7 +2138,7 @@ function mup(event)
     deltaX = 0;
     deltaY = 0;
     updatepos(0, 0);
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
@@ -2033,8 +2150,7 @@ function mup(event)
 /**
  * @description change cursor style when mouse hovering over an element.
  */
-function mouseEnter()
-{
+function mouseEnter() {
     if (!mouseButtonDown) {
         mouseOverElement = true;
         containerStyle.cursor = "pointer";
@@ -2044,8 +2160,7 @@ function mouseEnter()
 /**
  * @description change cursor style when mouse is hovering over the container.
  */
-function mouseLeave()
-{
+function mouseLeave() {
     mouseOverElement = false;
     setContainerStyles(mouseMode);
 }
@@ -2056,7 +2171,7 @@ function mouseLeave()
 
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
  */
-function checkDeleteBtn(){
+function checkDeleteBtn() {
     if (deleteBtnX != 0) {
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
             if (context.length > 0) removeElements(context);
@@ -2071,8 +2186,7 @@ function checkDeleteBtn(){
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
  */
-function mouseOverSelection(mouseX, mouseY)
-{
+function mouseOverSelection(mouseX, mouseY) {
     if (context.length > 0 || contextLine.length > 0) {
         // If there is a selection box and mouse position is inside it.
         if (mouseX > selectionBoxLowX && mouseX < selectionBoxHighX && mouseY > selectionBoxLowY && mouseY < selectionBoxHighY) {
@@ -2096,8 +2210,7 @@ function mouseOverSelection(mouseX, mouseY)
 /**
  * @description Retrieves lines from svgbacklayer. If none is found return empty array
  */
-function getLinesFromBackLayer()
-{
+function getLinesFromBackLayer() {
     return Array.from(document.getElementById("svgbacklayer").children);
 }
 
@@ -2106,20 +2219,19 @@ function getLinesFromBackLayer()
  * @param {Number} mouseX
  * @param {Number} mouseY
  */
-function determineLineSelect(mouseX, mouseY)
-{
+function determineLineSelect(mouseX, mouseY) {
     var allLines = getLinesFromBackLayer();
     var bLayerLineIDs = []
 
     // Current mouse XY
     var cMouse_XY = {
-        x: mouseX, 
+        x: mouseX,
         y: mouseY
     };
     var currentline = {};
     var lineData = {};
     var lineCoeffs = {};
-    var highestX, lowestX, highestY , lowestY;
+    var highestX, lowestX, highestY, lowestY;
     var lineWasHit = false;
     var labelWasHit = false;
 
@@ -2129,7 +2241,7 @@ function determineLineSelect(mouseX, mouseY)
         pos_y: cMouse_XY.y, // Mouse pos Y.
         radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
     }
-    
+
     for (var i = 0; i < allLines.length; i++) {
         // Copy the IDs.
         bLayerLineIDs[i] = allLines[i].id;
@@ -2137,19 +2249,19 @@ function determineLineSelect(mouseX, mouseY)
         // Make sure that "double lines" have the same id.
         bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
         bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
-  
+
         var hasPoints = allLines[i].getAttribute('points'); // If line has attribute point (polyline)
 
         if (hasPoints != null) {
 
             var points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
-            for (var j = 0; j < points.length-1; j++) {
+            for (var j = 0; j < points.length - 1; j++) {
                 currentLineSegment = {
                     x1: points[j].split(',')[0],
-                    x2: points[j+1].split(',')[0],
+                    x2: points[j + 1].split(',')[0],
                     y1: points[j].split(',')[1],
-                    y2: points[j+1].split(',')[1]
+                    y2: points[j + 1].split(',')[1]
                 }
                 // Used later to make sure the current mouse-position is in the span of a line.
                 highestX = Math.max(currentLineSegment.x1, currentLineSegment.x2);
@@ -2165,13 +2277,13 @@ function determineLineSelect(mouseX, mouseY)
                 lineCoeffs = {
                     a: (currentLineSegment.y1 - currentLineSegment.y2),
                     b: (currentLineSegment.x2 - currentLineSegment.x1),
-                    c: ((currentLineSegment.x1 - currentLineSegment.x2)*currentLineSegment.y1 + (currentLineSegment.y2-currentLineSegment.y1)*currentLineSegment.x1)
+                    c: ((currentLineSegment.x1 - currentLineSegment.x2) * currentLineSegment.y1 + (currentLineSegment.y2 - currentLineSegment.y1) * currentLineSegment.x1)
                 }
                 lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
 
-                if(lineWasHit == true && labelWasHit == false) {
+                if (lineWasHit == true && labelWasHit == false) {
                     // Return the current line that registered as a "hit".;
-                    return lines.filter(function(line) {
+                    return lines.filter(function (line) {
                         return line.id == bLayerLineIDs[i];
                     })[0];
                 }
@@ -2196,38 +2308,37 @@ function determineLineSelect(mouseX, mouseY)
             hY: highestY,
             lY: lowestY
         }
-        
+
         // Coefficients of the general equation of the current line.
         lineCoeffs = {
             a: (currentline.y1 - currentline.y2),
             b: (currentline.x2 - currentline.x1),
-            c: ((currentline.x1 - currentline.x2)*currentline.y1 + (currentline.y2-currentline.y1)*currentline.x1)
+            c: ((currentline.x1 - currentline.x2) * currentline.y1 + (currentline.y2 - currentline.y1) * currentline.x1)
         }
-        if (document.getElementById(bLayerLineIDs[i]+"Label")) {
+        if (document.getElementById(bLayerLineIDs[i] + "Label")) {
             var centerPoint = {
-                x: lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].centerX + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedX + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].displacementX,
-                y: lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].centerY + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].labelMovedY + lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].displacementY
+                x: lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].centerX + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].labelMovedX + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].displacementX,
+                y: lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].centerY + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].labelMovedY + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].displacementY
             }
-            var labelWidth = lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].width;
-            var labelHeight = lineLabelList[findIndex(lineLabelList,bLayerLineIDs[i]+"Label")].height;
+            var labelWidth = lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].width;
+            var labelHeight = lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].height;
             labelWasHit = didClickLabel(centerPoint, labelWidth, labelHeight, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius);
         }
-        
+
         // Determines if a line was clicked
         lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
         // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="#000000" stroke-width="3" fill="red" /> '
         // ---------------------------
-        if(lineWasHit == true && labelWasHit == false) {
+        if (lineWasHit == true && labelWasHit == false) {
             // Return the current line that registered as a "hit".
-            return lines.filter(function(line) {
+            return lines.filter(function (line) {
                 return line.id == bLayerLineIDs[i];
             })[0];
-        } else if(labelWasHit == true)
-        {
-            return lineLabelList.filter(function(label) {
-                return label.id == bLayerLineIDs[i]+"Label";
+        } else if (labelWasHit == true) {
+            return lineLabelList.filter(function (label) {
+                return label.id == bLayerLineIDs[i] + "Label";
             })[0];
         }
     }
@@ -2237,14 +2348,13 @@ function determineLineSelect(mouseX, mouseY)
 /**
  * @description Performs a circle detection algorithm on a certain point in pixels to decide if any line was clicked.
  */
-function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
-{
+function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data) {
     // Distance between line and circle center.
-    var distance = (Math.abs(a*circle_x + b*circle_y + c)) / Math.sqrt(a*a + b*b);
+    var distance = (Math.abs(a * circle_x + b * circle_y + c)) / Math.sqrt(a * a + b * b);
 
     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
     // Check if we are clicking withing the span.
-    return ( (circle_x < (line_data.hX + circle_radius)) &&
+    return ((circle_x < (line_data.hX + circle_radius)) &&
         (circle_x > (line_data.lX - circle_radius)) &&
         (circle_y < (line_data.hY + circle_radius)) &&
         (circle_y > (line_data.lY - circle_radius)) &&
@@ -2254,30 +2364,28 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data)
 /**
  * @description Performs a circle detection algorithm on a certain point in pixels to decide if a label was clicked.
  */
- function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius)
- {
-     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
-     // Check if we are clicking withing the span.
-     return (circle_x < (c.x + lw / 2 + circle_radius)) &&
-         (circle_x > (c.x - lw / 2 - circle_radius)) &&
-         (circle_y < (c.y + lh / 2 + circle_radius)) &&
-         (circle_y > (c.y - lh / 2 - circle_radius));
- }
+function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
+    // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
+    // Check if we are clicking withing the span.
+    return (circle_x < (c.x + lw / 2 + circle_radius)) &&
+        (circle_x > (c.x - lw / 2 - circle_radius)) &&
+        (circle_y < (c.y + lh / 2 + circle_radius)) &&
+        (circle_y > (c.y - lh / 2 - circle_radius));
+}
 
 /**
  * @description Called on mouse moving if no pointer state has blocked the event in mmoving()-function.
  */
-function mouseMode_onMouseMove(event)
-{
+function mouseMode_onMouseMove(event) {
     mouseOverLine = determineLineSelect(event.clientX, event.clientY);
 
     // Change cursor style if mouse pointer is over a line.
     if (mouseOverLine && !mouseButtonDown) {
         containerStyle.cursor = "pointer";
-    } else if (!mouseOverElement){
+    } else if (!mouseOverElement) {
         setContainerStyles(mouseMode);
     }
-     switch (mouseMode) {
+    switch (mouseMode) {
         case mouseModes.EDGE_CREATION:
             mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
@@ -2285,7 +2393,7 @@ function mouseMode_onMouseMove(event)
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
 
                 // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
-                if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION){
+                if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
                     ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
                     ghostElement.y = Math.round(cords.y / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.height / 2);
                 } else {
@@ -2314,8 +2422,7 @@ function mouseMode_onMouseMove(event)
  * @description Event function triggered when the mouse has moved on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
-function mmoving(event)
-{ 
+function mmoving(event) {
     lastMousePos = getPoint(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
@@ -2331,7 +2438,7 @@ function mmoving(event)
             updatepos(null, null);
 
             // Update the ruler
-            drawRulerBars(scrollx,scrolly);
+            drawRulerBars(scrollx, scrolly);
 
             calculateDeltaExceeded();
             break;
@@ -2378,13 +2485,13 @@ function mmoving(event)
         case pointerStates.CLICKED_NODE:
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
-            
+
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
             const minHeight = 50; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
-            
+
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
@@ -2400,7 +2507,7 @@ function mmoving(event)
 
                 // Deduct the new position, giving us the total change
                 const xChange = -(tmp - elementData.x);
-                
+
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
@@ -2409,7 +2516,7 @@ function mmoving(event)
 
                 // Remove the new width, giving us the total change
                 const widthChange = -(tmp - elementData.width);
-                
+
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
@@ -2449,10 +2556,10 @@ function mmoving(event)
                 // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
                 elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
-                
+
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
-                
+
                 // Adds a deep clone of the element to preResizeHeight if it isn't in it
                 let foundID = false;
                 if (preResizeHeight == undefined) {
@@ -2492,16 +2599,15 @@ function mmoving(event)
  * @returns {String} Hexadecimal number represented as a string.
  * @see randomidArray For an array of all generated IDs by this function.
  */
-function makeRandomID()
-{
+function makeRandomID() {
     var str = "";
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
-    while(true) {
+    while (true) {
         for (var i = 0; i < 6; i++) {
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        
+
         if (settings.misc.randomidArray === undefined || settings.misc.randomidArray.length == 0) { //always add first id
             settings.misc.randomidArray.push(str);
             return str;
@@ -2523,8 +2629,7 @@ function makeRandomID()
  * @param {*} id Item to determine index for.
  * @returns {Number} Index for the searched item OR -1 for a miss.
  */
-function findIndex(arr, id)
-{
+function findIndex(arr, id) {
     for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) return i;
     }
@@ -2536,8 +2641,7 @@ function findIndex(arr, id)
  * @param {Object} object Element to be added.
  * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
  */
-function addObjectToData(object, stateMachineShouldSave = true)
-{
+function addObjectToData(object, stateMachineShouldSave = true) {
     data.push(object);
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object), StateChange.ChangeTypes.ELEMENT_CREATED);
 }
@@ -2547,8 +2651,7 @@ function addObjectToData(object, stateMachineShouldSave = true)
  * @param {Object} object Line to be added.
  * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
  */
-function addObjectToLines(object, stateMachineShouldSave = true)
-{
+function addObjectToLines(object, stateMachineShouldSave = true) {
     lines.push(object);
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object), StateChange.ChangeTypes.LINE_CREATED);
 }
@@ -2558,17 +2661,16 @@ function addObjectToLines(object, stateMachineShouldSave = true)
  * @param {Array<Object>} elementArray List of all elements that should be deleted.
  * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
  */
-function removeElements(elementArray, stateMachineShouldSave = true)
-{
+function removeElements(elementArray, stateMachineShouldSave = true) {
     // Find all lines that should be deleted first
     var linesToRemove = [];
     var elementsToRemove = [];
 
     for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
-        linesToRemove = linesToRemove.concat(lines.filter(function(line) {
+        linesToRemove = linesToRemove.concat(lines.filter(function (line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
-        elementsToRemove = elementsToRemove.concat(data.filter(function(element) {
+        elementsToRemove = elementsToRemove.concat(data.filter(function (element) {
             return element == elementArray[i];
         }));
     }
@@ -2581,7 +2683,7 @@ function removeElements(elementArray, stateMachineShouldSave = true)
             if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove), StateChange.ChangeTypes.ELEMENT_DELETED);
         }
 
-        data = data.filter(function(element) { // Delete elements
+        data = data.filter(function (element) { // Delete elements
             return !elementsToRemove.includes(element);
         });
     } else { // All passed items were INVALID
@@ -2598,8 +2700,7 @@ function removeElements(elementArray, stateMachineShouldSave = true)
  * @param {Array<Object>} linesArray List of all elements that should be deleted.
  * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
  */
-function removeLines(linesArray, stateMachineShouldSave = true)
-{
+function removeLines(linesArray, stateMachineShouldSave = true) {
     var anyRemoved = false;
 
     // Removes from the two arrays that keep track of the attributes connections. 
@@ -2617,7 +2718,7 @@ function removeLines(linesArray, stateMachineShouldSave = true)
             }
         }
 
-        lines = lines.filter(function(line) {
+        lines = lines.filter(function (line) {
             var shouldRemove = (line != linesArray[i]);
             if (shouldRemove) {
                 anyRemoved = true;
@@ -2640,8 +2741,7 @@ function removeLines(linesArray, stateMachineShouldSave = true)
  * @description Generatesa a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
  * @see ghostElement
  */
-function makeGhost()
-{
+function makeGhost() {
     ghostElement = constructElementOfType(elementTypeSelected);
     var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
@@ -2656,8 +2756,7 @@ function makeGhost()
  * @see elementTypes For all available values to pass as argument.
  * @returns {Object}
  */
-function constructElementOfType(type)
-{
+function constructElementOfType(type) {
     let typeName = undefined;
     let newElement = undefined;
     for (const name in elementTypes) {
@@ -2681,8 +2780,7 @@ function constructElementOfType(type)
  * @param {Element} element
  * @returns {array} result
  */
-function getElementLines(element)
-{
+function getElementLines(element) {
     return element.bottom.concat(element.right, element.top, element.left);
 }
 
@@ -2691,8 +2789,7 @@ function getElementLines(element)
  * @param {Element} element
  * @returns {boolean} result
  */
-function elementHasLines(element)
-{
+function elementHasLines(element) {
     return (getElementLines(element).length > 0);
 }
 
@@ -2700,14 +2797,13 @@ function elementHasLines(element)
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
  */
-function changeState() 
-{
-    const element =  context[0],
+function changeState() {
+    const element = context[0],
         oldType = element.type,
         newType = document.getElementById("typeSelect")?.value || undefined;
     var oldRelation = element.state;
     var newRelation = document.getElementById("propertySelect")?.value || undefined;
-    
+
     // If we are changing types and the element has lines, we should not change
     if (oldType !== newType && newType !== undefined && oldType !== undefined && elementHasLines(element)) {
         displayMessage("error", `
@@ -2715,8 +2811,8 @@ function changeState()
             different diagrams should not be able to connect to each other.`
         )
         return;
-    // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } else if (oldType == newType && oldRelation == newRelation){
+        // If we are changing to the same type, (simply pressed save without changes), do nothing.
+    } else if (oldType == newType && oldRelation == newRelation) {
         return;
     } else if (element.type == 'ER') {
         //If not attribute, also save the current type and check if kind also should be updated
@@ -2725,83 +2821,83 @@ function changeState()
                 var newKind = element.kind;
                 newKind = newKind.replace(oldType, newType);
                 element.kind = newKind;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
             }
             if (newType != undefined) {
                 element.type = newType;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
             }
         }
         var property = document.getElementById("propertySelect").value;
         element.state = property;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if (element.type=='UML') {
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    } else if (element.type == 'UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (newType != undefined) {
             element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-    } else if(element.type=='IE') {
+    } else if (element.type == 'IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (newType != undefined) {
             element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if(element.type=='SD') {
+    } else if (element.type == 'SD') {
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (newType != undefined) {
             element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if(element.type=='SE') {
+    } else if (element.type == 'SE') {
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (newType != undefined) {
             element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     } else if (element.type == 'NOTE') {
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { kind: newKind }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (newType != undefined) {
             element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { type: newType }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
     displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
@@ -2810,8 +2906,7 @@ function changeState()
 /**
  * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
  */
-function saveProperties() 
-{
+function saveProperties() {
     const propSet = document.getElementById("propertyFieldset");
     const element = context[0];
     const children = propSet.children;
@@ -2838,7 +2933,7 @@ function saveProperties()
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
                         formatArr.push(arrElementAttr[i]);
-                    } 
+                    }
                 }
                 //Update the attribute array
                 arrElementAttr = formatArr;
@@ -2854,7 +2949,7 @@ function saveProperties()
                 for (var i = 0; i < arrElementFunc.length; i++) {
                     if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
                         formatArr.push(arrElementFunc[i]);
-                    } 
+                    }
                 }
                 //Update the attribute array
                 arrElementFunc = formatArr;
@@ -2867,44 +2962,43 @@ function saveProperties()
     }
     stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
-    updatepos(0,0);
+    updatepos(0, 0);
 }
 
 /**
  * Applies new changes to line attributes in the data array of lines.
  */
-function changeLineProperties()
-{
+function changeLineProperties() {
     // Set lineKind
-    var radio1  = document.getElementById("lineRadio1");
+    var radio1 = document.getElementById("lineRadio1");
     var radio2 = document.getElementById("lineRadio2");
     var radio3 = document.getElementById("lineRadio3");
     var radio4 = document.getElementById("lineRadio4");
     var label = document.getElementById("lineLabel");
     var startLabel = document.getElementById("lineStartLabel");
     var endLabel = document.getElementById("lineEndLabel");
-    var startIcon= document.getElementById("lineStartIcon");
-    var endIcon= document.getElementById("lineEndIcon");
+    var startIcon = document.getElementById("lineStartIcon");
+    var endIcon = document.getElementById("lineEndIcon");
     var lineType = document.getElementById("lineType");
     var line = contextLine[0];
-   
+
     if (radio1 != null && radio1.checked && line.kind != radio1.value) {
         line.kind = radio1.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio1.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio1.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } else if(radio2 != null && radio2.checked && line.kind != radio2.value){
+    } else if (radio2 != null && radio2.checked && line.kind != radio2.value) {
         line.kind = radio2.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio2.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio2.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } else if(radio3 != null && radio3.checked && line.kind != radio3.value){
+    } else if (radio3 != null && radio3.checked && line.kind != radio3.value) {
         line.kind = radio3.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio3.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio3.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } else if(radio4 != null && radio4.checked && line.kind != radio4.value){
+    } else if (radio4 != null && radio4.checked && line.kind != radio4.value) {
         line.kind = radio4.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { kind: radio4.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio4.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } 
+    }
     // Check if this element exists
     if (!!document.getElementById('propertyCardinality')) {
         // Change line - cardinality
@@ -2912,39 +3006,39 @@ function changeLineProperties()
 
         if (line.cardinality != undefined && cardinalityInputValue == "") {
             delete line.cardinality;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: undefined }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         } else if (line.cardinality != cardinalityInputValue && cardinalityInputValue != "") {
             line.cardinality = cardinalityInputValue;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { cardinality: cardinalityInputValue }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: cardinalityInputValue}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
 
     if (line.label != label.value) {
         label.value = label.value.trim();
         line.label = label.value
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { label: label.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {label: label.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML or IE line
-    if ((line.type == 'UML')||(line.type == 'IE')) {
+    if ((line.type == 'UML') || (line.type == 'IE')) {
         // Start label, near side
         if (line.startLabel != startLabel.value) {
             startLabel.value = startLabel.value.trim();
             line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // End label, opposite side
         if (line.endLabel != endLabel.value) {
             endLabel.value = endLabel.value.trim();
             line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.endIcon != endIcon.value) {
             line.endIcon = endIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
     //NOTE line
@@ -2953,21 +3047,21 @@ function changeLineProperties()
         if (line.startLabel != startLabel.value) {
             startLabel.value = startLabel.value.trim();
             line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // End label, opposite side
         if (line.endLabel != endLabel.value) {
             endLabel.value = endLabel.value.trim();
             line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.endIcon != endIcon.value) {
             line.endIcon = endIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
     // SD line
@@ -2975,27 +3069,27 @@ function changeLineProperties()
         if (line.innerType != lineType.value) {
             lineType.value = lineType.value.trim();
             line.innerType = lineType.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { innerType: lineType.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {innerType: lineType.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // Start label, near side
         if (line.startLabel != startLabel.value) {
             startLabel.value = startLabel.value.trim();
             line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startLabel: startLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         // End label, opposite side
         if (line.endLabel != endLabel.value) {
             endLabel.value = endLabel.value.trim();
             line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endLabel: endLabel.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { startIcon: startIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.endIcon != endIcon.value) {
             line.endIcon = endIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, { endIcon: endIcon.value }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
     showdata();
@@ -3005,8 +3099,7 @@ function changeLineProperties()
  * @description Updates what line(s) are selected.
  * @param {Object} selectedLine Line that has been selected.
  */
-function updateSelectedLine(selectedLine)
-{
+function updateSelectedLine(selectedLine) {
     // This function works almost exaclty as updateSelection but for lines instead.
 
     // If CTRL is pressed and an element is selected
@@ -3014,17 +3107,18 @@ function updateSelectedLine(selectedLine)
         if (!contextLine.includes(selectedLine)) {
             contextLine.push(selectedLine);
         } else {    //If element is already selcted
-            contextLine = contextLine.filter(function (line) { return line !== selectedLine;});
-        }
-    // If ALT is pressed while selecting a line -> deselects that line
-    } else if(selectedLine != null && altPressed) {
-        if (contextLine.includes(selectedLine)) {
-            contextLine = contextLine.filter(function (line) 
-            {
+            contextLine = contextLine.filter(function (line) {
                 return line !== selectedLine;
             });
         }
-    }   
+        // If ALT is pressed while selecting a line -> deselects that line
+    } else if (selectedLine != null && altPressed) {
+        if (contextLine.includes(selectedLine)) {
+            contextLine = contextLine.filter(function (line) {
+                return line !== selectedLine;
+            });
+        }
+    }
     // If CTRL is not pressed and a element has been selected.
     else if (selectedLine != null && !ctrlPressed) {
         clearContext();
@@ -3035,7 +3129,7 @@ function updateSelectedLine(selectedLine)
             contextLine = [];
             contextLine.push(selectedLine);
         }
-    } else if (!altPressed && !ctrlPressed ) {
+    } else if (!altPressed && !ctrlPressed) {
         contextLine = [];
     }
     generateContextProperties();
@@ -3045,8 +3139,7 @@ function updateSelectedLine(selectedLine)
  * @description Updates the current selection of elements depending on what buttons are down. Context array may have the new element added or removed from the context array, have the context array replaced with only the new element or simply have the array emptied.
  * @param {Object} ctxelement Element that has was clicked or null. A null value will DESELECT all elements, emptying the entire context array.
  */
-function updateSelection(ctxelement)
-{
+function updateSelection(ctxelement) {
     // If CTRL is pressed and an element is selected
     if (ctrlPressed && ctxelement != null) {
         // The element is not already selected
@@ -3055,16 +3148,14 @@ function updateSelection(ctxelement)
             showdata();
             clearContext
         } else {
-            context = context.filter(function (element)
-            {
+            context = context.filter(function (element) {
                 return element !== ctxelement;
             });
         }
         // The element is already selected
     } else if (altPressed && ctxelement != null) {
         if (context.includes(ctxelement)) {
-            context = context.filter(function (element)
-            {
+            context = context.filter(function (element) {
                 return element !== ctxelement;
             });
         }
@@ -3093,8 +3184,7 @@ function updateSelection(ctxelement)
 /**
  * @description Puts all available elements of the data array into the context array.
  */
-function selectAll()
-{   
+function selectAll() {
     context = data;
     contextLine = lines;
     generateContextProperties();
@@ -3105,8 +3195,7 @@ function selectAll()
  * Places a copy of all elements into the data array centered around the current mouse position.
  * @param {Array<Object>} elements List of all elements to paste into the data array.
  */
-function pasteClipboard(elements, elementsLines)
-{
+function pasteClipboard(elements, elementsLines) {
 
     // If elements does is empty, display error and return null
     if (elements.length == 0) {
@@ -3129,7 +3218,7 @@ function pasteClipboard(elements, elementsLines)
     var cx = (x2 - x1) / 2;
     var cy = (y2 - y1) / 2;
     var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
-    
+
     var connectedLines = [];
     // For every line that shall be copied, create a temp object, for kind and connection tracking
     elementsLines.forEach(line => {
@@ -3198,8 +3287,7 @@ function pasteClipboard(elements, elementsLines)
 /**
  * @description Sets ghostElement and ghostLine to null.
  */
-function clearGhosts()
-{
+function clearGhosts() {
     ghostElement = null;
     ghostLine = null;
 }
@@ -3207,8 +3295,7 @@ function clearGhosts()
 /**
  * @description Empties the context array of all selected elements.
  */
-function clearContext()
-{
+function clearContext() {
     if (context != null) {
         context = [];
         generateContextProperties();
@@ -3218,8 +3305,7 @@ function clearContext()
 /**
  * @description Empties the context array of all selected lines.
  */
-function clearContextLine()
-{
+function clearContextLine() {
     if (contextLine != null) {
         contextLine = [];
         generateContextProperties();
@@ -3235,8 +3321,7 @@ function clearContextLine()
  * @param {Number} mouseY Pixel position in the y-axis.
  * @returns {Point} Point containing the calculated coordinates.
  */
-function screenToDiagramCoordinates(mouseX,mouseY)
-{
+function screenToDiagramCoordinates(mouseX, mouseY) {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
     // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
     // We're tired.
@@ -3255,8 +3340,8 @@ function screenToDiagramCoordinates(mouseX,mouseY)
     if (zoomfact == 0.5) zoomX = zoom0_5;
     if (zoomfact == 0.25) zoomX = zoom0_25;
 
-    return new Point(Math.round( (mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
-                    Math.round((mouseY / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
+    return new Point(Math.round((mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
+        Math.round((mouseY / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
     );
 }
 
@@ -3266,8 +3351,7 @@ function screenToDiagramCoordinates(mouseX,mouseY)
  * @param {Object} enumObject The enum object containing all possible values.
  * @returns {Boolean} Returns TRUE if an enum contains the tested value
  */
-function enumContainsPropertyValue(value, enumObject) 
-{
+function enumContainsPropertyValue(value, enumObject) {
     for (const property in enumObject) {
         // If any cursor mode matches the passed argument
         const cm = enumObject[property];
@@ -3280,13 +3364,12 @@ function enumContainsPropertyValue(value, enumObject)
 
 /**
  * @description Creates an object with the selected x and y values.
- * @param {*} x 
- * @param {*} y 
+ * @param {*} x
+ * @param {*} y
  * @returns {Object} Returns object with x and y properties set.
  * @depricated Use new Point object instead!
  */
-function getPoint (x,y)
-{
+function getPoint(x, y) {
     return {
         x: x,
         y: y
@@ -3295,12 +3378,11 @@ function getPoint (x,y)
 
 /**
  * @description Creates a new rectangle from upper left point and lower right point.
- * @param {Point} topLeft 
- * @param {Point} bottomRight 
+ * @param {Point} topLeft
+ * @param {Point} bottomRight
  * @returns {Object} Returns an object representing a rectangle with position and size.
  */
-function getRectFromPoints(topLeft, bottomRight)
-{
+function getRectFromPoints(topLeft, bottomRight) {
     return {
         x: topLeft.x,
         y: topLeft.y,
@@ -3312,21 +3394,20 @@ function getRectFromPoints(topLeft, bottomRight)
 /**
  * @description Creates a new rectangle from an element.
  * @param {Object} element Element with a x,y,width and height propery.
- * @returns 
+ * @returns
  */
-function getRectFromElement (element)
-{
+function getRectFromElement(element) {
     // Corrects returned y position due to problems with resizing vertically
     for (let i = 0; i < preResizeHeight.length; i++) {
         if (element.id == preResizeHeight[i].id) {
             let resizedY = element.y;
             if (preResizeHeight[i].height < element.height) {
-                resizedY += (element.height - preResizeHeight[i].height)/2
+                resizedY += (element.height - preResizeHeight[i].height) / 2
             }
             // Corrects returned y position due to problems with SE types
             let elementY = resizedY;
             if (element.type == "SE") {
-                elementY += preResizeHeight[i].height/3;
+                elementY += preResizeHeight[i].height / 3;
             }
             return {
                 x: element.x,
@@ -3336,11 +3417,11 @@ function getRectFromElement (element)
             };
         }
     }
-    
+
     // Corrects returned y position due to problems with resizing vertically
     let elementY = element.y;
     if (element.type == "SE") {
-        elementY += element.height/3;
+        elementY += element.height / 3;
     }
     return {
         x: element.x,
@@ -3356,13 +3437,12 @@ function getRectFromElement (element)
  * @param {*} right Second rectangle
  * @returns {Boolean} true if the right rectangle is within the left rectangle.
  */
-function rectsIntersect (left, right)
-{
+function rectsIntersect(left, right) {
     return (
-        (left.x + left.width >= right.x + right.width) && 
+        (left.x + left.width >= right.x + right.width) &&
         (left.x <= right.x) &&
-        (left.y + left.height + (right.height/2) >= right.y + right.height) &&
-        (left.y + (right.height/2) <= right.y )
+        (left.y + left.height + (right.height / 2) >= right.y + right.height) &&
+        (left.y + (right.height / 2) <= right.y)
     );
 }
 
@@ -3372,8 +3452,7 @@ function rectsIntersect (left, right)
  * @param {Number} x Coordinates along the x-axis to move
  * @param {Number} y Coordinates along the y-axis to move
  */
-function setPos(objects, x, y)
-{
+function setPos(objects, x, y) {
     var idList = [];
     var overlapping = false;
 
@@ -3422,14 +3501,12 @@ function setPos(objects, x, y)
     updatepos(0, 0);
 }
 
-function isKeybindValid(e, keybind)
-{
+function isKeybindValid(e, keybind) {
     return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
-function findUMLEntityFromLine(lineObj)
-{
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLEntity).kind){
+function findUMLEntityFromLine(lineObj) {
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLEntity).kind) {
         return -1;
     } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLEntity).kind) {
         return 1;
@@ -3437,9 +3514,8 @@ function findUMLEntityFromLine(lineObj)
     return null;
 }
 
-function findUMLInheritanceFromLine(lineObj)
-{
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLRelation).kind){
+function findUMLInheritanceFromLine(lineObj) {
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLRelation).kind) {
         return -1;
     } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLRelation).kind) {
         return 1;
@@ -3447,9 +3523,8 @@ function findUMLInheritanceFromLine(lineObj)
     return null;
 }
 
-function findEntityFromLine(lineObj)
-{
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.EREntity).kind){
+function findEntityFromLine(lineObj) {
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
         return -1;
     } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
         return 1;
@@ -3457,29 +3532,26 @@ function findEntityFromLine(lineObj)
     return null;
 }
 
-function findAttributeFromLine(lineObj)
-{
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ERAttr).kind){
+function findAttributeFromLine(lineObj) {
+    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
         return -1;
     } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
         return 1;
     }
     return null;
 }
-    
+
 /**
  * @description Gets the extension of an filename
  * @param {String} filename The name of the file
  * @return The extension
  */
-function getExtension(filename)
-{
+function getExtension(filename) {
     var parts = filename.split('.');
     return parts[parts.length - 1];
 }
 
-function entityIsOverlapping(id, x, y)
-{   
+function entityIsOverlapping(id, x, y) {
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
     if (foundIndex > -1) {
@@ -3513,9 +3585,9 @@ function entityIsOverlapping(id, x, y)
             }
         }
         targetX = x //(x / zoomfact);
-        targetY =  y//(y / zoomfact);
+        targetY = y//(y / zoomfact);
 
-        for(var i = 0; i < data.length; i++){
+        for (var i = 0; i < data.length; i++) {
             if (data[i].id === id) continue
 
             // Doesn't compare if the other element is moving
@@ -3559,8 +3631,7 @@ function entityIsOverlapping(id, x, y)
                 if (data[i].kind == "sequenceActorAndObject" || element.kind == "sequenceActorAndObject") {
                     break;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
-                    (targetY < compY2) && (targetY + elementHeight) > data[i].y)
-                {
+                    (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                     isOverlapping = true;
                     break;
                 }
@@ -3578,8 +3649,7 @@ function entityIsOverlapping(id, x, y)
  * @param {mouseModes} mode What mouse mode to change into.
  * @see mouseModes For all available enum values.
  */
-function setMouseMode(mode)
-{
+function setMouseMode(mode) {
     if (enumContainsPropertyValue(mode, mouseModes)) {
         // Mode-specific activation/deactivation
         onMouseModeDisabled();
@@ -3596,11 +3666,10 @@ function setMouseMode(mode)
  * @description Changes the current visual cursor style for the user.
  * @param {Number} cursorMode containerStyle value. This will be translated into appropriate container style.
  */
-function setContainerStyles(cursorMode = mouseModes.POINTER)
-{
+function setContainerStyles(cursorMode = mouseModes.POINTER) {
     containerStyle = document.getElementById("container").style;
 
-    switch(cursorMode) {
+    switch (cursorMode) {
         case mouseModes.POINTER:
             containerStyle.cursor = "grab";
             break;
@@ -3621,8 +3690,7 @@ function setContainerStyles(cursorMode = mouseModes.POINTER)
 /**
  * @description Function triggered just AFTER the current mouse mode is changed.
  */
-function onMouseModeEnabled()
-{
+function onMouseModeEnabled() {
     // Add the diagramActive to current diagramIcon
     if (mouseMode === mouseModes.PLACING_ELEMENT) {
         document.getElementById("elementPlacement" + elementTypeSelected).classList.add("active");
@@ -3641,11 +3709,12 @@ function onMouseModeEnabled()
         case mouseModes.EDGE_CREATION:
             clearContext();
             clearContextLine();
-            updatepos(0,0);
+            updatepos(0, 0);
             break;
         case mouseModes.BOX_SELECTION:
             break;
-        default: console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeEnabled()!`);
+        default:
+            console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeEnabled()!`);
             break;
     }
 }
@@ -3653,8 +3722,7 @@ function onMouseModeEnabled()
 /**
  * @description Function triggered just BEFORE the current mouse mode is changed.
  */
-function onMouseModeDisabled()
-{
+function onMouseModeDisabled() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
     for (var i = 0; i < navButtons.length; i++) {
@@ -3673,18 +3741,18 @@ function onMouseModeDisabled()
             break;
         case mouseModes.BOX_SELECTION:
             break;
-        default: console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeDisabled()!`);
+        default:
+            console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeDisabled()!`);
             break;
     }
 }
 
-function calculateDeltaExceeded()
-{
+function calculateDeltaExceeded() {
     // Remember that mouse has moved out of starting bounds
     if ((deltaX >= maxDeltaBeforeExceeded ||
-        deltaX <= -maxDeltaBeforeExceeded) ||
+            deltaX <= -maxDeltaBeforeExceeded) ||
         (deltaY >= maxDeltaBeforeExceeded ||
-        deltaY <= -maxDeltaBeforeExceeded)
+            deltaY <= -maxDeltaBeforeExceeded)
     ) {
         deltaExceeded = true;
     }
@@ -3692,8 +3760,7 @@ function calculateDeltaExceeded()
 
 // --------------------------------------- Box Selection    --------------------------------
 // Returns all elements within the coordinate box
-function getElementsInsideCoordinateBox(selectionRect)
-{
+function getElementsInsideCoordinateBox(selectionRect) {
     var elements = [];
     data.forEach(element => {
 
@@ -3710,8 +3777,7 @@ function getElementsInsideCoordinateBox(selectionRect)
  * @param {Rect} selectionRect returned from the getRectFromPoints() function
  * @returns {Array<Object>} containing all of the lines that are currently within the coordinate box
  */
-function getLinesInsideCoordinateBox(selectionRect)
-{
+function getLinesInsideCoordinateBox(selectionRect) {
     var allLines = document.getElementById("svgbacklayer").children;
     var tempLines = [];
     var bLayerLineIDs = [];
@@ -3732,8 +3798,7 @@ function getLinesInsideCoordinateBox(selectionRect)
  * @param {Object} line following the format of the lines contained within the children of svgbacklayer
  * @returns {Boolean} Returns true if the line is within the coordinate box, else false
  */
-function lineIsInsideRect(selectionRect, line)
-{
+function lineIsInsideRect(selectionRect, line) {
     var lineCoord1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
@@ -3742,10 +3807,10 @@ function lineIsInsideRect(selectionRect, line)
         line.getAttribute("x2"),
         line.getAttribute("y2")
     );
-    var lineLeftX = Math.min(lineCoord1.x,lineCoord2.x);
-    var lineTopY = Math.min(lineCoord1.y,lineCoord2.y);
-    var lineRightX = Math.max(lineCoord1.x,lineCoord2.x);
-    var lineBottomY =  Math.max(lineCoord1.y,lineCoord2.y);
+    var lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
+    var lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
+    var lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
+    var lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
     var leftX = selectionRect.x;
     var topY = selectionRect.y;
     var rightX = selectionRect.x + selectionRect.width;
@@ -3766,8 +3831,7 @@ function lineIsInsideRect(selectionRect, line)
  * @param {Object} line following the format of the lines contained within the children of svgbacklayer
  * @returns {Boolean} Returns true if the line intersects with any of the sides of the coordinate box, else false
  */
-function intersectsBox(selectionRect, line)
-{
+function intersectsBox(selectionRect, line) {
     var tempCoords1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
@@ -3802,8 +3866,7 @@ function intersectsBox(selectionRect, line)
  * @param {Number} xy x1 - y2 are for the first line and the rest are for the second line
  * @returns {Boolean} Returns true if lines intersect, else false
  */
-function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4)
-{
+function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4) {
     // calc line direction
     var uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) /
         ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
@@ -3814,8 +3877,7 @@ function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4)
     return uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1;
 }
 
-function getBoxSelectionPoints()
-{
+function getBoxSelectionPoints() {
     return {
         n1: getPoint(startX, startY),
         n2: getPoint(startX + deltaX, startY),
@@ -3824,8 +3886,7 @@ function getBoxSelectionPoints()
     };
 }
 
-function getBoxSelectionCoordinates()
-{
+function getBoxSelectionCoordinates() {
     return {
         n1: screenToDiagramCoordinates(startX, startY),
         n2: screenToDiagramCoordinates(startX + deltaX, startY),
@@ -3835,8 +3896,7 @@ function getBoxSelectionCoordinates()
 }
 
 // User has initiated a box selection
-function boxSelect_Start(mouseX, mouseY)
-{
+function boxSelect_Start(mouseX, mouseY) {
     // Store previous context
     previousContext = context;
     previousContextLine = contextLine;
@@ -3848,8 +3908,7 @@ function boxSelect_Start(mouseX, mouseY)
     boxSelectionInUse = true;
 }
 
-function boxSelect_Update(mouseX, mouseY)
-{
+function boxSelect_Update(mouseX, mouseY) {
     if (boxSelectionInUse) {
         // Update relative position form the starting position
         deltaX = mouseX - startX;
@@ -3859,7 +3918,7 @@ function boxSelect_Update(mouseX, mouseY)
 
         // Select all objects inside the box
         var coords = getBoxSelectionCoordinates();
-            
+
         // Calculate top-left and bottom-right coordinates
         var topLeft = getPoint(0, 0), bottomRight = getPoint(0, 0);
 
@@ -3917,15 +3976,13 @@ function boxSelect_Update(mouseX, mouseY)
     }
 }
 
-function boxSelect_End()
-{
+function boxSelect_End() {
     deltaX = 0;
     deltaY = 0;
     boxSelectionInUse = false;
 }
 
-function boxSelect_Draw(str)
-{
+function boxSelect_Draw(str) {
     if (boxSelectionInUse && mouseMode == mouseModes.BOX_SELECTION && (pointerState == pointerStates.DEFAULT || pointerState == pointerStates.CLICKED_LINE)) {
         // Positions to draw lines in-between
         /*
@@ -3965,8 +4022,7 @@ function boxSelect_Draw(str)
  * @description Generates the string that contains the current State Diagram info.
  * @returns Connected State Diagram in the form of a string.
  */
-function generateStateDiagramInfo()
-{
+function generateStateDiagramInfo() {
     const ENTITY = 0, SEEN = 1, LABEL = 2;
     const stateInitial = [];
     const stateFinal = [];
@@ -3977,18 +4033,18 @@ function generateStateDiagramInfo()
     let output = "";
     let re = new RegExp("\\[.+\\]");
     // Picks out the lines of type "State Diagram" and place it in its local array.
-    for (let i=0; i<lines.length; i++) {
-        if (lines[i].type == entityType.SD) { 
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].type == entityType.SD) {
             stateLines.push(lines[i]);
         }
     }
 
     // Picks out the entities related to State Diagrams and place them in their local arrays.
-    for (let i=0; i<data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (data[i].kind == elementTypesNames.SDEntity) {
             stateElements.push([data[i], false]);
         } else if (data[i].kind == elementTypesNames.UMLInitialState) {
-            stateInitial.push([data[i], false]); 
+            stateInitial.push([data[i], false]);
         } else if (data[i].kind == elementTypesNames.UMLFinalState) {
             stateFinal.push([data[i], true]);
         } else if (data[i].kind == elementTypesNames.UMLSuperState) {
@@ -4050,7 +4106,7 @@ function generateStateDiagramInfo()
     output += `<p>Super States: ${stateSuper.length}</p>`;
     output += `<p>SD States: ${stateElements.length}</p>`;
     output += `<p>Lines: ${stateLines.length}</p>`;
-    
+
     //if no state diagram exists, return a message to the user instead.
     if ((stateLines.length == 0) && (stateElements.length == 0) && (stateInitial.length == 0) && (stateFinal.length == 0) && (stateSuper.length == 0)) {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
@@ -4059,72 +4115,67 @@ function generateStateDiagramInfo()
 }
 
 /**
- * @description hides or shows the diagram type dropdown 
+ * @description hides or shows the diagram type dropdown
  */
-function toggleDiagramDropdown()
-{
-    const dropdown=document.getElementById("diagramTypeDropdown");
-    const load=document.getElementById("diagramLoad");
-    const btn=document.getElementById("diagramDropDownToggle");
+function toggleDiagramDropdown() {
+    const dropdown = document.getElementById("diagramTypeDropdown");
+    const load = document.getElementById("diagramLoad");
+    const btn = document.getElementById("diagramDropDownToggle");
 
-    if (window.getComputedStyle(dropdown).display==="none") {
-        load.style.display="block";
-        dropdown.style.display="block";
+    if (window.getComputedStyle(dropdown).display === "none") {
+        load.style.display = "block";
+        dropdown.style.display = "block";
     } else {
-        load.style.display="none";
-        dropdown.style.display="none";
+        load.style.display = "none";
+        dropdown.style.display = "none";
     }
 
     document.getElementById("diagramDropDownToggle").classList.toggle("active");
-    
-    if (window.getComputedStyle(dropdown).display==="none") {
-        btn.style.backgroundColor ="transparent";
+
+    if (window.getComputedStyle(dropdown).display === "none") {
+        btn.style.backgroundColor = "transparent";
         btn.style.border = "3px solid #614875";
         btn.style.color = "#614875";
         btn.style.fontWeight = "bold";
     } else {
-        btn.style.backgroundColor ="#614875";
+        btn.style.backgroundColor = "#614875";
         btn.style.color = "#ffffff";
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
-   }
+    }
 }
 
 /**
  * @description Change the state in replay-mode with the slider
  * @param {Number} sliderValue The value of the slider
  */
-function changeReplayState(sliderValue)
-{
+function changeReplayState(sliderValue) {
     var timestampKeys = Object.keys(settings.replay.timestamps);
 
     // If the last timestamp is selected, goto the last state in the diagram.
-    if (timestampKeys.length - 1 == sliderValue){
+    if (timestampKeys.length - 1 == sliderValue) {
         stateMachine.scrubHistory(stateMachine.historyLog.length - 1);
-    } else stateMachine.scrubHistory(timestampKeys[sliderValue+1] -1);
+    } else stateMachine.scrubHistory(timestampKeys[sliderValue + 1] - 1);
 }
 
 /**
  * @description Toggles stepforward in history.
  */
-function toggleStepForward()
-{
+function toggleStepForward() {
     stateMachine.stepForward();
 }
 
 /**
  * @description Toggles stepbackwards in history.
  */
-function toggleStepBack() 
-{
+function toggleStepBack() {
     stateMachine.stepBack();
 }
 
 /**
  * @description Toggles the movement of elements ON/OFF.
  */
-function toggleEntityLocked()
-{
+function toggleEntityLocked() {
     var ids = []
     var lockbtn = document.getElementById("lockbtn");
     var locked = true;
@@ -4144,7 +4195,7 @@ function toggleEntityLocked()
         }
         ids.push(context[i].id);
     }
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(ids, { isLocked: !locked }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(ids, {isLocked: !locked}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos(0, 0);
 }
@@ -4152,8 +4203,7 @@ function toggleEntityLocked()
 /**
  * @description Toggles the visual background grid ON/OFF.
  */
-function toggleGrid()
-{
+function toggleGrid() {
     var grid = document.getElementById("svggrid");
     var gridButton = document.getElementById("gridToggle");
 
@@ -4163,46 +4213,45 @@ function toggleGrid()
     // Toggle active grid + color change of button to clarify if button is pressed or not
     if (grid.style.display == "block") {
         grid.style.display = "none";
-        gridButton.style.backgroundColor ="transparent";
+        gridButton.style.backgroundColor = "transparent";
         gridButton.style.border = "3px solid #614875";
         gridButton.style.color = "#614875";
         gridButton.style.fontWeight = "bold";
-     } else {
+    } else {
         grid.style.display = "block";
-        gridButton.style.backgroundColor ="#614875";
+        gridButton.style.backgroundColor = "#614875";
         gridButton.style.color = "#ffffff";
         gridButton.style.fontWeight = "normal";
         gridButton.style.border = "3px solid #614875";
-   }
+    }
 }
 
 /**
  * @description Toggles the darkmode for svgbacklayer ON/OFF.
  */
-function toggleDarkmode()
-{
+function toggleDarkmode() {
     const stylesheet = document.getElementById("themeBlack");
     const storedTheme = localStorage.getItem('diagramTheme');
     const btn = document.getElementById("darkmodeToggle");
 
-	if (storedTheme) stylesheet.href = storedTheme;
+    if (storedTheme) stylesheet.href = storedTheme;
 
     if (stylesheet.href.includes('blackTheme')) {
         // if it's dark -> go light
         stylesheet.href = "../Shared/css/style.css";
-        localStorage.setItem('diagramTheme',stylesheet.href)
-    } else if(stylesheet.href.includes('style')) {
+        localStorage.setItem('diagramTheme', stylesheet.href)
+    } else if (stylesheet.href.includes('style')) {
         // if it's light -> go dark
         stylesheet.href = "../Shared/css/blackTheme.css";
-        localStorage.setItem('diagramTheme',stylesheet.href)
+        localStorage.setItem('diagramTheme', stylesheet.href)
     }
     if (stylesheet.href.includes('blackTheme')) {
-        btn.style.backgroundColor ="#614875";
+        btn.style.backgroundColor = "#614875";
         btn.style.color = "#ffffff";
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
     } else {
-        btn.style.backgroundColor ="transparent";
+        btn.style.backgroundColor = "transparent";
         btn.style.border = "3px solid #614875";
         btn.style.color = "#614875";
         btn.style.fontWeight = "bold";
@@ -4223,8 +4272,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /**
  * @description Toggles the replay-mode, shows replay-panel, hides unused elements
  */
-function toggleReplay()
-{
+function toggleReplay() {
     // If there is no history => display error and return
     if (stateMachine.historyLog.length == 0) {
         displayMessage(messageTypes.ERROR, "Sorry, you need to make changes before entering the replay-mode");
@@ -4255,17 +4303,17 @@ function toggleReplay()
         zoomContainer.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
-        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
+        settings.replay.timestamps = {0: 0}; // Clear the array with all timestamp.
 
         stateMachine.historyLog.forEach(historyEntry => {
-            var lastKeyIndex = Object.keys(settings.replay.timestamps).length-1;
+            var lastKeyIndex = Object.keys(settings.replay.timestamps).length - 1;
             var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
             if (settings.replay.timestamps[lastKey] != historyEntry.time) {
                 settings.replay.timestamps[stateMachine.historyLog.indexOf(historyEntry)] = historyEntry.time
             }
         });
         // Change the sliders max to historyLogs length
-        document.getElementById("replay-range").setAttribute("max", (Object.keys(settings.replay.timestamps).length -1).toString());
+        document.getElementById("replay-range").setAttribute("max", (Object.keys(settings.replay.timestamps).length - 1).toString());
 
         settings.ruler.zoomX += 50;
         // Clear selected elements and lines
@@ -4296,8 +4344,7 @@ function toggleReplay()
 /**
  * @description Toggles the list of keybinds.
  */
-function toggleKeybindList()
-{
+function toggleKeybindList() {
     const element = document.getElementById("markdownKeybinds");
     if (element.style.display == "block") {
         element.style.display = "none";
@@ -4308,8 +4355,7 @@ function toggleKeybindList()
 
 
 /** @description Gives the exit button its intended functionality to exit out of replay-mode */
-function exitReplayMode()
-{
+function exitReplayMode() {
     toggleReplay();
     setReplayRunning(false);
     clearInterval(stateMachine.replayTimer);
@@ -4318,8 +4364,7 @@ function exitReplayMode()
 /**
  * @description Sets the replay-delay value
  */
-function setReplayDelay(value)
-{
+function setReplayDelay(value) {
     var replayDelayMap = {
         1: 0.1,
         2: 0.25,
@@ -4341,8 +4386,7 @@ function setReplayDelay(value)
  * @description Changes the play/pause button and locks/unlocks the sliders in replay-mode
  * @param {boolean} state The state if the replay-mode is running
  */
-function setReplayRunning(state)
-{
+function setReplayRunning(state) {
     var button = document.getElementById("diagram-replay-switch");
     var delaySlider = document.getElementById("replay-time");
     var stateSlider = document.getElementById("replay-range");
@@ -4359,8 +4403,7 @@ function setReplayRunning(state)
 /**
  * @description Toggles the ER-table for the diagram in the "Options side-bar" on/off.
  */
-function toggleErTable()
-{
+function toggleErTable() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
     for (var i = 0; i < navButtons.length; i++) {
@@ -4387,8 +4430,7 @@ function toggleErTable()
 /**
  * @description Toggles the testcases for the diagram in the "Options side-bar" on/off.
  */
-function toggleTestCase()
-{
+function toggleTestCase() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
     for (var i = 0; i < navButtons.length; i++) {
@@ -4396,7 +4438,7 @@ function toggleTestCase()
     }
     // Add the diagramActive to current diagramIcon
     document.getElementById("testCaseToggle").classList.add("active");
-    
+
     if (testCaseToggle == false) {
         testCaseToggle = true;
         erTableToggle = false;
@@ -4415,11 +4457,10 @@ function toggleTestCase()
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
  */
-function generateErTableString()
-{   
+function generateErTableString() {
     //TODO: When functionality is complete, try to minimize the overall space complexity, aka try to extract
     //only useful information from entities, attributes and relations. 
-    
+
     var entityList = [];    //All EREntities currently in the diagram
     var attrList = [];      //All ERAttributes currently in the diagram
     var relationList = [];  //All ERRelations currently in the diagram
@@ -4428,22 +4469,22 @@ function generateErTableString()
     /**
      * @description Multidimensional array containing data of each entity and their attribute. Index[0] is always the element
      * @structure ERAttributeData[i] = [entityObject, attributeObject1, ..., attributeObjectN]
-     */ 
+     */
     var ERAttributeData = [];
     /**
      * @description Multidimensional array containing foreign keys for every entity. The owning entity is the entity where the foreign keys are added
-     * @structure   ERForeignData[i] = [owningEntityObject, [otherEntityObject, foreignAttributeObject1, ..., foreignAttributeObjectN]] 
-     */ 
+     * @structure   ERForeignData[i] = [owningEntityObject, [otherEntityObject, foreignAttributeObject1, ..., foreignAttributeObjectN]]
+     */
     var ERForeignData = [];
     /**
      * @description Multidimensional array containing relation and the connected entities. Also stores the cardinality and kind for connected entity
      * @structure   ERRelationData[i] = [relationObject, [entityObject, lineCardinality, lineKind], [otherEREntityObject, otherLineCardinality, otherLineKind]]
-     */ 
+     */
     var ERRelationData = [];
 
     // Sort the data[] elements into entity-, attr- and relationList
     for (var i = 0; i < data.length; i++) {
-        
+
         if (data[i].kind == elementTypesNames.EREntity) {
             entityList.push(data[i]);
         } else if (data[i].kind == elementTypesNames.ERAttr) {
@@ -4484,7 +4525,7 @@ function generateErTableString()
     for (var i = 0; i < entityList.length; i++) {
         var currentRow = [entityList[i]];
         //Sort all lines that are connected to the current entity into lineList[]
-        var lineList = []; 
+        var lineList = [];
         for (var j = 0; j < lines.length; j++) {
             if (entityList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
@@ -4504,7 +4545,7 @@ function generateErTableString()
                 }
             }
         }
-        var parentAttribeList=[]; //list of parent attributes
+        var parentAttribeList = []; //list of parent attributes
 
         for (var j = 0; j < currentEntityAttrList.length; j++) {
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
@@ -4512,13 +4553,13 @@ function generateErTableString()
             for (var h = 0; h < lines.length; h++) {
                 //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
                 if ((currentEntityAttrList[j].id == lines[h].toID ||
-                    currentEntityAttrList[j].id == lines[h].fromID) &&
+                        currentEntityAttrList[j].id == lines[h].fromID) &&
                     (lines[h].toID != entityList[i].id && lines[h].fromID != entityList[i].id)
                 ) {
                     attrLineList.push(lines[h]);
                 }
             }
-            
+
             //Compare each line in attrLineList to each attribute.
             for (var h = 0; h < attrLineList.length; h++) {
                 for (var k = 0; k < attrList.length; k++) {
@@ -4536,14 +4577,14 @@ function generateErTableString()
                         //If no hits, then push the attribute to currentEntityAttrList[] (so it will also be checked for additional attributes in future iterations) and save the ID.
                         if (hits == 0) {
                             // looking if the parent attribute is in the parentAttributeList 
-                            if (findIndex(parentAttribeList,currentEntityAttrList[j].id) == -1) {
+                            if (findIndex(parentAttribeList, currentEntityAttrList[j].id) == -1) {
                                 parentAttribeList.push(currentEntityAttrList[j]);
                                 currentEntityAttrList[j].newKeyName = "";
                             }
                             if (currentEntityAttrList[j].newKeyName == "") {
                                 currentEntityAttrList[j].newKeyName += attrList[k].name;
                             } else {
-                                currentEntityAttrList[j].newKeyName += " "+attrList[k].name;
+                                currentEntityAttrList[j].newKeyName += " " + attrList[k].name;
                             }
                             if (currentEntityAttrList[j].state != 'primary' &&
                                 currentEntityAttrList[j].state != 'candidate'
@@ -4553,7 +4594,7 @@ function generateErTableString()
                             currentEntityAttrList.push(attrList[k]);
                             idList.push(attrList[k].id);
                         }
-                    }   
+                    }
                 }
             }
         }
@@ -4574,11 +4615,11 @@ function generateErTableString()
             // For current entity, iterate through every relation
             for (var j = 0; j < ERRelationData.length; j++) {
                 // Check if relation is valid, (relation, entity1, entity2)
-                if (ERRelationData[j].length >= 3) { 
+                if (ERRelationData[j].length >= 3) {
                     if (ERRelationData[j][0].state == 'weak') {
                         var visited = false;    // Boolean representing if the current entity has already been visited
                         for (var v = 0; v < visitedList.length; v++) {
-                            if (current.id == visitedList[v].id ) {
+                            if (current.id == visitedList[v].id) {
                                 visited = true;
                                 break;
                             }
@@ -4608,7 +4649,7 @@ function generateErTableString()
                                         }
                                     }
                                     queue.push(ERRelationData[j][2][0]); // Push in entity to queue
-                                }   
+                                }
                                 // Check if entity is in relation and check its cardinality
                                 else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
                                     // Iterate through weak entities and find its ID
@@ -4630,14 +4671,14 @@ function generateErTableString()
                                     }
                                     queue.push(ERRelationData[j][1][0]); // Push in entity to queue
                                 }
-                            } 
+                            }
                             //Check if current is weak
                             else if (current.state == 'weak') {
                                 // Check if entity is in relation and check its cardinality
                                 if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
                                     var exists = false; // Boolean representing if the other entity has already been visited
                                     for (var v = 0; v < visitedList.length; v++) {
-                                        if (ERRelationData[j][2][0].id == visitedList[v].id ) {
+                                        if (ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
                                             break;
                                         }
@@ -4665,10 +4706,10 @@ function generateErTableString()
                                     }
                                 }
                                 // Check if entity is in relation and check its cardinality
-                                else if (current.id == ERRelationData[j][2][0].id  && ERRelationData[j][2][1] == 'ONE') {
+                                else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
                                     var exists = false; // Boolean representing if the other entity has already been visited
                                     for (var v = 0; v < visitedList.length; v++) {
-                                        if (ERRelationData[j][1][0].id == visitedList[v].id ) {//|| ERRelationData[j][2][0].id == visitedList[v].id) {
+                                        if (ERRelationData[j][1][0].id == visitedList[v].id) {//|| ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
                                             break;
                                         }
@@ -4679,7 +4720,7 @@ function generateErTableString()
                                         for (var k = 0; k < weakEntityList.length; k++) {
                                             // ID match
                                             if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
-                                                 // Iterate through weak entities and find its ID (Entity that should give keys)
+                                                // Iterate through weak entities and find its ID (Entity that should give keys)
                                                 for (var l = 0; l < weakEntityList.length; l++) {
                                                     // ID match
                                                     if (weakEntityList[l][0].id == current.id) {
@@ -4758,7 +4799,7 @@ function generateErTableString()
     var allEntityList = strongEntityList.concat(weakEntityList); // Add the two list together
 
     //Iterate through all relations
-    for (var i = 0; i < ERRelationData.length; i++) {        
+    for (var i = 0; i < ERRelationData.length; i++) {
         if (ERRelationData[i].length >= 3) {
             var foreign = []; // Array with entities foreign keys
             // Case 1, two strong entities in relation
@@ -4832,7 +4873,7 @@ function generateErTableString()
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
                         }
                     }
-                } else if(ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') { //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
+                } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'ONE') { //MANY to ONE relation, key from the ONE is foreign for MANY,case 2
                     //If array is empty
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
@@ -4886,7 +4927,7 @@ function generateErTableString()
                                 // Push every key in the key list located at [1]
                                 for (var k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
-                               
+
                                 }
                             }
                         }
@@ -4961,7 +5002,7 @@ function generateErTableString()
                         //Find current entity and iterate through its attributes
                         for (var j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
-                            if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                            if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
                                 for (var k = 0; k < allEntityList[j][1].length; k++) {
@@ -5013,7 +5054,7 @@ function generateErTableString()
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
                             }
                         }
-                    }    
+                    }
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') { // MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
@@ -5028,8 +5069,8 @@ function generateErTableString()
                     }
                     //Find otherEntity and find its key-attributes
                     for (var j = 0; j < allEntityList.length; j++) {
-                        if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
-                            if(allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                        if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
+                            if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
                                 for (var k = 0; k < allEntityList[j][1].length; k++) {
@@ -5108,7 +5149,7 @@ function generateErTableString()
                         //Find current entity and iterate through its attributes
                         for (var j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
-                            if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                            if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
                                 for (var k = 0; k < allEntityList[j][1].length; k++) {
@@ -5181,7 +5222,7 @@ function generateErTableString()
                                 // Push every key in the key list located at [1]
                                 for (var k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
-                               
+
                                 }
                             }
                         }
@@ -5235,7 +5276,7 @@ function generateErTableString()
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
                         }
                     }
-                } else if(ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {//ONE to MANY relation, key from the ONE is foreign for MANY, case 1
+                } else if (ERRelationData[i][1][1] == 'ONE' && ERRelationData[i][2][1] == 'MANY') {//ONE to MANY relation, key from the ONE is foreign for MANY, case 1
                     // If normal relation
                     if (ERRelationData[i][0].state == 'normal') {
                         //If array is empty
@@ -5313,7 +5354,7 @@ function generateErTableString()
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
                     for (var j = 0; j < allEntityList.length; j++) {
-                        if(allEntityList[j][0].id == ERRelationData[i][1][0].id) {
+                        if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
                             for (var k = 0; k < allEntityList[j][1].length; k++) {
@@ -5329,7 +5370,7 @@ function generateErTableString()
                                 // Push every key in the key list located at [1]
                                 for (var k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
-                                
+
                                 }
                             }
                         }
@@ -5349,9 +5390,9 @@ function generateErTableString()
         }
     }
     // Iterate and add each entity's foreign attribute to the correct place
-    for(var i = 0; i < ERForeignData.length; i++) {
+    for (var i = 0; i < ERForeignData.length; i++) {
         // Iterate throught all entities
-        for (var j = 0; j < allEntityList.length; j++ ) {
+        for (var j = 0; j < allEntityList.length; j++) {
             // Check if correct entity were found
             if (ERForeignData[i][0].id == allEntityList[j][0].id) {
                 var row = [];
@@ -5391,7 +5432,7 @@ function generateErTableString()
                 //Print only candidate keys if no primary keys are present
                 if (!existPrimary) {
                     if (allEntityList[i][1][j].state == 'candidate') {
-                        if (allEntityList[i][1][j].newKeyName != undefined){
+                        if (allEntityList[i][1][j].newKeyName != undefined) {
                             currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].newKeyName}</span>, `;
                         } else {
                             currentString += `<span style='text-decoration: underline black solid 2px;'>${allEntityList[i][1][j].name}</span>, `;
@@ -5406,7 +5447,7 @@ function generateErTableString()
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
-                            if (allEntityList[i][j].newKeyName == undefined){
+                            if (allEntityList[i][j].newKeyName == undefined) {
                                 currentString += `${allEntityList[i][j].name}, `;
                             }
                         }
@@ -5442,7 +5483,7 @@ function generateErTableString()
                     }
                 }
             }
-            if (currentString.charAt(currentString.length-2) == ",") {
+            if (currentString.charAt(currentString.length - 2) == ",") {
                 currentString = currentString.substring(0, currentString.length - 2);
             }
             currentString += `)</p>`;
@@ -5513,7 +5554,7 @@ function generateErTableString()
                     }
                 }
             }
-            if (currentString.charAt(currentString.length-2) == ",") {
+            if (currentString.charAt(currentString.length - 2) == ",") {
                 currentString = currentString.substring(0, currentString.length - 2);
             }
             currentString += `)</p>`;
@@ -5598,11 +5639,10 @@ function generateErTableString()
 
 /**
  * @description Formats a list of strong/normal entities and their attributes.
- * @param ERDATA A list of all entities and it's attributes 
+ * @param ERDATA A list of all entities and it's attributes
  * @returns A formated list of all strong/normal entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
-function formatERStrongEntities(ERData)
-{
+function formatERStrongEntities(ERData) {
     var temp = []; // The formated list of strong/normal entities 
     // Iterating through all entities
     for (var i = 0; i < ERData.length; i++) {
@@ -5611,33 +5651,33 @@ function formatERStrongEntities(ERData)
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
             var keys = []; // The key attributes (primary, candidate and weakKey)
             // Pushing in weak keys last to ensure that the first key in a strong/normal entity isn't weak
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'primary') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'candidate') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'weakKey') {
                     keys.push(ERData[i][j]);
                 }
             }
             row.push(keys); // Pushing all keys from the entity
             // Pushing in remaining attributes
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'normal') {
                     row.push(ERData[i][j]);
-                }  
+                }
             }
             // Pushing in remaining multivalued attributes
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'multiple') {
                     row.push(ERData[i][j]);
-                }  
+                }
             }
             temp.push(row); // Pushing the formated row to the temp list
         }
@@ -5647,11 +5687,10 @@ function formatERStrongEntities(ERData)
 
 /**
  * @description Formats a list of weak entities and their attributes.
- * @param ERDATA A list of all entities and it's attributes 
+ * @param ERDATA A list of all entities and it's attributes
  * @returns A formated list of all weak entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
-function formatERWeakEntities(ERData)
-{
+function formatERWeakEntities(ERData) {
     var temp = []; // The formated list of weak entities 
     // Iterating through all entities
     for (var i = 0; i < ERData.length; i++) {
@@ -5660,33 +5699,33 @@ function formatERWeakEntities(ERData)
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
             var keys = []; // The key attributes (weakKey, primary and candidate)
             // Pushing in weak keys first to ensure that the first key in a weak entity is weak
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'weakKey') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'primary') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'candidate') {
                     keys.push(ERData[i][j]);
                 }
             }
             row.push(keys); // Pushing all keys from the entity
             // Pushing in remaining attributes
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'normal') {
                     row.push(ERData[i][j]);
-                }  
+                }
             }
             // Pushing in remaining multivalued attributes
-            for (var j = 1; j < ERData[i].length; j++ ) {
+            for (var j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'multiple') {
                     row.push(ERData[i][j]);
-                }  
+                }
             }
             temp.push(row); // Pushing the formated row to the temp list
         }
@@ -5697,8 +5736,7 @@ function formatERWeakEntities(ERData)
 /**
  * @description Toggles the A4 template ON/OFF.
  */
-function toggleA4Template()
-{
+function toggleA4Template() {
     var template = document.getElementById("a4Template");
 
     // Toggle active class on button
@@ -5708,26 +5746,26 @@ function toggleA4Template()
         template.style.display = "none";
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
-        document.getElementById("a4TemplateToggle").style.backgroundColor ="transparent";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
         document.getElementById("a4TemplateToggle").style.color = "#614875";
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
-     } else {
+    } else {
         template.style.display = "block";
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
-        document.getElementById("a4TemplateToggle").style.backgroundColor ="#614875";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
         document.getElementById("a4TemplateToggle").style.color = "#ffffff";
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
         document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
-   }
-   generateContextProperties();
+    }
+    generateContextProperties();
 }
 
 /**
  * @description turns the error checking functionality on/off
  */
-function toggleErrorCheck(){
+function toggleErrorCheck() {
     // Inverts the errorActive variable to true or false
     errorActive = !errorActive;
     if (errorActive) {
@@ -5743,13 +5781,13 @@ function toggleErrorCheck(){
 /**
  * @description hides the error check button when not allowed
  */
-function hideErrorCheck(show){
+function hideErrorCheck(show) {
     if (show) {
         document.getElementById("errorCheckField").style.display = "flex";
         // Enables error check by pressing 'h', only when error check button is visible
         document.addEventListener("keyup", event => {
             if (event.key === 'h') {
-                toggleErrorCheck();                   
+                toggleErrorCheck();
             }
         });
     } else {
@@ -5757,23 +5795,20 @@ function hideErrorCheck(show){
     }
 }
 
-function setA4SizeFactor(e)
-{
+function setA4SizeFactor(e) {
     //store 1 + increased procent amount
-    settings.grid.a4SizeFactor = parseInt(e.target.value)/100;
+    settings.grid.a4SizeFactor = parseInt(e.target.value) / 100;
     updateA4Size();
 }
 
-function toggleA4Horizontal()
-{
+function toggleA4Horizontal() {
     document.getElementById("vRect").style.display = "block";
     if (document.getElementById("a4Rect").style.display = "block") {
         document.getElementById("a4Rect").style.display = "none";
     }
 }
 
-function toggleA4Vertical()
-{
+function toggleA4Vertical() {
     document.getElementById("a4Rect").style.display = "block";
     if (document.getElementById("vRect").style.display = "block") {
         document.getElementById("vRect").style.display = "none";
@@ -5783,8 +5818,7 @@ function toggleA4Vertical()
 /**
  * @description Toggles weither the snap-to-grid logic should be active or not. The GUI button will also be flipped.
  */
-function toggleSnapToGrid()
-{
+function toggleSnapToGrid() {
     // Toggle active class on button
     document.getElementById("rulerSnapToGrid").classList.toggle("active");
 
@@ -5793,12 +5827,12 @@ function toggleSnapToGrid()
 
     // Color change of button to clarify if button is pressed or not
     if (settings.grid.snapToGrid) {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor ="#614875";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
         document.getElementById("rulerSnapToGrid").style.color = "#ffffff";
         document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
         document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
     } else {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor ="transparent";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = "transparent";
         document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
         document.getElementById("rulerSnapToGrid").style.color = "#614875";
         document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
@@ -5808,11 +5842,10 @@ function toggleSnapToGrid()
 /**
  * @description Toggles weither the ruler is visible or not for the end user.
  */
-function toggleRuler()
-{
+function toggleRuler() {
     var ruler = document.getElementById("rulerOverlay");
     var rulerToggleButton = document.getElementById("rulerToggle");
-  
+
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
 
@@ -5820,7 +5853,7 @@ function toggleRuler()
     if (settings.ruler.isRulerActive) {
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
-        rulerToggleButton.style.backgroundColor ="transparent";
+        rulerToggleButton.style.backgroundColor = "transparent";
         rulerToggleButton.style.border = "3px solid #614875";
         rulerToggleButton.style.color = "#614875";
         rulerToggleButton.style.fontWeight = "bold";
@@ -5833,7 +5866,7 @@ function toggleRuler()
         rulerToggleButton.style.border = "3px solid #614875";
     }
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
 }
 
 /**
@@ -5841,20 +5874,19 @@ function toggleRuler()
  * @param {Number} type What kind of element to place.
  * @see constructElementOfType
  */
-function setElementPlacementType(type = elementTypes.EREntity)
-{
+function setElementPlacementType(type = elementTypes.EREntity) {
     elementTypeSelected = type;
 }
+
 //<-- UML functionality start
 
 /**
  * @description Function to open a subtoolbar when pressing down on a button for a certan period of time
  */
-function holdPlacementButtonDown(num)
-{
-    mousePressed=true;
-    if (document.getElementById("togglePlacementTypeBox"+num).classList.contains("activeTogglePlacementTypeBox")) {
-        mousePressed=false;
+function holdPlacementButtonDown(num) {
+    mousePressed = true;
+    if (document.getElementById("togglePlacementTypeBox" + num).classList.contains("activeTogglePlacementTypeBox")) {
+        mousePressed = false;
         togglePlacementTypeBox(num);
     }
     setTimeout(() => {
@@ -5867,17 +5899,16 @@ function holdPlacementButtonDown(num)
 /**
  * @description resets the mousepress.
  */
-function holdPlacementButtonUp()
-{
-    mousePressed=false;
+function holdPlacementButtonUp() {
+    mousePressed = false;
 }
 
 /**
  * @description toggles the box containing different types of placement entitys.
  * @param {Number} num the number connected to the element selected.
  */
-function togglePlacementTypeBox(num){
-    if (!document.getElementById("togglePlacementTypeButton"+num).classList.contains("activeTogglePlacementTypeButton")) {
+function togglePlacementTypeBox(num) {
+    if (!document.getElementById("togglePlacementTypeButton" + num).classList.contains("activeTogglePlacementTypeButton")) {
         for (let index = 0; index < document.getElementsByClassName("togglePlacementTypeButton").length; index++) {
             if (document.getElementsByClassName("togglePlacementTypeButton")[index].classList.contains("activeTogglePlacementTypeButton")) {
                 document.getElementsByClassName("togglePlacementTypeButton")[index].classList.remove("activeTogglePlacementTypeButton");
@@ -5885,16 +5916,16 @@ function togglePlacementTypeBox(num){
             if (document.getElementsByClassName("togglePlacementTypeBox")[index].classList.contains("activeTogglePlacementTypeBox")) {
                 document.getElementsByClassName("togglePlacementTypeBox")[index].classList.remove("activeTogglePlacementTypeBox");
             }
-        }       
-        document.getElementById("togglePlacementTypeButton"+num).classList.add("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox"+num).classList.add("activeTogglePlacementTypeBox");
-        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("toolTipText");
-        document.getElementById("elementPlacement"+num).children.item(1).classList.add("hiddenToolTiptext");
+        }
+        document.getElementById("togglePlacementTypeButton" + num).classList.add("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox" + num).classList.add("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement" + num).children.item(1).classList.remove("toolTipText");
+        document.getElementById("elementPlacement" + num).children.item(1).classList.add("hiddenToolTiptext");
     } else {
-        document.getElementById("elementPlacement"+num).children.item(1).classList.add("toolTipText");
-        document.getElementById("elementPlacement"+num).children.item(1).classList.remove("hiddenToolTiptext");
-        document.getElementById("togglePlacementTypeButton"+num).classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox"+num).classList.remove("activeTogglePlacementTypeBox");
+        document.getElementById("elementPlacement" + num).children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement" + num).children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton" + num).classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox" + num).classList.remove("activeTogglePlacementTypeBox");
     }
 }
 
@@ -5903,9 +5934,8 @@ function togglePlacementTypeBox(num){
  * @param {Number} num the number connected to the element selected.
  * @param {Number} type the type of element selected. (which pop-out we are referring to)
  */
-function togglePlacementType(num,type)
-{
-    if (type==0) {
+function togglePlacementType(num, type) {
+    if (type == 0) {
         document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");// ER entity start
         document.getElementById("elementPlacement0").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement0").children.item(1).classList.remove("hiddenToolTiptext");
@@ -5926,7 +5956,7 @@ function togglePlacementType(num,type)
         document.getElementById("elementPlacement8").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton8").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");// SD state end
-    } else if(type==1) {
+    } else if (type == 1) {
         document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");// ER relation start
         document.getElementById("elementPlacement1").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement1").children.item(1).classList.remove("hiddenToolTiptext");
@@ -5953,48 +5983,46 @@ function togglePlacementType(num,type)
         document.getElementById("elementPlacement9").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton9").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox9").classList.remove("activeTogglePlacementTypeBox");
-        document.getElementById("elementPlacement10").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement10").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement10").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement10").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton10").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");
-        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement11").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement11").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement11").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox"); 
+        document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");
     } else if (type == 12) {
         // Sequence lifetime
         document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton12").classList.remove("activeTogglePlacementTypeButton");
-        document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox"); 
+        document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox");
         // Sequence activation
-        document.getElementById("elementPlacement13").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement13").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement13").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement13").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton13").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");
         // Sequence condition/loop object
-        document.getElementById("elementPlacement14").classList.add("hiddenPlacementType"); 
+        document.getElementById("elementPlacement14").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement14").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
     }
     // Unhide the currently selected placement type
-    document.getElementById("elementPlacement"+num).classList.remove("hiddenPlacementType");
+    document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
-
 
 
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
-function zoomin(scrollEvent = undefined)
-{
+function zoomin(scrollEvent = undefined) {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact < 4) {
@@ -6081,25 +6109,24 @@ function zoomin(scrollEvent = undefined)
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
 }
 
 /**
  * @description Decreases the current zoom level if not already at minimum. This will shrink all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
-function zoomout(scrollEvent = undefined)
-{
+function zoomout(scrollEvent = undefined) {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact > 0.25) {
             var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
-                
+
             var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
                 x: midScreen.x - zoomOrigo.x,
                 y: midScreen.y - zoomOrigo.y
             }
-  
+
             //Update scroll x/y to center screen on new zoomOrigo
             scrollx = scrollx / zoomfact;
             scrolly = scrolly / zoomfact;
@@ -6119,7 +6146,7 @@ function zoomout(scrollEvent = undefined)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
             }
- 
+
             //Update scroll variables with delta in order to move the screen to the new zoom position
             scrollx = scrollx / zoomfact;
             scrolly = scrolly / zoomfact;
@@ -6127,7 +6154,7 @@ function zoomout(scrollEvent = undefined)
             scrolly += delta.y * zoomfact;
             scrollx = scrollx * zoomfact;
             scrolly = scrolly * zoomfact;
-            
+
             //Set new zoomOrigo to the current mouse coordinatest
             zoomOrigo.x = mouseCoordinates.x;
             zoomOrigo.y = mouseCoordinates.y;
@@ -6177,16 +6204,15 @@ function zoomout(scrollEvent = undefined)
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
 }
 
 /**
  * @description Decreases or increases the zoomfactor to its original value zoomfactor = 1.0.
  */
-function zoomreset()
-{
+function zoomreset() {
     var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
-                
+
     var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
         x: midScreen.x - zoomOrigo.x,
         y: midScreen.y - zoomOrigo.y
@@ -6202,55 +6228,53 @@ function zoomreset()
 
     zoomOrigo.x = midScreen.x;
     zoomOrigo.y = midScreen.y;
-    
+
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
-   
+
     zoomfact = 1.0;
     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
-   
+
     //update the grid when reseting zoom
     updateGridSize();
-    
+
     // Update scroll position
     showdata()
-    
+
     //update the rulerbars when reseting zoomfact
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
 }
 
 /**
  * @description Zooms to desiredZoomfactor from center of diagram.
  */
-function zoomCenter(centerDiagram)
-{
+function zoomCenter(centerDiagram) {
     zoomOrigo.x = centerDiagram.x;
     zoomOrigo.y = centerDiagram.y;
 
     scrollx = scrollx / zoomfact;
     scrolly = scrolly / zoomfact;
-   
+
     zoomfact = desiredZoomfact;
     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
     scrollx = scrollx * zoomfact;
     scrolly = scrolly * zoomfact;
-   
+
     updateGridSize();
     updateA4Size();
-    
+
     // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
     showdata();
 
     // Draw new rules to match the new zoomfact
-    drawRulerBars(scrollx,scrolly);
+    drawRulerBars(scrollx, scrolly);
 }
 
-function determineZoomfact(maxX, maxY, minX, minY)
-{
+function determineZoomfact(maxX, maxY, minX, minY) {
     // Resolution of the screen
     var screenResolution = {
         x: window.innerWidth,
@@ -6258,13 +6282,13 @@ function determineZoomfact(maxX, maxY, minX, minY)
     };
     // Checks if elements are within the window for the smalest zoomfact
     desiredZoomfact = 0.25;
-    if (maxX-minX < ((screenResolution.x*1.25*1.5)-150) && maxY-minY < ((screenResolution.y*1.25*1.5)-100))desiredZoomfact = 0.5;
-    if (maxX-minX < ((screenResolution.x*1.25)-150) && maxY-minY < ((screenResolution.y*1.25)-100))desiredZoomfact = 0.75;
-    if (maxX-minX < (screenResolution.x-150) && maxY-minY < screenResolution.y-100)desiredZoomfact = 1.0;
-    if (maxX-minX < ((screenResolution.x*0.75)-150) && maxY-minY < ((screenResolution.y*0.75)-100))desiredZoomfact = 1.25;
-    if (maxX-minX < ((screenResolution.x*0.64)-150) && maxY-minY < ((screenResolution.y*0.64)-100))desiredZoomfact = 1.5;
-    if (maxX-minX < ((screenResolution.x*0.5)-150) && maxY-minY < ((screenResolution.y*0.5)-100)) desiredZoomfact = 2.0;
-    if (maxX-minX < ((screenResolution.x*0.25)-150) && maxY-minY < ((screenResolution.y*0.25)-100)) desiredZoomfact = 4.0;
+    if (maxX - minX < ((screenResolution.x * 1.25 * 1.5) - 150) && maxY - minY < ((screenResolution.y * 1.25 * 1.5) - 100)) desiredZoomfact = 0.5;
+    if (maxX - minX < ((screenResolution.x * 1.25) - 150) && maxY - minY < ((screenResolution.y * 1.25) - 100)) desiredZoomfact = 0.75;
+    if (maxX - minX < (screenResolution.x - 150) && maxY - minY < screenResolution.y - 100) desiredZoomfact = 1.0;
+    if (maxX - minX < ((screenResolution.x * 0.75) - 150) && maxY - minY < ((screenResolution.y * 0.75) - 100)) desiredZoomfact = 1.25;
+    if (maxX - minX < ((screenResolution.x * 0.64) - 150) && maxY - minY < ((screenResolution.y * 0.64) - 100)) desiredZoomfact = 1.5;
+    if (maxX - minX < ((screenResolution.x * 0.5) - 150) && maxY - minY < ((screenResolution.y * 0.5) - 100)) desiredZoomfact = 2.0;
+    if (maxX - minX < ((screenResolution.x * 0.25) - 150) && maxY - minY < ((screenResolution.y * 0.25) - 100)) desiredZoomfact = 4.0;
 }
 
 /**
@@ -6272,8 +6296,7 @@ function determineZoomfact(maxX, maxY, minX, minY)
  * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
  * @see propFieldState For seeing if any fieldset is currently selected.
  */
-function propFieldSelected(isSelected)
-{
+function propFieldSelected(isSelected) {
     propFieldState = isSelected;
 }
 
@@ -6282,11 +6305,10 @@ function propFieldSelected(isSelected)
  * @param {*} arr Input array with all elements that should be seperated by newlines
  * @returns Formated string containing all the elements in arr
  */
-function textboxFormatString(arr)
-{
+function textboxFormatString(arr) {
     var content = '';
     for (var i = 0; i < arr.length; i++) {
-        content += arr[i] + '\n';   
+        content += arr[i] + '\n';
     }
     return content;
 }
@@ -6294,21 +6316,20 @@ function textboxFormatString(arr)
 /**
  * @description Generates fields for all properties of the currently selected element/line in the context.
  * These fields can be used to modify the selected element/line.
- */ 
-function generateContextProperties()
-{
+ */
+function generateContextProperties() {
     var propSet = document.getElementById("propertyFieldset");
     var menuSet = document.getElementsByClassName('options-section');
-    
+
     var str = "<legend>Properties</legend>";
-/*     
-    //a4 propteries
-    if (document.getElementById("a4Template").style.display === "block") {
-        str += `<text>Change the size of the A4</text>`;
-        str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
-        str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
-        str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
-    } */
+    /*
+        //a4 propteries
+        if (document.getElementById("a4Template").style.display === "block") {
+            str += `<text>Change the size of the A4</text>`;
+            str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
+            str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
+            str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
+        } */
 
     //No element or line selected
     if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
@@ -6331,7 +6352,7 @@ function generateContextProperties()
 
     //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
     if (erTableToggle == true) {
-        str +=`<div id="ERTable">`
+        str += `<div id="ERTable">`
         var ertable = generateErTableString();
         str += ertable;
         str += `</div>`
@@ -6372,17 +6393,17 @@ function generateContextProperties()
 
                     //Only displays selected element in dropdown if it has any lines
                     if (elementHasLines(element)) {
-                        str += '<option selected ="selected" value='+selected+'>'+ selected +'</option>';
+                        str += '<option selected ="selected" value=' + selected + '>' + selected + '</option>';
                     } else {
                         for (i = 0; i < typesToChangeTo.length; i++) {
                             if (selected != typesToChangeTo[i]) {
                                 str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
                             } else if (selected == typesToChangeTo[i]) {
-                                str +=  `<option selected="selected" value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
+                                str += `<option selected="selected" value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
                             }
                         }
                     }
-                str += '</select>'; 
+                    str += '</select>';
                 }
             }
             //Selected ER type
@@ -6404,20 +6425,20 @@ function generateContextProperties()
                 var value;
                 var selected = context[0].state;
                 if (selected == undefined) selected = "normal"
-                if(element.kind=="ERAttr") {
+                if (element.kind == "ERAttr") {
                     value = Object.values(attrState);
-                } else if (element.kind=="EREntity") {
+                } else if (element.kind == "EREntity") {
                     value = Object.values(entityState);
-                } else if (element.kind=="ERRelation") {
+                } else if (element.kind == "ERRelation") {
                     value = Object.values(relationState);
                 }
 
                 str += '<select id="propertySelect">';
                 for (i = 0; i < value.length; i++) {
                     if (selected != value[i]) {
-                        str += '<option value='+value[i]+'>'+ value[i] +'</option>';
+                        str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                     } else if (selected == value[i]) {
-                        str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                        str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
                     }
                 }
                 str += '</select>';
@@ -6462,9 +6483,9 @@ function generateContextProperties()
                                 str += `<div style='display:none;'>Name</div>`;
                                 str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
-                          default:
-                              break;
-                      }
+                            default:
+                                break;
+                        }
                     }
                     str += `<div style='color:white'>Inheritance</div>`;
                     //Creates drop down for changing state of ER elements
@@ -6474,16 +6495,16 @@ function generateContextProperties()
                         selected = "disjoint"
                     }
 
-                    if (element.kind=="UMLRelation") {
+                    if (element.kind == "UMLRelation") {
                         value = Object.values(inheritanceState);
                     }
 
                     str += '<select id="propertySelect">';
                     for (i = 0; i < value.length; i++) {
                         if (selected != value[i]) {
-                            str += '<option value='+value[i]+'>'+ value[i] +'</option>';
-                        } else if(selected == value[i]) {
-                            str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
+                            str += '<option value=' + value[i] + '>' + value[i] + '</option>';
+                        } else if (selected == value[i]) {
+                            str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
                         }
                     }
                     str += '</select>';
@@ -6507,17 +6528,17 @@ function generateContextProperties()
                         }
                     }
                 } else if (element.kind = 'IERelation') {
-                      //ID MUST START WITH "elementProperty_"!!!!!
-                      for (const property in element) {
-                          switch (property.toLowerCase()) {
-                              case 'name':
-                                  str += `<div style='display:none;'>Name</div>`;
-                                  str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                  break;
-                              default:
-                                  break;
-                          }
-                      }
+                    //ID MUST START WITH "elementProperty_"!!!!!
+                    for (const property in element) {
+                        switch (property.toLowerCase()) {
+                            case 'name':
+                                str += `<div style='display:none;'>Name</div>`;
+                                str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                     str += `<div style='color:white'>Inheritance</div>`;
                     //Creates drop down for changing state of IE elements
                     var value;
@@ -6526,17 +6547,17 @@ function generateContextProperties()
                         selected = "disjoint"
                     }
 
-                    if (element.kind =="IERelation") {
+                    if (element.kind == "IERelation") {
                         value = Object.values(inheritanceStateIE);
                     }
                     str += '<select id="propertySelect">';
-                        for (i = 0; i < value.length; i++) {
-                            if (selected != value[i]) {
-                                str += '<option value='+value[i]+'>'+ value[i] +'</option>';
-                            } else if (selected == value[i]) {
-                                str += '<option selected ="selected" value='+value[i]+'>'+ value[i] +'</option>';
-                            }
+                    for (i = 0; i < value.length; i++) {
+                        if (selected != value[i]) {
+                            str += '<option value=' + value[i] + '>' + value[i] + '</option>';
+                        } else if (selected == value[i]) {
+                            str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
                         }
+                    }
                     str += '</select>';
                 }
             } else if (element.type == 'SD') {//Selected SD type
@@ -6550,12 +6571,12 @@ function generateContextProperties()
                                 break;
                             case 'attributes':
                                 str += `<div style='color:white'>Attributes</div>`;
-                               /* find me str += `<div>`;
-                                str += `<select id="SDOption">`;
-                                    str +=  `<option value ="Do: " selected>Do</option>`;
-                                    str += `<option value="Exit: ">Exit</option>`;
-                                str += `</select>`;
-                                str += `</div>`; */
+                                /* find me str += `<div>`;
+                                 str += `<select id="SDOption">`;
+                                     str +=  `<option value ="Do: " selected>Do</option>`;
+                                     str += `<option value="Exit: ">Exit</option>`;
+                                 str += `</select>`;
+                                 str += `</div>`; */
                                 str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
                                 break;
                             default:
@@ -6594,7 +6615,7 @@ function generateContextProperties()
                                 break;
                         }
                     }
-                } else if(element.kind == 'sequenceLoopOrAlt') {
+                } else if (element.kind == 'sequenceLoopOrAlt') {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'alternatives':
@@ -6611,10 +6632,10 @@ function generateContextProperties()
             }
             /// Creates button for selecting element background color if not a UML relation since they should not be able change color
             if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
-                  // Creates button for selecting element background color
+                // Creates button for selecting element background color
                 str += `<div style="white">Color</div>`;
                 str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-                   `<span id="BGColorMenu" class="colorMenu"></span></button>`;
+                    `<span id="BGColorMenu" class="colorMenu"></span></button>`;
             }
             str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="setSequenceAlternatives();changeState();saveProperties();generateContextProperties();">`;
         }
@@ -6632,31 +6653,31 @@ function generateContextProperties()
 
             var value;
             var selected = contextLine[0].kind;
-            if(selected == undefined) selected = normal;
+            if (selected == undefined) selected = normal;
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
             if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER' || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-                for(var i = 0; i < value.length; i++){
-                    if (i!=1 && findUMLEntityFromLine(contextLine[0]) != null || i!=2 && findUMLEntityFromLine(contextLine[0]) == null) {
+                for (var i = 0; i < value.length; i++) {
+                    if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
                         if (selected == value[i]) {
-                            str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}' checked>`
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
                             str += `<label for='${value[i]}'>${value[i]}</label><br>`
                         } else {
-                            str += `<input type="radio" id="lineRadio${i+1}" name="lineKind" value='${value[i]}'>`
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
                             str += `<label for='${value[i]}'>${value[i]}</label><br>`
                         }
                     }
                 }
             }
             if (contextLine[0].type == 'ER') {
-                if (findAttributeFromLine(contextLine[0]) == null){
-                    if (findEntityFromLine(contextLine[0]) != null){
+                if (findAttributeFromLine(contextLine[0]) == null) {
+                    if (findEntityFromLine(contextLine[0]) != null) {
                         str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
-                        str  += `<option value=''>None</option>`
+                        str += `<option value=''>None</option>`
                         Object.keys(lineCardinalitys).forEach(cardinality => {
-                            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality){
+                            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality) {
                                 str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
                             } else {
                                 str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
@@ -6686,181 +6707,181 @@ function generateContextProperties()
             }
             if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'NOTE') {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
-                str  += `<option value=''>None</option>`;
+                str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
                 Object.keys(UMLLineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined) {
-                    //this covers Triangle and Arrow.
-                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                    if (contextLine[0].startIcon.toUpperCase() == icon){
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                        console.log("icon is " + icon);
-                        console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                    if (contextLine[0].startIcon != undefined) {
+                        //this covers Triangle and Arrow.
+                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                        if (contextLine[0].startIcon.toUpperCase() == icon) {
+                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                            console.log("icon is " + icon);
+                            console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
+                        }
+                            //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                        //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                        else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        } else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        }
+                        //else, its not matching and the option is just added to the dropdown normally.
+                        else {
+                            str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                        }
+                    } else {
+                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                     }
-                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
-                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
-                    else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                    } else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                });
+                //iterate trough all icons associated with IE. add these icons to the drop down
+                //if the line in context has one of these lines in the starting position, just like for UML, it is automatically selected
+                Object.keys(IELineIcons).forEach(icon => {
+                    if (contextLine[0].startIcon != undefined) {
+                        //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
+                        //This means we have to manually check these and others like them
+                        if (contextLine[0].startIcon.toUpperCase() == icon) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //icon can be ZERO_MANY while start icon can be 0-M.
+                        else if ((contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers ZERO_ONE not being equal to 0-1
+                        else if ((contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers ONE not being equal to 1
+                        else if ((contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers FORCEDONE not being equal to 1!
+                        else if ((contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers ONE_MANY not being equal to 1-M
+                        else if ((contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers MANY not being equal to M
+                        else if ((contextLine[0].startIcon.toUpperCase() == "M") && (icon == "MANY")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        } else {
+                            str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                        }
+                    } else {
+                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                    }
+                });
+                str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
+                str += `<option value=''>None</option>`;
+                Object.keys(UMLLineIcons).forEach(icon => {
+                    if (contextLine[0].endIcon != undefined) {
+                        //this covers Triangle and Arrow.
+                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                        if (contextLine[0].endIcon.toUpperCase() == icon) {
+                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        }
+                            //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
+                        //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
+                        else if ((contextLine[0].endIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
+                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        } else if ((contextLine[0].endIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
+                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                        } else {
+                            str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
+                        }
                     }
                     //else, its not matching and the option is just added to the dropdown normally.
                     else {
                         str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
                     }
-                } else {
-                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                }
-            });
-            //iterate trough all icons associated with IE. add these icons to the drop down
-            //if the line in context has one of these lines in the starting position, just like for UML, it is automatically selected
-            Object.keys(IELineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined) {
-                    //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
-                    //This means we have to manually check these and others like them
-                    if (contextLine[0].startIcon.toUpperCase() == icon){
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //icon can be ZERO_MANY while start icon can be 0-M.
-                    else if ((contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers ZERO_ONE not being equal to 0-1
-                    else if ((contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers ONE not being equal to 1
-                    else if ((contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers FORCEDONE not being equal to 1!
-                    else if ((contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers ONE_MANY not being equal to 1-M
-                    else if ((contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers MANY not being equal to M
-                    else if ((contextLine[0].startIcon.toUpperCase() == "M") && (icon == "MANY")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                });
+                Object.keys(IELineIcons).forEach(icon => {
+                    if (contextLine[0].endIcon != undefined) {
+                        //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
+                        //This means we have to manually check these and others like them
+                        if (contextLine[0].endIcon.toUpperCase() == icon) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //icon can be ZERO_MANY while start icon can be 0-M.
+                        else if ((contextLine[0].endIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers ZERO_ONE not being equal to 0-1
+                        else if ((contextLine[0].endIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers ONE not being equal to 1
+                        else if ((contextLine[0].endIcon.toUpperCase() == "1") && (icon == "ONE")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers FORCEDONE not being equal to 1!
+                        else if ((contextLine[0].endIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers ONE_MANY not being equal to 1-M
+                        else if ((contextLine[0].endIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        }
+                        //this covers MANY not being equal to M
+                        else if ((contextLine[0].endIcon.toUpperCase() == "M") && (icon == "MANY")) {
+                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
+                        } else {
+                            str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
+                        }
                     } else {
                         str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
                     }
-                } else {
-                    str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                }
-            });
-            str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
-            str  += `<option value=''>None</option>`;
-            Object.keys(UMLLineIcons).forEach(icon => {
-                if (contextLine[0].endIcon != undefined) {
-                    //this covers Triangle and Arrow.
-                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                    if (contextLine[0].endIcon.toUpperCase() == icon){
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                    }
-                    //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
-                    //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
-                    else if ((contextLine[0].endIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                    } else if ((contextLine[0].endIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
-                        str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
+                });
+                str += `</select>`;
+            }
+            //generate the dropdown for SD line icons.
+            if (contextLine[0].type == 'SD') {
+                str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
+                str += `<option value=''>None</option>`;
+                //iterate through all the icons assicoated with SD, and add them to the drop down as options
+                Object.keys(SDLineIcons).forEach(icon => {
+                    if (contextLine[0].startIcon != undefined) {
+                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                        if (contextLine[0].startIcon == icon) {
+                            str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
+                        }
+                        //else, its not matching and the option is just added to the dropdown normally.
+                        else {
+                            str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                        }
                     } else {
-                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                    }
-                }
-                //else, its not matching and the option is just added to the dropdown normally.
-                else {
-                    str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                }
-            });
-            Object.keys(IELineIcons).forEach(icon => {
-                if (contextLine[0].endIcon != undefined) {
-                    //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
-                    //This means we have to manually check these and others like them
-                    if (contextLine[0].endIcon.toUpperCase() == icon){
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //icon can be ZERO_MANY while start icon can be 0-M.
-                    else if ((contextLine[0].endIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers ZERO_ONE not being equal to 0-1
-                    else if ((contextLine[0].endIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers ONE not being equal to 1
-                    else if ((contextLine[0].endIcon.toUpperCase() == "1") && (icon == "ONE")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers FORCEDONE not being equal to 1!
-                    else if ((contextLine[0].endIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers ONE_MANY not being equal to 1-M
-                    else if ((contextLine[0].endIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    }
-                    //this covers MANY not being equal to M
-                    else if ((contextLine[0].endIcon.toUpperCase() == "M") && (icon == "MANY")) {
-                        str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                    } else {
-                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                    }
-                } else {
-                    str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                }
-            });
-            str += `</select>`;
-        }
-        //generate the dropdown for SD line icons.
-        if (contextLine[0].type == 'SD') {
-            str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
-            str  += `<option value=''>None</option>`;
-            //iterate through all the icons assicoated with SD, and add them to the drop down as options
-            Object.keys(SDLineIcons).forEach(icon => {
-                if (contextLine[0].startIcon != undefined) {
-                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                    if (contextLine[0].startIcon == icon){
-                        str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
-                    }
-                    //else, its not matching and the option is just added to the dropdown normally.
-                    else {
                         str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
                     }
-                } else {
-                    str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
-                }
-            });
-            str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
-            str  += `<option value=''>None</option>`;
-            Object.keys(SDLineIcons).forEach(icon => {
-                if (contextLine[0].endIcon != undefined) {
-                    //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                    if (contextLine[0].endIcon == icon){
-                        str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
-                    }
-                    //else, its not matching and the option is just added to the dropdown normally.
-                    else {
+                });
+                str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
+                str += `<option value=''>None</option>`;
+                Object.keys(SDLineIcons).forEach(icon => {
+                    if (contextLine[0].endIcon != undefined) {
+                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                        if (contextLine[0].endIcon == icon) {
+                            str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
+                        }
+                        //else, its not matching and the option is just added to the dropdown normally.
+                        else {
+                            str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
+                        }
+                    } else {
                         str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
                     }
-                } else {
-                    str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
-                }
-            });
-            str += `</select>`;
-            str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
-            Object.keys(SDLineType).forEach(type => {
-                if (contextLine[0].innerType.localeCompare(type, undefined, { sensitivity: 'base' }) === 0) {
-                    str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
-                } else {
-                    str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
-                }
-            });
-            str += `</select>`;
-        }
-        str+=`<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
+                });
+                str += `</select>`;
+                str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
+                Object.keys(SDLineType).forEach(type => {
+                    if (contextLine[0].innerType.localeCompare(type, undefined, {sensitivity: 'base'}) === 0) {
+                        str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
+                    } else {
+                        str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
+                    }
+                });
+                str += `</select>`;
+            }
+            str += `<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
         }
         //If more than one element is selected
         if (context.length > 1) {
@@ -6899,19 +6920,17 @@ function generateContextProperties()
 }
 
 /**
- * 
+ *
  * @description function for include button to the options panel,writes out << Include >>
  */
-function setLineLabel()
-{
+function setLineLabel() {
     document.getElementById("lineLabel").value = "&#60&#60include&#62&#62";
 }
 
 /**
  * @description Toggles the option menu being open or closed.
  */
-function toggleOptionsPane()
-{
+function toggleOptionsPane() {
     if (document.getElementById("options-pane").className == "show-options-pane") {
         document.getElementById('optmarker').innerHTML = "&#9660;Options";
         if (document.getElementById("BGColorMenu") != null) {
@@ -6928,8 +6947,7 @@ function toggleOptionsPane()
  * @description Generates keybind tooltips for all keybinds that are available for the diagram.
  * @see keybinds All available keybinds currently configured
  */
-function generateToolTips()
-{
+function generateToolTips() {
     var toolButtons = document.getElementsByClassName("key_tooltip");
 
     for (var index = 0; index < toolButtons.length; index++) {
@@ -6942,7 +6960,7 @@ function generateToolTips()
             if (keybinds[id].ctrl) str += "CTRL + ";
             str += '"' + keybinds[id].key.toUpperCase() + '"';
 
-           element.innerHTML = str;
+            element.innerHTML = str;
         }
     }
 }
@@ -6950,15 +6968,13 @@ function generateToolTips()
 /**
  * @description Generates a markdown file with a list of keybinds from file diagramkeybinds.md for all keybinds that are available in the diagram.
  */
-async function generateKeybindList()
-{
+async function generateKeybindList() {
     try {
-        const response=await fetch("diagramkeybinds.md");
-        const file=await response.text();
+        const response = await fetch("diagramkeybinds.md");
+        const file = await response.text();
         document.getElementById("markdownKeybinds").innerHTML = parseMarkdown(file);
-    }
-    catch(error) {
-    console.error(error);
+    } catch (error) {
+        console.error(error);
     }
 }
 
@@ -6967,8 +6983,7 @@ async function generateKeybindList()
  * @param {Number} x Absolute x-position in pixels from the left of the inner window.
  * @param {Number} y Absolute y-position in pixels from the top of the inner window.
  */
-function setRulerPosition(x, y) 
-{
+function setRulerPosition(x, y) {
     //40 is the size of the actual ruler and 51 is the toolbar on the left side
     if (x >= 40 + 51) document.getElementById("ruler-x").style.left = x - 51 + "px";
     if (y >= 40) document.getElementById("ruler-y").style.top = y + "px";
@@ -6979,11 +6994,10 @@ function setRulerPosition(x, y)
  * @see zoomin Function where the zoom level increases.
  * @see zoomout Function where the zoom level decreases.
  */
-function updateGridSize()
-{
+function updateGridSize() {
     //Do not remore, for later us to make gridsize in 1cm.
-    var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
-    settings.grid.gridSize = 10*pxlength;
+    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    settings.grid.gridSize = 10 * pxlength;
 
     var bLayer = document.getElementById("grid");
     bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
@@ -7007,28 +7021,26 @@ function updateGridSize()
  * @see zoomin Function where the zoom level increases.
  * @see zoomout Function where the zoom level decreases.
  */
-function updateA4Size()
-{
-   var rect = document.getElementById("a4Rect");
-   var vRect = document.getElementById("vRect");
+function updateA4Size() {
+    var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
 
 
-   var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
-   //const a4Width = 794, a4Height = 1122;
-   const a4Width = 210*pxlength, a4Height = 297*pxlength;
+    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    //const a4Width = 794, a4Height = 1122;
+    const a4Width = 210 * pxlength, a4Height = 297 * pxlength;
 
-   vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
-   vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
-   rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
-   rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
-   updateA4Pos();
+    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    updateA4Pos();
 }
 
 /**
  * @description Calculates new positioning for the background grid.
  */
-function updateGridPos()
-{
+function updateGridPos() {
     var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
     var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
     var bLayer = document.getElementById("grid");
@@ -7049,22 +7061,21 @@ function updateGridPos()
 /**
  * @description Calculates new positioning for the A4 template.
  */
-function updateA4Pos()
-{
-   var OffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-   var OffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-   var rect = document.getElementById("a4Rect");
-   var vRect = document.getElementById("vRect");
-   var text = document.getElementById("a4Text");
+function updateA4Pos() {
+    var OffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+    var OffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
+    var text = document.getElementById("a4Text");
 
-   vRect.setAttribute('x', OffsetX);
-   vRect.setAttribute('y', OffsetY);
+    vRect.setAttribute('x', OffsetX);
+    vRect.setAttribute('y', OffsetY);
 
-   rect.setAttribute('x', OffsetX);
-   rect.setAttribute('y', OffsetY);
+    rect.setAttribute('x', OffsetX);
+    rect.setAttribute('y', OffsetY);
 
-   text.setAttribute('x',(OffsetX + (780 *zoomfact)));
-   text.setAttribute('y',(OffsetY - 5));
+    text.setAttribute('x', (OffsetX + (780 * zoomfact)));
+    text.setAttribute('y', (OffsetY - 5));
 }
 
 /**
@@ -7074,8 +7085,7 @@ function updateA4Pos()
  * @param {Number} time Milliseconds until the message will be destroyed.
  * @see messageTypes All kind of messages there exist to display.
  */
-function displayMessage(type, message, time = 5000)
-{
+function displayMessage(type, message, time = 5000) {
     // Message settings
     const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
 
@@ -7097,17 +7107,16 @@ function displayMessage(type, message, time = 5000)
 }
 
 /**
- * @description Function for setting the message destruction timer of a popup message. This is used by the displayMessage() function. 
+ * @description Function for setting the message destruction timer of a popup message. This is used by the displayMessage() function.
  * @param {HTMLElement} element The message DOM element that should be edited.
  * @param {Number} time Milliseconds until the message will be destroyed.
  */
-function setTimerToMessage(element, time = 5000)
-{
+function setTimerToMessage(element, time = 5000) {
     if (!element) return;
 
     element.innerHTML += `<div class="timeIndicatorBar"></div>`;
-    var timer = setInterval( function(){
-        const element = document.getElementById(settings.misc.errorMsgMap[timer].id); 
+    var timer = setInterval(function () {
+        const element = document.getElementById(settings.misc.errorMsgMap[timer].id);
         settings.misc.errorMsgMap[timer].percent -= 1;
         element.lastElementChild.style.width = `calc(${settings.misc.errorMsgMap[timer].percent - 1}% - 10px)`;
 
@@ -7131,8 +7140,7 @@ function setTimerToMessage(element, time = 5000)
  * @param {HTMLElement} element The message DOM element that should be destroyed.
  * @param {Number} timer Kills the timer associated with the popup message. Can be null and will not remove any timer then.
  */
-function removeMessage(element, timer)
-{
+function removeMessage(element, timer) {
     // If there is no timer in the parameter try find it by elementID in
     if (!timer) {
         timer = Object.keys(settings.misc.errorMsgMap).find(key => {
@@ -7156,8 +7164,7 @@ function removeMessage(element, timer)
  * @description Opens the color menu for selecting element color
  * @param {String} buttonID containing the ID of the button that was pressed
  */
-function toggleColorMenu(buttonID)
-{
+function toggleColorMenu(buttonID) {
     var button = document.getElementById(buttonID);
     var menu = undefined;
     var width = 0;
@@ -7168,7 +7175,7 @@ function toggleColorMenu(buttonID)
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
-            for (var i = 0; i < colors.length; i++) { 
+            for (var i = 0; i < colors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke="#000000" stroke-width="2"/>
             </svg>`;
@@ -7188,7 +7195,7 @@ function toggleColorMenu(buttonID)
         var buttonWidth = button.offsetWidth;
         var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
         var offsetHeight = button.getBoundingClientRect().y;
-        menu.style.top = (offsetHeight-50) + "px";
+        menu.style.top = (offsetHeight - 50) + "px";
         var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
     } else {    // if the color menu's inner html is not empty, remove the content
@@ -7203,8 +7210,7 @@ function toggleColorMenu(buttonID)
  * @description Sets the fill and/or stroke color of all elements in context
  * @param {String} clickedCircleID containing the ID of the svg circle that was pressed
  */
-function setElementColors(clickedCircleID)
-{
+function setElementColors(clickedCircleID) {
     var id = clickedCircleID;
     var menu = document.getElementById(clickedCircleID).parentElement.parentElement;
     var elementIDs = [];
@@ -7227,7 +7233,7 @@ function setElementColors(clickedCircleID)
             }*/
         }
         stateMachine.save(
-            StateChangeFactory.ElementAttributesChanged(elementIDs, { fill: color }),
+            StateChangeFactory.ElementAttributesChanged(elementIDs, {fill: color}),
             StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
         );
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
@@ -7238,7 +7244,7 @@ function setElementColors(clickedCircleID)
             elementIDs[i] = context[i].id;
         }
         stateMachine.save(
-            StateChangeFactory.ElementAttributesChanged(elementIDs, { stroke: color }),
+            StateChangeFactory.ElementAttributesChanged(elementIDs, {stroke: color}),
             StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
         );
     } else {
@@ -7252,8 +7258,7 @@ function setElementColors(clickedCircleID)
 /**
  * @description Tests if there are varying fill and/or stroke colors in the selected elements
  */
-function multipleColorsTest()
-{
+function multipleColorsTest() {
     if (context.length > 1) {
         var fill = context[0].fill;
         var stroke = context[0].stroke;
@@ -7268,20 +7273,20 @@ function multipleColorsTest()
                 button.insertBefore(textNode, button.firstChild);
                 varyingFills = true;
             }
-           /*
-           // Checks if there are varying stroke colors, but not if varying colors have already been detected
-            if (stroke != context[i].stroke && !varyingStrokes) {
-                var button = document.getElementById("colorMenuButton2");
-                button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
-                var textNode = document.createTextNode("Multiple Color Values");
-                button.insertBefore(textNode, button.firstChild);
-                varyingStrokes = true;
-            }
-            // If varying colors have been detected in both of the above, there is no reason to continue the test
-            if (varyingFills && varyingStrokes) {
-                break;
-            }
-            */
+            /*
+            // Checks if there are varying stroke colors, but not if varying colors have already been detected
+             if (stroke != context[i].stroke && !varyingStrokes) {
+                 var button = document.getElementById("colorMenuButton2");
+                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
+                 var textNode = document.createTextNode("Multiple Color Values");
+                 button.insertBefore(textNode, button.firstChild);
+                 varyingStrokes = true;
+             }
+             // If varying colors have been detected in both of the above, there is no reason to continue the test
+             if (varyingFills && varyingStrokes) {
+                 break;
+             }
+             */
         }
     }
 }
@@ -7295,11 +7300,10 @@ function multipleColorsTest()
  * @param {String} compareElementID Hexadecimal id for the element were comparing to.
  * @param {Array<Object>} ends Array of all lines connected on this side.
  * @param {String} elementid Hexadecimal id for element to perform sorting on.
- * @param {Number} axis 
+ * @param {Number} axis
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
-function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
-{
+function sortvectors(currentElementID, compareElementID, ends, elementid, axis) {
     // Get dx dy centered on association end e.g. invert vector if necessary
     var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
     var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
@@ -7353,19 +7357,18 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis)
 
 /**
  * @description Checks if the lines intersect and if the possible intersection point is within edges
- * @param {Number} x1 Position 1 
- * @param {Number} y1 Position 1 
- * @param {Number} x2 Position 2 
- * @param {Number} y2 Position 2 
- * @param {Number} x3 Position 3 
- * @param {Number} y3 Position 3 
- * @param {Number} x4 Position 4 
- * @param {Number} y4 Position 4 
+ * @param {Number} x1 Position 1
+ * @param {Number} y1 Position 1
+ * @param {Number} x2 Position 2
+ * @param {Number} y2 Position 2
+ * @param {Number} x3 Position 3
+ * @param {Number} y3 Position 3
+ * @param {Number} x4 Position 4
+ * @param {Number} y4 Position 4
  * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
 
-function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
-{
+function linetest(x1, y1, x2, y2, x3, y3, x4, y4) {
     var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
     var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
@@ -7377,8 +7380,8 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
             if (!(x2 <= x && x <= x1)) return false;
         } else {
             if (!(x1 <= x && x <= x2)) return false;
-        } 
-        
+        }
+
         if (y1 >= y2) {
             if (!(y2 <= y && y <= y1)) return false;
         } else {
@@ -7404,8 +7407,7 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4)
  * @description Clears the line list on all sides of an element.
  * @param {Object} element Element to empty all sides of.
  */
-function clearLinesForElement(element)
-{
+function clearLinesForElement(element) {
 
     element.left = [];
     element.right = [];
@@ -7429,8 +7431,7 @@ function clearLinesForElement(element)
  * @param {Object} line Line that should be checked.
  * @param {boolean} targetGhost Is the line an ghostLine
  */
-function determineLine(line, targetGhost = false)
-{
+function determineLine(line, targetGhost = false) {
     var felem, telem, dx, dy
 
     felem = data[findIndex(data, line.fromID)];
@@ -7451,7 +7452,7 @@ function determineLine(line, targetGhost = false)
 
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
     var ctype = 0;
-    if (overlapY || ((majorX) && (!overlapX))){
+    if (overlapY || ((majorX) && (!overlapX))) {
         if (line.dx > 0) line.ctype = "LR";
         else line.ctype = "RL";
     } else {
@@ -7460,16 +7461,16 @@ function determineLine(line, targetGhost = false)
     }
 
     // Add accordingly to association end
-    if (line.ctype == "LR"){
+    if (line.ctype == "LR") {
         felem.left.push(line.id);
         telem.right.push(line.id);
-    } else if (line.ctype == "RL"){
+    } else if (line.ctype == "RL") {
         felem.right.push(line.id);
         telem.left.push(line.id);
-    } else if (line.ctype == "TB"){
+    } else if (line.ctype == "TB") {
         felem.top.push(line.id);
         telem.bottom.push(line.id);
-    } else if (line.ctype == "BT"){
+    } else if (line.ctype == "BT") {
         felem.bottom.push(line.id);
         telem.top.push(line.id);
     }
@@ -7485,13 +7486,20 @@ function determineLine(line, targetGhost = false)
  * @description Sort the associations for each side of an element.
  * @param {Object} element Element to sort.
  */
-function sortElementAssociations(element)
-{
+function sortElementAssociations(element) {
     // Only sort if size of list is >= 2
-    if (element.top.length > 1) element.top.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.top, element.id, 2) });
-    if (element.bottom.length > 1) element.bottom.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.bottom, element.id, 3) });
-    if (element.left.length > 1) element.left.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.left, element.id, 0) });
-    if (element.right.length > 1) element.right.sort(function (currentElementID, compareElementID) { return sortvectors(currentElementID, compareElementID, element.right, element.id, 1) });
+    if (element.top.length > 1) element.top.sort(function (currentElementID, compareElementID) {
+        return sortvectors(currentElementID, compareElementID, element.top, element.id, 2)
+    });
+    if (element.bottom.length > 1) element.bottom.sort(function (currentElementID, compareElementID) {
+        return sortvectors(currentElementID, compareElementID, element.bottom, element.id, 3)
+    });
+    if (element.left.length > 1) element.left.sort(function (currentElementID, compareElementID) {
+        return sortvectors(currentElementID, compareElementID, element.left, element.id, 0)
+    });
+    if (element.right.length > 1) element.right.sort(function (currentElementID, compareElementID) {
+        return sortvectors(currentElementID, compareElementID, element.right, element.id, 1)
+    });
 }
 
 /**
@@ -7502,10 +7510,10 @@ function sortElementAssociations(element)
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
-    
-     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == "EREntity"){
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
+
+    // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
+    if (toElement.kind == "EREntity") {
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
@@ -7526,7 +7534,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         return;
     } else if (fromElement.kind == "UMLFinalState") {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}`);
-        return; 
+        return;
     }
 
     // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
@@ -7554,7 +7562,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             break;
         }
     }
-    
+
     // Adding attributes to the array that only carries attributes directly connected to entities or relations
     if (!exists) {
         if (toElement.kind == "ERRelation") {
@@ -7569,21 +7577,21 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     // Filter the existing lines and gets the number of existing lines
     var numOfExistingLines = lines.filter(function (line) {
         return (fromElement.id === line.fromID &&
-                toElement.id === line.toID ||
-                fromElement.id === line.toID &&
-                toElement.id === line.fromID)
-                }).length;
+            toElement.id === line.toID ||
+            fromElement.id === line.toID &&
+            toElement.id === line.fromID)
+    }).length;
 
 
     // Define a boolean for special case that relation and entity can have 2 lines
     var specialCase = (fromElement.kind === "ERRelation" &&
-                        toElement.kind === "EREntity" ||
-                        fromElement.kind === "EREntity" &&
-                        toElement.kind === "ERRelation"
+        toElement.kind === "EREntity" ||
+        fromElement.kind === "EREntity" &&
+        toElement.kind === "ERRelation"
     );
 
     // Check rules for Recursive relations
-    if(fromElement.kind === "ERRelation" && fromElement.kind == "Normal" || toElement.kind === "ERRelation" && toElement.kind == "Normal") {
+    if (fromElement.kind === "ERRelation" && fromElement.kind == "Normal" || toElement.kind === "ERRelation" && toElement.kind == "Normal") {
         var relationID;
         if (fromElement.kind === "ERRelation") relationID = fromElement.id;
         else relationID = toElement.id;
@@ -7610,7 +7618,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 break;
             }
         }
-        if (hasRecursive || hasOtherLines){
+        if (hasRecursive || hasOtherLines) {
             displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
             return;
         }
@@ -7632,10 +7640,10 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
         preProcessLine(newLine);
         addObjectToLines(newLine, stateMachineShouldSave);
-        if (successMessage) displayMessage(messageTypes.SUCCESS,`Created new line between: ${fromElement.name} and ${toElement.name}`);
+        if (successMessage) displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
         return newLine;
     } else {
-        displayMessage(messageTypes.ERROR,`Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
+        displayMessage(messageTypes.ERROR, `Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
     }
 }
 
@@ -7648,8 +7656,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  */
 function isClose(fromX, toX, fromY, toY, zoom = 1) {
     const concideredNearValue = 600 * zoom,
-          deltaX = Math.abs(toX - fromX),
-          deltaY = Math.abs(toY - fromY);
+        deltaX = Math.abs(toX - fromX),
+        deltaY = Math.abs(toY - fromY);
 
     // Returns true if deltaX and deltaY is within considered near value, otherwise false
     return deltaX < concideredNearValue && deltaY < concideredNearValue
@@ -7689,8 +7697,7 @@ function preProcessLine(line) {
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line an ghost line
  */
-function drawLine(line, targetGhost = false)
-{
+function drawLine(line, targetGhost = false) {
     var felem, telem, dx, dy;
     var str = "";
 
@@ -7702,10 +7709,10 @@ function drawLine(line, targetGhost = false)
     var y2Offset = 0;
 
 
-    if (line.kind=="Dashed") {
-        var strokeDash="10";
+    if (line.kind == "Dashed") {
+        var strokeDash = "10";
     } else {
-        var strokeDash="0";
+        var strokeDash = "0";
     }
 
     if (isDarkTheme()) {
@@ -7730,7 +7737,7 @@ function drawLine(line, targetGhost = false)
     tx = telem.cx;
     ty = telem.cy;
 
-    const elemsAreClose = isClose (
+    const elemsAreClose = isClose(
         (fx + x1Offset),
         (tx + x2Offset),
         (fy + y1Offset),
@@ -7738,30 +7745,30 @@ function drawLine(line, targetGhost = false)
         zoomfact
     );
 
-   // Collect coordinates
-    if (line.ctype == "BT"){
+    // Collect coordinates
+    if (line.ctype == "BT") {
         fy = felem.y2;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
-    } else if (line.ctype == "TB"){
+    } else if (line.ctype == "TB") {
         fy = felem.y1;
         if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
         ty = telem.y2;
-    } else if (line.ctype == "RL"){
+    } else if (line.ctype == "RL") {
         fx = felem.x2;
         if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
         tx = telem.x1;
-    } else if (line.ctype == "LR"){
+    } else if (line.ctype == "LR") {
         fx = felem.x1;
         if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
         tx = telem.x2;
     }
 
     // Set line end-point in center of UMLRelations.
-    if (felem.kind == "UMLRelation"){
+    if (felem.kind == "UMLRelation") {
         fx = felem.cx;
         fy = felem.cy;
-    } else if (telem.kind == "UMLRelation"){
+    } else if (telem.kind == "UMLRelation") {
         tx = telem.cx;
         ty = telem.cy;
     }
@@ -7776,16 +7783,16 @@ function drawLine(line, targetGhost = false)
         if (fromRelation) {
             if (line.ctype == "BT") {
                 fy = felem.cy;
-                fx = (isFirst) ? felem.x1: felem.x2;
+                fx = (isFirst) ? felem.x1 : felem.x2;
             } else if (line.ctype == "TB") {
                 fy = felem.cy;
-                fx = (isFirst) ? felem.x1: felem.x2;
+                fx = (isFirst) ? felem.x1 : felem.x2;
             } else if (line.ctype == "RL") {
                 fx = felem.cx;
-                fy = (isFirst) ? felem.y1: felem.y2;
+                fy = (isFirst) ? felem.y1 : felem.y2;
             } else if (line.ctype == "LR") {
                 fx = felem.cx;
-                fy = (isFirst) ? felem.y1: felem.y2;
+                fy = (isFirst) ? felem.y1 : felem.y2;
             }
 
             if (isFirst) {
@@ -7799,16 +7806,16 @@ function drawLine(line, targetGhost = false)
         } else {
             if (line.ctype == "BT") {
                 ty = telem.cy;
-                tx = (isFirst) ? telem.x1: telem.x2;
+                tx = (isFirst) ? telem.x1 : telem.x2;
             } else if (line.ctype == "TB") {
                 ty = telem.cy;
-                tx = (isFirst) ? telem.x1: telem.x2;
+                tx = (isFirst) ? telem.x1 : telem.x2;
             } else if (line.ctype == "RL") {
                 tx = telem.cx;
-                ty = (isFirst) ? telem.y1: telem.y2;
+                ty = (isFirst) ? telem.y1 : telem.y2;
             } else if (line.ctype == "LR") {
                 tx = telem.cx;
-                ty = (isFirst) ? telem.y1: telem.y2;
+                ty = (isFirst) ? telem.y1 : telem.y2;
             }
 
             if (isFirst) {
@@ -7821,7 +7828,7 @@ function drawLine(line, targetGhost = false)
         }
     }
 
-     // Used to draw the lines a bit longer to get rid of white-spaces.
+    // Used to draw the lines a bit longer to get rid of white-spaces.
     if ((fx > tx) && (line.ctype == "LR")) {
         x1Offset = lengthConstant;
         x2Offset = -lengthConstant;
@@ -7829,20 +7836,20 @@ function drawLine(line, targetGhost = false)
         x1Offset = -lengthConstant;
         x2Offset = lengthConstant;
     } else if ((fy > ty) && (line.ctype == "TB")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE'){
+        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
             y1Offset = lengthConstantSD_Y;
-            y2Offset = -lengthConstantSD_Y; 
+            y2Offset = -lengthConstantSD_Y;
         } else {
             y1Offset = lengthConstant;
-            y2Offset = -lengthConstant; 
+            y2Offset = -lengthConstant;
         }
     } else if ((fy < ty) && (line.ctype == "BT")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE'){
+        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
             y1Offset = -lengthConstantSD_Y;
-            y2Offset = lengthConstantSD_Y; 
+            y2Offset = lengthConstantSD_Y;
         } else {
             y1Offset = -lengthConstant;
-            y2Offset = lengthConstant; 
+            y2Offset = lengthConstant;
         }
     }
 
@@ -7873,12 +7880,12 @@ function drawLine(line, targetGhost = false)
     } else if ((felem.type == 'ER') || (telem.type == 'ER')) {
         line.type = 'ER';
     } else {
-        line.type = 'UML';       
+        line.type = 'UML';
     }
     // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
-        var dx = ((fx + x1Offset)-(tx + x2Offset))/2;
-        var dy = ((fy + y1Offset)-(ty + y2Offset))/2;
+        var dx = ((fx + x1Offset) - (tx + x2Offset)) / 2;
+        var dy = ((fy + y1Offset) - (ty + y2Offset)) / 2;
 
         if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
             if (line.kind == "Recursive") {
@@ -7890,7 +7897,7 @@ function drawLine(line, targetGhost = false)
                 const cornerX = fx + length;
                 const cornerY = fy - length;
 
-                
+
                 str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset - 17 * zoomfact}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}'/>`;
                 str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
                 str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
@@ -7898,7 +7905,7 @@ function drawLine(line, targetGhost = false)
                 str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
                 str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
 
-            } else { 
+            } else {
                 if ((fy > ty) && (line.ctype == "TB")) {
                     y1Offset = 1;
                     y2Offset = -7 + 3 / zoomfact;
@@ -7927,7 +7934,7 @@ function drawLine(line, targetGhost = false)
                 if (line.ctype == 'TB') {
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
+                } else if (line.ctype == 'BT') {
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy + 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
@@ -7937,25 +7944,25 @@ function drawLine(line, targetGhost = false)
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 20 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 5 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 5 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=30;
+                iconSizeStart = 30;
                 break;
             case IELineIcons.ONE:
                 if (line.ctype == 'TB') {
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=20;
+                iconSizeStart = 20;
                 break;
             case IELineIcons.FORCEDONE:
                 if (line.ctype == 'TB') {
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
+                } else if (line.ctype == 'BT') {
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
@@ -7965,129 +7972,129 @@ function drawLine(line, targetGhost = false)
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=30;
+                iconSizeStart = 30;
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx}' cy='${fy + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 25 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 25 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx - 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx + 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=40;
+                iconSizeStart = 40;
                 break;
             case IELineIcons.MANY:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=20;
-                    break;
+                iconSizeStart = 20;
+                break;
             case IELineIcons.ZERO_MANY:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy + 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx - 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=30;
+                iconSizeStart = 30;
                 break;
             case IELineIcons.ONE_MANY:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=20;
+                iconSizeStart = 20;
                 break;
             case UMLLineIcons.ARROW:
                 if (elemsAreClose) {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=20;
+                iconSizeStart = 20;
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy + zoomfact},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy - 0.5 * zoomfact},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy + zoomfact},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy - 0.5 * zoomfact},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx + zoomfact} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx + zoomfact} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx - 0.5 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx - 0.5 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=20;
+                iconSizeStart = 20;
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-black-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=20;
+                iconSizeStart = 20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=40;
+                iconSizeStart = 40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'BT'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'BT') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeStart=40;
+                iconSizeStart = 40;
                 break;
             case SDLineIcons.ARROW:
                 var iconSizeStart = 20;
@@ -8095,7 +8102,7 @@ function drawLine(line, targetGhost = false)
                 // If the line is straight calculate the points required to draw the arrow at an angle.
                 if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
+                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
 
                     let base = calculateArrowBase(to, from, iconSizeStart / 2 * zoomfact);
                     let right = rotateArrowPoint(base, from, true);
@@ -8115,10 +8122,10 @@ function drawLine(line, targetGhost = false)
                         str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     }
                 }
-                iconSizeStart=40;
+                iconSizeStart = 40;
                 break;
             default:
-                iconSizeStart=0;
+                iconSizeStart = 0;
                 break;
         }
         switch (line.endIcon) {
@@ -8126,7 +8133,7 @@ function drawLine(line, targetGhost = false)
                 if (line.ctype == 'BT') {
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
+                } else if (line.ctype == 'TB') {
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty + 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
@@ -8136,25 +8143,25 @@ function drawLine(line, targetGhost = false)
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 20 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 5 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 5 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=30;
+                iconSizeEnd = 30;
                 break;
             case IELineIcons.ONE:
                 if (line.ctype == 'BT') {
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<line id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=20;
+                iconSizeEnd = 20;
                 break;
             case IELineIcons.FORCEDONE:
                 if (line.ctype == 'BT') {
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 30 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
+                } else if (line.ctype == 'TB') {
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 30 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
@@ -8164,127 +8171,127 @@ function drawLine(line, targetGhost = false)
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 30 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 30 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=30;
+                iconSizeEnd = 30;
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 25 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 25 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx - 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=40;
+                iconSizeEnd = 40;
                 break;
             case IELineIcons.MANY:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=20;
+                iconSizeEnd = 20;
                 break;
             case IELineIcons.ZERO_MANY:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty + 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx - 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=30;
+                iconSizeEnd = 30;
                 break;
             case IELineIcons.ONE_MANY:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=20;
+                iconSizeEnd = 20;
                 break;
             case UMLLineIcons.ARROW:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=20;
+                iconSizeEnd = 20;
                 break;
             case UMLLineIcons.TRIANGLE:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty + zoomfact},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty - 0.5 * zoomfact},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty + zoomfact},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty - 0.5 * zoomfact},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx + zoomfact} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx + zoomfact} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx - 0.5 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx - 0.5 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=20;
+                iconSizeEnd = 20;
                 break;
             case UMLLineIcons.BLACK_TRIANGLE:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=20;
+                iconSizeEnd = 20;
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=40;
+                iconSizeEnd = 40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if(line.ctype == 'TB'){
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                } else if (line.ctype == 'TB') {
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                iconSizeEnd=40;
+                iconSizeEnd = 40;
                 break;
             case SDLineIcons.ARROW:
                 var iconSizeEnd = 20;
@@ -8292,7 +8299,7 @@ function drawLine(line, targetGhost = false)
                 // If the line is straight calculate the points required to draw the arrow at an angle.
                 if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);  
+                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
 
                     let base = calculateArrowBase(from, to, iconSizeEnd / 2 * zoomfact);
                     let right = rotateArrowPoint(base, to, true);
@@ -8304,20 +8311,20 @@ function drawLine(line, targetGhost = false)
                 else {
                     if (line.ctype == 'BT') {
                         ty = ty + zoomfact
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    } else if(line.ctype == 'TB'){
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    } else if (line.ctype == 'TB') {
                         ty = ty - 5 * zoomfact
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     } else if (line.ctype == 'RL') {
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     } else if (line.ctype == 'LR') {
-                        str += `<polyline id='${line.id+"IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     }
                 }
-                iconSizeEnd=20;
+                iconSizeEnd = 20;
                 break;
             default:
-                iconSizeEnd=0;
+                iconSizeEnd = 0;
                 break;
         }
         if (line.startLabel && line.startLabel != '') {
@@ -8335,7 +8342,7 @@ function drawLine(line, targetGhost = false)
             if (line.ctype == 'TB' || line.ctype == 'BT') {
                 distance = Math.abs(dy);
                 //Set position on line for the given offset
-                if (offsetOnLine > distance *0.5) {
+                if (offsetOnLine > distance * 0.5) {
                     posX = fx;
                     posY = fy - (offsetOnLine * (dy) / distance) * tweakOffset;
                 } else {
@@ -8345,7 +8352,7 @@ function drawLine(line, targetGhost = false)
             } else if (line.ctype == 'LR' || line.ctype == 'RL') {
                 distance = Math.abs(dx);
                 //Set position on line for the given offset
-                if (offsetOnLine > distance *0.5) {
+                if (offsetOnLine > distance * 0.5) {
                     posX = fx - (offsetOnLine * (dx) / distance) * tweakOffset;
                     posY = fy;
                 } else {
@@ -8365,7 +8372,7 @@ function drawLine(line, targetGhost = false)
                 if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
                 else posX += offset;
                 posY += iconSizeStart;
-            } else if(line.ctype == "RL") {
+            } else if (line.ctype == "RL") {
                 if (felem.right.indexOf(line.id) == 0) posY -= offset;
                 else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
                 posX += iconSizeStart;
@@ -8374,7 +8381,7 @@ function drawLine(line, targetGhost = false)
                 else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
                 posX -= iconSizeStart;
             }
-            str += `<rect class="text cardinalityLabel" id=${line.id + "startLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
+            str += `<rect class="text cardinalityLabel" id=${line.id + "startLabel"} x="${posX - (textWidth) / 2}" y="${posY - (textheight * zoomfact + zoomfact * 3) / 2}" width="${textWidth + 2}" height="${(textheight - 4) * zoomfact + zoomfact * 3}"/>`;
             str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
         }
         if (line.endLabel && line.endLabel != '') {
@@ -8392,7 +8399,7 @@ function drawLine(line, targetGhost = false)
             if (line.ctype == 'TB' || line.ctype == 'BT') {
                 distance = Math.abs(dy);
                 //Set position on line for the given offset
-                if (offsetOnLine > distance *0.5) {
+                if (offsetOnLine > distance * 0.5) {
                     posX = tx;
                     posY = ty + (offsetOnLine * (dy) / distance) * tweakOffset;
                 } else {
@@ -8402,7 +8409,7 @@ function drawLine(line, targetGhost = false)
             } else if (line.ctype == 'LR' || line.ctype == 'RL') {
                 distance = Math.abs(dx);
                 //Set position on line for the given offset
-                if (offsetOnLine > distance *0.5) {
+                if (offsetOnLine > distance * 0.5) {
                     posX = tx + (offsetOnLine * (dx) / distance) * tweakOffset;
                     posY = ty;
                 } else {
@@ -8418,11 +8425,11 @@ function drawLine(line, targetGhost = false)
                 if (telem.top.indexOf(line.id) == 0) posX -= offset;
                 else posX += offset;
                 posY += iconSizeEnd;
-            } else if(line.ctype == "BT") {
+            } else if (line.ctype == "BT") {
                 if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
                 else posX += offset;
                 posY -= iconSizeEnd;
-            } else if(line.ctype == "RL") {
+            } else if (line.ctype == "RL") {
                 if (telem.right.indexOf(line.id) == 0) posY -= offset;
                 else if (telem.right.indexOf(line.id) == telem.right.length - 1) posY += offset;
                 posX -= iconSizeEnd;
@@ -8431,11 +8438,11 @@ function drawLine(line, targetGhost = false)
                 else if (telem.left.indexOf(line.id) == telem.left.length - 1) posY += offset;
                 posX += iconSizeEnd;
             }
-            str += `<rect class="text cardinalityLabel" id=${line.id + "endLabel"} x="${posX - (textWidth)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
+            str += `<rect class="text cardinalityLabel" id=${line.id + "endLabel"} x="${posX - (textWidth) / 2}" y="${posY - (textheight * zoomfact + zoomfact * 3) / 2}" width="${textWidth + 2}" height="${(textheight - 4) * zoomfact + zoomfact * 3}"/>`;
             str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
         }
     } else {
-        if (line.kind == "Normal"){
+        if (line.kind == "Normal") {
             str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Double") {
             // We mirror the line vector
@@ -8445,7 +8452,7 @@ function drawLine(line, targetGhost = false)
             dy = dy / len;
             dx = dx / len;
             var cstmOffSet = 1.4;
-    
+
             str += `<line id='${line.id}-1' class='lineColor' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
@@ -8461,10 +8468,10 @@ function drawLine(line, targetGhost = false)
             var textWidth = canvasContext.measureText(line.cardinality).width;
 
             // Used to tweak the cardinality position when the line gets very short.
-            var tweakOffset = 0.30; 
+            var tweakOffset = 0.30;
 
             if (findEntityFromLine(line) == -1) {
-                if (offsetOnLine > distance *0.5) {
+                if (offsetOnLine > distance * 0.5) {
                     posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
                     posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
                 } else {
@@ -8483,7 +8490,7 @@ function drawLine(line, targetGhost = false)
                 } else if (line.ctype == "BT") {
                     if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
                     else posX += offset;
-                } else if(line.ctype == "RL") {
+                } else if (line.ctype == "RL") {
                     if (felem.right.indexOf(line.id) == 0) posY -= offset;
                     else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
                 } else if (line.ctype == "LR") {
@@ -8491,7 +8498,7 @@ function drawLine(line, targetGhost = false)
                     else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
                 }
             } else {
-                if(offsetOnLine > distance *0.5){
+                if (offsetOnLine > distance * 0.5) {
                     posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
                     posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
                 } else {
@@ -8506,10 +8513,10 @@ function drawLine(line, targetGhost = false)
                 if (line.ctype == "TB") {
                     if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
                     else posX += offset;
-                } else if (line.ctype == "BT"){
+                } else if (line.ctype == "BT") {
                     if (telem.top.indexOf(line.id) == 0) posX -= offset;
                     else posX += offset;
-                } else if (line.ctype == "RL"){
+                } else if (line.ctype == "RL") {
                     if (telem.left.indexOf(line.id) == 0) posY -= offset;
                     else if (telem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
                 } else if (line.ctype == "LR") {
@@ -8518,17 +8525,17 @@ function drawLine(line, targetGhost = false)
                 }
             }
             // Add the line to the str 12.84 10.11
-            str += `<rect class="text cardinalityLabel" id=${line.id + "Cardinality"} class='lineColor' x="${posX - (textWidth/4)/2}" y="${posY - (textheight * zoomfact + zoomfact * 3)/2}" width="${textWidth/4+2}" height="${(textheight-4) * zoomfact + zoomfact * 3}"/>`;
+            str += `<rect class="text cardinalityLabel" id=${line.id + "Cardinality"} class='lineColor' x="${posX - (textWidth / 4) / 2}" y="${posY - (textheight * zoomfact + zoomfact * 3) / 2}" width="${textWidth / 4 + 2}" height="${(textheight - 4) * zoomfact + zoomfact * 3}"/>`;
             str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
         }
     }
     if (contextLine.includes(line)) {
-        var x = (fx + tx) /2;
-        var y = (fy + ty) /2;
-        str += `<rect x="${x-(2 * zoomfact)}" y="${y-(2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
+        var x = (fx + tx) / 2;
+        var y = (fy + ty) / 2;
+        str += `<rect x="${x - (2 * zoomfact)}" y="${y - (2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
     }
 
-    if (line.label && line.label != "" && line.type !== "IE"){
+    if (line.label && line.label != "" && line.type !== "IE") {
         //Get width of label's text through canvas 
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
@@ -8538,60 +8545,82 @@ function drawLine(line, targetGhost = false)
         font = `${height}px ${font.split('px')[1]}`;
         canvasContext.font = font;
         var textWidth = canvasContext.measureText(line.label).width;
-        
+
         var centerX = (tx + fx) / 2;
         var centerY = (ty + fy) / 2;
-        var lowY= Math.min(ty,fy);
-        var highY= Math.max(ty,fy);
-        var lowX= Math.min(tx,fx);
-        var highX= Math.max(tx,fx);
-        var labelPosX = (tx+fx)/2 - ((textWidth) + zoomfact * 8)/2;
-        var labelPosY = (ty+fy)/2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        var lineLabel={id: line.id+"Label",labelLineID: line.id, centerX: centerX, centerY: centerY, width: textWidth + zoomfact * 4, height: textheight * zoomfact + zoomfact * 3, labelMovedX: 0, labelMovedY: 0, lowY: lowY, highY: highY, lowX: lowX, highX: highX, percentOfLine: 0,displacementX:0,displacementY:0,fromX:fx,toX:tx,fromY:fy,toY:ty,lineGroup:0,labelMoved:false};
+        var lowY = Math.min(ty, fy);
+        var highY = Math.max(ty, fy);
+        var lowX = Math.min(tx, fx);
+        var highX = Math.max(tx, fx);
+        var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
+        var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
+        var lineLabel = {
+            id: line.id + "Label",
+            labelLineID: line.id,
+            centerX: centerX,
+            centerY: centerY,
+            width: textWidth + zoomfact * 4,
+            height: textheight * zoomfact + zoomfact * 3,
+            labelMovedX: 0,
+            labelMovedY: 0,
+            lowY: lowY,
+            highY: highY,
+            lowX: lowX,
+            highX: highX,
+            percentOfLine: 0,
+            displacementX: 0,
+            displacementY: 0,
+            fromX: fx,
+            toX: tx,
+            fromY: fy,
+            toY: ty,
+            lineGroup: 0,
+            labelMoved: false
+        };
         if (!!targetLabel) {
             var rememberTargetLabelID = targetLabel.id;
         }
-        if (!!lineLabelList[findIndex(lineLabelList,lineLabel.id)]) {
-            lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedX;
-            lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMovedY;
-            lineLabel.labelGroup = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelGroup;
-            lineLabel.labelMoved = lineLabelList[findIndex(lineLabelList,lineLabel.id)].labelMoved;
+        if (!!lineLabelList[findIndex(lineLabelList, lineLabel.id)]) {
+            lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedX;
+            lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedY;
+            lineLabel.labelGroup = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelGroup;
+            lineLabel.labelMoved = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMoved;
             calculateProcentualDistance(lineLabel);
             if (lineLabel.labelGroup == 0) {
-                    lineLabel.displacementX = 0;
-                    lineLabel.displacementY = 0;
+                lineLabel.displacementX = 0;
+                lineLabel.displacementY = 0;
             } else if (lineLabel.labelGroup == 1) {
-                lineLabel.displacementX = calculateLabelDisplacement(lineLabel).storeX*zoomfact;
-                lineLabel.displacementY = calculateLabelDisplacement(lineLabel).storeY*zoomfact;
+                lineLabel.displacementX = calculateLabelDisplacement(lineLabel).storeX * zoomfact;
+                lineLabel.displacementY = calculateLabelDisplacement(lineLabel).storeY * zoomfact;
             } else if (lineLabel.labelGroup == 2) {
-                lineLabel.displacementX = -calculateLabelDisplacement(lineLabel).storeX*zoomfact;
-                lineLabel.displacementY = -calculateLabelDisplacement(lineLabel).storeY*zoomfact;
+                lineLabel.displacementX = -calculateLabelDisplacement(lineLabel).storeX * zoomfact;
+                lineLabel.displacementY = -calculateLabelDisplacement(lineLabel).storeY * zoomfact;
             }
-            lineLabelList[findIndex(lineLabelList,lineLabel.id)] = lineLabel;
+            lineLabelList[findIndex(lineLabelList, lineLabel.id)] = lineLabel;
         } else {
             lineLabelList.push(lineLabel);
         }
         if (!!rememberTargetLabelID) {
-            targetLabel=lineLabelList[findIndex(lineLabelList,rememberTargetLabelID)];
+            targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
         // Label position for recursive edges
-        const labelPositionX = labelPosX+lineLabel.labelMovedX+lineLabel.displacementX + zoomfact
-        const labelPositionY = labelPosY+lineLabel.labelMovedY+lineLabel.displacementY - zoomfact
+        const labelPositionX = labelPosX + lineLabel.labelMovedX + lineLabel.displacementX + zoomfact
+        const labelPositionY = labelPosY + lineLabel.labelMovedY + lineLabel.displacementY - zoomfact
 
         //Add label with styling based on selection.
         if (contextLine.includes(line)) {
             if (line.kind === "Recursive") {
                 //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact)))-textWidth/2}" y="${(labelPositionY-70*zoomfact)-((textheight/4)*zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY-70*zoomfact)+((textheight/4)*zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact))) - textWidth / 2}" y="${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
             } else {
                 str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
             }
         } else {
             if (line.kind === "Recursive") {
-                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact)))-textWidth/2}" y="${(labelPositionY-70*zoomfact)-((textheight/4)*zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY-70*zoomfact)+((textheight/4)*zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
+                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact))) - textWidth / 2}" y="${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
+                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
             } else {
                 str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
                 str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
@@ -8608,8 +8637,7 @@ function drawLine(line, targetGhost = false)
  * @param {number} size The size(height) of the arrow that is to be drawn.
  * @returns The coordinates/Point where the arrow base is placed on the line.
  */
-function calculateArrowBase(from, to, size)
-{
+function calculateArrowBase(from, to, size) {
     /*
         Since we know that the arrow is to be created on the line, we need a Point that is a set distance away from the element that is still on the line.
         The set distance is the size, as it will be the height of the arrow.
@@ -8631,8 +8659,7 @@ function calculateArrowBase(from, to, size)
  * @param {Point} to The coordinates/Point where the line between @param base and the element end
  * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
  */
-function rotateArrowPoint(base, to, clockwise)
-{
+function rotateArrowPoint(base, to, clockwise) {
     /*
         To create the actual arrow we need the corners.
         We need to rotate the point "to" around "base" by 90 or -90 degrees and divide the distance by 2 (as this decides how wide the triangle will be).
@@ -8657,42 +8684,41 @@ function rotateArrowPoint(base, to, clockwise)
  * @param {String} str The string to add the created line elements to
  * @return String containing all the new lines-elements
  */
-function redrawArrows(str)
-{
+function redrawArrows(str) {
     // Clear all lines and update with dom object dimensions
-    for (var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++) {
         clearLinesForElement(data[i]);
     }
 
     // Make list of all connectors?
     connectors = [];
 
-    for (var i = 0; i < lines.length; i++){
+    for (var i = 0; i < lines.length; i++) {
         determineLine(lines[i]);
     }
 
     // Determine lines before sorting associations
-    if (ghostLine && ghostElement){
+    if (ghostLine && ghostElement) {
         clearLinesForElement(ghostElement);
         determineLine(ghostLine, true);
     }
 
     // Sort all association ends that number above 0 according to direction of line
-    for (var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
     }
 
     // Draw each line using sorted line ends when applicable
-    for (var i = 0; i < lines.length; i++){
+    for (var i = 0; i < lines.length; i++) {
         str += drawLine(lines[i]);
     }
 
-    if (ghostLine && ghostElement){
+    if (ghostLine && ghostElement) {
         str += drawLine(ghostLine, true);
     }
 
     // Remove all neighbour maps from elements
-    for (var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++) {
         delete data[i].neighbours;
     }
 
@@ -8703,8 +8729,7 @@ function redrawArrows(str)
  * @description Adds nodes for resizing to an elements
  * @param {Object} element The target element to add nodes to.
  */
-function addNodes(element) 
-{
+function addNodes(element) {
     var elementDiv = document.getElementById(element.id)
     var nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
@@ -8719,44 +8744,43 @@ function addNodes(element)
     elementDiv.innerHTML += nodes;
     // This is the standard node size
     const defaultNodeSize = 8;
-    var nodeSize = defaultNodeSize*zoomfact;
+    var nodeSize = defaultNodeSize * zoomfact;
     if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         var mdNode = document.getElementById("md");
-        mdNode.style.width = nodeSize+"px";
-        mdNode.style.width = nodeSize+"px";
-        mdNode.style.height = nodeSize+"px";
-        mdNode.style.height = nodeSize+"px";
-        mdNode.style.left = "calc(50% - "+(nodeSize/4)+"px)";
+        mdNode.style.width = nodeSize + "px";
+        mdNode.style.width = nodeSize + "px";
+        mdNode.style.height = nodeSize + "px";
+        mdNode.style.height = nodeSize + "px";
+        mdNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
         mdNode.style.top = "100%";
     }
 
-    if (element.kind == "UMLSuperState"){
+    if (element.kind == "UMLSuperState") {
         var mdNode = document.getElementById("md");
         var muNode = document.getElementById("mu");
-        mdNode.style.width = nodeSize+"px";
-        muNode.style.width = nodeSize+"px";
-        mdNode.style.height = nodeSize+"px";
-        muNode.style.height = nodeSize+"px";
-        mdNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
-        muNode.style.right = "calc(50% - "+(nodeSize/2)+"px)";
+        mdNode.style.width = nodeSize + "px";
+        muNode.style.width = nodeSize + "px";
+        mdNode.style.height = nodeSize + "px";
+        muNode.style.height = nodeSize + "px";
+        mdNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
+        muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
     }
-    
-    var nodeSize = defaultNodeSize*zoomfact;
+
+    var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
-    mrNode.style.width = nodeSize+"px";
-    mlNode.style.width = nodeSize+"px";
-    mrNode.style.height = nodeSize+"px";
-    mlNode.style.height = nodeSize+"px";
-    mrNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
-    mlNode.style.top = "calc(50% - "+(nodeSize/2)+"px)";
+    mrNode.style.width = nodeSize + "px";
+    mlNode.style.width = nodeSize + "px";
+    mrNode.style.height = nodeSize + "px";
+    mlNode.style.height = nodeSize + "px";
+    mrNode.style.top = "calc(50% - " + (nodeSize / 2) + "px)";
+    mlNode.style.top = "calc(50% - " + (nodeSize / 2) + "px)";
 }
 
 /**
  * @description Remove all elements with the class "node"
  */
-function removeNodes() 
-{
+function removeNodes() {
     // Get all elements with the class: "node"
     var nodes = document.getElementsByClassName("node");
 
@@ -8770,27 +8794,26 @@ function removeNodes()
 /**
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
  */
-function drawRulerBars(X,Y)
-{ 
+function drawRulerBars(X, Y) {
     //Get elements
     if (!settings.ruler.isRulerActive) return;
-    
+
     svgX = document.getElementById("ruler-x-svg");
     svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
 
-    var pxlength = (pixellength.offsetWidth/1000)*window.devicePixelRatio;
+    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     const lineRatio1 = 1;
     const lineRatio2 = 10;
     const lineRatio3 = 100;
-    
+
     var barY, barX = "";
     var cordY = 0;
     var cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
     var pannedY = (Y - settings.ruler.ZF) / zoomfact;
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
-    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) +  (1.0 / zoomfact));
+    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (1.0 / zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
 
     if (zoomfact < 0.5) {
@@ -8798,123 +8821,123 @@ function drawRulerBars(X,Y)
     } else {
         var verticalText = " ";
     }
-    
+
     //Draw the Y-axis ruler positive side.
     var lineNumber = (lineRatio3 - 1);
-    for (i = 100 + settings.ruler.zoomY; i <= pannedY -(pannedY *2) + cheight ; i += (lineRatio1*zoomfact*pxlength)) {
+    for (i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
-         
+
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
-            barY += "<line class='ruler-line' x1='0px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
-            barY += "<text class='ruler-text' x='10' y='"+(pannedY+i+10)+"'style='font-size: 10px''>"+cordY+"</text>";
-            cordY = cordY +10;
+            barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
+            barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "'style='font-size: 10px''>" + cordY + "</text>";
+            cordY = cordY + 10;
         } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
             //centi
-            if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0) {
-                barY += "<text class='ruler-text' x='20' y='"+(pannedY+i+10)+"'style='font-size: 8px''>"+(cordY-10+lineNumber/10)+"</text>";
-                barY += "<line class='ruler-line' x1='20px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
+            if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
+                barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "'style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
+                barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
             } else {
-                barY += "<line class='ruler-line' x1='25px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
-            }
-        } else if (zoomfact > 0.75){
-            //milli
-            if ((lineNumber) % 5 == 0 ){
-                barY += "<line class='ruler-line' x1='32px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"'/>";
-            } else {
-                barY += "<line class='ruler-line' x1='35px' y1='"+(pannedY+i)+"' x2='40px' y2='"+(pannedY+i)+"' />";
-            }
-        } 
-    }
-    //Draw the Y-axis ruler negative side.
-    lineNumber = (lineRatio3 - 101);
-    cordY = -10;
-    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1*zoomfact*pxlength)) {
-        lineNumber++;
-         
-        //Check if a full line should be drawn
-        if (lineNumber === lineRatio3) {
-            lineNumber = 0;
-            barY += "<line class='ruler-line' x1='0px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' />";
-            barY += "<text class='ruler-text' x='10' y='"+(pannedY-i+10)+"' style='font-size: 10px''>"+cordY+"</text>";
-            cordY = cordY -10;
-        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
-            //centi
-            if ((zoomfact > 0.5 || (lineNumber/10) % 5 == 0)  && (cordY+10-lineNumber/10) != 0){
-                barY += "<text class='ruler-text' x='20' y='"+(pannedY-i+10)+"' style='font-size: 8px''>"+(cordY+10-lineNumber/10)+"</text>";
-                barY += "<line class='ruler-line' x1='20px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' />";
-            } else {
-                barY += "<line class='ruler-line' x1='25px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"' />";
-            }
-        } else if (zoomfact > 0.75){
-            //milli
-            if ((lineNumber) % 5 == 0 ){
-                barY += "<line class='ruler-line' x1='32px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"'/>";
-            } else{
-                barY += "<line class='ruler-line' x1='35px' y1='"+(pannedY-i)+"' x2='40px' y2='"+(pannedY-i)+"'/>";
-            }
-        }
-    }
-    svgY.style.boxShadow ="3px 45px 6px #5c5a5a";
-    svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
-    
-    //Draw the X-axis ruler positive side.
-    lineNumber = (lineRatio3 - 1);
-    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX *2) + cwidth; i += (lineRatio1*zoomfact*pxlength)) {
-        lineNumber++;
-        //Check if a full line should be drawn
-        if (lineNumber === lineRatio3) {
-            lineNumber = 0;
-            barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='0' x2='" + (i+pannedX) + "' y2='40px'/>";
-            barX += "<text class='ruler-text' x='"+(i+5+pannedX)+"'"+verticalText+"' y='15' style='font-size: 10px'>"+cordX+"</text>";
-            cordX = cordX +10;
-        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0){
-            //centi
-            if (zoomfact > 0.5 || (lineNumber/10) % 5 == 0){
-                barX += "<text class='ruler-text' x='"+(i+5+pannedX)+"'"+verticalText+"' y='25' style='font-size: 8px'>"+(cordX-10+lineNumber/10)+"</text>";
-                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='20' x2='" +(i+pannedX)+"' y2='40px'/>";
-            } else {
-                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='25' x2='" +(i+pannedX)+"' y2='40px'/>";
+                barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
             }
         } else if (zoomfact > 0.75) {
             //milli
             if ((lineNumber) % 5 == 0) {
-                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='32' x2='" +(i+pannedX)+"' y2='40px'/>";
+                barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
             } else {
-                barX += "<line class='ruler-line' x1='" +(i+pannedX)+"' y1='35' x2='" +(i+pannedX)+"' y2='40px'/>";
+                barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "' />";
+            }
+        }
+    }
+    //Draw the Y-axis ruler negative side.
+    lineNumber = (lineRatio3 - 101);
+    cordY = -10;
+    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
+        lineNumber++;
+
+        //Check if a full line should be drawn
+        if (lineNumber === lineRatio3) {
+            lineNumber = 0;
+            barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+            barY += "<text class='ruler-text' x='10' y='" + (pannedY - i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
+            cordY = cordY - 10;
+        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
+            //centi
+            if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordY + 10 - lineNumber / 10) != 0) {
+                barY += "<text class='ruler-text' x='20' y='" + (pannedY - i + 10) + "' style='font-size: 8px''>" + (cordY + 10 - lineNumber / 10) + "</text>";
+                barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+            } else {
+                barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+            }
+        } else if (zoomfact > 0.75) {
+            //milli
+            if ((lineNumber) % 5 == 0) {
+                barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
+            } else {
+                barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
+            }
+        }
+    }
+    svgY.style.boxShadow = "3px 45px 6px #5c5a5a";
+    svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
+
+    //Draw the X-axis ruler positive side.
+    lineNumber = (lineRatio3 - 1);
+    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
+        lineNumber++;
+        //Check if a full line should be drawn
+        if (lineNumber === lineRatio3) {
+            lineNumber = 0;
+            barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='0' x2='" + (i + pannedX) + "' y2='40px'/>";
+            barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='15' style='font-size: 10px'>" + cordX + "</text>";
+            cordX = cordX + 10;
+        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
+            //centi
+            if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
+                barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='25' style='font-size: 8px'>" + (cordX - 10 + lineNumber / 10) + "</text>";
+                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='20' x2='" + (i + pannedX) + "' y2='40px'/>";
+            } else {
+                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='25' x2='" + (i + pannedX) + "' y2='40px'/>";
+            }
+        } else if (zoomfact > 0.75) {
+            //milli
+            if ((lineNumber) % 5 == 0) {
+                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='32' x2='" + (i + pannedX) + "' y2='40px'/>";
+            } else {
+                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='35' x2='" + (i + pannedX) + "' y2='40px'/>";
             }
         }
     }
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
-    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1*zoomfact*pxlength)) {
+    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
-            barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='0' x2='" + (pannedX-i) + "' y2='40px'/>";
-            barX += "<text class='ruler-text' x='"+(pannedX-i+5)+"'"+verticalText+"' y='15'style='font-size: 10px'>"+cordX+"</text>";
-            cordX = cordX -10;
+            barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='0' x2='" + (pannedX - i) + "' y2='40px'/>";
+            barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='15'style='font-size: 10px'>" + cordX + "</text>";
+            cordX = cordX - 10;
         } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
             //centi
-            if ((zoomfact > 0.5 || (lineNumber/10) % 5 == 0) &&(cordX+10-lineNumber/10) != 0) {
-                barX += "<text class='ruler-text' x='"+(pannedX-i+5)+"'"+verticalText+"' y='25'style='font-size: 8px'>"+(cordX+10-lineNumber/10)+"</text>";
-                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='20' x2='" +(pannedX-i)+"' y2='40px'/>";
+            if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordX + 10 - lineNumber / 10) != 0) {
+                barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='25'style='font-size: 8px'>" + (cordX + 10 - lineNumber / 10) + "</text>";
+                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='20' x2='" + (pannedX - i) + "' y2='40px'/>";
             } else {
-                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='25' x2='" +(pannedX-i)+"' y2='40px'/>";
+                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='25' x2='" + (pannedX - i) + "' y2='40px'/>";
             }
-        } else if (zoomfact > 0.75){
+        } else if (zoomfact > 0.75) {
             //milli
-            if ((lineNumber) % 5 == 0 ) {
-                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='32' x2='" +(pannedX-i)+"' y2='40px'/>";
+            if ((lineNumber) % 5 == 0) {
+                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='32' x2='" + (pannedX - i) + "' y2='40px'/>";
             } else {
-                barX += "<line class='ruler-line' x1='" +(pannedX-i)+"' y1='35' x2='" +(pannedX-i)+"' y2='40px'/>";
+                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='35' x2='" + (pannedX - i) + "' y2='40px'/>";
             }
         }
     }
-    svgX.style.boxShadow ="3px 3px 6px #5c5a5a";
+    svgX.style.boxShadow = "3px 3px 6px #5c5a5a";
     svgX.innerHTML = barX;//Print the generated ruler, for X-axis
 }
 
@@ -8924,8 +8947,7 @@ function drawRulerBars(X,Y)
  * @param {boolean} ghosted Is the element an ghost element.
  * @return Returns an string containing the elements that should be drawn.
  */
-function drawElement(element, ghosted = false)
-{
+function drawElement(element, ghosted = false) {
     let ghostPreview = ghostLine ? 0 : 0.4;
     var str = "";
 
@@ -8936,16 +8958,16 @@ function drawElement(element, ghosted = false)
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height/2) * zoomfact); //determines the corner radius for the SD states.
-    var sequenceCornerRadius = Math.round((element.width/15) * zoomfact); //determines the corner radius for sequence objects.
+    var cornerRadius = Math.round((element.height / 2) * zoomfact); //determines the corner radius for the SD states.
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
-                                //This value represents the amount of attributes, hopefully this will be calculated through
-                                //an array in the UML document that contains the element's attributes.
+    //This value represents the amount of attributes, hopefully this will be calculated through
+    //an array in the UML document that contains the element's attributes.
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvasContext = canvas.getContext('2d');
-    
+
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
     var nonFilledElementPartStrokeColor;
@@ -8964,7 +8986,7 @@ function drawElement(element, ghosted = false)
     font = `${texth}px ${font.split('px')[1]}`;
     canvasContext.font = font;
     var textWidth = canvasContext.measureText(element.name).width;
-    
+
     // If calculated size is larger than element width
     const margin = 10 * zoomfact;
     var tooBig = (textWidth >= (boxw - (margin * 2)));
@@ -9476,27 +9498,27 @@ function drawElement(element, ghosted = false)
             if (!tooBig) {
                 //rect for sitting behind the actor text
                 str += `<rect class='text'
-                    x='${xAnchor-(textWidth/2)}'
-                    y='${boxw+(linew*2)}'
+                    x='${xAnchor - (textWidth / 2)}'
+                    y='${boxw + (linew * 2)}'
                     width='${textWidth}'
-                    height='${texth-linew}'
+                    height='${texth - linew}'
                     stroke='none'
                     fill='${element.fill}'
                 />`;
-                str += `<text class='text' x='${xAnchor}' y='${boxw+(texth/2)+(linew*2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+                str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
             }
             //else just make a boxw width rect and adjust the text to fit this new rect better
             else {
                 //rect for sitting behind the actor text
                 str += `<rect class='text'
                     x='${linew}'
-                    y='${boxw+(linew*2)}'
-                    width='${boxw-linew}'
-                    height='${texth-linew}'
+                    y='${boxw + (linew * 2)}'
+                    width='${boxw - linew}'
+                    height='${texth - linew}'
                     stroke='none'
                     fill='${element.fill}'
                 />`;
-                str += `<text class='text' x='${linew}' y='${boxw+texth}'>${element.name}</text>`;
+                str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
             }
             str += `</g>`;
         } else if (element.actorOrObject == "object") {
@@ -9637,17 +9659,17 @@ function drawElement(element, ghosted = false)
         // Calculate and store the NOTEEntity's real height
         var NOTEEntityHeight = {
             id: element.id,
-                height: ((boxh + (boxh / 2)) / zoomfact)   
+            height: ((boxh + (boxh / 2)) / zoomfact)
         }
         NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == `${"#000000"}` ) {
+        if (element.fill == `${"#000000"}`) {
             element.stroke = `${"#FFFFFF"}`;
         } else if (element.fill == `${"#FFFFFF"}`) {
             element.stroke = `${"#000000"}`;
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.4))}px; width:${boxw}px;font-size:${texth}px;`; 
+        style='left:0px; top:0px;margin-top:${((boxh * -0.4))}px; width:${boxw}px;font-size:${texth}px;`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -9659,7 +9681,7 @@ function drawElement(element, ghosted = false)
         //Draw note-content if there exist at least one attribute
         if (elemAttri <= 4) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;    
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
             //path math to create the note entity
             //the 4 sets the vertical size to be the same as having written 4 lines in the element
             str += `<path class="text"
@@ -9682,8 +9704,8 @@ function drawElement(element, ghosted = false)
                 fill='${element.fill}'
             />`;
             for (var i = 0; i < elemAttri; i++) {
-              str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }            
+                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
+            }
 
             //end of svg for background
             str += `</svg>`;
@@ -9768,12 +9790,12 @@ function drawElement(element, ghosted = false)
 
             var weak = "";
 
-            if(element.state == "weak") {
-                weak = `<rect x='${linew * multioffs }' y='${linew * multioffs }' width='${boxw- (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
+            if (element.state == "weak") {
+                weak = `<rect x='${linew * multioffs}' y='${linew * multioffs}' width='${boxw - (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
                 stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
-                `;         
+                `;
             }
-            
+
             str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
                     ${weak}
@@ -9786,7 +9808,7 @@ function drawElement(element, ghosted = false)
             if (element.state == "computed") {
                 dash = "stroke-dasharray='4 4'";
             }
-        
+
             if (element.state == "multiple") {
                 multi = `
                         <path d="M${linew * multioffs},${hboxh} 
@@ -9795,7 +9817,7 @@ function drawElement(element, ghosted = false)
                         Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
                         Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
                         stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
-            }    
+            }
             if (element.state != undefined) {
                 str += `<path d="M${linew},${hboxh} 
                                 Q${linew},${linew} ${hboxw},${linew} 
@@ -9809,15 +9831,15 @@ function drawElement(element, ghosted = false)
             }
             if (element.state == "candidate" || element.state == 'primary') {
                 str += `class='underline'`;
-            }             
+            }
             str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
             `;
-                
+
             if (element.state == "weakKey") {
                 // Calculates how far to the left X starts
                 var diff = xAnchor - textWidth / 2;
                 diff = diff < 0 ? 0 - diff + 10 : 0;
-                str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5*zoomfact}" stroke-width="${linew}"/>`;
+                str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5 * zoomfact}" stroke-width="${linew}"/>`;
             }
         } else if (element.kind == "ERRelation") {
             var numOfLetters = element.name.length;
@@ -9827,9 +9849,9 @@ function drawElement(element, ghosted = false)
 
                 if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
 
-                for (var i = 0; i < element.name.length; i++){
+                for (var i = 0; i < element.name.length; i++) {
                     tempName += element.name[i];
-                    if (canvasContext.measureText(tempName).width > maxTextWidth){
+                    if (canvasContext.measureText(tempName).width > maxTextWidth) {
                         numOfLetters = tempName.length - 1;
                         break;
                     }
@@ -9851,7 +9873,7 @@ function drawElement(element, ghosted = false)
     }
     //=============================================== <-- End ER functionality
     if (element.isLocked) {
-        str += `<img id="pad_lock" width='${zoomfact *20}' height='${zoomfact *25}' src="../Shared/icons/pad_lock.svg"/>`;     
+        str += `<img id="pad_lock" width='${zoomfact * 20}' height='${zoomfact * 25}' src="../Shared/icons/pad_lock.svg"/>`;
     }
     str += "</div>";
     return str;
@@ -9862,33 +9884,31 @@ function drawElement(element, ghosted = false)
  * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
  * @param {Interger} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
  */
-function updatepos(deltaX, deltaY)
-{
+function updatepos(deltaX, deltaY) {
     updateCSSForAllElements();
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
     str = redrawArrows(str);
-    document.getElementById("svgbacklayer").innerHTML=str;
+    document.getElementById("svgbacklayer").innerHTML = str;
 
     // Update svg overlay -- place everyhing to draw OVER elements here
     str = "";
     str = boxSelect_Draw(str);
     //str = selectionAllIndividualElements(str);
     if (mouseButtonDown == false) str = drawSelectionBox(str);
-    
-    document.getElementById("svgoverlay").innerHTML=str;
+
+    document.getElementById("svgoverlay").innerHTML = str;
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation"  && context[0].kind != "IERelation")) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation" && context[0].kind != "IERelation")) addNodes(context[0]);
 }
 
 /**
  * @description Error checking for lines
  * @param {Object} element Element to be checked for errors.
  */
-function checkLineErrors(lines)
-{
+function checkLineErrors(lines) {
     var line;
 
     // Error checking for lines
@@ -9911,8 +9931,7 @@ function checkLineErrors(lines)
  * @description Error checking for ER entity
  * @param {Object} element Element to be checked for errors.
  */
-function checkEREntityErrors(element)
-{
+function checkEREntityErrors(element) {
     var keyQuantity;
     var primaryCount;
     var strongEntity;
@@ -9971,7 +9990,7 @@ function checkEREntityErrors(element)
                 if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-            } 
+            }
         }
     }
 
@@ -10159,7 +10178,7 @@ function checkEREntityErrors(element)
         // Checks if element has one relation to a strong entity
         if (strongEntity != 1) {
             errorData.push(element);
-        } 
+        }
 
         for (var i = 0; i < lines.length; i++) {
             line = lines[i];
@@ -10271,12 +10290,11 @@ function checkEREntityErrors(element)
  * @description Error checking for ER relation
  * @param {Object} element Element to be checked for errors.
  */
-function checkERRelationErrors(element)
-{
+function checkERRelationErrors(element) {
     var lineQuantity;
 
-     // Checks for relation connected to another relation
-     for (var i = 0; i < lines.length; i++) {
+    // Checks for relation connected to another relation
+    for (var i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
@@ -10321,7 +10339,7 @@ function checkERRelationErrors(element)
                 if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-            } 
+            }
         }
     }
 
@@ -11225,8 +11243,7 @@ function checkERRelationErrors(element)
  * @description Error checking for ER attribute
  * @param {Object} element Element to be checked for errors.
  */
-function checkERAttributeErrors(element)
-{
+function checkERAttributeErrors(element) {
     for (var i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
@@ -11739,8 +11756,7 @@ function checkERAttributeErrors(element)
  * @description Checks for errors and adds the element affected by the errors to a error list.
  * @param {Object} element Element to be checked for errors.
  */
-function checkElementError(element) 
-{
+function checkElementError(element) {
     if (element.kind == "EREntity") checkEREntityErrors(element)
     if (element.kind == "ERRelation") checkERRelationErrors(element)
     if (element.kind == "ERAttr") checkERAttributeErrors(element)
@@ -11753,8 +11769,7 @@ function checkElementError(element)
  * @description Sets every elements stroke to black.
  * @param {Object} elements List of all elements.
  */
-function errorReset(elements)
-{
+function errorReset(elements) {
     for (var i = 0; i < elements.length; i++) {
         elements[i].stroke = strokeColors;
     }
@@ -11765,67 +11780,66 @@ function errorReset(elements)
  * @param {Interger} newPosX The position the mouse is at in the X-axis.
  * @param {Interger} newPosY The position the mouse is at in the Y-axis.
  */
-function updateLabelPos(newPosX, newPosY)
-{   
+function updateLabelPos(newPosX, newPosY) {
     targetLabel.labelMoved = true;
-    if(newPosX + targetLabel.width < targetLabel.highX && newPosX - targetLabel.width>targetLabel.lowX){ 
+    if (newPosX + targetLabel.width < targetLabel.highX && newPosX - targetLabel.width > targetLabel.lowX) {
         targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
-    } else if(newPosX - targetLabel.width < targetLabel.lowX){
-        targetLabel.labelMovedX = (targetLabel.lowX  + targetLabel.width - (targetLabel.centerX));
-    } else if(newPosX  + targetLabel.width > targetLabel.highX){
-        targetLabel.labelMovedX = (targetLabel.highX  - targetLabel.width - (targetLabel.centerX));
+    } else if (newPosX - targetLabel.width < targetLabel.lowX) {
+        targetLabel.labelMovedX = (targetLabel.lowX + targetLabel.width - (targetLabel.centerX));
+    } else if (newPosX + targetLabel.width > targetLabel.highX) {
+        targetLabel.labelMovedX = (targetLabel.highX - targetLabel.width - (targetLabel.centerX));
     }
-    if(newPosY + targetLabel.height < targetLabel.highY && newPosY - targetLabel.height > targetLabel.lowY){ 
+    if (newPosY + targetLabel.height < targetLabel.highY && newPosY - targetLabel.height > targetLabel.lowY) {
         targetLabel.labelMovedY = (newPosY - (targetLabel.centerY));
-    } else if(newPosY - targetLabel.height < targetLabel.lowY){
+    } else if (newPosY - targetLabel.height < targetLabel.lowY) {
         targetLabel.labelMovedY = (targetLabel.lowY + targetLabel.height - (targetLabel.centerY));
-    } else if(newPosY + targetLabel.height > targetLabel.highY){
+    } else if (newPosY + targetLabel.height > targetLabel.highY) {
         targetLabel.labelMovedY = (targetLabel.highY - targetLabel.height - (targetLabel.centerY));
     }
     calculateProcentualDistance(targetLabel);
     calculateLabelDisplacement(targetLabel);
-    displaceFromLine(newPosX,newPosY);
+    displaceFromLine(newPosX, newPosY);
 }
 
-function calculateProcentualDistance(objectLabel,x,y){
+function calculateProcentualDistance(objectLabel, x, y) {
     // Math to calculate procentuall distance from/to centerpoint
     var diffrenceX = objectLabel.highX - objectLabel.lowX;
-    var diffrenceY = objectLabel.highY - objectLabel.lowY;    
-    if(objectLabel.labelMovedX > objectLabel.highX - objectLabel.lowX){
+    var diffrenceY = objectLabel.highY - objectLabel.lowY;
+    if (objectLabel.labelMovedX > objectLabel.highX - objectLabel.lowX) {
         objectLabel.labelMovedX = objectLabel.highX - objectLabel.lowX;
-    } else if(objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX){
+    } else if (objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX) {
         objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
     }
-    if(objectLabel.labelMovedY > objectLabel.highY - objectLabel.lowY){
+    if (objectLabel.labelMovedY > objectLabel.highY - objectLabel.lowY) {
         objectLabel.labelMovedY = objectLabel.highY - objectLabel.lowY;
-    } else if(objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX){
+    } else if (objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX) {
         objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
     }
     var distanceToX1 = objectLabel.centerX + objectLabel.labelMovedX - objectLabel.fromX;
     var distanceToY1 = objectLabel.centerY + objectLabel.labelMovedY - objectLabel.fromY;
-    var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1*distanceToX1 + distanceToY1*distanceToY1));
-    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
-    objectLabel.percentOfLine = lenghtToNewPos/entireLinelenght;
+    var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1 * distanceToX1 + distanceToY1 * distanceToY1));
+    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX * diffrenceX + diffrenceY * diffrenceY));
+    objectLabel.percentOfLine = lenghtToNewPos / entireLinelenght;
     // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct 
-    if(objectLabel.percentOfLine < 0.5){
+    if (objectLabel.percentOfLine < 0.5) {
         objectLabel.percentOfLine = 1 - objectLabel.percentOfLine;
-        objectLabel.percentOfLine = objectLabel.percentOfLine - 0.5 ;
-    } else if (objectLabel.percentOfLine > 0.5){
-        objectLabel.percentOfLine = -(objectLabel.percentOfLine - 0.5) ;
+        objectLabel.percentOfLine = objectLabel.percentOfLine - 0.5;
+    } else if (objectLabel.percentOfLine > 0.5) {
+        objectLabel.percentOfLine = -(objectLabel.percentOfLine - 0.5);
     }
-    if(!objectLabel.labelMoved){
+    if (!objectLabel.labelMoved) {
         objectLabel.percentOfLine = 0;
     }
     //changing the direction depending on how the line is drawn
-    if(objectLabel.fromX<objectLabel.centerX){ //left to right
+    if (objectLabel.fromX < objectLabel.centerX) { //left to right
         objectLabel.labelMovedX = -objectLabel.percentOfLine * diffrenceX;
-    } else if(objectLabel.fromX>objectLabel.centerX){//right to left
+    } else if (objectLabel.fromX > objectLabel.centerX) {//right to left
         objectLabel.labelMovedX = objectLabel.percentOfLine * diffrenceX;
     }
 
-    if(objectLabel.fromY<objectLabel.centerY){ //down to up
+    if (objectLabel.fromY < objectLabel.centerY) { //down to up
         objectLabel.labelMovedY = -objectLabel.percentOfLine * diffrenceY;
-    } else if(objectLabel.fromY>objectLabel.centerY){ //up to down
+    } else if (objectLabel.fromY > objectLabel.centerY) { //up to down
         objectLabel.labelMovedY = objectLabel.percentOfLine * diffrenceY;
     }
 }
@@ -11834,37 +11848,36 @@ function calculateProcentualDistance(objectLabel,x,y){
  * @description calculates how the label should be displacesed
  * @param {Interger} labelObject the label that should be displaced
  */
-function calculateLabelDisplacement(labelObject)
-{
-    var diffrenceX = labelObject.highX-labelObject.lowX;
-    var diffrenceY = labelObject.highY-labelObject.lowY;
-    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX*diffrenceX+diffrenceY*diffrenceY));
-    var baseLine, angle, displacementConstant=labelObject.height, storeX, storeY;
-    var distanceToOuterlines={storeX, storeY}
+function calculateLabelDisplacement(labelObject) {
+    var diffrenceX = labelObject.highX - labelObject.lowX;
+    var diffrenceY = labelObject.highY - labelObject.lowY;
+    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX * diffrenceX + diffrenceY * diffrenceY));
+    var baseLine, angle, displacementConstant = labelObject.height, storeX, storeY;
+    var distanceToOuterlines = {storeX, storeY}
     // define the baseline used to calculate the angle
     if ((labelObject.fromX - labelObject.toX) > 0) {
         if ((labelObject.fromY - labelObject.toY) > 0) { // up left
             baseLine = labelObject.fromY - labelObject.toY;
-            angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = (((90-angle) / 5) - displacementConstant)*2.2;
-            distanceToOuterlines.storeY = (displacementConstant - (angle / 5))*1.2;
-        } else if((labelObject.fromY - labelObject.toY) < 0) { // down left
+            angle = (Math.acos(Math.cos(baseLine / entireLinelenght)) * 90);
+            distanceToOuterlines.storeX = (((90 - angle) / 5) - displacementConstant) * 2.2;
+            distanceToOuterlines.storeY = (displacementConstant - (angle / 5)) * 1.2;
+        } else if ((labelObject.fromY - labelObject.toY) < 0) { // down left
             baseLine = labelObject.toY - labelObject.fromY;
-            angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = (displacementConstant - ((angle+90) / 5))*2.2;
-            distanceToOuterlines.storeY = (displacementConstant + (angle / 5))*1.2;
+            angle = -(Math.acos(Math.cos(baseLine / entireLinelenght)) * 90);
+            distanceToOuterlines.storeX = (displacementConstant - ((angle + 90) / 5)) * 2.2;
+            distanceToOuterlines.storeY = (displacementConstant + (angle / 5)) * 1.2;
         }
-    } else if((labelObject.fromX - labelObject.toX) < 0) {
+    } else if ((labelObject.fromX - labelObject.toX) < 0) {
         if ((labelObject.fromY - labelObject.toY) > 0) { // up right
             baseLine = labelObject.toY - labelObject.fromY;
-            angle = (Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = (((90-angle) / 5) - displacementConstant)*2.2;
-            distanceToOuterlines.storeY = ((angle / 5) - displacementConstant)*1.2;
+            angle = (Math.acos(Math.cos(baseLine / entireLinelenght)) * 90);
+            distanceToOuterlines.storeX = (((90 - angle) / 5) - displacementConstant) * 2.2;
+            distanceToOuterlines.storeY = ((angle / 5) - displacementConstant) * 1.2;
         } else if ((labelObject.fromY - labelObject.toY) < 0) { // down right
             baseLine = labelObject.fromY - labelObject.toY;
-            angle = -(Math.acos(Math.cos(baseLine / entireLinelenght))*90);
-            distanceToOuterlines.storeX = (displacementConstant - ((angle+90) / 5))*2.2;
-            distanceToOuterlines.storeY = (-displacementConstant - (angle / 5))*1.2;
+            angle = -(Math.acos(Math.cos(baseLine / entireLinelenght)) * 90);
+            distanceToOuterlines.storeX = (displacementConstant - ((angle + 90) / 5)) * 2.2;
+            distanceToOuterlines.storeY = (-displacementConstant - (angle / 5)) * 1.2;
         }
     }
     return distanceToOuterlines;
@@ -11875,10 +11888,9 @@ function calculateLabelDisplacement(labelObject)
  * @param {Interger} newX The position the mouse is at in the X-axis.
  * @param {Interger} newY The position the mouse is at in the Y-axis.
  */
-function displaceFromLine(newX,newY)
-{
+function displaceFromLine(newX, newY) {
     //calculates which side of the line the point is.
-    var y1=targetLabel.fromY,y2=targetLabel.toY,x1=targetLabel.fromX,x2=targetLabel.toX;
+    var y1 = targetLabel.fromY, y2 = targetLabel.toY, x1 = targetLabel.fromX, x2 = targetLabel.toX;
     var distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
     //deciding which side of the line the label should be
     if (distance > 6000) {
@@ -11893,8 +11905,7 @@ function displaceFromLine(newX,newY)
 /**
  * @description Updates the variables for the size of the container-element.
  */
-function updateContainerBounds()
-{
+function updateContainerBounds() {
     var containerbox = container.getBoundingClientRect();
     cwidth = containerbox.width;
     cheight = containerbox.height;
@@ -11905,13 +11916,12 @@ function updateContainerBounds()
  * @param {String} str The string that the SVG-element is added to.
  * @return The populated string with the selection box rect.
  */
-function drawSelectionBox(str)
-{
+function drawSelectionBox(str) {
     deleteBtnX = 0;
     deleteBtnY = 0;
     deleteBtnSize = 0;
 
-    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 && contextLine.length != 0){
+    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) || mouseMode == mouseModes.EDGE_CREATION && context.length == 0 && contextLine.length != 0) {
         var lowX;
         var highX;
         var lineLowX;
@@ -12011,7 +12021,7 @@ function drawSelectionBox(str)
         selectionBoxHighX = highX + 5;
         selectionBoxLowY = lowY - 5;
         selectionBoxHighY = highY + 5;
-        
+
         // Selection container of selected elements
         str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
 
@@ -12021,60 +12031,58 @@ function drawSelectionBox(str)
         } else {
             deleteBtnSize = (highX - lowX + 10) / 3;
         }
-        
+
         if (deleteBtnSize > 20) {
             deleteBtnSize = 20;
         } else if (deleteBtnSize < 15) {
             deleteBtnSize = 15;
         }
 
-        deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize/2);
-        deleteBtnY = lowY - 5 - (deleteBtnSize/2);
+        deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize / 2);
+        deleteBtnY = lowY - 5 - (deleteBtnSize / 2);
 
         //Delete button visual representation
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + deleteBtnSize - 2}' class= "BlackthemeColor"/>`;
         str += `<line x1='${deleteBtnX + 2}' y1='${deleteBtnY + deleteBtnSize - 2}' x2='${deleteBtnX + deleteBtnSize - 2}' y2='${deleteBtnY + 2}' class= "BlackthemeColor"/>`;
     }
-    return str; 
+    return str;
 }
 
 /**
  * @description Translate all elements to the correct coordinate
  */
-function updateCSSForAllElements()
-{
-    function updateElementDivCSS(elementData, divObject, useDelta = false)
-    {
+function updateCSSForAllElements() {
+    function updateElementDivCSS(elementData, divObject, useDelta = false) {
         var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((((elementData.y - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+            top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
-        if (useDelta){
+        if (useDelta) {
             left -= deltaX;
             top -= deltaY;
         }
 
         if (settings.grid.snapToGrid && useDelta) {
-            if (element.kind == "EREntity"){
+            if (element.kind == "EREntity") {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                
+
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+(settings.grid.gridSize*5))* zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+                left = Math.round((((objX - zoomOrigo.x) + (settings.grid.gridSize * 5)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
-            } else if (element.kind != "EREntity"){
+            } else if (element.kind != "EREntity") {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
+                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
-                
+
                 // Add the scroll values
-                left = Math.round((((objX - zoomOrigo.x)+(settings.grid.gridSize*4)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-                top = Math.round((((objY - zoomOrigo.y)-(settings.grid.gridSize/2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-            
+                left = Math.round((((objX - zoomOrigo.x) + (settings.grid.gridSize * 4)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+                top = Math.round((((objY - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
@@ -12083,6 +12091,7 @@ function updateCSSForAllElements()
         divObject.style.left = left + "px";
         divObject.style.top = top + "px";
     }
+
     // Update positions of all data elements based on the zoom level and view space coordinate
     for (var i = 0; i < data.length; i++) {
         // Element data from the array
@@ -12120,11 +12129,11 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update IEEntity
-                else if(element.kind == "IEEntity"){
+                else if (element.kind == "IEEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        if(markedOverOne()){
+                        if (markedOverOne()) {
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else {
@@ -12148,12 +12157,12 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update Elements with double borders.
-                else if(element.state == "weak" || element.state == "multiple") {
+                else if (element.state == "weak" || element.state == "multiple") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
 
-                        if(markedOverOne()){
+                        if (markedOverOne()) {
                             fillColor.style.fill = `${"#927b9e"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else {
@@ -12167,19 +12176,19 @@ function updateCSSForAllElements()
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
-                    if(markedOverOne()){
+                    if (markedOverOne()) {
                         fillColor.style.fill = `${"#927b9e"}`;
                         fontColor.style.fill = `${"#ffffff"}`;
-                        if(element.state == "weakKey") {
+                        if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if(element.kind == "IERelation" && element.state != "overlapping") {
-                                disjointLine1Color.style.stroke = `${"#ffffff"}`;
-                                disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                        else if (element.kind == "IERelation" && element.state != "overlapping") {
+                            disjointLine1Color.style.stroke = `${"#ffffff"}`;
+                            disjointLine2Color.style.stroke = `${"#ffffff"}`;
                         }
                         // If UMLRelation is not marked.
-                    } else if(element.kind == "UMLRelation") {
-                        if(element.state == "overlapping") {
+                    } else if (element.kind == "UMLRelation") {
+                        if (element.state == "overlapping") {
                             fillColor.style.fill = `${"#000000"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else {
@@ -12188,7 +12197,7 @@ function updateCSSForAllElements()
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
-                        if(element.state == "weakKey") {
+                        if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
                             if (element.fill == "#000000") {
                                 weakKeyUnderline.style.stroke = `${"#ffffff"}`;
@@ -12198,7 +12207,7 @@ function updateCSSForAllElements()
                 }
             } else {
                 // Update UMLEntity
-                if(element.kind == "UMLEntity"){
+                if (element.kind == "UMLEntity") {
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12207,7 +12216,7 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update IEEntity
-                else if(element.kind == "IEEntity"){
+                else if (element.kind == "IEEntity") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12225,8 +12234,8 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update Elements with double borders.
-                else if(element.state == "weak" || element.state == "multiple"){
-                    for (let index = 0; index < 2; index++){
+                else if (element.state == "weak" || element.state == "multiple") {
+                    for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
                         fillColor.style.fill = `${element.fill}`;
@@ -12238,19 +12247,19 @@ function updateCSSForAllElements()
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
-                    if(markedOverOne()){
+                    if (markedOverOne()) {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
-                        if(element.state == "weakKey") {
+                        if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if(element.kind == "IERelation" && element.state != "overlapping") {
-                                disjointLine1Color.style.stroke = `${"#ffffff"}`;
-                                disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                        else if (element.kind == "IERelation" && element.state != "overlapping") {
+                            disjointLine1Color.style.stroke = `${"#ffffff"}`;
+                            disjointLine2Color.style.stroke = `${"#ffffff"}`;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
-                        if(element.state == "overlapping") {
+                        if (element.state == "overlapping") {
                             fillColor.style.fill = `${"#000000"}`;
                             fontColor.style.fill = `${"#ffffff"}`;
                         } else {
@@ -12259,7 +12268,7 @@ function updateCSSForAllElements()
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
-                        if(element.state == "weakKey") {
+                        if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#000000"}`;
                             if (element.fill == "#000000") {
                                 weakKeyUnderline.style.stroke = `${"#ffffff"}`;
@@ -12273,29 +12282,29 @@ function updateCSSForAllElements()
     // Also update ghost if there is one
     if (ghostElement) {
         var ghostDiv = document.getElementById(ghostElement.id);
-        
-        if (ghostDiv){
+
+        if (ghostDiv) {
             updateElementDivCSS(ghostElement, ghostDiv)
         }
     }
 
     function fontContrast() {
         //check if the fill color is black or pink, if so the font color is set to white
-        fontColor.style.fill = element.fill == "#000000" ||element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+        fontColor.style.fill = element.fill == "#000000" || element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
     }
 
     function markedOverOne() {
         //If more than one element is marked.
         return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
+
     toggleBorderOfElements();
 }
 
 /**
  * @description toggles the border of all elements to white or gray; depending on current theme and fill.
  */
-function toggleBorderOfElements()
-{
+function toggleBorderOfElements() {
     //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
     //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
     let allTexts = document.getElementsByClassName('text');
@@ -12304,7 +12313,7 @@ function toggleBorderOfElements()
         let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
-    
+
         if (cssUrl == 'blackTheme.css') {
             //iterate through all the elements that have the class 'text'.
             for (let i = 0; i < allTexts.length; i++) {
@@ -12339,13 +12348,12 @@ function toggleBorderOfElements()
  * @description toggles the sequence actor/object selected to the type specified in the parameter: actor or object.
  * @param type the type that youd like to switch to, actor or object.
  */
-function toggleActorOrbject(type)
-{
+function toggleActorOrbject(type) {
     for (let i = 0; i < context.length; i++) {
         if (context[i].actorOrObject != null) {
-            if (type=="object") {
+            if (type == "object") {
                 context[i].actorOrObject = "object";
-            } else if (type=="actor") {
+            } else if (type == "actor") {
                 context[i].actorOrObject = "actor";
             } else {
                 console.error(type + " is an unexpected parameter for toggleActorOrbject. This can only support actor or object.");
@@ -12359,8 +12367,7 @@ function toggleActorOrbject(type)
  * @description sets the alternatives attribute for sequenceLoopOrAlt to whatever is in the input box inputAlternatives. one index in the array per line.
  */
 //TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
-function setSequenceAlternatives()
-{
+function setSequenceAlternatives() {
     //for each element in context, check if it has the property alternatives
     for (let i = 0; i < context.length; i++) {
         if (context[i].alternatives != null) {
@@ -12370,15 +12377,15 @@ function setSequenceAlternatives()
             for (let i = 0; i < alternatives.length; i++) {
                 if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
                     formatArr.push(alternatives[i]);
-                } 
+                }
             }
             //Update the alternatives array
             alternatives = formatArr;
             context[0].alternatives = alternatives;
 
             stateMachine.save(
-                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'alternatives': alternatives }),
-                StateChangeFactory.ElementAttributesChanged(context[0].id, { 'altOrLoop': context[0].altOrLoop }),
+                StateChangeFactory.ElementAttributesChanged(context[0].id, {'alternatives': alternatives}),
+                StateChangeFactory.ElementAttributesChanged(context[0].id, {'altOrLoop': context[0].altOrLoop}),
                 StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
             );
         }
@@ -12390,11 +12397,10 @@ function setSequenceAlternatives()
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
  * @return a boolean value depending on if it is darktheme or not.
  */
-function isDarkTheme()
-{
+function isDarkTheme() {
     if (localStorage.getItem('diagramTheme') != null) {
         //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
-	    let cssUrl = localStorage.getItem('diagramTheme');
+        let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
         cssUrl = cssUrl.split("/").pop();
 
@@ -12405,8 +12411,7 @@ function isDarkTheme()
 /**
  * @description Redraw all elements and lines
  */
-function showdata()
-{
+function showdata() {
     updateContainerBounds();
     var str = "";
     var courses = [];
@@ -12431,8 +12436,7 @@ function showdata()
 /**
  * @description Centers the camera between the highest and lowest x and y values of all elements
  */
-function centerCamera()
-{
+function centerCamera() {
     // Stops execution if there are no elements to center the camera around.
     if (data.length == 0) {
         displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
@@ -12498,8 +12502,7 @@ function centerCamera()
  * @param {String} filename The name of the file that get generated
  * @param {*} dataObj The text content of the file
  */
-function downloadFile(filename, dataObj)
-{
+function downloadFile(filename, dataObj) {
     // Create a "a"-element
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
@@ -12516,8 +12519,7 @@ function downloadFile(filename, dataObj)
 /**
  * @description Prepares data for file creation, retrieves history and initialState
  */
-function exportWithHistory()
-{
+function exportWithHistory() {
 
     displayMessage(messageTypes.SUCCESS, "Generating the save file..");
 
@@ -12533,11 +12535,12 @@ function exportWithHistory()
     // Download the file
     downloadFile("diagram", objToSave);
 }
+
 /**
  * @description Stores the current diagram as JSON in localstorage
  * @param {string} key The name/key of the diagram
  */
-function storeDiagramInLocalStorage(key){
+function storeDiagramInLocalStorage(key) {
 
     if (stateMachine.currentHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
@@ -12570,8 +12573,7 @@ function storeDiagramInLocalStorage(key){
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
  */
-function exportWithoutHistory()
-{
+function exportWithoutHistory() {
     displayMessage(messageTypes.SUCCESS, "Generating the export file..");
     var objToSave = {
         data: [],
@@ -12588,7 +12590,7 @@ function exportWithoutHistory()
             if (keysToIgnore.includes(objKey)) return;
 
             // Ignore defaults
-            if (defaults[obj.kind][objKey] != obj[objKey]){
+            if (defaults[obj.kind][objKey] != obj[objKey]) {
                 // Add to filterdObj
                 filteredObj[objKey] = obj[objKey];
             }
@@ -12603,13 +12605,13 @@ function exportWithoutHistory()
             // If they key is ignore => return
             if (keysToIgnore.includes(objKey)) return;
 
-            if (defaultLine[objKey] != obj[objKey]){
+            if (defaultLine[objKey] != obj[objKey]) {
                 filteredObj[objKey] = obj[objKey];
             }
         });
         objToSave.lines.push(filteredObj);
     });
-    
+
 
     // Download the file
     downloadFile("diagram", objToSave);
@@ -12619,8 +12621,7 @@ function exportWithoutHistory()
  * @description Load one of the stored JSON files
  * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
  */
-function loadMockupDiagram(path)
-{
+function loadMockupDiagram(path) {
 
     // "resetDiagram()" calls this method with "EMPTYDiagram" as parameter
 
@@ -12634,13 +12635,13 @@ function loadMockupDiagram(path)
             .then((response) => {
                 //throw an error if the request is not ok
                 if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
+                    throw new Error(`HTTP error: ${response.status}`);
                 }
                 //fetch the response as json
                 return response.json();
             })
             //after response.json() has succeded, load the diagram from this json
-            .then((json) => loadDiagram(json, false)) 
+            .then((json) => loadDiagram(json, false))
             //catch any error
             .catch((err) => console.error(`Fetch problem: ${err.message}`));
     }
@@ -12651,31 +12652,29 @@ function loadMockupDiagram(path)
  * @param {File} files The file to get the content of
  * @return The content of the file
  */
-function getFileContent(files)
-{
+function getFileContent(files) {
     return new Promise((resolve, reject) => {
         var reader = new FileReader();
-    
+
         reader.onload = () => {
-          resolve(reader.result);
+            resolve(reader.result);
         };
-    
+
         reader.onerror = reject;
-    
+
         reader.readAsText(files);
-      })
+    })
 }
 
 /**
  * @description Load the content of a file to the diagram-data. This will remove previous data
  */
-async function loadDiagram(file = null, shouldDisplayMessage = true)
-{
-    if (file === null){
+async function loadDiagram(file = null, shouldDisplayMessage = true) {
+    if (file === null) {
         var fileInput = document.getElementById("importDiagramFile");
 
         // If not an json-file is inputted => return
-        if (getExtension(fileInput.value) != "json"){
+        if (getExtension(fileInput.value) != "json") {
             if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
             return;
         }
@@ -12685,20 +12684,20 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
             var file1 = fileInput.files[0];
             var temp = await getFileContent(file1);
             temp = JSON.parse(temp);
-        } catch(error) {
+        } catch (error) {
             console.error(error);
         }
     } else {
         temp = file;
     }
 
-    if(temp.historyLog && temp.initialState){
+    if (temp.historyLog && temp.initialState) {
         // Set the history and initalState to the values of the file
         stateMachine.historyLog = temp.historyLog;
         stateMachine.initialState = temp.initialState;
 
         // Update the stateMachine to the latest current index
-        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length - 1;
 
         // Scrub to the latest point in the diagram
         stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
@@ -12711,14 +12710,14 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
         temp.data.forEach(element => {
             var elDefault = defaults[element.kind];
             Object.keys(elDefault).forEach(defaultKey => {
-                if (!element[defaultKey]){
+                if (!element[defaultKey]) {
                     element[defaultKey] = elDefault[defaultKey];
                 }
             });
         });
         temp.lines.forEach(line => {
             Object.keys(defaultLine).forEach(defaultKey => {
-                if (!line[defaultKey]){
+                if (!line[defaultKey]) {
                     line[defaultKey] = defaultLine[defaultKey];
                 }
             });
@@ -12743,8 +12742,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true)
     }
 }
 
-function showModal()
-{
+function showModal() {
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
     var container = document.querySelector('#loadContainer');
@@ -12758,23 +12756,23 @@ function showModal()
         diagramKeys = Object.keys(localDiagrams);
     }
     // Remove all elements
-    while (container.firstElementChild){
+    while (container.firstElementChild) {
         container.firstElementChild.remove();
     }
 
     // If no items were found for loading in 
-    if (diagramKeys === undefined || diagramKeys.length === 0){
+    if (diagramKeys === undefined || diagramKeys.length === 0) {
         var p = document.createElement('p');
         var pText = document.createTextNode('No saves could be found');
 
         p.appendChild(pText);
         container.appendChild(p);
     } else {
-        for (let i = 0; i < diagramKeys.length; i++){
+        for (let i = 0; i < diagramKeys.length; i++) {
             let wrapper = document.createElement('div');
             var btn = document.createElement('button');
             var btnText = document.createTextNode(diagramKeys[i]);
-            
+
             btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
             wrapper.appendChild(btn);
@@ -12796,8 +12794,7 @@ function showModal()
     overlay.classList.remove('hiddenLoad');
 }
 
-function closeModal()
-{
+function closeModal() {
     var modal = document.querySelector('.loadModal');
     var overlay = document.querySelector('.loadModalOverlay');
 
@@ -12809,11 +12806,10 @@ function closeModal()
  * @description Check whether there is a diagram saved in localstorage and load it.
  * @param {string} key The name/key of the diagram to load.
  */
- function loadDiagramFromLocalStorage(key)
-{
+function loadDiagramFromLocalStorage(key) {
     if (localStorage.getItem("diagrams")) {
         var diagramFromLocalStorage = localStorage.getItem("diagrams");
-        diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage: `{${diagramFromLocalStorage}}`;
+        diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
         let obj = JSON.parse(diagramFromLocalStorage);
         if (obj[key] === undefined) {
             console.error("Undefined key")
@@ -12825,11 +12821,10 @@ function closeModal()
         console.error("No content to load")
     }
     disableIfDataEmpty();
-} 
+}
 
 // Save current diagram when user leaves the page
-function saveDiagramBeforeUnload()
-{
+function saveDiagramBeforeUnload() {
     window.addEventListener("beforeunload", (e) => {
         e.preventDefault();
         e.returnValue = "";
@@ -12837,18 +12832,16 @@ function saveDiagramBeforeUnload()
     })
 }
 
-function disableIfDataEmpty()
-{
-    if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
+function disableIfDataEmpty() {
+    if (stateMachine.currentHistoryIndex === -1 || data.length === 0) {
         document.getElementById('localSaveField').classList.add('disabledIcon');
-    } else{
+    } else {
         document.getElementById('localSaveField').classList.remove('disabledIcon');
     }
 }
 
-function showSavePopout()
-{
-    if (stateMachine.currentHistoryIndex === -1 || data.length === 0){
+function showSavePopout() {
+    if (stateMachine.currentHistoryIndex === -1 || data.length === 0) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
         $("#savePopoutContainer").css("display", "flex");
@@ -12856,8 +12849,7 @@ function showSavePopout()
     }
 }
 
-function hideSavePopout()
-{
+function hideSavePopout() {
     $("#savePopoutContainer").css("display", "none");
 }
 
@@ -12870,28 +12862,25 @@ function closeOverridePopout() {
 }
 
 //get the current file name that the user wants to use for saving to local storage.
-function getCurrentFileName()
-{
-    let elem = document.getElementById("saveDiagramAs");
-    let fileName = elem.value;
-    return fileName;
+function getCurrentFileName() {
+    let fileName = document.getElementById("saveDiagramAs");
+    return fileName.value;
 }
 
-function saveDiagramAs()
-{
+function saveDiagramAs() {
     let elem = document.getElementById("saveDiagramAs");
     let fileName = elem.value;
-    const currentDate=new Date();
+    const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1; // Note: January is month 0
     const day = currentDate.getDate();
     const hours = currentDate.getHours();
     const minutes = currentDate.getMinutes();
     const seconds = currentDate.getSeconds();
-    const formattedDate = year + "-" + month + "-" + day+' ';
+    const formattedDate = year + "-" + month + "-" + day + ' ';
     const formattedTime = hours + ":" + minutes + ":" + seconds;
     if (fileName.trim() == "") {
-        fileName = "diagram "+formattedDate+formattedTime;
+        fileName = "diagram " + formattedDate + formattedTime;
     }
     let names;
     let localDiagrams;
@@ -12900,11 +12889,11 @@ function saveDiagramAs()
     if (local != null) {
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
-     names = Object.keys(localDiagrams);
+        names = Object.keys(localDiagrams);
     }
 
-    for (let i=0; i<names.length; i++) {
-        if (names[i]==fileName) {
+    for (let i = 0; i < names.length; i++) {
+        if (names[i] == fileName) {
             hideSavePopout();
             showOverridePopout()
             return;
@@ -12913,15 +12902,14 @@ function saveDiagramAs()
     storeDiagramInLocalStorage(fileName);
 }
 
-function loadDiagramFromString(temp, shouldDisplayMessage = true)
-{
+function loadDiagramFromString(temp, shouldDisplayMessage = true) {
     if (temp.historyLog && temp.initialState) {
         // Set the history and initalState to the values of the file
         stateMachine.historyLog = temp.historyLog;
         stateMachine.initialState = temp.initialState;
 
         // Update the stateMachine to the latest current index
-        stateMachine.currentHistoryIndex = stateMachine.historyLog.length -1;
+        stateMachine.currentHistoryIndex = stateMachine.historyLog.length - 1;
 
         // Scrub to the latest point in the diagram
         stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
@@ -12934,14 +12922,14 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
         temp.data.forEach(element => {
             var elDefault = defaults[element.kind];
             Object.keys(elDefault).forEach(defaultKey => {
-                if (!element[defaultKey]){
+                if (!element[defaultKey]) {
                     element[defaultKey] = elDefault[defaultKey];
                 }
             });
         });
         temp.lines.forEach(line => {
             Object.keys(defaultLine).forEach(defaultKey => {
-                if (!line[defaultKey]){
+                if (!line[defaultKey]) {
                     line[defaultKey] = defaultLine[defaultKey];
                 }
             });
@@ -12966,8 +12954,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true)
     }
 }
 
-function removeLocalDiagram(item)
-{
+function removeLocalDiagram(item) {
     let local = localStorage.getItem("diagrams");
     local = (local[0] == "{") ? local : `{${local}}`;
     let localDiagrams = JSON.parse(local);
@@ -12982,8 +12969,7 @@ function removeLocalDiagram(item)
 }
 
 //Alert function to give user a warning/choice before reseting diagram data.
-function resetDiagramAlert()
-{
+function resetDiagramAlert() {
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if (refreshConfirm) {
         resetDiagram();
@@ -12993,11 +12979,10 @@ function resetDiagramAlert()
 /**
  * @description Cleares the diagram.
  */
-function resetDiagram()
-{
+function resetDiagram() {
     // Goto the beginning of the diagram
-        // NOTE: stateMachine should be StateMachine, but this had no effect
-        // on functionality.
+    // NOTE: stateMachine should be StateMachine, but this had no effect
+    // on functionality.
     /*
     stateMachine.gotoInitialState();
 
