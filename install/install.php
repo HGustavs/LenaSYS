@@ -189,7 +189,7 @@
         echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
         echo '<br><div class="tooltipInfo"><span class="material-symbols-outlined">info
         <span class="tooltipInfoText">
-          Check this to enable the domain, set for this user, to be able to connect from any hostname
+        Allow the dbuser to connect from any hostname. Useful if db is located on another machine/vm/container.
         </span></span></div><label for="usingDocker">Using distributed environment: </label><input id="usingDocker" name="usingDocker" type="checkbox" ' . ($usingDocker == "on" ? 'checked' : '') . '><br>';
         echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
           if($dbUsername || $dbHostname || $dbName || $dbPassword || $usingDocker){
