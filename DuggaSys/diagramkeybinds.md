@@ -8,8 +8,10 @@
 - Box selection = "2"
 - Entity = "3"
 - Relation = "4"
-- Attribute = "5" 
-- Line creation = "6" 
+- Line creation = "5" 
+- UML Initial state = "6"
+- Sequence lifeline = "7"
+- Note = "8"
 
 ## Zoom
 
