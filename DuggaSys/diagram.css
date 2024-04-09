@@ -117,6 +117,7 @@
     transform: translate(20px,0px) rotate(90deg);
     cursor: pointer;
     width: 780px;
+    padding: 6px;
 }
 
 #options-pane-content {
