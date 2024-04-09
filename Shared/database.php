@@ -1,6 +1,10 @@
 <?php
 
+
+include_once(__DIR__ . "/../../coursesyspw.php");
+
 include_once(__DIR__ . '/../../coursesyspw.php');
+
 
 //---------------------------------------------------------------------------------------------------------------
 // dbconnect - Makes database connection
