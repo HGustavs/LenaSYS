@@ -923,8 +923,8 @@
                     <p>Do you want to overwrite the existing file?</p>
                 </div>
                 <div class="button-row">
-                    <button class="submit-button" onclick="closeOverridePopout(), showSavePopout()">Cancel</button>
-                    <button class="submit-button" onclick="    storeDiagramInLocalStorage(getCurrentFileName()), closeOverridePopout()">Overwrite</button>
+                    <button class="submit-button" onclick="closeOverridePopout(); showSavePopout();">Cancel</button>
+                    <button class="submit-button" onclick="storeDiagramInLocalStorage(getCurrentFileName()); closeOverridePopout();">Overwrite</button>
                 </div>
             </div>
         </div>
