@@ -502,10 +502,8 @@ function updateGithubRepo(githubURL, cid) {
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 422:
-					alert(data.responseJSON.message + "\nDid not create/update course");
-					break;
 				case 503:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					alert(data.responseJSON.message + "\nDid not update course");
 					break;
 				default:
 					alert("Something went wrong...");
@@ -536,10 +534,8 @@ function fetchGitHubRepo(gitHubURL)
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 422:
-					alert(data.responseJSON.message + "\nDid not create/update course");
-					break;
 				case 503:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					alert(data.responseJSON.message + "\nDid not update course");
 					break;
 				default:
 					alert("Something went wrong...");
@@ -3805,16 +3801,15 @@ function validateForm(formid) {
     }
   }
 
-  if(formid === 'githubPopupWindow'){
+  if (formid === 'githubPopupWindow') {
     var repoLink = $("#gitRepoURL").val();
     var cid = $("#cidTrue").val();
 
-    if(repoLink){
-      if(fetchGitHubRepo(repoLink)){
-        AJAXService("SPECIALUPDATE", {	cid : cid, courseGitURL : repoLink }, "COURSE");
-        //AJAXService("UPDATE", {	cid : cid, courseGitURL : repoLink }, "COURSE");
+    if (repoLink) {
+      if (fetchGitHubRepo(repoLink)) {
+        AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
-        $("#githubPopupWindow").css("display", "none"); 
+        $("#githubPopupWindow").css("display", "none");
         updateGithubRepo(repoLink, cid);
       }
     }
