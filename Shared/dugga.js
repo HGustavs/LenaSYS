@@ -1020,7 +1020,7 @@ function AJAXService(opt,apara,kind)
 
 		if(opt === "NEW"){
 			$.ajax({
-				url : "./microservices/courseedService/createNewCourse_msTest.php",
+				url : "./microservices/courseedService/createNewCourse_ms.php",
 				//url : "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
