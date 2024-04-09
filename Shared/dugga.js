@@ -1017,13 +1017,31 @@ function AJAXService(opt,apara,kind)
 	}
 
 	if(kind=="COURSE"){
-		$.ajax({
+		//for testing of the microservice, delete the if/else and uncomment the original ajax call below before merge
+		if (opt === "NEWVRS") {
+            $.ajax({
+                url: "../DuggaSys/microservices/courseedService/createCourseVersion_ms.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedCourse
+            });
+        } else {
+			$.ajax({
+				url : "courseedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedCourse
+			});
+        }
+		/*$.ajax({
 			url : "courseedservice.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
 			success: returnedCourse
-		});
+		});*/
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
