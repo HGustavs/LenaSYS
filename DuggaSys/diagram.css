@@ -1,12 +1,14 @@
 @keyframes loadingSpin {
-    0%{
+    0% {
         rotate: 0deg;
     }
-    100%{
+
+    100% {
         rotate: 360deg;
     }
 }
-#loadingSpinner{
+
+#loadingSpinner {
     width: 100vw;
     height: 100vh;
     z-index: 9999;
@@ -17,65 +19,67 @@
 }
 
 #container {
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     user-select: none;
     overflow: none;
 }
 
 #svgbacklayer {
-    position:absolute;
-    left:0px;
-    top:0px;
-    width:100%;
-    height:100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: -10;
 }
 
 #svggrid {
-    position:absolute;
-    left:0;
-    top:0;
+    position: absolute;
+    left: 0;
+    top: 0;
     display: none;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: -10;
 }
-#svgA4Template{
-    position:absolute;
-    left:0px;
-    top:0px;
-    width:100%;
-    height:100%;
+
+#svgA4Template {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: -10;
 }
-#a4Template{
-    position:absolute;
-    left:0;
-    top:0;
+
+#a4Template {
+    position: absolute;
+    left: 0;
+    top: 0;
     display: none;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: -10;
 }
 
 #svgoverlay {
-    position:absolute;
-    left:0px;
-    top:0px;
-    border:1px dotted green;
-    width:100%;
-    height:100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border: 1px dotted green;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 10;
-}		
+}
 
 #fab {
     position: fixed;
@@ -90,7 +94,7 @@
     background-color: #eb4;
     box-shadow: 6px 6px 10px #888;
     user-select: none;
-    cursor:pointer;
+    cursor: pointer;
     z-index: 5001;
 }
 
@@ -113,14 +117,15 @@
 #options-pane-button {
     display: inline-block;
     vertical-align: top;
-    transform-origin: top left;            
-    transform: translate(20px,0px) rotate(90deg);
+    transform-origin: top left;
+    transform: translate(20px, 0px) rotate(90deg);
     cursor: pointer;
+    padding: 6px;
     width: 780px;
 }
 
 #options-pane-content {
-    margin-left:20px;
+    margin-left: 20px;
     vertical-align: top;
     display: inline-block;
 }
@@ -137,11 +142,11 @@
     box-shadow: 6px 6px 10px #888;
 }
 
-#diagramTypeDropdown, #diagramLoad{
+#diagramTypeDropdown, #diagramLoad {
     display: none;
 }
 
-#diagramTypeDropdown{
+#diagramTypeDropdown {
     width: 100%;
     margin-bottom: 10px;
 }
@@ -157,26 +162,26 @@
     position: absolute;
 }
 
-#pad_lock{
+#pad_lock {
     top: -45%;
     display: block;
     position: relative;
 }
 
-#canvasOverlay{
-    pointer-events:none;
-    position:absolute;
-    left:0px;
-    top:0px;
-    width:100%;
-    height:100%;
+#canvasOverlay {
+    pointer-events: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
 }
 
 .selected-course {
-    box-shadow:10px 10px 10px RGBA(0,0,0,0.3);
+    box-shadow: 10px 10px 10px RGBA(0, 0, 0, 0.3);
 }
 
-#diagram-header{
+#diagram-header {
     z-index: 1;
     position: relative;
     background-color: #FFF;
@@ -184,15 +189,16 @@
 
 #rulerOverlay {
     display: none;
-    position:absolute;
-    left:50px;
-    top:0;
-    width:100%;
-    height:100%;
+    position: absolute;
+    left: 50px;
+    top: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    display:block;
+    display: block;
     z-index: 20;
 }
+
 #ruler-y {
     left: 20px;
     background-color: #000;
@@ -210,19 +216,21 @@
     position: absolute;
     z-index: 500;
 }
+
 #ruler-x-svg {
     background-color: #fff;
-    position:absolute;
-    width:100%;
-    height:40px;
-    z-index:2;
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    z-index: 2;
 }
+
 #ruler-y-svg {
     background-color: #fff;
-    position:absolute;
-    width:40px;
-    height:100%;
-    z-index:2;
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    z-index: 2;
 }
 
 #rulerCorner {
@@ -234,44 +242,50 @@
     top: 0px;
 }
 
-.diagramIcons{
+.diagramIcons {
     position: relative;
     margin: auto;
     width: 34px;
     height: 34px;
-    cursor:pointer;
+    cursor: pointer;
     border: solid 1px var(--color-primary);
     margin-top: 3px;
-    
-   
+
+
 }
-.diagramIcons:hover, .active{
+
+.diagramIcons:hover, .active {
     background: var(--color-primary-light);
     border: solid 1px var(--color-border-2);
 }
-.diagramIcons img{
-    width:34px;
-    height:34px;
+
+.diagramIcons img {
+    width: 34px;
+    height: 34px;
 }
+
 .node {
     position: absolute;
     width: 8px;
     height: 8px;
     background: blue;
 }
+
 .node.mr {
     top: calc(50% - 4px);
     right: 0;
     cursor: col-resize;
 }
+
 .node.ml {
     top: calc(50% - 4px);
     left: 0;
     cursor: col-resize;
 }
+
 .node.md {
     right: calc(50% - 4px);
-    bottom: 0; 
+    bottom: 0;
     cursor: row-resize;
 }
 
@@ -280,7 +294,7 @@
     cursor: row-resize;
 }
 
-.underline{
+.underline {
     text-underline-offset: 0.15em;
     text-decoration: underline;
 }
@@ -314,14 +328,17 @@
     background-color: var(--color-primary);
     z-index: 1000;
 }
+
 #diagram-toolbar>fieldset {
     padding: 2px;
     border-color: var(--color-primary-hover);
 }
+
 #diagram-toolbar>fieldset>legend {
     color: var(--color-text-header);
     font-size: 0.6em;
 }
+
 /* Diagram Messages */
 #diagram-message {
     width: 300px;
@@ -334,13 +351,15 @@
     pointer-events: none;
     vertical-align: bottom;
 }
+
 #diagram-message .timeIndicatorBar {
     height: 5px;
     width: calc(100% - 20px);
     bottom: 5px;
     left: 10px;
-    background: rgba(255,255,255,1);
+    background: rgba(255, 255, 255, 1);
 }
+
 #diagram-message>div {
     pointer-events: auto;
     margin: 5px;
@@ -363,8 +382,8 @@
 
 /*tooltip*/
 
-.toolTipText{
-    top:-63px;
+.toolTipText {
+    top: -63px;
     left: 125%;
     visibility: hidden;
     width: 250px;
@@ -377,20 +396,21 @@
     position: absolute;
     z-index: 2;
 }
-#highestToolTip{
+
+#highestToolTip {
     top: -15px;
 }
 
-.diagramIcons:hover .toolTipText{
+.diagramIcons:hover .toolTipText {
     visibility: visible;
     transition-delay: 700ms;
 }
 
-#tooltip-OPTIONS{
+#tooltip-OPTIONS {
     left: 9.5%;
 }
 
-.colorMenu{
+.colorMenu {
     visibility: hidden;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
@@ -418,7 +438,7 @@
     animation-duration: 0.5s;
 }
 
-.colorCircle:hover{
+.colorCircle:hover {
     stroke: white;
     cursor: pointer;
 }
@@ -433,23 +453,26 @@
     transition: 1s;
 }
 
-#options-pane-button .toolTipText{
-    transform: translate(-150px,100px) rotate(-90deg);
+#options-pane-button .toolTipText {
+    transform: translate(-150px, 100px) rotate(-90deg);
 }
-#options-pane-button:hover .toolTipText{
+
+#options-pane-button:hover .toolTipText {
     visibility: visible;
 }
-#fab .toolTipText{
-    transform: translate(-335px,-20px);
+
+#fab .toolTipText {
+    transform: translate(-335px, -20px);
     font-size: 16px;
     line-height: 20px;
 
 }
-#fab:hover .toolTipText{
+
+#fab:hover .toolTipText {
     visibility: visible;
 }
 
-.tooltip{
+.tooltip {
     position: absolute;
     z-index: 1;
 }
@@ -479,12 +502,13 @@
 
 /*Cardinality stuff*/
 
-.propertyCardinality{
-    padding-left:3px;
-    padding-right:3px;
+.propertyCardinality {
+    padding-left: 3px;
+    padding-right: 3px;
 }
+
 /* REPLAY */
-#diagram-replay-box{
+#diagram-replay-box {
     position: absolute;
     background-color: var(--color-primary);
     bottom: 0;
@@ -495,66 +519,75 @@
     visibility: hidden;
     color: var(--color-text-header);
 }
-#diagram-replay-message{
-     position: absolute;
-     background-color: rgba(0, 0, 0, 0.8);
-     width: 300px;
-     left: calc(50% - 50px);
-     bottom: 70px;
-     color: var(--color-text-header);
-     border-radius: 5px;
-     text-align: center;
-     z-index: 100;
+
+#diagram-replay-message {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 300px;
+    left: calc(50% - 50px);
+    bottom: 70px;
+    color: var(--color-text-header);
+    border-radius: 5px;
+    text-align: center;
+    z-index: 100;
     visibility: hidden;
-     pointer-events: none;
- }
+    pointer-events: none;
+}
+
 /* toggle placement types */
-.togglePlacementTypeButton{
+.togglePlacementTypeButton {
     position: absolute;
     right: -10%;
     bottom: -10%;
     width: 6.2px;
     height: 6.2px;
 }
-#diagramPopOut{
+
+#diagramPopOut {
     position: absolute;
     right: 10%;
     width: 6.2px;
     height: 3.2px;
 }
-.togglePlacementTypeBoxEntity{
+
+.togglePlacementTypeBoxEntity {
     display: none;
     position: absolute;
     left: 130%;
     bottom: 0;
     padding: 2px;
-    background-color:var(--color-primary);
-    
+    background-color: var(--color-primary);
+
 }
-.togglePlacementTypeBoxRI{
+
+.togglePlacementTypeBoxRI {
     display: none;
     position: absolute;
     left: 172%;
     bottom: 0;
-    padding:2px;
-    background-color:var(--color-primary);
-    
+    padding: 2px;
+    background-color: var(--color-primary);
+
 }
-.activeTogglePlacementTypeBox{
+
+.activeTogglePlacementTypeBox {
     display: flex;
     justify-content: left;
 }
-.activePlacementType{
+
+.activePlacementType {
     background: var(--color-primary-hover);
 }
-.hiddenPlacementType{
-    display:none;
-}
-.hiddenToolTiptext{
-    visibility:hidden;
+
+.hiddenPlacementType {
+    display: none;
 }
 
-.loadModalOverlay{
+.hiddenToolTiptext {
+    visibility: hidden;
+}
+
+.loadModalOverlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -565,7 +598,7 @@
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.loadModal{
+.loadModal {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -577,7 +610,7 @@
     border: 1px solid #000;
 }
 
-.deleteLocalDiagram{
+.deleteLocalDiagram {
     margin-left: 10px;
     background-color: #DF2727 !important;
 }
@@ -586,24 +619,24 @@
     background-color: #961a1a !important;
 }
 
-#amountOfLoads{
+#amountOfLoads {
     text-align: center;
     font-size: 12px;
     font-style: italic;
 }
 
-#loadTitle{
+#loadTitle {
     font-size: 1.2rem;
     color: #815e9d;
 }
 
-#loadHeader{
+#loadHeader {
     display: flex;
     flex-direction: row;
     background-color: #eb4;
 }
 
-#loadContainer{
+#loadContainer {
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 10px;
@@ -614,14 +647,14 @@
     overflow-y: auto;
 }
 
-#loadContainer button{
+#loadContainer button {
     border-style: none;
     background-color: #815e9d;
     color: white;
     padding: 5px;
 }
 
-#loadContainer button:hover{
+#loadContainer button:hover {
     cursor: pointer;
     background-color: #614875;
 }
@@ -632,37 +665,41 @@
     cursor: pointer;
     border: none;
     background-color: #da2727;
-  }
+}
 
-.hiddenLoad{
+.hiddenLoad {
     display: none;
 }
 
-.placementTypeIcon img{
+.placementTypeIcon img {
     position: absolute;
     top: 0px;
     width: 6.2px;
     height: 6.2px;
     z-index: 2;
 }
-.placementTypeBoxIcons{
+
+.placementTypeBoxIcons {
     margin: auto;
     width: 34px;
     height: 34px;
-    cursor:pointer;
+    cursor: pointer;
     border: solid 1px var(--color-primary);
 }
-.placementTypeBoxIcons:hover, .active{
+
+.placementTypeBoxIcons:hover, .active {
     background: var(--color-primary-light);
     border: solid 1px var(--color-border-2);
 }
-.placementTypeBoxIcons img{
-    width:34px;
-    height:34px;
+
+.placementTypeBoxIcons img {
+    width: 34px;
+    height: 34px;
 }
-.placementTypeToolTipText{
-    top:0%;
-    left:100%;
+
+.placementTypeToolTipText {
+    top: 0%;
+    left: 100%;
     visibility: hidden;
     width: 250px;
     background: rgba(0, 0, 0, 0.8);
@@ -674,24 +711,30 @@
     position: absolute;
     z-index: 2;
 }
-.placementTypeBoxIcons:hover .placementTypeToolTipText{
+
+.placementTypeBoxIcons:hover .placementTypeToolTipText {
     visibility: visible;
 }
+
 /*  options panel  */
 .options-fieldset {
     width: 90%;
     margin: auto;
 }
+
 .options-fieldset-show {
     display: block;
 }
+
 .options-fieldset-hidden {
     display: none;
 }
+
 #ERTable {
     user-select: text;
 }
-#zoom-container{
+
+#zoom-container {
     visibility: visible;
     position: absolute;
     width: auto;
@@ -704,23 +747,28 @@
     justify-content: space-around;
     padding: 1px;
 }
+
 .diagramZoomIcons img {
     height: 27px;
     width: 27px;
 }
+
 #zoom-message {
     height: 30px;
     width: 40px;
 }
+
 .diagramZoomIcons {
     height: 27px;
     width: 27px;
     float: left;
     border: 1px solid transparent;
 }
+
 .diagramZoomIcons:hover {
     border: solid 1px var(--color-primary-light);
 }
+
 .zoomToolTipText {
     bottom: 40px;
     right: 0%;
@@ -753,7 +801,7 @@
     height: 100;
 }
 
-#grid > path {
+#grid>path {
     fill: none;
     stroke: gray;
     stroke: 0.8 0.8;
@@ -781,8 +829,8 @@
 #a4Rect {
     width: 794;
     height: 1122;
-    stroke:rgb(50, 50, 50);
-    stroke-width:2;
+    stroke: rgb(50, 50, 50);
+    stroke-width: 2;
     stroke-dasharray: 5 3;
     fill: #ffffee;
     fill-opacity: 0.4;
@@ -791,22 +839,22 @@
 #vRect {
     width: 1133;
     height: 794;
-    display:none; 
-    stroke:rgb(50, 50, 50);
-    stroke-width:2; 
-    stroke-dasharray: 5 3; 
+    display: none;
+    stroke: rgb(50, 50, 50);
+    stroke-width: 2;
+    stroke-dasharray: 5 3;
     fill: #ffffee;
     fill-opacity: 0.4;
 }
 
 #a4Text {
- /* no styling yet */
+    /* no styling yet */
 }
 
 /****************
   ZOOM CONTAINER 
 *****************/
-#zoom-message-box{
+#zoom-message-box {
     width: 75px;
     left: 100px;
     bottom: 5px;
@@ -817,8 +865,8 @@
     pointer-events: none;
 }
 
-#zoom-message-box > img {
-    width: 25%; 
+#zoom-message-box>img {
+    width: 25%;
     height: 27px;
 }
 
@@ -826,11 +874,11 @@
    OPTION PANE 
 *****************/
 #rulerSnapToGrid {
-    background-color: transparent; 
-    border: #614875; 
-    border-width: 3px; 
-    border-style: solid; 
-    color: #614875; 
+    background-color: transparent;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
     font-weight: bold;
 }
 
@@ -854,14 +902,14 @@
 
 #diagramDropDownToggle {
     background-color: transparent;
-    border:#614875;
-    border-width:3px;
-    border-style:solid;
-    color:#614875;
+    border: #614875;
+    border-width: 3px;
+    border-style: solid;
+    color: #614875;
     font-weight: bold;
 }
 
-.disabledIcon{
+.disabledIcon {
     background-color: #8d68ab;
 }
 
@@ -876,10 +924,10 @@
 }
 
 #a4HorizontalButton {
-    display:none;
+    display: none;
 }
 
-#option-import > input {
+#option-import>input {
     width: 100%;
 }
 
