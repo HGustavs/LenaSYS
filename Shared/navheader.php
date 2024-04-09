@@ -204,6 +204,7 @@
 									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].")' src='../Shared/icons/gitrefresh.svg'>";
 								echo "</span>";
 								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$_SESSION['lastFetchTime']."<br><b>Cooldown:</b> ".$_SESSION['fetchCooldown']."</span>";
+								// echo "<span class='tooltiptext'><b>Last Fetch:</b> <br><b>Cooldown:</b> </span>";
 							echo "</div>";
 							echo "</td>";
 

@@ -1262,6 +1262,7 @@ p {
 
 .tooltiptext {
   display: none;
+  width: 230px;
   background-color: var(--color-background);
   color: var(--color-text-primary);
   text-align: center;
