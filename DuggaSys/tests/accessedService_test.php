@@ -520,7 +520,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        'query-after-test-15' => "DELETE FROM user_course WHERE coursecode = 'testtest';",
+        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+
+        'query-after-test-15' => "DELETE FROM user_course WHERE cid = 'cid';",
         'query2-after-test-15' => "DELETE FROM course WHERE cid= '".$row['cid']."';",
 
     )
