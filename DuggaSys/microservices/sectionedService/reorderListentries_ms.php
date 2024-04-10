@@ -7,4 +7,12 @@
 
   pdoConnect();
   session_start();
+
+  //Get the necessary parameters from the request
+  $courseid = getOP('courseid');
+  $coursevers = getOP('coursevers');
+  $pos = getOP('pos');
+  $moment = getOP('moment');
+
+
 ?>
