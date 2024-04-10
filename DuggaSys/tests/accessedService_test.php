@@ -13,11 +13,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
+
         
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -26,7 +22,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'firstname',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
