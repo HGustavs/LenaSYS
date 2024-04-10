@@ -3213,11 +3213,9 @@ setInterval(function () {
       console.log("Time to update the code examples.");
 
       let returnedPromises = [];
-      for (let i = 0; i < itemKinds.length; i++) {
+      for (let i = 0; i < collectedLid.length; i++) {
         if (itemKinds[i] === 4) {
-          for (let i = 0; i < collectedLid.length; i++) {
-            returnedPromises.push(createExamples(collectedLid[i], false));
-          }
+          returnedPromises.push(createExamples(collectedLid[i], false));
         }
       }
 
