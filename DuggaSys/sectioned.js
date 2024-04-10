@@ -601,6 +601,14 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "Delete item" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionConfirmBox").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
