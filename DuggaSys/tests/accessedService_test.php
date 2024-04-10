@@ -172,11 +172,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values 1
         'query-before-test-6' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'cid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['cid'];
-        },
 
         //Pre-values 2
         'query2-before-test-6' => "INSERT INTO course_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
@@ -234,7 +229,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-7' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
         
-        'query2-before-test-7' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
+        'query2-before-test-7' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -527,7 +522,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        'query-after-test-15' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
+        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+
+        'query-after-test-15' => "DELETE FROM user_course WHERE cid = 'cid';",
         'query2-after-test-15' => "DELETE FROM course WHERE cid= '".$row['cid']."';",
 
     )
