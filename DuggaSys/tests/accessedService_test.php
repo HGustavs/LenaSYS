@@ -4,6 +4,19 @@ include "../../Shared/test.php";   // Include the test file where this is sent t
 include_once "../../../coursesyspw.php";
 include_once "../../Shared/sessions.php";
 
+ // Execute the query to insert a new user
+ $queryInsert = "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')";
+ $pdo->exec($queryInsert);
+
+ // Execute the query to fetch the UID
+ $querySelect = "SELECT uid FROM user WHERE username = 'testuser1'";
+ $statement = $pdo->query($querySelect);
+
+ // Fetch the result row as an associative array
+ $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+ // Extract the UID from the result array
+ $uid = $row['uid'];
 
 $testsData = array(   // Test-data is saved on this array that is then tested in test.php file
 
