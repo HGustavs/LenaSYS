@@ -43,11 +43,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-2' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
+
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -56,7 +52,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'lastname',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -77,11 +73,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-3' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -90,7 +81,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'ssn',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -110,11 +101,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-4' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -123,7 +109,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'username',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -145,11 +131,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-5' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
+
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -158,7 +140,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'class',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -197,7 +179,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'examiner',
                 'val' => 'test',
                 'uid' => '2',
-                'cid' => $row['cid'],
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
             ),
             
             //Inte säker om det fungerar att ha en annan array här men vi får testa
@@ -207,7 +189,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'examiner',
                 'val' => 'None',
                 'uid' => '2',
-                'cid' => $row['cid'],
+                'cid' => $row['cid'],  //OKLKART VILKEN SELECT SOM SKA VARA HÄR
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -227,12 +209,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-7' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'cid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['cid'];
-        },
-
         
         'query2-before-test-7' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
 
@@ -244,7 +220,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'examiner',
                 'val' => 'None',
                 'uid' => '2',
-                'cid' => $row['cid'],
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -265,11 +241,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-8' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'cid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['cid'];
-        },
 
          //Pre-values2
          'query2-before-test-8' => "INSERT INTO user_course(uid, cid, access) VALUES ('2','".$row['cid']."' , 'test');",
@@ -282,7 +253,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'vers',
                 'val' => 'test',
                 'uid' => '2',
-                'cid' => $row['cid'],
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -303,11 +274,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-9' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'cid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['cid'];
-        },
 
         //Pre-values2
         'query2-before-test-9' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
@@ -320,7 +286,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'access',
                 'val' => 'test',
                 'uid' => '2',
-                'cid' => $row['cid'],
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -341,11 +307,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'cid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['cid'];
-        },
 
         //Pre-values2
         'query2-before-test-1' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
@@ -358,7 +319,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'group',
                 'val' => 'test',
                 'uid' => '2',
-                'cid' => $row['cid'],
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -406,18 +367,13 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'CHPWD',
-                'uid' => $row['uid'],
+                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
                 'pwd' => '123123',
             )),
         'filter-output' => serialize(array(
@@ -501,11 +457,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'pre-query' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
 
-        'cid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = '1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['cid'];
-        },
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -514,7 +465,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'ADDUSR',
                 'regstatus' => 'UNK',
                 'uid' => '2',
-                'cid' => $row['cid'],
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
                 'coursevers' => 'testvers',
             )),
         'filter-output' => serialize(array(
