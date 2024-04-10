@@ -593,6 +593,14 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "logout" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#logoutBox").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
