@@ -167,7 +167,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         },
 
         //Pre-values 2
-        'query2-before-test-6' => "INSERT INTO course_course(uid, cid, access) VALUES ('2', '".$row['cid']."' , 'test');",
+        'query2-before-test-6' => "INSERT INTO course_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
 
         //Enligt modellen ska det bara vara en select för den första query inte säker på detta
 
@@ -189,7 +189,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'examiner',
                 'val' => 'None',
                 'uid' => '2',
-                'cid' => $row['cid'],  //OKLKART VILKEN SELECT SOM SKA VARA HÄR
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
