@@ -11,6 +11,7 @@ include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 include_once "../DuggaSys/gitfetchService.php";
 
+
 // Connect to database and start session
 pdoConnect();
 session_start();
