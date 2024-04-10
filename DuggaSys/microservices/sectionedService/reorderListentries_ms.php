@@ -3,7 +3,7 @@
 
   include_once "../Shared/sessions.php";
   include_once "../Shared/basic.php";
-  include_once "../Shared/microservices/getUid_ms.php";
+  include_once "../shared/microservices/getUid_ms.php";
 
   pdoConnect();
   session_start();
