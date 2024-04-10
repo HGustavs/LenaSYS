@@ -31,7 +31,8 @@ var isLoggedIn = false;
 // Globals for the automatic refresh (github)
 var isActivelyFocused = false; // If the user is actively focusing on the course page
 var lastUpdatedCodeExampes = null; // Last time code examples was updated
-const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+var updateMins = 10; // Variable expressed in minutes for how often the code should be updated
+const UPDATE_INTERVAL = 60000 * updateMins; // Timerintervall for code to be updated (currently set to 10 minutes) (minute in millisecond * updateMins)
 
 
 function IsLoggedIn(bool) {
