@@ -6,7 +6,7 @@ include_once "../../Shared/sessions.php";
 
  // Execute the query to insert a new user
  $queryInsert = "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd')";
- $pdo->exec($queryInsert);
+//  $pdo->exec($queryInsert);
 
  // Execute the query to fetch the UID
  $querySelect = "SELECT uid FROM user WHERE username = 'testuser1'";
