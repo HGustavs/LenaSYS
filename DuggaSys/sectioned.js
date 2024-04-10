@@ -3930,30 +3930,30 @@ function showFeedbackquestion() {
 
 async function fetchGitCode(){
      
-  /*
+  
       var fileName = document.getElementById('fileName').value;
       var githubURL = document.getElementById('githubURL').value;
       var filePath = document.getElementById('filePath').value;
-        
-      var gitUrlParts = githubURL.split('/');
-      var gitOwner = gitUrlParts[3];
-      var gitRepo = gitUrlParts[4];
-  */
-      //var apiUrl = 'https://api.github.com/repos/' + gitOwner + '/' + gitRepo + '/contents/' + filePath;
-      //var apiUrl = 'https://raw.githubusercontent.com/' + gitOwner + '/' + gitRepo + '/' + '/master/' + filePath;
-      var apiUrl = 'https://github.com/HGustavs/LenaSYS/raw/master/composer.json';
-  
-      try{
-         const response = await fetch(apiUrl, {mode: 'no-cors'});
-         if(!response.ok){
-          throw new Error('Network response not ok:', response.status, response.statusText);
-         }
-         //const fileData = await response.text();
-  
-         console.log('file fetched succesffully');
-      } catch (error) {
-        console.error('Error fetching file', error);
-      }
+
+      var apiUrl = githubURL.replace('github.com', 'raw.githubusercontent.com') + '/master/' + filePath;
+
+      //Ajax request to fetch githubfile content
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', apiUrl);
+      xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // File content fetched successfully
+                var fileContent = xhr.responseText;
+                console.log('File content:', fileContent);
+            } else {
+                // Error occurred while fetching file
+                console.error('Error fetching file:', xhr.statusText);
+            }
+        }
+    };
+    xhr.send();
+   
   }
 
 function changetemplate(templateno) {
