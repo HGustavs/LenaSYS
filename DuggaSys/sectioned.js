@@ -633,6 +633,14 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "login" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loginBox").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
