@@ -609,6 +609,30 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "Confirm tab" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#tabConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Choose template" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubTemplate").css("display", "none");
+  }
+})
+
+// Close the "Github moment" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubBox").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
