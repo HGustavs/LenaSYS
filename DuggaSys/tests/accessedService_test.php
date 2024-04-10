@@ -4,6 +4,15 @@ include "../../Shared/test.php";   // Include the test file where this is sent t
 include_once "../../../coursesyspw.php";
 include_once "../../Shared/sessions.php";
 
+$query = "SELECT uid FROM user WHERE username = 'testuser1'";
+$result = mysqli_query($connection, $query);
+
+// Fetch the result row as an associative array
+$row = mysqli_fetch_assoc($result);
+
+// Extract the UID from the result array
+$uid = $row['uid'];
+
 $testsData = array(   // Test-data is saved on this array that is then tested in test.php file
 
     //TEST #1
@@ -24,7 +33,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'firstname',
                 'val' => 'test',
-                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
+                'uid' => $uid,
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
