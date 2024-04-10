@@ -1545,7 +1545,6 @@ document.addEventListener('keydown', function (e) {
         pointerState = pointerStates.DEFAULT;
         showdata();
     }
-  
     if (isKeybindValid(e, keybinds.ZOOM_IN)){
         e.preventDefault();
         zoomin();
@@ -1585,14 +1584,14 @@ document.addEventListener('keydown', function (e) {
 
 document.addEventListener('keyup', function (e) {
     var pressedKey = e.key.toLowerCase();
-  
+
     // Toggle modifiers when released
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) {
-          setTimeout(() => { ctrlPressed = false; }, 1000);
+        setTimeout(() => { ctrlPressed = false; }, 1000);
     }
-  
+
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
     if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
         if (document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)) {
@@ -1612,13 +1611,16 @@ document.addEventListener('keyup', function (e) {
         if (context.length > 0) {
             removeElements(context);
         } else if (contextLine.length > 0) {
-             removeLines(contextLine);
+            removeLines(contextLine);
         }
         updateSelection(null);
     }
     if (isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
     if (isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
-    if (isKeybindValid(e, keybinds.EDGE_CREATION)) setMouseMode(mouseModes.EDGE_CREATION); clearContext();
+    if (isKeybindValid(e, keybinds.EDGE_CREATION)) {
+        setMouseMode(mouseModes.EDGE_CREATION);
+        clearContext();
+    }
 
     // Entity / Class / State
     if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
