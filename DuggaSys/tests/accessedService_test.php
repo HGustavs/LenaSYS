@@ -14,7 +14,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
 
-        
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -255,9 +254,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
+
+        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         //Rätt platts för delete?
-        'query-after-test-7' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
-        'query2-after-test-7' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
+        'query-after-test-7' => "DELETE FROM user_course WHERE cid = 'cid';",
+        'query2-after-test-7' => "DELETE FROM course WHERE cid = 'cid';",
     ),
 
 
@@ -291,9 +292,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
+        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         //Rätt platts för delete?
-        'query-after-test-8' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
-        'query2-after-test-8' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
+        'query-after-test-8' => "DELETE FROM user_course WHERE cid = 'cid';",
+        'query2-after-test-8' => "DELETE FROM course WHERE cid = 'cid';",
     ),
 
 
@@ -513,7 +515,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-                
+
                 'opt' => 'ADDUSR',
                 'regstatus' => 'UNK',
                 'uid' => '2',
