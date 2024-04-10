@@ -1649,7 +1649,7 @@ document.addEventListener('keyup', function (e) {
     }
 
     if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
-        setElementPlacementType(elementTypes.NOTE);
+        setElementPlacementType(elementTypes.note);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
