@@ -29,6 +29,20 @@ function getGitHubURL($url)
     return $translatedURL;
 }
 
+//gets the API URL for the latest commit in master instead of all content, could reasonably be made generic with getGitHubURL
+function getGitHubURLCommit($url)
+{
+    $urlParts = explode('/', $url);
+    // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    $username = $urlParts[3];
+    // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    $repository = $urlParts[4];
+    // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+    $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/commits/master';
+    // bfs($translatedURL, "REFRESH");
+    return $translatedURL;
+}
+
 function insertToFileLink($cid, $item) 
 {
     global $pdo;
@@ -65,6 +79,7 @@ function insertToMetaData($cid, $item)
     global $pdoLite;
     $query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
     $query->bindParam(':cid', $cid);
+    print_r("name = ".$item['name']."type = ".$item['type']."url = ".$item['url']."download_url = ".$item['download_url']."sha = ".$item['sha']."path = ".$item['path']);
     $query->bindParam(':fileName', $item['name']);
     $query->bindParam(':fileType', $item['type']);
     $query->bindParam(':fileURL', $item['url']);
@@ -116,7 +131,13 @@ function getIndexFile($url) {
 
 function bfs($url, $cid, $opt) 
 {
-    $url = getGitHubURL($url);
+    //different URL depending on operation
+    if($opt == "GETCOMMIT"){
+        $url = getGitHubURLCommit($url);
+    }
+    else{
+        $url = getGitHubURL($url);
+    }
     $filesToIgnore = getIndexFile($url);
     $visited = array();
     $fifoQueue = array();
@@ -142,10 +163,13 @@ function bfs($url, $cid, $opt)
         // Starts a stream with the required headers
         $context = stream_context_create($opts);
         // Fetches the data with the stream included
-        $data = @file_get_contents($currentUrl, true, $context);
+        $data = @file_get_contents($currentUrl, true, $context); 
         if ($data) {
             // Decodes the fetched data into JSON
             $json = json_decode($data, true);
+            if($opt == "GETCOMMIT"){
+                return $json['sha'];
+            }
             // Loops through each item fetched in the JSON data
             if ($json) {
                 foreach ($json as $item) {
@@ -162,7 +186,7 @@ function bfs($url, $cid, $opt)
                                     insertToFileLink($cid, $item);
                                     insertToMetaData($cid, $item);
                                     downloadToWebserver($cid, $item);  
-                                }                 
+                                }                
                             }
                             //Otherwise, fetch and download all files
                         } else {

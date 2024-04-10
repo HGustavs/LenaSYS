@@ -2,8 +2,8 @@
 	// -------------==============######## Setup ###########==============-------------
 
 	// Variables for the refresh button, deadlines specified in seconds
-	$shortdeadline = 300; // 300 = 5 minutes
-	$longdeadline = 600; // 600 = 10 minutes
+	$shortdeadline = 000; // 300 = 5 minutes
+	$longdeadline = 000; // 600 = 10 minutes
 
 	// Used to display errors on screen since PHP doesn't do that automatically.
 	ini_set('display_errors', 1);
@@ -193,8 +193,7 @@
 		else {
 			if(refreshCheck($_POST['cid'], $_POST['user'])){
 				// Get the latest commit from the URL
-				$latestCommit = getCommit($url);
-
+				$latestCommit = bfs($url,$cid,"GETCOMMIT");
 				// Compare old commit in db with the new one from the url
 				if($latestCommit != $commit) {
 					// Update the SQLite db with the new commit
@@ -263,6 +262,7 @@
 	// getCommit: Gets the latest commit from a URL using DOM
 	//--------------------------------------------------------------------------------------------------
 
+	//this is useless, do bfs($url,$cid,"GETCOMMIT") instead where applicable, leaving for now due to it being referenced elesewhere
 	function getCommit($url) {
 		// Turn the HTML from the URL into an DOM document
 		$html = file_get_contents($url);
@@ -274,11 +274,13 @@
 		$dom->loadHTML($html);
 		libxml_use_internal_errors(false);
 
+		//d-none js-permalink-shortcut
 		// Find the HTML element that holds the latest commit value
 		$href = "";
 		$elements = $dom->getElementsByTagName('a');
-		foreach ($elements as $element) {		
-			if($element->getAttribute('class')=='d-none js-permalink-shortcut'){
+		foreach ($elements as $element) {	
+			print_r("     ".$element->getAttribute('class'));	
+			if($element->getAttribute('class')=='Link_StyledLink-sc-14289xe-0 elltiT Link--secondary'){
 				$value = $element->getAttribute("href");
 				$href = $value;
 			}
