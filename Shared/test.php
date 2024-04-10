@@ -141,6 +141,7 @@ function testHandler($testsData, $prettyPrint){
                         if ($queryName == $oneQuery) {
                             if ($queryPath != null) {
                                 eval('$queryValue = $queryValue' . $queryPath . ';');
+                                echo $queryValue;
                                 $data[$sInput] = $queryValue;
                             }
                             else{
