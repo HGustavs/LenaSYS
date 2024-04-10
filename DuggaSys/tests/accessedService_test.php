@@ -195,7 +195,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Send 2
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
-        'service-data' => serialize(
+        'service-data2' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
