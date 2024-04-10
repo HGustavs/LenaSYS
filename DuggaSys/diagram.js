@@ -3595,11 +3595,11 @@ function entityIsOverlapping(id, x, y) {
                 }
                 //if its overlapping with a super state, just break since that is allowed.
                 if (data[i].kind == "UMLSuperState" || element.kind == "UMLSuperState") {
-                    break;
+                    isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
                 if (data[i].kind == "sequenceActorAndObject" || element.kind == "sequenceActorAndObject") {
-                    break;
+                    isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
                     isOverlapping = true;
