@@ -14,12 +14,18 @@
             $userid="guest";
         }
 
-        $log_uuid = getOP('log_uuid');
+        // Global variables
+	    $opt=getOP('opt');
+	    $courseId=getOP('courseId');
+	    $courseVersion=getOP('courseVersion');
+        $exampleName=getOP('exampleName');
+        $sectionName=getOP('sectionName');
+        $exampleId=getOP('exampleId');
+        $log_uuid = getOP('log_uuid'); // unique identifier for the event
         $log_timestamp = getOP('log_timestamp');
 
-        $log_uuid = getOP('log_uuid');
         $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
-        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php",$userid,$info);
+        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php",$userid,$info, $log_timestamp); //logging information into serviceLogEntries-table through logServiceEvent-function);
 
         $appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
