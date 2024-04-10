@@ -1091,7 +1091,7 @@ function AJAXService(opt,apara,kind)
 				success: returnedAccess
 			});
 	}else if(kind=="SECTION"){	
-		
+		/*
 		if(opt === "UPDATEDEADLINE"){
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
@@ -1110,7 +1110,8 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 				});
 		}
-		/*
+		*/
+		
 		$.ajax({
 		url: "sectionedservice.php",
 		type: "POST",
@@ -1118,28 +1119,9 @@ function AJAXService(opt,apara,kind)
 		dataType: "json",
 		success: returnedSection
 		});
-		*/
+		
   }else if(kind=="GRP"){
-	if(opt === "UPDATEDEADLINE"){
-		$.ajax({
-			url: "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
-			type: "POST",
-			data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-			dataType: "json",
-			success: returnedSection
-			});
-	}
-	else {
-		$.ajax({
-			url: "sectionedservice.php",
-			type: "POST",
-			data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-			dataType: "json",
-			success: returnedSection
-			});
-	}
-
-	/*
+	
     $.ajax({
       url: "sectionedservice.php",
       //url: "../DuggaSys/microservices/sectionedservice/getCourseGroupsAndMembers_ms.php",
@@ -1148,7 +1130,7 @@ function AJAXService(opt,apara,kind)
       dataType: "json",
       success: returnedGroups
     });
-	*/
+	
   }else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
@@ -1266,25 +1248,7 @@ function AJAXService(opt,apara,kind)
 			success: returnedSubmitFeedback
 		});
 	} else if(kind=="USERFB") {
-		if(opt === "UPDATEDEADLINE"){
-			$.ajax({
-				url: "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-				dataType: "json",
-				success: returnedSection
-				});
-		}
-		else {
-			$.ajax({
-				url: "sectionedservice.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-				dataType: "json",
-				success: returnedSection
-				});
-		}
-		/*
+		
 		$.ajax({
 			url: "sectionedservice.php",
 			type:"POST",
@@ -1292,7 +1256,7 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedUserFeedback
 		});
-		*/
+		
 	}
 	else if(kind=="GROUPTOKEN") {
 		$.ajax({
