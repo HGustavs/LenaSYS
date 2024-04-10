@@ -632,12 +632,13 @@
   				<span>There is currently no valid github repo. Add one?</span>
 			</div>
 			<div style='padding:5px;'>
+				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
-					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="reponame" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
+					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
 				</form>
 			</div>
 			<div style='padding-top:15px; width: 464px;'>
-				<input id='saveRepo' class='submit-button' style='float:right; margin-right:5px;' type='button' value='Save' title='Save Changes' onclick="" />
+				<input id='saveRepo' class='submit-button' style='float:right; margin-right:5px;' type='button' value='Save' title='Save Changes' onclick='validateForm("githubPopupWindow");' />
 			</div>
 		</div>
 	</div>
