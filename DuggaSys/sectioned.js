@@ -585,6 +585,14 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "download github repo" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#githubPopupWindow").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
