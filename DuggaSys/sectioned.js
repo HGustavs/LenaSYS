@@ -841,6 +841,29 @@ function addColorsToTabSections(kind, visible, spkind) {
   return retStr;
 }
 
+
+function fetchGitCode(){
+     var inputData = [];
+
+     var fileName = document.getElementById('fileName').value;
+     var githubURL = document.getElementById('githubURL').value;
+     var filePath = document.getElementById('filePath').value;
+     
+     inputData.push({
+     fileName: fileName,
+     githubURL: githubURL,
+     filePath: filePath
+    });
+      
+    var gitUrlParts = githubURL.split('/');
+    var gitOwner = gitUrlParts[3];
+    var gitRepo = gitUrlParts[4];
+
+    var apiUrl = 'https://api.github.com/repos/' + gitOwner + '/' + gitRepo + '/contents/' + filePath;
+   
+    console.log(apiUrl);
+}
+
 // -------------==============######## Commands ###########==============-------------
 
 //----------------------------------------------------------------------------------
