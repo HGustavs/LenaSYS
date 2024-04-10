@@ -174,7 +174,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
 
         //Pre-values 2
-        'query2-before-test-6' => "INSERT INTO course_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
+        'query2-before-test-6' => "INSERT INTO course_course(uid, cid, access) VALUES ('2', SELECT cid FROM course WHERE coursecode = 'testtest', 'test');",
 
         //Enligt modellen ska det bara vara en select för den första query inte säker på detta
 
@@ -304,7 +304,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
 
         //Pre-values2
-        'query2-before-test-9' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
+        'query2-before-test-9' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', SELECT cid FROM course WHERE coursecode = 'testtest', 'test');",
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
@@ -341,7 +341,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
 
         //Pre-values2
-        'query2-before-test-1' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
+        'query2-before-test-1' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', SELECT cid FROM course WHERE coursecode = 'testtest', 'test');",
 
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
