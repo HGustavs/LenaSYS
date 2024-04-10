@@ -119,6 +119,13 @@
 		$currentTime = time(); // Get the current time as a Unix timestamp
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
 
+		$_SESSION["lastFetchTime"] = date("Y-m-d H:i:s", $currentTime);
+		$fethCooldown = $longdeadline - (time() - $updateTime);
+		if($fethCooldown<0){
+			$_SESSION["fetchCooldown"]=0;
+		}else{
+			$_SESSION["fetchCooldown"]=$fethCooldown;
+		}
 		// Check if the user has superuser priviliges
 		if($user == 1) { // 1 = superuser
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline

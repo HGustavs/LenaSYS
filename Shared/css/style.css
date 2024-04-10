@@ -1255,17 +1255,36 @@ p {
 }
 
 .tooltip {
+  position: relative;
+  display: inline-block;
   line-height: 32px;
 }
 
 .tooltiptext {
   display: none;
-  width: 160px;
-  background-color: var(--color-primary);
-  color: var(--color-text-header);
+  width: 230px;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
   text-align: center;
   border-radius: 6px;
-  margin: 0 5px;
+  padding: 4px 4px;
+  /* Position for tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: -150%;
+  margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--color-background) transparent;
 }
 
 .tooltip:hover .tooltiptext {
