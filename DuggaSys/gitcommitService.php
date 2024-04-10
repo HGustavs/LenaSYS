@@ -116,8 +116,12 @@
 			$updated = $row['updated'];
 		}
 
+
 		$currentTime = time(); // Get the current time as a Unix timestamp
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
+
+		$_SESSION["updatetGitReposCooldown"][$cid]=$updateTime;
+		
 
 		$_SESSION["lastFetchTime"] = date("Y-m-d H:i:s", $currentTime);
 		$fethCooldown = $longdeadline - (time() - $updateTime);
@@ -128,7 +132,8 @@
 		}
 		// Check if the user has superuser priviliges
 		if($user == 1) { // 1 = superuser
-			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
+			if(($currentTime - $_SESSION["updatetGitReposCooldown"][$cid]) < $shortdeadline) { // If they to, use the short deadline
+				
 				print "Too soon since last update, please wait.";
 				return false;
 			} else {
@@ -136,7 +141,7 @@
 				return true;
 			}
 		} else { 
-			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
+			if(($currentTime - $_SESSION["updatetGitReposCooldown"][$cid]) > $longdeadline) { // Else use the long deadline
 				newUpdateTime($currentTime, $cid);
 				return true;
 			} else {
