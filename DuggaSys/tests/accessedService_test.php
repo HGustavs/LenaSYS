@@ -3,9 +3,11 @@
 include "../../Shared/test.php";   // Include the test file where this is sent to
 include_once "../../../coursesyspw.php";
 include_once "../../Shared/sessions.php";
+include_once "../../Shared/database.php";
+
 
 $query = "SELECT uid FROM user WHERE username = 'testuser1'";
-$result = mysqli_query($connection, $query);
+$result = mysqli_query($dbConnect, $query);
 
 // Fetch the result row as an associative array
 $row = mysqli_fetch_assoc($result);
