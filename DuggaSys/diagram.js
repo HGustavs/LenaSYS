@@ -8023,7 +8023,7 @@ function drawLine(line, targetGhost = false) {
                 iconSizeStart = 20;
                 break;
             case UMLLineIcons.ARROW:
-                if (elemsAreClose) {
+                if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
