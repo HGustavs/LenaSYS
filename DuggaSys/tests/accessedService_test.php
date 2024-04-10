@@ -19,6 +19,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'firstname',
                 'val' => 'test',
@@ -47,6 +50,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'lastname',
                 'val' => 'test',
@@ -76,6 +82,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+                
                 'opt' => 'UPDATE',
                 'prop' => 'ssn',
                 'val' => 'test',
@@ -104,6 +113,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'username',
                 'val' => 'test',
@@ -135,6 +147,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'class',
                 'val' => 'test',
@@ -173,6 +188,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+                
                 'opt' => 'UPDATE',
                 'prop' => 'examiner',
                 'val' => 'test',
@@ -186,6 +204,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'examiner',
                 'val' => 'None',
@@ -220,6 +241,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'examiner',
                 'val' => 'None',
@@ -253,6 +277,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'vers',
                 'val' => 'test',
@@ -286,6 +313,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'access',
                 'val' => 'test',
@@ -319,6 +349,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'group',
                 'val' => 'test',
@@ -344,6 +377,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'ADDCLASS',
                 'class' => 'testClass',
                 'responsible' => '2',
@@ -376,6 +412,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'CHPWD',
                 'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
                 'pwd' => '123123',
@@ -403,6 +442,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+                
                 'opt' => 'ADDUSR',
                 'username' => 'testuser',
                 'saveemail' => 'testmail',
@@ -431,6 +473,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+
                 'opt' => 'ADDUSR',
                 'cstmt' => '0',
                 'className' => 'testClass',
@@ -466,6 +511,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
+                
                 'opt' => 'ADDUSR',
                 'regstatus' => 'UNK',
                 'uid' => '2',
