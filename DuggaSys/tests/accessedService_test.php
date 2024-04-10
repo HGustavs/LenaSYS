@@ -43,8 +43,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-2' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
-
-
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -181,8 +179,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'uid' => '2',
                 'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
             ),
-            
-            //Inte säker om det fungerar att ha en annan array här men vi får testa
+        ),
+
+        //Send 2
+        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'UPDATE',
@@ -190,7 +191,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'val' => 'None',
                 'uid' => '2',
                 'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
-            )),
+            ),
+        ),
+
+
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
