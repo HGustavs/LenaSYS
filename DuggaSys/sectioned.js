@@ -841,29 +841,6 @@ function addColorsToTabSections(kind, visible, spkind) {
   return retStr;
 }
 
-
-function fetchGitCode(){
-     var inputData = [];
-
-     var fileName = document.getElementById('fileName').value;
-     var githubURL = document.getElementById('githubURL').value;
-     var filePath = document.getElementById('filePath').value;
-     
-     inputData.push({
-     fileName: fileName,
-     githubURL: githubURL,
-     filePath: filePath
-    });
-      
-    var gitUrlParts = githubURL.split('/');
-    var gitOwner = gitUrlParts[3];
-    var gitRepo = gitUrlParts[4];
-
-    var apiUrl = 'https://api.github.com/repos/' + gitOwner + '/' + gitRepo + '/contents/' + filePath;
-   
-    console.log(apiUrl);
-}
-
 // -------------==============######## Commands ###########==============-------------
 
 //----------------------------------------------------------------------------------
@@ -3951,6 +3928,33 @@ function showFeedbackquestion() {
   }
 }
 
+async function fetchGitCode(){
+     
+  /*
+      var fileName = document.getElementById('fileName').value;
+      var githubURL = document.getElementById('githubURL').value;
+      var filePath = document.getElementById('filePath').value;
+        
+      var gitUrlParts = githubURL.split('/');
+      var gitOwner = gitUrlParts[3];
+      var gitRepo = gitUrlParts[4];
+  */
+      //var apiUrl = 'https://api.github.com/repos/' + gitOwner + '/' + gitRepo + '/contents/' + filePath;
+      //var apiUrl = 'https://raw.githubusercontent.com/' + gitOwner + '/' + gitRepo + '/' + '/master/' + filePath;
+      var apiUrl = 'https://github.com/HGustavs/LenaSYS/raw/master/composer.json';
+  
+      try{
+         const response = await fetch(apiUrl, {mode: 'no-cors'});
+         if(!response.ok){
+          throw new Error('Network response not ok:', response.status, response.statusText);
+         }
+         //const fileData = await response.text();
+  
+         console.log('file fetched succesffully');
+      } catch (error) {
+        console.error('Error fetching file', error);
+      }
+  }
 
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
