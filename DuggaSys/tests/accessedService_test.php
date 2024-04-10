@@ -180,17 +180,17 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'val' => 'test',
                 'uid' => '2',
                 'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
-            )),
+            ),
             
             //Inte säker om det fungerar att ha en annan array här men vi får testa
-            // array(
-            //     // Data that service needs to execute function
-            //     'opt' => 'UPDATE',
-            //     'prop' => 'examiner',
-            //     'val' => 'None',
-            //     'uid' => '2',
-            //     'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
-            // )),
+            array(
+                // Data that service needs to execute function
+                'opt' => 'UPDATE',
+                'prop' => 'examiner',
+                'val' => 'None',
+                'uid' => '2',
+                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+            )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
