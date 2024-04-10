@@ -325,8 +325,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-9' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
-        'query2-after-test-9' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
+        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+        'query-after-test-9' => "DELETE FROM user_course WHERE cid = 'cid';",
+        'query2-after-test-9' => "DELETE FROM course WHERE cid = 'cid';",
     ),
 
 
@@ -361,8 +362,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-10' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
-        'query2-after-test-10' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
+        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+        'query-after-test-10' => "DELETE FROM user_course WHERE cid = 'cid';",
+        'query2-after-test-10' => "DELETE FROM course WHERE cid = 'cid';",
     ),
 
 
