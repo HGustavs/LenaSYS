@@ -4,6 +4,10 @@ include "../../Shared/test.php";   // Include the test file where this is sent t
 include_once "../../../coursesyspw.php";
 include_once "../../Shared/sessions.php";
 
+$uid_query = "SELECT uid FROM user WHERE username = 'testuser1'";
+$uid_statement = $pdo->query($uid_query);
+$uid_result = $uid_statement->fetch(PDO::FETCH_ASSOC);
+$uid_value = $uid_result['uid'];
 
 $testsData = array(   // Test-data is saved on this array that is then tested in test.php file
 
@@ -25,7 +29,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'firstname',
                 'val' => 'test',
-                'uid' => "(SELECT uid FROM user WHERE username = 'testuser1')", // Using subquery
+                'uid' => $uid_value, // Using the retrieved UID value
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
