@@ -1987,6 +1987,10 @@ function returnedSection(data) {
     addClasses();
     showMOTD();
   }
+    //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
+    for(var i = delArr.length-1; i == 0; --i){
+      document.getElementById("lid"+delArr[i]).style.display="none";
+    }
 }
 
 function openCanvasLink(btnobj) {
