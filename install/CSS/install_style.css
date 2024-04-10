@@ -148,6 +148,41 @@ input[type="text"], input[type="password"] {
     display: none;
 }
 
+/* Info icon for "Using distributed environment" label*/
+.material-symbols-outlined{
+   font-size:15px !important;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+.tooltipInfo {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltipInfo .tooltipInfoText {
+    font-family: Arial, Helvetica, sans-serif;
+    visibility: hidden;
+    width: 400px;
+    background-color: rgb(240,240,240);
+    color:black;
+    text-align: center;
+    white-space:wrap;
+    border:rgb(146, 124, 157) solid 2px;
+    border-radius: 6px;
+    padding: 15px;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -10px;
+    z-index: 1;
+  }
+
+    .tooltipInfo:hover .tooltipInfoText {
+    visibility: visible;
+    }
 
 /* Show the first input page at start */
 #td1 {

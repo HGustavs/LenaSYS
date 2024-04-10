@@ -54,7 +54,6 @@
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet"> <!-- This code must be open. If users/students use an old version of lenays (version manager), it should not destroy anything else. -->
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	
 	<script src="darkmodeToggle.js"></script>
@@ -621,10 +620,30 @@
 			</div>
 		</div>
 	</form>
+	
+	<!--error window opened when github repo not found-->
+	<div id="githubPopupWindow" class="loginBoxContainer" style="display: none;">
+		<div class="loginBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
+			<div class= "loginBoxheader">
+  					<h3>Github repo</h3>
+		  			<div class='cursorPointer'	onclick='closeWindows();'>x</div>
+			</div>
+			<div style="padding:5px; padding-top:20px;">
+  				<span>There is currently no valid github repo. Add one?</span>
+			</div>
+			<div style='padding:5px;'>
+				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
+				<form action="" method="POST" id="repoLink">
+					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
+				</form>
+			</div>
+			<div style='padding-top:15px; width: 464px;'>
+				<input id='saveRepo' class='submit-button' style='float:right; margin-right:5px;' type='button' value='Save' title='Save Changes' onclick='validateForm("githubPopupWindow");' />
+			</div>
+		</div>
+	</div>
 
 	<!-- github template  -->
-
-
 		<div id='gitHubTemplate' class="loginBoxContainer" style="display:none;">
 				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>

@@ -13,7 +13,6 @@
 	<title>Access Editor</title>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-	<link id="themeWhite" type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet"> <!-- This code must be open. If users/students use an old version of lenays (version manager), it should not destroy anything else. -->
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	
 	<script src="darkmodeToggle.js"></script>

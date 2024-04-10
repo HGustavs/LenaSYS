@@ -26,11 +26,14 @@
 		}
 		else if($_POST['action'] == 'refreshGithubRepo') 
 		{
-			refreshCheck($_POST['cid'], $_POST['user']);
+			refreshGithubRepo($_POST['cid']);
 		}
 		else if($_POST['action'] == 'updateGithubRepo') 
 		{
 			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
+		}
+		else if($_POST['action'] == 'directInsert'){
+			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
 		}
 	};
 
@@ -116,20 +119,29 @@
 		$currentTime = time(); // Get the current time as a Unix timestamp
 		$updateTime = strtotime($updated); // Format the update-time as Unix timestamp
 
+		$_SESSION["lastFetchTime"] = date("Y-m-d H:i:s", $currentTime);
+		$fethCooldown = $longdeadline - (time() - $updateTime);
+		if($fethCooldown<0){
+			$_SESSION["fetchCooldown"]=0;
+		}else{
+			$_SESSION["fetchCooldown"]=$fethCooldown;
+		}
 		// Check if the user has superuser priviliges
 		if($user == 1) { // 1 = superuser
 			if(($currentTime - $updateTime) < $shortdeadline) { // If they to, use the short deadline
 				print "Too soon since last update, please wait.";
+				return false;
 			} else {
 				newUpdateTime($currentTime, $cid);
-				refreshGithubRepo($cid);
+				return true;
 			}
 		} else { 
 			if(($currentTime - $updateTime) > $longdeadline) { // Else use the long deadline
 				newUpdateTime($currentTime, $cid);
-				refreshGithubRepo($cid);
+				return true;
 			} else {
 				print "Too soon since last update, please wait.";
+				return false;
 			}
 		}
 	}
@@ -166,7 +178,7 @@
 		$query = $pdolite->prepare('SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid');
 		$query->bindParam(':cid', $cid);
 		$query->execute();
-
+		
 		$commmit = "";
 		$url = "";
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -176,24 +188,27 @@
 
 		//If both values are valid
 		if($commit == "" && $url == "") {
-			print_r("Error! Couldn't get url and commit from SQLite db");
-		} else {
-			// Get the latest commit from the URL
-			$latestCommit = getCommit($url);
+			print_r("No repo");
+		} 
+		else {
+			if(refreshCheck($_POST['cid'], $_POST['user'])){
+				// Get the latest commit from the URL
+				$latestCommit = getCommit($url);
 
-			// Compare old commit in db with the new one from the url
-			if($latestCommit != $commit) {
-				// Update the SQLite db with the new commit
-				$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
-				$query->bindParam(':cid', $cid);
-				$query->bindParam(':latestCommit', $latestCommit);
-				$query->execute();
+				// Compare old commit in db with the new one from the url
+				if($latestCommit != $commit) {
+					// Update the SQLite db with the new commit
+					$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
+					$query->bindParam(':cid', $cid);
+					$query->bindParam(':latestCommit', $latestCommit);
+					$query->execute();
 
-				// Download files and metadata
-				bfs($url, $cid, "DOWNLOAD");
-				print "The course has been updated, files have been downloaded!";
-			} else {
-				print "The course is already up to date!";
+					// Download files and metadata
+					bfs($url, $cid, "DOWNLOAD");
+					print "The course has been updated, files have been downloaded!";
+				} else {
+					print "The course is already up to date!";
+				}
 			}
 		}
 	}

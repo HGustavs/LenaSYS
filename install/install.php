@@ -5,6 +5,7 @@
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
   <script src="install_entry.js"></script>
   <script src="install_defer.js" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
   <!-- Config Section -->
@@ -143,6 +144,7 @@
         $dbHostname = "";
         $dbName = "";
         $dbPassword = "";
+        $usingDocker = "";
         $credentialsFile = "../../coursesyspw.php";
 
         // check if the credentials exists in the file, store them if they do
@@ -153,13 +155,15 @@
             $tArray = explode('"', trim($cred));
               if(count($tArray) == 5) {
                 if($tArray[1]=="DB_USER"){
-                $dbUsername = $tArray[3];
+                  $dbUsername = $tArray[3];
                 }else if($tArray[1]=="DB_HOST"){
-                $dbHostname = $tArray[3];
+                  $dbHostname = $tArray[3];
                 }else if($tArray[1]=="DB_NAME"){
-                $dbName = $tArray[3];
+                  $dbName = $tArray[3];
                 }else if($tArray[1]=="DB_PASSWORD"){
-                $dbPassword = $tArray[3];
+                  $dbPassword = $tArray[3];
+                }else if($tArray[1]=="DB_USING_DOCKER"){
+                  $usingDocker = $tArray[3];
                 }
               }
             }
@@ -183,8 +187,12 @@
         echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
         echo 'Enter hostname (e.g localhost). <br>';
         echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+        echo '<br><div class="tooltipInfo"><span class="material-symbols-outlined">info
+        <span class="tooltipInfoText">
+        Allow the dbuser to connect from any hostname. Useful if db is located on another machine/vm/container.
+        </span></span></div><label for="usingDocker">Using distributed environment: </label><input id="usingDocker" name="usingDocker" type="checkbox" ' . ($usingDocker == "on" ? 'checked' : '') . '><br>';
         echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
-          if($dbUsername || $dbHostname || $dbName || $dbPassword){
+          if($dbUsername || $dbHostname || $dbName || $dbPassword || $usingDocker){
             echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
           }
         echo '</div>';
@@ -277,7 +285,7 @@
     # Installer
     if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
       $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
-      ob_end_clean(); // Remove form and start installation.
+      ob_clean(); // Clear form and start installation.
 
       //---------------------------------------------------------------------------------------------------
       // Header - Contains title, progress bar and restart-button.
@@ -410,6 +418,7 @@
           $password = $_POST["password"];
           $databaseName = $_POST["DBName"];
           $serverName = $_POST["hostname"];
+          $usingDocker = $_POST["usingDocker"];
           $rootUser = $_POST["mysqlRoot"];
           $rootPwd = $_POST["rootPwd"];
           $connection = null;
@@ -465,11 +474,18 @@
           flush();
           ob_flush();
 
+          // Determine user hostname (limits connections to either %=all, or $serverName)
+          if ($usingDocker) {
+            $userDomain = '%';
+          } else {
+            $userDomain = $serverName;
+          }
+
           # Create new user and grant privileges to created database.
           try {
             $connection->query("FLUSH PRIVILEGES");
-            $connection->query("CREATE USER '{$username}'@'{$serverName}' IDENTIFIED BY '{$password}'");
-            $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$serverName}'");
+            $connection->query("CREATE USER '{$username}'@'{$userDomain}' IDENTIFIED BY '{$password}'");
+            $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$userDomain}'");
             $connection->query("FLUSH PRIVILEGES");
             echo "<span id='successText' />Successfully created user {$username}.</span><br>";
           } catch (PDOException $e) {
@@ -641,6 +657,7 @@
           define(\"DB_PASSWORD\",\"".$password."\");
           define(\"DB_HOST\",\"".$serverName."\");
           define(\"DB_NAME\",\"".$databaseName."\");
+          define(\"DB_USING_DOCKER\",\"".$usingDocker."\");
         ?>";
         file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
       } catch (\Exception $e) {
@@ -655,6 +672,7 @@
           echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
           echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
           echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
+          echo 'define(\"DB_USING_DOCKER\",\"' . $usingDocker . '\");\n';
           echo htmlspecialchars("
         ?>") . '" > ' . $putFileHere . '/coursesyspw.php';
         echo "</code></div>";
@@ -737,6 +755,9 @@
     function deleteMetadataDB(){
       //Find all files ending with .db inside the directory
       $dir = '../../githubMetadata';
+      if(!is_dir($dir)){
+        return;
+      }
       $metadata_db_files = preg_grep( '~\.db$~',scandir($dir));
 
       //Iterate and delete above files in the same directory
