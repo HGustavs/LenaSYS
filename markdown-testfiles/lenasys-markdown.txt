@@ -102,19 +102,3 @@ Quotes
 smileys
 Icons can be found in Shared/icons
 Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
-
-Testar fr
-
-shesh
-
-Testing 123
-
-marcus is the best
-
-De lugnt, jag löser en *kunglig* commit.
-
-Finally in!
-
-larma om du lever
-
-det här var ju inte så bra
