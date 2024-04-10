@@ -8,7 +8,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
     //TEST #1
     //Update firstname
-    'Update firstname' => array(  
+    'Update-firstname' => array(  
 
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
@@ -19,7 +19,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             return $row['uid'];
         },
         
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -43,10 +42,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
     //TEST #2
     //Update lastname
-    'Update lastname' => array(  
+    'Update-lastname' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-2' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
         'uid' => function($connection) {
             $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
@@ -54,7 +53,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             return $row['uid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -70,7 +68,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
@@ -78,10 +76,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
     //TEST #3
     //Update ssn
-    'Update ssn' => array(  
+    'Update-ssn' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-3' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
         'uid' => function($connection) {
             $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
@@ -89,7 +87,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             return $row['uid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -105,17 +102,17 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-3' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
 
     //TEST #4
     //Update username
-    'Update username' => array(  
+    'Update-username' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-4' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
         'uid' => function($connection) {
             $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
@@ -123,7 +120,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             return $row['uid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -139,7 +135,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-4' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
@@ -148,10 +144,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
     //TEST #5
     //Update class
-    'Update class' => array(  
+    'Update-class' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-5' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
         'uid' => function($connection) {
             $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
@@ -159,7 +155,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             return $row['uid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -175,14 +170,14 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-5' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
 
     //TEST #6
-    //Update class
-    'Update class' => array(  
+    //Update examiner
+    'Update-examiner' => array(  
 
         //Pre-values 1
         'query-before-test-6' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
@@ -198,7 +193,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Enligt modellen ska det bara vara en select för den första query inte säker på detta
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -231,27 +225,30 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
 
     //TEST #7
-    //Update class
-    'Update class' => array(  
+    //Update examiner to none
+    'Update-examiner-to-none' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-7' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
+        'cid' => function($connection) {
+            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
             $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
+            return $row['cid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
+        
+        'query2-before-test-7' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
+
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'UPDATE',
-                'prop' => 'class',
-                'val' => 'test',
-                'uid' => $row['uid'],
+                'prop' => 'examiner',
+                'val' => 'None',
+                'uid' => '2',
+                'cid' => $row['cid'],
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -259,33 +256,37 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-7' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
+        'query2-after-test-7' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
     ),
 
 
 
     //TEST #8
-    //Update class
-    'Update class' => array(  
+    //Update version
+    'Update-version' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-8' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
+        'cid' => function($connection) {
+            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
             $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
+            return $row['cid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
+         //Pre-values2
+         'query2-before-test-8' => "INSERT INTO user_course(uid, cid, access) VALUES ('2','".$row['cid']."' , 'test');",
+
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'UPDATE',
-                'prop' => 'class',
+                'prop' => 'vers',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => '2',
+                'cid' => $row['cid'],
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -293,33 +294,37 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-8' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
+        'query2-after-test-8' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
     ),
 
 
 
     //TEST #9
-    //Update class
-    'Update class' => array(  
+    //Update access
+    'Update-access' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-9' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
+        'cid' => function($connection) {
+            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
             $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
+            return $row['cid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
+        //Pre-values2
+        'query2-before-test-9' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
+
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'UPDATE',
-                'prop' => 'class',
+                'prop' => 'access',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => '2',
+                'cid' => $row['cid'],
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -327,33 +332,37 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-9' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
+        'query2-after-test-9' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
     ),
 
 
 
     //TEST #10
-    //Update class
-    'Update class' => array(  
+    //Update group
+    'Update-group' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
+        'cid' => function($connection) {
+            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = 'testtest'");
             $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
+            return $row['cid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
+        //Pre-values2
+        'query2-before-test-1' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', '".$row['cid']."', 'test');",
+
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'opt' => 'UPDATE',
-                'prop' => 'class',
+                'prop' => 'group',
                 'val' => 'test',
-                'uid' => $row['uid'],
+                'uid' => '2',
+                'cid' => $row['cid'],
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -361,32 +370,28 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-10' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
+        'query2-after-test-10' => "DELETE FROM course WHERE cid = '".$row['cid']."';",
     ),
 
 
     //TEST #11
-    //Update class
-    'Update class' => array(  
+    //Add class
+    'Add-class' => array(  
 
-        //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
-
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'opt' => 'UPDATE',
-                'prop' => 'class',
-                'val' => 'test',
-                'uid' => $row['uid'],
+                'opt' => 'ADDCLASS',
+                'class' => 'testClass',
+                'responsible' => '2',
+                'classname' => 'testClassName',
+                'regcode' => '12345678',
+                'classcode' => '87654321',
+                'hp' => '7.5',
+                'tempo' => '100',
+                'hpProgress' => '1.5',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -394,13 +399,13 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass';",
     ),
 
 
     //TEST #12
-    //Update class
-    'Update class' => array(  
+    //Change password
+    'Change-password' => array(  
 
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
@@ -411,15 +416,13 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             return $row['uid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'opt' => 'UPDATE',
-                'prop' => 'class',
-                'val' => 'test',
+                'opt' => 'CHPWD',
                 'uid' => $row['uid'],
+                'pwd' => '123123',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -433,19 +436,13 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
 
     //TEST #13
-    //Update class
-    'Update class' => array(  
+    //Add user
+    'Add-user' => array(  
 
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-13' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) 
+        VALUES ('testClass', '2', 'testClassName, '12345678', '87654321', '7.5', '100', '1.5');",
 
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
-
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -466,24 +463,14 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Rätt platts för delete?
         'query-after-test-13' => "DELETE FROM user WHERE username = “testuser”;",
-		'query-after-test-13-2' => "DELETE FROM class WHERE class = “testClass”;",
+		'query2-after-test-13' => "DELETE FROM class WHERE class = “testClass”;",
     ),
 
 
     //TEST #14
-    //Update class
-    'Update class' => array(  
+    //Add user where no class exists
+    'Add-user-no-class' => array(  
 
-        //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
-        'uid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT uid FROM user WHERE username = 'testuser1'");
-            $row = mysqli_fetch_assoc($result);
-            return $row['uid'];
-        },
-
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -505,26 +492,25 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-14' => "DELETE FROM user WHERE username = 'testuser1';",
-        'query-after-test-14-2' => "DELETE FROM class WHERE class = “testClass”;",
+        'query-after-test-14' => "DELETE FROM user WHERE username = 'testuser';",
+        'query2-after-test-14' => "DELETE FROM class WHERE class = “testClass”;",
     ),
 
 
 
     //TEST #15
     //Connect user to user_course
-    'Connect user to user_course' => array(  
+    'Connect-user-to-user-course' => array(  
 
         //Pre-values
         'pre-query' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
 
         'cid' => function($connection) {
-            $result = mysqli_query($connection, "SELECT cid FROM user_course WHERE cid = '1'");
+            $result = mysqli_query($connection, "SELECT cid FROM course WHERE coursecode = '1'");
             $row = mysqli_fetch_assoc($result);
             return $row['cid'];
         },
 
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","entries":[{"qname":"Bitdugga1"},{"qname":"Bitdugga2"},{"qname":"colordugga1"},{"qname":"colordugga2"},{"qname":"linjedugga1"},{"qname":"linjedugga2"},{"qname":"dugga1"},{"qname":"dugga2"},{"qname":"Quiz"},{"qname":"Rapport"},{"qname":"HTML CSS Testdugga"},{"qname":"Clipping masking testdugga"},{"qname":"test"}]}',
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
@@ -541,7 +527,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         'query-after-test-15' => "DELETE FROM user_course WHERE cid = '".$row['cid']."';",
-        'query-after-test-16' => "DELETE FROM course WHERE cid= '".$row['cid']."';",
+        'query2-after-test-15' => "DELETE FROM course WHERE cid= '".$row['cid']."';",
 
     )
 
