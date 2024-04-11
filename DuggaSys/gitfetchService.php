@@ -184,8 +184,9 @@ function bfs($url, $cid, $opt)
                                 }
                                 else if($opt == "DOWNLOAD") {
                                     insertToFileLink($cid, $item);
-                                    insertToMetaData($cid, $item);
-                                    downloadToWebserver($cid, $item);  
+                                    //work in progress on these two
+                                    //insertToMetaData($cid, $item);
+                                    //downloadToWebserver($cid, $item);  
                                 }                
                             }
                             //Otherwise, fetch and download all files
@@ -195,8 +196,9 @@ function bfs($url, $cid, $opt)
                                 }
                                 else if($opt == "DOWNLOAD") {
                                     insertToFileLink($cid, $item);
-                                    insertToMetaData($cid, $item);
-                                    downloadToWebserver($cid, $item);  
+                                    //work in progress on these two
+                                    //insertToMetaData($cid, $item);
+                                    //downloadToWebserver($cid, $item);  
                                 }      
                         }
                         // Checks if the fetched item is of type 'dir'
