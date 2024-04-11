@@ -60,15 +60,17 @@ function burgerToggleDarkmode(operation = 'click') {
   const themeToggle = document.getElementById('theme-toggle');
   // if it's light -> go dark
   if (themeStylesheet.href.includes('blackTheme')) {
-    themeStylesheet.href = "../Shared/css/whiteTheme.css";
+    themeStylesheet.href = "../Shared/css/style.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#121212";
+    drawSwimlanes();
   }
-  else if (themeStylesheet.href.includes('whiteTheme')) {
+  else if (!themeStylesheet.href.includes('blackTheme')) {
     // if it's dark -> go light
     themeStylesheet.href = "../Shared/css/blackTheme.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#fff";
+    drawSwimlanes();
   }
 
   //const themeToggle = document.getElementById('theme-toggle');
@@ -2159,7 +2161,7 @@ function returnedHighscore(data) {
 //----------------------------------------------------------------------------------
 
 function drawSwimlanes() {
-
+  document.getElementById("swimlaneSVG").innerHTML = "";
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
