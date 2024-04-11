@@ -9,23 +9,18 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #1
     //Update firstname
     'Update-firstname' => array(  
-
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
-
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
-
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'UPDATE',
                 'prop' => 'firstname',
                 'val' => 'test',
-                'uid' => 
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -51,6 +46,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
+
                 'opt' => 'UPDATE',
                 'prop' => 'lastname',
                 'val' => 'test',
@@ -60,8 +56,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-
-        //Rätt platts för delete?
     ),
 
 
@@ -73,7 +67,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-        'query-before-test-2' =>"SELECT uid FROM user WHERE username = 'testuser1'",
+        'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-1' => "uid",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
@@ -91,8 +85,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-
-        //Rätt platts för delete?
     ),
 
 
@@ -100,64 +92,52 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #4
     //Update username
     'Update-username' => array(  
-
         //Pre-values
-        'query-before-test-4' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
-
+        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1'",
+        'variables-query-before-test-1' => "uid",
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'UPDATE',
                 'prop' => 'username',
                 'val' => 'test',
-                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
+                'uid' => '<!query-before-test-2!><[0]["uid"]>',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-
-        //Rätt platts för delete?
-        'query-after-test-4' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
-
-
-    
 
     //TEST #5
     //Update class
     'Update-class' => array(  
-
         //Pre-values
-        'query-before-test-5' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
-
-
+        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1'",
+        'variables-query-before-test-1' => "uid",
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'UPDATE',
                 'prop' => 'class',
                 'val' => 'test',
-                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
+                'uid' => '<!query-before-test-2!><[0]["uid"]>',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-
-        //Rätt platts för delete?
-        'query-after-test-5' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
@@ -165,31 +145,26 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #6
     //Update examiner
     'Update-examiner' => array(  
-
-        //Pre-values 1
-        'query-before-test-6' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
-
-
-        //Pre-values 2
-        'query2-before-test-6' => "INSERT INTO course_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
-
-        //Enligt modellen ska det bara vara en select för den första query inte säker på detta
-
+        //Pre-values
+        'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
+        'query-before-test-2' => "INSERT INTO course_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
+        'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+        'variables-query-before-test-1' => "cid",
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 'cid';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-                
                 'opt' => 'UPDATE',
                 'prop' => 'examiner',
                 'val' => 'test',
                 'uid' => '2',
-                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+                'cid' => '<!query-before-test-3!><[0]["cid"]>',
             ),
         ),
-
         //Send 2
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data2' => serialize(
@@ -197,26 +172,17 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'UPDATE',
                 'prop' => 'examiner',
                 'val' => 'None',
                 'uid' => '2',
-                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+                'cid' => '<!query-before-test-3!><[0]["cid"]>',
             ),
         ),
-
-
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-
-        //Rätt platts för delete?
-        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
-
-        'query-after-test-6' => "DELETE FROM user_course WHERE cid = 'cid';",
-        'query2-after-test-6' => "DELETE FROM course WHERE cid = 'cid';",
     ),
 
 
