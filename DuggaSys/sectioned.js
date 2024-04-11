@@ -63,15 +63,16 @@ function burgerToggleDarkmode(operation = 'click') {
     themeStylesheet.href = "../Shared/css/style.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#121212";
-    drawSwimlanes();
   }
   else if (!themeStylesheet.href.includes('blackTheme')) {
     // if it's dark -> go light
     themeStylesheet.href = "../Shared/css/blackTheme.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#fff";
-    drawSwimlanes();
   }
+  // Redraw course calendar / planner SVG to get the appropriate color scheme
+  // Course calendar = the SVG that displays the weeks and how far into a course we are (not sure what to call it)
+  drawSwimlanes();
 
   //const themeToggle = document.getElementById('theme-toggle');
   //themeToggle.addEventListener('click', () => {});
@@ -2161,6 +2162,7 @@ function returnedHighscore(data) {
 //----------------------------------------------------------------------------------
 
 function drawSwimlanes() {
+  // Resets the swimlane SVG
   document.getElementById("swimlaneSVG").innerHTML = "";
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
@@ -2230,13 +2232,13 @@ function drawSwimlanes() {
     "<linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'>" +
     "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
-  var storedTheme = localStorage.getItem('themeBlack');
+  const storedTheme = localStorage.getItem('themeBlack');
 
   for (var i = 0; i < weekLength; i++) {
     str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
       (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     // The following code decides the color scheme of the course timeline 
-    // (The svg showing how far in we are in a course and assignment deadlines)
+    // (The svg showing how far into a course we are and assignment deadlines)
     if ((i % 2) == 0 && !(storedTheme.includes("blackTheme.css"))) { // All even columns should be light gray in white theme
       str += "fill='#ededed' />";
     } else if((i % 2) != 0 && !(storedTheme.includes("blackTheme.css"))){ // All uneven columns should be white in white theme
