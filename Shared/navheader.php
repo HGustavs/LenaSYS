@@ -212,7 +212,7 @@
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
 									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
 								echo "</span>";
-								
+
 								//Check if user is super user
 								if(isSuperUser($_SESSION['uid']))
 								{
@@ -227,11 +227,9 @@
 								
 								$fetchCooldownS=strtotime($_SESSION["updatetGitReposCooldown"][$_SESSION['courseid']])+$fetchCooldownTimmer-time();
 								
-								echo "<span class='tooltiptext'>
-								<b>Last Fetch:</b> ".$_SESSION["updatetGitReposCooldown"][$_SESSION['courseid']]."<br>
-								<div id='cooldownHolder' style='display:inline'><b>Cooldown:</b>";
+								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$_SESSION["updatetGitReposCooldown"][$_SESSION['courseid']]."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown:</b>";
 
-								//
+								//set cooldown timer
 								if($fetchCooldownS>0)
 								{
 									echo "<p id='gitFetchMin' style='display:inline'>".intval(date("i",$fetchCooldownS))."</p>min and <p id='gitFetchSec' style='display:inline'>".intval(date("s",$fetchCooldownS))."</p>s";
@@ -242,7 +240,7 @@
 								}
 								
 								echo "</p></span>";
-								
+
 								// echo "<span class='tooltiptext'><b>Last Fetch:</b> <br><b>Cooldown:</b> </span>";
 							echo "</div>";
 							echo "</td>";
