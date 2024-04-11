@@ -469,6 +469,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add user where no class exists
     'Add-user-no-class' => array(  
 
+
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
+        'query-after-test-2' => "DELETE FROM class WHERE class = “testClass”;",
+
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -492,9 +496,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        //Rätt platts för delete?
-        'query-after-test-14' => "DELETE FROM user WHERE username = 'testuser';",
-        'query2-after-test-14' => "DELETE FROM class WHERE class = “testClass”;",
+
     ),
 
 
