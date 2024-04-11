@@ -7696,17 +7696,27 @@ function drawLine(line, targetGhost = false) {
     var y1Offset = 0;
     var y2Offset = 0;
 
-    const ctypes = new Map();
-    ctypes.set('TB', [-1, -1, 1, -1]);
-    ctypes.set('BT', [-1, 1, 1, 1]);
-    ctypes.set('LR', [-1, -1, -1, 1]);
-    ctypes.set('RL', [1, -1, 1, 1]);
 
+    if (line.kind == "Dashed") {
+        var strokeDash = "10";
+    } else {
+        var strokeDash = "0";
+    }
+
+    if (isDarkTheme()) {
+        var lineColor = '#FFFFFF';
+    } else {
+        var lineColor = '#000000';
+    }
+    /*
     var strokeDash = (line.kind == "Dashed") ? "10" : "0";
     var lineColor = isDarkTheme() ? '#FFFFFF' : '#000000';
-
     if (contextLine.includes(line)) let lineColor = selectedColor;
+    */
 
+    if (contextLine.includes(line)) {
+        lineColor = selectedColor;
+    }
     felem = data[findIndex(data, line.fromID)];
 
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
@@ -7725,8 +7735,25 @@ function drawLine(line, targetGhost = false) {
         (ty + y2Offset),
         zoomfact
     );
-
+    if (line.ctype == "BT") {
+        fy = felem.y2;
+        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
+        ty = telem.y1;
+    } else if (line.ctype == "TB") {
+        fy = felem.y1;
+        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
+        ty = telem.y2;
+    } else if (line.ctype == "RL") {
+        fx = felem.x2;
+        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
+        tx = telem.x1;
+    } else if (line.ctype == "LR") {
+        fx = felem.x1;
+        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
+        tx = telem.x2;
+    }
     // Collect coordinates
+    /*
     const btLambd = (function(fDir, f1, f2) { return f1 + (((f2 - f1) / (fDir.length + 1)) * (fDir.indexOf(line.id) + 1)) })
     if (line.ctype == "BT") {
         fy = felem.y2;
@@ -7745,7 +7772,7 @@ function drawLine(line, targetGhost = false) {
         if (felem.kind == "EREntity") fy = btLambd(felem.left, felem.y1, felem.y2);
         tx = telem.x2;
     }
-
+*/
     // Undoes above changes if any is UML relation
     // Set line end-point in center of UMLRelations.
     if (felem.kind == "UMLRelation") {
@@ -7864,6 +7891,11 @@ function drawLine(line, targetGhost = false) {
     } else {
         line.type = 'UML';
     }
+    const ctypes = new Map();
+    ctypes.set('TB', [-1, -1, 1, -1]);
+    ctypes.set('BT', [-1, 1, 1, 1]);
+    ctypes.set('LR', [-1, -1, -1, 1]);
+    ctypes.set('RL', [1, -1, 1, 1]);
     // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
         var dx = ((fx + x1Offset) - (tx + x2Offset)) / 2;
@@ -7913,20 +7945,21 @@ function drawLine(line, targetGhost = false) {
 
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
-                const zeroOneCirc = (a) => `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy + (a * 20) * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                const zeroOne = ([a, b, c, d]) => `<line class='diagram-umlicon-darkmode' x1='${fx + (a * 10) * zoomfact}' y1='${fy + (b * 5) * zoomfact}' x2='${fx + (c * 10) * zoomfact}' y2='${fy + (d * 5) * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const zeroOneCirc = (a, b) => `<circle class='diagram-umlicon-darkmode' cx='${a}' cy='${b}' r='${8 * zoomfact}' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const zeroOne = ([a, b, c, d]) => `<line class='diagram-umlicon-darkmode' x1='${fx + (a * 10 * zoomfact)}' y1='${fy + (b * 10 * zoomfact)}' x2='${fx + (c * 10 * zoomfact)}' y2='${fy + (d * 10 * zoomfact)}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 switch (line.ctype) {
                     case 'TB':
-                        str += zeroOneCirc(-1);
+                        str += zeroOneCirc(fx - 5, fy - 20 * zoomfact);
                         break;
                     case 'BT':
-                        str += zeroOneCirc(1);
+                        str += zeroOneCirc(fx + 5, fy + 20 * zoomfact);
                         break;
                     case 'LR':
-                        str += zeroOneCirc(-1);
+                        str += zeroOneCirc(fx - 25 * zoomfact, fy);
                         break;
                     case 'RL':
-                        str += zeroOneCirc(1);
+                        str += zeroOneCirc(fx + 25 * zoomfact, fy);
+                        break;
                 }
                 str += zeroOne(ctypes.get(line.ctype));
                 iconSizeStart = 30;
