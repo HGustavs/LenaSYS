@@ -79,7 +79,7 @@ function insertToMetaData($cid, $item)
     global $pdoLite;
     $query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
     $query->bindParam(':cid', $cid);
-    print_r("name = ".$item['name']."type = ".$item['type']."url = ".$item['url']."download_url = ".$item['download_url']."sha = ".$item['sha']."path = ".$item['path']);
+    print_r("\n ---name = ".$item['name']."\n ----type = ".$item['type']."\n ---url = ".$item['url']."\n ---download_url = ".$item['download_url']."\n ---sha = ".$item['sha']."\n ---path = ".$item['path']."\n\n");
     $query->bindParam(':fileName', $item['name']);
     $query->bindParam(':fileType', $item['type']);
     $query->bindParam(':fileURL', $item['url']);
@@ -167,6 +167,7 @@ function bfs($url, $cid, $opt)
         if ($data) {
             // Decodes the fetched data into JSON
             $json = json_decode($data, true);
+            //commit id is already aquired here, so we can simply return.
             if($opt == "GETCOMMIT"){
                 return $json['sha'];
             }
@@ -175,6 +176,7 @@ function bfs($url, $cid, $opt)
                 foreach ($json as $item) {
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
+                        if(!$item['name'] == ".gitignore"){
                         //If an index file has been found, check against the content of the index file
                         if($filesToIgnore){
                             //If file is not part of files to ignore, resume (Index file)
@@ -199,6 +201,7 @@ function bfs($url, $cid, $opt)
                                     downloadToWebserver($cid, $item);  
                                 }      
                         }
+                    }
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {
