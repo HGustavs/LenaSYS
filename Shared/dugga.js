@@ -1121,7 +1121,6 @@ function AJAXService(opt,apara,kind)
 		});
 		*/
 		
-		
   }else if(kind=="GRP"){
 	
     $.ajax({
