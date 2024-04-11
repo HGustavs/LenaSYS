@@ -1092,6 +1092,9 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="SECTION"){	
 		
+
+		/* 
+		//For testing microservice updateQuizDeadline_ms.php 
 		if(opt === "UPDATEDEADLINE"){
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
@@ -1110,8 +1113,8 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 				});
 		}
+		*/
 		
-		/*
 		$.ajax({
 		url: "sectionedservice.php",
 		type: "POST",
@@ -1119,7 +1122,6 @@ function AJAXService(opt,apara,kind)
 		dataType: "json",
 		success: returnedSection
 		});
-		*/
 		
   }else if(kind=="GRP"){
 	
