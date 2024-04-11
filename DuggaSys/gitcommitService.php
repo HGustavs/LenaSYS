@@ -197,10 +197,10 @@
 				// Compare old commit in db with the new one from the url
 				if($latestCommit != $commit) {
 					// Update the SQLite db with the new commit
-					/*$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
+					$query = $pdolite->prepare('UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid');
 					$query->bindParam(':cid', $cid);
 					$query->bindParam(':latestCommit', $latestCommit);
-					$query->execute();*/
+					$query->execute();
 
 					// Download files and metadata
 					bfs($url, $cid, "DOWNLOAD");
