@@ -11,18 +11,15 @@
   //Get the necessary parameters from the request
   $courseid = getOP('courseid');
   $coursevers = getOP('coursevers');
-  //$pos = getOP('pos');
-  //$moment = getOP('moment');
+  $pos = getOP('pos');
+  $moment = getOP('moment');
   $order = getOP('order');
+  $lid = getOP('lid');
 
   //Call the updateTableListentries service to update the pos & moment columns
 
-
-  // $query->bindParam(':courseid, $courseid');
-  // $query->bindParam(':coursevers, $coursevers');
-  // $query->bindParam(':pos, $pos');
-  // $query->bindParam(':moment, $moment');
-  //lid?
+  //the query
+  $query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
 
   //from sectionedservice.php
   if(strcmp($opt,"REORDER")===0) {
@@ -30,7 +27,6 @@
 
     foreach ($orderarr as $key => $value) {
       $armin=explode("XX",$value);
-      $query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
       $query->bindParam(':lid', $armin[1]);
       $query->bindParam(':pos', $armin[0]);
       $query->bindParam(':moment', $armin[2]);
