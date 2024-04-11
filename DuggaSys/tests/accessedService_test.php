@@ -268,7 +268,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
          //Pre-values2
          'query2-before-test-8' => "INSERT INTO user_course(uid, cid, access) VALUES (SELECT cid FROM course WHERE coursecode = 'testtest') , 'test');",
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -305,7 +305,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values2
         'query2-before-test-9' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -342,7 +342,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values2
         'query2-before-test-1' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -373,7 +373,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add class
     'Add-class' => array(  
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -408,7 +408,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -438,7 +438,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-13' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) 
         VALUES ('testClass', '2', 'testClassName, '12345678', '87654321', '7.5', '100', '1.5');",
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -469,7 +469,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add user where no class exists
     'Add-user-no-class' => array(  
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -504,10 +504,16 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Connect-user-to-user-course' => array(  
 
         //Pre-values
+        'expected-output' => '',
         'pre-query' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
 
+        'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+        'variables-query-before-test-1' => "cid",
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
+        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'cid';",
+
+        'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -517,7 +523,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'ADDUSR',
                 'regstatus' => 'UNK',
                 'uid' => '2',
-                'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+                'cid' => '<!query-before-test-1!><[0]["cid"]>',
                 'coursevers' => 'testvers',
             )),
         'filter-output' => serialize(array(
@@ -525,10 +531,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        'cid' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
-
-        'query-after-test-15' => "DELETE FROM user_course WHERE cid = 'cid';",
-        'query2-after-test-15' => "DELETE FROM user_course WHERE cid = 'cid';",
 
     )
 
