@@ -12434,18 +12434,10 @@ function centerCamera() {
     //desiredZoomfact = zoomfact;
     zoomfact = 1;
 
-    // Calculate min and max x and y values for all elements combined, and then find their averages
-    var maxX = undefined;
-    var maxY = undefined;
-    var minX = undefined;
-    var minY = undefined;
-    for (var i = 0; i < data.length; i++) {
-        if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
-        if (minX == undefined || data[i].x < minX) minX = data[i].x;
-        if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
-        if (minY == undefined || data[i].y < minY) minY = data[i].y;
-    }
-
+    var minX = Math.min.apply(null, data.map(i => i.x))
+    var maxX = Math.max.apply(null, data.map(i => i.x + i.width))
+    var minY = Math.min.apply(null, data.map(i => i.y))
+    var maxY = Math.max.apply(null, data.map(i => i.y + i.height))
     determineZoomfact(maxX, maxY, minX, minY);
 
     // Center of screen in pixels
@@ -12456,8 +12448,8 @@ function centerCamera() {
 
     // Center of diagram in coordinates
     var centerDiagram = {
-        x: minX + (maxX - minX) / 2,
-        y: minY + (maxY - minY) / 2
+        x: minX + ((maxX - minX) / 2),
+        y: minY + ((maxY - minY) / 2)
     };
 
     // Move camera to center of diagram
