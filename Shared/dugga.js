@@ -1092,7 +1092,6 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="SECTION"){	
 		
-		
 		if(opt === "UPDATEDEADLINE"){
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
