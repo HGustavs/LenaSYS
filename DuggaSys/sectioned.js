@@ -70,8 +70,8 @@ function burgerToggleDarkmode(operation = 'click') {
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#fff";
   }
-  // Redraw course calendar / planner SVG to get the appropriate color scheme
-  // Course calendar = the SVG that displays the weeks and how far into a course we are (not sure what to call it)
+  // Redraw course schedule / planner SVG to get the appropriate color scheme
+  // Course schedule = the SVG that displays the weeks and how far into a course we are
   drawSwimlanes();
 
   //const themeToggle = document.getElementById('theme-toggle');
