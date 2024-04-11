@@ -155,7 +155,7 @@ $testsData = array(
                 // Data that service needs to execute function
                 'opt' => 'SAVVARI',
                 'cid' => '2',
-                'vid' => '!query-before-test-1! [0][vid]',
+                'vid' => '<!query-before-test-1!><*[0]["vid"]*>',
                 'disabled' => '0',
                 'parameter' => '{&quot;type&quot;:&quot;md&quot;,&quot;filelink&quot;:&quot;&quot;,&quot;gType&quot;:&quot;md&quot;,&quot;gFilelink&quot;:&quot;&quot;,&quot;diagram_File&quot;:&quot;&quot;,&quot;diagram_type&quot;:{&quot;ER&quot;:true,&quot;UML&quot;:false,&quot;IE&quot;:false},&quot;extraparam&quot;:&quot;&quot;,&quot;notes&quot;:&quot;Test&quot;,&quot;submissions&quot;:[{&quot;type&quot;:&quot;pdf&quot;,&quot;fieldname&quot;:&quot;&quot;,&quot;instruction&quot;:&quot;&quot;}],&quot;errorActive&quot;:false}',
                 'variantanswer' => 'Test text updated',
@@ -188,7 +188,7 @@ $testsData = array(
                 'username' => 'toddler',
                 'password' => 'Kong',
                 'cid' => '2',
-                'vid' => '!query-before-test-1! [0][vid]',
+                'vid' => '<!query-before-test-1!><*[0]["vid"]*>',
                 'coursevers' => '97732'
             )
         ),
