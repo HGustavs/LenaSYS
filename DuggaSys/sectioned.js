@@ -41,7 +41,8 @@ function initInputColorTheme() {
 // Globals for the automatic refresh (github)
 var isActivelyFocused = false; // If the user is actively focusing on the course page
 var lastUpdatedCodeExampes = null; // Last time code examples was updated
-const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+const updateMins = 10; // Variable expressed in minutes for how often the code should be updated
+const UPDATE_INTERVAL = 60000 * updateMins; // Timerintervall for code to be updated (currently set to 10 minutes) (minute in millisecond * updateMins)
 
 
 function IsLoggedIn(bool) {
@@ -3223,11 +3224,9 @@ setInterval(function () {
       console.log("Time to update the code examples.");
 
       let returnedPromises = [];
-      for (let i = 0; i < itemKinds.length; i++) {
+      for (let i = 0; i < collectedLid.length; i++) {
         if (itemKinds[i] === 4) {
-          for (let i = 0; i < collectedLid.length; i++) {
-            returnedPromises.push(createExamples(collectedLid[i], false));
-          }
+          returnedPromises.push(createExamples(collectedLid[i], false));
         }
       }
 
