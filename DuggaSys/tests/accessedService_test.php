@@ -4,11 +4,6 @@ include "../../Shared/test.php";   // Include the test file where this is sent t
 include_once "../../../coursesyspw.php";
 include_once "../../Shared/sessions.php";
 
-$uid_query = "SELECT uid FROM user WHERE username = 'testuser1'";
-$uid_statement = $pdo->query($uid_query);
-$uid_result = $uid_statement->fetch(PDO::FETCH_ASSOC);
-$uid_value = $uid_result['uid'];
-
 $testsData = array(   // Test-data is saved on this array that is then tested in test.php file
 
     //TEST #1
@@ -22,6 +17,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
         'service-data' => serialize(
             array(
+
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
@@ -29,7 +25,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'UPDATE',
                 'prop' => 'firstname',
                 'val' => 'test',
-                'uid' => $uid_value, // Using the retrieved UID value
+                'uid' => 
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
