@@ -1606,7 +1606,10 @@ document.addEventListener('keyup', function (e) {
     }
     if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
     if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
-    if (isKeybindValid(e, keybinds.ESCAPE)) escPressed = false;
+    if (isKeybindValid(e, keybinds.ESCAPE)) {
+        escPressed = false; 
+        closeModal();
+    }
     if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
         if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
         if (context.length > 0) {
