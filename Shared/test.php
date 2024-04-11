@@ -54,7 +54,7 @@ testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprin
 
 function doDBQuery($query, $data, $testsData, $testname){
     $queryString = $query;
-    if(!$testname == "UNK"){
+    if(isset($testsData['variables-' . $testname])){
         echo $testsData['variables-' . $testname];
         $variables = $testsData['variables-' . $testname];
         $variablesArray = explode(", ", $variables);
@@ -63,18 +63,15 @@ function doDBQuery($query, $data, $testsData, $testname){
     // DB credentials
     include_once("../../../coursesyspw.php");
 
-    $pdo = null;
-    if ($pdo == null) {
-        // Connect to DB
-        try {
-            $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
-            if(!defined("MYSQL_VERSION")) {
-                define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
-            }
-        } catch (PDOException $e) {
-            $result = "Failed to get DB handle: " . $e->getMessage() . "</br>";
-            exit;
+    // Connect to DB
+    try {
+        $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+        if(!defined("MYSQL_VERSION")) {
+            define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
         }
+    } catch (PDOException $e) {
+        $result = "Failed to get DB handle: " . $e->getMessage() . "</br>";
+        exit;
     }
 
     // DB query to execute
@@ -141,6 +138,7 @@ function testHandler($testsData, $prettyPrint){
                         if ($queryName == $oneQuery) {
                             if ($queryPath != null) {
                                 eval('$queryValue = $queryValue' . $queryPath . ';');
+                                echo $queryValue;
                                 $data[$sInput] = $queryValue;
                             }
                             else{
