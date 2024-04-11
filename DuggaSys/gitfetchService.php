@@ -79,7 +79,7 @@ function insertToMetaData($cid, $item)
     global $pdoLite;
     $query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
     $query->bindParam(':cid', $cid);
-    print_r("\n ---name = ".$item['name']."\n ----type = ".$item['type']."\n ---url = ".$item['url']."\n ---download_url = ".$item['download_url']."\n ---sha = ".$item['sha']."\n ---path = ".$item['path']."\n\n");
+    //print_r("\n ---name = ".$item['name']."\n ----type = ".$item['type']."\n ---url = ".$item['url']."\n ---download_url = ".$item['download_url']."\n ---sha = ".$item['sha']."\n ---path = ".$item['path']."\n\n");
     $query->bindParam(':fileName', $item['name']);
     $query->bindParam(':fileType', $item['type']);
     $query->bindParam(':fileURL', $item['url']);
@@ -186,7 +186,7 @@ function bfs($url, $cid, $opt)
                                 else if($opt == "DOWNLOAD") {
                                     insertToFileLink($cid, $item);
                                     insertToMetaData($cid, $item);
-                                    //downloadToWebserver($cid, $item);  
+                                    downloadToWebserver($cid, $item);  
                                 }                
                             }
                             //Otherwise, fetch and download all files
@@ -197,7 +197,7 @@ function bfs($url, $cid, $opt)
                                 else if($opt == "DOWNLOAD") {
                                     insertToFileLink($cid, $item);
                                     insertToMetaData($cid, $item);
-                                    //downloadToWebserver($cid, $item);  
+                                    downloadToWebserver($cid, $item);  
                                 }      
                         }
                     }
