@@ -343,7 +343,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
+        'query-before-test-2' => "SELECT uid FROM user WHERE username= “testuser1”;",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
 
 
@@ -445,9 +445,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Pre-values
         'expected-output' => '',
-        'pre-query' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
+        'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
 
-        'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+        'query-before-test-2' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         'variables-query-before-test-1' => "cid",
 
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
