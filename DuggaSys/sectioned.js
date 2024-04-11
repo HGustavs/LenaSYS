@@ -2154,8 +2154,6 @@ function returnedHighscore(data) {
   $("#HighscoreBox").css("display", "block");
 }
 
-
-
 //----------------------------------------------------------------------------------
 // drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
@@ -2230,16 +2228,32 @@ function drawSwimlanes() {
     "<linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'>" +
     "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
+  var storedTheme = localStorage.getItem('themeBlack');
+
   for (var i = 0; i < weekLength; i++) {
     str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
       (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
-    if ((i % 2) == 0) {
+    // The following code decides the color scheme of the course timeline 
+    // (The svg showing how far in we are in a course and assignment deadlines)
+    if ((i % 2) == 0 && !(storedTheme.includes("blackTheme.css"))) { // All even columns should be light gray in white theme
       str += "fill='#ededed' />";
-    } else {
+    } else if((i % 2) != 0 && !(storedTheme.includes("blackTheme.css"))){ // All uneven columns should be white in white theme
       str += "fill='#ffffff' />";
+    } else if((i % 2) == 0 && (storedTheme.includes("blackTheme.css"))){ // All even columns should be dark gray in black theme
+      str += "fill='#121212' />";
+    }else{ // All uneven columns should be a lighter gray in white theme
+      str += "fill='#434343' />";
     }
-    str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
-    font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
+
+    //Changes text colors of week numbers in course SVG (course schedule with deadlines)
+    if(storedTheme.includes("blackTheme.css")){ //If theme is black then week numbers in the course schedule should be white
+      str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
+      font-family='Arial' font-size='12px' fill='white' text-anchor='middle'>${(i + 1)}</text>`;
+    }else{ //If theme is white then week numbers in the course schedule should be black
+      str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
+      font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
+    }
+
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
@@ -2279,8 +2293,19 @@ function drawSwimlanes() {
           textcol = `url("#fadeTextRed")`;
         }
 
-        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
-        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
+        if(storedTheme.includes("blackTheme.css")){ //If theme is black then dugga progress should be more pigmented
+          str += `<rect opacity='0.9' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
+        }else{ //If theme is white then week numbers in the course schedule should be less pigmented
+          str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
+        }
+
+        //Changes text colors of assignments/duggor in course SVG (course schedule with deadlines)
+        if(storedTheme.includes("blackTheme.css")){ //If theme is black then duggor-text in the course schedule should be white
+          str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='#ffffff' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
+        }else{ //If theme is white then duggor-text in the course schedule should be black
+          str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
+        }
+        
       }
     }
   }
