@@ -3929,17 +3929,19 @@ function showFeedbackquestion() {
 }
 
 //Fetch file content from github with ajax request
-async function fetchGitCode(courseid){
+async function fetchGitCodeExamples(courseid){
   
+  let fileNamesArray = [];
   var cid = courseid;
   var fileName = document.getElementById('fileName').value;
   var githubURL = document.getElementById('githubURL').value;
   var filePath = document.getElementById('filePath').value;
   
   var apiUrl = githubURL.replace('github.com', 'raw.githubusercontent.com') + '/master/' + filePath;
-
+  fileNamesArray = fetchFileNames(githubURL, filePath);
+  console.log(fileNamesArray);
   //Ajax request to fetch githubfile content
-  var xhr = new XMLHttpRequest();
+  /*var xhr = new XMLHttpRequest();
   xhr.open('GET', apiUrl);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -3953,9 +3955,39 @@ async function fetchGitCode(courseid){
         }
       }
     };
-  xhr.send();
-  
+  xhr.send();*/
 
+  }
+
+  function fetchFileNames(githubURL, filePath){
+    //extract the owner and repo into individual variables
+    var parts = githubURL.split("/");
+    var owner = parts[3];
+    var repo = parts[4]
+    //remove the filename from the filepath and construct a path to its folder
+    var lastIndex = filePath.lastIndexOf("/");
+    var folderPath = filePath.substring(0, lastIndex);
+
+    var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
+    
+    $.ajax({
+      url: apiGitUrl,
+      method: 'GET',
+      success: function(response) {
+        //check if response is an array or single object
+        var files = Array.isArray(response) ? response : [response];
+        // Parse the response to extract file names
+        var fileNames = files.map(function(file) {
+          return file.name;
+        });
+    
+        console.log(fileNames);
+        return fileNames;
+      },
+      error: function(xhr, status, error) {
+        console.error('Failed to fetch folder contents:', error);
+      }
+    });
   }
 
 function changetemplate(templateno) {
