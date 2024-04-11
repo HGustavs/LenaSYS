@@ -12,7 +12,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
 
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
@@ -31,9 +31,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-
-        //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
@@ -75,20 +72,20 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Update-ssn' => array(  
 
         //Pre-values
-        'query-before-test-3' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
-
+        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-2' =>"SELECT uid FROM user WHERE username = 'testuser1'",
+        'variables-query-before-test-1' => "uid",
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-                
                 'opt' => 'UPDATE',
                 'prop' => 'ssn',
                 'val' => 'test',
-                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
+                'uid' => '<!query-before-test-2!><[0]["uid"]>',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -96,7 +93,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-3' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
