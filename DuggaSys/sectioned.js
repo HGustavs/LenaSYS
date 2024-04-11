@@ -1949,6 +1949,11 @@ function returnedSection(data) {
 
 
   }
+  
+  //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
+  for(var i = 0; i < delArr.length; i++){
+    document.getElementById("lid"+delArr[i]).style.display="none";
+  }
 
   // Reset checkboxes
   // Prevents a bug if they are checked when for example an item is deleted and the table refreshes
@@ -1987,10 +1992,7 @@ function returnedSection(data) {
     addClasses();
     showMOTD();
   }
-    //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
-    for(var i = delArr.length-1; i == 0; --i){
-      document.getElementById("lid"+delArr[i]).style.display="none";
-    }
+
 }
 
 function openCanvasLink(btnobj) {
