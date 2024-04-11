@@ -27,11 +27,22 @@ var updatedLidsection;
 var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
+var inputColorTheme;
+
+function initInputColorTheme() {
+  if(localStorage.getItem('themeBlack').includes('blackTheme')){
+    inputColorTheme = "#212121";
+  } 
+  else {
+    inputColorTheme = "#FFF";
+  }
+}
 
 // Globals for the automatic refresh (github)
 var isActivelyFocused = false; // If the user is actively focusing on the course page
 var lastUpdatedCodeExampes = null; // Last time code examples was updated
-const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+const updateMins = 10; // Variable expressed in minutes for how often the code should be updated
+const UPDATE_INTERVAL = 60000 * updateMins; // Timerintervall for code to be updated (currently set to 10 minutes) (minute in millisecond * updateMins)
 
 
 function IsLoggedIn(bool) {
@@ -3213,11 +3224,9 @@ setInterval(function () {
       console.log("Time to update the code examples.");
 
       let returnedPromises = [];
-      for (let i = 0; i < itemKinds.length; i++) {
+      for (let i = 0; i < collectedLid.length; i++) {
         if (itemKinds[i] === 4) {
-          for (let i = 0; i < collectedLid.length; i++) {
-            returnedPromises.push(createExamples(collectedLid[i], false));
-          }
+          returnedPromises.push(createExamples(collectedLid[i], false));
         }
       }
 
@@ -3452,6 +3461,7 @@ function showCourseDate(ddate, dialogid) {
 
 // ------ Validates if deadline is between start and end date ------
 function validateDate2(ddate, dialogid) {
+  initInputColorTheme();
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
 
@@ -3465,12 +3475,11 @@ function validateDate2(ddate, dialogid) {
     var startdate = new Date(retdata['startdate']);
     var enddate = new Date(retdata['enddate']);
 
-
     // If deadline is between start date and end date
     if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
       ddate.style.borderColor = "#383";
       ddate.style.borderWidth = "2px";
-      ddate.style.backgroundColor = backgroundColorTheme;
+      ddate.style.backgroundColor = inputColorTheme;
       $(x).fadeOut();
       //x.style.display = "none";
       window.bool8 = true;
@@ -3480,7 +3489,7 @@ function validateDate2(ddate, dialogid) {
       // If absolute deadline is not being used
       $(x).fadeIn();
       ddate.style.borderWidth = "2px";
-      ddate.style.backgroundColor = backgroundColorTheme;
+      ddate.style.backgroundColor = inputColorTheme;
       ddate.style.borderColor = "#aaa";
       // x.style.display = "block";
       window.bool8 = true;
@@ -3502,6 +3511,7 @@ function validateDate2(ddate, dialogid) {
 }
 
 function validateSectName(name) {
+  initInputColorTheme();
   var emotd = document.getElementById(name);
   var tooltipTxt = document.getElementById("dialog10");
   tooltipTxt.style.left = 50 + "px";
@@ -3511,7 +3521,7 @@ function validateSectName(name) {
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     emotd.style.borderColor = "#383";
     emotd.style.borderWidth = "2px";
-    emotd.style.backgroundColor = backgroundColorTheme;
+    emotd.style.backgroundColor = inputColorTheme;
     $('#dialog10').fadeOut();
     window.bool10 = true;
     return true;
