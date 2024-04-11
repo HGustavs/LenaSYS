@@ -1,6 +1,7 @@
 <?php
 //---------------------------------------------------------------------------------------------------------------
 // Microservice updateQuizDeadline updates the deadline for a quiz (dugga)
+// Microservice does not currently work...
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
