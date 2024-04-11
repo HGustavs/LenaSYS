@@ -158,15 +158,7 @@ function testHandler($testsData, $prettyPrint){
         // Output filter
         $filter = unserialize($testData['filter-output']);
 
-        if (!(strpos($testData['service'], "/"))) {
-            echo $testData['service'];
-            $dirname = dirname(dirname(__FILE__));
-            $urlpath = strstr($dirname, '/root');
-            $serviceURL = $dirname.$urlpath."/DuggaSys/".$testData['service'];
-        }
-        else{
-            $serviceURL = $testData['service'];
-        }
+        $serviceURL = $testData['service'];
 
         // Test 1 login
         $serviceData = unserialize($testData['service-data']);
