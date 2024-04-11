@@ -641,6 +641,14 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "load dugga with hash" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loadDuggaBox").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
