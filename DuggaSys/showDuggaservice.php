@@ -495,8 +495,6 @@ if(isSuperUser($userid)){
 				}
 				else{
 					$debug="[Guest] Missing hash/password/variant!";
-					$hash = "UNK";
-					$opt = "UNK";
 					$variant="UNK";
 					$answer="UNK";
 					$variantanswer="UNK";
