@@ -14,7 +14,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
 
@@ -41,22 +41,23 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
     //TEST #2
     //Update lastname
-    'Update-lastname' => array(  
-
+    'Update-lastname' => array(
         //Pre-values
-        'query-before-test-2' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'expected-output' => '',
+        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
+        'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1';",
+        'variables-query-before-test-1' => "uid",
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'UPDATE',
                 'prop' => 'lastname',
                 'val' => 'test',
-                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
+                'uid' => '<!query-before-test-2!><[0]["uid"]>',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
@@ -64,7 +65,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
 
         //Rätt platts för delete?
-        'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser1';",
     ),
 
 
@@ -78,7 +78,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-3' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -109,7 +109,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-4' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -143,7 +143,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
 
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -179,7 +179,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
 
         //Enligt modellen ska det bara vara en select för den första query inte säker på detta
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
@@ -195,7 +195,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         ),
 
         //Send 2
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data2' => serialize(
             array(
                 // Data that service needs to execute function
@@ -234,7 +234,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         
         'query2-before-test-7' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
 
-        'service' => 'C:\xampp\htdocs\LenaSYS\DuggaSys\accessedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
