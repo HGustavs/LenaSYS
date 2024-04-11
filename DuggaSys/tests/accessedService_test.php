@@ -309,6 +309,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add class
     'Add-class' => array(  
 
+
+        'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass';",
+
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -331,8 +334,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass';",
     ),
 
 
@@ -343,6 +344,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
 
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+
 
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
@@ -352,7 +355,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'password' => 'password',
 
                 'opt' => 'CHPWD',
-                'uid' => "SELECT uid FROM user WHERE username = 'testuser1'",
+                'uid' => '<!query-before-test-1!><[0]["uid"]>',
                 'pwd' => '123123',
             )),
         'filter-output' => serialize(array(
@@ -360,8 +363,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        //Rätt platts för delete?
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
+
     ),
 
 
@@ -371,8 +373,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Add-user' => array(  
 
         //Pre-values
-        'query-before-test-13' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) 
+        'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress)  
         VALUES ('testClass', '2', 'testClassName, '12345678', '87654321', '7.5', '100', '1.5');",
+        'query-after-test-1' => "DELETE FROM user WHERE username = “testuser”;",
+        'query2-after-test-2' => "DELETE FROM class WHERE class = “testClass”;",
 
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
@@ -395,15 +399,17 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        //Rätt platts för delete?
-        'query-after-test-13' => "DELETE FROM user WHERE username = “testuser”;",
-		'query2-after-test-13' => "DELETE FROM class WHERE class = “testClass”;",
+
     ),
 
 
     //TEST #14
     //Add user where no class exists
     'Add-user-no-class' => array(  
+
+
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
+        'query-after-test-2' => "DELETE FROM class WHERE class = “testClass”;",
 
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
@@ -428,9 +434,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-        //Rätt platts för delete?
-        'query-after-test-14' => "DELETE FROM user WHERE username = 'testuser';",
-        'query2-after-test-14' => "DELETE FROM class WHERE class = “testClass”;",
+
     ),
 
 
