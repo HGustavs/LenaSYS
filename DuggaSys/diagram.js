@@ -2492,7 +2492,9 @@ function mmoving(event) {
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
+
                 elementData.height = (startHeight - (deltaY / zoomfact));
+
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
@@ -2513,22 +2515,29 @@ function mmoving(event) {
                         preResizeHeight.push(resizedElement);
                     }
                 }
+
+
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
+
                 elementData.height = (startHeight + (deltaY / zoomfact));
+
 
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
+
 
                 // Fetch original y-position
                 // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
                 elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
 
+
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
+
 
                 // Adds a deep clone of the element to preResizeHeight if it isn't in it
                 let foundID = false;
@@ -2546,6 +2555,8 @@ function mmoving(event) {
                         preResizeHeight.push(resizedElement);
                     }
                 }
+                console.log("yChange: ", yChange);
+                console.log("heightChange: ", heightChange);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
             document.getElementById(context[0].id).remove();
@@ -9030,7 +9041,7 @@ function drawElement(element, ghosted = false) {
 
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9202,7 +9213,7 @@ function drawElement(element, ghosted = false) {
 
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9293,7 +9304,7 @@ function drawElement(element, ghosted = false) {
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh / 3))}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9353,7 +9364,7 @@ function drawElement(element, ghosted = false) {
 
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9405,7 +9416,7 @@ function drawElement(element, ghosted = false) {
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxh / 1.5))}px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9657,7 +9668,7 @@ function drawElement(element, ghosted = false) {
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.4))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -9741,7 +9752,6 @@ function drawElement(element, ghosted = false) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
@@ -9749,7 +9759,6 @@ function drawElement(element, ghosted = false) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
@@ -9757,7 +9766,6 @@ function drawElement(element, ghosted = false) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxh / 2.75))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
