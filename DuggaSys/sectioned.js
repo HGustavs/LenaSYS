@@ -2229,8 +2229,6 @@ function drawSwimlanes() {
     "<linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'>" +
     "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
-  const storedTheme = localStorage.getItem('themeBlack');
-
   for (var i = 0; i < weekLength; i++) {
     // Draws the columns in the course schedule
     if ((i % 2) == 0){ str += "<rect class='evenScheduleColumn'";} // Even columns get the class "evenScheduleColumn"
