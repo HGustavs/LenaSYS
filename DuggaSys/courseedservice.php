@@ -558,6 +558,7 @@ foreach ($queryz->fetchAll(PDO::FETCH_ASSOC) as $row) {
 //Delete course matterial from courses that have been marked as deleted.
 $deleted = 3;
 
+
 //partresult
 $query = $pdo->prepare("DELETE partresult FROM course,partresult WHERE course.visibility=:deleted AND partresult.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
@@ -615,16 +616,16 @@ $query->bindParam(':deleted', $deleted);
 	$debug="Error reading courses\n".$error[2];
 } 
 
-//listentries
-$query = $pdo->prepare("DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;");
+//useranswer
+$query = $pdo->prepare("DELETE useranswer FROM course,useranswer WHERE course.visibility=:deleted AND useranswer.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
 }
 
-//useranswer useranswer är problemet 
-$query = $pdo->prepare("DELETE useranswer FROM course,useranswer WHERE course.visibility=:deleted AND useranswer.cid = course.cid;");
+//listentries
+$query = $pdo->prepare("DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
 	$error = $query->errorInfo();
@@ -703,6 +704,13 @@ if (!$query->execute()) {
     $debug = "Error reading courses\n" . $error[2];
 }
 
+//coursekeys
+$query = $pdo->prepare("DELETE coursekeys FROM course,coursekeys WHERE course.visibility=:deleted AND coursekeys.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
 
 //Delete Courses that have been marked as deleted.
 $query = $pdo->prepare("DELETE course FROM course WHERE visibility=:deleted;");
