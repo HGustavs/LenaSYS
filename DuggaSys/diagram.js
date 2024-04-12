@@ -7905,7 +7905,34 @@ function drawLine(line, targetGhost = false) {
     zeroOneCircle.set('BT', [0, 25 * zoomfact, 8]);
     zeroOneCircle.set('LR', [-25 * zoomfact, 0, 8]);
     zeroOneCircle.set('RL', [25 * zoomfact, 0, 8]);
+    // x1, y1, x2, y2
+    const oneLine = new Map();
+    oneLine.set('TB', [-10, -20, 10, -20]);
+    oneLine.set('BT', [-10, 20, 10, 20]);
+    oneLine.set('LR', [-20, -10, -20, 10]);
+    oneLine.set('RL', [20, -10, 20, 10]);
+    // x1, y1, x2, y2
+    const forcedOneLineB = new Map();
+    forcedOneLineB.set('TB', [-10, -30, 10, -30]);
+    forcedOneLineB.set('BT', [-10, 30, 10, 30]);
+    forcedOneLineB.set('LR', [-30, -10, -30, 10]);
+    forcedOneLineB.set('RL', [30, -10, 30, 10]);
 
+    const weakTriangle = new Map();
+    weakTriangle.set('TB',[-10 ,-5 ,0 ,-25 ,10 ,-5 ,-10 ,-5 ])
+    weakTriangle.set('BT',[-10 ,5 ,0 ,25 ,10 ,5 ,-10 ,5 ])
+    weakTriangle.set('LR',[-5 ,-10 ,-25 ,0 ,-5 ,10 ,-5 ,-10 ])
+    weakTriangle.set('RL',[5 ,-10 ,25 ,0 ,5 ,10 ,5 ,-10 ])
+    const weakCircle = new Map();
+    weakCircle.set('TB',[0, -25 * zoomfact, 8])
+    weakCircle.set('BT',[0, 25 * zoomfact, 8])
+    weakCircle.set('LR',[-25 * zoomfact, 0, 8])
+    weakCircle.set('RL',[25 * zoomfact, 0, 8])
+    const manyLine = new Map()
+    manyLine.set('TB',[-10, 5, 0, -15, 10, 5])
+    manyLine.set('BT',[-10, -5, 0, 15, 10, -5])
+    manyLine.set('LR',[5, -10, -15, 0, 5, 10])
+    manyLine.set('RL',[-5, -10, 15, 0, -5, 10])
     // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
         var dx = ((fx + x1Offset) - (tx + x2Offset)) / 2;
@@ -7975,99 +8002,112 @@ function drawLine(line, targetGhost = false) {
                 iconSizeStart = 30;
                 break;
             case IELineIcons.ONE:
-                if (line.ctype == 'TB') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const oneA = ([a, b, c, d]) => {
+                    return `<line class='diagram-umlicon-darkmode' \
+                    x1='${fx + (a * zoomfact)}' \
+                    y1='${fy + (b * zoomfact)}' \
+                    x2='${fx + (c * zoomfact)}' \
+                    y2='${fy + (d * zoomfact)}' \
+                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                str += oneA(oneLine.get(line.ctype));
                 iconSizeStart = 20;
                 break;
             case IELineIcons.FORCEDONE:
-                if (line.ctype == 'TB') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const forcedOneA = ([a, b, c, d]) => {
+                    return `<line class='diagram-umlicon-darkmode' \
+                    x1='${fx + (a * zoomfact)}' \
+                    y1='${fy + (b * zoomfact)}' \
+                    x2='${fx + (c * zoomfact)}' \
+                    y2='${fy + (d * zoomfact)}' \
+                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                const forcedOneB = ([a, b, c, d]) => {
+                    return `<line class='diagram-umlicon-darkmode' \
+                    x1='${fx + (a * zoomfact)}' \
+                    y1='${fy + (b * zoomfact)}' \
+                    x2='${fx + (c * zoomfact)}' \
+                    y2='${fy + (d * zoomfact)}' \
+                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                str += forcedOneA(oneLine.get(line.ctype));
+                str += forcedOneB(forcedOneLineB.get(line.ctype));
                 iconSizeStart = 30;
                 break;
             case IELineIcons.WEAK:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx}' cy='${fy + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 25 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx - 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx + 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const weakA = ([ax, ay, bx, by, cx, cy, dx, dy]) => {
+                    return `<polyline class='diagram-umlicon-darkmode' \
+                    points='${fx + (ax * zoomfact)} ${fy+( ay * zoomfact)}, \
+                    ${fx + (bx * zoomfact)} ${fy + (by * zoomfact)}, \
+                    ${fx + (cx * zoomfact)} ${fy + (cy * zoomfact)}, \
+                    ${fx + (dx * zoomfact)} ${fy + (dy * zoomfact)}' \
+                    fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                const weakB = ([a, b, c]) => {
+                    return `<circle class='diagram-umlicon-darkmode' \
+                    cx='${fx + a}' \
+                    cy='${fy + b}' \
+                    r='${c * zoomfact}' \
+                    fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                str += weakA(weakTriangle.get(line.ctype));
+                str += weakB(weakCircle.get(line.ctype));
                 iconSizeStart = 40;
                 break;
             case IELineIcons.MANY:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const many = ([ax, ay, bx, by, cx, cy]) => {
+                    return `<polyline class='diagram-umlicon-darkmode' \
+                    points='${fx + (ax * zoomfact)} ${fy+( ay * zoomfact)}, \
+                    ${fx + (bx * zoomfact)} ${fy + (by * zoomfact)}, \
+                    ${fx + (cx * zoomfact)} ${fy + (cy * zoomfact)}' \
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                str += many(manyLine.get(line.ctype));
                 iconSizeStart = 20;
                 break;
             case IELineIcons.ZERO_MANY:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy + 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx - 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const zeroManyA = ([ax, ay, bx, by, cx, cy]) => {
+                    return `<polyline class='diagram-umlicon-darkmode' \
+                    points='${fx + (ax * zoomfact)} ${fy+( ay * zoomfact)}, \
+                    ${fx + (bx * zoomfact)} ${fy + (by * zoomfact)}, \
+                    ${fx + (cx * zoomfact)} ${fy + (cy * zoomfact)}' \
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                const zeroManyB = ([a, b, c]) => {
+                    return `<circle class='diagram-umlicon-darkmode' \
+                    cx='${fx + a}' \
+                    cy='${fy + b}' \
+                    r='${c * zoomfact}' \
+                    fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                str += zeroManyA(manyLine.get(line.ctype));
+                str += zeroManyB(zeroOneCircle.get(line.ctype));
                 iconSizeStart = 30;
                 break;
             case IELineIcons.ONE_MANY:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                const oneManyA = ([ax, ay, bx, by, cx, cy]) => {
+                    return `<polyline class='diagram-umlicon-darkmode' \
+                    points='${fx + (ax * zoomfact)} ${fy+( ay * zoomfact)}, \
+                    ${fx + (bx * zoomfact)} ${fy + (by * zoomfact)}, \
+                    ${fx + (cx * zoomfact)} ${fy + (cy * zoomfact)}' \
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
+                const oneManyB = ([a, b, c, d]) => {
+                    return `<line class='diagram-umlicon-darkmode' \
+                    x1='${fx + (a * zoomfact)}' \
+                    y1='${fy + (b * zoomfact)}' \
+                    x2='${fx + (c * zoomfact)}' \
+                    y2='${fy + (d * zoomfact)}' \
+                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                str += oneManyA(manyLine.get(line.ctype));
+                str += oneManyB(oneLine.get(line.ctype));
                 iconSizeStart = 20;
                 break;
             case UMLLineIcons.ARROW:
                 if (line.ctype == 'TB') {
                     str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
+               } else if (line.ctype == 'BT') {
                     str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
                     str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
