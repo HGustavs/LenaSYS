@@ -6610,7 +6610,7 @@ function generateContextProperties()
               if(selected == undefined) {
                   selected = "normal"
               }
-              if(element.kind==elementTypes.ERAttr) {
+              if(element.kind==elementTypesNames.ERAttr) {
                   value = Object.values(attrState);
               } else if(element.kind==elementTypesNames.EREntity) {
                   value = Object.values(entityState);
