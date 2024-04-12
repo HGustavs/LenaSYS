@@ -36,6 +36,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Update-lastname' => array(
         //Pre-values
         'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
         'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1';",
         'variables-query-before-test-1' => "uid",
@@ -66,6 +67,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Update-ssn' => array(  
 
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
         'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-1' => "uid",
@@ -93,6 +96,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update username
     'Update-username' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
         'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-1' => "uid",
@@ -119,6 +124,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update class
     'Update-class' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
         'query-before-test-2' => "SELECT uid FROM user WHERE username = 'testuser1'",
         'variables-query-before-test-1' => "uid",
@@ -146,6 +153,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update examiner
     'Update-examiner' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
         'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
@@ -189,6 +198,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update examiner to none
     'Update-examiner-to-none' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
         'variables-query-before-test-1' => "cid",
         'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
@@ -219,6 +230,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update version
     'Update-version' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
         'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
@@ -249,6 +262,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update access
     'Update-access' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
         'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
@@ -279,6 +294,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update group
     'Update-group' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
         'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
@@ -307,6 +324,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #11
     //Add class
     'Add-class' => array(  
+        'expected-output' => '',
+
         'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
@@ -337,6 +356,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Change password
     'Change-password' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
@@ -363,6 +384,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add user
     'Add-user' => array(  
         //Pre-values
+        'expected-output' => '',
+
         'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2, 'testClassName', 12345678, 87654321, 7.5, 100, 1.5);",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
         'query-after-test-2' => "DELETE FROM class WHERE class = 'testClass';",
@@ -386,13 +409,14 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'none'
             )),
 
-
     ),
 
 
     //TEST #14
     //Add user where no class exists
     'Add-user-no-class' => array(  
+        'expected-output' => '',
+
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
         'query-after-test-2' => "DELETE FROM class WHERE class = 'testClass';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
