@@ -1155,7 +1155,7 @@ var ghostLine = null;
 var defaults = {
 
     EREntity: { name: "Entity", kind: elementTypesNames.EREntity, fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },
-    ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal', canChangeTo: Object.values(relationType) },
+    ERRelation: { name: "Relation", kind: elementTypesNames.ERRelation, fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal', canChangeTo: Object.values(relationType) },
     ERAttr: { name: "Attribute", kind: elementTypesNames.ERAttr, fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
     Ghost: { name: "Ghost", kind: elementTypesNames.ERAttr, fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
 
@@ -5726,7 +5726,7 @@ function generateErTableString()
     // Iterate through ERForeignData to find many to many relation
     for (var i = 0; i < ERForeignData.length; i++) {
         // If relation is exist in ERForeignData
-        if (ERForeignData[i][0].kind == 'ERRelation') {
+        if (ERForeignData[i][0].kind == elementTypesNames.ERRelation) {
             var currentString = '';
             currentString += `<p>${ERForeignData[i][0].name} (`; // Push in relation's name
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
@@ -6614,7 +6614,7 @@ function generateContextProperties()
                   value = Object.values(attrState);
               } else if(element.kind==elementTypesNames.EREntity) {
                   value = Object.values(entityState);
-              } else if(element.kind=="ERRelation") {
+              } else if(element.kind==elementTypesNames.ERRelation) {
                   value = Object.values(relationState);
               }
 
@@ -7809,7 +7809,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     
     // Adding attributes to the array that only carries attributes directly connected to entities or relations
     if (!exists) {
-        if (toElement.kind == "ERRelation") {
+        if (toElement.kind == elementTypesNames.ERRelation) {
             allAttrToEntityRelations[countUsedAttributes] = fromElement.id;
             countUsedAttributes++;
         }
@@ -7829,15 +7829,15 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
 
     // Define a boolean for special case that relation and entity can have 2 lines
-    var specialCase = (fromElement.kind === "ERRelation" &&
+    var specialCase = (fromElement.kind === elementTypesNames.ERRelation &&
                         toElement.kind === elementTypesNames.EREntity ||
                         fromElement.kind === elementTypesNames.EREntity &&
-                        toElement.kind === "ERRelation");
+                        toElement.kind === elementTypesNames.ERRelation);
 
     // Check rules for Recursive relations
-    if(fromElement.kind === "ERRelation" && fromElement.kind == "Normal" || toElement.kind === "ERRelation" && toElement.kind == "Normal") {
+    if(fromElement.kind === elementTypesNames.ERRelation && fromElement.kind == "Normal" || toElement.kind === elementTypesNames.ERRelation && toElement.kind == "Normal") {
         var relationID;
-        if (fromElement.kind === "ERRelation") relationID = fromElement.id;
+        if (fromElement.kind === elementTypesNames.ERRelation) relationID = fromElement.id;
         else relationID = toElement.id;
 
         var linesFromRelation = lines.filter(line => {
@@ -8027,7 +8027,7 @@ function drawLine(line, targetGhost = false)
     var connections = felem.neighbours[telem.id].length;
     if (connections === 2) {
         var isFirst = felem.neighbours[telem.id][0].id === line.id;
-        var fromRelation = felem.kind === "ERRelation";
+        var fromRelation = felem.kind === elementTypesNames.ERRelation;
         lengthConstant = 0;
 
         if (fromRelation) {
@@ -10122,7 +10122,7 @@ function drawElement(element, ghosted = false)
                             height:${boxh}px;
                             font-size:${texth}px;`;
         }
-        else if (element.kind == "ERRelation") {
+        else if (element.kind == elementTypesNames.ERRelation) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
@@ -10201,7 +10201,7 @@ function drawElement(element, ghosted = false)
             }
             
         }
-        else if (element.kind == "ERRelation") {         
+        else if (element.kind == elementTypesNames.ERRelation) {         
 
             var numOfLetters = element.name.length;
             if (tooBig) {
@@ -10265,7 +10265,7 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation"  && context[0].kind != "IERelation")) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != elementTypesNames.ERRelation && context[0].kind != "UMLRelation"  && context[0].kind != "IERelation")) addNodes(context[0]);
     
 
 }
@@ -10284,7 +10284,7 @@ function checkLineErrors(lines) {
         var tElement = data[findIndex(data, line.toID)];
 
         //Checking for cardinality
-        if ((fElement.kind == elementTypesNames.EREntity && tElement.kind == "ERRelation") || (tElement.kind == elementTypesNames.EREntity && fElement.kind == "ERRelation")) {
+        if ((fElement.kind == elementTypesNames.EREntity && tElement.kind == elementTypesNames.ERRelation) || (tElement.kind == elementTypesNames.EREntity && fElement.kind == elementTypesNames.ERRelation)) {
             if (line.cardinality != "ONE" && line.cardinality != "MANY") {
                 errorData.push(fElement);
                 errorData.push(tElement);
@@ -10336,10 +10336,10 @@ function checkEREntityErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -10350,10 +10350,10 @@ function checkEREntityErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             } 
@@ -10505,7 +10505,7 @@ function checkEREntityErrors(element) {
             }
 
             // Checking if weak entity is related to a strong entity or a weak entity with a relation
-            if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak" && line.kind == "Double") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak" && line.kind == "Double") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
@@ -10519,7 +10519,7 @@ function checkEREntityErrors(element) {
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak" && line.kind == "Double") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak" && line.kind == "Double") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
@@ -10535,10 +10535,10 @@ function checkEREntityErrors(element) {
             }
 
             // Counting weak relations
-            if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak") {
                 weakrelation += 1;
             }
-            if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak") {
                 weakrelation += 1;
             }
         }
@@ -10668,10 +10668,10 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "ERRelation") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == "ERRelation") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
             errorData.push(element);
         }
     }
@@ -10688,10 +10688,10 @@ function checkERRelationErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -10702,10 +10702,10 @@ function checkERRelationErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             } 
@@ -10794,7 +10794,7 @@ function checkERRelationErrors(element) {
 
     // Checking for reletions with same name but different properties
     for (var i = 0; i < data.length; i++) {
-        if (element.name == data[i].name && element.id != data[i].id && data[i].kind == "ERRelation") {
+        if (element.name == data[i].name && element.id != data[i].id && data[i].kind == elementTypesNames.ERRelation) {
 
             // Checking if relations have same line types
             var linesChecked = [];
@@ -11651,12 +11651,12 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
@@ -11669,12 +11669,12 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
@@ -11695,10 +11695,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11709,10 +11709,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11731,10 +11731,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11745,10 +11745,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11769,10 +11769,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11783,10 +11783,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11805,10 +11805,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11819,10 +11819,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11831,30 +11831,30 @@ function checkERAttributeErrors(element) {
         }
 
         // Attribute connected to more than one relation or entity
-        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == "ERRelation")) {
+        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == "ERRelation")) {
+        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -11867,30 +11867,30 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11903,30 +11903,30 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11935,7 +11935,7 @@ function checkERAttributeErrors(element) {
         }
 
         // Check for 1st line attribute connected in a 3 line attribute chain
-        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == "ERRelation")) {
+        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
@@ -11971,7 +11971,7 @@ function checkERAttributeErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == "ERRelation")) {
+        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
@@ -12039,7 +12039,7 @@ function checkERAttributeErrors(element) {
         var tElement0;
 
         // Checking for attributes on the same relation with the same name
-        if (fElement.id == element.id && tElement.kind == "ERRelation") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
@@ -12053,7 +12053,7 @@ function checkERAttributeErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERRelation") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
@@ -12069,10 +12069,10 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for key attributes on relation
-        if (fElement.id == element.id && tElement.kind == "ERRelation" && (fElement.state == "primary" || fElement.state == "candidate" || fElement.state == "weakKey")) {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && (fElement.state == "primary" || fElement.state == "candidate" || fElement.state == "weakKey")) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == "ERRelation" && (tElement.state == "primary" || tElement.state == "candidate" || tElement.state == "weakKey")) {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && (tElement.state == "primary" || tElement.state == "candidate" || tElement.state == "weakKey")) {
             errorData.push(element);
         }
 
@@ -12153,7 +12153,7 @@ function checkERAttributeErrors(element) {
 function checkElementError(element) 
 {
     if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element)
-    if (element.kind == "ERRelation") checkERRelationErrors(element)
+    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element)
     if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element)
 
     // Check lines
