@@ -2010,6 +2010,13 @@ $(window).load(function() {
       });
 });
 
+// Close the "logout" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+	if (event.key === 'Escape') {
+	  $("#logoutBox").css("display", "none");
+	}
+})
+
 /*
 
 // Never make dialogs draggable - ruins everything!
