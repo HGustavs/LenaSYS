@@ -3928,27 +3928,37 @@ function showFeedbackquestion() {
   }
 }
 
-//Fetch file content from github with ajax request
-async function fetchGitCodeExamples(courseid){
+//Fetch file content from github 
+function fetchGitCodeExamples(courseid){
   
-  let fileNamesArray = [];
+  var fileNamesArray = [];
   var cid = courseid;
   var fileName = document.getElementById('fileName').value;
   var githubURL = document.getElementById('githubURL').value;
   var filePath = document.getElementById('filePath').value;
-  
+  var filteredFiles = [];
 
   if(filePath == "" || githubURL == "" || fileName == ""){
     return alert('Fill in all boxes!');
   }
 
   var folderPath = getParentFolderOfFile(filePath);
-  fileNamesArray = fetchFileNames(githubURL, folderPath);
-  var fileSearchParm = deconstructFilePath(filePath);
-  console.log(fileSearchParam);
+  var fileSearchParam = deconstructFilePath(filePath);
+
+  fetchFileNames(githubURL, folderPath).then(function(fileNamesArray){
+    for (var i = 0; i < fileNamesArray.length; i++){
+      if(fileNamesArray[i].includes(fileSearchParam)){
+        filteredFiles.push(fileNamesArray[i]);
+      }
+    }
+    console.log(filteredFiles);
+    console.log(fileNamesArray);
+  }).catch(function(error){
+    console.error('Failed to fetch file names:', error)
+  });
+  
   var apiUrl = githubURL.replace('github.com', 'raw.githubusercontent.com') + '/master/' + filePath;
   
-  console.log(fileNamesArray);
   //HTTP request to fetch githubfile content
   /*var request = new XMLHttpRequest();
   request.open('GET', apiUrl);
@@ -3981,29 +3991,30 @@ async function fetchGitCodeExamples(courseid){
        return folderPath;
   }
 
-  function fetchFileNames(githubURL, folderPath){
-    // Extract the owner and repo into individual variables
-    var parts = githubURL.split("/");
-    var owner = parts[3];
-    var repo = parts[4]
+  async function fetchFileNames(githubURL, folderPath){
+    return new Promise(function(resolve, reject){
+      // Extract the owner and repo into individual variables
+      var parts = githubURL.split("/");
+      var owner = parts[3];
+      var repo = parts[4]
   
-    var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
-    // Ajax request to fetch all filenames in folder
-    $.ajax({
-      url: apiGitUrl,
-      method: 'GET',
-      success: function(response) {
-        // Check if response is an array or single object, then parse the response to extract file names
-        var files = Array.isArray(response) ? response : [response];
-        var fileNames = files.map(function(file) {
-          return file.name;
-        });
-        console.log(fileNames);
-        return fileNames;
-      },
-      error: function(xhr, status, error) {
-        console.error('Failed to fetch folder contents:', error);
-      }
+      var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
+      // Ajax request to fetch all filenames in folder
+      $.ajax({
+        url: apiGitUrl,
+        method: 'GET',
+        success: function(response) {
+          // Check if response is an array or single object, then parse the response to extract file names
+          var files = Array.isArray(response) ? response : [response];
+          var fileNames = files.map(function(file) {
+            return file.name;
+          });
+          resolve(fileNames);
+        },
+        error: function(xhr, status, error) {
+          reject(error);
+        }
+      });
     });
   }
 
