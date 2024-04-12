@@ -1568,17 +1568,65 @@ document.addEventListener('keydown', function (e) {
     }
 
     // Moving object with arrows
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
-        setPos(context, 0, 1);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x, obj.y - 1)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, 0, 1);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
-        setPos(context, 0, -1);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x, obj.y + 1)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, 0, -1);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
-        setPos(context, 1, 0);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x - 1, obj.y)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, 1, 0);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
-        setPos(context, -1, 0);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x + 1, obj.y)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, -1, 0);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
 });
 
@@ -3429,16 +3477,36 @@ function rectsIntersect(left, right) {
  */
 function setPos(objects, x, y) {
     var idList = [];
-    var overlapping = false;
+    var overlappingObject = null;
 
+    // Check for overlaps
     objects.forEach(obj => {
         if (entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) {
-            overlapping = true;
+            overlappingObject = obj;
         }
     });
 
-    if (overlapping) {
-        displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+    if (overlappingObject) {
+        // If overlap is detected, move the overlapping object back by one step
+        var previousX = overlappingObject.x;
+        var previousY = overlappingObject.y;
+
+        // Move the object back one step 
+        overlappingObject.x -= (x / zoomfact);
+        overlappingObject.y -= (y / zoomfact);
+
+        // Check again if the adjusted position still overlaps
+        if (entityIsOverlapping(overlappingObject.id, overlappingObject.x, overlappingObject.y)) {
+            // If it still overlaps, revert to the previous position
+            overlappingObject.x = previousX;
+            overlappingObject.y = previousY;
+
+            // Display error message
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        } else {
+            // If no longer overlaps after adjustment, proceed with saving the new position
+            idList.push(overlappingObject.id);
+        }
     } else {
         objects.forEach(obj => {
             if (obj.isLocked) return;
@@ -3473,6 +3541,8 @@ function setPos(objects, x, y) {
         });
         if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
     }
+
+    // Update positions
     updatepos(0, 0);
 }
 
