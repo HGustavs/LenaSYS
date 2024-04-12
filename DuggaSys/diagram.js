@@ -1154,7 +1154,7 @@ var ghostLine = null;
  */
 var defaults = {
 
-    EREntity: { name: "Entity", kind: "EREntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },
+    EREntity: { name: "Entity", kind: elementTypesNames.EREntity, fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },
     ERRelation: { name: "Relation", kind: "ERRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal', canChangeTo: Object.values(relationType) },
     ERAttr: { name: "Attribute", kind: elementTypesNames.ERAttr, fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
     Ghost: { name: "Ghost", kind: elementTypesNames.ERAttr, fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
@@ -3502,7 +3502,7 @@ function rectsIntersect (left, right)
 
            if (!ctrlPressed) {
              //Different snap points for entity and others
-             if (obj.kind == "EREntity") {
+             if (obj.kind == elementTypesNames.EREntity) {
                // Calculate nearest snap point
                obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize * 2)) / settings.grid.gridSize) * settings.grid.gridSize;
                obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
@@ -6612,7 +6612,7 @@ function generateContextProperties()
               }
               if(element.kind==elementTypes.ERAttr) {
                   value = Object.values(attrState);
-              } else if(element.kind=="EREntity") {
+              } else if(element.kind==elementTypesNames.EREntity) {
                   value = Object.values(entityState);
               } else if(element.kind=="ERRelation") {
                   value = Object.values(relationState);
@@ -7755,7 +7755,7 @@ function sortElementAssociations(element)
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal){
     
      // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-     if (toElement.kind == "EREntity"){
+     if (toElement.kind == elementTypesNames.EREntity){
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
@@ -7830,8 +7830,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // Define a boolean for special case that relation and entity can have 2 lines
     var specialCase = (fromElement.kind === "ERRelation" &&
-                        toElement.kind === "EREntity" ||
-                        fromElement.kind === "EREntity" &&
+                        toElement.kind === elementTypesNames.EREntity ||
+                        fromElement.kind === elementTypesNames.EREntity &&
                         toElement.kind === "ERRelation");
 
     // Check rules for Recursive relations
@@ -7998,19 +7998,19 @@ function drawLine(line, targetGhost = false)
    // Collect coordinates
    if (line.ctype == "BT"){
         fy = felem.y2;
-        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
+        if (felem.kind == elementTypesNames.EREntity) fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
         ty = telem.y1;
     }else if (line.ctype == "TB"){
         fy = felem.y1;
-        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
+        if (felem.kind == elementTypesNames.EREntity) fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
         ty = telem.y2;
     }else if (line.ctype == "RL"){
         fx = felem.x2;
-        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
+        if (felem.kind == elementTypesNames.EREntity) fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
         tx = telem.x1;
     }else if (line.ctype == "LR"){
         fx = felem.x1;
-        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
+        if (felem.kind == elementTypesNames.EREntity) fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
         tx = telem.x2;
     }
 
@@ -10104,7 +10104,7 @@ function drawElement(element, ghosted = false)
     //ER element
     else {
         // Create div & svg element
-        if (element.kind == "EREntity") {
+        if (element.kind == elementTypesNames.EREntity) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
@@ -10143,7 +10143,7 @@ function drawElement(element, ghosted = false)
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
-        if (element.kind == "EREntity") {
+        if (element.kind == elementTypesNames.EREntity) {
 
             var weak = "";
 
@@ -10284,7 +10284,7 @@ function checkLineErrors(lines) {
         var tElement = data[findIndex(data, line.toID)];
 
         //Checking for cardinality
-        if ((fElement.kind == "EREntity" && tElement.kind == "ERRelation") || (tElement.kind == "EREntity" && fElement.kind == "ERRelation")) {
+        if ((fElement.kind == elementTypesNames.EREntity && tElement.kind == "ERRelation") || (tElement.kind == elementTypesNames.EREntity && fElement.kind == "ERRelation")) {
             if (line.cardinality != "ONE" && line.cardinality != "MANY") {
                 errorData.push(fElement);
                 errorData.push(tElement);
@@ -10316,10 +10316,10 @@ function checkEREntityErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "EREntity") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == "EREntity") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
             errorData.push(element);
         }
     }
@@ -10336,10 +10336,10 @@ function checkEREntityErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -10350,10 +10350,10 @@ function checkEREntityErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             } 
@@ -10511,10 +10511,10 @@ function checkEREntityErrors(element) {
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == tElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                    if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.EREntity && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
                         strongEntity += 1;
                     }
-                    if (tElement0.id == tElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                    if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.EREntity && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
                         strongEntity += 1;
                     }
                 }
@@ -10525,10 +10525,10 @@ function checkEREntityErrors(element) {
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == fElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                    if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.EREntity && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
                         strongEntity += 1;
                     }
-                    if (tElement0.id == fElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                    if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.EREntity && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
                         strongEntity += 1;
                     }
                 }
@@ -10688,10 +10688,10 @@ function checkERRelationErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -10702,10 +10702,10 @@ function checkERRelationErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             } 
@@ -10807,7 +10807,7 @@ function checkERRelationErrors(element) {
                 var fElement0;
                 var tElement0;
 
-                if (fElement.id == element.id && tElement.kind == "EREntity") {
+                if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
@@ -10822,14 +10822,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -10852,14 +10852,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -10884,14 +10884,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -10914,14 +10914,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -10937,7 +10937,7 @@ function checkERRelationErrors(element) {
                         errorData.push(element);
                     }
                 }
-                if (tElement.id == element.id && fElement.kind == "EREntity") {
+                if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
@@ -10952,14 +10952,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -10982,14 +10982,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -11014,14 +11014,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -11044,14 +11044,14 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
                                     else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     }
@@ -11512,30 +11512,30 @@ function checkERRelationErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong line type to a relation
-            if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state == "weak" && line.kind == "Normal") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state == "weak" && line.kind == "Normal") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != tElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != tElement.id) {
                         errorData.push(element);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state == "weak" && line.kind == "Normal") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state == "weak" && line.kind == "Normal") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != fElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != fElement.id) {
                         errorData.push(element);
                     }
                 }
@@ -11546,30 +11546,30 @@ function checkERRelationErrors(element) {
             var tElement0;
 
             // Checking for more than one Normal line to a weak relation
-            if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state != "weak") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state != "weak") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != tElement.id) {
                         errorData.push(fElement);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != tElement.id) {
                         errorData.push(fElement);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state != "weak") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state != "weak") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != fElement.id) {
                         errorData.push(tElement);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != fElement.id) {
                         errorData.push(tElement);
                     }
                 }
@@ -11606,7 +11606,7 @@ function checkERRelationErrors(element) {
             }
 
             // Counting connected lines
-            if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+            if ((tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) || (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity)) {
                 lineQuantity += 1;
             }
         }
@@ -11619,7 +11619,7 @@ function checkERRelationErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Counting connected lines
-            if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+            if ((tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) || (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity)) {
                 lineQuantity += 1;
             }
         }
@@ -11651,12 +11651,12 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
@@ -11669,12 +11669,12 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
@@ -11695,10 +11695,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11709,10 +11709,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11731,10 +11731,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11745,10 +11745,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11769,10 +11769,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11783,10 +11783,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11805,10 +11805,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11819,10 +11819,10 @@ function checkERAttributeErrors(element) {
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11831,30 +11831,30 @@ function checkERAttributeErrors(element) {
         }
 
         // Attribute connected to more than one relation or entity
-        if (fElement.id == element.id && (tElement.kind == "EREntity" || tElement.kind == "ERRelation")) {
+        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == "ERRelation")) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == "EREntity" || fElement.kind == "ERRelation")) {
+        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == "ERRelation")) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -11867,30 +11867,30 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11903,30 +11903,30 @@ function checkERAttributeErrors(element) {
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == "ERRelation")) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == "ERRelation")) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == "ERRelation")) {
                             errorData.push(element);
                         }
                     }
@@ -11935,7 +11935,7 @@ function checkERAttributeErrors(element) {
         }
 
         // Check for 1st line attribute connected in a 3 line attribute chain
-        if (fElement.id == element.id && (tElement.kind == "EREntity" || tElement.kind == "ERRelation")) {
+        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == "ERRelation")) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
@@ -11971,7 +11971,7 @@ function checkERAttributeErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == "EREntity" || fElement.kind == "ERRelation")) {
+        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == "ERRelation")) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
@@ -12009,25 +12009,25 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for wrong key type
-        if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
-            if (fElement.id == element.id && tElement.kind == "EREntity") {
+        if ((tElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.EREntity) && (tElement.state == "weak" || fElement.state == "weak")) {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
                 if (fElement.state == "candidate" || fElement.state == "primary") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
                 if (tElement.state == "candidate" || tElement.state == "primary") {
                     errorData.push(tElement);
                 }
             }
         }
         else {
-            if (fElement.id == element.id && tElement.kind == "EREntity") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
                 if (fElement.state == "weakKey") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
                 if (tElement.state == "weakKey") {
                     errorData.push(tElement);
                 }
@@ -12085,7 +12085,7 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for attributes on the same entity
-        if (fElement.id == element.id && tElement.kind == "EREntity") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
             var currentAttr = fElement;
             var currentEntity = tElement;
             for (var j = 0; j < lines.length; j++) {
@@ -12114,7 +12114,7 @@ function checkERAttributeErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "EREntity") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
             var currentAttr = tElement;
             var currentEntity = fElement;
             for (var j = 0; j < lines.length; j++) {
@@ -12152,7 +12152,7 @@ function checkERAttributeErrors(element) {
  */
 function checkElementError(element) 
 {
-    if (element.kind == "EREntity") checkEREntityErrors(element)
+    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element)
     if (element.kind == "ERRelation") checkERRelationErrors(element)
     if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element)
 
@@ -12480,7 +12480,7 @@ function updateCSSForAllElements()
         }
 
         if (settings.grid.snapToGrid && useDelta) {
-            if (element.kind == "EREntity"){
+            if (element.kind == elementTypesNames.EREntity){
                 // The element coordinates with snap point
                 var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
@@ -12494,7 +12494,7 @@ function updateCSSForAllElements()
                 top -= ((elementData.height * zoomfact) / 2);
                 
             } 
-            else if (element.kind != "EREntity"){
+            else if (element.kind != elementTypesNames.EREntity){
                 // The element coordinates with snap point
                 var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact))-(settings.grid.gridSize*3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
