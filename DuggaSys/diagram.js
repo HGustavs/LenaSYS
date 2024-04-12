@@ -1028,7 +1028,7 @@ const colorMap = {
 };
 
 // to access the colorMap with lenght or index
-const keys = Object.keys(colorMap);
+const colorKeys = Object.keys(colorMap);
 
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -7186,9 +7186,9 @@ function toggleColorMenu(buttonID) {
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
-            for (var i = 0; i < keys.length; i++) {
+            for (var i = 0; i < colorKeys.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colorMap[keys[i]]}" onclick="setElementColors('BGColorCircle${i}')" stroke=colorMap.Black stroke-width="2"/>
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colorMap[colorKeys[i]]}" onclick="setElementColors('BGColorCircle${i}')" stroke=colorMap.Black stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7229,7 +7229,7 @@ function setElementColors(clickedCircleID) {
     // If fill button was pressed
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
-        var color = keys[index];
+        var color = colorKeys[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
