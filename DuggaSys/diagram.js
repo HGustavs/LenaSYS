@@ -12435,55 +12435,48 @@ function centerCamera() {
         displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
         return;
     }
+    // Centering needs to happen twice for it to work, temp solution
+    for (let i = 0; i < 2; i++) {
+        zoomfact = 1;
 
-    //desiredZoomfact = zoomfact;
-    zoomfact = 1;
+        var minX = Math.min.apply(null, data.map(i => i.x))
+        var maxX = Math.max.apply(null, data.map(i => i.x + i.width))
+        var minY = Math.min.apply(null, data.map(i => i.y))
+        var maxY = Math.max.apply(null, data.map(i => i.y + i.height))
+        determineZoomfact(maxX, maxY, minX, minY);
 
-    // Calculate min and max x and y values for all elements combined, and then find their averages
-    var maxX = undefined;
-    var maxY = undefined;
-    var minX = undefined;
-    var minY = undefined;
-    for (var i = 0; i < data.length; i++) {
-        if (maxX == undefined || data[i].x + data[i].width > maxX) maxX = data[i].x + data[i].width;
-        if (minX == undefined || data[i].x < minX) minX = data[i].x;
-        if (maxY == undefined || data[i].y + data[i].height > maxY) maxY = data[i].y + data[i].height;
-        if (minY == undefined || data[i].y < minY) minY = data[i].y;
+        // Center of screen in pixels
+        var centerScreen = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2
+        };
+
+        // Center of diagram in coordinates
+        var centerDiagram = {
+            x: minX + ((maxX - minX) / 2),
+            y: minY + ((maxY - minY) / 2)
+        };
+
+        // Move camera to center of diagram
+        scrollx = centerDiagram.x * zoomfact;
+        scrolly = centerDiagram.y * zoomfact;
+
+        var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+        document.getElementById("zoom-message").innerHTML = zoomfact + "x";
+
+        scrollx = middleCoordinate.x;
+        scrolly = middleCoordinate.y;
+
+        // Update screen
+        showdata();
+        updatepos();
+        updateGridPos();
+        updateGridSize();
+        drawRulerBars(scrollx, scrolly);
+        updateA4Pos();
+        updateA4Size();
+        zoomCenter(centerDiagram);
     }
-
-    determineZoomfact(maxX, maxY, minX, minY);
-
-    // Center of screen in pixels
-    var centerScreen = {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2
-    };
-
-    // Center of diagram in coordinates
-    var centerDiagram = {
-        x: minX + (maxX - minX) / 2,
-        y: minY + (maxY - minY) / 2
-    };
-
-    // Move camera to center of diagram
-    scrollx = centerDiagram.x * zoomfact;
-    scrolly = centerDiagram.y * zoomfact;
-
-    var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
-
-    scrollx = middleCoordinate.x;
-    scrolly = middleCoordinate.y;
-
-    // Update screen
-    showdata();
-    updatepos();
-    updateGridPos();
-    updateGridSize();
-    drawRulerBars(scrollx, scrolly);
-    updateA4Pos();
-    updateA4Size();
-    zoomCenter(centerDiagram);
     displayMessage(messageTypes.SUCCESS, `Centered the camera.`);
 }
 
