@@ -64,8 +64,6 @@
 		$writeAccess="s";
 	}
 
-	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
-
 	$exampleCount = 0;
 
   $query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
