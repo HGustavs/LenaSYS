@@ -6010,21 +6010,18 @@ function togglePlacementType(num, type) {
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
 
-function hidePlacementType(){
-    document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox6").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox9").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");
-    document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
+function hidePlacementType(){    
+    let i = 0;
+    while(true){
+        
+        if(document.getElementById("togglePlacementTypeBox" + i)){
+            document.getElementById("togglePlacementTypeBox" + i).classList.remove("activeTogglePlacementTypeBox");
+        }else if(document.getElementById("togglePlacementTypeBox" + i) == null && document.getElementById("togglePlacementTypeBox" + (i + 1)) == null){
+            break;
+        }
+
+        i++;
+    }
 }
 
 /**
