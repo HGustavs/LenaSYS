@@ -430,8 +430,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Connect-user-to-user-course' => array(  
         //Pre-values
         'expected-output' => '',
-        'pre-query' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
-        'query-before-test-1' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
+        'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
+        'query-before-test-2' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         'variables-query-before-test-1' => "cid",
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
         'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'cid';",
@@ -441,11 +441,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'ADDUSR',
                 'regstatus' => 'UNK',
                 'uid' => '2',
-                'cid' => '<!query-before-test-1!><[0]["cid"]>',
+                'cid' => '<!query-before-test-2!><[0]["cid"]>',
                 'coursevers' => 'testvers',
             )),
         'filter-output' => serialize(array(
