@@ -428,7 +428,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'opt' => 'ADDUSR',
                 'cstmt' => '0',
                 'className' => 'testClass',
-                'username' => 'testuser',
                 'saveemail' => 'testmail',
                 'firstname' => 'testfirstname',
                 'lastname' => 'testlastname',
