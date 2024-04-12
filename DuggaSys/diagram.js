@@ -7891,11 +7891,21 @@ function drawLine(line, targetGhost = false) {
     } else {
         line.type = 'UML';
     }
-    const ctypes = new Map();
-    ctypes.set('TB', [-1, -1, 1, -1]);
-    ctypes.set('BT', [-1, 1, 1, 1]);
-    ctypes.set('LR', [-1, -1, -1, 1]);
-    ctypes.set('RL', [1, -1, 1, 1]);
+
+    // IELineIcons.ZERO_ONE
+    // x1, y1, x2, y2
+    const zeroOneLine = new Map();
+    zeroOneLine.set('TB', [-10, -10, 10, -10]);
+    zeroOneLine.set('BT', [-10, 10, 10, 10]);
+    zeroOneLine.set('LR', [-10, -10, -10, 10]);
+    zeroOneLine.set('RL', [10, -10, 10, 10]);
+    const zeroOneCircle = new Map();
+    // x, y, radius
+    zeroOneCircle.set('TB', [0, -25 * zoomfact, 8]);
+    zeroOneCircle.set('BT', [0, 25 * zoomfact, 8]);
+    zeroOneCircle.set('LR', [-25 * zoomfact, 0, 8]);
+    zeroOneCircle.set('RL', [25 * zoomfact, 0, 8]);
+
     // If element is UML, IE or SD (use straight line segments instead)
     if (felem.type != 'ER' || telem.type != 'ER') {
         var dx = ((fx + x1Offset) - (tx + x2Offset)) / 2;
@@ -7945,23 +7955,23 @@ function drawLine(line, targetGhost = false) {
 
         switch (line.startIcon) {
             case IELineIcons.ZERO_ONE:
-                const zeroOneCirc = (a, b) => `<circle class='diagram-umlicon-darkmode' cx='${a}' cy='${b}' r='${8 * zoomfact}' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                const zeroOne = ([a, b, c, d]) => `<line class='diagram-umlicon-darkmode' x1='${fx + (a * 10 * zoomfact)}' y1='${fy + (b * 10 * zoomfact)}' x2='${fx + (c * 10 * zoomfact)}' y2='${fy + (d * 10 * zoomfact)}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                switch (line.ctype) {
-                    case 'TB':
-                        str += zeroOneCirc(fx - 5, fy - 20 * zoomfact);
-                        break;
-                    case 'BT':
-                        str += zeroOneCirc(fx + 5, fy + 20 * zoomfact);
-                        break;
-                    case 'LR':
-                        str += zeroOneCirc(fx - 25 * zoomfact, fy);
-                        break;
-                    case 'RL':
-                        str += zeroOneCirc(fx + 25 * zoomfact, fy);
-                        break;
+                const zeroOneA = ([a, b, c]) => {
+                    return `<circle class='diagram-umlicon-darkmode' \
+                    cx='${fx + a}' \
+                    cy='${fy + b}' \
+                    r='${c * zoomfact}' \
+                    fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
-                str += zeroOne(ctypes.get(line.ctype));
+                const zeroOneB = ([a, b, c, d]) => {
+                    return `<line class='diagram-umlicon-darkmode' \
+                    x1='${fx + (a * zoomfact)}' \
+                    y1='${fy + (b * zoomfact)}' \
+                    x2='${fx + (c * zoomfact)}' \
+                    y2='${fy + (d * zoomfact)}' \
+                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                }
+                str += zeroOneA(zeroOneCircle.get(line.ctype));
+                str += zeroOneB(zeroOneLine.get(line.ctype));
                 iconSizeStart = 30;
                 break;
             case IELineIcons.ONE:
