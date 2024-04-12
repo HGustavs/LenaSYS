@@ -384,7 +384,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add user
     'Add-user' => array(  
         //Pre-values
-        'expected-output' => '',
+        'expected-output' => '{null,&quot;testfirstname&quot;,&quot;testlastname&quot;,&quot;testmail&quot;,null,&quot;testClassName&quot;,null}',
 
         'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2, 'testClassName', 12345678, 87654321, 7.5, 100, 1.5);",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
@@ -393,8 +393,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'username' => 'brom',
-                'password' => 'password',
                 'opt' => 'ADDUSR',
                 'username' => 'testuser',
                 'saveemail' => 'testmail',
