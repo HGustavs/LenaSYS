@@ -26,7 +26,6 @@ if (checklogin()) { //This entire checklogin should be working by using the getU
                     $debug = "The item could not be deleted.";
                 }
             }
-
         }
     }
         
