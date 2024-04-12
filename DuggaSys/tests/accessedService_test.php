@@ -308,10 +308,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #11
     //Add class
     'Add-class' => array(  
-
-
         'query-after-test-1' => "DELETE FROM class WHERE class = 'testClass';",
-
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -340,20 +337,15 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #12
     //Change password
     'Change-password' => array(  
-
         //Pre-values
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-        'query-before-test-2' => "SELECT uid FROM user WHERE username= “testuser1”;",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
-
-
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'CHPWD',
                 'uid' => '<!query-before-test-1!><[0]["uid"]>',
                 'pwd' => '123123',
@@ -371,20 +363,17 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #13
     //Add user
     'Add-user' => array(  
-
         //Pre-values
         'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress)  
         VALUES ('testClass', '2', 'testClassName, '12345678', '87654321', '7.5', '100', '1.5');",
         'query-after-test-1' => "DELETE FROM user WHERE username = “testuser”;",
         'query2-after-test-2' => "DELETE FROM class WHERE class = “testClass”;",
-
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-                
                 'opt' => 'ADDUSR',
                 'username' => 'testuser',
                 'saveemail' => 'testmail',
@@ -406,11 +395,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #14
     //Add user where no class exists
     'Add-user-no-class' => array(  
-
-
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
         'query-after-test-2' => "DELETE FROM class WHERE class = “testClass”;",
-
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -442,28 +428,23 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #15
     //Connect user to user_course
     'Connect-user-to-user-course' => array(  
-
         //Pre-values
         'expected-output' => '',
         'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
-
         'query-before-test-2' => "SELECT cid FROM course WHERE coursecode = 'testtest'",
         'variables-query-before-test-1' => "cid",
-
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
         'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'cid';",
-
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
-
                 'opt' => 'ADDUSR',
                 'regstatus' => 'UNK',
                 'uid' => '2',
-                'cid' => '<!query-before-test-1!><[0]["cid"]>',
+                'cid' => '<!query-before-test-2!><[0]["cid"]>',
                 'coursevers' => 'testvers',
             )),
         'filter-output' => serialize(array(
