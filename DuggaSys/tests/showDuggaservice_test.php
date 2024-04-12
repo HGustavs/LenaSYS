@@ -164,13 +164,14 @@ $testsData = array(
         'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
         'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
-            'username' => 'stei',
+            'username' => 'knas',
             'password' => 'password',
             'moment' => '<!query-before-test3!> <*[0][listentries]*>'
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
             'none'
         )),
+        'console-output' => 'echo "This is a message printed to the console.";'
     ),
     'super-view data on quizname (teacher)' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
