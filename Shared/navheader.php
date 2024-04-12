@@ -34,6 +34,15 @@
 			else
 				$_SESSION['coursevers'] = "UNK";
 
+			//used for repository fetch cooldown
+			global $pdo;
+			$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
+			$query->bindParam(':cid', $_SESSION['courseid']);
+			$query->execute();
+			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+				$updateTime = $row['updated'];
+			}
+
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 				if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid']))){
 					
@@ -201,9 +210,37 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton tooltip'>";
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
-									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].")' src='../Shared/icons/gitrefresh.svg'>";
+									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
 								echo "</span>";
-								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$_SESSION['lastFetchTime']."<br><b>Cooldown:</b> ".intval(date("i",$_SESSION['fetchCooldown']))." min and ".date("s",$_SESSION['fetchCooldown'])." s</span>";
+
+								//Check if user is super user
+								if(isSuperUser($_SESSION['uid']))
+								{
+									//5 min for super users
+									$fetchCooldownTimmer=300;
+								}
+								else
+								{
+									//10 min for normal users
+									$fetchCooldownTimmer=600;
+								}
+								
+								$fetchCooldownS=strtotime($updateTime)+$fetchCooldownTimmer-time();
+								
+								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$updateTime."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown:</b>";
+
+								//set cooldown timer
+								if($fetchCooldownS>0)
+								{
+									echo "<p id='gitFetchMin' style='display:inline'>".intval(date("i",$fetchCooldownS))."</p>min and <p id='gitFetchSec' style='display:inline'>".intval(date("s",$fetchCooldownS))."</p>s";
+								}
+								else
+								{
+									echo "<p id='gitFetchMin' style='display:inline'>0</p>min and <p id='gitFetchSec' style='display:inline'>0</p>s";
+								}
+								
+								echo "</p></span>";
+
 								// echo "<span class='tooltiptext'><b>Last Fetch:</b> <br><b>Cooldown:</b> </span>";
 							echo "</div>";
 							echo "</td>";
@@ -625,6 +662,48 @@ function hamburgerToggle() {
 	}
 }
 
+//count down the fetch cooldown
+const gitFetchCooldownMin = document.getElementById("gitFetchMin");
+const gitFetchCooldownSec = document.getElementById("gitFetchSec");
+const cooldownHolder = document.getElementById("cooldownHolder");
+
+setInterval(
+	function() 
+	{
+		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
+		{
+			gitFetchCooldownSec.innerHTML-=1;
+			if(gitFetchCooldownSec.innerHTML<0)
+			{
+				gitFetchCooldownMin.innerHTML-=1;
+				gitFetchCooldownSec.innerHTML=59;
+			}
+			
+		}
+		else
+		{
+			cooldownHolder.style.display="none";
+		}
+	}, 1000
+);
+
+function resetGitFetchTimer(superuser)
+{
+	if(cooldownHolder.style.display=="none"){
+		cooldownHolder.style.display="block";
+		if(superuser==1)
+		{
+			gitFetchCooldownMin.innerHTML=4;
+			gitFetchCooldownSec.innerHTML=59;
+		}
+		else
+		{
+			gitFetchCooldownMin.innerHTML=9;
+			gitFetchCooldownSec.innerHTML=59;
+		}
+	}
+}
+
 </script>
 <script type="text/javascript">
 	(function(proxied) {
@@ -645,7 +724,6 @@ var canvasEmbedded = "canvas.his.se";// HOSTNAME for the Embedded Canvas
         function RemoveNavEmbedded() {
                 $("header").css('display', 'none');
         }
-
 
 
 
