@@ -1373,7 +1373,6 @@ header td {
 }
 
 .navheader {
-  table-layout: fixed;
   height: 20px;
   margin-bottom: 10px;
   width: 100%;
@@ -1418,6 +1417,7 @@ header td {
 }
 #courseVersionDropDown{
   vertical-align: top;
+  max-width: 30vw;
 }
 
 .burgerButt {
@@ -2740,6 +2740,11 @@ button.option {
  position: absolute;
  right: 20px;
  left: auto;
+}
+
+#courseDropdownTop, .course-dropdown-div{
+  max-width: 200px;
+  width: 30vw;
 }
 
 @media only screen and (max-width: 430px) {
