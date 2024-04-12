@@ -139,6 +139,7 @@ function bfs($url, $cid, $opt)
         $url = getGitHubURL($url);
     }
     $filesToIgnore = getIndexFile($url);
+    $filesVisited = array();
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
@@ -176,31 +177,35 @@ function bfs($url, $cid, $opt)
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
                         //If an index file has been found, check against the content of the index file
-                        if($item['name'] != ".gitignore"){
-                        if($filesToIgnore){
-                            //If file is not part of files to ignore, resume (Index file)
-                            if(!in_array($item['name'], $filesToIgnore)){
-                                if($opt == "REFRESH") {
-                                    insertToMetaData($cid, $item);
+                        if ($item['name'] != ".gitignore") {
+                            if ($filesToIgnore) {
+                                //If file is not part of files to ignore, resume (Index file)
+                                if (!in_array($item['name'], $filesToIgnore) && !in_array($item['name'], $filesVisited)) {
+                                    if ($opt == "REFRESH") {
+                                        insertToMetaData($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    } else if ($opt == "DOWNLOAD") {
+                                        insertToFileLink($cid, $item);
+                                        insertToMetaData($cid, $item);
+                                        downloadToWebserver($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    }
                                 }
-                                else if($opt == "DOWNLOAD") {
-                                    insertToFileLink($cid, $item);
-                                    insertToMetaData($cid, $item);
-                                    downloadToWebserver($cid, $item);  
-                                }                
+                                //Otherwise, fetch and download all files
+                            } else {
+                                if (!in_array($item['name'], $filesVisited)) {
+                                    if ($opt == "REFRESH") {
+                                        insertToMetaData($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    } else if ($opt == "DOWNLOAD") {
+                                        insertToFileLink($cid, $item);
+                                        insertToMetaData($cid, $item);
+                                        downloadToWebserver($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    }
+                                }
                             }
-                            //Otherwise, fetch and download all files
-                        } else {
-                                if($opt == "REFRESH") {
-                                    insertToMetaData($cid, $item);
-                                }
-                                else if($opt == "DOWNLOAD") {
-                                    insertToFileLink($cid, $item);
-                                    insertToMetaData($cid, $item);
-                                    downloadToWebserver($cid, $item);  
-                                }      
                         }
-                    }
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {
