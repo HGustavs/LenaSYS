@@ -1012,21 +1012,20 @@ const selectedColor = "#A000DC";
 const multioffs = 3;
 
 
-// Color mapping to responding colorcode, use colorMap.get('Color') which returns the colorcode
-const colorMap = new Map([
-    ["White", "#ffffff"],
-    ["Light blue", "#c4e4fc"],
-    ["Light red", "#ffd4d4"],
-    ["Light yellow", "#fff4c2"],
-    ["Light green", "#c4f8bd"],
-    ["Light royal blue", "#648fff"],
-    ["Pink", "#DC267F"],
-    ["Orange", "#FFB000"],
-    ["Orange-red", "#FE6100"],
-    ["Black", "#000000"],
-    ["Blue", "#0000ff"]
-]);
-
+// Color mapping to responding colorcode, use colorMap.Color to get the color
+const colorMap = {
+    "White": "#ffffff",
+    "Light blue": "#c4e4fc",
+    "Light red": "#ffd4d4",
+    "Light yellow": "#fff4c2",
+    "Light green": "#c4f8bd",
+    "Light royal blue": "#648fff",
+    "Pink": "#DC267F",
+    "Orange": "#FFB000",
+    "Orange-red": "#FE6100",
+    "Black": "#000000",
+    "Blue": "#0000ff"
+};
 
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -1163,8 +1162,8 @@ var defaults = {
     EREntity: {
         name: "Entity",
         kind: "EREntity",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 200,
         height: 50,
         type: "ER",
@@ -1176,8 +1175,8 @@ var defaults = {
     ERRelation: {
         name: "Relation",
         kind: "ERRelation",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 60,
         height: 60,
         type: "ER",
@@ -1187,20 +1186,20 @@ var defaults = {
     ERAttr: {
         name: "Attribute",
         kind: "ERAttr",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 90,
         height: 45,
         type: "ER",
         state: 'normal'
     },
-    Ghost: {name: "Ghost", kind: "ERAttr", fill: colorMap.get('White'), stroke: colorMap.get('Black'), width: 5, height: 5, type: "ER"},
+    Ghost: {name: "Ghost", kind: "ERAttr", fill: colorMap.White, stroke: colorMap.Black, width: 5, height: 5, type: "ER"},
 
     UMLEntity: {
         name: "Class",
         kind: "UMLEntity",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 200,
         height: 50,
         type: "UML",
@@ -1211,8 +1210,8 @@ var defaults = {
     UMLRelation: {
         name: "Inheritance",
         kind: "UMLRelation",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 60,
         height: 60,
         type: "UML",
@@ -1221,8 +1220,8 @@ var defaults = {
     IEEntity: {
         name: "IEEntity",
         kind: "IEEntity",
-        stroke: colorMap.get('Black'),
-        fill: colorMap.get('White'),
+        stroke: colorMap.Black,
+        fill: colorMap.White,
         width: 200,
         height: 50,
         type: "IE",
@@ -1233,8 +1232,8 @@ var defaults = {
     IERelation: {
         name: "Inheritance",
         kind: "IERelation",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 50,
         height: 50,
         type: "IE",
@@ -1243,8 +1242,8 @@ var defaults = {
     SDEntity: {
         name: "State",
         kind: "SDEntity",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 200,
         height: 50,
         type: "SD",
@@ -1256,8 +1255,8 @@ var defaults = {
     UMLInitialState: {
         name: "UML Initial State",
         kind: "UMLInitialState",
-        fill: colorMap.get('Black'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.Black,
+        stroke: colorMap.Black,
         width: 60,
         height: 60,
         type: "SD",
@@ -1266,8 +1265,8 @@ var defaults = {
     UMLFinalState: {
         name: "UML Final State",
         kind: "UMLFinalState",
-        fill: colorMap.get('Black'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.Black,
+        stroke: colorMap.Black,
         width: 60,
         height: 60,
         type: "SD",
@@ -1276,8 +1275,8 @@ var defaults = {
     UMLSuperState: {
         name: "UML Super State",
         kind: "UMLSuperState",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 500,
         height: 500,
         type: "SD",
@@ -1287,8 +1286,8 @@ var defaults = {
     sequenceActorAndObject: {
         name: "name",
         kind: "sequenceActorAndObject",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 100,
         height: 150,
         type: "SE",
@@ -1298,8 +1297,8 @@ var defaults = {
     sequenceActivation: {
         name: "Activation",
         kind: "sequenceActivation",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 30,
         height: 300,
         type: "SE",
@@ -1307,8 +1306,8 @@ var defaults = {
     }, // Sequence Activation.
     sequenceLoopOrAlt: {
         kind: "sequenceLoopOrAlt",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 750,
         height: 300,
         type: "SE",
@@ -1320,8 +1319,8 @@ var defaults = {
     note: {
         name: "Note",
         kind: "note",
-        fill: colorMap.get('White'),
-        stroke: colorMap.get('Black'),
+        fill: colorMap.White,
+        stroke: colorMap.Black,
         width: 200,
         height: 50,
         type: "NOTE",
@@ -2320,7 +2319,7 @@ function determineLineSelect(mouseX, mouseY) {
         lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
-        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke=colorMap.get('Black') stroke-width="3" fill="red" /> '
+        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke=colorMap.Black stroke-width="3" fill="red" /> '
         // ---------------------------
         if (lineWasHit == true && labelWasHit == false) {
             // Return the current line that registered as a "hit".
@@ -4148,7 +4147,7 @@ function toggleDiagramDropdown() {
         btn.style.fontWeight = "bold";
     } else {
         btn.style.backgroundColor = "#614875";
-        btn.style.color = colorMap.get('White');
+        btn.style.color = colorMap.White;
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
     }
@@ -4229,7 +4228,7 @@ function toggleGrid() {
     } else {
         grid.style.display = "block";
         gridButton.style.backgroundColor = "#614875";
-        gridButton.style.color = colorMap.get('White');
+        gridButton.style.color = colorMap.White;
         gridButton.style.fontWeight = "normal";
         gridButton.style.border = "3px solid #614875";
     }
@@ -4256,7 +4255,7 @@ function toggleDarkmode() {
     }
     if (stylesheet.href.includes('blackTheme')) {
         btn.style.backgroundColor = "#614875";
-        btn.style.color = colorMap.get('White');
+        btn.style.color = colorMap.White;
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
     } else {
@@ -5764,7 +5763,7 @@ function toggleA4Template() {
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
-        document.getElementById("a4TemplateToggle").style.color = colorMap.get('White');
+        document.getElementById("a4TemplateToggle").style.color = colorMap.White;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
         document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
     }
@@ -5837,7 +5836,7 @@ function toggleSnapToGrid() {
     // Color change of button to clarify if button is pressed or not
     if (settings.grid.snapToGrid) {
         document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
-        document.getElementById("rulerSnapToGrid").style.color = colorMap.get('White');
+        document.getElementById("rulerSnapToGrid").style.color = colorMap.White;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
         document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
     } else {
@@ -5870,7 +5869,7 @@ function toggleRuler() {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
         rulerToggleButton.style.backgroundColor = "#614875";
-        rulerToggleButton.style.color = colorMap.get('White');
+        rulerToggleButton.style.color = colorMap.White;
         rulerToggleButton.style.fontWeight = "normal";
         rulerToggleButton.style.border = "3px solid #614875";
     }
@@ -7186,7 +7185,7 @@ function toggleColorMenu(buttonID) {
             // Create svg circles for each element in the "colors" array
             for (var i = 0; i < colors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke=colorMap.get('Black') stroke-width="2"/>
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke=colorMap.Black stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7194,7 +7193,7 @@ function toggleColorMenu(buttonID) {
             // Create svg circles for each element in the "strokeColors" array
             for (var i = 0; i < strokeColors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke=colorMap.get('Black') stroke-width="2"/>
+            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke=colorMap.Black stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7235,10 +7234,10 @@ function setElementColors(clickedCircleID) {
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg");
-               document.getElementsByClassName("text").style.color = colorMap.get('White');
+               document.getElementsByClassName("text").style.color = colorMap.White;
             }
             else{
-                //element.id.style.color = colorMap.get('Black');
+                //element.id.style.color = colorMap.Black;
             }*/
         }
         stateMachine.save(
@@ -7725,12 +7724,12 @@ function drawLine(line, targetGhost = false) {
     }
 
     if (isDarkTheme()) {
-        var lineColor = colorMap.get('White');
+        var lineColor = colorMap.White;
     } else {
-        var lineColor = colorMap.get('Black');
+        var lineColor = colorMap.Black;
     }
 
-    //ineColor = colorMap.get('Black');
+    //ineColor = colorMap.Black;
 
     if (contextLine.includes(line)) {
         lineColor = selectedColor;
@@ -7985,16 +7984,16 @@ function drawLine(line, targetGhost = false) {
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx}' cy='${fy + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 25 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 25 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx - 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle cx='${fx + 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 iconSizeStart = 40;
@@ -8083,25 +8082,25 @@ function drawLine(line, targetGhost = false) {
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 iconSizeStart = 40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 iconSizeStart = 40;
                 break;
@@ -8184,16 +8183,16 @@ function drawLine(line, targetGhost = false) {
                 break;
             case IELineIcons.WEAK:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 25 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 25 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx - 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                     str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 iconSizeEnd = 40;
@@ -8280,25 +8279,25 @@ function drawLine(line, targetGhost = false) {
                 break;
             case UMLLineIcons.WHITEDIAMOND:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.get('White') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill="${colorMap.White}" stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 iconSizeEnd = 40;
                 break;
             case UMLLineIcons.BLACKDIAMOND:
                 if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.get('Black') stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill=colorMap.Black stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
                 }
                 iconSizeEnd = 40;
                 break;
@@ -8980,14 +8979,14 @@ function drawElement(element, ghosted = false) {
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
     var nonFilledElementPartStrokeColor;
-    if (isDarkTheme()) nonFilledElementPartStrokeColor = colorMap.get('White');
+    if (isDarkTheme()) nonFilledElementPartStrokeColor = colorMap.White;
     else nonFilledElementPartStrokeColor = '#383737';
 
     //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
     //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
     //replace this with nonFilledElementPartStroke when it gets merged.
     var actorFontColor;
-    if (isDarkTheme()) actorFontColor = colorMap.get('White');
+    if (isDarkTheme()) actorFontColor = colorMap.White;
     else actorFontColor = '#383737';
 
     // Caclulate font width using some canvas magic
@@ -9145,10 +9144,10 @@ function drawElement(element, ghosted = false) {
                         </g>
                     </svg>
                 </div>`;
-        if (element.fill == `${colorMap.get('Black')}` && theme.href.includes('blackTheme')) {
-            element.fill = `${colorMap.get('White')}`;
-        } else if (element.fill == `${colorMap.get('White')}` && theme.href.includes('style')) {
-            element.fill = `${colorMap.get('Black')}`;
+        if (element.fill == `${colorMap.Black}` && theme.href.includes('blackTheme')) {
+            element.fill = `${colorMap.White}`;
+        } else if (element.fill == `${colorMap.White}` && theme.href.includes('style')) {
+            element.fill = `${colorMap.Black}`;
         }
     } else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
@@ -9170,10 +9169,10 @@ function drawElement(element, ghosted = false) {
                         </g>
                     </svg>
                 </div>`;
-        if (element.fill == `${colorMap.get('Black')}` && theme.href.includes('blackTheme')) {
-            element.fill = `${colorMap.get('White')}`;
-        } else if (element.fill == `${colorMap.get('White')}` && theme.href.includes('style')) {
-            element.fill = `${colorMap.get('Black')}`;
+        if (element.fill == `${colorMap.Black}` && theme.href.includes('blackTheme')) {
+            element.fill = `${colorMap.White}`;
+        } else if (element.fill == `${colorMap.White}` && theme.href.includes('style')) {
+            element.fill = `${colorMap.Black}`;
         }
     } else if (element.kind == 'UMLSuperState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
@@ -9671,10 +9670,10 @@ function drawElement(element, ghosted = false) {
             height: ((boxh + (boxh / 2)) / zoomfact)
         }
         NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == `${colorMap.get('Black')}`) {
-            element.stroke = `${colorMap.get('White')}`;
-        } else if (element.fill == `${colorMap.get('White')}`) {
-            element.stroke = `${colorMap.get('Black')}`;
+        if (element.fill == `${colorMap.Black}`) {
+            element.stroke = `${colorMap.White}`;
+        } else if (element.fill == `${colorMap.White}`) {
+            element.stroke = `${colorMap.Black}`;
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
@@ -12130,7 +12129,7 @@ function updateCSSForAllElements() {
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
                             fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${colorMap.get('White')}`;
+                            fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -12144,7 +12143,7 @@ function updateCSSForAllElements() {
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
                             fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${colorMap.get('White')}`;
+                            fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -12158,7 +12157,7 @@ function updateCSSForAllElements() {
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
                             fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${colorMap.get('White')}`;
+                            fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -12173,7 +12172,7 @@ function updateCSSForAllElements() {
 
                         if (markedOverOne()) {
                             fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${colorMap.get('White')}`;
+                            fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -12187,29 +12186,29 @@ function updateCSSForAllElements() {
                     disjointLine2Color = elementDiv.children[0].children[3];
                     if (markedOverOne()) {
                         fillColor.style.fill = `${"#927b9e"}`;
-                        fontColor.style.fill = `${colorMap.get('White')}`;
+                        fontColor.style.fill = `${colorMap.White}`;
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.get('White')}`;
+                            weakKeyUnderline.style.stroke = `${colorMap.White}`;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
                         else if (element.kind == "IERelation" && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${colorMap.get('White')}`;
-                            disjointLine2Color.style.stroke = `${colorMap.get('White')}`;
+                            disjointLine1Color.style.stroke = `${colorMap.White}`;
+                            disjointLine2Color.style.stroke = `${colorMap.White}`;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${colorMap.get('Black')}`;
-                            fontColor.style.fill = `${colorMap.get('White')}`;
+                            fillColor.style.fill = `${colorMap.Black}`;
+                            fontColor.style.fill = `${colorMap.White}`;
                         } else {
-                            fillColor.style.fill = `${colorMap.get('White')}`;
+                            fillColor.style.fill = `${colorMap.White}`;
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.get('Black')}`;
-                            if (element.fill == colorMap.get('Black')) {
-                                weakKeyUnderline.style.stroke = `${colorMap.get('White')}`;
+                            weakKeyUnderline.style.stroke = `${colorMap.Black}`;
+                            if (element.fill == colorMap.Black) {
+                                weakKeyUnderline.style.stroke = `${colorMap.White}`;
                             }
                         }
                     }
@@ -12260,27 +12259,27 @@ function updateCSSForAllElements() {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.get('White')}`;
+                            weakKeyUnderline.style.stroke = `${colorMap.White}`;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
                         else if (element.kind == "IERelation" && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${colorMap.get('White')}`;
-                            disjointLine2Color.style.stroke = `${colorMap.get('White')}`;
+                            disjointLine1Color.style.stroke = `${colorMap.White}`;
+                            disjointLine2Color.style.stroke = `${colorMap.White}`;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${colorMap.get('Black')}`;
-                            fontColor.style.fill = `${colorMap.get('White')}`;
+                            fillColor.style.fill = `${colorMap.Black}`;
+                            fontColor.style.fill = `${colorMap.White}`;
                         } else {
-                            fillColor.style.fill = `${colorMap.get('White')}`;
+                            fillColor.style.fill = `${colorMap.White}`;
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.get('Black')}`;
-                            if (element.fill == colorMap.get('Black')) {
-                                weakKeyUnderline.style.stroke = `${colorMap.get('White')}`;
+                            weakKeyUnderline.style.stroke = `${colorMap.Black}`;
+                            if (element.fill == colorMap.Black) {
+                                weakKeyUnderline.style.stroke = `${colorMap.White}`;
                             }
                         }
                     }
@@ -12299,7 +12298,7 @@ function updateCSSForAllElements() {
 
     function fontContrast() {
         //check if the fill color is black or pink, if so the font color is set to white
-        fontColor.style.fill = element.fill == colorMap.get('Black') || element.fill == colorMap.get('Pink') ? `${colorMap.get('White')}` : `${colorMap.get('Black')}`;
+        fontColor.style.fill = element.fill == colorMap.Black || element.fill == colorMap.Pink ? `${colorMap.White}` : `${colorMap.Black}`;
     }
 
     function markedOverOne() {
@@ -12332,8 +12331,8 @@ function toggleBorderOfElements() {
                 let fillColor = text.getAttribute('fill');
                 //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
                 //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
-                if (strokeColor == '#383737' && fillColor != colorMap.get('White')) {
-                    strokeColor = colorMap.get('White');
+                if (strokeColor == '#383737' && fillColor != colorMap.White) {
+                    strokeColor = colorMap.White;
                     text.setAttribute('stroke', strokeColor);
                 }
             }
@@ -12344,7 +12343,7 @@ function toggleBorderOfElements() {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
                 let fillColor = text.getAttribute('fill');
-                if (strokeColor == colorMap.get('White') && fillColor != '#383737') {
+                if (strokeColor == colorMap.White && fillColor != '#383737') {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
                 }
