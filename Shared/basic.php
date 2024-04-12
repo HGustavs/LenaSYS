@@ -195,7 +195,7 @@ $sql = '
 		remoteAddress VARCHAR(15)
 	);
 	CREATE TABLE IF NOT EXISTS serviceLogEntries (
-		id INTEGER PRIMARY KEY,
+		id INTEGER PRIMARY KEY AUTOINCREMENT, 
 		uuid CHAR(15),
 		eventType INTEGER,
 		service VARCHAR(15),
