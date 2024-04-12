@@ -71,11 +71,11 @@ function burgerToggleDarkmode(operation = 'click') {
   const themeToggle = document.getElementById('theme-toggle');
   // if it's light -> go dark
   if (themeStylesheet.href.includes('blackTheme')) {
-    themeStylesheet.href = "../Shared/css/whiteTheme.css";
+    themeStylesheet.href = "../Shared/css/style.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#121212";
   }
-  else if (themeStylesheet.href.includes('whiteTheme')) {
+  else if (!themeStylesheet.href.includes('blackTheme')) {
     // if it's dark -> go light
     themeStylesheet.href = "../Shared/css/blackTheme.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
@@ -2171,14 +2171,13 @@ function returnedHighscore(data) {
   $("#HighscoreBox").css("display", "block");
 }
 
-
-
 //----------------------------------------------------------------------------------
 // drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
 
 function drawSwimlanes() {
-
+  // Resets the swimlane SVG
+  document.getElementById("swimlaneSVG").innerHTML = "";
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
@@ -2248,17 +2247,20 @@ function drawSwimlanes() {
     "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
-      (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
-    if ((i % 2) == 0) {
-      str += "fill='#ededed' />";
-    } else {
-      str += "fill='#ffffff' />";
-    }
-    str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
-    font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
+    // Draws the columns in the course schedule
+    if ((i % 2) == 0){ str += "<rect class='evenScheduleColumn'";} // Even columns get the class "evenScheduleColumn"
+    else{ str += "<rect class='oddScheduleColumn'"; } // Odd columns get the class "oddScheduleColumn"
+
+    str += " x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
+    (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' />";
+
+    // Draws the week of the column (For example "1" or "7" ...)
+    str += `<text class='scheduleWeeks' x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
+      font-family='Arial' font-size='12px' text-anchor='middle'>${(i + 1)}</text>`;
+
   }
 
+  // Draws a row line in the course schedule
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
     str += `<line x1='0' y1='${((i * weekheight) + 15)}' x2='
     ${(weekLength * weekwidth)}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
@@ -2295,9 +2297,11 @@ function drawSwimlanes() {
         } else if ((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
           textcol = `url("#fadeTextRed")`;
         }
+        // Draws the progress bar for a dugga in the schedule
+        str += `<rect class='progressBar' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}'/>`;
 
-        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
-        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
+        // Draws the dugga name in the schedule
+        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' text-anchor='left' class='scheduleDugga'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
     }
   }

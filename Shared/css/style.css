@@ -917,6 +917,23 @@ p {
   font-size: 10px;
 }
 
+#swimlaneSVG rect:nth-child(odd){
+  fill: #620C5B80; 
+  opacity: 0.7;
+}
+
+.scheduleWeeks{
+  fill: black;
+}
+
+.evenScheduleColumn{
+  fill:#f0f0f0;
+}
+
+.oddScheduleColumn{
+  fill:#ffffff;
+}
+
 @media only screen and (max-width: 800px), only screen and (orientation:portrait) {
   #swimlaneSVG text {
       font-size: 14px;
@@ -4889,6 +4906,8 @@ rect[class*="activitymarker"]:hover {
   margin-bottom: 5px;
   margin-right: 2px;
 }
+
+
 
 #searchBar img,
 #testSearchContainer img {

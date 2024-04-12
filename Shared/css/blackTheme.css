@@ -76,10 +76,6 @@
 	background-color: var(--color-background-light-surface);
 }
 
-#picktemplate img{
-
-}
-
 #picktemplate h1{
 	text-align: center;
   font-family: Arial, Sans-Serif;
@@ -539,8 +535,25 @@ body {
 
 #statisticsSwimlanes{
     border: 2px solid var(--color-text-secondary);
-
 }
+
+/* Course schedule styling */
+#swimlaneSVG rect:nth-child(odd){
+    opacity: 0.9;
+}
+
+.scheduleWeeks, .scheduleDugga{
+   fill: white;
+}
+
+.evenScheduleColumn{
+    fill:#2d3133;
+}
+
+.oddScheduleColumn{
+    fill:#242729;
+}
+/* Course schedule styling END */
 
 .DateColorInDarkMode{
     cursor: pointer;
@@ -1286,7 +1299,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 #a4Text {
     fill: white;
-
+}
 .date-interval-selector, #searchbar, #highlight-entry {
     background-color: #212121;
     color: white;
