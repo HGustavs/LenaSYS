@@ -3937,50 +3937,67 @@ async function fetchGitCodeExamples(courseid){
   var githubURL = document.getElementById('githubURL').value;
   var filePath = document.getElementById('filePath').value;
   
+
+  if(filePath == "" || githubURL == "" || fileName == ""){
+    return alert('Fill in all boxes!');
+  }
+
+  var folderPath = getParentFolderOfFile(filePath);
+  fileNamesArray = fetchFileNames(githubURL, folderPath);
+  var fileSearchParm = deconstructFilePath(filePath);
+  console.log(fileSearchParam);
   var apiUrl = githubURL.replace('github.com', 'raw.githubusercontent.com') + '/master/' + filePath;
-  fileNamesArray = fetchFileNames(githubURL, filePath);
+  
   console.log(fileNamesArray);
-  //Ajax request to fetch githubfile content
-  /*var xhr = new XMLHttpRequest();
-  xhr.open('GET', apiUrl);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-       if (xhr.status === 200) {
+  //HTTP request to fetch githubfile content
+  /*var request = new XMLHttpRequest();
+  request.open('GET', apiUrl);
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+       if (request.status === 200) {
           // File content fetched successfully
-          var fileContent = xhr.responseText;
+          var fileContent = request.responseText;
           console.log('File content:', fileContent);
         } else {
           // Error occurred while fetching file
-           console.error('Error fetching file:', xhr.statusText);
+           console.error('Error fetching file:', request.statusText);
         }
       }
     };
-  xhr.send();*/
+  request.send();*/
 
   }
 
-  function fetchFileNames(githubURL, filePath){
-    //extract the owner and repo into individual variables
+  function deconstructFilePath(filePath){
+    var fileName = filePath.split('/').pop();
+    var fileString = fileName.split('.')[0];
+    var noNumString = fileString.replace(/\d+/g, '');
+    return noNumString;
+  }
+  // Remove the filename from the filepath and construct a path to its folder
+  function getParentFolderOfFile(filePath){
+       var lastIndex = filePath.lastIndexOf("/");
+       var folderPath = filePath.substring(0, lastIndex);
+       return folderPath;
+  }
+
+  function fetchFileNames(githubURL, folderPath){
+    // Extract the owner and repo into individual variables
     var parts = githubURL.split("/");
     var owner = parts[3];
     var repo = parts[4]
-    //remove the filename from the filepath and construct a path to its folder
-    var lastIndex = filePath.lastIndexOf("/");
-    var folderPath = filePath.substring(0, lastIndex);
-
+  
     var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
-    
+    // Ajax request to fetch all filenames in folder
     $.ajax({
       url: apiGitUrl,
       method: 'GET',
       success: function(response) {
-        //check if response is an array or single object
+        // Check if response is an array or single object, then parse the response to extract file names
         var files = Array.isArray(response) ? response : [response];
-        // Parse the response to extract file names
         var fileNames = files.map(function(file) {
           return file.name;
         });
-    
         console.log(fileNames);
         return fileNames;
       },
