@@ -232,7 +232,7 @@
 								
 								$fetchCooldownS=strtotime($updateTime)+$fetchCooldownTimmer-time();
 								
-								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$updateTime."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown:</b>";
+								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$updateTime."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown: </b>";
 
 								//set cooldown timer
 								if($fetchCooldownS>0)
