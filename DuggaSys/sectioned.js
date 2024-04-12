@@ -70,9 +70,6 @@ function burgerToggleDarkmode(operation = 'click') {
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#fff";
   }
-  // Redraw course schedule / planner SVG to get the appropriate color scheme
-  // Course schedule = the SVG that displays the weeks and how far into a course we are
-  drawSwimlanes();
 
   //const themeToggle = document.getElementById('theme-toggle');
   //themeToggle.addEventListener('click', () => {});
@@ -2235,31 +2232,20 @@ function drawSwimlanes() {
   const storedTheme = localStorage.getItem('themeBlack');
 
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
-      (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
-    // The following code decides the color scheme of the course timeline 
-    // (The svg showing how far into a course we are and assignment deadlines)
-    if ((i % 2) == 0 && !(storedTheme.includes("blackTheme.css"))) { // All even columns should be light gray in white theme
-      str += "fill='#ededed' />";
-    } else if((i % 2) != 0 && !(storedTheme.includes("blackTheme.css"))){ // All uneven columns should be white in white theme
-      str += "fill='#ffffff' />";
-    } else if((i % 2) == 0 && (storedTheme.includes("blackTheme.css"))){ // All even columns should be dark gray in black theme
-      str += "fill='#121212' />";
-    }else{ // All uneven columns should be a lighter gray in white theme
-      str += "fill='#434343' />";
-    }
+    // Draws the columns in the course schedule
+    if ((i % 2) == 0){ str += "<rect class='evenScheduleColumn'";} // Even columns get the class "evenScheduleColumn"
+    else{ str += "<rect class='oddScheduleColumn'"; } // Odd columns get the class "oddScheduleColumn"
 
-    //Changes text colors of week numbers in course SVG (course schedule with deadlines)
-    if(storedTheme.includes("blackTheme.css")){ //If theme is black then week numbers in the course schedule should be white
-      str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
-      font-family='Arial' font-size='12px' fill='white' text-anchor='middle'>${(i + 1)}</text>`;
-    }else{ //If theme is white then week numbers in the course schedule should be black
-      str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
-      font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
-    }
+    str += " x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
+    (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' />";
+
+    // Draws the week of the column (For example "1" or "7" ...)
+    str += `<text class='scheduleWeeks' x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
+      font-family='Arial' font-size='12px' text-anchor='middle'>${(i + 1)}</text>`;
 
   }
 
+  // Draws a row line in the course schedule
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
     str += `<line x1='0' y1='${((i * weekheight) + 15)}' x2='
     ${(weekLength * weekwidth)}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
@@ -2296,20 +2282,11 @@ function drawSwimlanes() {
         } else if ((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
           textcol = `url("#fadeTextRed")`;
         }
+        // Draws the progress bar for a dugga in the schedule
+        str += `<rect class='progressBar' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}'/>`;
 
-        if(storedTheme.includes("blackTheme.css")){ //If theme is black then dugga progress should be more pigmented
-          str += `<rect opacity='0.9' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
-        }else{ //If theme is white then week numbers in the course schedule should be less pigmented
-          str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
-        }
-
-        //Changes text colors of assignments/duggor in course SVG (course schedule with deadlines)
-        if(storedTheme.includes("blackTheme.css")){ //If theme is black then duggor-text in the course schedule should be white
-          str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='#ffffff' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
-        }else{ //If theme is white then duggor-text in the course schedule should be black
-          str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
-        }
-        
+        // Draws the dugga name in the schedule
+        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' text-anchor='left' class='scheduleDugga'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
     }
   }
