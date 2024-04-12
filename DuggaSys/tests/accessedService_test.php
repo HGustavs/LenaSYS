@@ -162,7 +162,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'examiner',
                 'val' => 'test',
                 'uid' => '2',
-                'cid' => '<!query-before-test-3!><[0]["cid"]>',
+                'cid' => '<!query-before-test-2!><[0]["cid"]>',
             ),
         ),
         //Send 2
@@ -176,7 +176,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'prop' => 'examiner',
                 'val' => 'None',
                 'uid' => '2',
-                'cid' => '<!query-before-test-3!><[0]["cid"]>',
+                'cid' => '<!query-before-test-2!><[0]["cid"]>',
             ),
         ),
         'filter-output' => serialize(array(
