@@ -9115,7 +9115,7 @@ function drawElement(element, ghosted = false) {
                     onmouseenter='mouseEnter();' 
                     onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%" 
-                        viewBox="0 0 24 24"
+                        viewBox="-2 -2 28 28"
                         xmlns="http://www.w3.org/2000/svg" 
                         xml:space="preserve"
                         style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;stroke:black;stroke-width:1;">
@@ -9139,7 +9139,7 @@ function drawElement(element, ghosted = false) {
                     onmouseenter='mouseEnter();' 
                     onmouseleave='mouseLeave();'>
                     <svg width="100%" height="95%"
-                        viewBox="0 0 24 24"
+                        viewBox="-2 -2 28 28"
                         xmlns="http://www.w3.org/2000/svg"
                         xml:space="preserve"
                         style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;stroke:black;stroke-width:1;">
