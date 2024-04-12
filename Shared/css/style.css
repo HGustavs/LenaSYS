@@ -1417,7 +1417,7 @@ header td {
 }
 #courseVersionDropDown{
   vertical-align: top;
-  max-width: 30vw;
+  max-width: 60px;
 }
 
 .burgerButt {
@@ -2742,11 +2742,6 @@ button.option {
  left: auto;
 }
 
-#courseDropdownTop, .course-dropdown-div{
-  max-width: 200px;
-  width: 30vw;
-}
-
 @media only screen and (max-width: 430px) {
   #MOTDbutton {
     width:20%;
@@ -3550,6 +3545,7 @@ span.arrow {
   background-position: right;
   margin-top: 7px;
   margin-left: 3px;
+  width: 90%;
 }
 
 /* Course version dropdown */
