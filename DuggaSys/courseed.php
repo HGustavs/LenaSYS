@@ -40,14 +40,14 @@ if(isset($_SESSION['uid'])){
 	</head>
 	<body>
 	<script>
-	function showLoader() {
-		document.querySelector('.loader').style.display = 'block';
-	}
-	function hideLoader() {
-		document.querySelector('.loader').style.display = 'none';
-	}
+		function showLoader() {
+			document.querySelector('.loader').style.display = 'block';
+		}
+		function hideLoader() {
+			document.querySelector('.loader').style.display = 'none';
+		}
 	</script>
-	
+
 	<?php
 	include '../Shared/navheader.php';
 	?>
@@ -148,10 +148,8 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
     		<div style='float:right; padding-top:20px; width: 464px;' >
-    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="showLoader(); setTimeout(function() {validateForm('editCourse');hideLoader(); }, 1000); "/>
-				<div class="container">
-				<div id='loader' class='loader' style='height: 50px; width: 50px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none'></div>
-				</div>
+    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="showLoader(); setTimeout(function() { validateForm('editCourse'); hideLoader(); }, 100); "/>
+				<div id='loader' class='loader' style='height: 50px; width: 50px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none'></div>	
     		</div>
       </div>
 	</div>
