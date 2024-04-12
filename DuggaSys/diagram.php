@@ -64,7 +64,7 @@
     <div id="diagram-toolbar">
         <fieldset>
             <legend aria-hidden="true">Modes</legend>
-                <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
+                <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0); hidePlacementType();'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <span>Allows you to select and move different elements as well as navigate the workspace</span><br>

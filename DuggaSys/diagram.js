@@ -6010,6 +6010,22 @@ function togglePlacementType(num, type) {
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
 
+function hidePlacementType(){
+    document.getElementById("togglePlacementTypeBox0").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox1").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox2").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox4").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox5").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox6").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox7").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox8").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox9").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox10").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox12").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox13").classList.remove("activeTogglePlacementTypeBox");
+    document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
+}
 
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
