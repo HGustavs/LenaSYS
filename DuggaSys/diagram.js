@@ -1163,17 +1163,17 @@ var defaults = {
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML", canChangeTo: Object.values(relationType) }, //<-- UML functionality
     IEEntity: {name: elementTypesNames.IEEntity, kind: elementTypesNames.IEEntity, stroke: "#000000", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- IE functionality
     IERelation: {name: "Inheritance", kind: elementTypesNames.IERelation, fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE", canChangeTo: Object.values(relationType) }, //<-- IE inheritence functionality
-    SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] }, //<-- SD functionality
+    SDEntity: { name: "State", kind: elementTypesNames.SDEntity, fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] }, //<-- SD functionality
 
-    UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Initial state.
-    UMLFinalState: {name: "UML Final State", kind: "UMLFinalState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Final state.
-    UMLSuperState: {name: "UML Super State", kind: "UMLSuperState", fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD", canChangeTo: null },  // UML Super State.
+    UMLInitialState: {name: "UML Initial State", kind: elementTypesNames.UMLInitialState, fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Initial state.
+    UMLFinalState: {name: "UML Final State", kind: elementTypesNames.UMLFinalState, fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Final state.
+    UMLSuperState: {name: "UML Super State", kind: elementTypesNames.UMLSuperState, fill: "#FFFFFF", stroke: "#000000", width: 500, height: 500, type: "SD", canChangeTo: null },  // UML Super State.
 
-    sequenceActorAndObject: {name: "name", kind: "sequenceActorAndObject", fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor", canChangeTo: null }, // sequence actor and object
-    sequenceActivation: {name: "Activation", kind: "sequenceActivation", fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE", canChangeTo: null }, // Sequence Activation.
-    sequenceLoopOrAlt: {kind: "sequenceLoopOrAlt", fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt", canChangeTo: null }, // Sequence Loop or Alternative.
+    sequenceActorAndObject: {name: "name", kind: elementTypesNames.sequenceActorAndObject, fill: "#FFFFFF", stroke: "#000000", width: 100, height: 150, type: "SE", actorOrObject: "actor", canChangeTo: null }, // sequence actor and object
+    sequenceActivation: {name: "Activation", kind: elementTypesNames.sequenceActivation, fill: "#FFFFFF", stroke: "#000000", width: 30, height: 300, type: "SE", canChangeTo: null }, // Sequence Activation.
+    sequenceLoopOrAlt: {kind: elementTypesNames.sequenceLoopOrAlt, fill: "#FFFFFF", stroke: "#000000", width: 750, height: 300, type: "SE", alternatives: ["alternative1","alternative2","alternative3"], altOrLoop: "Alt", canChangeTo: null }, // Sequence Loop or Alternative.
 
-    note: { name: "Note", kind: "note", fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: ['Note'],},  // Note.
+    note: { name: elementTypesNames.note, kind: elementTypesNames.note, fill: "#FFFFFF", stroke: "#000000", width: 200, height: 50, type: "NOTE", attributes: [elementTypesNames.note],},  // Note.
 }
 var defaultLine = { kind: "Normal" };
 //#endregion ===================================================================================
@@ -3663,11 +3663,11 @@ function entityIsOverlapping(id, x, y)
                 }
               }
               //if its overlapping with a super state, just break since that is allowed.
-                if (data[i].kind == "UMLSuperState" || element.kind == "UMLSuperState") {
+                if (data[i].kind == elementTypesNames.UMLSuperState || element.kind == elementTypesNames.UMLSuperState) {
                 break;
               }
               //if its overlapping with a sequence actor, just break since that is allowed.
-                if (data[i].kind == "sequenceActorAndObject" || element.kind == "sequenceActorAndObject") {
+                if (data[i].kind == elementTypesNames.sequenceActorAndObject || element.kind == elementTypesNames.sequenceActorAndObject) {
                 break;
               }
               else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
@@ -6757,7 +6757,7 @@ function generateContextProperties()
         //Selected SD type
         else if (element.type == 'SD') {
             //if SDEntity kind
-            if (element.kind == 'SDEntity') {
+            if (element.kind == elementTypesNames.SDEntity) {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -6779,7 +6779,7 @@ function generateContextProperties()
                     }
                 }
             }
-            else if (element.kind == 'UMLSuperState') {
+            else if (element.kind == elementTypesNames.UMLSuperState) {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -6795,7 +6795,7 @@ function generateContextProperties()
         //Selected sequence type
         else if (element.type == 'SE') {
             //if sequenceActorAndObject kind
-            if (element.kind == 'sequenceActorAndObject') {
+            if (element.kind == elementTypesNames.sequenceActorAndObject) {
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'name':
@@ -6815,7 +6815,7 @@ function generateContextProperties()
                 }
                 
             }
-            else if(element.kind == 'sequenceLoopOrAlt'){
+            else if(element.kind == elementTypesNames.sequenceLoopOrAlt){
                 for (const property in element) {
                     switch (property.toLowerCase()) {
                         case 'alternatives':
@@ -7762,7 +7762,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     
-    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDEntity' || toElement.kind === 'SDEntity')) {
+    if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -7772,10 +7772,10 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         return;
     }
     //checks if a line is drawn to UMLInitialState.
-    if (toElement.kind == "UMLInitialState") {
+    if (toElement.kind == elementTypesNames.UMLInitialState) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
-    }else if(fromElement.kind == "UMLFinalState") {
+    }else if(fromElement.kind == elementTypesNames.UMLFinalState) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}`);
         return; 
     }
@@ -9068,7 +9068,7 @@ function addNodes(element)
     nodes += "<span id='md' class='node md'></span>";
     nodes += "<span id='mu' class='node mu'></span>";
 
-    if (element.kind == "UMLSuperState") {
+    if (element.kind == elementTypesNames.UMLSuperState) {
         nodes += "<span id='md' class='node md'></span>";
         nodes += "<span id='mu' class='node mu'></span>";
     }
@@ -9076,7 +9076,7 @@ function addNodes(element)
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize*zoomfact;
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
+    if ((element.kind == elementTypesNames.sequenceActorAndObject) || (element.kind == elementTypesNames.sequenceLoopOrAlt) || (element.kind == elementTypesNames.sequenceActivation)) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize+"px";
         mdNode.style.width = nodeSize+"px";
@@ -9086,7 +9086,7 @@ function addNodes(element)
         mdNode.style.top = "100%";
     }
 
-    if (element.kind == "UMLSuperState"){
+    if (element.kind == elementTypesNames.UMLSuperState){
         var mdNode = document.getElementById("md");
         var muNode = document.getElementById("mu");
         mdNode.style.width = nodeSize+"px";
@@ -9458,7 +9458,7 @@ function drawElement(element, ghosted = false)
         str += `</div>`;
 
     }
-    else if (element.kind == 'UMLInitialState') {
+    else if (element.kind == elementTypesNames.UMLInitialState) {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
@@ -9484,7 +9484,7 @@ function drawElement(element, ghosted = false)
         }
 
     }
-    else if (element.kind == 'UMLFinalState') {
+    else if (element.kind == elementTypesNames.UMLFinalState) {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
@@ -9511,7 +9511,7 @@ function drawElement(element, ghosted = false)
         }
 
     }
-    else if (element.kind == 'UMLSuperState') {
+    else if (element.kind == elementTypesNames.UMLSuperState) {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
@@ -9529,7 +9529,7 @@ function drawElement(element, ghosted = false)
     }
 
     // Check if element is SDEntity
-    else if (element.kind == "SDEntity") {
+    else if (element.kind == elementTypesNames.SDEntity) {
 
         const maxCharactersPerLine = Math.floor(boxw / texth);
 
@@ -9803,7 +9803,7 @@ function drawElement(element, ghosted = false)
     //=============================================== <-- End of IE functionality
     //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == 'sequenceActorAndObject') {
+    else if (element.kind == elementTypesNames.sequenceActorAndObject) {
         //div to encapsulate sequence actor/object and its lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
@@ -9894,7 +9894,7 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
     }
     // Sequence activation 
-    else if (element.kind == 'sequenceActivation') {
+    else if (element.kind == elementTypesNames.sequenceActivation) {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;`;
@@ -9912,7 +9912,7 @@ function drawElement(element, ghosted = false)
         str += `</svg>`;
     }
     // Sequence loop or alt
-    else if (element.kind == 'sequenceLoopOrAlt') {
+    else if (element.kind == elementTypesNames.sequenceLoopOrAlt) {
         //first, set a suggested height for the element based on the amount of alternatives
         if (element.alternatives != null) {
             //increase length of element to avoid squished alternatives
@@ -12566,7 +12566,7 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update SDEntity
-                else if (element.kind == "SDEntity") {
+                else if (element.kind == elementTypesNames.SDEntity) {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12652,7 +12652,7 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update SDEntity
-                else if (element.kind == "SDEntity") {
+                else if (element.kind == elementTypesNames.SDEntity) {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
