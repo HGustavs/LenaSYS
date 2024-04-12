@@ -12026,8 +12026,8 @@ function drawSelectionBox(str) {
             deleteBtnSize = 15;
         }
         
-        // Calculate delete button position relative to the selected element
-        deleteBtnX = highX + 5;
+        // Button possition
+        deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize / 2);
         deleteBtnY = lowY - 5 - (deleteBtnSize / 2);
 
         //Delete button visual representation
