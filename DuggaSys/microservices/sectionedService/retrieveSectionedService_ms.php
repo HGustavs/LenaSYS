@@ -1,11 +1,21 @@
 <?php
-    include_once "../../../Shared/basic.php";
-    function retrieveSectionedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated){//CHANGE HERE
-        // Include basic application services! Include more if needed
-        date_default_timezone_set("Europe/Stockholm");
-        include_once "../../../Shared/sessions.php";
+    function retrieveSectionedService($userid, $debug, ...$sectionedInfo){
 
-        pdoConnect();
-        // Retrieve Information
-        // functions will be added
+        $serviceInformation = [
+            'User ID' => $userid,
+            'Timestamp' => date("Y-m-d H:i:s"),
+            'Error log' => $debug,
+            'Service Info' => []
+        ];
+
+        if (empty($debug)) {
+            $serviceInformation['Error log'] = 'NONE!';
+        }
+
+        // Add information from the microservice to service information
+        foreach ($sectionedInfo as $info) {
+            array_push($serviceInformation['Service Info'], $info);
+        }
+
+        return $serviceInformation;
     }
