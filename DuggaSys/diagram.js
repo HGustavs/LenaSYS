@@ -1157,12 +1157,12 @@ var defaults = {
     EREntity: { name: "Entity", kind: elementTypesNames.EREntity, fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "ER", state: 'normal', attributes: ['-attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },
     ERRelation: { name: "Relation", kind: elementTypesNames.ERRelation, fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "ER", state: 'normal', canChangeTo: Object.values(relationType) },
     ERAttr: { name: "Attribute", kind: elementTypesNames.ERAttr, fill: "#ffffff", stroke: "#000000", width: 90, height: 45, type: "ER", state: 'normal' },
-    Ghost: { name: "Ghost", kind: elementTypesNames.ERAttr, fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
+    Ghost: { name: elementTypesNames.Ghost, kind: elementTypesNames.ERAttr, fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER" },
 
-    UMLEntity: {name: "Class", kind: "UMLEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- UML functionality
+    UMLEntity: {name: "Class", kind: elementTypesNames.UMLEntity, fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "UML", attributes: ['-Attribute'], functions: ['+Function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- UML functionality
     UMLRelation: {name: "Inheritance", kind: "UMLRelation", fill: "#ffffff", stroke: "#000000", width: 60, height: 60, type: "UML", canChangeTo: Object.values(relationType) }, //<-- UML functionality
-    IEEntity: {name: "IEEntity", kind: "IEEntity", stroke: "#000000", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- IE functionality
-    IERelation: {name: "Inheritance", kind: "IERelation", fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE", canChangeTo: Object.values(relationType) }, //<-- IE inheritence functionality
+    IEEntity: {name: elementTypesNames.IEEntity, kind: elementTypesNames.IEEntity, stroke: "#000000", fill: "#ffffff", width: 200, height: 50, type: "IE", attributes: ['-Attribute'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] },     //<-- IE functionality
+    IERelation: {name: "Inheritance", kind: elementTypesNames.IERelation, fill: "#ffffff", stroke: "#000000", width: 50, height: 50, type: "IE", canChangeTo: Object.values(relationType) }, //<-- IE inheritence functionality
     SDEntity: { name: "State", kind: "SDEntity", fill: "#ffffff", stroke: "#000000", width: 200, height: 50, type: "SD", attributes: ['do: func'], functions: ['+function'], canChangeTo: ["UML", "ER", "IE", "SD"] }, //<-- SD functionality
 
     UMLInitialState: {name: "UML Initial State", kind: "UMLInitialState", fill: "#000000", stroke: "#000000", width: 60, height: 60, type: "SD", canChangeTo: null }, // UML Initial state.
@@ -2793,7 +2793,7 @@ function changeState()
     }
     else if(element.type=='UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != 'UMLEntity') {
+        if (element.kind != elementTypesNames.UMLEntity) {
 
             var property = document.getElementById("propertySelect").value;
             element.state = property;
@@ -2816,7 +2816,7 @@ function changeState()
     }
     else if(element.type=='IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != 'IEEntity') {
+        if (element.kind != elementTypesNames.IEEntity) {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, { state: property }), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -6643,7 +6643,7 @@ function generateContextProperties()
           //Selected UML type
           else if (element.type == 'UML') {
               //If UML entity
-              if (element.kind == 'UMLEntity') {
+              if (element.kind == elementTypesNames.UMLEntity) {
                   //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
                   for (const property in element) {
                       switch (property.toLowerCase()) {
@@ -6703,7 +6703,7 @@ function generateContextProperties()
           //Selected IE type
           else if (element.type == 'IE') {
             //If IE entity
-            if (element.kind == 'IEEntity') {
+            if (element.kind == elementTypesNames.IEEntity) {
                 //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111 
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6720,7 +6720,7 @@ function generateContextProperties()
                     }
                 }
             }
-            else if(element.kind = 'IERelation') {
+            else if(element.kind = elementTypesNames.IERelation) {
               //ID MUST START WITH "elementProperty_"!!!!!
               for (const property in element) {
                   switch (property.toLowerCase()) {
@@ -6740,7 +6740,7 @@ function generateContextProperties()
                     selected = "disjoint"
                 }
 
-                if(element.kind =="IERelation") {
+                if(element.kind ==elementTypesNames.IERelation) {
                     value = Object.values(inheritanceStateIE);
                 }
                 str += '<select id="propertySelect">';
@@ -6834,7 +6834,7 @@ function generateContextProperties()
 
 
         /// Creates button for selecting element background color if not a UML relation since they should not be able change color
-        if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
+        if (element.kind != 'UMLRelation' && element.kind != elementTypesNames.IERelation) {
               // Creates button for selecting element background color
             str += `<div style="white">Color</div>`;
             str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
@@ -9344,7 +9344,7 @@ function drawElement(element, ghosted = false)
 
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
-    if (element.kind == "UMLEntity") {
+    if (element.kind == elementTypesNames.UMLEntity) {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
 
         const splitLengthyLine = (str, max) => {
@@ -9683,7 +9683,7 @@ function drawElement(element, ghosted = false)
 
     //=============================================== <-- IE functionality
     //Check if the element is a IE entity
-    else if (element.kind == "IEEntity") {
+    else if (element.kind == elementTypesNames.IEEntity) {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
 
         const splitLengthyLine = (str, max) => {
@@ -9765,7 +9765,7 @@ function drawElement(element, ghosted = false)
     }
 
     //IE inheritance
-    else if (element.kind == 'IERelation') {
+    else if (element.kind == elementTypesNames.IERelation) {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; margin-top:${((boxh / 1.5))}px; width:${boxw}px;height:${boxh / 2}px;`;
@@ -10265,7 +10265,7 @@ function updatepos(deltaX, deltaY)
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != elementTypesNames.ERRelation && context[0].kind != "UMLRelation"  && context[0].kind != "IERelation")) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != elementTypesNames.ERRelation && context[0].kind != "UMLRelation"  && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
     
 
 }
@@ -12536,7 +12536,7 @@ function updateCSSForAllElements()
             // Edge creation does not highlight selected elements
             if(mouseMode != mouseModes.EDGE_CREATION){
                 // Update UMLEntity
-                if(element.kind == "UMLEntity"){
+                if(element.kind == elementTypesNames.UMLEntity){
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12552,7 +12552,7 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update IEEntity
-                else if(element.kind == "IEEntity"){
+                else if(element.kind == elementTypesNames.IEEntity){
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12609,7 +12609,7 @@ function updateCSSForAllElements()
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if(element.kind == "IERelation" && element.state != "overlapping") {
+                        else if(element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
                                 disjointLine1Color.style.stroke = `${"#ffffff"}`;
                                 disjointLine2Color.style.stroke = `${"#ffffff"}`;
                         }
@@ -12634,7 +12634,7 @@ function updateCSSForAllElements()
                 }
             } else {
                 // Update UMLEntity
-                if(element.kind == "UMLEntity"){
+                if(element.kind == elementTypesNames.UMLEntity){
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12643,7 +12643,7 @@ function updateCSSForAllElements()
                     }
                 }
                 // Update IEEntity
-                else if(element.kind == "IEEntity"){
+                else if(element.kind == elementTypesNames.IEEntity){
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -12680,7 +12680,7 @@ function updateCSSForAllElements()
                         if(element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${"#ffffff"}`;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if(element.kind == "IERelation" && element.state != "overlapping") {
+                        else if(element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
                                 disjointLine1Color.style.stroke = `${"#ffffff"}`;
                                 disjointLine2Color.style.stroke = `${"#ffffff"}`;
                         }
