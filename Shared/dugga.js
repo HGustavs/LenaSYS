@@ -1096,10 +1096,12 @@ function AJAXService(opt,apara,kind)
 		
 		if(opt === "UPDATEDEADLINE"){
 			$.ajax({
-				url: "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
+				//url: "sectionedservice.php",
+				url: "../DuggaSys/microservices/sectionedService/test.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-				dataType: "json"
+				dataType: "json",
+				success: returnedSection
 				});
 		}
 		else {
