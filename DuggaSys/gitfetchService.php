@@ -29,7 +29,7 @@ function getGitHubURL($url)
     return $translatedURL;
 }
 
-//gets the API URL for the latest commit in master instead of all content, could reasonably be made generic with getGitHubURL
+// Gets the API URL for the latest commit in master instead of all content, could reasonably be made generic with getGitHubURL.
 function getGitHubURLCommit($url)
 {
     $urlParts = explode('/', $url);
@@ -74,12 +74,12 @@ function insertToFileLink($cid, $item)
     }
 }
 
+// Inserts data into metadata2.db (the table gitFiles).
 function insertToMetaData($cid, $item) 
 {
     global $pdoLite;
     $query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
     $query->bindParam(':cid', $cid);
-    //print_r("\n ---name = ".$item['name']."\n ----type = ".$item['type']."\n ---url = ".$item['url']."\n ---download_url = ".$item['download_url']."\n ---sha = ".$item['sha']."\n ---path = ".$item['path']."\n\n");
     $query->bindParam(':fileName', $item['name']);
     $query->bindParam(':fileType', $item['type']);
     $query->bindParam(':fileURL', $item['url']);
@@ -102,7 +102,7 @@ function downloadToWebServer($cid, $item)
     file_put_contents($path, $fileContents);    
 }
     
-//Retrieves the content of a repos index-file
+// Retrieves the content of a repos index-file
 function getIndexFile($url) {
     $indexFilePath = "/index.txt";
     $url = $url . $indexFilePath;
@@ -131,7 +131,7 @@ function getIndexFile($url) {
 
 function bfs($url, $cid, $opt) 
 {
-    //different URL depending on operation
+    // Different URL depending on operation
     if($opt == "GETCOMMIT"){
         $url = getGitHubURLCommit($url);
     }
@@ -179,7 +179,7 @@ function bfs($url, $cid, $opt)
                         //If an index file has been found, check against the content of the index file
                         if ($item['name'] != ".gitignore") {
                             if ($filesToIgnore) {
-                                //If file is not part of files to ignore, resume (Index file)
+                                // If the file is not part of files to ignore, resume (Index file)
                                 if (!in_array($item['name'], $filesToIgnore) && !in_array($item['name'], $filesVisited)) {
                                     if ($opt == "REFRESH") {
                                         insertToMetaData($cid, $item);
@@ -191,7 +191,7 @@ function bfs($url, $cid, $opt)
                                         array_push($filesVisited,$item['name']);
                                     }
                                 }
-                                //Otherwise, fetch and download all files
+                                // Otherwise, fetch and download all files
                             } else {
                                 if (!in_array($item['name'], $filesVisited)) {
                                     if ($opt == "REFRESH") {
