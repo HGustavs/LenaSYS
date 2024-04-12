@@ -40,7 +40,7 @@
 			$query->bindParam(':cid', $_SESSION['courseid']);
 			$query->execute();
 			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-				$_SESSION["updatetGitReposCooldown"][$_SESSION['courseid']] = $row['updated'];
+				$updateTime = $row['updated'];
 			}
 
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
@@ -225,9 +225,9 @@
 									$fetchCooldownTimmer=600;
 								}
 								
-								$fetchCooldownS=strtotime($_SESSION["updatetGitReposCooldown"][$_SESSION['courseid']])+$fetchCooldownTimmer-time();
+								$fetchCooldownS=strtotime($updateTime)+$fetchCooldownTimmer-time();
 								
-								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$_SESSION["updatetGitReposCooldown"][$_SESSION['courseid']]."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown:</b>";
+								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$updateTime."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown:</b>";
 
 								//set cooldown timer
 								if($fetchCooldownS>0)
