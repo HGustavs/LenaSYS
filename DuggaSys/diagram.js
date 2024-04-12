@@ -7188,7 +7188,7 @@ function toggleColorMenu(buttonID) {
             // Create svg circles for each element in the "colors" array
             for (var i = 0; i < colorKeys.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colorMap[colorKeys[i]]}" onclick="setElementColors('BGColorCircle${i}')" stroke=colorMap.Black stroke-width="2"/>
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colorMap[colorKeys[i]]}" onclick="setElementColors('BGColorCircle${i}')" stroke="${colorMap.Black}" stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7196,7 +7196,7 @@ function toggleColorMenu(buttonID) {
             // Create svg circles for each element in the "strokeColors" array
             for (var i = 0; i < strokeColors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke=colorMap.Black stroke-width="2"/>
+            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke="${colorMap.Black}" stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
