@@ -36,12 +36,17 @@
 
 			//used for repository fetch cooldown
 			global $pdo;
-			$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
+			$query = $pdo->prepare('SELECT updated, courseGitURL FROM course WHERE cid = :cid;');
 			$query->bindParam(':cid', $_SESSION['courseid']);
 			$query->execute();
-			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			
+			// Check if there is a 'courseGitURL' set for the course
+			$checkIfGithubURL = $row['courseGitURL'];
+			if ($checkIfGithubURL) {
 				$updateTime = $row['updated'];
-			}
+			} else { $updateTime = "No Github URL set"; }
+
 
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 				if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid']))){
