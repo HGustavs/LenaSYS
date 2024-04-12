@@ -1569,21 +1569,65 @@ document.addEventListener('keydown', function (e) {
     }
 
     // Moving object with arrows
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid){
-        console.log("Up");
-        setPos(context, 0, 1);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x, obj.y - 1)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, 0, 1);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid){
-        console.log("Down");
-        setPos(context, 0, -1);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x, obj.y + 1)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, 0, -1);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid){
-        console.log("Left");
-        setPos(context, 1, 0);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x - 1, obj.y)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, 1, 0);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid){
-        console.log("Right");
-        setPos(context, -1, 0);
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid) {
+        let overlapDetected = false;
+        context.forEach(obj => {
+            if (entityIsOverlapping(obj.id, obj.x + 1, obj.y)) {
+                overlapDetected = true;
+                return;
+            }
+        });
+        if (!overlapDetected) {
+            setPos(context, -1, 0);
+        }
+        else {
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        }
     }
 });
 
