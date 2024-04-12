@@ -393,8 +393,9 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
+                'username' => 'brom',
+                'password' => 'password',
                 'opt' => 'ADDUSR',
-                'username' => 'testuser',
                 'saveemail' => 'testmail',
                 'firstname' => 'testfirstname',
                 'lastname' => 'testlastname',
@@ -453,7 +454,6 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES(1, 9999, 'testtest');",
         'query-before-test-2' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = 9999;",
-        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 9999;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
