@@ -189,7 +189,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update examiner to none
     'Update-examiner-to-none' => array(  
         //Pre-values
-        'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999 'testtest');",
+        'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
         'variables-query-before-test-1' => "cid",
         'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
@@ -220,11 +220,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Update-version' => array(  
         //Pre-values
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
-        'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, (9999), 'test');",
+        'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
         'variables-query-before-test-1' => "cid",
-        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
-        'query-after-test-2' => "DELETE FROM course WHERE cid = 'cid';",
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 9999;",
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -249,12 +249,12 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update access
     'Update-access' => array(  
         //Pre-values
-        'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
-        'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
+        'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
+        'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
         'variables-query-before-test-1' => "cid",
-        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
-        'query-after-test-2' => "DELETE FROM course WHERE cid = 'cid';",
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 9999;",
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -279,12 +279,12 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Update group
     'Update-group' => array(  
         //Pre-values
-        'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES ('1', 'testtest');",
-        'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES ('2', (SELECT cid FROM course WHERE coursecode = 'testtest'), 'test');",
+        'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
+        'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (2, 9999, 'test');",
         'query-before-test-3' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
         'variables-query-before-test-1' => "cid",
-        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
-        'query-after-test-2' => "DELETE FROM course WHERE cid = 'cid';",
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 9999;",
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -363,7 +363,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add user
     'Add-user' => array(  
         //Pre-values
-        'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', '2', 'testClassName, '12345678', '87654321', '7.5', '100', '1.5');",
+        'query-before-test-1' => "INSERT INTO class(class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES ('testClass', 2, 'testClassName', 12345678, 87654321, 7.5, 100, 1.5);",
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
         'query-after-test-2' => "DELETE FROM class WHERE class = 'testClass';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
@@ -428,11 +428,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Connect-user-to-user-course' => array(  
         //Pre-values
         'expected-output' => '',
-        'query-before-test-1' => "INSERT INTO course(creator, coursecode) VALUES('1', 'testtest');",
+        'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES(1, 9999, 'testtest');",
         'query-before-test-2' => "SELECT cid FROM course WHERE coursecode = 'testtest';",
-        'variables-query-before-test-1' => "cid",
-        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 'cid';",
-        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 'cid';",
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = 9999;",
+        'query-after-test-2' => "DELETE FROM user_course WHERE cid = 9999;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/tests/accessedservice.php',
         'service-data' => serialize(
             array(
