@@ -33,10 +33,8 @@
 			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
 		}
 		else if($_POST['action'] == 'directInsert'){
-			$myfile = fopen("a22kara.txt", "w") or die("Unable to open file!");
-            $txt = $_POST['token'];
-            fwrite($myfile, $txt);
-            fclose($myfile);
+
+			insertTokenToMetaData($_POST['token']);
 			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
 		}
 	};
@@ -93,6 +91,44 @@
 			echo $errorvar;
 		} else {
 			bfs($url, $cid, "REFRESH");
+		}
+	}
+
+	function insertTokenToMetaData($token) 
+	{
+
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		
+		$query2 = $pdolite->prepare('SELECT gitToken FROM gitToken WHERE gitToken!=""');
+		$query2->execute();
+
+
+		$old_token="";
+		foreach($query2->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$old_token = $row['gitToken'];
+		}
+
+
+		if(strlen($old_token)>1)
+		{
+
+			$query2 = $pdolite->prepare('UPDATE gitToken SET gitToken=:token WHERE tid=1');
+			$path='C:\Users\Användaren\Desktop\own thoughts OP\msg.txt';
+			file_put_contents($path, '');
+			$txt = "IN IF 1, NEW TOKEN: ".$token;
+
+			fwrite($myfile, $txt." ".$old_token);
+			fclose($myfile);
+			$query2->bindParam(':token', $token);
+			$query2->execute();
+
+		}
+		else
+		{
+			$query2 = $pdolite->prepare('INSERT OR REPLACE INTO gitToken (tid, gitToken) VALUES (1, :token)');
+
+			$query2->bindParam(':token', $token);
+			$query2->execute();
 		}
 	}
 

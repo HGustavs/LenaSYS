@@ -114,7 +114,7 @@ function getIndexFile($url) {
     }
 }
 
-function bfs($url, $cid, $opt, $key) 
+function bfs($url, $cid, $opt) 
 {
     $url = getGitHubURL($url);
     $filesToIgnore = getIndexFile($url);
