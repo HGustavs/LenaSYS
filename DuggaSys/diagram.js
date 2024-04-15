@@ -7796,7 +7796,7 @@ function drawLine(line, targetGhost = false) {
     if (line.type == 'NOTE') strokeDash = "10";
     if (targetGhost && line.type == 'SD') line.endIcon = "ARROW";
 
-    if (felem.type == 'ER' || telem.type == 'ER') {
+    if (line.type == 'ER') {
         if (line.kind == "Normal") {
             str += `<line id='${line.id}' class='lineColor' \
                 x1='${fx + x1Offset}' y1='${fy + y1Offset}' \
@@ -7805,25 +7805,24 @@ function drawLine(line, targetGhost = false) {
         } else if (line.kind == "Double") {
             let dy = -(tx - fx);
             let dx = ty - fy;
-            var len = Math.sqrt((dx * dx) + (dy * dy));
+            let len = Math.sqrt((dx * dx) + (dy * dy));
             dy = dy / len;
             dx = dx / len;
-            var cstmOffSet = 1.4;
 
             str +=  `<line id='${line.id}-1' class='lineColor' \
-                x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' \
-                y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' \
-                x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' \
-                y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' \
+                x1='${fx + dx * strokewidth * 1.5 + x1Offset}' \
+                y1='${fy + dy * strokewidth * 1.5 + y1Offset}' \
+                x2='${tx + dx * strokewidth * 1.5 + x2Offset}' \
+                y2='${ty + dy * strokewidth * 1.5 + y2Offset}' \
                 stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             str += `<line id='${line.id}-2' class='lineColor' \
-                x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' \
-                y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' \
-                x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' \
-                y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' \
+                x1='${fx - dx * strokewidth * 1.5 + x1Offset}' \
+                y1='${fy - dy * strokewidth * 1.5 + y1Offset}' \
+                x2='${tx - dx * strokewidth * 1.5 + x2Offset}' \
+                y2='${ty - dy * strokewidth * 1.5 + y2Offset}' \
                 stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
-    } else if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+    } else if ((line.type == 'SD' && elemsAreClose && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
         if (line.kind == "Recursive") {
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
@@ -7883,13 +7882,14 @@ function drawLine(line, targetGhost = false) {
 
     if (felem.type != 'ER' || telem.type != 'ER') {
         if (line.startLabel && line.startLabel != '') {
-            str += drawLineLabel(line, line.startLabel, lineColor, 'starLabel', fx, fy, 0, 0);
-        } else if (line.endLabel && line.endLabel != '') {
-            str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, 0, 0);
+            str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
+        }
+        if (line.endLabel && line.endLabel != '') {
+            str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false);
         }
     } else {
         if (line.cardinality) {
-            str += drawLineLabel(line, lineColor, fx, fy, tx, ty, felem, telem);
+            str += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
         }
     }
 
@@ -8066,46 +8066,36 @@ function getLineAttrubutes(f, t, ctype) {
     }
     return result;
 }
-// drawLineLabel(line, line.cardinality, lineColorm, 'Cardinality')
-function drawLineLabel(line, label, lineColor, labelStr, x, y, dx, dy, isER) {
+
+function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     let str = "";
 
     const offsetOnLine = 20 * zoomfact;
-    let posX, posY, distance, offset;
+    let posX = x;
+    let posY = y;
 
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
-    // Used to tweak the cardinality position when the line gets very short.
-    const tweakOffset = 0.30;
-
-    // Set the correct distance depending on the place where the line is connected
-    if (line.ctype == 'TB' || line.ctype == 'BT') {
-        distance = Math.abs(dy);
-        //Set position on line for the given offset
-        if (offsetOnLine > distance * 0.5) {
-            posX = x;
-            posY = y - (offsetOnLine * (dy) / distance) * tweakOffset;
-        } else {
-            posX = x;
-            posY = y - (offsetOnLine * (dy) / distance);
-        }
-    } else if (line.ctype == 'LR' || line.ctype == 'RL') {
-        distance = Math.abs(dx);
-        //Set position on line for the given offset
-        if (offsetOnLine > distance * 0.5) {
-            posX = x - (offsetOnLine * (dx) / distance) * tweakOffset;
-            posY = y;
-        } else {
-            posX = x - (offsetOnLine * (dx) / distance);
-            posY = y;
-        }
+    if (line.ctype == 'TB') {
+        posY += (isStart) ? -offsetOnLine : offsetOnLine;
+        posX -= offsetOnLine / 2;
+    } else if (line.ctype == 'BT') {
+        posY += (isStart) ? offsetOnLine : -offsetOnLine;
+        posX -= offsetOnLine / 2;
+    } else if (line.ctype == 'LR') {
+        posX += (isStart) ? -offsetOnLine : offsetOnLine;
+        posY -= offsetOnLine / 2;
+    } else if (line.ctype == 'RL') {
+        posX += (isStart) ? offsetOnLine : -offsetOnLine;
+        posY -= offsetOnLine / 2;
     }
+
     str += `<rect \
             class='text cardinalityLabel' \
             id='${line.id + labelStr}' \
-            x='${posX - (textWidth) / 2}' \
+            x='${posX - textWidth / 2}' \
             y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' \
             width='${textWidth + 2}' \
             height='${(textheight - 4) * zoomfact + zoomfact * 3}'/>`;
@@ -8172,7 +8162,7 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     }
     str += `<rect \
             class='text cardinalityLabel' \
-            id='${line.id + labelStr}' \
+            id='${line.id + "Cardinality"}' \
             x='${posX - (textWidth) / 2}' \
             y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' \
             width='${textWidth + 2}' \
@@ -8184,7 +8174,6 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
             style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' \
             x='${posX}' \
             y='${posY}'> ${lineCardinalitys[line.cardinality]} </text>`;
-    console.log(str);
     return str;
 }
 
