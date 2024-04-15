@@ -3168,7 +3168,7 @@ function updateSelection(ctxelement) {
         if (!context.includes(ctxelement)) {
             context.push(ctxelement);
             showdata();
-            clearContext
+            clearContext();
         } else {
             context = context.filter(function (element) {
                 return element !== ctxelement;
