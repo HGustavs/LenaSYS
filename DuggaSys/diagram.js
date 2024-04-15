@@ -973,6 +973,12 @@ const MANY = {
     'LR': [[5, -10], [-15, 0], [5, 10]],
     'RL': [[-5, -10], [15, 0], [-5, 10]],
 }
+const ARROW = {
+    'TB': [[-10, -20], [0, 0], [10, -20]],
+    'BT': [[-10, 20], [0, 0], [10, 20]],
+    'LR': [[-20, -10], [0, 0], [-20, 10]],
+    'RL': [[20, -10], [0, 0], [20, 10]]
+}
 
 /**
  *@description Gives x1, y1, x2, y2 position of a line for a line icon. For all element pair orientations
@@ -8202,7 +8208,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, strokewidth, str) {
             str += iconLine(TWO_LINE[ctype], x, y, lineColor, strokewidth);
             break;
         case IELineIcons.WEAK:
-            str += iconPoly(WEAK_TRIANGLE[ctype], lineColor, strokewidth, '#ffffff');
+            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, strokewidth, '#ffffff');
             str += iconCircle(CIRCLE[ctype], x, y, lineColor, strokewidth);
             break;
         case IELineIcons.MANY:
@@ -8217,17 +8223,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, strokewidth, str) {
             str += iconLine(TWO_LINE[ctype], x, y, lineColor, strokewidth);
             break;
         case UMLLineIcons.ARROW:
-            /*
-            if (line.ctype == 'TB') {
-                str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            } else if (line.ctype == 'BT') {
-                str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            } else if (line.ctype == 'LR') {
-                str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            } else if (line.ctype == 'RL') {
-                str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            }
-             */
+           str += iconPoly(ARROW[ctype], x, y, lineColor, strokewidth, 'none');
             break;
         case UMLLineIcons.TRIANGLE:
             str += iconPoly(TRIANGLE[ctype], x, y, lineColor, strokewidth, '#ffffff');
@@ -8242,9 +8238,9 @@ function drawLineIcon(icon, ctype, x, y, lineColor, strokewidth, str) {
             str += iconPoly(DIAMOND[ctype], x, y, lineColor, strokewidth, '#000000');
             break;
         case SDLineIcons.ARROW:
-            /*
+
             // If the line is straight calculate the points required to draw the arrow at an angle.
-            if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+            /*if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
                 let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
                 let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
 
@@ -8254,19 +8250,9 @@ function drawLineIcon(icon, ctype, x, y, lineColor, strokewidth, str) {
 
                 str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${from.x} ${from.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             } else {
-                if (line.ctype == 'TB') {
-                    fy = fy + zoomfact;
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    fy = fy - 5 * zoomfact
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-            }
-             */
+
+            }*/
+            str += iconPoly(ARROW[ctype], x, y, lineColor, strokewidth, 'none');
             break;
     }
     return str;
