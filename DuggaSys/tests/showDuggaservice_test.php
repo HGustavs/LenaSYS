@@ -1,8 +1,8 @@
 <?php
 
-// include "../../Shared/test.php";
+include "../../Shared/test.php";
 // /*Warning! No test works since showDugga doesn't work properly. Expected outputs in this document have not been fixed yet.*/
-// $testsData = array(
+$testsData = array(
 //     'Get active users' => array(
 //         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
 //         'query-before-test-1' => "INSERT INTO groupdugga(hash, active_users) VALUES ('hnf3j58s', 5);",
@@ -240,7 +240,7 @@
 //             'none'
 //         )),
 //     ),
-// );
+);
 
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
