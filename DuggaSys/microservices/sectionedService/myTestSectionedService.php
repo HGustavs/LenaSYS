@@ -1,7 +1,4 @@
 <?php
-//---------------------------------------------------------------------------------------------------------------
-// Microservice updateQuizDeadline updates the deadline for a quiz (dugga)
-//---------------------------------------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------------------------------------
 // editorService - Saves and Reads content for Code Editor
@@ -10,9 +7,9 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
-include_once "../DuggaSys/gitfetchService.php";
+include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
+include_once "../../../DuggaSys/gitfetchService.php";
 
 // Connect to database and start session
 pdoConnect();

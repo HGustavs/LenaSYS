@@ -1095,10 +1095,11 @@ function AJAXService(opt,apara,kind)
 		//For testing microservice updateQuizDeadline_ms.php 
 		//IT IS NOT WORKING...
 		
+		/*
 		if(opt === "UPDATEDEADLINE"){
 			$.ajax({
 				//url: "sectionedservice.php",
-				url: "/Applications/XAMPP/xamppfiles/htdocs/LenaSYS/DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
+				url: "/LenaSYS/DuggaSys/updateQuizDeadline_ms.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
 				dataType: "json",
@@ -1114,17 +1115,19 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 				});
 		}
+		*/
 		
-
-		/*
+		
 		$.ajax({
-		url: "sectionedservice.php",
+		//url: "/LenaSYS/DuggaSys/sectionedservice.php",
+		url: "/LenaSYS/DuggaSys/microservices/sectionedService/myTestSectionedService.php",
 		type: "POST",
 		data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
 		dataType: "json",
 		success: returnedSection
 		});
-		*/
+		
+		
 		
   }else if(kind=="GRP"){
 	
