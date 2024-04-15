@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    container_name: apache-php
+    ports:
+      - "80:80"
+    volumes:
+      - "../:/var/www/html/LenaSYS"
+      - "./coursesyspw.php:/var/www/html/coursesyspw.php"
+      - "./githubMetadata:/var/www/html/githubMetadata"
+    restart: no
+  db:
+    image: mysql:5.7.42
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: password
+    volumes:
+      - "./mysql-data:/var/lib/mysql"
+    restart: no
+  dbadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: password
+    ports:
+      - "8080:80"
+    restart: no
