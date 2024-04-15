@@ -2150,7 +2150,6 @@ function checkDeleteBtn() {
             updateSelection();
             return true;
         }
-        updatepos(0,0);
     }
     return false;
 }
