@@ -538,7 +538,7 @@ body {
 }
 
 /* Course schedule styling */
-#swimlaneSVG rect:nth-child(odd){
+#swimlaneSVG rect:nth-child(n of .progressBar){
     opacity: 0.9;
 }
 

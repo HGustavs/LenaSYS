@@ -917,7 +917,7 @@ p {
   font-size: 10px;
 }
 
-#swimlaneSVG rect:nth-child(odd){
+#swimlaneSVG rect:nth-child(n of .progressBar){
   fill: #620C5B80; 
   opacity: 0.7;
 }
