@@ -271,12 +271,14 @@
 							echo "</a>";
 							echo "<a class='burgerButtText' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Show files</a></div>";
 
-							echo "<div id='courseIMGBurger'>";
-							echo "<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
-							echo "<img alt='course page icon'  value='Course' class='burgerButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
-							echo "</a>";
-							echo "<a class='burgerButtText' href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>Course page</a></div>";
-
+							////Need to check if the course has a version, if it does not the button in the hamburger menu should not be created
+							if(isset($result['versname'])) {
+								echo "<div id='courseIMGBurger'>";
+								echo "<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+								echo "<img alt='course page icon'  value='Course' class='burgerButt' title='Course page for 343' src='../Shared/icons/coursepage_button.svg'>";
+								echo "</a>";
+								echo "<a class='burgerButtText' href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>Course page</a></div>";
+							}
 							echo "<div id='editCourseBurger'>";
             			    echo "<a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
 							echo "<img alt='give access icon'  class='burgerButt' src='../Shared/icons/lock_symbol.svg'>";
