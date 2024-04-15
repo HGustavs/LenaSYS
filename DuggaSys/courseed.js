@@ -304,12 +304,6 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 		str += "<option value='2'>Login</option>";
 	}
 
-	if (visi == 3) {
-		str += "<option selected='selected' value='3'>Deleted</option>";
-	} else {
-		str += "<option value='3'>Deleted</option>";
-	}
-
 	$("#visib").html(str);
 	var cstr = "";
 	var sstr = "";

@@ -37,6 +37,15 @@ if(isset($_SESSION['uid'])){
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="courseed.js"></script>
+	<script>
+		function openForm() {
+		document.getElementById("myForm").style.display = "block";
+		}
+
+		function closeForm() {
+		document.getElementById("myForm").style.display = "none";
+		}
+</script>
 </head>
 <body>
 
@@ -140,8 +149,18 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
     		<div style='float:right; padding-top:20px; width: 464px;' >
-				<button id="deleteCourseButton">Delete</button>
+				<button id="deleteCourseButton" onclick='openForm()'>Delete</button>
     			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
+					<div class="form-popup" id="myForm">
+					<form action="" class="form-container">
+						<h1>Are you shure </h1>
+
+
+
+						<button id="deleteCourseButton" type="button"  style="background-color: white; align-items:center;" onclick="closeForm()">YES!</button>
+						<button id="deleteCourseButton" type="button" onclick="closeForm()">NO!</button>
+					</form>
+					</div>
     		</div>
 
       </div>

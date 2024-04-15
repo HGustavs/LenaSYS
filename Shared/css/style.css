@@ -7709,6 +7709,30 @@ textarea#mrkdwntxt {
   margin:0px;
 }
 
+
+.form-popup {
+  text-align: center;
+  display: none;
+  padding: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  background-color: #fff; /* white background */
+  max-width: 1000%; /* maximum width */
+  max-height: 1000%; /* maximum height */
+  background-color: rgba(0, 0, 0, 0.6);/* enable vertical scrolling if content overflows */
+}
+
+/* styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
 #submitEditCourse{
   margin-left: 343px;
   margin-top: 20px;
