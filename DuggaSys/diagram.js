@@ -1011,7 +1011,6 @@ const strokeColors = ["#383737"];
 const selectedColor = "#A000DC";
 const multioffs = 3;
 
-
 // Color mapping to responding colorcode, use colorMap.Color to get the color
 const colorMap = {
     "White": "#ffffff",
@@ -1026,9 +1025,6 @@ const colorMap = {
     "Black": "#000000",
     "Blue": "#0000ff"
 };
-
-// to access the colorMap with lenght or index
-const colorKeys = Object.keys(colorMap);
 
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -7186,9 +7182,19 @@ function toggleColorMenu(buttonID) {
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
+            function getKeyIndex(obj, key) {
+                let keys = Object.keys(colorMap);
+                for (let i = 0; i < keys.length; i++) {
+                    if (keys[i] == key) {
+                        return i;
+                    }
+                }
+                return -1; // key is not found
+            }
             for (var i = 0; i < colorKeys.length; i++) {
+                var i = getKeyIndex(colorMap, key);
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colorMap[colorKeys[i]]}" onclick="setElementColors('BGColorCircle${i}')" stroke="${colorMap.Black}" stroke-width="2"/>
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colorMap[key]}" onclick="setElementColors('BGColorCircle${i}')" stroke="${colorMap.Black}" stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7229,7 +7235,8 @@ function setElementColors(clickedCircleID) {
     // If fill button was pressed
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
-        var color = colorMap[colorKeys[index]];
+        let values = Object.values(colorMap);
+        var color = values[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
