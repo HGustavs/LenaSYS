@@ -5,7 +5,7 @@
 include_once "../../../Shared/basic.php";
 
 
-function retrieveSectionedService(PDO $pdo, $userid, array $sectionedInfo)
+function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 {
 
 	// Include basic application services!
