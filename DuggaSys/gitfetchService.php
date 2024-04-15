@@ -91,6 +91,9 @@ function insertToMetaData($cid, $item)
 
 function downloadToWebServer($cid, $item) 
 {
+    $message = "Jag används för loggning hehe...";
+    $file = '../log/gitErrorLog.txt';
+    error_log($message, 3, $file);
     // Retrieves the contents of each individual file based on the fetched "download_url"
     $fileContents = file_get_contents($item['download_url']);
     $path = '../../LenaSYS/courses/'. $cid . '/' . "Github" .'/' . $item['path'];
@@ -99,16 +102,26 @@ function downloadToWebServer($cid, $item)
         mkdir(dirname($path), 0777, true);
     } 
     // Writes the file to the respective folder. 
-    $content = @file_put_contents($path, $fileContents);
-    if ($content === false) {
-        http_response_code(422);
-        header('Content-type: application/json');
-        $response = array(
+    $content = file_put_contents($path, $fileContents);
+        if ($content === false) {
+            // Set HTTP response code and header for the error
+            //http_response_code(422);
+            header('Content-type: application/json');
+            $response = array(
             'message' => "Failed to put ".$item['name']." in ".$path
-        );
+            );
 
-        echo json_encode($response);
-    }    
+            echo json_encode($response);
+
+            // Prepare the error message
+            $errorMessage = date("Y-m-d H:i:s") . " - Error: Failed to put " . $item['name'] . " in " . $path . "\n";
+
+            // Specify the log file path
+            $logFilePath = '../../LenaSYS/log/gitErrorLog.txt';
+
+            // Append the error message to the log file
+            file_put_contents($logFilePath, $errorMessage, FILE_APPEND | LOCK_EX);
+        }   
 }
     
 // Retrieves the content of a repos index-file
