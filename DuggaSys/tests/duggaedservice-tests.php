@@ -138,7 +138,8 @@ $testsData = array(
                 'debug',
                 'writeaccess',
                 'coursename',
-                'coursecode'
+                'coursecode',
+                'variants',
                 
             )
         ),
@@ -170,7 +171,8 @@ $testsData = array(
                 'debug',
                 'writeaccess',
                 'coursename',
-                'coursecode'
+                'coursecode',
+                'variants',
             )
         ),
     ),
@@ -198,7 +200,8 @@ $testsData = array(
                 'debug',
                 'writeaccess',
                 'coursename',
-                'coursecode'
+                'coursecode',
+                'variants',
             )
         ),
     ),
