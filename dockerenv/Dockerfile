@@ -26,10 +26,11 @@ RUN echo '<Directory /var/www/html>' > /etc/apache2/conf-available/custom-direct
     && a2enconf custom-directory-listing
 
 # Copy the initialization script
-COPY init.sh /usr/local/bin/init.sh
+COPY ./init.sh /usr/local/bin/init.sh
 
 # Make sure the script is executable
 RUN chmod +x /usr/local/bin/init.sh
+RUN sed -i 's/\r$//' /usr/local/bin/init.sh
 
 # Set the script as the entrypoint
 ENTRYPOINT [ "/usr/local/bin/init.sh" ]
