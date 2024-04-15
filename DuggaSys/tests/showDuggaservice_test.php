@@ -141,6 +141,8 @@ $testsData = array(
         'query-before-test-2' => "INSERT INTO listentries(cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode,feedbackenabled,feedbackquestion) VALUES (9999, 'Inserttobedeleted', 'UNK', 4, 12, 2, 1, 1337, 1, 1, 0, 'UNK');",
         'query-before-test-3' => "SELECT MAX(lid) FROM listentries",
         'query-before-test-4' => "INSERT INTO userAnswer(cid,hash,password,moment) VALUES(9999,'dfg4zxc5','asdfasdf',?);",
+        // Added a new query to create a user
+        'query-before-test-5' => "INSERT INTO users(username, password) VALUES ('stei', 'password');",
         'query-after-test-1' => "DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;",
         'query-after-test-2' => "DELETE FROM listentries WHERE cid = 9999;",
         'query-after-test-3' => "DELETE FROM course WHERE cid = 9999;",
