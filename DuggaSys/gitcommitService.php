@@ -205,7 +205,7 @@
 					// Download files and metadata
 					bfs($url, $cid, "DOWNLOAD");
 					print "The course has been updated, files have been downloaded!";
-				} else {
+				} else if(http_response_code() == 200) {
 					print "The course is already up to date!";
 				}
 			}

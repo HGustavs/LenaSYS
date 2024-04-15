@@ -91,37 +91,25 @@ function insertToMetaData($cid, $item)
 
 function downloadToWebServer($cid, $item) 
 {
-    $message = "Jag används för loggning hehe...";
-    $file = '../log/gitErrorLog.txt';
-    error_log($message, 3, $file);
     // Retrieves the contents of each individual file based on the fetched "download_url"
     $fileContents = file_get_contents($item['download_url']);
+    if ($fileContents === false) {
+        $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: Failed to get file contents of " . $item['name'] . " from " . $item['download_url'] . "\n";
+        $file = '../../LenaSYS/log/gitErrorLog.txt';
+        error_log($message, 3, $file);
+    }
     $path = '../../LenaSYS/courses/'. $cid . '/' . "Github" .'/' . $item['path'];
     // Creates the directory for each individual file based on the fetched "path"
     if (!file_exists((dirname($path)))) {
         mkdir(dirname($path), 0777, true);
     } 
-    // Writes the file to the respective folder. 
+
     $content = file_put_contents($path, $fileContents);
-        if ($content === false) {
-            // Set HTTP response code and header for the error
-            //http_response_code(422);
-            header('Content-type: application/json');
-            $response = array(
-            'message' => "Failed to put ".$item['name']." in ".$path
-            );
-
-            echo json_encode($response);
-
-            // Prepare the error message
-            $errorMessage = date("Y-m-d H:i:s") . " - Error: Failed to put " . $item['name'] . " in " . $path . "\n";
-
-            // Specify the log file path
-            $logFilePath = '../../LenaSYS/log/gitErrorLog.txt';
-
-            // Append the error message to the log file
-            file_put_contents($logFilePath, $errorMessage, FILE_APPEND | LOCK_EX);
-        }   
+    if ($content === false) {
+        $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: Failed to put " . $item['name'] . " in " . $path . "\n";
+        $file = '../../LenaSYS/log/gitErrorLog.txt';
+        error_log($message, 3, $file);
+    }
 }
     
 // Retrieves the content of a repos index-file
@@ -154,6 +142,7 @@ function getIndexFile($url) {
 function bfs($url, $cid, $opt) 
 {
     // Different URL depending on operation
+    date_default_timezone_set("Europe/Stockholm");
     if($opt == "GETCOMMIT"){
         $url = getGitHubURLCommit($url);
     }
@@ -186,7 +175,19 @@ function bfs($url, $cid, $opt)
         // Starts a stream with the required headers
         $context = stream_context_create($opts);
         // Fetches the data with the stream included
-        $data = @file_get_contents($currentUrl, true, $context); 
+        $data = @file_get_contents($currentUrl, true, $context);
+        if($data === false || !$data) {
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
+            curl_setopt($curl, CURLOPT_HEADER, 0);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            $response = json_decode(curl_exec($curl));
+            $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code."\n";
+            $file = '../../LenaSYS/log/gitErrorLog.txt';
+            http_response_code($http_response_code);
+            error_log($message, 3, $file);
+        }
         if ($data) {
             // Decodes the fetched data into JSON
             $json = json_decode($data, true);
@@ -246,14 +247,6 @@ function bfs($url, $cid, $opt)
 
                 echo json_encode($response);
             }
-        } else {
-            //503: Service is unavailable
-            http_response_code(503);
-            header('Content-type: application/json');
-            $response = array(
-                'message' => "Github services are unavailable at this time."
-            );
-            echo json_encode($response);
         }
     }
 }
