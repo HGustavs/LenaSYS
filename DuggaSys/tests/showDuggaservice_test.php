@@ -24,6 +24,8 @@ $testsData = array(
         'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'tj7dh2nb';",
         'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
+            'username' => 'brom',
+            'password' => 'password',
             'opt' => 'UPDATEAU',
             'hash' => 'tj7dh2nb',
             'AUtoken' => '999'
@@ -244,7 +246,7 @@ $testsData = array(
 //     ),
 
 );
-json_encode($array);
-testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
+echo json_encode($array);
+testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 ?>
