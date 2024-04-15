@@ -2,8 +2,12 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
+
+// Connect to database and start session
+pdoConnect();
+session_start();
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -16,33 +20,15 @@ if(isset($_SESSION['uid'])){
 
 $hash=getOP('hash');
 $moment=getOP('moment');
-$courseid=getOP('courseid');
-$coursevers=getOP('coursevers');
-$duggaid=getOP('did');
 
-if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment != "UNK"){
-	if((isset($_POST["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
-		isset($_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
-		isset($_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"]))) {
-		$hash=$_POST["submission-$courseid-$coursevers-$duggaid-$moment"];
-		$hashpwd=$_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-		$variant=$_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-	}
-	else{
-		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
-		$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-	}
-}else{
-	$debug="Could not find the requested dugga!";
-}
-
-$variant = null;
-$answer = null;
+$variant = array();
+$answer = array();
 $variantanswer = null;
 $param = null;
+$newcourseid=array();
+$newcoursevers=array();
+$newduggaid=array();
 
-if (isSuperUser($userid)){
     if($hash!="UNK"){
         $sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash";
         $query = $pdo->prepare($sql);
@@ -59,6 +45,7 @@ if (isSuperUser($userid)){
             $query->execute();
             $rows = $query->fetchAll();
         }
+
         foreach($rows as $row){
             $variant=$row['vid'];
             $answer=$row['useranswer'];
@@ -68,10 +55,10 @@ if (isSuperUser($userid)){
             $newcoursevers=$row['vers'];
             $newduggaid=$row['quiz'];
         }
-    }
-}
 
-echo json_decode(
+    }
+
+echo json_encode(
     array(
         'variant'=>$variant, 
         'answer'=> $answer, 
@@ -79,6 +66,6 @@ echo json_decode(
         'param'=>$param,
         'newcourseid'=>$row,
         'newcoursevers'=>$newcoursevers,
-        'newduggaid'=>$newduggaid,
+        'newduggaid'=>$newduggaid
     ));
 ?>
