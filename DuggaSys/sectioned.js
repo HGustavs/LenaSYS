@@ -986,6 +986,20 @@ function updateSelectedDir() {
 //----------------------------------------------------------------------------------
 function getDeletedListEntries() {
   var deletedEntries = document.write('<?php echo getDeletedEntries("DISPLAYDELETED"); ');
+  /*
+   // Microservice integration
+  $.ajax({
+    url: "../DuggaSys/microservices/sectionedService/getDeletedListentries_ms.php",
+    dataType: "json",
+    type: "GET",
+    success: function (response) {
+      deletedEntries = response;
+    },
+    error: function(xhr, status, error) {
+      console.error("Error retrieving deleted entries: ", error);
+    }
+  });
+  */
 }
 //----------------------------------------------------------------------------------
 // hideMarkedItems: Hides Item from Section List
