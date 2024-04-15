@@ -19,11 +19,11 @@ $testsData = array(
     'Create active users' => array(
         'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"UNK","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"UNK","hash":"UNK","hashpwd":"UNK","opt":"UNK","link":"UNK"}',
         //Get newly added active users?
-        'query-before-test-1' => "SELECT MAX(hash) FROM groupdugga WHERE hash= 'tj7dh2nb';",
+        'query-before-test-1' => "SELECT hash FROM groupdugga WHERE hash= 'tj7dh2nb';",
+        'query-before-test-2' => "SELECT MAX(active_users) FROM groupdugga",
         'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'tj7dh2nb';",
         'service' => 'localhost/LenaSYS/DuggaSys/showDuggaservice.php',
         'service-data' => serialize(array( // Data that service needs to execute function
-            'username' =>
             'opt' => 'UPDATEAU',
             'hash' => 'tj7dh2nb',
             'AUtoken' => '999'
@@ -242,8 +242,9 @@ $testsData = array(
 //             'none'
 //         )),
 //     ),
-);
 
+);
+json_encode($array);
 testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 ?>
