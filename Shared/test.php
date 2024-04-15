@@ -54,8 +54,10 @@ testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprin
 
 function doDBQuery($query, $data, $testsData, $testname){
     $queryString = $query;
+
     if(isset($testsData['variables-' . $testname])){
         echo $testsData['variables-' . $testname];
+
         $variables = $testsData['variables-' . $testname];
         $variablesArray = explode(", ", $variables);
     }
@@ -99,7 +101,7 @@ function doDBQuery($query, $data, $testsData, $testname){
     }
 
     return $result;
-
+   
 }
 
 function testHandler($testsData, $prettyPrint){
@@ -138,6 +140,7 @@ function testHandler($testsData, $prettyPrint){
                         if ($queryName == $oneQuery) {
                             if ($queryPath != null) {
                                 eval('$queryValue = $queryValue' . $queryPath . ';');
+                                echo $queryValue;
                                 $data[$sInput] = $queryValue;
                             }
                             else{
@@ -155,15 +158,7 @@ function testHandler($testsData, $prettyPrint){
         // Output filter
         $filter = unserialize($testData['filter-output']);
 
-        if (!(strpos($testData['service'], "/"))) {
-            echo $testData['service'];
-            $dirname = dirname(dirname(__FILE__));
-            $urlpath = strstr($dirname, '/root');
-            $serviceURL = $dirname.$urlpath."/DuggaSys/".$testData['service'];
-        }
-        else{
-            $serviceURL = $testData['service'];
-        }
+        $serviceURL = $testData['service'];
 
         // Test 1 login
         $serviceData = unserialize($testData['service-data']);
