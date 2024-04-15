@@ -1695,10 +1695,10 @@ document.addEventListener('keyup', function (e) {
     }
 })
 
-window.addEventListener("resize", () => {
-    updateContainerBounds();
-    drawRulerBars(scrollx, scrolly);
-});
+// window.addEventListener("resize", () => {
+//     updateContainerBounds();
+//     drawRulerBars(scrollx, scrolly);
+// });  // original resize solution
 
 window.onfocus = function () {
     altPressed = false;
