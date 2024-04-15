@@ -1805,6 +1805,7 @@ function mdown(event) {
     // If no line, label or delete button was clicked, react to mouse down on container
     if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL && !hasPressedDelete) {
         if (event.target.id == "container") {
+            hidePlacementType();
             switch (mouseMode) {
                 case mouseModes.POINTER:
                     sscrollx = scrollx;
