@@ -99,7 +99,16 @@ function downloadToWebServer($cid, $item)
         mkdir(dirname($path), 0777, true);
     } 
     // Writes the file to the respective folder. 
-    file_put_contents($path, $fileContents);    
+    $content = @file_put_contents($path, $fileContents);
+    if ($content === false) {
+        http_response_code(422);
+        header('Content-type: application/json');
+        $response = array(
+            'message' => "Failed to put ".$item['name']." in ".$path
+        );
+
+        echo json_encode($response);
+    }    
 }
     
 // Retrieves the content of a repos index-file
