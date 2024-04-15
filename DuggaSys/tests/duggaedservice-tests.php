@@ -116,7 +116,7 @@ $testsData = array(
     //Test works, but it is not possible to gather the correct expected output since the array is within an array, and the api is currently unable to handle it properly. (,"entries":[{"variantanswer":"Test text"}])
     //Test works meaning that a variant is added correctly when checked without following deletes..
     'add variant' => array(
-    'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
+    'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","variants":["{\"danswer\":\"00000010 0 2\"}","{\"danswer\":\"00000101 0 5\"}","{\"danswer\":\"00002 0 A\"}","{\"danswer\":\"00011001 1 9\"}","{\"danswer\":\"02111 5 7\"}","{\"danswer\":\"11000000 C 0\"}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","B","A","C","A","","","","Test text"]}',
         'service' => 'http://localhost/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
@@ -148,7 +148,7 @@ $testsData = array(
     //Test works, but it is not possible to gather the correct expected output since the array is within an array, and the api is currently unable to handle it properly.
     //Test works meaning that a variant is updated correctly when checked without following deletes.
     'update a variant' => array(
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
+        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","variants":["{\"danswer\":\"00000010 0 2\"}","{\"danswer\":\"00000101 0 5\"}","{\"danswer\":\"00002 0 A\"}","{\"danswer\":\"00011001 1 9\"}","{\"danswer\":\"02111 5 7\"}","{\"danswer\":\"11000000 C 0\"}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","B","A","C","A","","","","Test text updated"]}',
         'query-before-test-1' => "SELECT vid FROM variant WHERE variantanswer = 'Test text'",
         'service' => 'http://localhost/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
@@ -180,7 +180,7 @@ $testsData = array(
     //Test works, but it is not possible to gather the correct expected output since the array is within an array, and the api is currently unable to handle it properly.
     //Test works meaning that a variant is deleted correctly when checked. All previous tests have been tested thoroughly so we now that they were added to begin with.
     'delete variant' => array(
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
+        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","variants":["{\"danswer\":\"00000010 0 2\"}","{\"danswer\":\"00000101 0 5\"}","{\"danswer\":\"00002 0 A\"}","{\"danswer\":\"00011001 1 9\"}","{\"danswer\":\"02111 5 7\"}","{\"danswer\":\"11000000 C 0\"}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","B","A","C","A","","",""]}',
         'query-before-test-1' => "SELECT vid FROM variant WHERE variantanswer = 'Test text updated'",
         'service' => 'http://localhost/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
