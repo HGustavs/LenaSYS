@@ -33,6 +33,10 @@
 			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
 		}
 		else if($_POST['action'] == 'directInsert'){
+			$myfile = fopen("a22kara.txt", "w") or die("Unable to open file!");
+            $txt = $_POST['token'];
+            fwrite($myfile, $txt);
+            fclose($myfile);
 			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
 		}
 	};

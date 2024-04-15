@@ -495,7 +495,7 @@ function refreshGithubRepo(courseid, user) {
 }
 
 //Send new Github URL and course id to PHP-script which gets and saves the latest commit in the sqllite db
-function updateGithubRepo(githubURL, cid) {
+function updateGithubRepo(githubURL, cid, githubKey) {
   //Used to return success(true) or error(false) to the calling function
   regexURL = githubURL.replace(/.git$/, "");
   var dataCheck;
@@ -503,7 +503,7 @@ function updateGithubRepo(githubURL, cid) {
     async: false,
     url: "../DuggaSys/gitcommitService.php",
     type: "POST",
-    data: { 'githubURL': regexURL, 'cid': cid, 'action': 'directInsert' },
+    data: { 'githubURL': regexURL, 'cid': cid, 'action': 'directInsert', 'token': githubKey },
     success: function () {
       //Returns true if the data and JSON is correct
       dataCheck = true;
@@ -3822,14 +3822,18 @@ function validateForm(formid) {
 
   if (formid === 'githubPopupWindow') {
     var repoLink = $("#gitRepoURL").val();
+    var repoKey = $("#gitAPIKey").val();
     var cid = $("#cidTrue").val();
 
     if (repoLink) {
       if (fetchGitHubRepo(repoLink)) {
         AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
+        if(repoKey) {
+          console.log("repoKey: " + repoKey); 
+        }
         $("#githubPopupWindow").css("display", "none");
-        updateGithubRepo(repoLink, cid);
+        updateGithubRepo(repoLink, cid, repoKey);
       }
     }
   }
