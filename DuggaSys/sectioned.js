@@ -3928,9 +3928,10 @@ function showFeedbackquestion() {
   }
 }
 
-//Fetch file content from github 
+//Fetch Code Examples content from github 
 function fetchGitCodeExamples(courseid){
-  
+  //Make codeExamplesContent a global array for easier access?
+  var codeExamplesContent = [];
   var fileNamesArray = [];
   var cid = courseid;
   var fileName = document.getElementById('fileName').value;
@@ -3944,40 +3945,65 @@ function fetchGitCodeExamples(courseid){
 
   var folderPath = getParentFolderOfFile(filePath);
   var fileSearchParam = deconstructFilePath(filePath);
-
+  //After names haves been fetched all relevant filenames are pushed into the filteredFiles array. These are to be fetched later.
   fetchFileNames(githubURL, folderPath).then(function(fileNamesArray){
     for (var i = 0; i < fileNamesArray.length; i++){
       if(fileNamesArray[i].includes(fileSearchParam)){
         filteredFiles.push(fileNamesArray[i]);
       }
     }
-    console.log(filteredFiles);
-    console.log(fileNamesArray);
+  
+    fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
+      //Test to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+      //Code below shows how to decode from base64 and access actual file content. Uncomment below code to test.
+      //console.log(codeExamplesContent);
+      //var base64content = codeExamplesContent[0].content.content;
+      //var decode = atob(base64content);
+      //console.log(decode);
+    }).catch(function(error){
+      console.error('Failed to fetch file contents:', error)
+    });
+
   }).catch(function(error){
     console.error('Failed to fetch file names:', error)
   });
   
-  var apiUrl = githubURL.replace('github.com', 'raw.githubusercontent.com') + '/master/' + filePath;
-  
-  //HTTP request to fetch githubfile content
-  /*var request = new XMLHttpRequest();
-  request.open('GET', apiUrl);
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-       if (request.status === 200) {
-          // File content fetched successfully
-          var fileContent = request.responseText;
-          console.log('File content:', fileContent);
-        } else {
-          // Error occurred while fetching file
-           console.error('Error fetching file:', request.statusText);
-        }
-      }
-    };
-  request.send();*/
-
-  }
-
+}
+ // Function to fetch the files from github through ajax http request
+ async function fetchFileContent(githubURL, filteredFiles, folderPath){
+  var results = [];
+  return new Promise(function(resolve, reject){
+    // Extract the owner and repo into individual variables
+    var parts = githubURL.split("/");
+    var owner = parts[3];
+    var repo = parts[4]
+    //Foreach loop to fetch each file in the filteredFiles array
+    filteredFiles.forEach(function(filename){
+      var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath + '/' + filename;
+      // Ajax request to fetch filecontent of current file in foreach loop. fetched file is pushed into results array.
+      var promise = new Promise(function(resolveFile, rejectFile){
+        $.ajax({
+          url: apiGitUrl,
+          method: 'GET',
+          success: function(response) {
+            resolveFile({filename: filename, content: response});
+          },
+          error: function(xhr, status, error) {
+            rejectFile(error);
+          }
+        });
+      });
+      results.push(promise);
+    });
+    //Waits for all file requests to resolve. When all files have been fetched an array is returned containing the files.
+    Promise.all(results).then(function(allFileContents){
+      resolve(allFileContents);
+    }).catch(function(error){
+      reject(error);
+    });
+  });
+ }
+  // Deconstructs the filepath so return param only includes the filename. Numbers, .filetype and path to file is removed.
   function deconstructFilePath(filePath){
     var fileName = filePath.split('/').pop();
     var fileString = fileName.split('.')[0];
@@ -3990,9 +4016,9 @@ function fetchGitCodeExamples(courseid){
        var folderPath = filePath.substring(0, lastIndex);
        return folderPath;
   }
-
+  //Fetch all filenames from the parent folder of original input file
   async function fetchFileNames(githubURL, folderPath){
-    return new Promise(function(resolve, reject){
+      return new Promise(function(resolve, reject){
       // Extract the owner and repo into individual variables
       var parts = githubURL.split("/");
       var owner = parts[3];
@@ -4004,7 +4030,8 @@ function fetchGitCodeExamples(courseid){
         url: apiGitUrl,
         method: 'GET',
         success: function(response) {
-          // Check if response is an array or single object, then parse the response to extract file names
+          // Check if response is an array or single object, then parse the response to extract file names.
+          // resolve() returns all filenames.
           var files = Array.isArray(response) ? response : [response];
           var fileNames = files.map(function(file) {
             return file.name;
