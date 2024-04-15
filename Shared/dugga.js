@@ -1092,9 +1092,8 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="SECTION"){	
 		
+		/*
 		//For testing microservice updateQuizDeadline_ms.php 
-		//IT IS NOT WORKING...
-		
 		if(opt === "UPDATEDEADLINE"){
 			$.ajax({
 				//url: "sectionedservice.php",
@@ -1114,17 +1113,15 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 				});
 		}
+		*/
 		
-		/*
 		$.ajax({
-		url: "/LenaSYS/DuggaSys/sectionedservice.php",
+		url: "sectionedservice.php",
 		type: "POST",
 		data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
 		dataType: "json",
 		success: returnedSection
 		});
-		*/
-		
 		
   }else if(kind=="GRP"){
 	
