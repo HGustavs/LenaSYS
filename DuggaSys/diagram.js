@@ -1880,6 +1880,7 @@ function mdown(event) {
 function ddown(event) {
     // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
+        console.log("delete button should not be active");
         hasPressedDelete = checkDeleteBtn();
     }
 
@@ -2124,6 +2125,8 @@ function mouseEnter() {
     if (!mouseButtonDown) {
         mouseOverElement = true;
         containerStyle.cursor = "pointer";
+        deleteBtnX = 0;
+        console.log("now x should NOT be active");
     }
 }
 
@@ -2142,13 +2145,21 @@ function mouseLeave() {
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
  */
 function checkDeleteBtn() {
-    if (deleteBtnX != 0) {
+
+    console.log(context);
+    console.log("we are inside checkDeleteBtn");
+    containerStyle.cursor = "pointer";
+    
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
+            if (deleteBtnX != 0 && !mouseOverElement) {
+                console.log("now x is active");
             if (context.length > 0) removeElements(context);
+            console.log("is inside select box");
             if (contextLine.length > 0) removeLines(contextLine);
             updateSelection();
             return true;
         }
+        updatepos(0,0);
     }
     return false;
 }
@@ -2613,6 +2624,7 @@ function findIndex(arr, id) {
  */
 function addObjectToData(object, stateMachineShouldSave = true) {
     data.push(object);
+    console.log("new element in data array");
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object), StateChange.ChangeTypes.ELEMENT_CREATED);
 }
 
