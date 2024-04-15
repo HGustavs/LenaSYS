@@ -142,6 +142,9 @@ if(isset($_SESSION['uid'])){
     		<div style='float:right; padding-top:20px; width: 464px;' >
     			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
     		</div>
+			<div style='float:right; padding-top:20px; width: 464px;' >
+    			<input id='deleteCourse' class='submit-button' type='button' value='Delete' title='Delete changes' style='background-color:#FF0000' onclick="" />
+    		</div>
       </div>
 	</div>
 	<!-- Edit Section Dialog END -->
