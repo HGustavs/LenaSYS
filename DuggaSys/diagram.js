@@ -1880,8 +1880,7 @@ function mdown(event) {
 function ddown(event) {
     // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
-        console.log("delete button should not be active");
-        hasPressedDelete = checkDeleteBtn();
+          hasPressedDelete = checkDeleteBtn();
     }
 
     // Used when determining time between clicks.
@@ -2126,7 +2125,6 @@ function mouseEnter() {
         mouseOverElement = true;
         containerStyle.cursor = "pointer";
         deleteBtnX = 0;
-        console.log("now x should NOT be active");
     }
 }
 
@@ -2145,17 +2143,10 @@ function mouseLeave() {
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
  */
 function checkDeleteBtn() {
-
-    console.log(context);
-    console.log("we are inside checkDeleteBtn");
-    containerStyle.cursor = "pointer";
-    
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
             if (deleteBtnX != 0 && !mouseOverElement) {
-                console.log("now x is active");
-            if (context.length > 0) removeElements(context);
-            console.log("is inside select box");
-            if (contextLine.length > 0) removeLines(contextLine);
+                if (context.length > 0) removeElements(context);
+                 if (contextLine.length > 0) removeLines(contextLine);
             updateSelection();
             return true;
         }
@@ -2163,7 +2154,6 @@ function checkDeleteBtn() {
     }
     return false;
 }
-
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
  */
