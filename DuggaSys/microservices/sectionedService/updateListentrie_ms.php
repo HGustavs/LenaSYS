@@ -24,17 +24,15 @@ $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
 $link=getOP('link');
 $kind=getOP('kind');
-$moment=getOP('monent');
+$moment=getOP('moment');
 $visibility=getOP('visibility');
 $grptype=getOP('grptype');
 $tabs=getOP('tabs');
 $gradesys=getOP('gradesys');
 
-$visbile = 0;
-$avgfeedbackscore = 0;
-
-$grpmembershp="UNK";
-$unmarked = 0;
+if($feedbackenabled != 1){
+	$feedbackenabled = 0;
+}
 
 if(strcmp($opt,"UPDATE")===0) {
 
@@ -117,4 +115,7 @@ if(strcmp($opt,"UPDATE")===0) {
         }
     }
 }
+
+// add echo json_decode(retrieveSectionedService()); here
+
 ?>
