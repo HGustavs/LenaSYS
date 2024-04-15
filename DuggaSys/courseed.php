@@ -43,7 +43,7 @@ if(isset($_SESSION['uid'])){
 	<?php
 	include '../Shared/navheader.php';
 	?>
-
+	
 	<!-- content START -->
 	<div id="content">
 		<!-- Section List -->
@@ -140,8 +140,8 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
     		<div style='float:right; padding-top:20px; width: 464px;' >
-    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
 				<button id="deleteCourseButton">Delete</button>
+    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
     		</div>
 
       </div>
