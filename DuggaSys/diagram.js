@@ -1700,6 +1700,17 @@ document.addEventListener('keyup', function (e) {
 //     drawRulerBars(scrollx, scrolly);
 // });  // original resize solution
 
+window.addEventListener("resize", test);
+var testCount = 0;
+function test() { // function to test which methods affect the grid
+    updateContainerBounds();
+    updateGridSize(); // should update size of grid but doesn't properly...
+    drawRulerBars(scrollx, scrolly); // updates the rulers on the side to match window size.
+
+    console.log(testCount); // count to see if the methods run and to differentiate between events.
+    testCount++;
+}
+
 window.onfocus = function () {
     altPressed = false;
     ctrlPressed = false;
