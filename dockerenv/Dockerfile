@@ -25,11 +25,14 @@ RUN echo '<Directory /var/www/html>' > /etc/apache2/conf-available/custom-direct
     && echo '</Directory>' >> /etc/apache2/conf-available/custom-directory-listing.conf \
     && a2enconf custom-directory-listing
 
-# Change permissions
-RUN chown -R www-data:www-data /var/www/
+# Copy the initialization script
+COPY init.sh /usr/local/bin/init.sh
 
-# Create directory for github metadata
-RUN mkdir /var/www/html/githubMetadata
+# Make sure the script is executable
+RUN chmod +x /usr/local/bin/init.sh
+
+# Set the script as the entrypoint
+ENTRYPOINT [ "/usr/local/bin/init.sh" ]
 
 # Default command
 CMD [ "apache2-foreground" ]
