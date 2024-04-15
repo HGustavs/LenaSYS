@@ -8811,11 +8811,9 @@ function addNodes(element) {
     if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize + "px";
-        mdNode.style.width = nodeSize + "px";
-        mdNode.style.height = nodeSize + "px";
         mdNode.style.height = nodeSize + "px";
         mdNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
-        mdNode.style.top = "100%";
+        mdNode.style.bottom = "0%";
     }
 
     if (element.kind == "UMLSuperState") {
@@ -8832,12 +8830,18 @@ function addNodes(element) {
     var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
+    var muNode = document.getElementById("mu");
     mrNode.style.width = nodeSize + "px";
     mlNode.style.width = nodeSize + "px";
     mrNode.style.height = nodeSize + "px";
     mlNode.style.height = nodeSize + "px";
     mrNode.style.top = "calc(50% - " + (nodeSize / 2) + "px)";
     mlNode.style.top = "calc(50% - " + (nodeSize / 2) + "px)";
+    muNode.style.width = nodeSize + "px";
+    muNode.style.height = nodeSize + "px";
+    muNode.style.top = "0%";
+    muNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
+
 }
 
 /**
