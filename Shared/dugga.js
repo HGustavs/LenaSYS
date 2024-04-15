@@ -1613,7 +1613,7 @@ function processLogin() {
 		}
       },
 	  error: function(data) {
-        console.log("error! status: "+data.status);
+        console.log("Login error status: "+data.status);
 		// status 200 = successful request
         if(data.status != 200){
 			loginFail();
