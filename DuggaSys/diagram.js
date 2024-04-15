@@ -2788,7 +2788,7 @@ function changeState() {
         // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation) {
         return;
-    } else if (element.type == 'ER') {
+    } else if (element.type == 'entityTypes.ER') {
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != 'ERAttr') {
             if (oldType != newType) {
@@ -2805,7 +2805,7 @@ function changeState() {
         var property = document.getElementById("propertySelect").value;
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if (element.type == 'UML') {
+    } else if (element.type == 'entityTypes.UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'UMLEntity') {
             var property = document.getElementById("propertySelect").value;
@@ -2823,7 +2823,7 @@ function changeState() {
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-    } else if (element.type == 'IE') {
+    } else if (element.type == 'entityTypes.IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != 'IEEntity') {
             var property = document.getElementById("propertySelect").value;
@@ -2840,7 +2840,7 @@ function changeState() {
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if (element.type == 'SD') {
+    } else if (element.type == 'entityTypes.SD') {
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
@@ -2851,7 +2851,7 @@ function changeState() {
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if (element.type == 'SE') {
+    } else if (element.type == 'entityTypes.SE') {
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
@@ -2993,7 +2993,7 @@ function changeLineProperties() {
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {label: label.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML or IE line
-    if ((line.type == 'UML') || (line.type == 'IE')) {
+    if ((line.type == 'entityTypes.UML') || (line.type == 'entityTypes.IE')) {
         // Start label, near side
         if (line.startLabel != startLabel.value) {
             startLabel.value = startLabel.value.trim();
@@ -3039,7 +3039,7 @@ function changeLineProperties() {
         }
     }
     // SD line
-    if (line.type == 'SD') {
+    if (line.type == 'entityTypes.SD') {
         if (line.innerType != lineType.value) {
             lineType.value = lineType.value.trim();
             line.innerType = lineType.value
@@ -3381,7 +3381,7 @@ function getRectFromElement(element) {
             // Corrects returned y position due to problems with SE types
             
             let elementY = resizedY;
-            if (element.type == "SE") {
+            if (element.type == "entityTypes.SE") {
                 elementY += preResizeHeight[i].height / 3;
             }
 
@@ -3396,7 +3396,7 @@ function getRectFromElement(element) {
 
     // Corrects returned y position due to problems with resizing vertically
     let elementY = element.y;
-    if (element.type == "SE") {
+    if (element.type == "entityTypes.SE") {
         elementY += element.height / 3;
     }
     return {
@@ -6400,7 +6400,7 @@ function generateContextProperties() {
                 }
             }
             //Selected ER type
-            if (element.type == 'ER') {
+            if (element.type == 'entityTypes.ER') {
                 //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6446,7 +6446,7 @@ function generateContextProperties() {
                             break;
                     }
                 }
-            } else if (element.type == 'UML') { //Selected UML type
+            } else if (element.type == 'entityTypes.UML') { //Selected UML type
                 //If UML entity
                 if (element.kind == 'UMLEntity') {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
@@ -6502,7 +6502,7 @@ function generateContextProperties() {
                     }
                     str += '</select>';
                 }
-            } else if (element.type == 'IE') {//Selected IE type
+            } else if (element.type == 'entityTypes.IE') {//Selected IE type
                 //If IE entity
                 if (element.kind == 'IEEntity') {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
@@ -6553,7 +6553,7 @@ function generateContextProperties() {
                     }
                     str += '</select>';
                 }
-            } else if (element.type == 'SD') {//Selected SD type
+            } else if (element.type == 'entityTypes.SD') {//Selected SD type
                 //if SDEntity kind
                 if (element.kind == 'SDEntity') {
                     for (const property in element) {
@@ -6588,7 +6588,7 @@ function generateContextProperties() {
                         }
                     }
                 }
-            } else if (element.type == 'SE') {//Selected sequence type
+            } else if (element.type == 'entityTypes.SE') {//Selected sequence type
                 //if sequenceActorAndObject kind
                 if (element.kind == 'sequenceActorAndObject') {
                     for (const property in element) {
@@ -6650,7 +6650,7 @@ function generateContextProperties() {
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
-            if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER' || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == 'entityTypes.UML' || contextLine[0].type == 'entityTypes.IE' || contextLine[0].type == 'entityTypes.ER' || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (var i = 0; i < value.length; i++) {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
@@ -6664,7 +6664,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if (contextLine[0].type == 'ER') {
+            if (contextLine[0].type == 'entityTypes.ER') {
                 if (findAttributeFromLine(contextLine[0]) == null) {
                     if (findEntityFromLine(contextLine[0]) != null) {
                         str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
@@ -6684,7 +6684,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD' || contextLine[0].type == 'NOTE')) {
+            if ((contextLine[0].type == 'entityTypes.UML') || (contextLine[0].type == 'entityTypes.IE') || (contextLine[0].type == 'entityTypes.SD' || contextLine[0].type == 'NOTE')) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
                 str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                 str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6698,7 +6698,7 @@ function generateContextProperties() {
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
                 str += `/>`;
             }
-            if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == 'entityTypes.UML' || contextLine[0].type == 'entityTypes.IE' || contextLine[0].type == 'NOTE') {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
@@ -6829,7 +6829,7 @@ function generateContextProperties() {
                 str += `</select>`;
             }
             //generate the dropdown for SD line icons.
-            if (contextLine[0].type == 'SD') {
+            if (contextLine[0].type == 'entityTypes.SD') {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with SD, and add them to the drop down as options
@@ -7667,7 +7667,7 @@ function preProcessLine(line) {
     telem = data[findIndex(data, line.toID)];
 
     //Sets the endIcon of the to-be-created line, if it an State entity
-    if ((felem.type === 'SD') && (telem.type === 'SD')) {
+    if ((felem.type === 'entityTypes.SD') && (telem.type === 'entityTypes.SD')) {
         if (line.kind === 'Recursive') {
             line.endIcon = '';
         } else {
@@ -7829,7 +7829,7 @@ function drawLine(line, targetGhost = false) {
         x1Offset = -lengthConstant;
         x2Offset = lengthConstant;
     } else if ((fy > ty) && (line.ctype == "TB")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
+        if (felem.type == 'entityTypes.SD' || telem.type == 'entityTypes.SD' || felem.type == 'entityTypes.IE' || telem.type == 'entityTypes.IE') {
             y1Offset = lengthConstantSD_Y;
             y2Offset = -lengthConstantSD_Y;
         } else {
@@ -7837,7 +7837,7 @@ function drawLine(line, targetGhost = false) {
             y2Offset = -lengthConstant;
         }
     } else if ((fy < ty) && (line.ctype == "BT")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
+        if (felem.type == 'entityTypes.SD' || telem.type == 'entityTypes.SD' || felem.type == 'entityTypes.IE' || telem.type == 'entityTypes.IE') {
             y1Offset = -lengthConstantSD_Y;
             y2Offset = lengthConstantSD_Y;
         } else {
@@ -7863,24 +7863,24 @@ function drawLine(line, targetGhost = false) {
     if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
         line.type = 'NOTE';
         var strokeDash = "10";
-    } else if ((felem.type == 'SD') || (telem.type == 'SD')) {
+    } else if ((felem.type == 'entityTypes.SD') || (telem.type == 'entityTypes.SD')) {
         line.type = 'SD';
         if (targetGhost) {
             line.endIcon = "ARROW";
         }
-    } else if ((felem.type == "IE") || (telem.type == 'IE')) {
+    } else if ((felem.type == "entityTypes.IE") || (telem.type == 'entityTypes.IE')) {
         line.type = "IE"
-    } else if ((felem.type == 'ER') || (telem.type == 'ER')) {
-        line.type = 'ER';
+    } else if ((felem.type == 'entityTypes.ER') || (telem.type == 'entityTypes.ER')) {
+        line.type = 'entityTypes.ER';
     } else {
         line.type = 'UML';
     }
     // If element is UML, IE or SD (use straight line segments instead)
-    if (felem.type != 'ER' || telem.type != 'ER') {
+    if (felem.type != 'entityTypes.ER' || telem.type != 'entityTypes.ER') {
         var dx = ((fx + x1Offset) - (tx + x2Offset)) / 2;
         var dy = ((fy + y1Offset) - (ty + y2Offset)) / 2;
 
-        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+        if ((felem.type == 'entityTypes.SD' && elemsAreClose && line.innerType == null) || (felem.type == 'entityTypes.SD' && line.innerType === SDLineType.STRAIGHT)) {
             if (line.kind == "Recursive") {
                 const length = 80 * zoomfact;
                 const startX = fx - 10 * zoomfact;
@@ -8093,7 +8093,7 @@ function drawLine(line, targetGhost = false) {
                 var iconSizeStart = 20;
 
                 // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+                if ((felem.type == 'entityTypes.SD' && elemsAreClose && line.innerType == null) || (felem.type == 'entityTypes.SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
                     let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
 
@@ -8290,7 +8290,7 @@ function drawLine(line, targetGhost = false) {
                 var iconSizeEnd = 20;
 
                 // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+                if ((felem.type == 'entityTypes.SD' && elemsAreClose && line.innerType == null) || (felem.type == 'entityTypes.SD' && line.innerType === SDLineType.STRAIGHT)) {
                     let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
                     let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
 
@@ -8528,7 +8528,7 @@ function drawLine(line, targetGhost = false) {
         str += `<rect x="${x - (2 * zoomfact)}" y="${y - (2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
     }
 
-    if (line.label && line.label != "" && line.type !== "IE") {
+    if (line.label && line.label != "" && line.type !== "entityTypes.IE") {
         //Get width of label's text through canvas 
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
