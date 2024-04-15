@@ -81,7 +81,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - settingCodeexampleTemplate
 - editCodeExample
 - editContentOfCodeExample
-- editBoxTitle __==finished==__ New filename should be: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
+- editBoxTitle __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
 - deliteExample
 - createNewCourse
 - createCourseVersion
@@ -125,10 +125,13 @@ CRUD stands for the four basic operations for managing data in applications and 
 - loadDugga
 
 
+# OBSERVE
+
+In some potential microservices, specific 'database services' are referenced. For example, selectFromTableUser and updateTableCourse. This implies that a particular query from Database_related_micro_services is referred to. These queries should then be implemented in the microservice.
 
 ---
 ---
-# Potentaial services 
+# Potential microservices 
 ---
 ---
 <br>
@@ -448,8 +451,8 @@ Aswell as __insertIntoTableImprow__ or __deleteFromTableImpwordlist__ to add or 
 
 <br>
 
-### editBoxTitle
-Uses service __updateTableBox__ to change value of column: 
+### updateBoxTitle_ms.php 
+Uses database service __updateTableBox__ to update the value of the column: 
 - boxtitle
 
 <br>
