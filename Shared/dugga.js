@@ -1093,11 +1093,12 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="SECTION"){	
 		
 		//For testing microservice updateQuizDeadline_ms.php 
+		//IT IS NOT WORKING...
 		
 		if(opt === "UPDATEDEADLINE"){
 			$.ajax({
 				//url: "sectionedservice.php",
-				url: "../DuggaSys/microservices/sectionedService/test.php",
+				url: "/Applications/XAMPP/xamppfiles/htdocs/LenaSYS/DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
 				dataType: "json",
