@@ -1,6 +1,13 @@
 <?php
 
+//---------------------------------------------------------------------------------------------------------------
+// The microservice changeActiveVersion_ms.php takes an existing course and changes the activeversion
+//---------------------------------------------------------------------------------------------------------------
+
+// Set the correct time zone
 date_default_timezone_set("Europe/Stockholm");
+
+// Basic includes for this ms to work
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 
@@ -12,11 +19,12 @@ session_start();
 
 
 
-
+// Get attributes from db
 $cid=getOP('cid');
 $vers=getOP('vers');
 
 
+// Login is checked for function to run
 if(checklogin() && isSuperUser(getUid()) == true) {
 
 if(strcmp($opt,"CHGVERS")===0) {
