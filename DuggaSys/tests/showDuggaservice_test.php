@@ -82,7 +82,7 @@ $testsData = array(
             'hash' => 'ghj1jfg2',
             'username' => 'stei',
             'password' => 'password',
-            'moment' => '<!query-before-test-3!><*[0][listentries]*>'
+            'moment' => '<!query-before-test-3!><*[0][listentries]*>',
         )),
         'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
             'none'
