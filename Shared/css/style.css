@@ -2773,7 +2773,6 @@ button.option {
   border-radius: 5px;
 }
 
-
 input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -7693,9 +7692,21 @@ textarea#mrkdwntxt {
   border-radius: 0px;
 }
 
+#deleteCourseButton{
+  background-color:#e35057;
+  padding-top:5px;
+  padding-bottom:5px;
+  padding-left:35px;
+  padding-right:35px;
+  border: none;
+  border-radius: 5px;
+  font-size:14px;
+  margin:0px;
+  margin-right:238px;
+}
+
 #saveCourse{
-  margin-left: 347px;
-  margin-top: 20px;
+  margin:0px;
 }
 
 #submitEditCourse{
