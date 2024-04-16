@@ -1747,10 +1747,19 @@ document.addEventListener('keyup', function (e) {
     }
 })
 
-window.addEventListener("resize", () => {
+window.addEventListener("resize", handleResize);
+var testCount = 0;
+function handleResize() {
+    updateRulers();
+}
+
+/**
+ * @description Used to update ruler bars on window resize.
+ */
+function updateRulers() {
     updateContainerBounds();
     drawRulerBars(scrollx, scrolly);
-});
+}
 
 window.onfocus = function () {
     altPressed = false;
