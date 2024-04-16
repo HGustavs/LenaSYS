@@ -1695,11 +1695,6 @@ document.addEventListener('keyup', function (e) {
     }
 })
 
-// window.addEventListener("resize", () => {
-//     updateContainerBounds();
-//     drawRulerBars(scrollx, scrolly);
-// });  // original resize solution
-
 window.addEventListener("resize", handleResize);
 var testCount = 0;
 function handleResize() {
