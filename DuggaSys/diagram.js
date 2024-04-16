@@ -1705,20 +1705,26 @@ var testCount = 0;
 function handleResize() { // function to test which methods affect the grid
     console.log(testCount); // count to see if the methods run and to differentiate between events.
     testCount++;
+    updateRulers();
     redrawGrid(); // Attempt at creating a function that will redraw the grid properly after resize.
 }
 
-function redrawGrid() {
+function redrawGrid()
+{
     const svgElement = document.getElementById('svgbacklayer');
-    if (!svgElement) { // Safety check to prevent errors.
+    if (!svgElement)
+    { // Safety check to prevent errors.
         console.log("svgElement is null, cannot redraw the Grid.") // TODO: update to a better error msg.
         return;
     }
 
     const pattern = document.getElementById('grid');
-    if (pattern) {
+    if (pattern)
+    {
         pattern.setAttribute('patternTransform', 'scale(1)'); // Updates the pattern, same scale no change.
-    } else {
+    }
+    else
+    {
         console.log("smth wrong w/ pattern"); // TODO: update error msg if redraw works.
     }
 
@@ -1727,11 +1733,16 @@ function redrawGrid() {
 
 
     grid_rect.style.overflow = 'hidden';  // Force reflow
-    setTimeout(() => {
+    setTimeout(() =>
+    {
         grid_rect.style.overflow = 'visible';
     }, 0); // Runs immediately
+}
 
-    // Updates rulers based on window size.
+/**
+ * @description Used to update ruler bars on window resize.
+ */
+function updateRulers() {
     updateContainerBounds();
     drawRulerBars(scrollx, scrolly);
 }
