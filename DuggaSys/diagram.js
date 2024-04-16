@@ -7193,7 +7193,7 @@ function toggleColorMenu(buttonID) {
                 }
                 return -1; // key is not found
             }
-            for (var i = 0; i < colorKeys.length; i++) {
+            for (let key in colorMap) {
                 var i = getKeyIndex(colorMap, key);
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colorMap[key]}" onclick="setElementColors('BGColorCircle${i}')" stroke="${colorMap.Black}" stroke-width="2"/>
