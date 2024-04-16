@@ -1709,6 +1709,9 @@ function handleResize() { // function to test which methods affect the grid
     redrawGrid(); // Attempt at creating a function that will redraw the grid properly after resize.
 }
 
+/**
+ * @description Used to update diagram grid on window resize.
+ */
 function redrawGrid()
 {
     const svgElement = document.getElementById('svgbacklayer');
