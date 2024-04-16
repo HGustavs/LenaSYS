@@ -617,7 +617,7 @@ $query->bindParam(':deleted', $deleted);
 } 
 
 //useranswer
-$query = $pdo->prepare("DELETE useranswer FROM course,useranswer WHERE course.visibility=:deleted AND useranswer.cid = course.cid;");
+$query = $pdo->prepare("DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
 	$error = $query->errorInfo();
