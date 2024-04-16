@@ -3830,8 +3830,8 @@ function validateForm(formid) {
         localStorage.setItem('courseGitHubRepo', repoLink);
         $("#githubPopupWindow").css("display", "none");
         updateGithubRepo(repoLink, cid);
+        // Refresh page after github link
         location.reload();
-        console.log("TESTAR, RELOADED DET NYSS???");
       }
     }
   }
