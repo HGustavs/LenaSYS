@@ -3954,12 +3954,7 @@ function fetchGitCodeExamples(courseid){
     }
   
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-      //Test to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
-      //Code below shows how to decode from base64 and access actual file content. Uncomment below code to test.
-      //console.log(codeExamplesContent);
-      //var base64content = codeExamplesContent[0].content.content;
-      //var decode = atob(base64content);
-      //console.log(decode);
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
