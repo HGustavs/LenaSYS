@@ -1576,8 +1576,8 @@ function processLogin() {
         password: password,
         opt: "LOGIN"
       },
-      success:function(data) {  		  
-		var result = JSON.parse(data);
+      success:function(data) {  	
+		var result = JSON.parse(data);  
         if(result['login'] == "success") {
 			document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
 
@@ -1599,31 +1599,40 @@ function processLogin() {
         	displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
 		}
 		else{
+			loginFail();
         	if(typeof result.reason != "undefined") {
             	displayAlertText("#login #message", result.reason);
 		  	} 
 			else {
         		displayAlertText("#login #message", "Wrong username or password");
 			}
-
-			$("input#username").addClass("loginFail");
-			$("input#password").addClass("loginFail");
 			setTimeout(function(){
-			$("input#username").removeClass("loginFail");
-			$("input#password").removeClass("loginFail");
-			displayAlertText("#login #message", "Try again");
-					}, 2000);
-          //closeWindows();
+				displayAlertText("#login #message", "Try again");
+			}, 2000);
+          	//closeWindows();
 		}
-		
-
       },
-      error:function() {
-        console.log("error");
+	  error: function(data) {
+        console.log("Login error status: "+data.status);
+		// status 200 = successful request
+        if(data.status != 200){
+			loginFail();
+        } 
       }
     });
 }
 
+// Method is called when a login attempt fails. 
+//Displays an error text and makes login inputs flash red
+function loginFail(){
+	displayAlertText("#login #message", "Wrong username or password");
+	$("input#username").addClass("loginFail");
+	$("input#password").addClass("loginFail");
+	setTimeout(function(){
+		$("input#username").removeClass("loginFail");
+		$("input#password").removeClass("loginFail");
+	}, 2000);
+}
 
 function displayAlertText(selector, text){
   $(selector).html("<div style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
@@ -1634,10 +1643,9 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-            localStorage.removeItem("ls-security-question");
-            localStorage.removeItem("securitynotification");
-
-            reloadPage();
+			localStorage.removeItem("ls-security-question");
+			localStorage.removeItem("securitynotification");
+			reloadPage();
 		},
 		error:function() {
 			console.log("error");

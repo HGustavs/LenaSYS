@@ -670,13 +670,13 @@
 					<table id="templateOptions" width="100%">
 					</table>
 					<table width="100%">
-						<!-- <tr>
-							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
-						</tr> -->
-						<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='hash' placeholder='Name.type' value=''/></div>
-						<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='hash' placeholder='GitHubDownloadUrl' value=''/></div>
-						<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='hash' placeholder='no' value=''/></div>
-						<div class='inputwrapper'><span>Number of items:</span><input class='textinput' type='text' id='hash' placeholder='nope' value=''/></div>
+					    <tr> 
+				            <td align='right'><input class='submit-button' type='button' value='Save' onclick='fetchGitCodeExamples(<?php echo $_GET["courseid"]; ?>);' /></td>
+						</tr>
+						<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='fileName' placeholder='Name.type' value=''/></div>
+						<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/></div>
+						<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='filePath' placeholder='no' value=''/></div>
+                        
 					</table>
 				</div>
 				
