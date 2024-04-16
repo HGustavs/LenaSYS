@@ -274,9 +274,9 @@ $metadata_db->exec($sql3);
 //The git token that the website will use
 $sql4 = '
 	CREATE TABLE IF NOT EXISTS gitToken ( 
-		tid INTEGER,
+		cid INTEGER,
 		gitToken VARCHAR(50),
-		PRIMARY KEY (tid)
+		PRIMARY KEY (cid)
 	);
 '; 
 $metadata_db->exec($sql4);
