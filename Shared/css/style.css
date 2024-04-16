@@ -7707,23 +7707,23 @@ textarea#mrkdwntxt {
 
 #deleteCourseButtonYes{
   background-color:#ccc;
-  height:30px;
+  height:40px;
   padding-left:35px;
   padding-right:35px;
   border: solid 1px #775886;
   border-radius: 5px;
-  font-size:14px;
+  font-size:16px;
   margin:0px;
-  margin-right:35px;
+  margin-right:75px;
  
 }
 #deleteCourseButtonNo{
   background-color:#e35057;
-  height:30px;
+  height:40px;
   padding-left:35px;
   padding-right:35px;
   border-radius: 5px;
-  font-size:14px;
+  font-size:16px;
   margin:0px;
   border: solid 1px #775886;
 }
@@ -7736,7 +7736,7 @@ textarea#mrkdwntxt {
 .form-popup {
   text-align: center;
   display: none;
-  padding: 10px;
+  padding: 5px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -7744,16 +7744,17 @@ textarea#mrkdwntxt {
   border: 3px solid #f1f1f1;
   z-index: 9;
   background-color: #fff; /* white background */
-  max-width: 1000%; /* maximum width */
-   max-height: 1000%; /*maximum height */
+  height:260px;
+  width:460px;
   background-color:#775886;
 }
 
 /* styles to the form container */
 .form-container {
-  max-width: 300px;
+  height:211px;
   padding: 30px;
   background-color: white;
+
 
 }
 
