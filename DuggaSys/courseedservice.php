@@ -564,6 +564,25 @@ if (!$query->execute()) {
 	$debug = "Error reading courses\n" . $error[2];
 }
 
+
+//user_participant
+$query = $pdo->prepare("DELETE user_participant FROM user_participant,course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid AND listentries.lid = user_participant.lid;");
+$query->bindParam(':deleted', $deleted);
+ if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses\n".$error[2];
+} 
+
+//useranswer
+$query = $pdo->prepare("DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+	$error = $query->errorInfo();
+	$debug = "Error reading courses\n" . $error[2];
+}
+
+//listentries
+
 $query = $pdo->prepare("DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
@@ -583,6 +602,55 @@ $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
+}
+
+
+//fileLink
+$query = $pdo->prepare("DELETE fileLink FROM course,fileLink WHERE course.visibility=:deleted AND fileLink.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+	$error = $query->errorInfo();
+	$debug = "Error reading courses\n" . $error[2];
+}
+
+//programcourse
+$query = $pdo->prepare("DELETE programcourse FROM course,programcourse WHERE course.visibility=:deleted AND programcourse.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+	$error = $query->errorInfo();
+	$debug = "Error reading courses\n" . $error[2];
+}
+
+//user_course
+$query = $pdo->prepare("DELETE user_course FROM course,user_course WHERE course.visibility=:deleted AND user_course.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+
+//course_req
+$query = $pdo->prepare("DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND course_req.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+$query = $pdo->prepare("DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND course_req.req_cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//coursekeys
+$query = $pdo->prepare("DELETE coursekeys FROM course,coursekeys WHERE course.visibility=:deleted AND coursekeys.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
 }
 
 //Delete Courses that have been marked as deleted.

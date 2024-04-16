@@ -192,6 +192,16 @@ if($gradesys=="UNK") $gradesys=0;
 			if($ha || $studentTeacher) {
 				// The code for modification using sessions
 				if(strcmp($opt,"DEL")===0) {
+					// Delete foreign key references
+					$query = $pdo->prepare("DELETE FROM useranswer WHERE moment=:lid");
+					$query->bindParam(':lid', $sectid);
+
+					if(!$query->execute()) {
+						if($query->errorInfo()[0] == 23000) {
+							$debug = "The item could not be deleted.";
+						}
+					}
+					// Delete the listentry
 					$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
 					$query->bindParam(':lid', $sectid);
 

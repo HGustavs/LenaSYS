@@ -54,6 +54,7 @@ testHandler($testsData, false); // 2nd argument (prettyPrint): true = prettyprin
 
 function doDBQuery($query, $data, $testsData, $testname){
     $queryString = $query;
+
     if(isset($testsData['variables-' . $testname])){
         $variables = $testsData['variables-' . $testname];
         $variablesArray = explode(", ", $variables);
