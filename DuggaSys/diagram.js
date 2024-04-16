@@ -1714,19 +1714,21 @@ function redrawGrid() {
         console.log("svgElement is null, cannot redraw the Grid.") // TODO: update to a better error msg.
         return;
     }
-    const svgW = svgElement.clientWidth;
-    const svgH = svgElement.clientHeight;
 
     const pattern = document.getElementById('grid');
     if (pattern) {
-        pattern.setAttribute('patternTransform', 'scale(1)'); // Updates the pattern, same scale no change
+        pattern.setAttribute('patternTransform', 'scale(1)'); // Updates the pattern, same scale no change.
     } else {
-        console.log("wrong w/ pattern"); // TODO: update error msg if redraw works.
+        console.log("smth wrong w/ pattern"); // TODO: update error msg if redraw works.
     }
 
-    svgElement.style.overflow = 'hidden';  // Force reflow
+    const grid_rect = document.getElementById('grid_rect');
+    grid_rect.setAttribute('fill', 'url(#grid)')
+
+
+    grid_rect.style.overflow = 'hidden';  // Force reflow
     setTimeout(() => {
-        svgElement.style.overflow = 'visible';
+        grid_rect.style.overflow = 'visible';
     }, 0); // Runs immediately
 
     updateContainerBounds(); // Updates rulers but only after mouse button 1 press on the diagram canvas.
