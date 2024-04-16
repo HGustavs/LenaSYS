@@ -56,8 +56,6 @@ function doDBQuery($query, $data, $testsData, $testname){
     $queryString = $query;
 
     if(isset($testsData['variables-' . $testname])){
-        echo $testsData['variables-' . $testname];
-
         $variables = $testsData['variables-' . $testname];
         $variablesArray = explode(", ", $variables);
     }
@@ -82,7 +80,7 @@ function doDBQuery($query, $data, $testsData, $testname){
         if (strpos($queryString, '?') !== false) {
             for ($i = 0; $i < count($variablesArray); $i++) {
                 $variableToUse = $data[$variablesArray[$i]];
-                $query->bindParam($i+1, $variableToUse);
+                $query->bindValue($i+1, $variableToUse);
             }
         }
 
@@ -140,7 +138,6 @@ function testHandler($testsData, $prettyPrint){
                         if ($queryName == $oneQuery) {
                             if ($queryPath != null) {
                                 eval('$queryValue = $queryValue' . $queryPath . ';');
-                                echo $queryValue;
                                 $data[$sInput] = $queryValue;
                             }
                             else{
