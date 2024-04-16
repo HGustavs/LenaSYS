@@ -1703,12 +1703,29 @@ document.addEventListener('keyup', function (e) {
 window.addEventListener("resize", test);
 var testCount = 0;
 function test() { // function to test which methods affect the grid
-    updateContainerBounds(); // used to set the numbers on the rulers (? unclear)
-    updateGridSize(); // should update size of grid but doesn't properly...
-    drawRulerBars(scrollx, scrolly); // updates the rulers to match window size.
-
     console.log(testCount); // count to see if the methods run and to differentiate between events.
     testCount++;
+    redrawGrid(); // Attempt at creating a function that will redraw the grid properly after resize.
+}
+
+function redrawGrid() {
+    const svgElement = document.getElementById('svgbacklayer');
+    if (!svgElement) { // Safety check to prevent errors.
+        console.log("svgElement is null, cannot redraw the Grid.") // TODO: update to a better error msg.
+        return;
+    }
+
+    const pattern = document.getElementById('grid');
+    if (pattern) {
+        pattern.setAttribute('patternTransform', 'scale(1)'); // Updates the pattern, same scale no change
+    } else {
+        console.log("wrong w/ pattern"); // TODO: update error msg if redraw works.
+    }
+
+    svgElement.style.overflow = 'hidden';  // Force reflow
+    setTimeout(() => {
+        svgElement.style.overflow = 'visible';
+    }, 0); // Runs immediately
 }
 
 window.onfocus = function () {
