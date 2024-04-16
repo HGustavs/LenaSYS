@@ -2175,6 +2175,7 @@ function mouseEnter() {
     if (!mouseButtonDown && mouseMode != mouseModes.PLACING_ELEMENT) {
         mouseOverElement = true;
         containerStyle.cursor = "pointer";
+        deleteBtnX = 0;
     }
 }
 
@@ -2193,17 +2194,16 @@ function mouseLeave() {
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
  */
 function checkDeleteBtn() {
-    if (deleteBtnX != 0) {
         if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-            if (context.length > 0) removeElements(context);
-            if (contextLine.length > 0) removeLines(contextLine);
+            if (deleteBtnX != 0 && !mouseOverElement) {
+                if (context.length > 0) removeElements(context);
+                 if (contextLine.length > 0) removeLines(contextLine);
             updateSelection();
             return true;
         }
     }
     return false;
 }
-
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
  */
@@ -12094,7 +12094,8 @@ function drawSelectionBox(str) {
         } else if (deleteBtnSize < 15) {
             deleteBtnSize = 15;
         }
-
+        
+        // Button possition
         deleteBtnX = lowX - 5 + highX - lowX + 10 - (deleteBtnSize / 2);
         deleteBtnY = lowY - 5 - (deleteBtnSize / 2);
 
