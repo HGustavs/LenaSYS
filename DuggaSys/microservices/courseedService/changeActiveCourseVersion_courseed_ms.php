@@ -1,7 +1,9 @@
 <?php
 
 //---------------------------------------------------------------------------------------------------------------
-// The microservice changeActiveVersion_ms.php takes an existing course and changes content of the activeversion column
+// The microservice changeActiveVersion_ms.php takes an existing course and changes content of the activeversion column.
+// I am unsure where on Lenasys this function is used or if it even is used. If someone implements a feature to edit the 
+// course version this Microservice can be used.
 //---------------------------------------------------------------------------------------------------------------
 
 // Set the correct time zone
