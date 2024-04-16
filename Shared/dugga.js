@@ -1242,12 +1242,21 @@ function AJAXService(opt,apara,kind)
 		
 	}
 	else if(kind=="GROUPTOKEN") {
-		$.ajax({
-			url: "showDuggaservice.php",
-			type:"POST",
-			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
-			dataType: "json"
-		});
+		if(opt=="UPDATEAU"){
+			$.ajax({
+				url: "../DuggaSys/microservices/showDuggaservice/updateActiveUsers_ms.php",
+				type:"POST",
+				data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
+				dataType: "json"
+			});
+		}else{
+			$.ajax({
+				url: "showDuggaservice.php",
+				type:"POST",
+				data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
+				dataType: "json"
+			});
+		}
 	} else if(kind=="ACCESSEDDUGGA") {
 		$.ajax({
 			url: "showDuggaservice.php",

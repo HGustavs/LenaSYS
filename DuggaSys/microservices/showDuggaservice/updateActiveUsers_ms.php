@@ -1,11 +1,10 @@
 <?php
 
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
-
 
 $hash=getOP('hash');
 $AUtoken=getOP('AUtoken');
