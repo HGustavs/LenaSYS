@@ -1358,7 +1358,6 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
-    // onSetup();
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
