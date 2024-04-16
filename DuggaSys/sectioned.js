@@ -917,8 +917,8 @@ function deleteItem(item_lid = null) {
   }, 60000);
 }
 
-// Permanently delete elements. Update: This function now calls DELETED in sectionserviced.php instead of DEL
-function deleteAll(item) {
+// Permanently delete elements.
+function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
     AJAXService("DEL", {
       lid: delArr.pop()
@@ -926,7 +926,6 @@ function deleteAll(item) {
   }
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
-  item.style.display = "none";
 }
 
 // Cancel deletion
@@ -986,6 +985,20 @@ function updateSelectedDir() {
 //----------------------------------------------------------------------------------
 function getDeletedListEntries() {
   var deletedEntries = document.write('<?php echo getDeletedEntries("DISPLAYDELETED"); ');
+  /*
+   // Microservice integration
+  $.ajax({
+    url: "../DuggaSys/microservices/sectionedService/getDeletedListentries_ms.php",
+    dataType: "json",
+    type: "GET",
+    success: function (response) {
+      deletedEntries = response;
+    },
+    error: function(xhr, status, error) {
+      console.error("Error retrieving deleted entries: ", error);
+    }
+  });
+  */
 }
 //----------------------------------------------------------------------------------
 // hideMarkedItems: Hides Item from Section List

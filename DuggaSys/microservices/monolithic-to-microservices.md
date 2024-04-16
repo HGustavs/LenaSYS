@@ -95,8 +95,6 @@ function getUid(){
         $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
         logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php",$userid,$info);
 
-        $appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
-
         return $log_uuid;
     }
 ```
