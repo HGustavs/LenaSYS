@@ -41,19 +41,19 @@ CRUD stands for the four basic operations for managing data in applications and 
 ---
 # LIST OF ORIGINAL SERVICE FILES
 ---
-- accessedservice __==finished==__
-- codeviewerService __==finished==__
-- contributedservice : _there is no documentation for this file_ __dont know is needed__
-- contribution_loginbox_service : __dont know if needed__
-- courseedservice  __==finished==__
-- diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
-- duggaedservice __==finished==__
-- fileedservice __==finished==__
-- highscoreservice __==finished==__
-- sectionedservice __==finished==__
-- profileservice __==finished==__
-- resultedservice __==finished==__
-- showDuggaservice __==finished==__ 
+- accessedservice.php __==finished==__
+- codeviewerService.php __==finished==__
+- contributedservice.php : _there is no documentation for this file_ __dont know is needed__
+- contribution_loginbox_service.php : __dont know if needed__
+- courseedservice.php  __==finished==__
+- diagramservice.php  __WORK PAUSED in this service will continue when the service is fixed__
+- duggaedservice.php __==finished==__
+- fileedservice.php __==finished==__
+- highscoreservice.php __==finished==__
+- sectionedservice.php __==finished==__
+- profileservice.php __==finished==__
+- resultedservice.php __==finished==__
+- showDuggaservice.php __==finished==__ 
 <br>
 <br>
 
@@ -62,72 +62,68 @@ CRUD stands for the four basic operations for managing data in applications and 
 # LIST OF POTENTIAL SERVICES
 ---
 
-- logging
-- getUid
-- isSuperUser
-- hasAccess
-- setUserID
-- setActiveCourseversion
-- updateUserPassword
-- createNewCodeexample
-- createNewListentrie
-- createNewVersionOfCourse
-- setAsActiveCourse
-- UpdateUser
-- updateUsercourse
-- addClass
-- changeUserPassword_accessed
-- addUser
-- settingCodeexampleTemplate
-- editCodeExample
-- editContentOfCodeExample
-- editBoxTitle __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
-- deliteExample
-- createNewCourse
-- createCourseVersion __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateCourseVersion_courseed
-- changeActiveCourseVersion_courseed
-- copyCourseVersion
-- updateCourse
-- createMOTD __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- deleteCourseMaterial
-- createDugga
-- UpdateDugga
-- deleteDugga
-- createDuggaVariant
-- updateDuggaVariant
-- deleteDuggaVariant
-- deleteFileLink
-- updataFileLink
-- highscoreservice
-- getGroupValues
-- getCourseGroupsAndMembers
-- deleteListentries
-- removeListentries 
-- createListentrie
-- reorderListentries
-- updateListentrie
-- updateQuizDeadline
-- updateListentriesGradesystem
-- updateCourseVersion_sectioned
-- changeActiveCourseVersion_sectioned
-- setVisibleListentrie
-- getCourseVersions
-- getGitReference
-- createGithubCodeexample
-- getUserDuggaFeedback
-- getDeletedListentries
-- changeProfileValues
-- getUserAnswar
-- updateActiveUsers
-- processDuggaFile
-- submitDugga
-- loadDugga
+- logging_ms.php
+- getUid_ms.php
+- isSuperUser_ms.php
+- hasAccess_ms.php
+- setUserID_ms.php
+- setActiveCourseversion_ms.php
+- updateUserPassword_ms.php
+- createNewCodeexample_ms.php
+- createNewListentrie_ms.php
+- createNewVersionOfCourse_ms.php
+- setAsActiveCourse_ms.php
+- UpdateUser_ms.php
+- updateUsercourse_ms.php
+- addClass_ms.php
+- changeUserPassword_accessed_ms.php
+- addUser_ms.php
+- settingCodeexampleTemplate_ms.php
+- editCodeExample_ms.php
+- editContentOfCodeExample_ms.php
+- editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
+- deliteExample_ms.php
+- createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- updateCourseVersion_courseed_ms.php
+- changeActiveCourseVersion_courseed_ms.php
+- copyCourseVersion_ms.php
+- updateCourse_ms.php
+- createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- deleteCourseMaterial_ms.php
+- createDugga_ms.php
+- UpdateDugga_ms.php
+- deleteDugga_ms.php
+- createDuggaVariant_ms.php
+- updateDuggaVariant_ms.php
+- deleteDuggaVariant_ms.php
+- deleteFileLink_ms.php
+- updataFileLink_ms.php
+- highscoreservice_ms.php
+- getGroupValues_ms.php
+- getCourseGroupsAndMembers_ms.php
+- deleteListentries_ms.php
+- removeListentries_ms.php
+- createListentrie_ms.php
+- reorderListentries_ms.php
+- updateListentrie_ms.php
+- updateQuizDeadline_ms.php
+- updateListentriesGradesystem_ms.php
+- updateCourseVersion_sectioned_ms.php
+- changeActiveCourseVersion_sectioned_ms.php
+- setVisibleListentrie_ms.php
+- getCourseVersions_ms.php
+- getGitReference_ms.php
+- createGithubCodeexample_ms.php
+- getUserDuggaFeedback_ms.php
+- getDeletedListentries_ms.php
+- changeProfileValues_ms.php
+- getUserAnswar_ms.php
+- updateActiveUsers_ms.php
+- processDuggaFile_ms.php
+- submitDugga_ms.php
+- loadDugga_ms.php
 
-
-# OBSERVE
-
-In some potential microservices, specific 'database services' are referenced. For example, selectFromTableUser and updateTableCourse. This implies that a particular query from Database_related_micro_services is referred to. These queries should then be implemented in the microservice.
 
 ---
 ---
@@ -452,8 +448,12 @@ Aswell as __insertIntoTableImprow__ or __deleteFromTableImpwordlist__ to add or 
 <br>
 
 ### updateBoxTitle_ms.php 
-Uses database service __updateTableBox__ to _update_ the table __box__ and update the value of the column: 
+_UPDATE_ operation on the table __'box'__ to update the value of the column:
 - boxtitle
+
+```sql
+UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
+```
 
 <br>
 
@@ -478,9 +478,18 @@ Uses service __deleteFromTableListentries__ to delete a row from the tabe __list
 <br>
 <br>
 
-### createNewCourse
-Uses service __insertIntoTableCourse__ to makes _inserts_ into the table __course__.
-Uses service __selectFromTableCourse__ to _get_ information it requires from __course__.
+### createNewCourse_ms.php
+_INSERT_ operation on the table __'course'__ to create new rows in the colums:
+- coursecode
+- coursename
+- visibility = 0 (set value)
+- creator
+- hp = 7.5 (set value)
+- courseGitURL    
+
+```sql
+INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)
+``` 
 
 <br>
 
@@ -488,8 +497,8 @@ Uses service __selectFromTableCourse__ to _get_ information it requires from __c
 
 <br>
 
-### createCourseVersion
-Uses database service __insertIntoTableVers__ to make _inserts_ into the table __vers__ and create new rows for these columns:
+### createCourseVersion_ms.php
+_INSERT_ operation on the table __'vers'__ to create new rows in the colums:
 - cid
 - coursecode
 - vers
@@ -500,8 +509,16 @@ Uses database service __insertIntoTableVers__ to make _inserts_ into the table _
 - enddate
 - motd
 
-Uses database service __setAsActiveCourse__ to _update_ the table __course__ by updating the value of this column:
+```sql
+INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);
+```
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
+
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid   
+```
 
 <br>
 
@@ -594,10 +611,14 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 
 <br>
 
-### createMOTD
-Uses database service __insertIntoTableSettings__ to make _inserts_ into the table __settings__ to create new rows for the columns:
+### createMOTD_ms.php
+_INSERT_ operation on the table __'settings'__ to create new rows in the colums:
 - mot 
 - readonly
+
+```sql
+INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
+```
 
 <br>
 
