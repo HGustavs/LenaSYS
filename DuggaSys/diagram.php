@@ -64,14 +64,14 @@
     <div id="diagram-toolbar">
         <fieldset>
             <legend aria-hidden="true">Modes</legend>
-                <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0); hidePlacementType();'>
+                <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <span>Allows you to select and move different elements as well as navigate the workspace</span><br>
                         <span id="tooltip-POINTER" class="key_tooltip">Keybinding:</span>
                     </span>
                 </div>
-                <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1); hidePlacementType();'>
+                <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                         <p>Click and drag to select multiple elements within the selected area</p><br>
@@ -83,7 +83,7 @@
                          class="ERButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(0); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(0); hidePlacementType();"><!--<-- UML functionality -->
+                         onmousedown="holdPlacementButtonDown(0);"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Add an ER entity to the diagram</p>
@@ -136,7 +136,7 @@
                          class="UMLButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(4); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(4); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(4);">
                         <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         <span class="toolTipText"><b>UML class</b><br>
                             <p>Add an UML class to the diagram</p>
@@ -188,7 +188,7 @@
                          class="IEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(6); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(6); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(6);">
                         <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         <span class="toolTipText"><b>IE entity</b><br>
                             <p>Add an IE entity to the diagram</p>
@@ -241,7 +241,7 @@
                         class="SDButton diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(8); setMouseMode(2);'
                         onmouseup='holdPlacementButtonUp();'
-                        onmousedown='holdPlacementButtonDown(8); hidePlacementType();'>
+                        onmousedown='holdPlacementButtonDown(8);'>
                         <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add state diagram state to the diagram</p>
@@ -295,7 +295,7 @@
                          class="ERButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(1); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(1); hidePlacementType();"> <!--<-- UML functionality -->
+                         onmousedown="holdPlacementButtonDown(1);"> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         <span class="toolTipText"><b>ER relation</b><br>
                             <p>Add a ER relation to the diagram</p>
@@ -348,7 +348,7 @@
                          class="UMLButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(5); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(5); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(5);">
                         <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p>
@@ -402,7 +402,7 @@
                          class="IEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(7); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(7); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(7);">
                         <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
                             <p>Add an IE inheritance to the diagram</p>
@@ -456,7 +456,7 @@
                          class="ERAttribute diagramIcons toolbarMode"
                          onclick='setElementPlacementType(2); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(2); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(2);">
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         <span class="toolTipText"><b>ER Attribute</b><br>
                             <p>Add a ER attribute to the diagram</p>
@@ -504,7 +504,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3); hidePlacementType();'>
+                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                     <span class="toolTipText"><b>Line</b><br>
                         <p>Make a line between elements</p><br>
@@ -516,7 +516,7 @@
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(9); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(9); hidePlacementType();"><!--<-- UML functionality -->
+                         onmousedown="holdPlacementButtonDown(9);"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                         <span class="toolTipText"><b>UML initial state</b><br>
                             <p>Creates an initial state for UML.</p>
@@ -561,7 +561,7 @@
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(10); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(10); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(10);">
                         <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                         <span class="toolTipText"><b>UML final state</b><br>
                             <p>Creates a final state for UML.</p>
@@ -606,7 +606,7 @@
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(11); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(11); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(11);">
                         <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                         <span class="toolTipText"><b>UML super state</b><br>
                             <p>Creates a super state.</p>
@@ -654,7 +654,7 @@
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(12); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(12); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(12);">
                          <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
                             <p>Creates a lifeline for a sequnece diagram</p>
@@ -703,7 +703,7 @@
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(13); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(13); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(13);">
                          <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Creates an activation box.</p>
@@ -751,7 +751,7 @@
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(14); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(14); hidePlacementType();">
+                         onmousedown="holdPlacementButtonDown(14);">
                          <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="toolTipText"><b>Sequence Condition</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
@@ -794,7 +794,7 @@
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
                 <!-- NOTE -->
-                <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2); hidePlacementType();' onmouseup='holdPlacementButtonUp();'>
+                <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);' onmouseup='holdPlacementButtonUp();'>
                     <img src="../Shared/icons/diagram_note.svg"/>
                     <span class="toolTipText"><b>Note</b><br>
                         <p>Creates a note</p><br>
@@ -804,7 +804,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
-            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera(); hidePlacementType();">
+            <div id="camtoOrigo" class="diagramIcons" onclick="centerCamera();">
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 <span class="toolTipText"><b>Reset view</b><br>
                     <p>Reset view to show all elements</p><br>
@@ -814,27 +814,27 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">History</legend>
-            <div id="diagramReset" class="diagramIcons" onclick="resetDiagramAlert(); hidePlacementType();">
+            <div id="diagramReset" class="diagramIcons" onclick="resetDiagramAlert();">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
                     <p>Reset diagram to default state</p><br>
                 </span>
             </div>
-            <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward(); hidePlacementType();">
+            <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward();">
                 <img src="../Shared/icons/diagram_stepforward.svg" alt="Redo"/>
                 <span class="toolTipText"><b>Redo</b><br>
                     <p>Redo last change</p><br>
                     <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack(); hidePlacementType();">
+            <div id="stepBackToggle" class="diagramIcons" onclick="toggleStepBack();">
                 <img src="../Shared/icons/diagram_stepback.svg" alt="Undo"/>
                 <span class="toolTipText"><b>Undo</b><br>
                     <p>Undo last change</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
-            <div id="replayToggle" class="diagramIcons" onclick="toggleReplay(); hidePlacementType();">
+            <div id="replayToggle" class="diagramIcons" onclick="toggleReplay();">
                 <img src="../Shared/icons/diagram_replay.svg" alt="Enter replay mode"/>
                 <span class="toolTipText"><b>Enter replay mode</b><br>
                     <p>View history of changes made</p><br>
@@ -844,7 +844,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">ER-Table</legend>
-            <div id="erTableToggle" class="diagramIcons toolbarMode" onclick="toggleErTable(); hidePlacementType();">
+            <div id="erTableToggle" class="diagramIcons toolbarMode" onclick="toggleErTable();">
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options</p><br>
@@ -854,7 +854,7 @@
         </fieldset>
         <fieldset>
             <legend aria-hidden="true">Testcase</legend>
-            <div id="testCaseToggle" class="diagramIcons toolbarMode" onclick="toggleTestCase(); hidePlacementType();"> <!--add func here later-->
+            <div id="testCaseToggle" class="diagramIcons toolbarMode" onclick="toggleTestCase();"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options</p><br>
@@ -864,7 +864,7 @@
         </fieldset> 
         <fieldset id = "errorCheckField">
         <legend aria-hidden="true">Check</legend>
-            <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck(); hidePlacementType();">
+            <div id="errorCheckToggle" class="diagramIcons" onclick="toggleErrorCheck();">
                 <img src="../Shared/icons/diagram_errorCheck.svg" alt="Toggle error check"/>
                 <span class="toolTipText"><b>Toggle error check</b><br>
                     <p>Click to toggle error checking on/off</p>
@@ -876,7 +876,7 @@
         </fieldset>
         <fieldset id="localSaveField" class="disabledIcon">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="showSavePopout(); hidePlacementType();">
+            <div id="localSave" class="diagramIcons" onclick="showSavePopout();">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
@@ -887,7 +887,7 @@
         </fieldset>
         <fieldset id="localLoadField">
             <legend aria-hidden="true">Load</legend>
-            <div id="localLoad" class="diagramIcons" onclick="showModal(); hidePlacementType();">
+            <div id="localLoad" class="diagramIcons" onclick="showModal();">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram</p>
