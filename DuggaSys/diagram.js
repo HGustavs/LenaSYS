@@ -1704,7 +1704,7 @@ window.addEventListener("resize", handleResize);
 var testCount = 0;
 function handleResize() {
     updateRulers();
-    redrawGrid();
+    // redrawGrid();
 }
 
 /**
