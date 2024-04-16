@@ -1607,9 +1607,9 @@ function processLogin() {
         		displayAlertText("#login #message", "Wrong username or password");
 			}
 			setTimeout(function(){
-			displayAlertText("#login #message", "Try again");
-					}, 2000);
-          //closeWindows();
+				displayAlertText("#login #message", "Try again");
+			}, 2000);
+          	//closeWindows();
 		}
       },
 	  error: function(data) {
@@ -1629,9 +1629,9 @@ function loginFail(){
 	$("input#username").addClass("loginFail");
 	$("input#password").addClass("loginFail");
 	setTimeout(function(){
-	$("input#username").removeClass("loginFail");
-	$("input#password").removeClass("loginFail");
-			}, 2000);
+		$("input#username").removeClass("loginFail");
+		$("input#password").removeClass("loginFail");
+	}, 2000);
 }
 
 function displayAlertText(selector, text){
@@ -1643,10 +1643,9 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-            localStorage.removeItem("ls-security-question");
-            localStorage.removeItem("securitynotification");
-
-            reloadPage();
+			localStorage.removeItem("ls-security-question");
+			localStorage.removeItem("securitynotification");
+			reloadPage();
 		},
 		error:function() {
 			console.log("error");
