@@ -1014,16 +1014,16 @@ const multioffs = 3;
 // Color mapping to responding colorcode, use colorMap.Color to get the color
 const colorMap = {
     "White": "#ffffff",
-    "Light blue": "#c4e4fc",
-    "Light red": "#ffd4d4",
-    "Light yellow": "#fff4c2",
-    "Light green": "#c4f8bd",
-    "Light royal blue": "#648fff",
+    "LightBlue": "#c4e4fc",
+    "LightRed": "#ffd4d4",
+    "LightYellow": "#fff4c2",
+    "LightGreen": "#c4f8bd",
+    "LightRoyalBlue": "#648fff",
     "Pink": "#DC267F",
-    "Dark purple": "#614875",
-    "Purple grey": "#927b9e",
+    "DarkPurple": "#614875",
+    "PurpleGrey": "#927b9e",
     "Orange": "#FFB000",
-    "Orange-red": "#FE6100",
+    "OrangeRed": "#FE6100",
     "Black": "#000000",
     "Blue": "#0000ff"
 };
@@ -4144,10 +4144,10 @@ function toggleDiagramDropdown() {
     if (window.getComputedStyle(dropdown).display === "none") {
         btn.style.backgroundColor = "transparent";
         btn.style.border = "3px solid #614875";
-        btn.style.color = "#614875";
+        btn.style.color = colorMap.DarkPurple;
         btn.style.fontWeight = "bold";
     } else {
-        btn.style.backgroundColor = "#614875";
+        btn.style.backgroundColor = colorMap.DarkPurple;
         btn.style.color = colorMap.White;
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
@@ -4224,11 +4224,11 @@ function toggleGrid() {
         grid.style.display = "none";
         gridButton.style.backgroundColor = "transparent";
         gridButton.style.border = "3px solid #614875";
-        gridButton.style.color = "#614875";
+        gridButton.style.color = colorMap.DarkPurple;
         gridButton.style.fontWeight = "bold";
     } else {
         grid.style.display = "block";
-        gridButton.style.backgroundColor = "#614875";
+        gridButton.style.backgroundColor = colorMap.DarkPurple;
         gridButton.style.color = colorMap.White;
         gridButton.style.fontWeight = "normal";
         gridButton.style.border = "3px solid #614875";
@@ -4255,14 +4255,14 @@ function toggleDarkmode() {
         localStorage.setItem('diagramTheme', stylesheet.href)
     }
     if (stylesheet.href.includes('blackTheme')) {
-        btn.style.backgroundColor = "#614875";
+        btn.style.backgroundColor = colorMap.DarkPurple;
         btn.style.color = colorMap.White;
         btn.style.fontWeight = "normal";
         btn.style.border = "3px solid #614875";
     } else {
         btn.style.backgroundColor = "transparent";
         btn.style.border = "3px solid #614875";
-        btn.style.color = "#614875";
+        btn.style.color = colorMap.DarkPurple;
         btn.style.fontWeight = "bold";
     }
     showdata();
@@ -5757,13 +5757,13 @@ function toggleA4Template() {
         document.getElementById("a4HorizontalButton").style.display = "none";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
-        document.getElementById("a4TemplateToggle").style.color = "#614875";
+        document.getElementById("a4TemplateToggle").style.color = colorMap.DarkPurple;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
-        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = colorMap.DarkPurple;
         document.getElementById("a4TemplateToggle").style.color = colorMap.White;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
         document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
@@ -5836,14 +5836,14 @@ function toggleSnapToGrid() {
 
     // Color change of button to clarify if button is pressed or not
     if (settings.grid.snapToGrid) {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = colorMap.DarkPurple;
         document.getElementById("rulerSnapToGrid").style.color = colorMap.White;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
         document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
     } else {
         document.getElementById("rulerSnapToGrid").style.backgroundColor = "transparent";
         document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
-        document.getElementById("rulerSnapToGrid").style.color = "#614875";
+        document.getElementById("rulerSnapToGrid").style.color = colorMap.DarkPurple;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
     }
 }
@@ -5864,12 +5864,12 @@ function toggleRuler() {
         ruler.style.top = "-100px";
         rulerToggleButton.style.backgroundColor = "transparent";
         rulerToggleButton.style.border = "3px solid #614875";
-        rulerToggleButton.style.color = "#614875";
+        rulerToggleButton.style.color = colorMap.DarkPurple;
         rulerToggleButton.style.fontWeight = "bold";
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
-        rulerToggleButton.style.backgroundColor = "#614875";
+        rulerToggleButton.style.backgroundColor = colorMap.DarkPurple;
         rulerToggleButton.style.color = colorMap.White;
         rulerToggleButton.style.fontWeight = "normal";
         rulerToggleButton.style.border = "3px solid #614875";
@@ -12140,7 +12140,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
+                            fillColor.style.fill = `${colorMap.PurpleGrey}`;
                             fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
@@ -12154,7 +12154,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
+                            fillColor.style.fill = `${colorMap.PurpleGrey}`;
                             fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
@@ -12168,7 +12168,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
+                            fillColor.style.fill = `${colorMap.PurpleGrey}`;
                             fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
@@ -12183,7 +12183,7 @@ function updateCSSForAllElements() {
                         fontColor = elementDiv.children[0];
 
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
+                            fillColor.style.fill = `${colorMap.PurpleGrey}`;
                             fontColor.style.fill = `${colorMap.White}`;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
@@ -12197,7 +12197,7 @@ function updateCSSForAllElements() {
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
                     if (markedOverOne()) {
-                        fillColor.style.fill = `${"#927b9e"}`;
+                        fillColor.style.fill = `${colorMap.PurpleGrey}`;
                         fontColor.style.fill = `${colorMap.White}`;
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = `${colorMap.White}`;
