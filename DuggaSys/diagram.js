@@ -9102,7 +9102,7 @@ function drawElement(element, ghosted = false) {
 
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.5))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9113,7 +9113,7 @@ function drawElement(element, ghosted = false) {
         str += `'>`;
 
         //div to encapuslate UML header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`;
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
         //svg for UML header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
@@ -9125,7 +9125,7 @@ function drawElement(element, ghosted = false) {
         str += `</div>`;
 
         //div to encapuslate UML content
-        str += `<div class='uml-content' style='margin-top: -0.5em;'>`;
+        str += `<div class='uml-content' style='height:${boxh - (linew * 2)}px'>`;
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
@@ -9153,7 +9153,7 @@ function drawElement(element, ghosted = false) {
         //Draw UML-footer if there exist at least one function
         if (elemFunc != 0) {
             //div for UML footer
-            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh / 2 + (boxh * elemFunc / 2)}px;'>`;
+            str += `<div class='uml-footer' style='height: ${boxh / 2 + (boxh * elemFunc / 2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
@@ -9166,7 +9166,7 @@ function drawElement(element, ghosted = false) {
             // Draw UML-footer if there are no functions
         } else {
             //div for UML footer
-            str += `<div class='uml-footer' style='margin-top: -0.5em; height: ${boxh / 2 + (boxh / 2)}px;'>`;
+            str += `<div class='uml-footer' style='height: ${boxh / 2 + (boxh / 2)}px;'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
@@ -9274,7 +9274,7 @@ function drawElement(element, ghosted = false) {
 
         //div to encapuslate SD element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9285,7 +9285,7 @@ function drawElement(element, ghosted = false) {
         str += `'>`;
 
         //div to encapuslate SD header
-        str += `<div style='width: ${boxw}; height: ${boxh};'>`;
+        str += `<div style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
         //svg for SD header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<path class="text" 
@@ -9310,7 +9310,7 @@ function drawElement(element, ghosted = false) {
         str += `</div>`;
 
         //div to encapuslate SD content
-        str += `<div style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
             /* find me let sdOption = document.getElementById("SDOption");
@@ -9339,7 +9339,7 @@ function drawElement(element, ghosted = false) {
             // Draw SD-content if there are no attributes.
         } else {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
@@ -9365,7 +9365,7 @@ function drawElement(element, ghosted = false) {
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px; margin-top:${((boxh / 3))}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9425,7 +9425,7 @@ function drawElement(element, ghosted = false) {
 
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;margin-top:${((boxh * -0.15))}px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9436,7 +9436,7 @@ function drawElement(element, ghosted = false) {
         str += `'>`;
 
         //div to encapuslate IE header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh};'>`;
+        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
         //svg for IE header, background and text
         str += `<svg width='${boxw}' height='${boxh}'>`;
         str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
@@ -9448,11 +9448,11 @@ function drawElement(element, ghosted = false) {
         str += `</div>`;
 
         //div to encapuslate IE content
-        str += `<div class='uml-content' style='margin-top: ${-8 * zoomfact}px;'>`;
+        str += `<div class='uml-content' style='height: ${boxh / 2 + (boxh * elemAttri / 2)}px;'>`;
         //Draw IE-content if there exist at least one attribute
         if (elemAttri != 0) {
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
             for (var i = 0; i < elemAttri; i++) {
@@ -9477,7 +9477,7 @@ function drawElement(element, ghosted = false) {
     else if (element.kind == 'IERelation') {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; margin-top:${((boxh / 1.5))}px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
+        style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9729,7 +9729,7 @@ function drawElement(element, ghosted = false) {
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;margin-top:${((boxh * -0.4))}px; width:${boxw}px;font-size:${texth}px;`;
+        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;`;
         if (context.includes(element)) {
             str += `z-index: 1;`;
         }
@@ -9813,7 +9813,6 @@ function drawElement(element, ghosted = false) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
@@ -9821,7 +9820,6 @@ function drawElement(element, ghosted = false) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxh / 2))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
@@ -9829,7 +9827,6 @@ function drawElement(element, ghosted = false) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
-                            margin-top:${((boxh / 2.75))}px;;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
