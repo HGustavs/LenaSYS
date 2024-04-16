@@ -2,7 +2,7 @@
 	// -------------==============######## Setup ###########==============-------------
 
 	// Variables for the refresh button, deadlines specified in seconds
-	$shortdeadline = 300; // 300 = 5 minutes
+	$shortdeadline = 10; // 300 = 5 minutes
 	$longdeadline = 600; // 600 = 10 minutes
 
 	// Used to display errors on screen since PHP doesn't do that automatically.

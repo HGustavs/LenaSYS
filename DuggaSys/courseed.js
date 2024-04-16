@@ -37,6 +37,62 @@ function updateCourse()
 	var courseGitURL = $("#editcoursegit-url").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
+
+	var token = document.getElementById("githubToken").value;
+	
+	console.log(token);
+	if(token){
+		$.ajax({
+			async: false,
+			url: "../DuggaSys/gitcommitService.php",
+			type: "POST",
+			data: {'token':token,'cid':cid, 'action':'insertTokenToMetaData'},
+			success: function() { 
+				//Returns true if the data and JSON is correct
+				dataCheck = true;
+			},
+			error: function(data){
+				//Check FetchGithubRepo for the meaning of the error code.
+				switch(data.status){
+					case 422:
+						alert(data.responseJSON.message + "\nDid not create/update token");
+						break;
+					case 503:
+						alert(data.responseJSON.message + "\nDid not create/update token");
+						break;
+					default:
+						alert("Something went wrong...");
+				}
+				dataCheck = false;
+			}
+		});
+	}
+	$.ajax({
+		async: false,
+		url: "../DuggaSys/gitcommitService.php",
+		type: "POST",
+		data: {'githubURL':courseGitURL,'cid':cid, 'action':'directInsert'},
+		success: function() { 
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch(data.status){
+				case 422:
+					alert(data.responseJSON.message + "\nDid not create/update token");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not create/update token");
+					break;
+				default:
+					alert("Something went wrong...");
+			}
+			dataCheck = false;
+		}
+	});
+
+	console.log(2+" "+token);
 	// Show dialog
 	$("#editCourse").css("display", "none");
 	
@@ -46,6 +102,7 @@ function updateCourse()
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
 	localStorage.setItem('courseid', courseid);
 	localStorage.setItem('updateCourseName', true);
+
 
 	//Check if courseGitURL has a value
 	if(courseGitURL) {
@@ -427,7 +484,6 @@ function editSettings(){
 
 function updateSettings() {
 	const messageElement = document.getElementById("motd");
-	const token = document.getElementById("githubToken").value;
 	const readOnlyCheckbox = document.getElementById("readonly");
 	const popupContainer = document.getElementById("editSettings");
 
@@ -437,31 +493,6 @@ function updateSettings() {
 		readonly = 0;
 	}
 	if (window.bool9 === true) {
-		$.ajax({
-			async: false,
-			url: "../DuggaSys/gitcommitService.php",
-			type: "POST",
-			data: {'token':token,'cid':cid, 'action':'insertTokenToMetaData'},
-			success: function() { 
-				//Returns true if the data and JSON is correct
-				dataCheck = true;
-			},
-			error: function(data){
-				//Check FetchGithubRepo for the meaning of the error code.
-				switch(data.status){
-					case 422:
-						alert(data.responseJSON.message + "\nDid not create/update token");
-						break;
-					case 503:
-						alert(data.responseJSON.message + "\nDid not create/update token");
-						break;
-					default:
-						alert("Something went wrong...");
-				}
-				 dataCheck = false;
-			}
-		});
-		
 		alert('Version updated');
 		popupContainer.style.display = "none";
 		AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");

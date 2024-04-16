@@ -134,6 +134,7 @@ if(isset($_SESSION['uid'])){
 					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..."/>
 				</div>
+    			<div class='inputwrapper'><span>(optional) Insert Github Key:</span><input class='textinput' type='text' id='githubToken' placeholder='Leave blank for no key' /></div>
 				<div class='inputwrapper'>
 					<span>Visibility:</span>
 					<select class='selectinput' id='visib'></select>
@@ -159,7 +160,6 @@ if(isset($_SESSION['uid'])){
     		<div style='padding:5px;'>
 
     			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
-    			<div class='inputwrapper'><span>(optional) Insert Github Key:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd')" type='text' id='githubToken' placeholder='Leave blank for no key' /></div>
     			<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
