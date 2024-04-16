@@ -7749,9 +7749,8 @@ function preProcessLine(line) {
  * @param {boolean} targetGhost Is the targeted line an ghost line
  */
 function drawLine(line, targetGhost = false) {
-    // Element line is drawn from
+    // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
-    // Element line is drawn to
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
 
     let str = "";
@@ -7761,44 +7760,8 @@ function drawLine(line, targetGhost = false) {
 
     if (isSelected) lineColor = selectedColor;
 
-    const elemsAreClose = isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact);
-
-    let x1Offset = 0;
-    let x2Offset = 0;
-    let y1Offset = 0;
-    let y2Offset = 0;
-
-    let fx, fy, tx, ty;
-    [fx, fy, tx, ty] = getLineAttrubutes(felem, telem, line.ctype);
-
-    /*
-    // Used to draw the lines a bit longer to get rid of white-spaces.
-    var lengthConstant = 1; // Determines how "far inwards" on the element the line should have its origin and its end points.
-    var lengthConstantSD_Y = 20;
-    if ((fx > tx) && (line.ctype == "LR")) {
-        x1Offset = lengthConstant;
-        x2Offset = -lengthConstant;
-    } else if ((fx < tx) && (line.ctype == "RL")) {
-        x1Offset = -lengthConstant;
-        x2Offset = lengthConstant;
-    } else if ((fy > ty) && (line.ctype == "TB")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
-            y1Offset = lengthConstantSD_Y;
-            y2Offset = -lengthConstantSD_Y;
-        } else {
-            y1Offset = lengthConstant;
-            y2Offset = -lengthConstant;
-        }
-    } else if ((fy < ty) && (line.ctype == "BT")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
-            y1Offset = -lengthConstantSD_Y;
-            y2Offset = lengthConstantSD_Y;
-        } else {
-            y1Offset = -lengthConstant;
-            y2Offset = lengthConstant;
-        }
-    }
-     */
+    let fx, fy, tx, ty, offset;
+    [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
     line.type = (telem.type == 'NOTE') ? telem.type : felem.type;
     if (line.type == 'NOTE') strokeDash = "10";
@@ -7806,9 +7769,9 @@ function drawLine(line, targetGhost = false) {
 
     if (line.type == 'ER') {
         if (line.kind == "Normal") {
-            str += `<line id='${line.id}' class='lineColor' \
-                x1='${fx + x1Offset}' y1='${fy + y1Offset}' \
-                x2='${tx + x2Offset}' y2='${ty + y2Offset}' \
+            str += `<line id='${line.id}' class='lineColor' 
+                x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
+                x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
                 stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Double") {
             let dy = -(tx - fx);
@@ -7817,18 +7780,16 @@ function drawLine(line, targetGhost = false) {
             dy = dy / len;
             dx = dx / len;
 
-            str +=  `<line id='${line.id}-1' class='lineColor' \
-                x1='${fx + dx * strokewidth * 1.5 + x1Offset}' \
-                y1='${fy + dy * strokewidth * 1.5 + y1Offset}' \
-                x2='${tx + dx * strokewidth * 1.5 + x2Offset}' \
-                y2='${ty + dy * strokewidth * 1.5 + y2Offset}' \
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-2' class='lineColor' \
-                x1='${fx - dx * strokewidth * 1.5 + x1Offset}' \
-                y1='${fy - dy * strokewidth * 1.5 + y1Offset}' \
-                x2='${tx - dx * strokewidth * 1.5 + x2Offset}' \
-                y2='${ty - dy * strokewidth * 1.5 + y2Offset}' \
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            const double = (a, b) => {
+                return `<line id='${line.id}-${b}' class='lineColor' 
+                    x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
+                    y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
+                    x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
+                    y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
+                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            }
+            str += double(1, 1);
+            str += double(-1, 2);
         }
     } else if ((line.type == 'SD' && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
         if (line.kind == "Recursive") {
@@ -7840,56 +7801,50 @@ function drawLine(line, targetGhost = false) {
             const cornerX = fx + length;
             const cornerY = fy - length;
 
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset - 17 * zoomfact}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
         } else if ((fy > ty) && (line.ctype == "TB")) {
-            y1Offset = 1;
-            y2Offset = -7 + 3 / zoomfact;
+            offset.y1 = 1;
+            offset.y2 = -7 + 3 / zoomfact;
         } else if ((fy < ty) && (line.ctype == "BT")) {
-            y1Offset = -7 + 3 / zoomfact;
-            y2Offset = 1;
+            offset.y1 = -7 + 3 / zoomfact;
+            offset.y2 = 1;
         }
         str += `<line id='${line.id}' class='lineColor' \
-            x1='${fx + x1Offset * zoomfact}' \
-            y1='${fy + y1Offset * zoomfact}' \
-            x2='${tx + x2Offset * zoomfact}' \
-            y2='${ty + y2Offset * zoomfact}' \
+            x1='${fx + offset.x1 * zoomfact}' \
+            y1='${fy + offset.y1 * zoomfact}' \
+            x2='${tx + offset.x2 * zoomfact}' \
+            y2='${ty + offset.y2 * zoomfact}' \
             fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-
-        /**
-         * Remove if you want to use offset!!!
-         */
-        y1Offset = 0;
-        y2Offset = 0;
-    } else {
+    } else { // UML, IE or SD with segmented line
         // Halfway point between elements
-        let dx = ((fx + x1Offset) - (tx + x2Offset)) / 2;
-        let dy = ((fy + y1Offset) - (ty + y2Offset)) / 2;
+        let dx = ((fx + offset.x1) - (tx + offset.x2)) / 2;
+        let dy = ((fy + offset.y1) - (ty + offset.y2)) / 2;
         if (line.ctype == 'TB' || line.ctype == 'BT') {
             str += `<polyline \
                 id='${line.id}' \
                 class='lineColor' \
-                points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' \
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1},${fy + offset.y1 - dy} ${tx + offset.x2},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' \
                 fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
         } else if (line.ctype == 'LR' || line.ctype == 'RL') {
             str += `<polyline \
                 id='${line.id}' \
                 class='lineColor' \
-                points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' \
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1} ${tx + offset.x2 + dx},${ty + offset.y2} ${tx + offset.x2},${ty + offset.y2}' \
                 fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
     }
 
-    str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
-    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
+    str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
+    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
 
     if  (line.type == 'SD' && line.innerType != SDLineType.SEGMENT) {
-        let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-        let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
+        let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
+        let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
             str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
         }
@@ -7912,11 +7867,11 @@ function drawLine(line, targetGhost = false) {
     }
 
     if (isSelected) {
-        str += `<rect \
-            x='${((fx + tx) / 2) - (2 * zoomfact)}' \
-            y='${((fy + ty) / 2) - (2 * zoomfact)}' \
-            width='${4 * zoomfact}' \
-            height='${4 * zoomfact}' \
+        str += `<rect 
+            x='${((fx + tx) / 2) - (2 * zoomfact)}' 
+            y='${((fy + ty) / 2) - (2 * zoomfact)}' 
+            width='${4 * zoomfact}' 
+            height='${4 * zoomfact}' 
             style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"/>`;
     }
 
@@ -7991,74 +7946,74 @@ function drawLine(line, targetGhost = false) {
         if (isSelected) {
             if (line.kind === "Recursive") {
                 //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-                str += `<rect \
-                    class='text cardinalityLabel' \
-                    id=${line.id + 'Label'} \
-                    x='${((fx + length + (30 * zoomfact))) - textWidth / 2}' \
-                    y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}' \
-                    width='${(textWidth + zoomfact * 4)}' \
+                str += `<rect 
+                    class='text cardinalityLabel' 
+                    id=${line.id + 'Label'} 
+                    x='${((fx + length + (30 * zoomfact))) - textWidth / 2}' 
+                    y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}' 
+                    width='${(textWidth + zoomfact * 4)}' 
                     height='${textheight * zoomfact}'/>`;
-                str += `<text \
-                    class='cardinalityLabelText' \
-                    dominant-baseline='middle' \
-                    text-anchor='middle' \
-                    x='${(fx + length + (30 * zoomfact))}' \
-                    y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}' \
-                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'> \
-                    ${line.label} \
+                str += `<text 
+                    class='cardinalityLabelText' 
+                    dominant-baseline='middle' 
+                    text-anchor='middle' 
+                    x='${(fx + length + (30 * zoomfact))}' 
+                    y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}' 
+                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'> 
+                    ${line.label} 
                     </text>`;
             } else {
-                str += `<rect \
-                    class='text cardinalityLabel' \
-                    id=${line.id + 'Label'}\
-                    x='${labelPositionX}' \
-                    y='${labelPositionY}' \
-                    width='${(textWidth + zoomfact * 4)}' \
+                str += `<rect 
+                    class='text cardinalityLabel' 
+                    id=${line.id + 'Label'}
+                    x='${labelPositionX}' 
+                    y='${labelPositionY}' 
+                    width='${(textWidth + zoomfact * 4)}' 
                     height='${textheight * zoomfact + zoomfact * 3}'/>`;
-                str += `<text \
-                    class='cardinalityLabelText' \
-                    dominant-baseline='middle' \
-                    text-anchor='middle' \
-                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' \
-                    x='${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}' \
-                    y='${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}'> \
-                    ${line.label} \
+                str += `<text 
+                    class='cardinalityLabelText' 
+                    dominant-baseline='middle' 
+                    text-anchor='middle' 
+                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                    x='${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}' 
+                    y='${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}'> 
+                    ${line.label} 
                     </text>`;
             }
         } else {
             if (line.kind === "Recursive") {
-                str += `<rect \
-                    class='text cardinalityLabel' \
-                    id='${line.id + 'Label'}' \
-                    x='${((fx + length + (30 * zoomfact))) - textWidth / 2}' \
-                    y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}' \
-                    width='${(textWidth + zoomfact * 4)}' \
+                str += `<rect 
+                    class='text cardinalityLabel' 
+                    id='${line.id + 'Label'}' 
+                    x='${((fx + length + (30 * zoomfact))) - textWidth / 2}' 
+                    y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}' 
+                    width='${(textWidth + zoomfact * 4)}' 
                     height='${textheight * zoomfact}'/>`;
-                str += `<text \
-                    class='cardinalityLabelText' \
-                    dominant-baseline='middle' \
-                    text-anchor='middle' \
-                    x='${(fx + length + (30 * zoomfact))}' \
-                    y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}' \
-                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>\
-                    ${line.label} \
+                str += `<text 
+                    class='cardinalityLabelText' 
+                    dominant-baseline='middle' 
+                    text-anchor='middle' 
+                    x='${(fx + length + (30 * zoomfact))}' 
+                    y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}' 
+                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
+                    ${line.label} 
                     </text>`;
             } else {
-                str += `<rect \
-                    class='text cardinalityLabel' \
-                    id=${line.id + 'Label'} \
-                    x='${labelPositionX}' \
-                    y='${labelPositionY}' \
-                    width='${(textWidth + zoomfact * 4)}' \
+                str += `<rect 
+                    class='text cardinalityLabel' 
+                    id=${line.id + 'Label'} 
+                    x='${labelPositionX}' 
+                    y='${labelPositionY}' 
+                    width='${(textWidth + zoomfact * 4)}' 
                     height='${textheight * zoomfact + zoomfact * 3}'/>`;
-                str += `<text \
-                    class='cardinalityLabelText' \
-                    dominant-baseline='middle' \
-                    text-anchor='middle' \
-                    style='font-size:${Math.round(zoomfact * textheight)}px;' \
-                    x='${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}' \
-                    y='${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}'> \
-                    ${line.label} \
+                str += `<text 
+                    class='cardinalityLabelText' 
+                    dominant-baseline='middle' 
+                    text-anchor='middle' 
+                    style='font-size:${Math.round(zoomfact * textheight)}px;' 
+                    x='${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}' 
+                    y='${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}'> 
+                    ${line.label} 
                     </text>`;
             }
         }
@@ -8068,25 +8023,38 @@ function drawLine(line, targetGhost = false) {
 
 function getLineAttrubutes(f, t, ctype) {
     let result;
+    let px = 3;
+    let offset = {
+        x1: 0,
+        x2: 0,
+        y1: 0,
+        y2: 0,
+    }
     switch (ctype) {
         case 'TB':
-            result = [f.cx, f.y1, t.cx, t.y2];
+            offset.y1 = px;
+            offset.y2 = -px * 2;
+            result = [f.cx, f.y1, t.cx, t.y2, offset];
             break;
         case 'BT':
-            result = [f.cx, f.y2, t.cx, t.y1];
+            offset.y1 = -px * 2;
+            offset.y2 = px;
+            result = [f.cx, f.y2, t.cx, t.y1, offset];
             break;
         case 'LR':
-            result = [f.x1, f.cy, t.x2, t.cy];
+            offset.x1 = px;
+            offset.x2 = 0;
+            result = [f.x1, f.cy, t.x2, t.cy, offset];
             break;
         case 'RL':
-            result = [f.x2, f.cy, t.x1, t.cy];
+            offset.x1 = 0;
+            offset.x2 = px;
+            result = [f.x2, f.cy, t.x1, t.cy, offset];
     }
     return result;
 }
 
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
-    let str = "";
-
     const offsetOnLine = 20 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
@@ -8106,19 +8074,19 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
         y -= offsetOnLine / 2;
     }
 
-    return `<rect \
-            class='text cardinalityLabel' \
-            id='${line.id + labelStr}' \
-            x='${x - textWidth / 2}' \
-            y='${x - (textheight * zoomfact + zoomfact * 3) / 2}' \
-            width='${textWidth + 2}' \
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> \
-            <text \
-            class='text cardinalityLabelText' \
-            dominant-baseline='middle' \
-            text-anchor='middle' \
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' \
-            x='${x}' \
+    return `<rect 
+            class='text cardinalityLabel' 
+            id='${line.id + labelStr}' 
+            x='${x - textWidth / 2}' 
+            y='${x - (textheight * zoomfact + zoomfact * 3) / 2}' 
+            width='${textWidth + 2}' 
+            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+            <text 
+            class='text cardinalityLabelText' 
+            dominant-baseline='middle' 
+            text-anchor='middle' 
+            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+            x='${x}' 
             y='${y}'> ${label} </text>`;
 }
 
@@ -8172,19 +8140,19 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
             else if (t.right.indexOf(line.id) == f.right.length - 1) posY += offset;
         }
     }
-    return `<rect \
-            class='text cardinalityLabel' \
-            id='${line.id + "Cardinality"}' \
-            x='${posX - (textWidth) / 2}' \
-            y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' \
-            width='${textWidth + 2}' \
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> \
-            <text \
-            class='text cardinalityLabelText' \
-            dominant-baseline='middle' \
-            text-anchor='middle' \
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' \
-            x='${posX}' \
+    return `<rect 
+            class='text cardinalityLabel' 
+            id='${line.id + "Cardinality"}' 
+            x='${posX - (textWidth) / 2}' 
+            y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
+            width='${textWidth + 2}' 
+            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+            <text 
+            class='text cardinalityLabelText' 
+            dominant-baseline='middle' 
+            text-anchor='middle' 
+            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+            x='${posX}' 
             y='${posY}'> ${lineCardinalitys[line.cardinality]} </text>`;
 }
 
@@ -8318,20 +8286,15 @@ function rotateArrowPoint(base, to, clockwise) {
     }
 }
 
-function drawArrowPoint(base, point, x, y, lineColor, line, type) {
-    str = "";
-    // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
-    if ((line.innerType == null) || (line.innerType === SDLineType.STRAIGHT)) {
-        let right = rotateArrowPoint(base, point, true);
-        let left = rotateArrowPoint(base, point, false);
-        str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' \
-            points=' \
-            ${right.x} ${right.y}, \
-            ${point.x} ${point.y}, \
-            ${left.x} ${left.y}' \
-            stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-    }
-    return str;
+function drawArrowPoint(base, point, x, y, lineColor, line) {
+    let right = rotateArrowPoint(base, point, true);
+    let left = rotateArrowPoint(base, point, false);
+    return `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd'
+        points=' 
+        ${right.x} ${right.y},
+        ${point.x} ${point.y}, 
+        ${left.x} ${left.y}' 
+        stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 }
 
 
