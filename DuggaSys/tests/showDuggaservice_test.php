@@ -200,7 +200,7 @@ $testsData = array(
     //     )),
     // ),
     'view data on userAnswer (teacher)' => array(
-        'expected-output' => '{"debug":"[Guest] Missing hash\/password\/variant!","param":"{}","answer":"an answer","danswer":"UNK","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"feedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"UNK","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":0,"variants":[],"duggaTitle":"Inserttobedeleted","hash":"ghj1ghj2","hashpwd":"asddasdd","opt":"UNK","link":"UNK"}',
+        'expected-output' => '{"debug":"NONE!","param":"{\"tal\":\"10\"}","answer":"an answer","danswer":"{\"danswer\":\"00002 0 A\"}","score":0,"highscoremode":"","grade":"UNK","submitted":"","marked":"","deadline":"UNK","release":"UNK","files":[],"userfeedback":"UNK","feedbackquestion":"UNK","variant":"UNK","ishashindb":false,"variantsize":"UNK","variantvalue":"UNK","password":"password","hashvariant":"UNK","isFileSubmitted":"UNK","isTeacher":1,"variants":[],"duggaTitle":"Inserttobedeleted","hash":null,"hashpwd":null,"opt":"UNK","link":"https:\/\/localhost\/sh\/?s="}',
         'query-before-test-1' => "INSERT INTO course(cid, creator) VALUES (9999, 1);",
         'query-before-test-2' => "INSERT INTO listentries(cid, entryname, link, kind, pos, creator, visible, vers, gradesystem, highscoremode, feedbackenabled, feedbackquestion) VALUES (9999, 'Inserttobedeleted', 'UNK', 4, 12, 2, 1, 1337, 1, 1, 0, 'UNK');",
         'query-before-test-3' => "INSERT INTO quiz(cid) VALUES (9999);",
