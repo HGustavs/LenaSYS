@@ -89,7 +89,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - changeActiveCourseVersion_courseed
 - copyCourseVersion
 - updateCourse
-- createMOTD
+- createMOTD __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial
 - createDugga
 - UpdateDugga
@@ -452,7 +452,7 @@ Aswell as __insertIntoTableImprow__ or __deleteFromTableImpwordlist__ to add or 
 <br>
 
 ### updateBoxTitle_ms.php 
-Uses database service __updateTableBox__ to update the value of the column: 
+Uses database service __updateTableBox__ to _update_ the table __box__ and update the value of the column: 
 - boxtitle
 
 <br>
@@ -489,7 +489,17 @@ Uses service __selectFromTableCourse__ to _get_ information it requires from __c
 <br>
 
 ### createCourseVersion
-Uses database service __insertIntoTableVers__ to makes _inserts_ into the table __vers__.
+Uses database service __insertIntoTableVers__ to make _inserts_ into the table __vers__ and create new rows for these columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
+
 Uses database service __setAsActiveCourse__ to _update_ the table __course__ by updating the value of this column:
 - activeversion
 
@@ -585,7 +595,9 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 <br>
 
 ### createMOTD
-Uses service __insertIntoTableSettings__ to makes _inserts_ into the table __settings__.
+Uses database service __insertIntoTableSettings__ to make _inserts_ into the table __settings__ to create new rows for the columns:
+- mot 
+- readonly
 
 <br>
 
