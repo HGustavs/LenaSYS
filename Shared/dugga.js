@@ -1240,8 +1240,7 @@ function AJAXService(opt,apara,kind)
 			success: returnedUserFeedback
 		});
 		
-	}
-	else if(kind=="GROUPTOKEN") {
+	} else if(kind=="GROUPTOKEN") {
 		$.ajax({
 			url: "showDuggaservice.php",
 			type:"POST",
@@ -1255,8 +1254,7 @@ function AJAXService(opt,apara,kind)
 			data: "hash="+hash+"&opt="+opt+para,
 			dataType: "json"
 		});
-	}
-	else if(kind=="CONT_LOGINBOX_SERVICE") {
+	} else if(kind=="CONT_LOGINBOX_SERVICE") {
 		$.ajax({
 			url: "contribution_loginbox_service.php",
 			type:"POST",
@@ -1264,8 +1262,7 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: CONT_LOGINBOX_SERVICE_RETURN
 		});
-	}
-	else if(kind=="CONT_ACCOUNT_STATUS"){
+	} else if(kind=="CONT_ACCOUNT_STATUS"){
 		$.ajax({
 			url: "contributionservice.php",
 			type:"POST",
