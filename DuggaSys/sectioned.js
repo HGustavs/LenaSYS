@@ -917,8 +917,8 @@ function deleteItem(item_lid = null) {
   }, 60000);
 }
 
-// Permanently delete elements. Update: This function now calls DELETED in sectionserviced.php instead of DEL
-function deleteAll(item) {
+// Permanently delete elements.
+function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
     AJAXService("DEL", {
       lid: delArr.pop()
@@ -926,7 +926,6 @@ function deleteAll(item) {
   }
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
-  item.style.display = "none";
 }
 
 // Cancel deletion

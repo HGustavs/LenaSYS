@@ -1098,15 +1098,16 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedAccess
 			});
-	}else if(kind=="SECTION"){		
-		$.ajax({
-		url: "sectionedservice.php",
-		type: "POST",
-		data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-		dataType: "json",
-		success: returnedSection
-		});
-  }else if(kind=="GRP"){
+	}else if(kind=="SECTION"){
+				$.ajax({
+					url: "sectionedservice.php",
+					type: "POST",
+					data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+					dataType: "json",
+					success: returnedSection
+				});
+			}
+			else if(kind=="GRP"){
     $.ajax({
       url: "sectionedservice.php",
       //url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
