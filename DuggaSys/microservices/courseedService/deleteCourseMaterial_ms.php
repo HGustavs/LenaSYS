@@ -71,7 +71,7 @@ $query->bindParam(':deleted', $deleted);
 } 
 
 //useranswer
-$query = $pdo->prepare("DELETE useranswer FROM course,useranswer WHERE course.visibility=:deleted AND useranswer.cid = course.cid;");
+$query = $pdo->prepare("DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
     $error = $query->errorInfo();
@@ -118,8 +118,8 @@ if (!$query->execute()) {
     $debug = "Error reading courses\n" . $error[2];
 }
 
-//filelink
-$query = $pdo->prepare("DELETE filelink FROM course,filelink WHERE course.visibility=:deleted AND filelink.cid = course.cid;");
+//fileLink
+$query = $pdo->prepare("DELETE fileLink FROM course,fileLink WHERE course.visibility=:deleted AND fileLink.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
     $error = $query->errorInfo();
