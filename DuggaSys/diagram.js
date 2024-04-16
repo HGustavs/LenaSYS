@@ -1714,13 +1714,6 @@ function handleResize() { // function to test which methods affect the grid
  */
 function redrawGrid()
 {
-    const svgElement = document.getElementById('svgbacklayer');
-    if (!svgElement)
-    { // Safety check to prevent errors.
-        console.log("svgElement is null, cannot redraw the Grid.") // TODO: update to a better error msg.
-        return;
-    }
-
     const pattern = document.getElementById('grid');
     if (pattern)
     {
@@ -1729,12 +1722,16 @@ function redrawGrid()
     else
     {
         console.log("smth wrong w/ pattern"); // TODO: update error msg if redraw works.
+        return;
     }
 
     const grid_rect = document.getElementById('grid_rect');
+    if (!grid_rect)
+    { // Safety check to prevent errors.
+        console.log("grid_rect is null, cannot redraw the Grid."); // TODO: update to a better error msg.
+        return;
+    }
     grid_rect.setAttribute('fill', 'url(#grid)')
-
-
     grid_rect.style.overflow = 'hidden';  // Force reflow
     setTimeout(() =>
     {
