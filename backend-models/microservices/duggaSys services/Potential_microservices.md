@@ -489,8 +489,8 @@ Uses service __selectFromTableCourse__ to _get_ information it requires from __c
 <br>
 
 ### createCourseVersion
-Uses database service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
-Uses database service __setAsActiveCourse__ to change the content of these columns:
+Uses database service __insertIntoTableVers__ to makes _inserts_ into the table __vers__.
+Uses database service __setAsActiveCourse__ to _update_ the table __course__ by updating the value of this column:
 - activeversion
 
 <br>
