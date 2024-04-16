@@ -979,6 +979,12 @@ const ARROW = {
     'LR': [[-20, -10], [0, 0], [-20, 10]],
     'RL': [[20, -10], [0, 0], [20, 10]]
 }
+const SD_ARROW = {
+    'TB': [[-5, -10], [0, 0], [5, -10], [-5, -10]],
+    'BT': [[-5, 10], [0, 0], [5, 10], [-5, 10]],
+    'LR': [[-10, -5], [0, 0], [-10, 5], [-10, -5]],
+    'RL': [[10, -5], [0, 0], [10, 5], [10, -5]],
+}
 
 /**
  *@description Gives x1, y1, x2, y2 position of a line for a line icon. For all element pair orientations
@@ -7730,11 +7736,7 @@ function preProcessLine(line) {
             line.endIcon = 'ARROW';
         }
 
-        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
-            line.innerType = SDLineType.STRAIGHT;
-        } else {
-            line.innerType = SDLineType.SEGMENT;
-        }
+        line.innerType = SDLineType.STRAIGHT;
     }
 }
 
@@ -7828,7 +7830,7 @@ function drawLine(line, targetGhost = false) {
                 y2='${ty - dy * strokewidth * 1.5 + y2Offset}' \
                 stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         }
-    } else if ((line.type == 'SD' && elemsAreClose && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+    } else if ((line.type == 'SD' && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
         if (line.kind == "Recursive") {
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
@@ -7882,9 +7884,19 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
-    str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, strokewidth, str);
-    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, strokewidth, str);
+    str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
+    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
+    if  (line.type == 'SD' && line.innerType != SDLineType.SEGMENT) {
+        let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
+        let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
+        if (line.startIcon == SDLineIcons.ARROW) {
+            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+        }
+        if (line.endIcon == SDLineIcons.ARROW) {
+            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
+        }
+    }
 
     if (felem.type != 'ER' || telem.type != 'ER') {
         if (line.startLabel && line.startLabel != '') {
@@ -7946,9 +7958,8 @@ function drawLine(line, targetGhost = false) {
             lineGroup: 0,
             labelMoved: false
         };
-        if (!!targetLabel) {
-            var rememberTargetLabelID = targetLabel.id;
-        }
+        if (!!targetLabel) var rememberTargetLabelID = targetLabel.id;
+
         if (!!lineLabelList[findIndex(lineLabelList, lineLabel.id)]) {
             lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedX;
             lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedY;
@@ -8077,42 +8088,38 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     let str = "";
 
     const offsetOnLine = 20 * zoomfact;
-    let posX = x;
-    let posY = y;
-
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
     if (line.ctype == 'TB') {
-        posY += (isStart) ? -offsetOnLine : offsetOnLine;
-        posX -= offsetOnLine / 2;
+        x -= offsetOnLine / 2;
+        y += (isStart) ? -offsetOnLine : offsetOnLine;
     } else if (line.ctype == 'BT') {
-        posY += (isStart) ? offsetOnLine : -offsetOnLine;
-        posX -= offsetOnLine / 2;
+        x -= offsetOnLine / 2;
+        y += (isStart) ? offsetOnLine : -offsetOnLine;
     } else if (line.ctype == 'LR') {
-        posX += (isStart) ? -offsetOnLine : offsetOnLine;
-        posY -= offsetOnLine / 2;
+        x += (isStart) ? -offsetOnLine : offsetOnLine;
+        y -= offsetOnLine / 2;
     } else if (line.ctype == 'RL') {
-        posX += (isStart) ? offsetOnLine : -offsetOnLine;
-        posY -= offsetOnLine / 2;
+        x += (isStart) ? offsetOnLine : -offsetOnLine;
+        y -= offsetOnLine / 2;
     }
 
-    str += `<rect \
+    return `<rect \
             class='text cardinalityLabel' \
             id='${line.id + labelStr}' \
-            x='${posX - textWidth / 2}' \
-            y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' \
+            x='${x - textWidth / 2}' \
+            y='${x - (textheight * zoomfact + zoomfact * 3) / 2}' \
             width='${textWidth + 2}' \
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/>`;
-    str += `<text \
+            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> \
+            <text \
             class='text cardinalityLabelText' \
             dominant-baseline='middle' \
             text-anchor='middle' \
             style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' \
-            x='${posX}' \
-            y='${posY}'> ${label} </text>`;
-    return str;
+            x='${x}' \
+            y='${y}'> ${label} </text>`;
 }
 
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
@@ -8122,7 +8129,6 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     const tweakOffset = 0.30;
     const offsetOnLine = 20 * zoomfact;
 
-    let str = "";
     let distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
     let offset = Math.round(zoomfact * textheight / 2);
     let canvas = document.getElementById('canvasOverlay');
@@ -8166,88 +8172,76 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
             else if (t.right.indexOf(line.id) == f.right.length - 1) posY += offset;
         }
     }
-    str += `<rect \
+    return `<rect \
             class='text cardinalityLabel' \
             id='${line.id + "Cardinality"}' \
             x='${posX - (textWidth) / 2}' \
             y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' \
             width='${textWidth + 2}' \
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/>`;
-    str += `<text \
+            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> \
+            <text \
             class='text cardinalityLabelText' \
             dominant-baseline='middle' \
             text-anchor='middle' \
             style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' \
             x='${posX}' \
             y='${posY}'> ${lineCardinalitys[line.cardinality]} </text>`;
-    return str;
 }
 
-function drawLineIcon(icon, ctype, x, y, lineColor, strokewidth, str) {
+function drawLineIcon(icon, ctype, x, y, lineColor, line) {
+    let str = "";
     switch (icon) {
         case IELineIcons.ZERO_ONE:
-            str += iconLine(ONE_LINE[ctype], x, y, lineColor, strokewidth);
-            str += iconCircle(CIRCLE[ctype], x, y, lineColor, strokewidth);
+            str += iconLine(ONE_LINE[ctype], x, y, lineColor);
+            str += iconCircle(CIRCLE[ctype], x, y, lineColor);
             break;
         case IELineIcons.ONE:
-            str += iconLine(ONE_LINE[ctype], x, y, lineColor, strokewidth);
+            str += iconLine(ONE_LINE[ctype], x, y, lineColor);
             break;
         case IELineIcons.FORCED_ONE:
-            str += iconLine(ONE_LINE[ctype], x, y, lineColor, strokewidth);
-            str += iconLine(TWO_LINE[ctype], x, y, lineColor, strokewidth);
+            str += iconLine(ONE_LINE[ctype], x, y, lineColor);
+            str += iconLine(TWO_LINE[ctype], x, y, lineColor);
             break;
         case IELineIcons.WEAK:
-            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, strokewidth, '#ffffff');
-            str += iconCircle(CIRCLE[ctype], x, y, lineColor, strokewidth);
+            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, '#ffffff');
+            str += iconCircle(CIRCLE[ctype], x, y, lineColor);
             break;
         case IELineIcons.MANY:
-            str += iconPoly(MANY[ctype], x, y, lineColor, strokewidth, 'none');
+            str += iconPoly(MANY[ctype], x, y, lineColor, 'none');
             break;
         case IELineIcons.ZERO_MANY:
-            str += iconPoly(MANY[ctype], x, y, lineColor, strokewidth, 'none');
-            str += iconCircle(CIRCLE[ctype], x, y, lineColor, strokewidth);
+            str += iconPoly(MANY[ctype], x, y, lineColor, 'none');
+            str += iconCircle(CIRCLE[ctype], x, y, lineColor);
             break;
         case IELineIcons.ONE_MANY:
-            str += iconPoly(MANY[ctype], x, y, lineColor, strokewidth, 'none');
-            str += iconLine(TWO_LINE[ctype], x, y, lineColor, strokewidth);
+            str += iconPoly(MANY[ctype], x, y, lineColor, 'none');
+            str += iconLine(TWO_LINE[ctype], x, y, lineColor);
             break;
         case UMLLineIcons.ARROW:
-           str += iconPoly(ARROW[ctype], x, y, lineColor, strokewidth, 'none');
+           str += iconPoly(ARROW[ctype], x, y, lineColor, 'none');
             break;
         case UMLLineIcons.TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, strokewidth, '#ffffff');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#ffffff');
             break;
         case UMLLineIcons.BLACK_TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, strokewidth, '#000000');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#000000');
             break;
         case UMLLineIcons.WHITEDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, strokewidth, '#ffffff');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#ffffff');
             break;
         case UMLLineIcons.BLACKDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, strokewidth, '#000000');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#000000');
             break;
         case SDLineIcons.ARROW:
-
-            // If the line is straight calculate the points required to draw the arrow at an angle.
-            /*if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-                let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
-
-                let base = calculateArrowBase(to, from, iconSizeStart / 2 * zoomfact);
-                let right = rotateArrowPoint(base, from, true);
-                let left = rotateArrowPoint(base, from, false);
-
-                str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${from.x} ${from.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            } else {
-
-            }*/
-            str += iconPoly(ARROW[ctype], x, y, lineColor, strokewidth, 'none');
-            break;
+            if (line.innerType == SDLineType.SEGMENT) {
+                // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, '#000000');
+            }
     }
     return str;
 }
 
-function iconLine([a, b, c, d], x, y, lineColor, strokewidth) {
+function iconLine([a, b, c, d], x, y, lineColor) {
     return `<line class='diagram-umlicon-darkmode' \
                 x1='${x + a * zoomfact}' \
                 y1='${y + b * zoomfact}' \
@@ -8256,7 +8250,7 @@ function iconLine([a, b, c, d], x, y, lineColor, strokewidth) {
                 stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 }
 
-function iconCircle([a, b, c], x, y, lineColor, strokewidth) {
+function iconCircle([a, b, c], x, y, lineColor,) {
     return `<circle class='diagram-umlicon-darkmode' \
                 cx='${x + a * zoomfact}' \
                 cy='${y + b * zoomfact}' \
@@ -8264,7 +8258,7 @@ function iconCircle([a, b, c], x, y, lineColor, strokewidth) {
                 fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 }
 
-function iconPoly(arr, x, y, lineColor, strokewidth, fill) {
+function iconPoly(arr, x, y, lineColor, fill) {
     let s = "";
     for (let i = 0; i < arr.length; i++) {
         const [a, b] = arr[i];
@@ -8323,6 +8317,23 @@ function rotateArrowPoint(base, to, clockwise) {
         return point;
     }
 }
+
+function drawArrowPoint(base, point, x, y, lineColor, line, type) {
+    str = "";
+    // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
+    if ((line.innerType == null) || (line.innerType === SDLineType.STRAIGHT)) {
+        let right = rotateArrowPoint(base, point, true);
+        let left = rotateArrowPoint(base, point, false);
+        str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' \
+            points=' \
+            ${right.x} ${right.y}, \
+            ${point.x} ${point.y}, \
+            ${left.x} ${left.y}' \
+            stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    }
+    return str;
+}
+
 
 /**
  * @description Removes all existing lines and draw them again
