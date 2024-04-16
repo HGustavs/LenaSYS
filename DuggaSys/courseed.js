@@ -441,7 +441,7 @@ function updateSettings() {
 			async: false,
 			url: "../DuggaSys/gitcommitService.php",
 			type: "POST",
-			data: {'token':token, 'action':'insertTokenToMetaData'},
+			data: {'token':token.value, 'action':'insertTokenToMetaData'},
 			success: function() { 
 				//Returns true if the data and JSON is correct
 				dataCheck = true;

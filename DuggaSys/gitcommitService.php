@@ -112,21 +112,23 @@
 			$old_token = $row['gitToken'];
 		}
 
-
-		if(strlen($old_token)>1)
+		if(strlen($token)>1)
 		{
+			if(strlen($old_token)>1)
+			{
 
-			$query2 = $pdolite->prepare('UPDATE gitToken SET gitToken=:token WHERE tid=1');
-			$query2->bindParam(':token', $token);
-			$query2->execute();
+				$query2 = $pdolite->prepare('UPDATE gitToken SET gitToken=:token WHERE tid=1');
+				$query2->bindParam(':token', $token);
+				$query2->execute();
 
-		}
-		else
-		{
-			$query2 = $pdolite->prepare('INSERT OR REPLACE INTO gitToken (tid, gitToken) VALUES (1, :token)');
+			}
+			else
+			{
+				$query2 = $pdolite->prepare('INSERT OR REPLACE INTO gitToken (tid, gitToken) VALUES (1, :token)');
 
-			$query2->bindParam(':token', $token);
-			$query2->execute();
+				$query2->bindParam(':token', $token);
+				$query2->execute();
+			}
 		}
 	}
 
