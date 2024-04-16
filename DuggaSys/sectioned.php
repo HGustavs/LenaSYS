@@ -682,7 +682,7 @@
 		</div>
 
 <?php
-
+//Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
 	$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 	$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
@@ -697,11 +697,9 @@ function insertIntoSqLiteGitRepo($cid, $githubURL){
     }else{
 		return true;
 	}
-    //TODO Store in db here.
-    //Maybe include_once 'gitfetchService.php' and gitcommitService.php'
-	//Check with group in issue 14391
-	//If not maybe call ajax from js
 }
+
+//Insert files into gitFiles DB
 function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA){
 	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 	for($i = 0; $i < count($fileNames); $i++){
@@ -740,7 +738,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!file_exists($path)) {
       mkdir($path, 0777, true);
     }
-
+    //Writes files in folder
     for($i = 0; $i < count($codeExamplesContent); $i++){
        $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
 	   if($WriteFilesSucces === false){
@@ -750,7 +748,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		 echo "File written successfully";
 	   }
 	}
-
+    
 	if($success){
 		echo "All files written successfully!";
 		$successGitRepoInsert = insertIntoSqLiteGitRepo($cid, $githubURL);
