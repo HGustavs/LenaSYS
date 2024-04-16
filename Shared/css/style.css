@@ -7270,8 +7270,9 @@ only screen and (max-device-width: 568px) {
   border-radius: 6px;
   font-size: 12px;
   opacity: 0.3;
-  bottom: 56px;
-  right: 180px;
+  right: 160px;
+  cursor: pointer;
+  bottom: 35px;
   position: fixed;
   z-index: 1;
 }
