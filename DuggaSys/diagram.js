@@ -1702,11 +1702,9 @@ document.addEventListener('keyup', function (e) {
 
 window.addEventListener("resize", handleResize);
 var testCount = 0;
-function handleResize() { // function to test which methods affect the grid
-    console.log(testCount); // count to see if the methods run and to differentiate between events.
-    testCount++;
+function handleResize() {
     updateRulers();
-    redrawGrid(); // Attempt at creating a function that will redraw the grid properly after resize.
+    redrawGrid();
 }
 
 /**
@@ -1714,29 +1712,15 @@ function handleResize() { // function to test which methods affect the grid
  */
 function redrawGrid()
 {
-    const pattern = document.getElementById('grid');
-    if (pattern)
-    {
-        pattern.setAttribute('patternTransform', 'scale(1)'); // Updates the pattern, same scale no change.
-    }
-    else
-    {
-        console.log("smth wrong w/ pattern"); // TODO: update error msg if redraw works.
-        return;
-    }
-
     const grid_rect = document.getElementById('grid_rect');
     if (!grid_rect)
-    { // Safety check to prevent errors.
-        console.log("grid_rect is null, cannot redraw the Grid."); // TODO: update to a better error msg.
+    {
+        console.log("grid_rect is null");
         return;
     }
     grid_rect.setAttribute('fill', 'url(#grid)')
-    grid_rect.style.overflow = 'hidden';  // Force reflow
-    setTimeout(() =>
-    {
-        grid_rect.style.overflow = 'visible';
-    }, 0); // Runs immediately
+    grid_rect.style.overflow = 'hidden';
+    grid_rect.style.overflow = 'visible';
 }
 
 /**
