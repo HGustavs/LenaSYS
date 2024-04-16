@@ -7839,8 +7839,8 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
-    str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
-    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
+    str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
+    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
     if  (line.type == 'SD' && line.innerType != SDLineType.SEGMENT) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
