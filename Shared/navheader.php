@@ -38,14 +38,28 @@
 			global $pdo;
 			$query = $pdo->prepare('SELECT updated, courseGitURL FROM course WHERE cid = :cid;');
 			$query->bindParam(':cid', $_SESSION['courseid']);
-			$query->execute();
+			
+			// Add error handling for the execute function
+			if (!$query->execute()) {
+				$errorInfo = $query->errorInfo();
+				echo "Database error: " . $errorInfo[2];
+				exit;
+			}
+			
 			$row = $query->fetch(PDO::FETCH_ASSOC);
 			
-			// Check if there is a 'courseGitURL' set for the course
-			$checkIfGithubURL = $row['courseGitURL'];
-			if ($checkIfGithubURL) {
-				$updateTime = $row['updated'];
-			} else { $updateTime = "No Github URL set"; }
+			if ($row !== false) {
+				// Now we know $row is an array and we can safely access its elements
+				$checkIfGithubURL = $row['courseGitURL'];
+				if ($checkIfGithubURL) {
+					$updateTime = $row['updated'];
+				} else {
+					$updateTime = "No Github URL set";
+				}
+			} else {
+				// $row is false, which means no data was fetched
+				$updateTime = "No data found for the given course ID";
+			}
 
 
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
