@@ -6,7 +6,9 @@ sftp-config.json
 vendor/
 *.iml
 
-gitErrorLog.txt
+log/
+
+
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -14,3 +16,4 @@ gitErrorLog.txt
 
 *diff*.txt
 *branch*.txt
+log/gitErrorLog.txt
