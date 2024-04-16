@@ -24,8 +24,8 @@ session_start();
 
 // Get attributes from db
 $opt=getOP('opt');
-$cid=getOP('cid');
-$vers=getOP('vers');
+$courseid=getOP('cid');
+$versid=getOP('vers');
 
 
 // Login is checked for function to run
