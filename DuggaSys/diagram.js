@@ -1700,9 +1700,9 @@ document.addEventListener('keyup', function (e) {
 //     drawRulerBars(scrollx, scrolly);
 // });  // original resize solution
 
-window.addEventListener("resize", test);
+window.addEventListener("resize", handleResize);
 var testCount = 0;
-function test() { // function to test which methods affect the grid
+function handleResize() { // function to test which methods affect the grid
     console.log(testCount); // count to see if the methods run and to differentiate between events.
     testCount++;
     redrawGrid(); // Attempt at creating a function that will redraw the grid properly after resize.
