@@ -31,19 +31,18 @@ $versid=getOP('vers');
 // Login is checked for function to run
 if(checklogin() && isSuperUser(getUid()) == true) {
 
-
-if(strcmp($opt,"CHGVERS")===0) {
+	if(strcmp($opt,"CHGVERS")===0) {
 
 		$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':vers', $versid);
 
-				if(!$query->execute()) {
-						$error=$query->errorInfo();
-						$debug="Error updating entries".$error[2];
-				}
-        }
-	}
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+    }
+}
 
 
 ?>
