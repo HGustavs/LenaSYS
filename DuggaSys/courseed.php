@@ -153,12 +153,12 @@ if(isset($_SESSION['uid'])){
     			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
 					<div class="form-popup" id="myForm">
 					<form action="" class="form-container">
-						<h1>Are you shure </h1>
+						<h1 style="font-size:20px; padding-bottom:20px; color:#434343;">Are you sure? </h1>
 
 
 
-						<button id="deleteCourseButton" type="button"  style="background-color: white; align-items:center;" onclick="closeForm()">YES!</button>
-						<button id="deleteCourseButton" type="button" onclick="closeForm()">NO!</button>
+						<button id="deleteCourseButtonYes" type="button" onclick="closeForm()">Yes</button>
+						<button id="deleteCourseButtonNo" type="button" onclick="closeForm()">No</button>
 					</form>
 					</div>
     		</div>
