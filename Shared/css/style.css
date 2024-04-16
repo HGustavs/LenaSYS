@@ -7257,7 +7257,7 @@ only screen and (max-device-width: 568px) {
 }
 
 .arrow:hover {
-  border-color: #FFD700;
+  border-color: var(--color-accent-hover);
   opacity: 1;
 }
 
