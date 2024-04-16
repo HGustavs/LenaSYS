@@ -1242,14 +1242,12 @@ function AJAXService(opt,apara,kind)
 		
 	}
 	else if(kind=="GROUPTOKEN") {
-
-			$.ajax({
-				url: "showDuggaservice.php",
-				type:"POST",
-				data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
-				dataType: "json"
-			});		
-			
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
+			dataType: "json"
+		});		
 	} else if(kind=="ACCESSEDDUGGA") {
 		$.ajax({
 			url: "showDuggaservice.php",
