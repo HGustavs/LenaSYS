@@ -335,6 +335,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 	}else{
 		$("#editcoursegit-url").val("");
 	}
+	$("#githubToken").val("");
 	
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
