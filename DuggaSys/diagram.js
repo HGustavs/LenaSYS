@@ -1731,7 +1731,9 @@ function redrawGrid() {
         grid_rect.style.overflow = 'visible';
     }, 0); // Runs immediately
 
-    updateContainerBounds(); // Updates rulers but only after mouse button 1 press on the diagram canvas.
+    // Updates rulers based on window size.
+    updateContainerBounds();
+    drawRulerBars(scrollx, scrolly);
 }
 
 window.onfocus = function () {
