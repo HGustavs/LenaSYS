@@ -478,6 +478,7 @@ function refreshGithubRepo(courseid, user) {
     error: function (data) {
       //Check gitfetchService for the meaning of the error code.
       switch (data.status) {
+        case 403:
         case 422:
           alert(data.responseJSON.message + "\nDid not update course");
           break;
@@ -511,6 +512,7 @@ function updateGithubRepo(githubURL, cid) {
     error: function (data) {
       //Check FetchGithubRepo for the meaning of the error code.
       switch (data.status) {
+        case 403:
         case 422:
         case 503:
           alert(data.responseJSON.message + "\nFailed to update github repo");
