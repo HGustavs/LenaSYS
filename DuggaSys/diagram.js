@@ -1880,7 +1880,7 @@ function mdown(event) {
 function ddown(event) {
     // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
-          hasPressedDelete = checkDeleteBtn();
+        hasPressedDelete = checkDeleteBtn();
     }
 
     // Used when determining time between clicks.
@@ -2613,7 +2613,6 @@ function findIndex(arr, id) {
  */
 function addObjectToData(object, stateMachineShouldSave = true) {
     data.push(object);
-    console.log("new element in data array");
     if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object), StateChange.ChangeTypes.ELEMENT_CREATED);
 }
 
