@@ -1963,7 +1963,6 @@ function ddown(event) {
         switch (mouseMode) {
             case mouseModes.POINTER:
             case mouseModes.BOX_SELECTION:
-            case mouseModes.PLACING_ELEMENT:
                 startX = event.clientX;
                 startY = event.clientY;
 
@@ -2002,31 +2001,30 @@ function ddown(event) {
 function mouseMode_onMouseUp(event) {
     if (!hasPressedDelete) {
         switch (mouseMode) {
-            case mouseModes.PLACING_ELEMENT:
-                if (event.target.id == "container") {
-                    if (ghostElement && event.button == 0) {
-                        addObjectToData(ghostElement, false);
+            case mouseModes.PLACING_ELEMENT:       
+                if (ghostElement && event.button == 0) {
+                    addObjectToData(ghostElement, false);
 
-                        // Check if the element to create would overlap others, returns if true
-                        if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
-                            displayMessage(messageTypes.ERROR, "Error: You can't create elements that overlap eachother.");
-                            console.error("Failed to create an element as it overlaps other element(s)")
+                    // Check if the element to create would overlap others, returns if true
+                    if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
+                        displayMessage(messageTypes.ERROR, "Error: You can't create elements that overlap eachother.");
+                        console.error("Failed to create an element as it overlaps other element(s)")
 
-                            // Remove added element from data as it should remain
-                            data.splice(data.length - 1, 1)
+                        // Remove added element from data as it should remain
+                        data.splice(data.length - 1, 1)
 
-                            makeGhost();
-                            showdata();
-                            return;
-                        }
-
-                        //If not overlapping
-                        stateMachine.save(StateChangeFactory.ElementCreated(ghostElement), StateChange.ChangeTypes.ELEMENT_CREATED);
                         makeGhost();
                         showdata();
+                        return;
                     }
-                    break;
+
+                    //If not overlapping
+                    stateMachine.save(StateChangeFactory.ElementCreated(ghostElement), StateChange.ChangeTypes.ELEMENT_CREATED);
+                    makeGhost();
+                    showdata();
                 }
+                break;
+                
             case mouseModes.EDGE_CREATION:
                 if (context.length > 1) {
                     // TODO: Change the static variable to make it possible to create different lines.
@@ -2174,7 +2172,7 @@ function mup(event) {
  * @description change cursor style when mouse hovering over an element.
  */
 function mouseEnter() {
-    if (!mouseButtonDown) {
+    if (!mouseButtonDown && mouseMode != mouseModes.PLACING_ELEMENT) {
         mouseOverElement = true;
         containerStyle.cursor = "pointer";
     }
@@ -2436,7 +2434,6 @@ function mouseMode_onMouseMove(event) {
             mouseOverSelection(event.clientX, event.clientY);
             break;
         default:
-            console.error(`State ${mouseMode} missing implementation at switch-case in mouseMode_onMouseMove()!`);
             break;
     }
 }
