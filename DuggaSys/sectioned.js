@@ -641,6 +641,22 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "Confirm hiding" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionHideConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm show items" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionShowConfirmBox").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
