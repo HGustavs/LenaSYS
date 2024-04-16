@@ -9,7 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 //---------------------------------------
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
-
+include "/microservices/showDuggaService/processDuggaFile.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
@@ -125,7 +125,7 @@ if(strcmp($opt,"UPDATEAU")==0){
 		$query->execute();
 	}
 }
-
+/*
 function processDuggaFiles()
 {
 	global $courseid;
@@ -245,7 +245,7 @@ function processDuggaFiles()
 	if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
 
 }
-
+*/
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
