@@ -3953,14 +3953,8 @@ function fetchGitCodeExamples(courseid){
       }
     }
   
-    fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-      //Test to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
-      //Code below shows how to decode from base64 and access actual file content. Uncomment below code to test.
-      //console.log(codeExamplesContent);
-      //var base64content = codeExamplesContent[0].content.content;
-      //var decode = atob(base64content);
-      //console.log(decode);
-      storeCodeExamples(cid, codeExamplesContent);
+    fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){ 
+      storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4046,25 +4040,37 @@ function fetchGitCodeExamples(courseid){
     });
   }
 
-function storeCodeExamples(cid, codeExamplesContent){
+function storeCodeExamples(cid, codeExamplesContent, githubURL){
   var base64;
   var decodedContent = [];
   var shaKeys = [];
   var fileNames = [];
+  var fileURL = [];
+  var filePath = [];
+  var downloadURL = [];
+  var fileType = [];
   for(i = 0; i < codeExamplesContent.length; i++){
       base64 = codeExamplesContent[i].content.content;
       decodedContent[i] = atob(base64);
       shaKeys[i] = codeExamplesContent[i].content.sha;
       fileNames[i] = codeExamplesContent[i].filename;
+      fileURL[i] = codeExamplesContent[i].content.url;
+      downloadURL[i] = codeExamplesContent[i].content.download_url;
+      filePath[i] = codeExamplesContent[i].content.path;
+      fileType[i] = codeExamplesContent[i].content.type;
   }
   //TODO store necessary data to send
   var AllJsonData = {
     codeExamplesContent: decodedContent,
     SHA: shaKeys,
-    fileNames: fileNames
+    fileNames: fileNames,
+    filePaths: filePath,
+    fileURLS: fileURL,
+    downloadURLS: downloadURL,
+    fileTypes: fileType
   }
   
-  fetch('sectioned.php?function=createDirWithCodeExamplesWeb&cid=' + cid, {
+  fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
      method: 'POST',
      body: JSON.stringify(AllJsonData),
      headers: {
