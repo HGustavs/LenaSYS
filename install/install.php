@@ -56,7 +56,7 @@
     //---------------------------------------------------------------------------------------------------
     function isPermissionsSat($crntFilePath){
       $permissionsSat = false;
-      if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0060)) {
+      if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0755)) {
         $permissionsSat = false;
       }
       else {
