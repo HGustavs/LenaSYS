@@ -155,6 +155,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 //------------------------------------------------------------------------------------------------
 $mass=array();
 $entries=array();
+$variants=array();
 $files=array();
 $duggaPages = array();
 
@@ -212,6 +213,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 				"trashcanVariant" => $rowz["vid"]
 				);
 
+			array_push($variants, html_entity_decode($rowz["variantanswer"]));
 			array_push($mass, $entryz);
 		}
 
@@ -252,8 +254,8 @@ $array = array(
 	'files' => $files,
 	'duggaPages' => $duggaPages,
 	'coursecode' => $coursecode,
-	'coursename' => $coursename
-
+	'coursename' => $coursename,
+	'variants' => $variants
 );
 
 echo json_encode($array);
