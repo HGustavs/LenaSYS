@@ -1390,7 +1390,6 @@ header td {
 }
 
 .navheader {
-  table-layout: fixed;
   height: 20px;
   margin-bottom: 10px;
   width: 100%;
@@ -1435,6 +1434,7 @@ header td {
 }
 #courseVersionDropDown{
   vertical-align: top;
+  max-width: 60px;
 }
 
 .burgerButt {
@@ -3562,6 +3562,7 @@ span.arrow {
   background-position: right;
   margin-top: 7px;
   margin-left: 3px;
+  width: 90%;
 }
 
 /* Course version dropdown */
