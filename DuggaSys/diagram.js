@@ -1704,23 +1704,6 @@ window.addEventListener("resize", handleResize);
 var testCount = 0;
 function handleResize() {
     updateRulers();
-    // redrawGrid();
-}
-
-/**
- * @description Used to update diagram grid on window resize.
- */
-function redrawGrid()
-{
-    const grid_rect = document.getElementById('grid_rect');
-    if (!grid_rect)
-    {
-        console.log("grid_rect is null");
-        return;
-    }
-    grid_rect.setAttribute('fill', 'url(#grid)')
-    grid_rect.style.overflow = 'hidden';
-    grid_rect.style.overflow = 'visible';
 }
 
 /**
