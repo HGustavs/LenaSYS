@@ -37,6 +37,10 @@
 			insertTokenToMetaData($_POST['token']);
 			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
 		}
+		else if($_POST['action'] == 'insertTokenToMetaData'){
+
+			insertTokenToMetaData($_POST['token']);
+		}
 	};
 
 	// -------------==============######## Creating New Course ###########==============-------------
@@ -113,12 +117,6 @@
 		{
 
 			$query2 = $pdolite->prepare('UPDATE gitToken SET gitToken=:token WHERE tid=1');
-			$path='C:\Users\Användaren\Desktop\own thoughts OP\msg.txt';
-			file_put_contents($path, '');
-			$txt = "IN IF 1, NEW TOKEN: ".$token;
-
-			fwrite($myfile, $txt." ".$old_token);
-			fclose($myfile);
 			$query2->bindParam(':token', $token);
 			$query2->execute();
 
