@@ -3829,9 +3829,6 @@ function validateForm(formid) {
       if (fetchGitHubRepo(repoLink)) {
         AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
-        if(repoKey) {
-          console.log("repoKey: " + repoKey); 
-        }
         $("#githubPopupWindow").css("display", "none");
         updateGithubRepo(repoLink, cid, repoKey);
       }

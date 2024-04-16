@@ -427,6 +427,7 @@ function editSettings(){
 
 function updateSettings() {
 	const messageElement = document.getElementById("motd");
+	const token = document.getElementById("githubToken").value;
 	const readOnlyCheckbox = document.getElementById("readonly");
 	const popupContainer = document.getElementById("editSettings");
 
@@ -436,9 +437,35 @@ function updateSettings() {
 		readonly = 0;
 	}
 	if (window.bool9 === true) {
+		$.ajax({
+			async: false,
+			url: "../DuggaSys/gitcommitService.php",
+			type: "POST",
+			data: {'token':token, 'action':'insertTokenToMetaData'},
+			success: function() { 
+				//Returns true if the data and JSON is correct
+				dataCheck = true;
+			},
+			error: function(data){
+				//Check FetchGithubRepo for the meaning of the error code.
+				switch(data.status){
+					case 422:
+						alert(data.responseJSON.message + "\nDid not create/update token");
+						break;
+					case 503:
+						alert(data.responseJSON.message + "\nDid not create/update token");
+						break;
+					default:
+						alert("Something went wrong...");
+				}
+				 dataCheck = false;
+			}
+		});
+		
 		alert('Version updated');
 		popupContainer.style.display = "none";
 		AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
+		return dataCheck;
 	  } else {
 		alert("You have entered incorrect information");
 	  }
