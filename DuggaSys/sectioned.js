@@ -3960,6 +3960,7 @@ function fetchGitCodeExamples(courseid){
       //var base64content = codeExamplesContent[0].content.content;
       //var decode = atob(base64content);
       //console.log(decode);
+      storeCodeExamples(cid, codeExamplesContent);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4045,6 +4046,40 @@ function fetchGitCodeExamples(courseid){
     });
   }
 
+function storeCodeExamples(cid, codeExamplesContent){
+  var base64;
+  var decodedContent = [];
+  var shaKeys = [];
+  var fileNames = [];
+  for(i = 0; i < codeExamplesContent.length; i++){
+      base64 = codeExamplesContent[i].content.content;
+      decodedContent[i] = atob(base64);
+      shaKeys[i] = codeExamplesContent[i].content.sha;
+      fileNames[i] = codeExamplesContent[i].filename;
+  }
+  //TODO store necessary data to send
+  var AllJsonData = {
+    codeExamplesContent: decodedContent,
+    SHA: shaKeys,
+    fileNames: fileNames
+  }
+  
+  fetch('sectioned.php?function=createDirWithCodeExamplesWeb&cid=' + cid, {
+     method: 'POST',
+     body: JSON.stringify(AllJsonData),
+     headers: {
+      'Content-Type': 'application/json'
+     }
+    }) 
+    .then(response => response.text())
+    .then(data => {
+        // Handle the response from the PHP
+        console.log('Response from PHP:', data);
+    })
+    .catch(error => {
+        console.error('Error calling PHP function:', error);
+    });
+  }
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
     $(this).css("background", "#ccc");

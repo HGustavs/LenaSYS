@@ -682,7 +682,39 @@
 				
 		</div>
 
+<?php
 
+function createDirWithCodeExamplesWeb($cid, $codeExamplesContent){
+    //TODO Store in db here.
+    //Maybe include_once 'gitfetchService.php' and gitcommitService.php'
+	//Check with group in issue 14391
+	//If not maybe call ajax from js
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $cid = $_GET['cid'];
+	$postDataContent = file_get_contents('php://input');
+	$requestDataContent = json_decode($postDataContent, true);
+	$codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
+	$SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
+	$fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
+	echo $cid;
+	print_r($codeExamplesContent[0]);
+	print_r($SHA);
+	print_r($fileNames);
+
+	$path = '../../LenaSYS/courses/'. $cid;
+     // Creates the directory for the corresponding course if it doesnt exist.
+    if (!file_exists($path)) {
+       mkdir($path, 0777, true);
+    }
+	
+    for($i = 0; $i < count($codeExamplesContent); $i++){
+       file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
+	}
+    //TODO create a error check, if files and dir are created successfully, call function to store in db
+}
+?>
 </body>
 
 </html>
