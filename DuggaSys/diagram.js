@@ -7882,27 +7882,20 @@ function drawLine(line, targetGhost = false) {
         var canvasContext = canvas.getContext('2d');
         canvasContext.font = `${height}px ${canvasContext.font.split('px')[1]}`;
         var textWidth = canvasContext.measureText(line.label).width;
-        var centerX = (tx + fx) / 2;
-        var centerY = (ty + fy) / 2;
-        var lowY = Math.min(ty, fy);
-        var highY = Math.max(ty, fy);
-        var lowX = Math.min(tx, fx);
-        var highX = Math.max(tx, fx);
-        var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
-        var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        var lineLabel = {
+
+        var label = {
             id: line.id + "Label",
             labelLineID: line.id,
-            centerX: centerX,
-            centerY: centerY,
+            centerX: (tx + fx) / 2,
+            centerY: (ty + fy) / 2,
             width: textWidth + zoomfact * 4,
             height: textheight * zoomfact + zoomfact * 3,
             labelMovedX: 0,
             labelMovedY: 0,
-            lowY: lowY,
-            highY: highY,
-            lowX: lowX,
-            highX: highX,
+            lowY: Math.min(ty, fy),
+            highY: Math.max(ty, fy),
+            lowX: Math.min(tx, fx),
+            highX: Math.max(ty, fy),
             percentOfLine: 0,
             displacementX: 0,
             displacementY: 0,
@@ -7913,109 +7906,74 @@ function drawLine(line, targetGhost = false) {
             lineGroup: 0,
             labelMoved: false
         };
+
         if (!!targetLabel) var rememberTargetLabelID = targetLabel.id;
 
-        if (!!lineLabelList[findIndex(lineLabelList, lineLabel.id)]) {
-            lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedX;
-            lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedY;
-            lineLabel.labelGroup = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelGroup;
-            lineLabel.labelMoved = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMoved;
-            calculateProcentualDistance(lineLabel);
-            if (lineLabel.labelGroup == 0) {
-                lineLabel.displacementX = 0;
-                lineLabel.displacementY = 0;
-            } else if (lineLabel.labelGroup == 1) {
-                lineLabel.displacementX = calculateLabelDisplacement(lineLabel).storeX * zoomfact;
-                lineLabel.displacementY = calculateLabelDisplacement(lineLabel).storeY * zoomfact;
-            } else if (lineLabel.labelGroup == 2) {
-                lineLabel.displacementX = -calculateLabelDisplacement(lineLabel).storeX * zoomfact;
-                lineLabel.displacementY = -calculateLabelDisplacement(lineLabel).storeY * zoomfact;
+        if (!!lineLabelList[findIndex(lineLabelList, label.id)]) {
+            label.labelMovedX = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedX;
+            label.labelMovedY = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedY;
+            label.labelGroup = lineLabelList[findIndex(lineLabelList, label.id)].labelGroup;
+            label.labelMoved = lineLabelList[findIndex(lineLabelList, label.id)].labelMoved;
+            calculateProcentualDistance(label);
+            if (label.labelGroup == 0) {
+                label.displacementX = 0;
+                label.displacementY = 0;
+            } else if (label.labelGroup == 1) {
+                label.displacementX = calculateLabelDisplacement(label).storeX * zoomfact;
+                label.displacementY = calculateLabelDisplacement(label).storeY * zoomfact;
+            } else if (label.labelGroup == 2) {
+                label.displacementX = -calculateLabelDisplacement(label).storeX * zoomfact;
+                label.displacementY = -calculateLabelDisplacement(label).storeY * zoomfact;
             }
-            lineLabelList[findIndex(lineLabelList, lineLabel.id)] = lineLabel;
+            lineLabelList[findIndex(lineLabelList, label.id)] = label;
         } else {
-            lineLabelList.push(lineLabel);
+            lineLabelList.push(label);
         }
+
         if (!!rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
         // Label position for recursive edges
-        const labelPositionX = labelPosX + lineLabel.labelMovedX + lineLabel.displacementX + zoomfact
-        const labelPositionY = labelPosY + lineLabel.labelMovedY + lineLabel.displacementY - zoomfact
+        var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
+        var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
+        const labelPositionX = labelPosX + label.labelMovedX + label.displacementX + zoomfact
+        const labelPositionY = labelPosY + label.labelMovedY + label.displacementY - zoomfact
 
         //Add label with styling based on selection.
-        if (isSelected) {
-            if (line.kind === "Recursive") {
-                //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-                str += `<rect 
-                    class='text cardinalityLabel' 
-                    id=${line.id + 'Label'} 
-                    x='${((fx + length + (30 * zoomfact))) - textWidth / 2}' 
-                    y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}' 
-                    width='${(textWidth + zoomfact * 4)}' 
-                    height='${textheight * zoomfact}'/>`;
-                str += `<text 
-                    class='cardinalityLabelText' 
-                    dominant-baseline='middle' 
-                    text-anchor='middle' 
-                    x='${(fx + length + (30 * zoomfact))}' 
-                    y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}' 
-                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'> 
-                    ${line.label} 
-                    </text>`;
-            } else {
-                str += `<rect 
-                    class='text cardinalityLabel' 
-                    id=${line.id + 'Label'}
-                    x='${labelPositionX}' 
-                    y='${labelPositionY}' 
-                    width='${(textWidth + zoomfact * 4)}' 
-                    height='${textheight * zoomfact + zoomfact * 3}'/>`;
-                str += `<text 
-                    class='cardinalityLabelText' 
-                    dominant-baseline='middle' 
-                    text-anchor='middle' 
-                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
-                    x='${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}' 
-                    y='${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}'> 
-                    ${line.label} 
-                    </text>`;
-            }
+        if (line.kind === "Recursive") {
+            str += `<rect
+                class='text cardinalityLabel'
+                id='${line.id + 'Label'}'
+                x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
+                y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
+                width='${(textWidth + zoomfact * 4)}'
+                height='${textheight * zoomfact}'/>`;
+            str += `<text
+                class='cardinalityLabelText'
+                dominant-baseline='middle'
+                text-anchor='middle'
+                x='${(fx + length + (30 * zoomfact))}'
+                y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
+                ${line.label}
+                </text>`;
         } else {
-            if (line.kind === "Recursive") {
-                str += `<rect 
-                    class='text cardinalityLabel' 
-                    id='${line.id + 'Label'}' 
-                    x='${((fx + length + (30 * zoomfact))) - textWidth / 2}' 
-                    y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}' 
-                    width='${(textWidth + zoomfact * 4)}' 
-                    height='${textheight * zoomfact}'/>`;
-                str += `<text 
-                    class='cardinalityLabelText' 
-                    dominant-baseline='middle' 
-                    text-anchor='middle' 
-                    x='${(fx + length + (30 * zoomfact))}' 
-                    y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}' 
-                    style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
-                    ${line.label} 
-                    </text>`;
-            } else {
-                str += `<rect 
-                    class='text cardinalityLabel' 
-                    id=${line.id + 'Label'} 
-                    x='${labelPositionX}' 
-                    y='${labelPositionY}' 
-                    width='${(textWidth + zoomfact * 4)}' 
-                    height='${textheight * zoomfact + zoomfact * 3}'/>`;
-                str += `<text 
-                    class='cardinalityLabelText' 
-                    dominant-baseline='middle' 
-                    text-anchor='middle' 
-                    style='font-size:${Math.round(zoomfact * textheight)}px;' 
-                    x='${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}' 
-                    y='${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}'> 
-                    ${line.label} 
-                    </text>`;
-            }
+            str += `<rect
+                class='text cardinalityLabel'
+                id=${line.id + 'Label'}
+                x='${labelPositionX}'
+                y='${labelPositionY}'
+                width='${(textWidth + zoomfact * 4)}'
+                height='${textheight * zoomfact + zoomfact * 3}'/>`;
+            str += `<text
+                class='cardinalityLabelText'
+                dominant-baseline='middle'
+                text-anchor='middle'
+                style='font-size:${Math.round(zoomfact * textheight)}px;'
+                x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
+                y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
+                ${line.label}
+                </text>`;
         }
     }
     return str;
@@ -8078,7 +8036,7 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
             class='text cardinalityLabel' 
             id='${line.id + labelStr}' 
             x='${x - textWidth / 2}' 
-            y='${x - (textheight * zoomfact + zoomfact * 3) / 2}' 
+            y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
             width='${textWidth + 2}' 
             height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
             <text 
@@ -11465,7 +11423,6 @@ function calculateProcentualDistance(objectLabel, x, y) {
 
 /**
  * @description calculates how the label should be displacesed
- * @param {Interger} labelObject the label that should be displaced
  */
 function calculateLabelDisplacement(labelObject) {
     var diffrenceX = labelObject.highX - labelObject.lowX;
