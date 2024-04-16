@@ -1358,6 +1358,7 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
+    document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // onSetup();
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -1805,7 +1806,6 @@ function mdown(event) {
     // If no line, label or delete button was clicked, react to mouse down on container
     if (pointerState != pointerStates.CLICKED_LINE && pointerState != pointerStates.CLICKED_LABEL && !hasPressedDelete) {
         if (event.target.id == "container") {
-            hidePlacementType();
             switch (mouseMode) {
                 case mouseModes.POINTER:
                     sscrollx = scrollx;
@@ -1875,6 +1875,10 @@ function mdown(event) {
             startY = event.clientY;
         }
     }
+    if(!event.target.parentElement.classList.contains("placementTypeBoxIcons")){
+        hidePlacementType();
+    }
+
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
 }
