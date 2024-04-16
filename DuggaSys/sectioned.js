@@ -4078,10 +4078,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
      }
     }) 
     .then(response => response.text())
-    .then(data => {
-        // Handle the response from the PHP
-        console.log('Response from PHP:', data);
-    })
+    .then(data => {})
     .catch(error => {
         console.error('Error calling PHP function:', error);
     });
