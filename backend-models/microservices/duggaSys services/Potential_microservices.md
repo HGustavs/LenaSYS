@@ -84,7 +84,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - editBoxTitle __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
 - deliteExample
 - createNewCourse
-- createCourseVersion
+- createCourseVersion __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_courseed
 - changeActiveCourseVersion_courseed
 - copyCourseVersion
@@ -489,8 +489,8 @@ Uses service __selectFromTableCourse__ to _get_ information it requires from __c
 <br>
 
 ### createCourseVersion
-Uses service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
-Uses the services __setAsActiveCourse__ to change the content of these columns:
+Uses database service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
+Uses database service __setAsActiveCourse__ to change the content of these columns:
 - activeversion
 
 <br>
