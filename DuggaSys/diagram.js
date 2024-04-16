@@ -1021,6 +1021,7 @@ const colorMap = {
     "Light royal blue": "#648fff",
     "Pink": "#DC267F",
     "Dark purple": "#614875",
+    "Purple grey": "#927b9e",
     "Orange": "#FFB000",
     "Orange-red": "#FE6100",
     "Black": "#000000",
