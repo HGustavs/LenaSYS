@@ -924,7 +924,7 @@ const IELineIcons = {//TODO: Replace with actual icons for the dropdown
     ZERO_MANY: "0-M",
     ZERO_ONE: "0-1",
     ONE: "1",
-    FORCEDONE: "1!",
+    FORCED_ONE: "1!",
     ONE_MANY: "1-M",
     MANY: "M",
     WEAK: "Weak"
@@ -944,6 +944,74 @@ const SDLineType = {
     STRAIGHT: "Straight",
     SEGMENT: "Segment"
 }
+
+/**
+ * @description Polyline [x, y] coordinates of a line icon. For all element pair orientations
+ * @type {{BT: number[][], LR: number[][], RL: number[][], TB: number[][]}}
+ */
+const TRIANGLE = {
+    'TB': [[-10, -20], [0, 0], [10, -20], [-10, -20]],
+    'BT': [[-10, 20], [0, 0], [10, 20], [-10, 20]],
+    'LR': [[-20, -10], [0, 0], [-20, 10], [-20, -10]],
+    'RL': [[20, -10], [0, 0], [20, 10], [20, -10]]
+}
+const WEAK_TRIANGLE = {
+    'TB': [[-10, -5], [0, -25], [10, -5], [-10, -5]],
+    'BT': [[-10, 5], [0, 25], [10, 5], [-10, 5]],
+    'LR': [[-5, -10], [-25, 0], [-5, 10], [-5, -10]],
+    'RL': [[5, -10], [25, 0], [5, 10], [5, -10]],
+}
+const DIAMOND = {
+    'TB': [[-10, -20], [0, 0], [10, -20], [0, -40], [-10, -20]],
+    'BT': [[-10, 20], [0, 0], [10, 20], [0, 40], [-10, 20]],
+    'RL': [[20, -10], [0, 0], [20, 10], [40, 0], [20, -10]],
+    'LR': [[-20, -10], [0, 0], [-20, 10], [-40, 0], [-20, -10]],
+}
+const MANY = {
+    'TB': [[-10, 5], [0, -15], [10, 5]],
+    'BT': [[-10, -5], [0, 15], [10, -5]],
+    'LR': [[5, -10], [-15, 0], [5, 10]],
+    'RL': [[-5, -10], [15, 0], [-5, 10]],
+}
+const ARROW = {
+    'TB': [[-10, -20], [0, 0], [10, -20]],
+    'BT': [[-10, 20], [0, 0], [10, 20]],
+    'LR': [[-20, -10], [0, 0], [-20, 10]],
+    'RL': [[20, -10], [0, 0], [20, 10]]
+}
+const SD_ARROW = {
+    'TB': [[-5, -10], [0, 0], [5, -10], [-5, -10]],
+    'BT': [[-5, 10], [0, 0], [5, 10], [-5, 10]],
+    'LR': [[-10, -5], [0, 0], [-10, 5], [-10, -5]],
+    'RL': [[10, -5], [0, 0], [10, 5], [10, -5]],
+}
+
+/**
+ *@description Gives x1, y1, x2, y2 position of a line for a line icon. For all element pair orientations
+ */
+const iconLineDirections = (a, b) => ({
+    'TB': [-a, -b, a, -b],
+    'BT': [-a, b, a, b],
+    'LR': [-b, -a, -b, a],
+    'RL': [b, -a, b, a],
+});
+/**
+ *@description Gives x, y coordinates and radius of a cricle for a line icon. For all element pair orientations
+ */
+const iconCircleDirections = (a) => ({
+    'TB': [0, -a, 8],
+    'BT': [0, a, 8],
+    'LR': [-a, 0, 8],
+    'RL': [a, 0, 8],
+});
+
+/**
+ * @description Coordinates for line icons
+ * @type {{BT: (number|*)[], LR: (number|*)[], RL: (*|number)[], TB: (number|*)[]}}
+ */
+const ONE_LINE = iconLineDirections(10, 10);
+const TWO_LINE = iconLineDirections(10, 20);
+const CIRCLE = iconCircleDirections(25);
 
 //#endregion ===================================================================================
 //#region ================================ GLOBAL VARIABLES ====================================
@@ -7577,7 +7645,6 @@ function sortElementAssociations(element) {
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
-
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
 
     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
@@ -7749,11 +7816,7 @@ function preProcessLine(line) {
             line.endIcon = 'ARROW';
         }
 
-        if (isClose(felem.cx, telem.cx, felem.cy, telem.cy, zoomfact)) {
-            line.innerType = SDLineType.STRAIGHT;
-        } else {
-            line.innerType = SDLineType.SEGMENT;
-        }
+        line.innerType = SDLineType.STRAIGHT;
     }
 }
 
@@ -7766,875 +7829,153 @@ function preProcessLine(line) {
  * @param {boolean} targetGhost Is the targeted line an ghost line
  */
 function drawLine(line, targetGhost = false) {
-    var felem, telem, dx, dy;
-    var str = "";
+    // Element line is drawn from/to
+    let felem = data[findIndex(data, line.fromID)];
+    let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
 
-    var lengthConstant = 1; // Determines how "far inwards" on the element the line should have its origin and its end points.
-    var lengthConstantSD_Y = 20;
-    var x1Offset = 0;
-    var x2Offset = 0;
-    var y1Offset = 0;
-    var y2Offset = 0;
+    let str = "";
+    let strokeDash = (line.kind == "Dashed") ? "10" : "0";
+    let lineColor = isDarkTheme() ? '#FFFFFF' : '#000000';
+    let isSelected = contextLine.includes(line);
 
+    if (isSelected) lineColor = selectedColor;
 
-    if (line.kind == "Dashed") {
-        var strokeDash = "10";
-    } else {
-        var strokeDash = "0";
-    }
+    let fx, fy, tx, ty, offset;
+    [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
-    if (isDarkTheme()) {
-        var lineColor = '#FFFFFF';
-    } else {
-        var lineColor = '#000000';
-    }
+    line.type = (telem.type == 'NOTE') ? telem.type : felem.type;
+    if (line.type == 'NOTE') strokeDash = "10";
+    if (targetGhost && line.type == 'SD') line.endIcon = "ARROW";
 
-    //ineColor = '#000000';
-
-    if (contextLine.includes(line)) {
-        lineColor = selectedColor;
-    }
-    felem = data[findIndex(data, line.fromID)];
-
-    // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
-    telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
-
-    // Draw each line - compute end coordinate from position in list compared to list count
-    fx = felem.cx;
-    fy = felem.cy;
-    tx = telem.cx;
-    ty = telem.cy;
-
-    const elemsAreClose = isClose(
-        (fx + x1Offset),
-        (tx + x2Offset),
-        (fy + y1Offset),
-        (ty + y2Offset),
-        zoomfact
-    );
-
-    // Collect coordinates
-    if (line.ctype == "BT") {
-        fy = felem.y2;
-        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.bottom.length + 1)) * (felem.bottom.indexOf(line.id) + 1));
-        ty = telem.y1;
-    } else if (line.ctype == "TB") {
-        fy = felem.y1;
-        if (felem.kind == "EREntity") fx = felem.x1 + (((felem.x2 - felem.x1) / (felem.top.length + 1)) * (felem.top.indexOf(line.id) + 1));
-        ty = telem.y2;
-    } else if (line.ctype == "RL") {
-        fx = felem.x2;
-        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.right.length + 1)) * (felem.right.indexOf(line.id) + 1));
-        tx = telem.x1;
-    } else if (line.ctype == "LR") {
-        fx = felem.x1;
-        if (felem.kind == "EREntity") fy = felem.y1 + (((felem.y2 - felem.y1) / (felem.left.length + 1)) * (felem.left.indexOf(line.id) + 1));
-        tx = telem.x2;
-    }
-
-    // Set line end-point in center of UMLRelations.
-    if (felem.kind == "UMLRelation") {
-        fx = felem.cx;
-        fy = felem.cy;
-    } else if (telem.kind == "UMLRelation") {
-        tx = telem.cx;
-        ty = telem.cy;
-    }
-
-    // Overwrite line positioning on recursive relations (2 lines pointing to same EREntity)
-    var connections = felem.neighbours[telem.id].length;
-    if (connections === 2) {
-        var isFirst = felem.neighbours[telem.id][0].id === line.id;
-        var fromRelation = felem.kind === "ERRelation";
-        lengthConstant = 0;
-
-        if (fromRelation) {
-            if (line.ctype == "BT") {
-                fy = felem.cy;
-                fx = (isFirst) ? felem.x1 : felem.x2;
-            } else if (line.ctype == "TB") {
-                fy = felem.cy;
-                fx = (isFirst) ? felem.x1 : felem.x2;
-            } else if (line.ctype == "RL") {
-                fx = felem.cx;
-                fy = (isFirst) ? felem.y1 : felem.y2;
-            } else if (line.ctype == "LR") {
-                fx = felem.cx;
-                fy = (isFirst) ? felem.y1 : felem.y2;
-            }
-
-            if (isFirst) {
-                telem.recursivePos = getPoint(tx, ty);
-            } else {
-                tx = telem.recursivePos.x;
-                ty = telem.recursivePos.y;
-                delete telem.recursivePos;
-            }
-
-        } else {
-            if (line.ctype == "BT") {
-                ty = telem.cy;
-                tx = (isFirst) ? telem.x1 : telem.x2;
-            } else if (line.ctype == "TB") {
-                ty = telem.cy;
-                tx = (isFirst) ? telem.x1 : telem.x2;
-            } else if (line.ctype == "RL") {
-                tx = telem.cx;
-                ty = (isFirst) ? telem.y1 : telem.y2;
-            } else if (line.ctype == "LR") {
-                tx = telem.cx;
-                ty = (isFirst) ? telem.y1 : telem.y2;
-            }
-
-            if (isFirst) {
-                felem.recursivePos = getPoint(fx, fy);
-            } else {
-                fx = felem.recursivePos.x;
-                fy = felem.recursivePos.y;
-                delete felem.recursivePos;
-            }
-        }
-    }
-
-    // Used to draw the lines a bit longer to get rid of white-spaces.
-    if ((fx > tx) && (line.ctype == "LR")) {
-        x1Offset = lengthConstant;
-        x2Offset = -lengthConstant;
-    } else if ((fx < tx) && (line.ctype == "RL")) {
-        x1Offset = -lengthConstant;
-        x2Offset = lengthConstant;
-    } else if ((fy > ty) && (line.ctype == "TB")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
-            y1Offset = lengthConstantSD_Y;
-            y2Offset = -lengthConstantSD_Y;
-        } else {
-            y1Offset = lengthConstant;
-            y2Offset = -lengthConstant;
-        }
-    } else if ((fy < ty) && (line.ctype == "BT")) {
-        if (felem.type == 'SD' || telem.type == 'SD' || felem.type == 'IE' || telem.type == 'IE') {
-            y1Offset = -lengthConstantSD_Y;
-            y2Offset = lengthConstantSD_Y;
-        } else {
-            y1Offset = -lengthConstant;
-            y2Offset = lengthConstant;
-        }
-    }
-
-    // Do not draw the lines longer for UMLRelations.
-    if (felem.kind == "UMLRelation") {
-        x1Offset = 0;
-        y1Offset = 0;
-    } else if (telem.kind == "UMLRelation") {
-        x2Offset = 0;
-        y2Offset = 0;
-    }
-    /* if (felem.type != 'ER' || telem.type != 'ER') {
-        line.type = 'UML';
-    } else {
-        line.type = 'ER';
-    } */
-    //gives the lines the correct type based on the from and to element.
-    if ((felem.type == 'NOTE') || (telem.type == 'NOTE')) {
-        line.type = 'NOTE';
-        var strokeDash = "10";
-    } else if ((felem.type == 'SD') || (telem.type == 'SD')) {
-        line.type = 'SD';
-        if (targetGhost) {
-            line.endIcon = "ARROW";
-        }
-    } else if ((felem.type == "IE") || (telem.type == 'IE')) {
-        line.type = "IE"
-    } else if ((felem.type == 'ER') || (telem.type == 'ER')) {
-        line.type = 'ER';
-    } else {
-        line.type = 'UML';
-    }
-    // If element is UML, IE or SD (use straight line segments instead)
-    if (felem.type != 'ER' || telem.type != 'ER') {
-        var dx = ((fx + x1Offset) - (tx + x2Offset)) / 2;
-        var dy = ((fy + y1Offset) - (ty + y2Offset)) / 2;
-
-        if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-            if (line.kind == "Recursive") {
-                const length = 80 * zoomfact;
-                const startX = fx - 10 * zoomfact;
-                const startY = fy - 10 * zoomfact;
-                const endX = fx - 25 * zoomfact;
-                const endY = fy - 15 * zoomfact;
-                const cornerX = fx + length;
-                const cornerY = fy - length;
-
-
-                str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset - 17 * zoomfact}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}'/>`;
-                str += `<line id='${line.id}' class='lineColor' x1='${startX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${startY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-                str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${startY + y1Offset}' x2='${cornerX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-                str += `<line id='${line.id}' class='lineColor' x1='${cornerX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${cornerY + y1Offset}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-                str += `<line id='${line.id}' class='lineColor' x1='${endX + x1Offset}' y1='${cornerY + y1Offset}' x2='${endX + x1Offset}' y2='${endY + y1Offset - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-                str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + x1Offset - 5 * zoomfact},${endY + y1Offset - 44 * zoomfact},${endX + x1Offset},${endY + y1Offset - 34 * zoomfact},${endX + x1Offset + 5 * zoomfact},${endY + y1Offset - 44 * zoomfact}' fill='${lineColor}'/>`;
-
-            } else {
-                if ((fy > ty) && (line.ctype == "TB")) {
-                    y1Offset = 1;
-                    y2Offset = -7 + 3 / zoomfact;
-                } else if ((fy < ty) && (line.ctype == "BT")) {
-                    y1Offset = -7 + 3 / zoomfact;
-                    y2Offset = 1;
-                }
-                str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset * zoomfact}' y1='${fy + y1Offset * zoomfact}' x2='${tx + x2Offset * zoomfact}' y2='${ty + y2Offset * zoomfact}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-            }
-        } else if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset},${fy + y1Offset - dy} ${tx + x2Offset},${ty + y2Offset + dy} ${tx + x2Offset},${ty + y2Offset}' `;
-            str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
-            str += `fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-
-        } else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline id='${line.id}' class='lineColor' points='${fx + x1Offset},${fy + y1Offset} ${fx + x1Offset - dx},${fy + y1Offset} ${tx + x2Offset + dx},${ty + y2Offset} ${tx + x2Offset},${ty + y2Offset}' `;
-            str += `x1='${fx + x1Offset}' x2='${tx + x2Offset}' y1='${fy + y1Offset}' y2='${ty + y2Offset}' `
-            str += `fill = none stroke = '${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
-        }
-        //Line creation when adding icons
-        var iconSizeStart;
-        var iconSizeEnd;
-
-        switch (line.startIcon) {
-            case IELineIcons.ZERO_ONE:
-                if (line.ctype == 'TB') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy + 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 5 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx - 20 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 5 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 5 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 20 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 5 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 5 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 30;
-                break;
-            case IELineIcons.ONE:
-                if (line.ctype == 'TB') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 20;
-                break;
-            case IELineIcons.FORCEDONE:
-                if (line.ctype == 'TB') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 30 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 30 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 30 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 30;
-                break;
-            case IELineIcons.WEAK:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy - 25 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx}' cy='${fy - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy + 25 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx}' cy='${fy + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 25 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx - 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 25 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx + 5 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle cx='${fx + 30 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 40;
-                break;
-            case IELineIcons.MANY:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 20;
-                break;
-            case IELineIcons.ZERO_MANY:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx}' cy='${fy + 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx - 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${fx + 25 * zoomfact}' cy='${fy}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 30;
-                break;
-            case IELineIcons.ONE_MANY:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx} ${fy - 15 * zoomfact},${fx + 10 * zoomfact} ${fy + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy - 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy + 15 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 10 * zoomfact}' y1='${fy + 20 * zoomfact}' x2='${fx + 10 * zoomfact}' y2='${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 15 * zoomfact} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx - 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx - 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx + 15 * zoomfact} ${fy},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${fx + 20 * zoomfact}' y1='${fy - 10 * zoomfact}' x2='${fx + 20 * zoomfact}' y2='${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 20;
-                break;
-            case UMLLineIcons.ARROW:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 20;
-                break;
-            case UMLLineIcons.TRIANGLE:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy + zoomfact},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy - 0.5 * zoomfact},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx + zoomfact} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx - 0.5 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 20;
-                break;
-            case UMLLineIcons.BLACK_TRIANGLE:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-black-triangle' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 20;
-                break;
-            case UMLLineIcons.WHITEDIAMOND:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 40;
-                break;
-            case UMLLineIcons.BLACKDIAMOND:
-                if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy - 20 * zoomfact},${fx} ${fy - 40 * zoomfact},${fx - 10 * zoomfact} ${fy - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 20 * zoomfact},${fx} ${fy + 40 * zoomfact},${fx - 10 * zoomfact} ${fy + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx - 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx - 20 * zoomfact} ${fy + 10 * zoomfact},${fx - 40 * zoomfact} ${fy},${fx - 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${fx + 20 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 20 * zoomfact} ${fy + 10 * zoomfact},${fx + 40 * zoomfact} ${fy},${fx + 20 * zoomfact} ${fy - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeStart = 40;
-                break;
-            case SDLineIcons.ARROW:
-                var iconSizeStart = 20;
-
-                // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
-
-                    let base = calculateArrowBase(to, from, iconSizeStart / 2 * zoomfact);
-                    let right = rotateArrowPoint(base, from, true);
-                    let left = rotateArrowPoint(base, from, false);
-
-                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${from.x} ${from.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else {
-                    if (line.ctype == 'TB') {
-                        fy = fy + zoomfact;
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy - 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy - 10 * zoomfact},${fx - 5 * zoomfact} ${fy - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    } else if (line.ctype == 'BT') {
-                        fy = fy - 5 * zoomfact
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 5 * zoomfact} ${fy + 10 * zoomfact},${fx} ${fy},${fx + 5 * zoomfact} ${fy + 10 * zoomfact},${fx - 5 * zoomfact} ${fy + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    } else if (line.ctype == 'LR') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx - 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx - 10 * zoomfact} ${fy + 5 * zoomfact},${fx - 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    } else if (line.ctype == 'RL') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${fx + 10 * zoomfact} ${fy - 5 * zoomfact},${fx} ${fy},${fx + 10 * zoomfact} ${fy + 5 * zoomfact},${fx + 10 * zoomfact} ${fy - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                }
-                iconSizeStart = 40;
-                break;
-            default:
-                iconSizeStart = 0;
-                break;
-        }
-        switch (line.endIcon) {
-            case IELineIcons.ZERO_ONE:
-                if (line.ctype == 'BT') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty + 20 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 5 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx - 20 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 5 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 5 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 20 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx + 5 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 5 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 30;
-                break;
-            case IELineIcons.ONE:
-                if (line.ctype == 'BT') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<line id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 20;
-                break;
-            case IELineIcons.FORCEDONE:
-                if (line.ctype == 'BT') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 30 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 30 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 30 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 30 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 30 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx + 30 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 30 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 30;
-                break;
-            case IELineIcons.WEAK:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty - 25 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty + 25 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty + 5 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty + 30 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 25 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx - 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 25 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx + 5 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 30 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 40;
-                break;
-            case IELineIcons.MANY:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 20;
-                break;
-            case IELineIcons.ZERO_MANY:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty - 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx}' cy='${ty + 25 * zoomfact}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx - 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<circle class='diagram-umlicon-darkmode' cx='${tx + 25 * zoomfact}' cy='${ty}' r='10' fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 30;
-                break;
-            case IELineIcons.ONE_MANY:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx} ${ty - 15 * zoomfact},${tx + 10 * zoomfact} ${ty + 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty - 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty + 15 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 10 * zoomfact}' y1='${ty + 20 * zoomfact}' x2='${tx + 10 * zoomfact}' y2='${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 15 * zoomfact} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx - 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx - 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx + 15 * zoomfact} ${ty},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    str += `<line class='diagram-umlicon-darkmode' x1='${tx + 20 * zoomfact}' y1='${ty - 10 * zoomfact}' x2='${tx + 20 * zoomfact}' y2='${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 20;
-                break;
-            case UMLLineIcons.ARROW:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact}' fill=none stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 20;
-                break;
-            case UMLLineIcons.TRIANGLE:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty + zoomfact},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty - 0.5 * zoomfact},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx + zoomfact} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-triangle' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx - 0.5 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 20;
-                break;
-            case UMLLineIcons.BLACK_TRIANGLE:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 20;
-                break;
-            case UMLLineIcons.WHITEDIAMOND:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#ffffff' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 40;
-                break;
-            case UMLLineIcons.BLACKDIAMOND:
-                if (line.ctype == 'BT') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty - 20 * zoomfact},${tx} ${ty - 40 * zoomfact},${tx - 10 * zoomfact} ${ty - 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'TB') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 20 * zoomfact},${tx} ${ty + 40 * zoomfact},${tx - 10 * zoomfact} ${ty + 20 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'RL') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx - 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx - 20 * zoomfact} ${ty + 10 * zoomfact},${tx - 40 * zoomfact} ${ty},${tx - 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                } else if (line.ctype == 'LR') {
-                    str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode' points='${tx + 20 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 20 * zoomfact} ${ty + 10 * zoomfact},${tx + 40 * zoomfact} ${ty},${tx + 20 * zoomfact} ${ty - 10 * zoomfact}' fill='#000000' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                iconSizeEnd = 40;
-                break;
-            case SDLineIcons.ARROW:
-                var iconSizeEnd = 20;
-
-                // If the line is straight calculate the points required to draw the arrow at an angle.
-                if ((felem.type == 'SD' && elemsAreClose && line.innerType == null) || (felem.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-                    let to = new Point(tx + x2Offset * zoomfact, ty + y2Offset * zoomfact);
-                    let from = new Point(fx + x1Offset * zoomfact, fy + y1Offset * zoomfact);
-
-                    let base = calculateArrowBase(from, to, iconSizeEnd / 2 * zoomfact);
-                    let right = rotateArrowPoint(base, to, true);
-                    let left = rotateArrowPoint(base, to, false);
-
-                    str += `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${right.x} ${right.y},${to.x} ${to.y},${left.x} ${left.y}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                }
-                // If the line is segmented draw the arrow on a 90 degree angle matching the line.
-                else {
-                    if (line.ctype == 'BT') {
-                        ty = ty + zoomfact
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty - 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty - 10 * zoomfact},${tx - 5 * zoomfact} ${ty - 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    } else if (line.ctype == 'TB') {
-                        ty = ty - 5 * zoomfact
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 5 * zoomfact} ${ty + 10 * zoomfact},${tx} ${ty},${tx + 5 * zoomfact} ${ty + 10 * zoomfact},${tx - 5 * zoomfact} ${ty + 10 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    } else if (line.ctype == 'RL') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx - 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx - 10 * zoomfact} ${ty + 5 * zoomfact},${tx - 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    } else if (line.ctype == 'LR') {
-                        str += `<polyline id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd' points='${tx + 10 * zoomfact} ${ty - 5 * zoomfact},${tx} ${ty},${tx + 10 * zoomfact} ${ty + 5 * zoomfact},${tx + 10 * zoomfact} ${ty - 5 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-                    }
-                }
-                iconSizeEnd = 20;
-                break;
-            default:
-                iconSizeEnd = 0;
-                break;
-        }
-        if (line.startLabel && line.startLabel != '') {
-            const offsetOnLine = 20 * zoomfact;
-            var offset = Math.round(zoomfact * textheight / 2);
-            var posX, posY, distance;
-
-            var canvas = document.getElementById('canvasOverlay');
-            var canvasContext = canvas.getContext('2d');
-            var textWidth = canvasContext.measureText(line.startLabel).width;
-
-            // Used to tweak the cardinality position when the line gets very short.
-            var tweakOffset = 0.30;
-            // Set the correct distance depending on the place where the line is connected
-            if (line.ctype == 'TB' || line.ctype == 'BT') {
-                distance = Math.abs(dy);
-                //Set position on line for the given offset
-                if (offsetOnLine > distance * 0.5) {
-                    posX = fx;
-                    posY = fy - (offsetOnLine * (dy) / distance) * tweakOffset;
-                } else {
-                    posX = fx;
-                    posY = fy - (offsetOnLine * (dy) / distance);
-                }
-            } else if (line.ctype == 'LR' || line.ctype == 'RL') {
-                distance = Math.abs(dx);
-                //Set position on line for the given offset
-                if (offsetOnLine > distance * 0.5) {
-                    posX = fx - (offsetOnLine * (dx) / distance) * tweakOffset;
-                    posY = fy;
-                } else {
-                    posX = fx - (offsetOnLine * (dx) / distance);
-                    posY = fy;
-                }
-            }
-            /*
-            * Depending on the side of the element that the line is connected to
-            * and the number of lines from that side, set the offset.
-            */
-            if (line.ctype == "TB") {
-                if (felem.top.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-                posY -= iconSizeStart;
-            } else if (line.ctype == "BT") {
-                if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-                posY += iconSizeStart;
-            } else if (line.ctype == "RL") {
-                if (felem.right.indexOf(line.id) == 0) posY -= offset;
-                else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
-                posX += iconSizeStart;
-            } else if (line.ctype == "LR") {
-                if (felem.left.indexOf(line.id) == 0) posY -= offset;
-                else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
-                posX -= iconSizeStart;
-            }
-            str += `<rect class="text cardinalityLabel" id=${line.id + "startLabel"} x="${posX - (textWidth) / 2}" y="${posY - (textheight * zoomfact + zoomfact * 3) / 2}" width="${textWidth + 2}" height="${(textheight - 4) * zoomfact + zoomfact * 3}"/>`;
-            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.startLabel}</text>`;
-        }
-        if (line.endLabel && line.endLabel != '') {
-            const offsetOnLine = 20 * zoomfact;
-            var offset = Math.round(zoomfact * textheight / 2);
-            var posX, posY, distance;
-
-            var canvas = document.getElementById('canvasOverlay');
-            var canvasContext = canvas.getContext('2d');
-            var textWidth = canvasContext.measureText(line.endLabel).width;
-
-            // Used to tweak the cardinality position when the line gets very short.
-            var tweakOffset = 0.30;
-            // Set the correct distance depending on the place where the line is connected
-            if (line.ctype == 'TB' || line.ctype == 'BT') {
-                distance = Math.abs(dy);
-                //Set position on line for the given offset
-                if (offsetOnLine > distance * 0.5) {
-                    posX = tx;
-                    posY = ty + (offsetOnLine * (dy) / distance) * tweakOffset;
-                } else {
-                    posX = tx;
-                    posY = ty + (offsetOnLine * (dy) / distance);
-                }
-            } else if (line.ctype == 'LR' || line.ctype == 'RL') {
-                distance = Math.abs(dx);
-                //Set position on line for the given offset
-                if (offsetOnLine > distance * 0.5) {
-                    posX = tx + (offsetOnLine * (dx) / distance) * tweakOffset;
-                    posY = ty;
-                } else {
-                    posX = tx + (offsetOnLine * (dx) / distance);
-                    posY = ty;
-                }
-            }
-            /*
-            * Depending on the side of the element that the line is connected to
-            * and the number of lines from that side, set the offset.
-            */
-            if (line.ctype == "TB") {
-                if (telem.top.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-                posY += iconSizeEnd;
-            } else if (line.ctype == "BT") {
-                if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
-                else posX += offset;
-                posY -= iconSizeEnd;
-            } else if (line.ctype == "RL") {
-                if (telem.right.indexOf(line.id) == 0) posY -= offset;
-                else if (telem.right.indexOf(line.id) == telem.right.length - 1) posY += offset;
-                posX -= iconSizeEnd;
-            } else if (line.ctype == "LR") {
-                if (telem.left.indexOf(line.id) == 0) posY -= offset;
-                else if (telem.left.indexOf(line.id) == telem.left.length - 1) posY += offset;
-                posX += iconSizeEnd;
-            }
-            str += `<rect class="text cardinalityLabel" id=${line.id + "endLabel"} x="${posX - (textWidth) / 2}" y="${posY - (textheight * zoomfact + zoomfact * 3) / 2}" width="${textWidth + 2}" height="${(textheight - 4) * zoomfact + zoomfact * 3}"/>`;
-            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${line.endLabel}</text>`;
-        }
-    } else {
+    if (line.type == 'ER') {
         if (line.kind == "Normal") {
-            str += `<line id='${line.id}' class='lineColor' x1='${fx + x1Offset}' y1='${fy + y1Offset}' x2='${tx + x2Offset}' y2='${ty + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+            str += `<line id='${line.id}' class='lineColor' 
+                x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
+                x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
+                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
         } else if (line.kind == "Double") {
-            // We mirror the line vector
-            dy = -(tx - fx);
-            dx = ty - fy;
-            var len = Math.sqrt((dx * dx) + (dy * dy));
+            let dy = -(tx - fx);
+            let dx = ty - fy;
+            let len = Math.sqrt((dx * dx) + (dy * dy));
             dy = dy / len;
             dx = dx / len;
-            var cstmOffSet = 1.4;
 
-            str += `<line id='${line.id}-1' class='lineColor' x1='${fx + (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy + (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx + (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty + (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-            str += `<line id='${line.id}-2' class='lineColor' x1='${fx - (dx * strokewidth * 1.5) - cstmOffSet + x1Offset}' y1='${fy - (dy * strokewidth * 1.5) - cstmOffSet + y1Offset}' x2='${tx - (dx * strokewidth * 1.5) + cstmOffSet + x2Offset}' y2='${ty - (dy * strokewidth * 1.5) + cstmOffSet + y2Offset}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-        }
-        // If the line got cardinality
-        if (line.cardinality) {
-            const offsetOnLine = 20 * zoomfact;
-            var offset = Math.round(zoomfact * textheight / 2);
-            var posX, posY;
-            var distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
-
-            var canvas = document.getElementById('canvasOverlay');
-            var canvasContext = canvas.getContext('2d');
-            var textWidth = canvasContext.measureText(line.cardinality).width;
-
-            // Used to tweak the cardinality position when the line gets very short.
-            var tweakOffset = 0.30;
-
-            if (findEntityFromLine(line) == -1) {
-                if (offsetOnLine > distance * 0.5) {
-                    posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
-                    posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
-                } else {
-                    // Set position on line for the given offset
-                    posX = fx + (offsetOnLine * (tx - fx) / distance);
-                    posY = fy + (offsetOnLine * (ty - fy) / distance);
-                }
-
-                /*
-                * Depending on the side of the element that the line is connected to
-                * and the number of lines from that side, set the offset.
-                * */
-                if (line.ctype == "TB") {
-                    if (felem.top.indexOf(line.id) == 0) posX -= offset;
-                    else posX += offset;
-                } else if (line.ctype == "BT") {
-                    if (felem.bottom.indexOf(line.id) == 0) posX -= offset;
-                    else posX += offset;
-                } else if (line.ctype == "RL") {
-                    if (felem.right.indexOf(line.id) == 0) posY -= offset;
-                    else if (felem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
-                } else if (line.ctype == "LR") {
-                    if (felem.left.indexOf(line.id) == 0) posY -= offset;
-                    else if (felem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
-                }
-            } else {
-                if (offsetOnLine > distance * 0.5) {
-                    posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
-                    posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
-                } else {
-                    // Set position on line for the given offset
-                    posX = fx + (offsetOnLine * (tx - fx) / distance);
-                    posY = fy + (offsetOnLine * (ty - fy) / distance);
-                }
-                /*
-                * Depending on the side of the element that the line is connected to
-                * and the number of lines from that side, set the offset.
-                * */
-                if (line.ctype == "TB") {
-                    if (telem.bottom.indexOf(line.id) == 0) posX -= offset;
-                    else posX += offset;
-                } else if (line.ctype == "BT") {
-                    if (telem.top.indexOf(line.id) == 0) posX -= offset;
-                    else posX += offset;
-                } else if (line.ctype == "RL") {
-                    if (telem.left.indexOf(line.id) == 0) posY -= offset;
-                    else if (telem.left.indexOf(line.id) == felem.left.length - 1) posY += offset;
-                } else if (line.ctype == "LR") {
-                    if (telem.right.indexOf(line.id) == 0) posY -= offset;
-                    else if (telem.right.indexOf(line.id) == felem.right.length - 1) posY += offset;
-                }
+            const double = (a, b) => {
+                return `<line id='${line.id}-${b}' class='lineColor' 
+                    x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
+                    y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
+                    x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
+                    y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
+                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
             }
-            // Add the line to the str 12.84 10.11
-            str += `<rect class="text cardinalityLabel" id=${line.id + "Cardinality"} class='lineColor' x="${posX - (textWidth / 4) / 2}" y="${posY - (textheight * zoomfact + zoomfact * 3) / 2}" width="${textWidth / 4 + 2}" height="${(textheight - 4) * zoomfact + zoomfact * 3}"/>`;
-            str += `<text class="text cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${posX}" y="${posY}">${lineCardinalitys[line.cardinality]}</text>`;
+            str += double(1, 1);
+            str += double(-1, 2);
+        }
+    } else if ((line.type == 'SD' && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
+        if (line.kind == "Recursive") {
+            const length = 80 * zoomfact;
+            const startX = fx - 10 * zoomfact;
+            const startY = fy - 10 * zoomfact;
+            const endX = fx - 25 * zoomfact;
+            const endY = fy - 15 * zoomfact;
+            const cornerX = fx + length;
+            const cornerY = fy - length;
+
+            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' class='lineColor' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
+        } else if ((fy > ty) && (line.ctype == "TB")) {
+            offset.y1 = 1;
+            offset.y2 = -7 + 3 / zoomfact;
+        } else if ((fy < ty) && (line.ctype == "BT")) {
+            offset.y1 = -7 + 3 / zoomfact;
+            offset.y2 = 1;
+        }
+        str += `<line id='${line.id}' class='lineColor' \
+            x1='${fx + offset.x1 * zoomfact}' \
+            y1='${fy + offset.y1 * zoomfact}' \
+            x2='${tx + offset.x2 * zoomfact}' \
+            y2='${ty + offset.y2 * zoomfact}' \
+            fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+    } else { // UML, IE or SD with segmented line
+        // Halfway point between elements
+        let dx = ((fx + offset.x1) - (tx + offset.x2)) / 2;
+        let dy = ((fy + offset.y1) - (ty + offset.y2)) / 2;
+        if (line.ctype == 'TB' || line.ctype == 'BT') {
+            str += `<polyline \
+                id='${line.id}' \
+                class='lineColor' \
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1},${fy + offset.y1 - dy} ${tx + offset.x2},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' \
+                fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
+        } else if (line.ctype == 'LR' || line.ctype == 'RL') {
+            str += `<polyline \
+                id='${line.id}' \
+                class='lineColor' \
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1} ${tx + offset.x2 + dx},${ty + offset.y2} ${tx + offset.x2},${ty + offset.y2}' \
+                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
         }
     }
-    if (contextLine.includes(line)) {
-        var x = (fx + tx) / 2;
-        var y = (fy + ty) / 2;
-        str += `<rect x="${x - (2 * zoomfact)}" y="${y - (2 * zoomfact)}" width='${4 * zoomfact}' height='${4 * zoomfact}' style="fill:${lineColor}" stroke="${lineColor}" stroke-width="3"/>`;
+
+    str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
+    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
+
+    if  (line.type == 'SD' && line.innerType != SDLineType.SEGMENT) {
+        let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
+        let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
+        if (line.startIcon == SDLineIcons.ARROW) {
+            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+        }
+        if (line.endIcon == SDLineIcons.ARROW) {
+            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
+        }
+    }
+
+    if (felem.type != 'ER' || telem.type != 'ER') {
+        if (line.startLabel && line.startLabel != '') {
+            str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
+        }
+        if (line.endLabel && line.endLabel != '') {
+            str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false);
+        }
+    } else {
+        if (line.cardinality) {
+            str += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
+        }
+    }
+
+    if (isSelected) {
+        str += `<rect 
+            x='${((fx + tx) / 2) - (2 * zoomfact)}' 
+            y='${((fy + ty) / 2) - (2 * zoomfact)}' 
+            width='${4 * zoomfact}' 
+            height='${4 * zoomfact}' 
+            style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"/>`;
     }
 
     if (line.label && line.label != "" && line.type !== "IE") {
-        //Get width of label's text through canvas 
+        //Get width of label's text through canvas
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
         var canvasContext = canvas.getContext('2d');
-
-        var font = canvasContext.font;
-        font = `${height}px ${font.split('px')[1]}`;
-        canvasContext.font = font;
+        canvasContext.font = `${height}px ${canvasContext.font.split('px')[1]}`;
         var textWidth = canvasContext.measureText(line.label).width;
 
-        var centerX = (tx + fx) / 2;
-        var centerY = (ty + fy) / 2;
-        var lowY = Math.min(ty, fy);
-        var highY = Math.max(ty, fy);
-        var lowX = Math.min(tx, fx);
-        var highX = Math.max(tx, fx);
-        var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
-        var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        var lineLabel = {
+        var label = {
             id: line.id + "Label",
             labelLineID: line.id,
-            centerX: centerX,
-            centerY: centerY,
+            centerX: (tx + fx) / 2,
+            centerY: (ty + fy) / 2,
             width: textWidth + zoomfact * 4,
             height: textheight * zoomfact + zoomfact * 3,
             labelMovedX: 0,
             labelMovedY: 0,
-            lowY: lowY,
-            highY: highY,
-            lowX: lowX,
-            highX: highX,
+            lowY: Math.min(ty, fy),
+            highY: Math.max(ty, fy),
+            lowX: Math.min(tx, fx),
+            highX: Math.max(ty, fy),
             percentOfLine: 0,
             displacementX: 0,
             displacementY: 0,
@@ -8645,57 +7986,293 @@ function drawLine(line, targetGhost = false) {
             lineGroup: 0,
             labelMoved: false
         };
-        if (!!targetLabel) {
-            var rememberTargetLabelID = targetLabel.id;
-        }
-        if (!!lineLabelList[findIndex(lineLabelList, lineLabel.id)]) {
-            lineLabel.labelMovedX = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedX;
-            lineLabel.labelMovedY = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMovedY;
-            lineLabel.labelGroup = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelGroup;
-            lineLabel.labelMoved = lineLabelList[findIndex(lineLabelList, lineLabel.id)].labelMoved;
-            calculateProcentualDistance(lineLabel);
-            if (lineLabel.labelGroup == 0) {
-                lineLabel.displacementX = 0;
-                lineLabel.displacementY = 0;
-            } else if (lineLabel.labelGroup == 1) {
-                lineLabel.displacementX = calculateLabelDisplacement(lineLabel).storeX * zoomfact;
-                lineLabel.displacementY = calculateLabelDisplacement(lineLabel).storeY * zoomfact;
-            } else if (lineLabel.labelGroup == 2) {
-                lineLabel.displacementX = -calculateLabelDisplacement(lineLabel).storeX * zoomfact;
-                lineLabel.displacementY = -calculateLabelDisplacement(lineLabel).storeY * zoomfact;
+
+        if (!!targetLabel) var rememberTargetLabelID = targetLabel.id;
+
+        if (!!lineLabelList[findIndex(lineLabelList, label.id)]) {
+            label.labelMovedX = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedX;
+            label.labelMovedY = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedY;
+            label.labelGroup = lineLabelList[findIndex(lineLabelList, label.id)].labelGroup;
+            label.labelMoved = lineLabelList[findIndex(lineLabelList, label.id)].labelMoved;
+            calculateProcentualDistance(label);
+            if (label.labelGroup == 0) {
+                label.displacementX = 0;
+                label.displacementY = 0;
+            } else if (label.labelGroup == 1) {
+                label.displacementX = calculateLabelDisplacement(label).storeX * zoomfact;
+                label.displacementY = calculateLabelDisplacement(label).storeY * zoomfact;
+            } else if (label.labelGroup == 2) {
+                label.displacementX = -calculateLabelDisplacement(label).storeX * zoomfact;
+                label.displacementY = -calculateLabelDisplacement(label).storeY * zoomfact;
             }
-            lineLabelList[findIndex(lineLabelList, lineLabel.id)] = lineLabel;
+            lineLabelList[findIndex(lineLabelList, label.id)] = label;
         } else {
-            lineLabelList.push(lineLabel);
+            lineLabelList.push(label);
         }
+
         if (!!rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
         // Label position for recursive edges
-        const labelPositionX = labelPosX + lineLabel.labelMovedX + lineLabel.displacementX + zoomfact
-        const labelPositionY = labelPosY + lineLabel.labelMovedY + lineLabel.displacementY - zoomfact
+        var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
+        var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
+        const labelPositionX = labelPosX + label.labelMovedX + label.displacementX + zoomfact
+        const labelPositionY = labelPosY + label.labelMovedY + label.displacementY - zoomfact
 
         //Add label with styling based on selection.
-        if (contextLine.includes(line)) {
-            if (line.kind === "Recursive") {
-                //Add background, position and size is determined by text and zoom factor <-- Consider replacing magic numbers
-                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact))) - textWidth / 2}" y="${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
-            } else {
-                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
-            }
+        if (line.kind === "Recursive") {
+            str += `<rect
+                class='text cardinalityLabel'
+                id='${line.id + 'Label'}'
+                x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
+                y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
+                width='${(textWidth + zoomfact * 4)}'
+                height='${textheight * zoomfact}'/>`;
+            str += `<text
+                class='cardinalityLabelText'
+                dominant-baseline='middle'
+                text-anchor='middle'
+                x='${(fx + length + (30 * zoomfact))}'
+                y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
+                ${line.label}
+                </text>`;
         } else {
-            if (line.kind === "Recursive") {
-                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${((fx + length + (30 * zoomfact))) - textWidth / 2}" y="${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" x="${(fx + length + (30 * zoomfact))}" y="${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}" style="fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;">${line.label}</text>`;
-            } else {
-                str += `<rect class="text cardinalityLabel" id=${line.id + "Label"} x="${labelPositionX}" y="${labelPositionY}" width="${(textWidth + zoomfact * 4)}" height="${textheight * zoomfact + zoomfact * 3}"/>`;
-                str += `<text class="cardinalityLabelText" dominant-baseline="middle" text-anchor="middle" style="font-size:${Math.round(zoomfact * textheight)}px;" x="${centerX - (2 * zoomfact) + lineLabel.labelMovedX + lineLabel.displacementX}" y="${centerY - (2 * zoomfact) + lineLabel.labelMovedY + lineLabel.displacementY}">${line.label}</text>`;
-            }
+            str += `<rect
+                class='text cardinalityLabel'
+                id=${line.id + 'Label'}
+                x='${labelPositionX}'
+                y='${labelPositionY}'
+                width='${(textWidth + zoomfact * 4)}'
+                height='${textheight * zoomfact + zoomfact * 3}'/>`;
+            str += `<text
+                class='cardinalityLabelText'
+                dominant-baseline='middle'
+                text-anchor='middle'
+                style='font-size:${Math.round(zoomfact * textheight)}px;'
+                x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
+                y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
+                ${line.label}
+                </text>`;
         }
     }
     return str;
+}
+
+function getLineAttrubutes(f, t, ctype) {
+    let result;
+    let px = 3;
+    let offset = {
+        x1: 0,
+        x2: 0,
+        y1: 0,
+        y2: 0,
+    }
+    switch (ctype) {
+        case 'TB':
+            offset.y1 = px;
+            offset.y2 = -px * 2;
+            result = [f.cx, f.y1, t.cx, t.y2, offset];
+            break;
+        case 'BT':
+            offset.y1 = -px * 2;
+            offset.y2 = px;
+            result = [f.cx, f.y2, t.cx, t.y1, offset];
+            break;
+        case 'LR':
+            offset.x1 = px;
+            offset.x2 = 0;
+            result = [f.x1, f.cy, t.x2, t.cy, offset];
+            break;
+        case 'RL':
+            offset.x1 = 0;
+            offset.x2 = px;
+            result = [f.x2, f.cy, t.x1, t.cy, offset];
+    }
+    return result;
+}
+
+function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
+    const offsetOnLine = 20 * zoomfact;
+    let canvas = document.getElementById('canvasOverlay');
+    let canvasContext = canvas.getContext('2d');
+    let textWidth = canvasContext.measureText(label).width;
+
+    if (line.ctype == 'TB') {
+        x -= offsetOnLine / 2;
+        y += (isStart) ? -offsetOnLine : offsetOnLine;
+    } else if (line.ctype == 'BT') {
+        x -= offsetOnLine / 2;
+        y += (isStart) ? offsetOnLine : -offsetOnLine;
+    } else if (line.ctype == 'LR') {
+        x += (isStart) ? -offsetOnLine : offsetOnLine;
+        y -= offsetOnLine / 2;
+    } else if (line.ctype == 'RL') {
+        x += (isStart) ? offsetOnLine : -offsetOnLine;
+        y -= offsetOnLine / 2;
+    }
+
+    return `<rect 
+            class='text cardinalityLabel' 
+            id='${line.id + labelStr}' 
+            x='${x - textWidth / 2}' 
+            y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
+            width='${textWidth + 2}' 
+            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+            <text 
+            class='text cardinalityLabelText' 
+            dominant-baseline='middle' 
+            text-anchor='middle' 
+            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+            x='${x}' 
+            y='${y}'> ${label} </text>`;
+}
+
+function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
+    let posX, posY;
+
+    // Used to tweak the cardinality position when the line gets very short.
+    const tweakOffset = 0.30;
+    const offsetOnLine = 20 * zoomfact;
+
+    let distance = Math.sqrt(Math.pow((tx - fx), 2) + Math.pow((ty - fy), 2));
+    let offset = Math.round(zoomfact * textheight / 2);
+    let canvas = document.getElementById('canvasOverlay');
+    let canvasContext = canvas.getContext('2d');
+    let textWidth = canvasContext.measureText(line.cardinality).width / 4;
+    if (offsetOnLine > distance * 0.5) {
+        posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
+        posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+    } else {
+        // Set position on line for the given offset
+        posX = fx + (offsetOnLine * (tx - fx) / distance);
+        posY = fy + (offsetOnLine * (ty - fy) / distance);
+    }
+
+    if (findEntityFromLine(line) == -1) {
+        if (line.ctype == "TB") {
+            if (f.top.indexOf(line.id) == 0) posX -= offset;
+            else posX += offset;
+        } else if (line.ctype == "BT") {
+            if (f.bottom.indexOf(line.id) == 0) posX -= offset;
+            else posX += offset;
+        } else if (line.ctype == "RL") {
+            if (f.right.indexOf(line.id) == 0) posY -= offset;
+            else if (f.right.indexOf(line.id) == f.right.length - 1) posY += offset;
+        } else if (line.ctype == "LR") {
+            if (f.left.indexOf(line.id) == 0) posY -= offset;
+            else if (f.left.indexOf(line.id) == f.left.length - 1) posY += offset;
+        }
+    } else {
+        if (line.ctype == "TB") {
+            if (t.bottom.indexOf(line.id) == 0) posX -= offset;
+            else posX += offset;
+        } else if (line.ctype == "BT") {
+            if (t.top.indexOf(line.id) == 0) posX -= offset;
+            else posX += offset;
+        } else if (line.ctype == "RL") {
+            if (t.left.indexOf(line.id) == 0) posY -= offset;
+            else if (t.left.indexOf(line.id) == f.left.length - 1) posY += offset;
+        } else if (line.ctype == "LR") {
+            if (t.right.indexOf(line.id) == 0) posY -= offset;
+            else if (t.right.indexOf(line.id) == f.right.length - 1) posY += offset;
+        }
+    }
+    return `<rect 
+            class='text cardinalityLabel' 
+            id='${line.id + "Cardinality"}' 
+            x='${posX - (textWidth) / 2}' 
+            y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
+            width='${textWidth + 2}' 
+            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+            <text 
+            class='text cardinalityLabelText' 
+            dominant-baseline='middle' 
+            text-anchor='middle' 
+            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+            x='${posX}' 
+            y='${posY}'> ${lineCardinalitys[line.cardinality]} </text>`;
+}
+
+function drawLineIcon(icon, ctype, x, y, lineColor, line) {
+    let str = "";
+    switch (icon) {
+        case IELineIcons.ZERO_ONE:
+            str += iconLine(ONE_LINE[ctype], x, y, lineColor);
+            str += iconCircle(CIRCLE[ctype], x, y, lineColor);
+            break;
+        case IELineIcons.ONE:
+            str += iconLine(ONE_LINE[ctype], x, y, lineColor);
+            break;
+        case IELineIcons.FORCED_ONE:
+            str += iconLine(ONE_LINE[ctype], x, y, lineColor);
+            str += iconLine(TWO_LINE[ctype], x, y, lineColor);
+            break;
+        case IELineIcons.WEAK:
+            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, '#ffffff');
+            str += iconCircle(CIRCLE[ctype], x, y, lineColor);
+            break;
+        case IELineIcons.MANY:
+            str += iconPoly(MANY[ctype], x, y, lineColor, 'none');
+            break;
+        case IELineIcons.ZERO_MANY:
+            str += iconPoly(MANY[ctype], x, y, lineColor, 'none');
+            str += iconCircle(CIRCLE[ctype], x, y, lineColor);
+            break;
+        case IELineIcons.ONE_MANY:
+            str += iconPoly(MANY[ctype], x, y, lineColor, 'none');
+            str += iconLine(TWO_LINE[ctype], x, y, lineColor);
+            break;
+        case UMLLineIcons.ARROW:
+           str += iconPoly(ARROW[ctype], x, y, lineColor, 'none');
+            break;
+        case UMLLineIcons.TRIANGLE:
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#ffffff');
+            break;
+        case UMLLineIcons.BLACK_TRIANGLE:
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#000000');
+            break;
+        case UMLLineIcons.WHITEDIAMOND:
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#ffffff');
+            break;
+        case UMLLineIcons.BLACKDIAMOND:
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#000000');
+            break;
+        case SDLineIcons.ARROW:
+            if (line.innerType == SDLineType.SEGMENT) {
+                // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, '#000000');
+            }
+    }
+    return str;
+}
+
+function iconLine([a, b, c, d], x, y, lineColor) {
+    return `<line class='diagram-umlicon-darkmode' \
+                x1='${x + a * zoomfact}' \
+                y1='${y + b * zoomfact}' \
+                x2='${x + c * zoomfact}' \
+                y2='${y + d * zoomfact}' \
+                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+}
+
+function iconCircle([a, b, c], x, y, lineColor,) {
+    return `<circle class='diagram-umlicon-darkmode' \
+                cx='${x + a * zoomfact}' \
+                cy='${y + b * zoomfact}' \
+                r='${c * zoomfact}' \
+                fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+}
+
+function iconPoly(arr, x, y, lineColor, fill) {
+    let s = "";
+    for (let i = 0; i < arr.length; i++) {
+        const [a, b] = arr[i];
+        s += `${x + a * zoomfact} ${y + b * zoomfact}, `;
+    }
+    return `<polyline class='diagram-umlicon-darkmode' \
+                points='${s}' \
+                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
 }
 
 /**
@@ -8746,6 +8323,18 @@ function rotateArrowPoint(base, to, clockwise) {
         return point;
     }
 }
+
+function drawArrowPoint(base, point, x, y, lineColor, line) {
+    let right = rotateArrowPoint(base, point, true);
+    let left = rotateArrowPoint(base, point, false);
+    return `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd'
+        points=' 
+        ${right.x} ${right.y},
+        ${point.x} ${point.y}, 
+        ${left.x} ${left.y}' 
+        stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+}
+
 
 /**
  * @description Removes all existing lines and draw them again
@@ -11915,7 +11504,6 @@ function calculateProcentualDistance(objectLabel, x, y) {
 
 /**
  * @description calculates how the label should be displacesed
- * @param {Interger} labelObject the label that should be displaced
  */
 function calculateLabelDisplacement(labelObject) {
     var diffrenceX = labelObject.highX - labelObject.lowX;
