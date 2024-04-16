@@ -153,7 +153,7 @@ if(isset($_SESSION['uid'])){
     			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
 					<div class="form-popup" id="myForm">
 					<form action="" class="form-container">
-						<h1 style="font-size:20px; padding-bottom:20px; color:#434343;">Are you sure? </h1>
+						<h1 style="font-size:20px; padding-bottom:20px; color:#434343; border-bottom: 2px solid #ccc;">Are you sure? </h1>
 
 
 

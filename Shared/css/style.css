@@ -7707,24 +7707,21 @@ textarea#mrkdwntxt {
 
 #deleteCourseButtonYes{
   background-color:#ccc;
-  padding-top:5px;
-  padding-bottom:5px;
+  height:30px;
   padding-left:35px;
   padding-right:35px;
   border: solid 1px #775886;
   border-radius: 5px;
   font-size:14px;
   margin:0px;
-  margin-right:40px;
+  margin-right:35px;
  
 }
 #deleteCourseButtonNo{
   background-color:#e35057;
-  padding-top:5px;
-  padding-bottom:5px;
+  height:30px;
   padding-left:35px;
   padding-right:35px;
-  border: none;
   border-radius: 5px;
   font-size:14px;
   margin:0px;
