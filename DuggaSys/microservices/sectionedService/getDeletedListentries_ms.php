@@ -27,5 +27,3 @@ if($query->execute()) {
     $debug="Failed to get listentries with visibility DELETED!";
 }
 echo json_encode($results);
-
-?>

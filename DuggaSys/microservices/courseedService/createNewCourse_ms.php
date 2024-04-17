@@ -4,8 +4,9 @@
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
-include ("../../../Shared/sessions.php");     
-include('../shared_microservices/getUid_ms.php');
+
+include_once "../../../Shared/sessions.php";     
+include_once "../shared_microservices/getUid_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -18,7 +19,6 @@ $courseGitURL = getOP('courseGitURL');
 
 // checks that the user is a superuser and logged in
 if(checklogin() && isSuperUser(getUid()) == true) {
-
     $userid = getUid();   
 
     // insert into database 
@@ -44,10 +44,8 @@ if(checklogin() && isSuperUser(getUid()) == true) {
     while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $username = $row['username'];
     }
-
     
     // Logging for creating new course
     $description = $coursename . " " . $coursecode . " " . $courseGitURL . " " . "Hidden";
     logUserEvent($userid, $username, EventTypes::AddCourse, $description);
 }
-?>

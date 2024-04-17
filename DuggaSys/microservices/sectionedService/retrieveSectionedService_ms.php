@@ -4,10 +4,8 @@
 //----------------------------------------------------------------------------------------------
 include_once "../../../Shared/basic.php";
 
-
 function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 {
-
 	// Include basic application services!
 	date_default_timezone_set("Europe/Stockholm");
 	include_once "../../../Shared/sessions.php";
@@ -69,7 +67,6 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 		$username = $row['username'];
 	}
 
-
 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 	$query->bindParam(':cid', $courseid);
 
@@ -83,8 +80,6 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 		if ($isSuperUserVar || $row['visibility'] == 1 || ($row['visibility'] == 2 && ($hasread || $haswrite)) || ($row['visibility'] == 0 && ($haswrite == true || $studentTeacher == true)))
 			$cvisibility = true;
 	}
-
-
 
 	// Retrieve quiz entries including release and deadlines
 	$duggor = array();
@@ -100,7 +95,6 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 	}
 
 	// Create "duggor" array to store information about quizes and create "releases" to perform checks
-
 	foreach ($query->fetchAll() as $row) {
 		$releases[$row['id']] = array(
 			'release' => $row['qrelease'],
@@ -149,7 +143,6 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 		$debug = "Error reading results" . $error[2];
 	}
 
-
 	//--------------------------------
 	$today_dt = new DateTime($timestamp);
 	foreach ($query->fetchAll() as $row) {
@@ -177,6 +170,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 			)
 		);
 	}
+
 	//--------------------------------
 	$entries = array();
 	if ($cvisibility) {
@@ -222,6 +216,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 			}
 		}
 	}
+
 	//--------------------------------
 	$query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
 	$query->bindParam(':cid', $courseid);
@@ -238,6 +233,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 		$error = $query->errorInfo();
 		$debug = "Error reading entries" . $error[2];
 	}
+
 	//--------------
 	$links = array();
 
@@ -284,8 +280,8 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 			);
 		}
 	}
-	//--------------------------------
 
+	//--------------------------------
 	$codeexamples = array();
 
 	if ($ha || $studentTeacher) {
@@ -366,6 +362,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 				);
 			}
 		}
+
 		$codeexamples = array();
 
 		// New Example
@@ -461,6 +458,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 				);
 			}
 		}
+
 		$query = $pdo->prepare("SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':lid', $moment);
@@ -534,6 +532,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 			"removedlistentries" => $removedlistentries,
 			"serviceinfo" => [] // Data from ms
 	);
+	
 	// echo json_encode($serviceInformation);
 	array_push($serviceInformation["serviceinfo"], $sectionedInfo);
 
@@ -544,5 +543,4 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 
 	// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveSectionedService_ms.php",$userid,$info);
 	return;
-
 }
