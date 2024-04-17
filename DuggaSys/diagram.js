@@ -2000,7 +2000,7 @@ function mdown(event) {
         }
     }
 
-    if(!event.target.parentElement.classList.contains("placementTypeBoxIcons")){
+    if (!event.target.parentElement.classList.contains("placementTypeBoxIcons")) {
         hidePlacementType();
     }
 
@@ -6161,13 +6161,12 @@ function togglePlacementType(num, type) {
 function hidePlacementType(){
     let i = 0;
 
-    while(true){
-        if(document.getElementById("togglePlacementTypeBox" + i)){
+    while (true) {
+        if (document.getElementById("togglePlacementTypeBox" + i)) {
             document.getElementById("togglePlacementTypeBox" + i).classList.remove("activeTogglePlacementTypeBox");
-        }else if(document.getElementById("togglePlacementTypeBox" + i) == null && document.getElementById("togglePlacementTypeButton" + (i + 1)) == null){
+        } else if (document.getElementById("togglePlacementTypeBox" + i) == null && document.getElementById("togglePlacementTypeButton" + (i + 1)) == null) {
             break;
         }
-
         i++;
     }
 }
