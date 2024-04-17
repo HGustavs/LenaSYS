@@ -2441,7 +2441,7 @@ function determineLineSelect(mouseX, mouseY) {
         lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
-        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke=colorMap.Black stroke-width="3" fill="red" /> '
+        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="${colorMap.Black}" stroke-width="3" fill="red" /> '
         // ---------------------------
         if (lineWasHit == true && labelWasHit == false) {
             // Return the current line that registered as a "hit".
@@ -7861,7 +7861,7 @@ function drawLine(line, targetGhost = false) {
 
     let str = "";
     let strokeDash = (line.kind == "Dashed") ? "10" : "0";
-    let lineColor = isDarkTheme() ? 'colorMap.White' : 'colorMap.Black';
+    let lineColor = isDarkTheme() ? colorMap.White : colorMap.Black;
     let isSelected = contextLine.includes(line);
 
     if (isSelected) lineColor = selectedColor;
@@ -8235,7 +8235,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             str += iconLine(TWO_LINE[ctype], x, y, lineColor);
             break;
         case IELineIcons.WEAK:
-            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, 'colorMap.White');
+            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, colorMap.White);
             str += iconCircle(CIRCLE[ctype], x, y, lineColor);
             break;
         case IELineIcons.MANY:
@@ -8253,21 +8253,21 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
            str += iconPoly(ARROW[ctype], x, y, lineColor, 'none');
             break;
         case UMLLineIcons.TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, 'colorMap.White');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, colorMap.White);
             break;
         case UMLLineIcons.BLACK_TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, 'colorMap.Black');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, colorMap.Black);
             break;
         case UMLLineIcons.WHITEDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, 'colorMap.White');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, colorMap.White);
             break;
         case UMLLineIcons.BLACKDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, 'colorMap.Black');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, colorMap.Black);
             break;
         case SDLineIcons.ARROW:
             if (line.innerType == SDLineType.SEGMENT) {
                 // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, 'colorMap.Black');
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, colorMap.Black);
             }
     }
     return str;
@@ -8658,14 +8658,14 @@ function drawElement(element, ghosted = false) {
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
     var nonFilledElementPartStrokeColor;
-    if (isDarkTheme()) nonFilledElementPartStrokeColor = 'colorMap.White';
+    if (isDarkTheme()) nonFilledElementPartStrokeColor = colorMap.White;
     else nonFilledElementPartStrokeColor = '#383737';
 
     //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
     //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
     //replace this with nonFilledElementPartStroke when it gets merged.
     var actorFontColor;
-    if (isDarkTheme()) actorFontColor = 'colorMap.White';
+    if (isDarkTheme()) actorFontColor = colorMap.White;
     else actorFontColor = '#383737';
 
     // Caclulate font width using some canvas magic
@@ -8823,10 +8823,10 @@ function drawElement(element, ghosted = false) {
                         </g>
                     </svg>
                 </div>`;
-        if (element.fill == `${colorMap.Black}` && theme.href.includes('blackTheme')) {
-            element.fill = `${colorMap.White}`;
-        } else if (element.fill == `${colorMap.White}` && theme.href.includes('style')) {
-            element.fill = `${colorMap.Black}`;
+        if (element.fill == colorMap.Black && theme.href.includes('blackTheme')) {
+            element.fill = colorMap.White;
+        } else if (element.fill == colorMap.White && theme.href.includes('style')) {
+            element.fill = colorMap.Black;
         }
     } else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
@@ -8848,10 +8848,10 @@ function drawElement(element, ghosted = false) {
                         </g>
                     </svg>
                 </div>`;
-        if (element.fill == `${colorMap.Black}` && theme.href.includes('blackTheme')) {
-            element.fill = `${colorMap.White}`;
-        } else if (element.fill == `${colorMap.White}` && theme.href.includes('style')) {
-            element.fill = `${colorMap.Black}`;
+        if (element.fill == colorMap.Black && theme.href.includes('blackTheme')) {
+            element.fill = colorMap.White;
+        } else if (element.fill == colorMap.White && theme.href.includes('style')) {
+            element.fill = colorMap.Black;
         }
     } else if (element.kind == 'UMLSuperState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
@@ -9349,10 +9349,10 @@ function drawElement(element, ghosted = false) {
             height: ((boxh + (boxh / 2)) / zoomfact)
         }
         NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == `${colorMap.Black}`) {
-            element.stroke = `${colorMap.White}`;
-        } else if (element.fill == `${colorMap.White}`) {
-            element.stroke = `${colorMap.Black}`;
+        if (element.fill == colorMap.Black) {
+            element.stroke = colorMap.White;
+        } else if (element.fill == colorMap.White) {
+            element.stroke = colorMap.Black;
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
@@ -11804,8 +11804,8 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"colorMap."}`;
-                            fontColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.PurpleGrey";
+                            fontColor.style.fill = colorMap.White;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -11818,8 +11818,8 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${colorMap.PurpleGrey}`;
-                            fontColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.PurpleGrey;
+                            fontColor.style.fill = colorMap.White;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -11832,8 +11832,8 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${colorMap.PurpleGrey}`;
-                            fontColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.PurpleGrey;
+                            fontColor.style.fill = colorMap.White;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -11847,8 +11847,8 @@ function updateCSSForAllElements() {
                         fontColor = elementDiv.children[0];
 
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${colorMap.PurpleGrey}`;
-                            fontColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.PurpleGrey;
+                            fontColor.style.fill = colorMap.White;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
                             fontContrast();
@@ -11861,30 +11861,30 @@ function updateCSSForAllElements() {
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
                     if (markedOverOne()) {
-                        fillColor.style.fill = `${colorMap.PurpleGrey}`;
-                        fontColor.style.fill = `${colorMap.White}`;
+                        fillColor.style.fill = colorMap.PurpleGrey;
+                        fontColor.style.fill = colorMap.White;
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.White}`;
+                            weakKeyUnderline.style.stroke = colorMap.White;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
                         else if (element.kind == "IERelation" && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${colorMap.White}`;
-                            disjointLine2Color.style.stroke = `${colorMap.White}`;
+                            disjointLine1Color.style.stroke = colorMap.White;
+                            disjointLine2Color.style.stroke = colorMap.White;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${colorMap.Black}`;
-                            fontColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.Black;
+                            fontColor.style.fill = colorMap.White;
                         } else {
-                            fillColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.White;
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.Black}`;
+                            weakKeyUnderline.style.stroke = colorMap.Black;
                             if (element.fill == colorMap.Black) {
-                                weakKeyUnderline.style.stroke = `${colorMap.White}`;
+                                weakKeyUnderline.style.stroke = colorMap.White;
                             }
                         }
                     }
@@ -11935,27 +11935,27 @@ function updateCSSForAllElements() {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.White}`;
+                            weakKeyUnderline.style.stroke = colorMap.White;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
                         else if (element.kind == "IERelation" && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${colorMap.White}`;
-                            disjointLine2Color.style.stroke = `${colorMap.White}`;
+                            disjointLine1Color.style.stroke = colorMap.White;
+                            disjointLine2Color.style.stroke = colorMap.White;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${colorMap.Black}`;
-                            fontColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.Black;
+                            fontColor.style.fill = colorMap.White;
                         } else {
-                            fillColor.style.fill = `${colorMap.White}`;
+                            fillColor.style.fill = colorMap.White;
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${colorMap.Black}`;
+                            weakKeyUnderline.style.stroke = colorMap.Black;
                             if (element.fill == colorMap.Black) {
-                                weakKeyUnderline.style.stroke = `${colorMap.White}`;
+                                weakKeyUnderline.style.stroke = colorMap.White;
                             }
                         }
                     }
@@ -11974,7 +11974,7 @@ function updateCSSForAllElements() {
 
     function fontContrast() {
         //check if the fill color is black or pink, if so the font color is set to white
-        fontColor.style.fill = element.fill == colorMap.Black || element.fill == colorMap.Pink ? `${colorMap.White}` : `${colorMap.Black}`;
+        fontColor.style.fill = element.fill == colorMap.Black || element.fill == colorMap.Pink ? colorMap.White : colorMap.Black;
     }
 
     function markedOverOne() {
@@ -12007,8 +12007,8 @@ function toggleBorderOfElements() {
                 let fillColor = text.getAttribute('fill');
                 //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
                 //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
-                if (strokeColor == '#383737' && fillColor != 'colorMap.White') {
-                    strokeColor = 'colorMap.White';
+                if (strokeColor == '#383737' && fillColor != colorMap.White) {
+                    strokeColor = colorMap.White;
                     text.setAttribute('stroke', strokeColor);
                 }
             }
@@ -12019,7 +12019,7 @@ function toggleBorderOfElements() {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
                 let fillColor = text.getAttribute('fill');
-                if (strokeColor == 'colorMap.White' && fillColor != '#383737') {
+                if (strokeColor == colorMap.White && fillColor != '#383737') {
                     strokeColor = '#383737';
                     text.setAttribute('stroke', strokeColor);
                 }
