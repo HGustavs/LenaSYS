@@ -8,18 +8,10 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../../../DuggaSys/gitfetchService.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
-
-//session code should be replaced with getuid when getuid is fixed, see monolithic-to-microservices.md
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="guest";
-}
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');
@@ -48,7 +40,6 @@ if(checklogin()){
 		
 		if(!$deadlinequery->execute()){
 			$error=$deadlinequery->errorInfo();
-			$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
 		}
 	}
 }
