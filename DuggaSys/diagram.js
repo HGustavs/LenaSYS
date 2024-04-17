@@ -906,6 +906,13 @@ const lineCardinalitys = {
     ONE: "1"
 };
 
+const lineDirection = {
+    UP: 'TB',
+    DOWN: 'BT',
+    RIGHT: 'RL',
+    LEFT: 'LR',
+}
+
 /**
  * @description Available options of icons to display at the end of lines connecting two UML elements.
  */
@@ -7588,24 +7595,24 @@ function determineLine(line, targetGhost = false) {
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
     var ctype = 0;
     if (overlapY || ((majorX) && (!overlapX))) {
-        if (line.dx > 0) line.ctype = "LR";
-        else line.ctype = "RL";
+        if (line.dx > 0) line.ctype = lineDirection.LEFT;
+        else line.ctype = lineDirection.RIGHT;
     } else {
-        if (line.dy > 0) line.ctype = "TB";
-        else line.ctype = "BT";
+        if (line.dy > 0) line.ctype = lineDirection.UP;
+        else line.ctype = lineDirection.DOWN;
     }
 
     // Add accordingly to association end
-    if (line.ctype == "LR") {
+    if (line.ctype == lineDirection.LEFT) {
         felem.left.push(line.id);
         telem.right.push(line.id);
-    } else if (line.ctype == "RL") {
+    } else if (line.ctype == lineDirection.RIGHT) {
         felem.right.push(line.id);
         telem.left.push(line.id);
-    } else if (line.ctype == "TB") {
+    } else if (line.ctype == lineDirection.UP) {
         felem.top.push(line.id);
         telem.bottom.push(line.id);
-    } else if (line.ctype == "BT") {
+    } else if (line.ctype == lineDirection.DOWN) {
         felem.bottom.push(line.id);
         telem.top.push(line.id);
     }
@@ -7890,10 +7897,10 @@ function drawLine(line, targetGhost = false) {
             str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<line id='${line.id}' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
-        } else if ((fy > ty) && (line.ctype == "TB")) {
+        } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             offset.y1 = 1;
             offset.y2 = -7 + 3 / zoomfact;
-        } else if ((fy < ty) && (line.ctype == "BT")) {
+        } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
             offset.y1 = -7 + 3 / zoomfact;
             offset.y2 = 1;
         }
@@ -8062,22 +8069,22 @@ function getLineAttrubutes(f, t, ctype) {
         y2: 0,
     }
     switch (ctype) {
-        case 'TB':
+        case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
             result = [f.cx, f.y1, t.cx, t.y2, offset];
             break;
-        case 'BT':
+        case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
             result = [f.cx, f.y2, t.cx, t.y1, offset];
             break;
-        case 'LR':
+        case lineDirection.LEFT:
             offset.x1 = px;
             offset.x2 = 0;
             result = [f.x1, f.cy, t.x2, t.cy, offset];
             break;
-        case 'RL':
+        case lineDirection.RIGHT:
             offset.x1 = 0;
             offset.x2 = px;
             result = [f.x2, f.cy, t.x1, t.cy, offset];
@@ -8091,16 +8098,16 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
-    if (line.ctype == 'TB') {
+    if (line.ctype == lineDirection.UP) {
         x -= offsetOnLine / 2;
         y += (isStart) ? -offsetOnLine : offsetOnLine;
-    } else if (line.ctype == 'BT') {
+    } else if (line.ctype == lineDirection.DOWN) {
         x -= offsetOnLine / 2;
         y += (isStart) ? offsetOnLine : -offsetOnLine;
-    } else if (line.ctype == 'LR') {
+    } else if (line.ctype == lineDirection.LEFT) {
         x += (isStart) ? -offsetOnLine : offsetOnLine;
         y -= offsetOnLine / 2;
-    } else if (line.ctype == 'RL') {
+    } else if (line.ctype == lineDirection.RIGHT) {
         x += (isStart) ? offsetOnLine : -offsetOnLine;
         y -= offsetOnLine / 2;
     }
@@ -8144,30 +8151,30 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     }
 
     if (findEntityFromLine(line) == -1) {
-        if (line.ctype == "TB") {
+        if (line.ctype == lineDirection.UP) {
             if (f.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "BT") {
+        } else if (line.ctype == lineDirection.DOWN) {
             if (f.bottom.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "RL") {
+        } else if (line.ctype == lineDirection.RIGHT) {
             if (f.right.indexOf(line.id) == 0) posY -= offset;
             else if (f.right.indexOf(line.id) == f.right.length - 1) posY += offset;
-        } else if (line.ctype == "LR") {
+        } else if (line.ctype == lineDirection.LEFT) {
             if (f.left.indexOf(line.id) == 0) posY -= offset;
             else if (f.left.indexOf(line.id) == f.left.length - 1) posY += offset;
         }
     } else {
-        if (line.ctype == "TB") {
+        if (line.ctype == lineDirection.UP) {
             if (t.bottom.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "BT") {
+        } else if (line.ctype == lineDirection.DOWN) {
             if (t.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "RL") {
+        } else if (line.ctype == lineDirection.RIGHT) {
             if (t.left.indexOf(line.id) == 0) posY -= offset;
             else if (t.left.indexOf(line.id) == f.left.length - 1) posY += offset;
-        } else if (line.ctype == "LR") {
+        } else if (line.ctype == lineDirection.LEFT) {
             if (t.right.indexOf(line.id) == 0) posY -= offset;
             else if (t.right.indexOf(line.id) == f.right.length - 1) posY += offset;
         }
@@ -8191,8 +8198,8 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
 }
 
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
-    let dy = (line.ctype == 'TB' || line.ctype == 'BT') ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
-    let dx = (line.ctype == 'LR' || line.ctype == 'RL') ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+    let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
+    let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
     return `<polyline 
                 id='${line.id}' 
                 points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
