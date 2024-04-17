@@ -4285,14 +4285,14 @@ function toggleDiagramDropdown() {
 
     if (window.getComputedStyle(dropdown).display === "none") {
         btn.style.backgroundColor = "transparent";
-        btn.style.border = "3px solid ${colorMap.DarkPurple}";
+        btn.style.border = `3px solid ${colorMap.DarkPurple}`;
         btn.style.color = colorMap.DarkPurple;
         btn.style.fontWeight = "bold";
     } else {
         btn.style.backgroundColor = colorMap.DarkPurple;
         btn.style.color = colorMap.White;
         btn.style.fontWeight = "normal";
-        btn.style.border = "3px solid "${colorMap.DarkPurple}"";
+        btn.style.border = `3px solid ${colorMap.DarkPurple}`;
     }
 }
 
@@ -4365,7 +4365,7 @@ function toggleGrid() {
     if (grid.style.display == "block") {
         grid.style.display = "none";
         gridButton.style.backgroundColor = "transparent";
-        gridButton.style.border = "3px solid "${colorMap.DarkPurple}"";
+        gridButton.style.border = `3px solid ${colorMap.DarkPurple}`;
         gridButton.style.color = colorMap.DarkPurple;
         gridButton.style.fontWeight = "bold";
     } else {
@@ -4373,7 +4373,7 @@ function toggleGrid() {
         gridButton.style.backgroundColor = colorMap.DarkPurple;
         gridButton.style.color = colorMap.White;
         gridButton.style.fontWeight = "normal";
-        gridButton.style.border = "3px solid "${colorMap.DarkPurple}"";
+        gridButton.style.border = `3px solid ${colorMap.DarkPurple}`;
     }
 }
 
@@ -4400,10 +4400,10 @@ function toggleDarkmode() {
         btn.style.backgroundColor = colorMap.DarkPurple;
         btn.style.color = colorMap.White;
         btn.style.fontWeight = "normal";
-        btn.style.border = "3px solid "${colorMap.DarkPurple}"";
+        btn.style.border = `3px solid ${colorMap.DarkPurple}`;
     } else {
         btn.style.backgroundColor = "transparent";
-        btn.style.border = "3px solid "${colorMap.DarkPurple}"";
+        btn.style.border = `3px solid ${colorMap.DarkPurple}`;
         btn.style.color = colorMap.DarkPurple;
         btn.style.fontWeight = "bold";
     }
@@ -5898,7 +5898,7 @@ function toggleA4Template() {
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
-        document.getElementById("a4TemplateToggle").style.border = "3px solid "${colorMap.DarkPurple}"";
+        document.getElementById("a4TemplateToggle").style.border = `3px solid ${colorMap.DarkPurple}`;
         document.getElementById("a4TemplateToggle").style.color = colorMap.DarkPurple;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
@@ -5908,7 +5908,7 @@ function toggleA4Template() {
         document.getElementById("a4TemplateToggle").style.backgroundColor = colorMap.DarkPurple;
         document.getElementById("a4TemplateToggle").style.color = colorMap.White;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
-        document.getElementById("a4TemplateToggle").style.border = "3px solid "${colorMap.DarkPurple}"";
+        document.getElementById("a4TemplateToggle").style.border = `3px solid ${colorMap.DarkPurple}`;
     }
     generateContextProperties();
 }
@@ -5981,10 +5981,10 @@ function toggleSnapToGrid() {
         document.getElementById("rulerSnapToGrid").style.backgroundColor = colorMap.DarkPurple;
         document.getElementById("rulerSnapToGrid").style.color = colorMap.White;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
-        document.getElementById("rulerSnapToGrid").style.border = "3px solid "${colorMap.DarkPurple}"";
+        document.getElementById("rulerSnapToGrid").style.border = `3px solid ${colorMap.DarkPurple}`;
     } else {
         document.getElementById("rulerSnapToGrid").style.backgroundColor = "transparent";
-        document.getElementById("rulerSnapToGrid").style.border = "3px solid "${colorMap.DarkPurple}"";
+        document.getElementById("rulerSnapToGrid").style.border = `3px solid ${colorMap.DarkPurple}`;
         document.getElementById("rulerSnapToGrid").style.color = colorMap.DarkPurple;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
     }
@@ -6005,7 +6005,7 @@ function toggleRuler() {
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
         rulerToggleButton.style.backgroundColor = "transparent";
-        rulerToggleButton.style.border = "3px solid "${colorMap.DarkPurple}"";
+        rulerToggleButton.style.border = `3px solid ${colorMap.DarkPurple}`;
         rulerToggleButton.style.color = colorMap.DarkPurple;
         rulerToggleButton.style.fontWeight = "bold";
     } else {
@@ -6014,7 +6014,7 @@ function toggleRuler() {
         rulerToggleButton.style.backgroundColor = colorMap.DarkPurple;
         rulerToggleButton.style.color = colorMap.White;
         rulerToggleButton.style.fontWeight = "normal";
-        rulerToggleButton.style.border = "3px solid "${colorMap.DarkPurple}"";
+        rulerToggleButton.style.border = `3px solid ${colorMap.DarkPurple}`;
     }
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
     drawRulerBars(scrollx, scrolly);
