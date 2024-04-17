@@ -23,7 +23,7 @@ if(strcmp($opt,"SAVDU")==0){
 	if(checklogin() && !isSuperUser($userid)) {
 
 		if(isset($grade)&&($grade > 1)){
-			//if grade equal G, VG, 3, 4, 5, or 6
+			//if grade equal G, VG, 3, 4, 5, or 6 
 			$debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
 		}
 		else {
