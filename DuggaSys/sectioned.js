@@ -4064,6 +4064,7 @@ function fetchGitCodeExamples(courseid){
   
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
       //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+      storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
