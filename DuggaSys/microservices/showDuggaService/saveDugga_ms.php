@@ -1,5 +1,20 @@
-
 <?php
+
+//
+// Microservice for saveDugga that has update userAnswer, insert userAnswer and 
+//
+
+include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
+
+pdoConnect(); // Connect to database and start session
+session_start();
+
+$opt=getOP('opt');
+$hash=getOP('hash');
+$AUtoken=getOP('AUtoken');
+
+
 if(strcmp($opt,"SAVDU")==0){
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
