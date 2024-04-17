@@ -1093,12 +1093,25 @@ const color = {
     PINK: "#DC267F",
     DENIM: "#648fff",
     SELECTED: "#A000DC",
-    LIGHT_BLUE: "#c4e4fc",
-    LIGHT_RED: "#ffd4d4",
-    LIGHT_YELLOW: "#fff4c2",
-    LIGHT_GREEN: "#c4f8bd",
-    LIGHT_PURPLE: "#927b9e",
+    LIGHT_BLUE: "#C4E4FC",
+    LIGHT_RED: "#FFD4D4",
+    LIGHT_YELLOW: "#FFF4C2",
+    LIGHT_GREEN: "#C4F8BD",
+    LIGHT_PURPLE: "#927B9E",
 };
+const MENU_COLORS = [
+    color.WHITE,
+    color.LIGHT_BLUE,
+    color.LIGHT_RED,
+    color.LIGHT_YELLOW,
+    color.LIGHT_GREEN,
+    color.DENIM,
+    color.PINK,
+    color.YELLOW,
+    color.ORANGE,
+    color.BLUE,
+    color.BLACK,
+]
 const strokeColors = [color.GREY];
 
 // Zoom values for offsetting the mouse cursor positioning
@@ -7331,9 +7344,9 @@ function toggleColorMenu(buttonID) {
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
-            for (var i = 0; i < colors.length; i++) {
+            for (var i = 0; i < MENU_COLORS.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${MENU_COLORS[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7374,7 +7387,7 @@ function setElementColors(clickedCircleID) {
     // If fill button was pressed
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
-        var color = colors[index];
+        var color = MENU_COLORS[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
