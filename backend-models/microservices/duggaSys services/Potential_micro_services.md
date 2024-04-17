@@ -1,25 +1,59 @@
-# Potential micro services
+# POTENTIAL MICROSERVICES
+This document primarily focuses on the services provided by the monolithc service files and which microservies can obtained thorugh these files. However, a complementary document may be required for functions that gather information.
 
-This document primaraly focuses on the services provided by the service-files, that does not mean that a complementary document wont be needed for functions that gather information, but we start with this.
+# BACKGROUND
+A monolithic architecture means that the application is built as a single unified codebase, which can sometimes make it difficult to scale or maintain. Microservices, on the other hand, are smaller, modular services that can operate independently yet still interact with each other. That is what we are aiming for.
+
+# UPDATES
+The naming convention for the microservices to be created was established by the group in 2023. The 2024 group found this naming convention somewhat confusing and has therefore decided that the new naming convention for microservices should be based on CRUD:
+
+CRUD stands for the four basic operations for managing data in applications and databases: Create, Read, Update, Delete.
+
+- Create:
+
+    Purpose: To create or add new records in a database.
+    Methods:
+    In a web application or API: Use the POST request to send data to be created.
+    In SQL databases: Use the 'INSERT' command to add new rows to a table.
+
+- Read:
+
+    Purpose: To fetch or read data from a database. This can include retrieving a specific record or a list of records based on certain criteria.
+    Methods:
+    In web applications or APIs: Use the GET request to request data.
+    In SQL databases: Use the 'SELECT' command to retrieve data from one or more tables.
+
+- Update:
+
+    Purpose: To update existing records in a database with new or modified data.
+    Methods:
+    In web applications or APIs: Use PUT or PATCH requests to send updates.
+    In SQL databases: Use the 'UPDATE' command to change data in existing rows.
+
+- Delete:
+
+    Purpose: To delete records from a database.
+    Methods:
+    In web applications or APIs: Use the DELETE request to remove data.
+    In SQL databases: Use the 'DELETE' command to remove rows from a table.
+
 
 ---
 # LIST OF ORIGINAL SERVICE FILES
 ---
-- accessedservice __==finished==__
-- codeviewerService __==finished==__
-- contributedservice : _there is no documentation for this file_ __dont know is needed__
-- contribution_loginbox_service : __dont know if needed__
-- courseedservice  __==finished==__
-- diagramservice  __WORK PAUSED in this service will continue when the service is fixed__
-- duggaedservice __==finished==__
-- fileedservice __==finished==__
-- highscoreservice __==finished==__
-- sectionedservice __==finished==__
-- profileservice __==finished==__
-- resultedservice __==finished==__
-- showDuggaservice __==finished==__ 
-<br>
-<br>
+- accessedservice.php __==finished==__
+- codeviewerService.php __==finished==__
+- contributedservice.php : _there is no documentation for this file_ __dont know is needed__
+- contribution_loginbox_service.php : __dont know if needed__
+- courseedservice.php  __==finished==__
+- diagramservice.php  __WORK PAUSED in this service will continue when the service is fixed__
+- duggaedservice.php __==finished==__
+- fileedservice.php __==finished==__
+- highscoreservice.php __==finished==__
+- sectionedservice.php __==finished==__
+- profileservice.php __==finished==__
+- resultedservice.php __==finished==__
+- showDuggaservice.php __==finished==__ 
 <br>
 <br>
 
@@ -28,73 +62,72 @@ This document primaraly focuses on the services provided by the service-files, t
 # LIST OF POTENTIAL SERVICES
 ---
 
-- logging
-- getUid
-- isSuperUser
-- hasAccess
-- setUserID
-- setActiveCourseversion
-- updateUserPassword
-- createNewCodeexample
-- createNewListentrie
-- createNewVersionOfCourse
-- setAsActiveCourse
-- UpdateUser
-- updateUsercourse
-- addClass
-- changeUserPassword_accessed
-- addUser
-- settingCodeexampleTemplate
-- editCodeExample
-- editContentOfCodeExample
-- editBoxTitle
-- deliteExample
-- createNewCourse
-- createCourseVersion
-- updateCourseVersion_courseed
-- changeActiveCourseVersion_courseed
-- copyCourseVersion
-- updateCourse
-- createMOTD
-- deleteCourseMaterial
-- createDugga
-- UpdateDugga
-- deleteDugga
-- createDuggaVariant
-- updateDuggaVariant
-- deleteDuggaVariant
-- deleteFileLink
-- updataFileLink
-- highscoreservice
-- getGroupValues
-- getCourseGroupsAndMembers
-- deleteListentries
-- removeListentries 
-- createListentrie
-- reorderListentries
-- updateListentrie
-- updateQuizDeadline
-- updateListentriesGradesystem
-- updateCourseVersion_sectioned
-- changeActiveCourseVersion_sectioned
-- setVisibleListentrie
-- getCourseVersions
-- getGitReference
-- createGithubCodeexample
-- getUserDuggaFeedback
-- getDeletedListentries
-- changeProfileValues
-- getUserAnswar
-- updateActiveUsers
-- processDuggaFile
-- submitDugga
-- loadDugga
-
+- logging_ms.php
+- getUid_ms.php
+- isSuperUser_ms.php
+- hasAccess_ms.php
+- setUserID_ms.php
+- setActiveCourseversion_ms.php
+- updateUserPassword_ms.php
+- createNewCodeexample_ms.php
+- createNewListentrie_ms.php
+- createNewVersionOfCourse_ms.php
+- setAsActiveCourse_ms.php
+- UpdateUser_ms.php
+- updateUsercourse_ms.php
+- addClass_ms.php
+- changeUserPassword_accessed_ms.php
+- addUser_ms.php
+- settingCodeexampleTemplate_ms.php
+- editCodeExample_ms.php
+- editContentOfCodeExample_ms.php
+- editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
+- deliteExample_ms.php
+- createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- updateCourseVersion_courseed_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- changeActiveCourseVersion_courseed_ms.php
+- copyCourseVersion_ms.php
+- updateCourse_ms.php
+- createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- deleteCourseMaterial_ms.php
+- createDugga_ms.php
+- UpdateDugga_ms.php
+- deleteDugga_ms.php
+- createDuggaVariant_ms.php
+- updateDuggaVariant_ms.php
+- deleteDuggaVariant_ms.php
+- deleteFileLink_ms.php
+- updataFileLink_ms.php
+- highscoreservice_ms.php
+- getGroupValues_ms.php
+- getCourseGroupsAndMembers_ms.php
+- deleteListentries_ms.php
+- removeListentries_ms.php
+- createListentrie_ms.php
+- reorderListentries_ms.php
+- updateListentrie_ms.php
+- updateQuizDeadline_ms.php
+- updateListentriesGradesystem_ms.php
+- updateCourseVersion_sectioned_ms.php
+- changeActiveCourseVersion_sectioned_ms.php
+- setVisibleListentrie_ms.php
+- getCourseVersions_ms.php
+- getGitReference_ms.php
+- createGithubCodeexample_ms.php
+- getUserDuggaFeedback_ms.php
+- getDeletedListentries_ms.php
+- changeProfileValues_ms.php
+- getUserAnswar_ms.php
+- updateActiveUsers_ms.php
+- processDuggaFile_ms.php
+- submitDugga_ms.php
+- loadDugga_ms.php
 
 
 ---
 ---
-# Potentaial services 
+# Potential microservices 
 ---
 ---
 <br>
@@ -103,30 +136,25 @@ This document primaraly focuses on the services provided by the service-files, t
 ## --------- _Misc services used in multiple of the original services_ -------------
 ---
 
-
 <br>
 
 ### logging
 Uses a function in basic.php. 
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### getUid
 Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### isSuperUser
 Uses a function in Session.php. 
@@ -136,13 +164,11 @@ Returns superuser status of user
 @return true false. True if superuser false if not
 ```
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### hasAccess
 
@@ -286,15 +312,13 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 
 <br>
 <br>
-<br>
 
 ---
-## ----- _accessedservice_ -----------------------------------------------------
+## ----------------------------- _accessedservice_ -----------------------------
 ---
 
 <br>
 <br>
-
 
 ### UpdateUser
 Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
@@ -334,36 +358,30 @@ Uses service __updateTableUser__ to update one of these columns in the table __u
 Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
 - group
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### addClass
 
 Uses service __insertIntoTableClass__ to makes _inserts_ into the table __class__.
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### changeUserPassword_accessed
 Uses service __updateUserPassword__ to _update_ the column "_password_" in the table __user__. 
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### addUser
 Uses service __selectFromTableClass__ to _get_ information it requires from __class__.
@@ -373,18 +391,15 @@ Uses service __insertIntoTableclass__ to _insert_ into the table __class__.
 Uses service __insertIntoTableUser__ to _insert_ into the table __user__.
 Uses service __insertIntoTableUserCourse__ to _insert_ into the table __user_course__.
 
-
-<br>
 <br>
 <br>
 
 ---
-## ------- _codeviewerService_ ----------------------------------------------
+## ----------------------------- _codeviewerService_ -----------------------------
 ---
 
-
 <br>
-
+<br>
 
 ### settingCodeexampleTemplate
 Updates the template for the code boxes in LenaSYS.
@@ -394,13 +409,11 @@ The number of boxes created depends on on the value of _templateNumber_.
 The contents of all boxes are gatherd with the service __selectFromTableBox__.
 Depending on if a box with the set id exists or not an insert into the table __box__, using service __insertIntoTableBox__, or an update, using __updateTableBox__, is performed. 
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### editCodeExample
 This service uses __updateTableCodeexample__ to update values in table __codeexample__:
@@ -412,13 +425,11 @@ This service uses __updateTableCodeexample__ to update values in table __codeexa
 
 Aswell as __insertIntoTableImpwordlist__ or __deliteFromTableImpwordlist__ to add or remove a row in table __impwordlist__.
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### editContentOfCodeExample
 Uses the services __updateTableBox__ to change the content of these columns:
@@ -430,26 +441,25 @@ Uses the services __updateTableBox__ to change the content of these columns:
 
 Aswell as __insertIntoTableImprow__ or __deleteFromTableImpwordlist__ to add or remove a row in table __improw__.
 
-
 <br>
 
 ---
 
 <br>
 
-
-### editBoxTitle
-Uses service __updateTableBox__ to change value of column: 
+### updateBoxTitle_ms.php 
+_UPDATE_ operation on the table __'box'__ to update the value of the column:
 - boxtitle
 
+```sql
+UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
+```
 
 <br>
 
 ---
 
 <br>
-
-
 
 ### deliteExample
 Uses service __deleteFromTableBox__ to delete a row from the table __Box__.
@@ -458,35 +468,28 @@ Uses service __deleteFromTableImpwordlist__ to delete a row from the tabe __impw
 Uses service __deleteFromTableCodeexample__ to delete a row from the tabe __Codeexample__.
 Uses service __deleteFromTableListentries__ to delete a row from the tabe __listentries__.
 
-
-<br>
 <br>
 <br>
 
 ---
-## ----- _courseedservice_ -------------------------------------------------
+## ----------------------------- _courseedService_ -----------------------------
 ---
 
 <br>
-
-
-
-### createNewCourse
-Uses service __insertIntoTableCourse__ to makes _inserts_ into the table __course__.
-Uses service __selectFromTableCourse__ to _get_ information it requires from __course__.
-
-
 <br>
 
----
+### createNewCourse_ms.php
+_INSERT_ operation on the table __'course'__ to create new rows in the colums:
+- coursecode
+- coursename
+- visibility = 0 (set value)
+- creator
+- hp = 7.5 (set value)
+- courseGitURL    
 
-<br>
-
-
-### createCourseVersion
-Uses service __insertIntoTableVers__ to makes _inserts_ into the table __Vers__.
-Uses the services __setAsActiveCourse__ to change the content of these columns:
-- activeversion
+```sql
+INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)
+``` 
 
 <br>
 
@@ -494,12 +497,52 @@ Uses the services __setAsActiveCourse__ to change the content of these columns:
 
 <br>
 
-### updateCourseVersion_courseed
-Uses the services __updateTableVers__ to change the content of these columns:
+### createCourseVersion_ms.php
+_INSERT_ operation on the table __'vers'__ to create new rows in the colums:
+- cid
+- coursecode
+- vers
 - versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
 
-Uses the services __setActiveCourseversion__ to change the content of these columns:
+```sql
+INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);
+```
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
+
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid   
+```
+
+<br>
+
+---
+
+<br>
+
+### updateCourseVersion_courseed_ms.php
+_UPDATE_ operation on the table __'course'__ to update the value of these columns:
+- coursename
+- visibility
+- coursecode
+- courseGitURL
+
+```sql
+UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;
+```
+
+_SELECT_ operation on the table __'user'__ to get the value of the column:
+- username
+
+```sql
+   SELECT username FROM user WHERE uid = :uid
+```
 
 <br>
 
@@ -516,7 +559,6 @@ Uses the services __setActiveCourseversion__ to change the content of these colu
 ---
 
 <br>
-
 
 ### copyCourseVersion
 Uses service __createNewVersionOfCourse__ to makes _inserts_ into the table __Vers__.
@@ -561,15 +603,11 @@ Uses the services __updateTableCodeexample__ to change the content of these colu
 Uses the services __setAsActiveCourse__ to change the content of these columns:
 - activeversion
 
-
 <br>
-
 
 ---
 
-
 <br>
-
 
 ### updateCourse
 Uses the services __updateTableCourse__ to change the content of these columns:
@@ -578,26 +616,26 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 - coursecode
 - courseGitURL
 
-
 <br>
 
 ---
 
 <br>
 
+### createMOTD_ms.php
+_INSERT_ operation on the table __'settings'__ to create new rows in the colums:
+- mot 
+- readonly
 
-### createMOTD
-Uses service __insertIntoTableSettings__ to makes _inserts_ into the table __settings__.
-
+```sql
+INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
+```
 
 <br>
-
 
 ---
 
-
 <br>
-
 
 ### deleteCourseMaterial
 Uses service __deliteFromTableCodexample__ to delete a row from the table __codeexample__.
@@ -606,15 +644,11 @@ Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 Uses service __deliteFromTableVers__ to delete a row from the table __vers__.
 Uses service __deliteFromTableCourse__ to delete a row from the table __course__.
 
-
-
 <br>
 <br>
-<br>
-
 
 ---
-# ----- _duggaedservice_ -----------------------------------------------------------
+## ----------------------------- _duggaedservice_ -----------------------------
 ---
 
 <br>
@@ -655,25 +689,20 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 ### deleteDugga
 Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 
-
-
 <br>
 
 ---
 
 <br>
-
 
 ### createDuggaVariant
 Uses service __insertIntoTablVariant__ to makes _inserts_ into the table __Variant__.
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### updateDuggaVariant 
 Uses the services __updateTableVariant__ to change the content of these columns:
@@ -681,26 +710,21 @@ Uses the services __updateTableVariant__ to change the content of these columns:
 - param
 - variantanswer
 
-
 <br>
 
 ---
 
 <br>
-
 
 ### deleteDuggaVariant
 Uses service __deliteFromTableUserAnswer__ to delete a row from the table __userAnswer__.
 Uses service __deliteFromTableVariant__ to delete a row from the table __variant__.
 
-
 <br>
 <br>
-<br>
-
 
 ---
-# ----- _fileedservice_ -----------------------------------------------------------
+## ----------------------------- _fileedservice_ -----------------------------
 ---
 
 <br>
@@ -715,7 +739,6 @@ Count rows where these conditions hold. This will indicate if the file is in use
 If not in use, then service __deliteFromTableFileLink__ is used to delete a row from the table __fileLink__.
 
 This service contains two seperat instanses of the above mentiond code, placed in an if and else statment. 
-
 
 <br>
 
@@ -733,10 +756,9 @@ __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 
 <br>
 <br>
-<br>
 
 ---
-## -------------------------------------- _highscoreservice_ --------------------------------
+## ----------------------------- _highscoreservice_ -----------------------------
 ---
 
 <br>
@@ -752,10 +774,9 @@ Uses service __selectFromTableScore__ to _get_ information it requires from __Sc
 
 <br>
 <br>
-<br>
 
 ---
-## ------------------------------------ _sectionedservice_ -----------------------------
+## ----------------------------- _sectionedservice_ -----------------------------
 ---
 
 <br>
@@ -768,7 +789,6 @@ Uses service __selectFromTableGroup__ to _get_ information it requires from __gr
 ---
 
 <br>
-
 
 ### getCourseGroupsAndMembers
 Gets groups and there members for a specific course  
@@ -865,14 +885,11 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 Uses the services __updateTableListentries__ to change the content of these columns:
 - gradesystem
 
-
-
 <br>
 
 ---
 
 <br>
-
 
 ### updateCourseVersion_sectioned
 Uses the services __updateTableVers__ to change the content of these columns:
@@ -913,7 +930,6 @@ Uses the services __updateTableListentries__ to change the content of these colu
 Uses the services __updateTableListentries__ to change the content of these columns:
 - visible
 
-
 <br>
 
 ---
@@ -950,7 +966,6 @@ Uses service __selectFromTableListentries__ to _get_ information it requires fro
 Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
 Uses service __createNewListentrie__ to makes _inserts_ into the table __listentries__.
 
-
 <br>
 
 ---
@@ -979,14 +994,14 @@ Uses service __selectFromTableListentries__ to _get_ information it requires fro
 
 <br>
 <br>
-<br>
 
 ---
-## ------------------------------------ _profileservice_ -----------------------------
+## ----------------------------- _profileservice_ -----------------------------
 ---
 
 <br>
 <br>
+
 profileService - handles password changes and challenge question
 
 ### changeProfileValues    
@@ -1007,10 +1022,9 @@ Uses service __updateUserPassword__ to _get_ information it requires from __user
 
 <br>
 <br>
-<br>
 
 ---
-## ------------------------------------ _resultedservice_ -----------------------------
+## ----------------------------- _resultedservice_ -----------------------------
 ---
 
 <br>
@@ -1025,10 +1039,9 @@ Uses service __selectFromTableListentries__ to _get_ information it requires fro
 
 <br>
 <br>
-<br>
 
 ---
-## ------------------------------------ _showDuggaservice_ -----------------------------
+## ----------------------------- _showDuggaservice_ -----------------------------
 ---
 
 <br>
