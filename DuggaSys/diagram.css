@@ -716,6 +716,7 @@
     display: flex;
     justify-content: space-around;
     padding: 1px;
+    z-index: 900;
 }
 .diagramZoomIcons img {
     height: 27px;
