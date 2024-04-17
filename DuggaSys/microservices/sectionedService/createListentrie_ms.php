@@ -1,10 +1,9 @@
 <?php
-
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
-include('../shared_microservices/getUid_ms.php');
+include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
+include_once "../shared_microservices/getUid_ms.php";
 
 pdoConnect();
 session_start();
@@ -79,7 +78,6 @@ if ($grptype != "UNK") {
      logUserEvent($userid, $username, EventTypes::SectionItems,$sectname);
 }
 
-
 if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error updating entries".$error[2];
@@ -88,5 +86,3 @@ if(!$query->execute()) {
 echo json_encode(array('courseid' => $courseid, 'coursevers' => $coursevers, 'sectname' => $sectname, 'kind' => $kind, 'link' => $link, 'visibility' => $visibility, 'gradesys' => $gradesys, 'highscoremode' => $highscoremode, 'comments' => $comments, 'grptype' => $grptype, 'pos' => $pos, 'tabs' => $tabs, 'debug' => $debug));
 
 return;
-
-?>

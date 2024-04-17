@@ -4,13 +4,11 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
-include_once ("../../../Shared/sessions.php");
+include_once "../../../Shared/sessions.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
-
-
 
 //Delete course matterial from courses that have been marked as deleted.
 $deleted = 3;
@@ -37,8 +35,7 @@ $query->bindParam(':deleted', $deleted);
  if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading courses\n".$error[2];
-} 
-
+}
 
 //box
 $query = $pdo->prepare("DELETE box FROM box,course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND codeexample.exampleid=box.exampleid;");
@@ -144,7 +141,6 @@ if (!$query->execute()) {
     $debug = "Error reading courses\n" . $error[2];
 }
 
-
 //course_req
 $query = $pdo->prepare("DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND course_req.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
@@ -175,5 +171,3 @@ if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
 }
-
-?>

@@ -1,9 +1,9 @@
 <?php
-
 date_default_timezone_set("Europe/Stockholm");
-include_once ('../../../Shared/sessions.php');
+
+include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once ('../shared_microservices/getUid_ms.php');
+include_once "../shared_microservices/getUid_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -35,7 +35,6 @@ if($feedbackenabled != 1){
 }
 
 if(strcmp($opt,"UPDATE")===0) {
-
     // Insert a new code example and update variables accordingly.
     if($link==-1) {
 
@@ -117,5 +116,3 @@ if(strcmp($opt,"UPDATE")===0) {
 }
 
 // add echo json_decode(retrieveSectionedService()); here
-
-?>

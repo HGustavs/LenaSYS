@@ -1,14 +1,14 @@
 <?php
-
 //---------------------------------------------------------------------------------------------------------------
 // The microservice createCourseVersion_ms.php creates a new version of an existing course
 // by inserting a new row into the vers table
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
-include_once "../Shared/basic.php";
-include_once "../Shared/sessions.php";
-include ('../shared_microservices/getUid_ms.php');
+
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include_once "../shared_microservices/getUid_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -22,7 +22,6 @@ $coursenamealt=getOP('coursenamealt');
 $versname=getOP('versname');
 $versid=getOP('versid');
 $motd=getOP('motd');
-
 
 if(checklogin() && isSuperUser(getUid()) == true) {
     $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
@@ -61,5 +60,3 @@ if(checklogin() && isSuperUser(getUid()) == true) {
 	$description=$cid." ".$versid;
 	logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 }
-
-?>   

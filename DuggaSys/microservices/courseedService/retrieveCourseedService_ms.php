@@ -2,8 +2,8 @@
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
-include_once "../../../Shared/basic.php";
 
+include_once "../../../Shared/basic.php";
 
 function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated, $isSuperUserVar){
     // Include basic application services!
@@ -18,7 +18,6 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
     }else{
         $userid="UNK";
     }
-
 
     $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
     $queryreg->bindParam(':uid', $userid);
@@ -83,7 +82,6 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
         $error=$query->errorInfo();
         $debug="Error reading courses\n".$error[2];
     }
-
 
     $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 
@@ -154,7 +152,6 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
         }
     }
 
-
     $query=$pdo->prepare("SELECT motd,readonly FROM settings;");
 
     if(!$query->execute()) {
@@ -168,8 +165,6 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
             $readonly=$row["readonly"];
         }
     }
-
-
 
     $array = array(
         'LastCourseCreated' => $LastCourseCreated,
@@ -187,6 +182,3 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
 
     return $array;
 }
-
-
-?>

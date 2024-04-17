@@ -11,10 +11,10 @@
 -------------==============######## Documentation End ###########==============-------------
 */
 
-
 date_default_timezone_set("Europe/Stockholm");
-include ("../../../Shared/sessions.php");     
-include('../shared_microservices/getUid_ms.php');
+
+include_once "../../../Shared/sessions.php";     
+include_once "../shared_microservices/getUid_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -26,7 +26,6 @@ $readonly=getOP('readonly');
 
 // Updates the message of the day 
 if(checklogin() && isSuperUser(getUid()) == true) {
-
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
     $query->bindParam(':motd', $motd);
@@ -38,5 +37,3 @@ if(checklogin() && isSuperUser(getUid()) == true) {
         $debug="Error updating entries\n".$error[2];
     }
 }
-?>
-

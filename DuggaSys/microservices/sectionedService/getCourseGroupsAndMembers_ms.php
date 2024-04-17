@@ -1,5 +1,4 @@
 <?php
-
 //---------------------------------------------------------------------------------------------------------------
 // Microservice getCourseGroupsAndMembers, returns a list of group member related to the provided 
 // course id and course version
@@ -56,6 +55,6 @@ if(checklogin()){
 		}
 	} 	
 }
+
 echo json_encode(array('debug'=> "NONE!",'grplst' => $grplst));
 return;
-?>
