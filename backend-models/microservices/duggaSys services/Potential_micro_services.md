@@ -86,7 +86,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_courseed_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- changeActiveCourseVersion_courseed_ms.php
+- changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
 - copyCourseVersion_ms.php
 - updateCourse_ms.php
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -550,9 +550,13 @@ _SELECT_ operation on the table __'user'__ to get the value of the column:
 
 <br>
 
-### changeActiveCourseVersion_courseed
-Uses the services __setActiveCourseversion__ to change the content of these columns:
+### updateActiveCourseVersion_courseed_ms.php
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
+
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid
+```
 
 <br>
 
