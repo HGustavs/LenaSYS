@@ -14,8 +14,11 @@ session_start();
 
 $opt=getOP('opt');
 
-
-if(isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0){
+if(isset($grade)&&($grade > 1)){
+	//if grade equal G, VG, 3, 4, 5, or 6
+	$debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
+}
+else { if(isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0){
 	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timesSubmitted=timesSubmitted+1 WHERE hash=:hash AND password=:hashpwd;");
 	$query->bindParam(':hash', $hash);
 	$query->bindParam(':hashpwd', $hashpwd);
@@ -24,6 +27,7 @@ if(isset($dbpwd) && strcmp($hashpwd,$dbpwd) === 0){
 		$error=$query->errorInfo();
 		$debug="Error updating variant (row ".__LINE__.") Error code: ".$error[2];
 	}
+}
 }
 
 ?>
