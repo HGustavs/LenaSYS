@@ -8913,17 +8913,18 @@ function drawElement(element, ghosted = false) {
         str += `</div>`;
 
         //div to encapuslate SD content
-        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
+
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
             /* find me let sdOption = document.getElementById("SDOption");
              console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
+                    h${(boxw - (linew * 2 ))}
+                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
                     h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
@@ -8942,8 +8943,9 @@ function drawElement(element, ghosted = false) {
             // Draw SD-content if there are no attributes.
         }
         else {
+            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
