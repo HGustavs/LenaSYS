@@ -24,7 +24,7 @@ $versid=getOP('versid');
 $motd=getOP('motd');
 
 if(checklogin() && isSuperUser(getUid()) == true) {
-    $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
+  $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
 
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':coursecode', $coursecode);
@@ -32,27 +32,34 @@ if(checklogin() && isSuperUser(getUid()) == true) {
 	$query->bindParam(':versname', $versname);
 	$query->bindParam(':coursename', $coursename);
 	$query->bindParam(':coursenamealt', $coursenamealt);
-    $query->bindParam(':motd', $motd);
+  $query->bindParam(':motd', $motd);
 
-    // if start and end dates are null, insert mysql null value into database
-	if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
-	else $query->bindParam(':startdate', $startdate);
-	if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
-	else $query->bindParam(':enddate', $enddate);
+  // if start and end dates are null, insert mysql null value into database
+	if($startdate=="null") {
+		$query->bindValue(':startdate', null,PDO::PARAM_INT);
+	} else {
+		$query->bindParam(':startdate', $startdate);
+	}
+	
+	if($enddate=="null") {
+		$query->bindValue(':enddate', null,PDO::PARAM_INT);
+	} else {
+		$query->bindParam(':enddate', $enddate);
+	}
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error inserting entries\n".$error[2];
 	} 
 
-    // if specified, sets the course as active
-    if($makeactive==3){
+  // if specified, sets the course as active
+  if($makeactive==3){
 		$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $versid);
 		if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries\n".$error[2];
+			$error=$query->errorInfo();
+			$debug="Error updating entries\n".$error[2];
 		}	
 	}
 
