@@ -1015,42 +1015,17 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
+	if (kind === "COURSE") {
 
-	if(kind=="COURSE"){
-		//for testing of the microservice, delete the if/else and uncomment the original ajax call below before merge
-		if(opt === "NEW"){
 			$.ajax({
-                url: "courseedservice.php",
+				url: "courseedservice.php",
 				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-            });
-		} else if (opt === "NEWVRS") {
-            $.ajax({
-                url: "courseedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-            });
-        } else {
-			$.ajax({
-				url : "courseedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
+				data: "opt=" + opt + para,
 				dataType: "json",
 				success: returnedCourse
 			});
-        }
-		/*$.ajax({
-			url : "courseedservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedCourse
-		});*/
-	}else if(kind=="VARIANTPDUGGA"){
+		
+		}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
@@ -1098,19 +1073,18 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedAccess
 			});
-	}else if(kind=="SECTION"){
-				$.ajax({
-					url: "sectionedservice.php",
-					type: "POST",
-					data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-					dataType: "json",
-					success: returnedSection
-				});
-			}
-			else if(kind=="GRP"){
+	}else if(kind=="SECTION"){		
+		$.ajax({
+		url: "sectionedservice.php",
+		type: "POST",
+		data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+		dataType: "json",
+		success: returnedSection
+		});
+  }else if(kind=="GRP"){
     $.ajax({
       url: "sectionedservice.php",
-      //url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
+      //url: "../DuggaSys/microservices/sectionedservice/getCourseGroupsAndMembers_ms.php",
       type: "POST",
       data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
       dataType: "json",
