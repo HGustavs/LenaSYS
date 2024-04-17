@@ -17,10 +17,11 @@ $answer=getOP('answer');
 $hash=getOP('hash');
 $hashpwd=getOP('password');
 
-if(strcmp($opt,"SAVDU")==0){
+if(strcmp($opt,"SAVDU")==0){   // Unsure if this if-statement is supposed to be in this MS as i dont know how this file is going to be implemented in the future.
 	// Log the dugga write
 	makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 	$discription = $courseid." ".$duggaid." ".$moment." ".$answer;
+
 	if(checklogin() && !isSuperUser($userid)) {
 
 		if(isset($grade)&&($grade > 1)){
