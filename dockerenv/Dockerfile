@@ -16,6 +16,22 @@ RUN { \
         echo 'post_max_size=128M'; \
     } > /usr/local/etc/php/conf.d/uploads.ini
 
+# Create a custom configuration to control access to specific directories and files
+RUN { \
+    echo '<Directory /var/www/html/LenaSYS/dockerenv>'; \
+    echo '    Require all denied'; \
+    echo '</Directory>'; \
+    echo '<Directory /var/www/html/githubMetadata>'; \
+    echo '    Require all denied'; \
+    echo '</Directory>'; \
+    echo '<Directory /var/www/html>'; \
+    echo '    <Files "coursesyspw.php">'; \
+    echo '        Require all denied'; \
+    echo '    </Files>'; \
+    echo '</Directory>'; \
+} > /etc/apache2/conf-available/restricted-access.conf \
+    && a2enconf restricted-access
+
 # Enable Apache Directory Listing
 RUN a2enmod autoindex
 RUN echo '<Directory /var/www/html>' > /etc/apache2/conf-available/custom-directory-listing.conf \
