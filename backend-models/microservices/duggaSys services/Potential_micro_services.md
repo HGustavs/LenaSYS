@@ -741,15 +741,76 @@ DELETE variant FROM variant,course,quiz WHERE course.visibility=:deleted AND qui
 ```
 
 
+_DELETE_ operation on the table __'quiz'__ to delete rows where:
+
+- The 'cid' value in the __'quiz'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid;
+```
 
 
+_DELETE_ operation on the table __'vers'__ to delete rows where:
+
+- The 'cid' value in the __'vers'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = course.cid;
+```
 
 
-Uses service __deliteFromTableCodexample__ to delete a row from the table __codeexample__.
-Uses service __deliteFromTableListentries__ to delete a row from the table __listentries__.
-Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
-Uses service __deliteFromTableVers__ to delete a row from the table __vers__.
-Uses service __deliteFromTableCourse__ to delete a row from the table __course__.
+_DELETE_ operation on the table __'fileLink'__ to delete rows where:
+
+- The 'cid' value in the __'fileLink'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE fileLink FROM course,fileLink WHERE course.visibility=:deleted AND fileLink.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'programcourse'__ to delete rows where:
+
+- The 'cid' value in the __'programcourse'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE programcourse FROM course,programcourse WHERE course.visibility=:deleted AND programcourse.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'user_course'__ to delete rows where:
+
+- The 'cid' value in the __'user_course'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE user_course FROM course,user_course WHERE course.visibility=:deleted AND user_course.cid = course.cid
+```
+
+
+_DELETE_ operation on the table __'course_req'__ to delete rows where:
+
+- The 'cid' value in the __'course_req'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND course_req.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'coursekeys'__ to delete rows where:
+
+- The 'cid' value in the __'coursekeys'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE coursekeys FROM course,coursekeys WHERE course.visibility=:deleted AND coursekeys.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'course'__ to delete rows where:
+
+- The 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE course FROM course WHERE visibility=:deleted;
+```
 
 <br>
 <br>
