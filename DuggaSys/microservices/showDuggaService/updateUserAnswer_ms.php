@@ -16,7 +16,7 @@ $answer=getOP('answer');
 $hash=getOP('hash');
 $hashpwd=getOP('password');
 
-if(checklogin() && isSuperUser(getUid()) == true) {
+if(checklogin() && !isSuperUser($userid)) {
 
 	if(isset($grade)&&($grade > 1)){
 		//if grade equal G, VG, 3, 4, 5, or 6
