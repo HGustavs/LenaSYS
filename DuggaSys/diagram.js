@@ -3109,7 +3109,8 @@ function changeLineProperties() {
 
     if (line.label != label.value) {
         label.value = label.value.trim();
-        line.label = label.value
+        var label_value = label.value.replaceAll('<', "&#60").replaceAll('>', "&#62");
+        line.label = label_value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {label: label.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML or IE line
@@ -7059,7 +7060,7 @@ function generateContextProperties() {
  * @description function for include button to the options panel,writes out << Include >>
  */
 function setLineLabel() {
-    document.getElementById("lineLabel").value = "&#60&#60include&#62&#62";
+    document.getElementById("lineLabel").value = "<<include>>";
 }
 
 /**
