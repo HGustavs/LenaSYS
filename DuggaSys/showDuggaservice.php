@@ -283,6 +283,7 @@ if(isSuperUser($userid)){
 				$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
 				$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+				echo $link;
 				unset($grade);
 
 				$query = $pdo->prepare("SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;");

@@ -265,8 +265,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 			<div id='receiptInfo'></div>
 
 			<?php 
+			$parentDir = basename(dirname(__DIR__));
 			#determine if it's https or http, add $_SERVER[HTTP_HOST] (url) and add hash. Might need to change s to either a or c, depending on type of submit.
-			$receiptLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+			$receiptLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/$parentDir/sh/?s=$hash";
 			?>
     		<div id='emailPopup' style="display:block">
 				<p>Your dugga has been saved. Besure to store the hash and hash password in a safe place before submitting the dugga in canvas! <em>There is <strong>no way</strong> to restore a submission without the hash and hash password.</em></p>
