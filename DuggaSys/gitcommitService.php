@@ -33,7 +33,13 @@
 			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
 		}
 		else if($_POST['action'] == 'directInsert'){
+			
+			insertTokenToMetaData($_POST['token'], $_POST['cid']);
 			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
+		}
+		else if($_POST['action'] == 'insertTokenToMetaData'){
+
+			insertTokenToMetaData($_POST['token'], $_POST['cid']);
 		}
 	};
 
@@ -89,6 +95,43 @@
 			echo $errorvar;
 		} else {
 			bfs($url, $cid, "REFRESH");
+		}
+	}
+
+	function insertTokenToMetaData($token,$cid) 
+	{
+
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		
+		$query2 = $pdolite->prepare('SELECT gitToken FROM gitToken WHERE cid=:cid');
+		$query2->bindParam(':cid', $cid);
+		$query2->execute();
+
+
+		$old_token="";
+		foreach($query2->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$old_token = $row['gitToken'];
+		}
+
+		if(strlen($token)>1)
+		{
+			if(strlen($old_token)>1)
+			{
+
+				$query2 = $pdolite->prepare('UPDATE gitToken SET gitToken=:token WHERE cid=:cid');
+				$query2->bindParam(':token', $token);
+				$query2->bindParam(':cid', $cid);
+				$query2->execute();
+
+			}
+			else
+			{
+				$query2 = $pdolite->prepare('INSERT OR REPLACE INTO gitToken (cid, gitToken) VALUES (:cid, :token)');
+
+				$query2->bindParam(':token', $token);
+				$query2->bindParam(':cid', $cid);
+				$query2->execute();
+			}
 		}
 	}
 

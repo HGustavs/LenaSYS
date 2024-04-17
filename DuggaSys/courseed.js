@@ -37,6 +37,37 @@ function updateCourse()
 	var courseGitURL = $("#editcoursegit-url").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
+
+	var token = document.getElementById("githubToken").value;
+	
+	//check if token is set, if it is insert information into meta data
+	if(token){
+		$.ajax({
+			async: false,
+			url: "../DuggaSys/gitcommitService.php",
+			type: "POST",
+			data: {'githubURL':courseGitURL,'cid':cid,'token':token, 'action':'directInsert'},
+			success: function() { 
+				//Returns true if the data and JSON is correct
+				dataCheck = true;
+			},
+			error: function(data){
+				//Check FetchGithubRepo for the meaning of the error code.
+				switch(data.status){
+					case 422:
+						alert(data.responseJSON.message + "\nDid not create/update token");
+						break;
+					case 503:
+						alert(data.responseJSON.message + "\nDid not create/update token");
+						break;
+					default:
+						alert("Something went wrong...");
+				}
+				dataCheck = false;
+			}
+		});
+	}
+
 	// Show dialog
 	$("#editCourse").css("display", "none");
 	
@@ -278,7 +309,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 	}else{
 		$("#editcoursegit-url").val("");
 	}
-	
+	$("#githubToken").val("");
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);

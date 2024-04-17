@@ -158,22 +158,50 @@ function bfs($url, $cid, $opt)
     array_push($fifoQueue, $url);
     global $pdoLite;
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+
+	$query = $pdoLite->prepare('SELECT gitToken FROM gitToken WHERE cid=:cid');
+    $query->bindParam(':cid', $cid);
+
+    $query->execute();
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$token = $row['gitToken'];
+	}
+
     while (!empty($fifoQueue)) {
         $currentUrl = array_shift($fifoQueue);
         // Necessary headers to send with the request, 'User-Agent: PHP' is necessary. 
-        $opts = [
-            'http' => [
-                'method' => 'GET',
-                'header' => [
-                    'User-Agent: PHP',
-                    // If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
-                    // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
-                    // To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
-                    // Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
-                    // 'Authorization: Bearer YOUR_GITHUB_API_KEY'
+        //if there is a github token it will be used
+        if(isset($token))
+        {
+            $opts = [
+                'http' => [
+                    'method' => 'GET',
+                    'header' => [
+                        'User-Agent: PHP',
+                        // If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
+                        // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
+                        // To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
+                        // Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
+                        'Authorization: Bearer '.$token
+                    ]
                 ]
-            ]
-        ];
+            ];
+        }
+        else{
+            $opts = [
+                'http' => [
+                    'method' => 'GET',
+                    'header' => [
+                        'User-Agent: PHP',
+                        // If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
+                        // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
+                        // To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
+                        // Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
+                    ]
+                ]
+            ];
+        }
+
         // Starts a stream with the required headers
         $context = stream_context_create($opts);
         // Fetches the data with the stream included

@@ -635,6 +635,7 @@
 				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
 					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
+					<div class= 'inputwrapper'><span>(optional) Github API Key:</span><input type="text" id="gitAPIKey" class="textinput" name="repokey" placeholder="Enter GitHub API key here..."/></div>
 				</form>
 			</div>
 			<div style='padding-top:15px; width: 464px;'>

@@ -272,6 +272,15 @@ $sql3 = '
 '; 
 $metadata_db->exec($sql3);
 
+$sql4 = '
+	CREATE TABLE IF NOT EXISTS gitToken ( 
+		cid INTEGER,
+		gitToken VARCHAR(50),
+		PRIMARY KEY (cid)
+	);
+'; 
+$metadata_db->exec($sql4);
+
 
 //------------------------------------------------------------------------------------------------
 // Logging of user history, used to keep track of who is online and where they are on the site
