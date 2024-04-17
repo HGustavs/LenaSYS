@@ -6152,6 +6152,19 @@ function togglePlacementType(num, type) {
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
 
+function hidePlacementType(){
+    let i = 0;
+
+    while(true){
+        if(document.getElementById("togglePlacementTypeButton" + i)){
+            document.getElementById("togglePlacementTypeButton" + i).classList.remove("activeTogglePlacementTypeBox");
+        }else if(document.getElementById("togglePlacementTypeButton" + i) == null && document.getElementById("togglePlacementTypeButton" + (i + 1)) == null){
+            break;
+        }
+
+        i++;
+    }
+}
 
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
