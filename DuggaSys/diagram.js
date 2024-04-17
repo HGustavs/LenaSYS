@@ -7833,7 +7833,7 @@ function drawLine(line, targetGhost = false) {
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
 
     let str = "";
-    let strokeDash = (line.kind == "Dashed") ? "10" : "0";
+    let strokeDash = (line.kind == lineKind.DASHED) ? "10" : "0";
     let lineColor = isDarkTheme() ? '#FFFFFF' : '#000000';
     let isSelected = contextLine.includes(line);
 
@@ -7842,17 +7842,19 @@ function drawLine(line, targetGhost = false) {
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
-    line.type = (telem.type == 'NOTE') ? telem.type : felem.type;
-    if (line.type == 'NOTE') strokeDash = "10";
-    if (targetGhost && line.type == 'SD') line.endIcon = "ARROW";
+    line.type = (telem.type == entityType.note) ? telem.type : felem.type;
+    if (line.type == entityType.note) strokeDash = "10";
+    if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
 
-    if (line.type == 'ER') {
-        if (line.kind == "Normal") {
-            str += `<line id='${line.id}' class='lineColor' 
-                x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
-                x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-        } else if (line.kind == "Double") {
+    if (line.type == entityType.ER) {
+        if (line.kind == lineKind.NORMAL) {
+            str += `<line 
+                        id='${line.id}' 
+                        x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
+                        x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
+                        stroke='${lineColor}' stroke-width='${strokewidth}'
+                    />`;
+        } else if (line.kind == lineKind.DOUBLE) {
             let dy = -(tx - fx);
             let dx = ty - fy;
             let len = Math.sqrt((dx * dx) + (dy * dy));
@@ -7860,18 +7862,20 @@ function drawLine(line, targetGhost = false) {
             dx = dx / len;
 
             const double = (a, b) => {
-                return `<line id='${line.id}-${b}' class='lineColor' 
-                    x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
-                    y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
-                    x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
-                    y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
-                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                return `<line 
+                            id='${line.id}-${b}' 
+                            x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
+                            y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
+                            x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
+                            y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
+                            stroke='${lineColor}' stroke-width='${strokewidth}'
+                        />`;
             }
             str += double(1, 1);
             str += double(-1, 2);
         }
-    } else if ((line.type == 'SD' && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-        if (line.kind == "Recursive") {
+    } else if ((line.type == entityType.SD && line.innerType == null) || (line.type == entityType.SD && line.innerType === SDLineType.STRAIGHT)) {
+        if (line.kind == lineKind.RECURSIVE) {
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
             const startY = fy - 10 * zoomfact;
@@ -7880,11 +7884,11 @@ function drawLine(line, targetGhost = false) {
             const cornerX = fx + length;
             const cornerY = fy - length;
 
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
+            str += `<line id='${line.id}' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
         } else if ((fy > ty) && (line.ctype == "TB")) {
             offset.y1 = 1;
@@ -7893,35 +7897,22 @@ function drawLine(line, targetGhost = false) {
             offset.y1 = -7 + 3 / zoomfact;
             offset.y2 = 1;
         }
-        str += `<line id='${line.id}' class='lineColor' \
-            x1='${fx + offset.x1 * zoomfact}' \
-            y1='${fy + offset.y1 * zoomfact}' \
-            x2='${tx + offset.x2 * zoomfact}' \
-            y2='${ty + offset.y2 * zoomfact}' \
-            fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-    } else { // UML, IE or SD with segmented line
-        // Halfway point between elements
-        let dx = ((fx + offset.x1) - (tx + offset.x2)) / 2;
-        let dy = ((fy + offset.y1) - (ty + offset.y2)) / 2;
-        if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline \
-                id='${line.id}' \
-                class='lineColor' \
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1},${fy + offset.y1 - dy} ${tx + offset.x2},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' \
-                fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-        } else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline \
-                id='${line.id}' \
-                class='lineColor' \
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1} ${tx + offset.x2 + dx},${ty + offset.y2} ${tx + offset.x2},${ty + offset.y2}' \
-                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
-        }
+        str += `<line 
+                    id='${line.id}' 
+                    x1='${fx + offset.x1 * zoomfact}' 
+                    y1='${fy + offset.y1 * zoomfact}' 
+                    x2='${tx + offset.x2 * zoomfact}' 
+                    y2='${ty + offset.y2 * zoomfact}' 
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
+                />`;
+    } else { // UML, IE or SD
+        str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
 
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
-    if  (line.type == 'SD' && line.innerType != SDLineType.SEGMENT) {
+    if  (line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
@@ -7932,7 +7923,7 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
-    if (felem.type != 'ER' || telem.type != 'ER') {
+    if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
@@ -7947,14 +7938,15 @@ function drawLine(line, targetGhost = false) {
 
     if (isSelected) {
         str += `<rect 
-            x='${((fx + tx) / 2) - (2 * zoomfact)}' 
-            y='${((fy + ty) / 2) - (2 * zoomfact)}' 
-            width='${4 * zoomfact}' 
-            height='${4 * zoomfact}' 
-            style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"/>`;
+                    x='${((fx + tx) / 2) - (2 * zoomfact)}' 
+                    y='${((fy + ty) / 2) - (2 * zoomfact)}' 
+                    width='${4 * zoomfact}' 
+                    height='${4 * zoomfact}' 
+                    style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"
+                />`;
     }
 
-    if (line.label && line.label != "" && line.type !== "IE") {
+    if (line.label  && line.type !== entityType.IE) {
         //Get width of label's text through canvas
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
@@ -8019,40 +8011,42 @@ function drawLine(line, targetGhost = false) {
         const labelPositionY = labelPosY + label.labelMovedY + label.displacementY - zoomfact
 
         //Add label with styling based on selection.
-        if (line.kind === "Recursive") {
+        if (line.kind === lineKind.RECURSIVE) {
             str += `<rect
-                class='text cardinalityLabel'
-                id='${line.id + 'Label'}'
-                x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
-                y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
-                width='${(textWidth + zoomfact * 4)}'
-                height='${textheight * zoomfact}'/>`;
+                        class='text cardinalityLabel'
+                        id='${line.id + 'Label'}'
+                        x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
+                        y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
+                        width='${(textWidth + zoomfact * 4)}'
+                        height='${textheight * zoomfact}'
+                    />`;
             str += `<text
-                class='cardinalityLabelText'
-                dominant-baseline='middle'
-                text-anchor='middle'
-                x='${(fx + length + (30 * zoomfact))}'
-                y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
-                ${line.label}
-                </text>`;
+                        class='cardinalityLabelText'
+                        dominant-baseline='middle'
+                        text-anchor='middle'
+                        x='${(fx + length + (30 * zoomfact))}'
+                        y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
+                        style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
+                        ${line.label}
+                    </text>`;
         } else {
             str += `<rect
-                class='text cardinalityLabel'
-                id=${line.id + 'Label'}
-                x='${labelPositionX}'
-                y='${labelPositionY}'
-                width='${(textWidth + zoomfact * 4)}'
-                height='${textheight * zoomfact + zoomfact * 3}'/>`;
-            str += `<text
-                class='cardinalityLabelText'
-                dominant-baseline='middle'
-                text-anchor='middle'
-                style='font-size:${Math.round(zoomfact * textheight)}px;'
-                x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
-                y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
-                ${line.label}
-                </text>`;
+                        class='text cardinalityLabel'
+                        id=${line.id + 'Label'}
+                        x='${labelPositionX}'
+                        y='${labelPositionY}'
+                        width='${(textWidth + zoomfact * 4)}'
+                        height='${textheight * zoomfact + zoomfact * 3}'
+                    />`;
+            str += ` <text
+                        class='cardinalityLabelText'
+                        dominant-baseline='middle'
+                        text-anchor='middle'
+                        style='font-size:${Math.round(zoomfact * textheight)}px;'
+                        x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
+                        y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
+                        ${line.label}
+                    </text>`;
         }
     }
     return str;
@@ -8112,19 +8106,20 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     }
 
     return `<rect 
-            class='text cardinalityLabel' 
-            id='${line.id + labelStr}' 
-            x='${x - textWidth / 2}' 
-            y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
-            width='${textWidth + 2}' 
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+                class='text cardinalityLabel' 
+                id='${line.id + labelStr}' 
+                x='${x - textWidth / 2}' 
+                y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
+                width='${textWidth + 2}' 
+                height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
             <text 
-            class='text cardinalityLabelText' 
-            dominant-baseline='middle' 
-            text-anchor='middle' 
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
-            x='${x}' 
-            y='${y}'> ${label} </text>`;
+                class='text cardinalityLabelText' 
+                dominant-baseline='middle' 
+                text-anchor='middle' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                x='${x}' 
+                y='${y}'
+            > ${label} </text>`;
 }
 
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
@@ -8178,19 +8173,32 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
         }
     }
     return `<rect 
-            class='text cardinalityLabel' 
-            id='${line.id + "Cardinality"}' 
-            x='${posX - (textWidth) / 2}' 
-            y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
-            width='${textWidth + 2}' 
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+                class='text cardinalityLabel' 
+                id='${line.id + "Cardinality"}' 
+                x='${posX - (textWidth) / 2}' 
+                y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
+                width='${textWidth + 2}' 
+                height='${(textheight - 4) * zoomfact + zoomfact * 3}'
+            /> 
             <text 
-            class='text cardinalityLabelText' 
-            dominant-baseline='middle' 
-            text-anchor='middle' 
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
-            x='${posX}' 
-            y='${posY}'> ${lineCardinalitys[line.cardinality]} </text>`;
+                class='text cardinalityLabelText' 
+                dominant-baseline='middle' 
+                text-anchor='middle' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                x='${posX}' 
+                y='${posY}'
+            > ${lineCardinalitys[line.cardinality]} </text>`;
+}
+
+function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
+    let dy = (line.ctype == 'TB' || line.ctype == 'BT') ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
+    let dx = (line.ctype == 'LR' || line.ctype == 'RL') ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+    return `<polyline 
+                id='${line.id}' 
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
+                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
+            />`;
+
 }
 
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {
@@ -8247,20 +8255,22 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
 }
 
 function iconLine([a, b, c, d], x, y, lineColor) {
-    return `<line class='diagram-umlicon-darkmode' \
-                x1='${x + a * zoomfact}' \
-                y1='${y + b * zoomfact}' \
-                x2='${x + c * zoomfact}' \
-                y2='${y + d * zoomfact}' \
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<line 
+                x1='${x + a * zoomfact}' 
+                y1='${y + b * zoomfact}' 
+                x2='${x + c * zoomfact}' 
+                y2='${y + d * zoomfact}' 
+                stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 function iconCircle([a, b, c], x, y, lineColor,) {
-    return `<circle class='diagram-umlicon-darkmode' \
-                cx='${x + a * zoomfact}' \
-                cy='${y + b * zoomfact}' \
-                r='${c * zoomfact}' \
-                fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<circle 
+                cx='${x + a * zoomfact}' 
+                cy='${y + b * zoomfact}' 
+                r='${c * zoomfact}' 
+                fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 function iconPoly(arr, x, y, lineColor, fill) {
@@ -8269,9 +8279,10 @@ function iconPoly(arr, x, y, lineColor, fill) {
         const [a, b] = arr[i];
         s += `${x + a * zoomfact} ${y + b * zoomfact}, `;
     }
-    return `<polyline class='diagram-umlicon-darkmode' \
-                points='${s}' \
-                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<polyline 
+                points='${s}' 
+                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 /**
@@ -8326,8 +8337,7 @@ function rotateArrowPoint(base, to, clockwise) {
 function drawArrowPoint(base, point, x, y, lineColor, line) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
-    return `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd'
-        points=' 
+    return `<polygon points=' 
         ${right.x} ${right.y},
         ${point.x} ${point.y}, 
         ${left.x} ${left.y}' 
