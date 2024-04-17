@@ -598,6 +598,78 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// Close the "download github repo" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#githubPopupWindow").css("display", "none");
+  }
+})
+
+// Close the "Delete item" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm tab" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#tabConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Choose template" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubTemplate").css("display", "none");
+  }
+})
+
+// Close the "Github moment" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubBox").css("display", "none");
+  }
+})
+
+// Close the "login" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loginBox").css("display", "none");
+  }
+})
+
+// Close the "load dugga with hash" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loadDuggaBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm hiding" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionHideConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm show items" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionShowConfirmBox").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
