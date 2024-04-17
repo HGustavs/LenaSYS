@@ -276,6 +276,7 @@ if(isSuperUser($userid)){
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $courseid." ".$duggaid." ".$moment." ".$answer;
 
+			
 			if(	!isSuperUser($userid) && // Teachers cannot submit
 				isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
 				isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"])){
@@ -329,6 +330,10 @@ if(isSuperUser($userid)){
 			}else{
 				$debug="Unable to save dugga!";
 			}
+
+			echo $_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+
+
         } 
 
 		unset($variant);
