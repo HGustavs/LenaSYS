@@ -56,7 +56,7 @@ if(strcmp($opt,"SAVDU")==0){
 					$error=$query->errorInfo();
 					$debug="Error updating variant (row ".__LINE__.") Error code: ".$error[2];
 				}else{
-					
+					// ???????????????????????????????????
 				}
 			} else if(isset($dbpwd) && strcmp($hashpwd,$dbpwd) !== 0){
 				$debug="The hash/hascode combination is not valid.";
