@@ -11804,7 +11804,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = colorMap.PurpleGrey";
+                            fillColor.style.fill = colorMap.PurpleGrey;
                             fontColor.style.fill = colorMap.White;
                         } else {
                             fillColor.style.fill = `${element.fill}`;
