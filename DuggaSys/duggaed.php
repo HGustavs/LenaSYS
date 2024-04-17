@@ -1,9 +1,8 @@
-
 <?php
 session_start();
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
-//pdoConnect();
+pdoConnect();
 $cid=getOPG('courseid');
 $vers=getOPG('coursevers');
 ?>
@@ -31,8 +30,6 @@ $vers=getOPG('coursevers');
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
   <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
-  <script src="timer.js"></script>
-  <script src="clickcounter.js"></script>
   <script src="../Shared/markdown.js"></script>
 	<script src="backToTop.js"></script>
 
