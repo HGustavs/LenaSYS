@@ -4285,7 +4285,7 @@ function toggleDiagramDropdown() {
 
     if (window.getComputedStyle(dropdown).display === "none") {
         btn.style.backgroundColor = "transparent";
-        btn.style.border = "3px solid "${colorMap.DarkPurple}"";
+        btn.style.border = "3px solid ${colorMap.DarkPurple}";
         btn.style.color = colorMap.DarkPurple;
         btn.style.fontWeight = "bold";
     } else {
