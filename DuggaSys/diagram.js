@@ -1998,6 +1998,11 @@ function mdown(event) {
             startY = event.clientY;
         }
     }
+
+    if(!event.target.parentElement.classList.contains("placementTypeBoxIcons")){
+        hidePlacementType();
+    }
+
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
 }
@@ -6156,9 +6161,9 @@ function hidePlacementType(){
     let i = 0;
 
     while(true){
-        if(document.getElementById("togglePlacementTypeButton" + i)){
-            document.getElementById("togglePlacementTypeButton" + i).classList.remove("activeTogglePlacementTypeBox");
-        }else if(document.getElementById("togglePlacementTypeButton" + i) == null && document.getElementById("togglePlacementTypeButton" + (i + 1)) == null){
+        if(document.getElementById("togglePlacementTypeBox" + i)){
+            document.getElementById("togglePlacementTypeBox" + i).classList.remove("activeTogglePlacementTypeBox");
+        }else if(document.getElementById("togglePlacementTypeBox" + i) == null && document.getElementById("togglePlacementTypeButton" + (i + 1)) == null){
             break;
         }
 
