@@ -4148,7 +4148,51 @@ function fetchGitCodeExamples(courseid){
       });
     });
   }
-
+  function storeCodeExamples(cid, codeExamplesContent, githubURL){
+    var base64;
+    var decodedContent = [];
+    var shaKeys = [];
+    var fileNames = [];
+    var fileURL = [];
+    var filePath = [];
+    var downloadURL = [];
+    var fileType = [];
+    var i = 0;
+    for(i; i < codeExamplesContent.length; i++){
+        base64 = codeExamplesContent[i].content.content;
+        decodedContent[i] = atob(base64);
+        shaKeys[i] = codeExamplesContent[i].content.sha;
+        fileNames[i] = codeExamplesContent[i].filename;
+        fileURL[i] = codeExamplesContent[i].content.url;
+        downloadURL[i] = codeExamplesContent[i].content.download_url;
+        filePath[i] = codeExamplesContent[i].content.path;
+        fileType[i] = codeExamplesContent[i].content.type;
+    }
+    //TODO store necessary data to send
+    var AllJsonData = {
+      codeExamplesContent: decodedContent,
+      SHA: shaKeys,
+      fileNames: fileNames,
+      filePaths: filePath,
+      fileURLS: fileURL,
+      downloadURLS: downloadURL,
+      fileTypes: fileType
+    }
+    
+    fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
+       method: 'POST',
+       body: JSON.stringify(AllJsonData),
+       headers: {
+        'Content-Type': 'application/json'
+       }
+      }) 
+      .then(response => response.text())
+      .then(data => {})
+      .catch(error => {
+          console.error('Error calling PHP function:', error);
+      });
+}
+  
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
     $(this).css("background", "#ccc");
