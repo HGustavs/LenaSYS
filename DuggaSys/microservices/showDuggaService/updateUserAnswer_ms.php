@@ -21,10 +21,10 @@ if(strcmp($opt,"SAVDU")==0){
 	// Log the dugga write
 	makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 	$discription = $courseid." ".$duggaid." ".$moment." ".$answer;
-	if(checklogin() && isSuperUser(getUid()) == true) {
+	if(checklogin() && !isSuperUser($userid)) {
 
 		if(isset($grade)&&($grade > 1)){
-			//if grade equal G, VG, 3, 4, 5, or 6
+			//if grade equal G, VG, 3, 4, 5, or 6 
 			$debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
 		}
 		else {
