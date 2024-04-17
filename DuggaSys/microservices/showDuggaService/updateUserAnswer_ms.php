@@ -21,6 +21,7 @@ if(strcmp($opt,"SAVDU")==0){
 	// Log the dugga write
 	makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 	$discription = $courseid." ".$duggaid." ".$moment." ".$answer;
+	
 	if(checklogin() && !isSuperUser($userid)) {
 
 		if(isset($grade)&&($grade > 1)){
