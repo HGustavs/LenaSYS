@@ -2,7 +2,6 @@
 <?php
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
-session_start();
 //pdoConnect();
 $cid=getOPG('courseid');
 $vers=getOPG('coursevers');
