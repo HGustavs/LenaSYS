@@ -7077,7 +7077,7 @@ function generateContextProperties() {
  * @description function for include button to the options panel,writes out << Include >>
  */
 function setLineLabel() {
-    document.getElementById("lineLabel").value = "&#60&#60include&#62&#62";
+    document.getElementById("lineLabel").value = "<<include>>";
 }
 
 /**
@@ -7978,6 +7978,7 @@ function drawLine(line, targetGhost = false) {
         var canvas = document.getElementById('canvasOverlay');
         var canvasContext = canvas.getContext('2d');
         canvasContext.font = `${height}px ${canvasContext.font.split('px')[1]}`;
+        var labelValue = line.label.replaceAll('<', "&#60").replaceAll('>', "&#62");
         var textWidth = canvasContext.measureText(line.label).width;
 
         var label = {
@@ -8052,7 +8053,7 @@ function drawLine(line, targetGhost = false) {
                 x='${(fx + length + (30 * zoomfact))}'
                 y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
                 style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
-                ${line.label}
+                ${labelValue}
                 </text>`;
         } else {
             str += `<rect
@@ -8069,7 +8070,7 @@ function drawLine(line, targetGhost = false) {
                 style='font-size:${Math.round(zoomfact * textheight)}px;'
                 x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
                 y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
-                ${line.label}
+                ${labelValue}
                 </text>`;
         }
     }
