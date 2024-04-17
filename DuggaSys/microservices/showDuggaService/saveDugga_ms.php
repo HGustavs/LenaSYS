@@ -12,7 +12,15 @@ session_start();
 
 $opt=getOP('opt');
 $hash=getOP('hash');
-$AUtoken=getOP('AUtoken');
+$hashpwd=getOP('hashpwd');
+$answer=getOP('useranswer');
+$dbpwd=getOP('password');
+$courseid=getOP('cid');
+$coursevers=getOP('coursevers');
+$duggaid=getOP('did');
+$moment=getOP('moment');
+$variant=getOP('variant');
+
 
 
 if(strcmp($opt,"SAVDU")==0){
