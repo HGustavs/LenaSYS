@@ -724,6 +724,10 @@ function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $down
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$successGitRepoInsert;
+	$WriteFilesSuccess = true;
+	$success = true;
+    //Retreival of JSON data sent through POST and GET
     $cid = $_GET['cid'];
 	$githubURL = $_GET['githubURL'];
 	$postDataContent = file_get_contents('php://input');
@@ -735,14 +739,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
 	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
 	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-	echo $cid;
-	print_r($codeExamplesContent[0]);
-	print_r($SHA);
-	print_r($fileNames);
-	$WriteFilesSucces = true;
-	$success = true;
-	$path = '../../LenaSYS/courses/'. $cid;
+
+	$path = '../../LenaSYS/courses/' . $cid;
+	$pathCoursesRoot = '../../LenaSYS/courses';	
      // Creates the directory for the corresponding course if it doesnt exist.
+	if(!is_dir($pathCoursesRoot)){
+		mkdir($pathCoursesRoot, 0775, true);
+	}
+	
     if (!file_exists($path)) {
       mkdir($path, 0775, true);
     }
