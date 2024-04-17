@@ -2084,6 +2084,8 @@ function mouseMode_onMouseUp(event) {
     if (!hasPressedDelete) {
         switch (mouseMode) {
             case mouseModes.PLACING_ELEMENT:       
+                clearContext();
+                clearContextLine();
                 if (ghostElement && event.button == 0) {
                     addObjectToData(ghostElement, false);
 
