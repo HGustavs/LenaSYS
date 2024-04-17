@@ -66,4 +66,5 @@ echo json_encode(
         'newcourseid'=>$row,
         'newcoursevers'=>$newcoursevers,
         'newduggaid'=>$newduggaid
-    ));
+    )
+);
