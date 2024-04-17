@@ -762,8 +762,8 @@
 }
 
 #grid_rect {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     overflow: visible;
     fill: url(#grid);
 }
@@ -781,8 +781,6 @@
 }
 
 #a4Rect {
-    width: 794px;
-    height: 1122px;
     stroke:rgb(50, 50, 50);
     stroke-width:2;
     stroke-dasharray: 5 3;

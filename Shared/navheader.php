@@ -36,12 +36,31 @@
 
 			//used for repository fetch cooldown
 			global $pdo;
-			$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
+			$query = $pdo->prepare('SELECT updated, courseGitURL FROM course WHERE cid = :cid;');
 			$query->bindParam(':cid', $_SESSION['courseid']);
-			$query->execute();
-			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-				$updateTime = $row['updated'];
+			
+			// Add error handling for the execute function
+			if (!$query->execute()) {
+				$errorInfo = $query->errorInfo();
+				echo "Database error: " . $errorInfo[2];
+				exit;
 			}
+			
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			
+			if ($row !== false) {
+				// Now we know $row is an array and we can safely access its elements
+				$checkIfGithubURL = $row['courseGitURL'];
+				if ($checkIfGithubURL) {
+					$updateTime = $row['updated'];
+				} else {
+					$updateTime = "No Github URL set";
+				}
+			} else {
+				// $row is false, which means no data was fetched
+				$updateTime = "No data found for the given course ID";
+			}
+
 
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 				if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid']))){
@@ -113,7 +132,7 @@
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
 						echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 						echo "</td>";
-						echo "<td id='courseVersionDropDown' style='display: inline-block;' title='Choose course version'>";
+						echo "<td id='courseVersionDropDown' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
 							echo "    </div>";
@@ -227,7 +246,7 @@
 								
 								$fetchCooldownS=strtotime($updateTime)+$fetchCooldownTimmer-time();
 								
-								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$updateTime."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown:</b>";
+								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$updateTime."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown: </b>";
 
 								//set cooldown timer
 								if($fetchCooldownS>0)

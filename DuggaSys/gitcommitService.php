@@ -198,8 +198,7 @@
 		else {
 			if(refreshCheck($_POST['cid'], $_POST['user'])){
 				// Get the latest commit from the URL
-				$latestCommit = getCommit($url);
-
+				$latestCommit = bfs($url,$cid,"GETCOMMIT");
 				// Compare old commit in db with the new one from the url
 				if($latestCommit != $commit) {
 					// Update the SQLite db with the new commit
@@ -211,7 +210,7 @@
 					// Download files and metadata
 					bfs($url, $cid, "DOWNLOAD");
 					print "The course has been updated, files have been downloaded!";
-				} else {
+				} else if(http_response_code() == 200) {
 					print "The course is already up to date!";
 				}
 			}
@@ -268,6 +267,7 @@
 	// getCommit: Gets the latest commit from a URL using DOM
 	//--------------------------------------------------------------------------------------------------
 
+	//this is useless, do bfs($url,$cid,"GETCOMMIT") instead where applicable, leaving for now due to it being referenced elesewhere
 	function getCommit($url) {
 		// Turn the HTML from the URL into an DOM document
 		$html = file_get_contents($url);
@@ -279,11 +279,13 @@
 		$dom->loadHTML($html);
 		libxml_use_internal_errors(false);
 
+		//d-none js-permalink-shortcut
 		// Find the HTML element that holds the latest commit value
 		$href = "";
 		$elements = $dom->getElementsByTagName('a');
-		foreach ($elements as $element) {		
-			if($element->getAttribute('class')=='d-none js-permalink-shortcut'){
+		foreach ($elements as $element) {	
+			print_r("     ".$element->getAttribute('class'));	
+			if($element->getAttribute('class')=='Link_StyledLink-sc-14289xe-0 elltiT Link--secondary'){
 				$value = $element->getAttribute("href");
 				$href = $value;
 			}

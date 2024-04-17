@@ -478,6 +478,7 @@ function refreshGithubRepo(courseid, user) {
     error: function (data) {
       //Check gitfetchService for the meaning of the error code.
       switch (data.status) {
+        case 403:
         case 422:
           alert(data.responseJSON.message + "\nDid not update course");
           break;
@@ -511,6 +512,7 @@ function updateGithubRepo(githubURL, cid) {
     error: function (data) {
       //Check FetchGithubRepo for the meaning of the error code.
       switch (data.status) {
+        case 403:
         case 422:
         case 503:
           alert(data.responseJSON.message + "\nFailed to update github repo");
@@ -593,6 +595,78 @@ document.addEventListener('keydown', function (event) {
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
     $("#userFeedbackDialog").css("display", "none");
+  }
+})
+
+// Close the "download github repo" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#githubPopupWindow").css("display", "none");
+  }
+})
+
+// Close the "Delete item" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm tab" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#tabConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Choose template" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubTemplate").css("display", "none");
+  }
+})
+
+// Close the "Github moment" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubBox").css("display", "none");
+  }
+})
+
+// Close the "login" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loginBox").css("display", "none");
+  }
+})
+
+// Close the "load dugga with hash" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loadDuggaBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm hiding" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionHideConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm show items" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionShowConfirmBox").css("display", "none");
   }
 })
 
@@ -928,8 +1002,8 @@ function deleteItem(item_lid = null) {
   }, 60000);
 }
 
-// Permanently delete elements. Update: This function now calls DELETED in sectionserviced.php instead of DEL
-function deleteAll(item) {
+// Permanently delete elements.
+function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
     AJAXService("DEL", {
       lid: delArr.pop()
@@ -937,7 +1011,6 @@ function deleteAll(item) {
   }
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
-  item.style.display = "none";
 }
 
 // Cancel deletion
@@ -997,6 +1070,20 @@ function updateSelectedDir() {
 //----------------------------------------------------------------------------------
 function getDeletedListEntries() {
   var deletedEntries = document.write('<?php echo getDeletedEntries("DISPLAYDELETED"); ');
+  /*
+   // Microservice integration
+  $.ajax({
+    url: "../DuggaSys/microservices/sectionedService/getDeletedListentries_ms.php",
+    dataType: "json",
+    type: "GET",
+    success: function (response) {
+      deletedEntries = response;
+    },
+    error: function(xhr, status, error) {
+      console.error("Error retrieving deleted entries: ", error);
+    }
+  });
+  */
 }
 //----------------------------------------------------------------------------------
 // hideMarkedItems: Hides Item from Section List
@@ -3830,6 +3917,8 @@ function validateForm(formid) {
         localStorage.setItem('courseGitHubRepo', repoLink);
         $("#githubPopupWindow").css("display", "none");
         updateGithubRepo(repoLink, cid);
+        // Refresh page after github link
+        location.reload();
       }
     }
   }
@@ -3948,6 +4037,117 @@ function showFeedbackquestion() {
   }
 }
 
+//Fetch Code Examples content from github 
+function fetchGitCodeExamples(courseid){
+  //Make codeExamplesContent a global array for easier access?
+  var codeExamplesContent = [];
+  var fileNamesArray = [];
+  var cid = courseid;
+  var fileName = document.getElementById('fileName').value;
+  var githubURL = document.getElementById('githubURL').value;
+  var filePath = document.getElementById('filePath').value;
+  var filteredFiles = [];
+
+  if(filePath == "" || githubURL == "" || fileName == ""){
+    return alert('Fill in all boxes!');
+  }
+
+  var folderPath = getParentFolderOfFile(filePath);
+  var fileSearchParam = deconstructFilePath(filePath);
+  //After names haves been fetched all relevant filenames are pushed into the filteredFiles array. These are to be fetched later.
+  fetchFileNames(githubURL, folderPath).then(function(fileNamesArray){
+    for (var i = 0; i < fileNamesArray.length; i++){
+      if(fileNamesArray[i].includes(fileSearchParam)){
+        filteredFiles.push(fileNamesArray[i]);
+      }
+    }
+  
+    fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+    }).catch(function(error){
+      console.error('Failed to fetch file contents:', error)
+    });
+
+  }).catch(function(error){
+    console.error('Failed to fetch file names:', error)
+  });
+  
+}
+ // Function to fetch the files from github through ajax http request
+ async function fetchFileContent(githubURL, filteredFiles, folderPath){
+  var results = [];
+  return new Promise(function(resolve, reject){
+    // Extract the owner and repo into individual variables
+    var parts = githubURL.split("/");
+    var owner = parts[3];
+    var repo = parts[4]
+    //Foreach loop to fetch each file in the filteredFiles array
+    filteredFiles.forEach(function(filename){
+      var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath + '/' + filename;
+      // Ajax request to fetch filecontent of current file in foreach loop. fetched file is pushed into results array.
+      var promise = new Promise(function(resolveFile, rejectFile){
+        $.ajax({
+          url: apiGitUrl,
+          method: 'GET',
+          success: function(response) {
+            resolveFile({filename: filename, content: response});
+          },
+          error: function(xhr, status, error) {
+            rejectFile(error);
+          }
+        });
+      });
+      results.push(promise);
+    });
+    //Waits for all file requests to resolve. When all files have been fetched an array is returned containing the files.
+    Promise.all(results).then(function(allFileContents){
+      resolve(allFileContents);
+    }).catch(function(error){
+      reject(error);
+    });
+  });
+ }
+  // Deconstructs the filepath so return param only includes the filename. Numbers, .filetype and path to file is removed.
+  function deconstructFilePath(filePath){
+    var fileName = filePath.split('/').pop();
+    var fileString = fileName.split('.')[0];
+    var noNumString = fileString.replace(/\d+/g, '');
+    return noNumString;
+  }
+  // Remove the filename from the filepath and construct a path to its folder
+  function getParentFolderOfFile(filePath){
+       var lastIndex = filePath.lastIndexOf("/");
+       var folderPath = filePath.substring(0, lastIndex);
+       return folderPath;
+  }
+  //Fetch all filenames from the parent folder of original input file
+  async function fetchFileNames(githubURL, folderPath){
+      return new Promise(function(resolve, reject){
+      // Extract the owner and repo into individual variables
+      var parts = githubURL.split("/");
+      var owner = parts[3];
+      var repo = parts[4]
+  
+      var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
+      // Ajax request to fetch all filenames in folder
+      $.ajax({
+        url: apiGitUrl,
+        method: 'GET',
+        success: function(response) {
+          // Check if response is an array or single object, then parse the response to extract file names.
+          // resolve() returns all filenames.
+          var files = Array.isArray(response) ? response : [response];
+          var fileNames = files.map(function(file) {
+            return file.name;
+          });
+          resolve(fileNames);
+        },
+        error: function(xhr, status, error) {
+          reject(error);
+        }
+      });
+    });
+  }
 
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
