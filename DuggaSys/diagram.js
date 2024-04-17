@@ -8618,7 +8618,7 @@ function drawElement(element, ghosted = false) {
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height / 2) * zoomfact); //determines the corner radius for the SD states.
+    var cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
     //This value represents the amount of attributes, hopefully this will be calculated through
@@ -8777,7 +8777,8 @@ function drawElement(element, ghosted = false) {
         }
         //end of div for UML footer
         str += `</div>`;
-    } else if (element.kind == 'UMLInitialState') {
+    }
+    else if (element.kind == 'UMLInitialState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
@@ -8801,7 +8802,8 @@ function drawElement(element, ghosted = false) {
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
             element.fill = `${"#000000"}`;
         }
-    } else if (element.kind == 'UMLFinalState') {
+    }
+    else if (element.kind == 'UMLFinalState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
@@ -8826,7 +8828,8 @@ function drawElement(element, ghosted = false) {
         } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
             element.fill = `${"#000000"}`;
         }
-    } else if (element.kind == 'UMLSuperState') {
+    }
+    else if (element.kind == 'UMLSuperState') {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         str += `<div id="${element.id}" 
                     class="element uml-Super"
@@ -8920,11 +8923,11 @@ function drawElement(element, ghosted = false) {
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius}
+                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
                     h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius) * -1}
+                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
                     z
                 "
                 stroke-width='${linew}'
@@ -8937,7 +8940,8 @@ function drawElement(element, ghosted = false) {
             //end of svg for background
             str += `</svg>`;
             // Draw SD-content if there are no attributes.
-        } else {
+        }
+        else {
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
@@ -8954,7 +8958,7 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`;
+            /*str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`; */
             //end of svg for background
             str += `</svg>`;
         }
@@ -9181,7 +9185,8 @@ function drawElement(element, ghosted = false) {
                 str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
             }
             str += `</g>`;
-        } else if (element.actorOrObject == "object") {
+        }
+        else if (element.actorOrObject == "object") {
             //svg for object.
             str += `<g>`;
             str += `<rect class='text'
