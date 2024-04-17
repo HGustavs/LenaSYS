@@ -34,6 +34,34 @@
 			else
 				$_SESSION['coursevers'] = "UNK";
 
+			//used for repository fetch cooldown
+			global $pdo;
+			$query = $pdo->prepare('SELECT updated, courseGitURL FROM course WHERE cid = :cid;');
+			$query->bindParam(':cid', $_SESSION['courseid']);
+			
+			// Add error handling for the execute function
+			if (!$query->execute()) {
+				$errorInfo = $query->errorInfo();
+				echo "Database error: " . $errorInfo[2];
+				exit;
+			}
+			
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			
+			if ($row !== false) {
+				// Now we know $row is an array and we can safely access its elements
+				$checkIfGithubURL = $row['courseGitURL'];
+				if ($checkIfGithubURL) {
+					$updateTime = $row['updated'];
+				} else {
+					$updateTime = "No Github URL set";
+				}
+			} else {
+				// $row is false, which means no data was fetched
+				$updateTime = "No data found for the given course ID";
+			}
+
+
 				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 				if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid']))){
 					
@@ -104,7 +132,7 @@
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
 						echo '<td class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
 						echo "</td>";
-						echo "<td id='courseVersionDropDown' style='display: inline-block;' title='Choose course version'>";
+						echo "<td id='courseVersionDropDown' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
 							echo "    </div>";
@@ -201,9 +229,37 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton tooltip'>";
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
-									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].")' src='../Shared/icons/gitrefresh.svg'>";
+									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
 								echo "</span>";
-								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$_SESSION['lastFetchTime']."<br><b>Cooldown:</b> ".$_SESSION['fetchCooldown']."</span>";
+
+								//Check if user is super user
+								if(isSuperUser($_SESSION['uid']))
+								{
+									//5 min for super users
+									$fetchCooldownTimmer=300;
+								}
+								else
+								{
+									//10 min for normal users
+									$fetchCooldownTimmer=600;
+								}
+								
+								$fetchCooldownS=strtotime($updateTime)+$fetchCooldownTimmer-time();
+								
+								echo "<span class='tooltiptext'><b>Last Fetch:</b> ".$updateTime."<br><div id='cooldownHolder' style='display:inline'><b>Cooldown: </b>";
+
+								//set cooldown timer
+								if($fetchCooldownS>0)
+								{
+									echo "<p id='gitFetchMin' style='display:inline'>".intval(date("i",$fetchCooldownS))."</p>min and <p id='gitFetchSec' style='display:inline'>".intval(date("s",$fetchCooldownS))."</p>s";
+								}
+								else
+								{
+									echo "<p id='gitFetchMin' style='display:inline'>0</p>min and <p id='gitFetchSec' style='display:inline'>0</p>s";
+								}
+								
+								echo "</p></span>";
+
 								// echo "<span class='tooltiptext'><b>Last Fetch:</b> <br><b>Cooldown:</b> </span>";
 							echo "</div>";
 							echo "</td>";
@@ -234,12 +290,14 @@
 							echo "</a>";
 							echo "<a class='burgerButtText' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >Show files</a></div>";
 
-							echo "<div id='courseIMGBurger'>";
-							echo "<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
-							echo "<img alt='course page icon'  value='Course' class='burgerButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
-							echo "</a>";
-							echo "<a class='burgerButtText' href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>Course page</a></div>";
-
+							////Need to check if the course has a version, if it does not the button in the hamburger menu should not be created
+							if(isset($result['versname'])) {
+								echo "<div id='courseIMGBurger'>";
+								echo "<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+								echo "<img alt='course page icon'  value='Course' class='burgerButt' title='Course page for 343' src='../Shared/icons/coursepage_button.svg'>";
+								echo "</a>";
+								echo "<a class='burgerButtText' href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>Course page</a></div>";
+							}
 							echo "<div id='editCourseBurger'>";
             			    echo "<a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
 							echo "<img alt='give access icon'  class='burgerButt' src='../Shared/icons/lock_symbol.svg'>";
@@ -625,6 +683,48 @@ function hamburgerToggle() {
 	}
 }
 
+//count down the fetch cooldown
+const gitFetchCooldownMin = document.getElementById("gitFetchMin");
+const gitFetchCooldownSec = document.getElementById("gitFetchSec");
+const cooldownHolder = document.getElementById("cooldownHolder");
+
+setInterval(
+	function() 
+	{
+		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
+		{
+			gitFetchCooldownSec.innerHTML-=1;
+			if(gitFetchCooldownSec.innerHTML<0)
+			{
+				gitFetchCooldownMin.innerHTML-=1;
+				gitFetchCooldownSec.innerHTML=59;
+			}
+			
+		}
+		else
+		{
+			cooldownHolder.style.display="none";
+		}
+	}, 1000
+);
+
+function resetGitFetchTimer(superuser)
+{
+	if(cooldownHolder.style.display=="none"){
+		cooldownHolder.style.display="block";
+		if(superuser==1)
+		{
+			gitFetchCooldownMin.innerHTML=4;
+			gitFetchCooldownSec.innerHTML=59;
+		}
+		else
+		{
+			gitFetchCooldownMin.innerHTML=9;
+			gitFetchCooldownSec.innerHTML=59;
+		}
+	}
+}
+
 </script>
 <script type="text/javascript">
 	(function(proxied) {
@@ -645,7 +745,6 @@ var canvasEmbedded = "canvas.his.se";// HOSTNAME for the Embedded Canvas
         function RemoveNavEmbedded() {
                 $("header").css('display', 'none');
         }
-
 
 
 

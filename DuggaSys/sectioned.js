@@ -27,11 +27,22 @@ var updatedLidsection;
 var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
+var inputColorTheme;
+
+function initInputColorTheme() {
+  if(localStorage.getItem('themeBlack').includes('blackTheme')){
+    inputColorTheme = "#212121";
+  } 
+  else {
+    inputColorTheme = "#FFF";
+  }
+}
 
 // Globals for the automatic refresh (github)
 var isActivelyFocused = false; // If the user is actively focusing on the course page
 var lastUpdatedCodeExampes = null; // Last time code examples was updated
-const UPDATE_INTERVAL = 600 * 100; // Timerintervall for code to be updated (10 minutes)
+const updateMins = 10; // Variable expressed in minutes for how often the code should be updated
+const UPDATE_INTERVAL = 60000 * updateMins; // Timerintervall for code to be updated (currently set to 10 minutes) (minute in millisecond * updateMins)
 
 
 function IsLoggedIn(bool) {
@@ -60,11 +71,11 @@ function burgerToggleDarkmode(operation = 'click') {
   const themeToggle = document.getElementById('theme-toggle');
   // if it's light -> go dark
   if (themeStylesheet.href.includes('blackTheme')) {
-    themeStylesheet.href = "../Shared/css/whiteTheme.css";
+    themeStylesheet.href = "../Shared/css/style.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
     backgroundColorTheme = "#121212";
   }
-  else if (themeStylesheet.href.includes('whiteTheme')) {
+  else if (!themeStylesheet.href.includes('blackTheme')) {
     // if it's dark -> go light
     themeStylesheet.href = "../Shared/css/blackTheme.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
@@ -467,6 +478,7 @@ function refreshGithubRepo(courseid, user) {
     error: function (data) {
       //Check gitfetchService for the meaning of the error code.
       switch (data.status) {
+        case 403:
         case 422:
           alert(data.responseJSON.message + "\nDid not update course");
           break;
@@ -500,6 +512,7 @@ function updateGithubRepo(githubURL, cid) {
     error: function (data) {
       //Check FetchGithubRepo for the meaning of the error code.
       switch (data.status) {
+        case 403:
         case 422:
         case 503:
           alert(data.responseJSON.message + "\nFailed to update github repo");
@@ -582,6 +595,78 @@ document.addEventListener('keydown', function (event) {
     $("#editCourseVersion").css("display", "none");
     $("#newCourseVersion").css("display", "none");
     $("#userFeedbackDialog").css("display", "none");
+  }
+})
+
+// Close the "download github repo" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#githubPopupWindow").css("display", "none");
+  }
+})
+
+// Close the "Delete item" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm tab" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#tabConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Choose template" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubTemplate").css("display", "none");
+  }
+})
+
+// Close the "Github moment" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#gitHubBox").css("display", "none");
+  }
+})
+
+// Close the "login" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loginBox").css("display", "none");
+  }
+})
+
+// Close the "load dugga with hash" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#loadDuggaBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm hiding" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionHideConfirmBox").css("display", "none");
+  }
+})
+
+// Close the "Confirm show items" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    toggleTab(false);
+    $("#sectionShowConfirmBox").css("display", "none");
   }
 })
 
@@ -1962,6 +2047,11 @@ function returnedSection(data) {
 
 
   }
+  
+  //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
+  for(var i = 0; i < delArr.length; i++){
+    document.getElementById("lid"+delArr[i]).style.display="none";
+  }
 
   // Reset checkboxes
   // Prevents a bug if they are checked when for example an item is deleted and the table refreshes
@@ -2000,6 +2090,7 @@ function returnedSection(data) {
     addClasses();
     showMOTD();
   }
+
 }
 
 function openCanvasLink(btnobj) {
@@ -2167,14 +2258,13 @@ function returnedHighscore(data) {
   $("#HighscoreBox").css("display", "block");
 }
 
-
-
 //----------------------------------------------------------------------------------
 // drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
 
 function drawSwimlanes() {
-
+  // Resets the swimlane SVG
+  document.getElementById("swimlaneSVG").innerHTML = "";
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
@@ -2244,17 +2334,20 @@ function drawSwimlanes() {
     "<stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
-      (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
-    if ((i % 2) == 0) {
-      str += "fill='#ededed' />";
-    } else {
-      str += "fill='#ffffff' />";
-    }
-    str += `<text x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
-    font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>${(i + 1)}</text>`;
+    // Draws the columns in the course schedule
+    if ((i % 2) == 0){ str += "<rect class='evenScheduleColumn'";} // Even columns get the class "evenScheduleColumn"
+    else{ str += "<rect class='oddScheduleColumn'"; } // Odd columns get the class "oddScheduleColumn"
+
+    str += " x='" + (i * weekwidth) + "' y='" + (15) + "' width='" +
+    (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' />";
+
+    // Draws the week of the column (For example "1" or "7" ...)
+    str += `<text class='scheduleWeeks' x='${((i * weekwidth) + (weekwidth * 0.5))}' y='${(33)}'
+      font-family='Arial' font-size='12px' text-anchor='middle'>${(i + 1)}</text>`;
+
   }
 
+  // Draws a row line in the course schedule
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
     str += `<line x1='0' y1='${((i * weekheight) + 15)}' x2='
     ${(weekLength * weekwidth)}' y2='${((i * weekheight) + 15)}' stroke='black' />`;
@@ -2291,9 +2384,11 @@ function drawSwimlanes() {
         } else if ((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
           textcol = `url("#fadeTextRed")`;
         }
+        // Draws the progress bar for a dugga in the schedule
+        str += `<rect class='progressBar' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}'/>`;
 
-        str += `<rect opacity='0.7' x='${(startday * daywidth)}' y='${(weeky)}' width='${(duggalength * daywidth)}' height='${weekheight}' fill='${fillcol}' />`;
-        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' fill='${textcol}' text-anchor='left'> <title> ${entry.text} </title>${entry.text}</text>`;
+        // Draws the dugga name in the schedule
+        str += `<text x='${(12)}' y='${(weeky + 18)}' font-family='Arial' font-size='12px' text-anchor='left' class='scheduleDugga'> <title> ${entry.text} </title>${entry.text}</text>`;
       }
     }
   }
@@ -3226,11 +3321,9 @@ setInterval(function () {
       console.log("Time to update the code examples.");
 
       let returnedPromises = [];
-      for (let i = 0; i < itemKinds.length; i++) {
+      for (let i = 0; i < collectedLid.length; i++) {
         if (itemKinds[i] === 4) {
-          for (let i = 0; i < collectedLid.length; i++) {
-            returnedPromises.push(createExamples(collectedLid[i], false));
-          }
+          returnedPromises.push(createExamples(collectedLid[i], false));
         }
       }
 
@@ -3465,6 +3558,7 @@ function showCourseDate(ddate, dialogid) {
 
 // ------ Validates if deadline is between start and end date ------
 function validateDate2(ddate, dialogid) {
+  initInputColorTheme();
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
 
@@ -3478,12 +3572,11 @@ function validateDate2(ddate, dialogid) {
     var startdate = new Date(retdata['startdate']);
     var enddate = new Date(retdata['enddate']);
 
-
     // If deadline is between start date and end date
     if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
       ddate.style.borderColor = "#383";
       ddate.style.borderWidth = "2px";
-      ddate.style.backgroundColor = backgroundColorTheme;
+      ddate.style.backgroundColor = inputColorTheme;
       $(x).fadeOut();
       //x.style.display = "none";
       window.bool8 = true;
@@ -3493,7 +3586,7 @@ function validateDate2(ddate, dialogid) {
       // If absolute deadline is not being used
       $(x).fadeIn();
       ddate.style.borderWidth = "2px";
-      ddate.style.backgroundColor = backgroundColorTheme;
+      ddate.style.backgroundColor = inputColorTheme;
       ddate.style.borderColor = "#aaa";
       // x.style.display = "block";
       window.bool8 = true;
@@ -3515,6 +3608,7 @@ function validateDate2(ddate, dialogid) {
 }
 
 function validateSectName(name) {
+  initInputColorTheme();
   var emotd = document.getElementById(name);
   var tooltipTxt = document.getElementById("dialog10");
   tooltipTxt.style.left = 50 + "px";
@@ -3524,7 +3618,7 @@ function validateSectName(name) {
   if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     emotd.style.borderColor = "#383";
     emotd.style.borderWidth = "2px";
-    emotd.style.backgroundColor = backgroundColorTheme;
+    emotd.style.backgroundColor = inputColorTheme;
     $('#dialog10').fadeOut();
     window.bool10 = true;
     return true;
@@ -3823,6 +3917,8 @@ function validateForm(formid) {
         localStorage.setItem('courseGitHubRepo', repoLink);
         $("#githubPopupWindow").css("display", "none");
         updateGithubRepo(repoLink, cid);
+        // Refresh page after github link
+        location.reload();
       }
     }
   }
@@ -3941,6 +4037,117 @@ function showFeedbackquestion() {
   }
 }
 
+//Fetch Code Examples content from github 
+function fetchGitCodeExamples(courseid){
+  //Make codeExamplesContent a global array for easier access?
+  var codeExamplesContent = [];
+  var fileNamesArray = [];
+  var cid = courseid;
+  var fileName = document.getElementById('fileName').value;
+  var githubURL = document.getElementById('githubURL').value;
+  var filePath = document.getElementById('filePath').value;
+  var filteredFiles = [];
+
+  if(filePath == "" || githubURL == "" || fileName == ""){
+    return alert('Fill in all boxes!');
+  }
+
+  var folderPath = getParentFolderOfFile(filePath);
+  var fileSearchParam = deconstructFilePath(filePath);
+  //After names haves been fetched all relevant filenames are pushed into the filteredFiles array. These are to be fetched later.
+  fetchFileNames(githubURL, folderPath).then(function(fileNamesArray){
+    for (var i = 0; i < fileNamesArray.length; i++){
+      if(fileNamesArray[i].includes(fileSearchParam)){
+        filteredFiles.push(fileNamesArray[i]);
+      }
+    }
+  
+    fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+    }).catch(function(error){
+      console.error('Failed to fetch file contents:', error)
+    });
+
+  }).catch(function(error){
+    console.error('Failed to fetch file names:', error)
+  });
+  
+}
+ // Function to fetch the files from github through ajax http request
+ async function fetchFileContent(githubURL, filteredFiles, folderPath){
+  var results = [];
+  return new Promise(function(resolve, reject){
+    // Extract the owner and repo into individual variables
+    var parts = githubURL.split("/");
+    var owner = parts[3];
+    var repo = parts[4]
+    //Foreach loop to fetch each file in the filteredFiles array
+    filteredFiles.forEach(function(filename){
+      var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath + '/' + filename;
+      // Ajax request to fetch filecontent of current file in foreach loop. fetched file is pushed into results array.
+      var promise = new Promise(function(resolveFile, rejectFile){
+        $.ajax({
+          url: apiGitUrl,
+          method: 'GET',
+          success: function(response) {
+            resolveFile({filename: filename, content: response});
+          },
+          error: function(xhr, status, error) {
+            rejectFile(error);
+          }
+        });
+      });
+      results.push(promise);
+    });
+    //Waits for all file requests to resolve. When all files have been fetched an array is returned containing the files.
+    Promise.all(results).then(function(allFileContents){
+      resolve(allFileContents);
+    }).catch(function(error){
+      reject(error);
+    });
+  });
+ }
+  // Deconstructs the filepath so return param only includes the filename. Numbers, .filetype and path to file is removed.
+  function deconstructFilePath(filePath){
+    var fileName = filePath.split('/').pop();
+    var fileString = fileName.split('.')[0];
+    var noNumString = fileString.replace(/\d+/g, '');
+    return noNumString;
+  }
+  // Remove the filename from the filepath and construct a path to its folder
+  function getParentFolderOfFile(filePath){
+       var lastIndex = filePath.lastIndexOf("/");
+       var folderPath = filePath.substring(0, lastIndex);
+       return folderPath;
+  }
+  //Fetch all filenames from the parent folder of original input file
+  async function fetchFileNames(githubURL, folderPath){
+      return new Promise(function(resolve, reject){
+      // Extract the owner and repo into individual variables
+      var parts = githubURL.split("/");
+      var owner = parts[3];
+      var repo = parts[4]
+  
+      var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
+      // Ajax request to fetch all filenames in folder
+      $.ajax({
+        url: apiGitUrl,
+        method: 'GET',
+        success: function(response) {
+          // Check if response is an array or single object, then parse the response to extract file names.
+          // resolve() returns all filenames.
+          var files = Array.isArray(response) ? response : [response];
+          var fileNames = files.map(function(file) {
+            return file.name;
+          });
+          resolve(fileNames);
+        },
+        error: function(xhr, status, error) {
+          reject(error);
+        }
+      });
+    });
+  }
 
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {

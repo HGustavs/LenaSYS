@@ -29,6 +29,20 @@ function getGitHubURL($url)
     return $translatedURL;
 }
 
+// Gets the API URL for the latest commit in master instead of all content, could reasonably be made generic with getGitHubURL.
+function getGitHubURLCommit($url)
+{
+    $urlParts = explode('/', $url);
+    // In normal GitHub Repo URL:s, the username is the third object separated by a slash
+    $username = $urlParts[3];
+    // In normal GitHub Repo URL:s, the repo is the fourth object separated by a slash
+    $repository = $urlParts[4];
+    // Translates the parts broken out of $url into the correct URL syntax for an API-URL 
+    $translatedURL = 'https://api.github.com/repos/'.$username.'/'.$repository.'/commits/master';
+    // bfs($translatedURL, "REFRESH");
+    return $translatedURL;
+}
+
 function insertToFileLink($cid, $item) 
 {
     global $pdo;
@@ -60,6 +74,7 @@ function insertToFileLink($cid, $item)
     }
 }
 
+// Inserts data into metadata2.db (the table gitFiles).
 function insertToMetaData($cid, $item) 
 {
     global $pdoLite;
@@ -78,16 +93,28 @@ function downloadToWebServer($cid, $item)
 {
     // Retrieves the contents of each individual file based on the fetched "download_url"
     $fileContents = file_get_contents($item['download_url']);
+    // If unable to get file contents then it is logged into the specified textfile
+    if ($fileContents === false) {
+        $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: Failed to get file contents of " . $item['name'] . " from " . $item['download_url'] . "\n";
+        $file = '../../LenaSYS/log/gitErrorLog.txt';
+        error_log($message, 3, $file);
+    }
     $path = '../../LenaSYS/courses/'. $cid . '/' . "Github" .'/' . $item['path'];
     // Creates the directory for each individual file based on the fetched "path"
     if (!file_exists((dirname($path)))) {
         mkdir(dirname($path), 0777, true);
     } 
-    // Writes the file to the respective folder. 
-    file_put_contents($path, $fileContents);    
+
+    $content = file_put_contents($path, $fileContents);
+    // If unable to get file contents then it is logged into the specified textfile
+    if ($content === false) {
+        $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: Failed to put " . $item['name'] . " in " . $path . "\n";
+        $file = '../../LenaSYS/log/gitErrorLog.txt';
+        error_log($message, 3, $file);
+    }
 }
     
-//Retrieves the content of a repos index-file
+// Retrieves the content of a repos index-file
 function getIndexFile($url) {
     $indexFilePath = "/index.txt";
     $url = $url . $indexFilePath;
@@ -116,8 +143,16 @@ function getIndexFile($url) {
 
 function bfs($url, $cid, $opt) 
 {
-    $url = getGitHubURL($url);
+    // Different URL depending on operation
+    date_default_timezone_set("Europe/Stockholm");
+    if($opt == "GETCOMMIT"){
+        $url = getGitHubURLCommit($url);
+    }
+    else{
+        $url = getGitHubURL($url);
+    }
     $filesToIgnore = getIndexFile($url);
+    $filesVisited = array();
     $visited = array();
     $fifoQueue = array();
     array_push($fifoQueue, $url);
@@ -143,37 +178,60 @@ function bfs($url, $cid, $opt)
         $context = stream_context_create($opts);
         // Fetches the data with the stream included
         $data = @file_get_contents($currentUrl, true, $context);
+        // If unable to get file contents then it is logged into the specified textfile with
+        // the specific http error code
+        if($data === false || !$data) {
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
+            curl_setopt($curl, CURLOPT_HEADER, 0);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            $response = json_decode(curl_exec($curl));
+            $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code."\n";
+            $file = '../../LenaSYS/log/gitErrorLog.txt';
+            http_response_code($http_response_code);
+            error_log($message, 3, $file);
+        }
         if ($data) {
             // Decodes the fetched data into JSON
             $json = json_decode($data, true);
+            if($opt == "GETCOMMIT"){
+                return $json['sha'];
+            }
             // Loops through each item fetched in the JSON data
             if ($json) {
                 foreach ($json as $item) {
                     // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
                         //If an index file has been found, check against the content of the index file
-                        if($filesToIgnore){
-                            //If file is not part of files to ignore, resume (Index file)
-                            if(!in_array($item['name'], $filesToIgnore)){
-                                if($opt == "REFRESH") {
-                                    insertToMetaData($cid, $item);
+                        if ($item['name'] != ".gitignore") {
+                            if ($filesToIgnore) {
+                                // If the file is not part of files to ignore, resume (Index file)
+                                if (!in_array($item['name'], $filesToIgnore) && !in_array($item['name'], $filesVisited)) {
+                                    if ($opt == "REFRESH") {
+                                        insertToMetaData($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    } else if ($opt == "DOWNLOAD") {
+                                        insertToFileLink($cid, $item);
+                                        insertToMetaData($cid, $item);
+                                        downloadToWebserver($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    }
                                 }
-                                else if($opt == "DOWNLOAD") {
-                                    insertToFileLink($cid, $item);
-                                    insertToMetaData($cid, $item);
-                                    downloadToWebserver($cid, $item);  
-                                }                 
+                                // Otherwise, fetch and download all files
+                            } else {
+                                if (!in_array($item['name'], $filesVisited)) {
+                                    if ($opt == "REFRESH") {
+                                        insertToMetaData($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    } else if ($opt == "DOWNLOAD") {
+                                        insertToFileLink($cid, $item);
+                                        insertToMetaData($cid, $item);
+                                        downloadToWebserver($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    }
+                                }
                             }
-                            //Otherwise, fetch and download all files
-                        } else {
-                                if($opt == "REFRESH") {
-                                    insertToMetaData($cid, $item);
-                                }
-                                else if($opt == "DOWNLOAD") {
-                                    insertToFileLink($cid, $item);
-                                    insertToMetaData($cid, $item);
-                                    downloadToWebserver($cid, $item);  
-                                }      
                         }
                         // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
@@ -193,14 +251,6 @@ function bfs($url, $cid, $opt)
 
                 echo json_encode($response);
             }
-        } else {
-            //503: Service is unavailable
-            http_response_code(503);
-            header('Content-type: application/json');
-            $response = array(
-                'message' => "Github services are unavailable at this time."
-            );
-            echo json_encode($response);
         }
     }
 }
