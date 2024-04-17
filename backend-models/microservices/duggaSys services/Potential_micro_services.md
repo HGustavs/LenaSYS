@@ -641,7 +641,110 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 
 <br>
 
-### deleteCourseMaterial
+### deleteCourseMaterial_ms.php
+_DELETE_ operation on the table __'partresult'__ to delete rows where:
+
+- The 'cid' value in the __'partresult'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the  __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE partresult FROM course,partresult WHERE course.visibility=:deleted AND partresult.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'subparts'__ to delete rows where:
+
+- The 'cid' value in the __'subparts'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted
+
+```sql
+DELETE subparts FROM course,subparts WHERE course.visibility=:deleted AND subparts.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'improw'__ to delete rows where:
+
+- The 'boxid' value in the __'improw'__ table matches the 'boxid' value in the __'box'__ table, and the 'exampleid' value in the __'box'__ table matches the 'exampleid' value in __'codeexample'__ table, and the 'cid' value in the __'codeexample'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE improw FROM improw,box,course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND codeexample.exampleid = box.exampleid AND box.boxid = improw.boxid;
+```
+
+
+_DELETE_ operation on the table __'box'__ to delete rows where:
+
+- The 'exampleid' value in the __'box'__ table matches the 'exampleid' value in the __'codeexample'__ table, and the 'cid' value in the __'codeexample'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE box FROM box,course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND codeexample.exampleid=box.exampleid;
+```
+
+
+_DELETE_ operation on the table __'impwordlist'__ to delete rows where:
+
+- The 'exampleid' value in the __'impwordlist'__ table matches the 'exampleid' value in the __'codeexample'__ table, and the 'cid' value in the __'codeexample'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE impwordlist FROM impwordlist,course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND codeexample.exampleid=impwordlist.exampleid;
+```
+
+
+_DELETE_ operation on the table __'codeexample'__ to delete rows where:
+
+- The 'cid' value in the __'codeexample'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'user_participant'__ to delete rows where:
+
+- The 'lid' value in the __'user_participant'__ table matches the 'lid' value in the __'listentries'__ table, and the 'cid' value in the __'listentries'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE user_participant FROM user_participant,course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid AND listentries.lid = user_participant.lid;
+```
+
+
+_DELETE_ operation on the table __'userAnswer'__ to delete rows where:
+
+- The 'cid' value in the __'userAnswer'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'listentries'__ to delete rows where:
+
+- The 'cid' value in the __'listentries'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'timesheet'__ to delete rows where:
+
+- The 'cid' value in the __'timesheet'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE timesheet FROM course,timesheet WHERE course.visibility=:deleted AND timesheet.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'variant'__ to delete rows where:
+
+- The 'quizID' value in the __'variant'__ table matches the 'id' value in the __'quiz'__ table, and the 'cid' value in the __'quiz'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE variant FROM variant,course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid AND quiz.id = variant.quizID;
+```
+
+
+
+
+
+
 Uses service __deliteFromTableCodexample__ to delete a row from the table __codeexample__.
 Uses service __deliteFromTableListentries__ to delete a row from the table __listentries__.
 Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
