@@ -15,7 +15,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
     // TODO change later to microservice when php isn't shit
     if(isset($_SESSION['uid'])){
         $userid=$_SESSION['uid'];
-    }else{
+    } else{
         $userid="UNK";
     }
 
@@ -99,35 +99,36 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
         $debug="Error reading courses\n".$error[2];
     }else{
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-                $writeAccess = false;
-                if (isset ($userCourse[$row['cid']])){
-                        if ($userCourse[$row['cid']] == "W") $writeAccess = true;
-                }
-                if ($isSuperUserVar ||
-                $row['visibility']==1 ||
-                ($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) ||
-                ($row['visibility']==0 && $writeAccess)){
-                    $isRegisteredToCourse = false;
-                    foreach($userRegCourses as $userRegCourse){
-                        if($userRegCourse == $row['cid']){
-                            $isRegisteredToCourse = true;
-                            break;
-                        }
-                    }
-                    array_push(
-                        $entries,
-                        array(
-                            'cid' => $row['cid'],
-                            'coursename' => $row['coursename'],
-                            'coursecode' => $row['coursecode'],
-                            'visibility' => $row['visibility'],
-                            'activeversion' => $row['activeversion'],
-                            'activeedversion' => $row['activeedversion'],
-                            'registered' => $isRegisteredToCourse
-                            )
-                        );
+            $writeAccess = false;
+            if (isset ($userCourse[$row['cid']])){
+                if ($userCourse[$row['cid']] == "W") {
+                    $writeAccess = true;
                 }
             }
+
+            if ($isSuperUserVar ||$row['visibility']==1 || $row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) || ($row['visibility']==0 && $writeAccess){
+                $isRegisteredToCourse = false;
+            }
+            foreach($userRegCourses as $userRegCourse){
+                if($userRegCourse == $row['cid']){
+                    $isRegisteredToCourse = true;
+                    break;
+                }
+            }
+            array_push(
+                $entries,
+                array(
+                    'cid' => $row['cid'],
+                    'coursename' => $row['coursename'],
+                    'coursecode' => $row['coursecode'],
+                    'visibility' => $row['visibility'],
+                    'activeversion' => $row['activeversion'],
+                    'activeedversion' => $row['activeedversion'],
+                    'registered' => $isRegisteredToCourse
+                )
+            );
+            
+        }
     }
 
     $versions=array();
@@ -136,7 +137,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
     if(!$query->execute()) {
         $error=$query->errorInfo();
         $debug="Error reading courses\n".$error[2];
-    }else{
+    } else{
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
             array_push(
                 $versions,
@@ -157,7 +158,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
     if(!$query->execute()) {
         $error=$query->errorInfo();
         $debug="Error reading settings\n".$error[2];
-    }else{
+    } else{
         $motd="UNK";
         $readonly=0;
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -174,7 +175,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
         'writeaccess' => $ha,
         'motd' => $motd,
         'readonly' => $readonly
-        );
+    );
 
     //echo json_encode($array);
 
