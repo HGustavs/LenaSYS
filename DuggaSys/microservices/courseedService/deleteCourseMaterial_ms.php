@@ -32,7 +32,7 @@ if (!$query->execute()) {
 //improw
 $query = $pdo->prepare("DELETE improw FROM improw,box,course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND codeexample.exampleid = box.exampleid AND box.boxid = improw.boxid;");
 $query->bindParam(':deleted', $deleted);
- if(!$query->execute()) {
+if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading courses\n".$error[2];
 }
@@ -40,7 +40,7 @@ $query->bindParam(':deleted', $deleted);
 //box
 $query = $pdo->prepare("DELETE box FROM box,course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND codeexample.exampleid=box.exampleid;");
 $query->bindParam(':deleted', $deleted);
- if(!$query->execute()) {
+if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading courses\n".$error[2];
 } 
@@ -48,7 +48,7 @@ $query->bindParam(':deleted', $deleted);
 //impwordlist
 $query = $pdo->prepare("DELETE impwordlist FROM impwordlist,course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND codeexample.exampleid=impwordlist.exampleid;");
 $query->bindParam(':deleted', $deleted);
- if(!$query->execute()) {
+if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading courses\n".$error[2];
 } 
@@ -64,7 +64,7 @@ if (!$query->execute()) {
 //user_participant
 $query = $pdo->prepare("DELETE user_participant FROM user_participant,course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid AND listentries.lid = user_participant.lid;");
 $query->bindParam(':deleted', $deleted);
- if(!$query->execute()) {
+if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading courses\n".$error[2];
 } 
@@ -96,7 +96,7 @@ if (!$query->execute()) {
 //variant
 $query = $pdo->prepare("DELETE variant FROM variant,course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid AND quiz.id = variant.quizID;");
 $query->bindParam(':deleted', $deleted);
- if(!$query->execute()) {
+if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading courses\n".$error[2];
 }
