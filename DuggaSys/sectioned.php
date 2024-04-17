@@ -683,19 +683,27 @@
 <?php
 //Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
-	$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-	$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
-	$query->bindParam(':cid', $cid);
-	$query->bindParam(':repoURL', $githubURL);
-	if (!$query->execute()) {
-		$error = $query->errorInfo();
-		echo "Error updating file entries" . $error[2];
-		$errorvar = $error[2];
-		print_r($error);
-		echo $errorvar;
-    }else{
-		return true;
+	//First query: Check if a row with same cid already exists. If not, insert into db.
+	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+    $query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
+	$query->execute([$cid]);
+	$count = $query->fetchColumn();
+
+	if($count > 0){
+		//A repo with the same cid primary key already exists. Do nothing.
+		return false;
+	} else {
+		$query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $githubURL);
+		if (!$query->execute()) {
+	        $error = $query->errorInfo();
+		    echo "Error updating file entries" . $error[2];
+		}else{
+			return true;
+		}
 	}
+	
 }
 
 //Insert files into gitFiles DB
