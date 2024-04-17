@@ -13,8 +13,9 @@ pdoConnect(); // Connect to database and start session
 session_start();
 
 $opt=getOP('opt');
-$answer=getOP('answer');
 $hash=getOP('hash');
+$hashpwd=getOP('password');
+
 
 if(isset($grade)&&($grade > 1)){
 	//if grade equal G, VG, 3, 4, 5, or 6
