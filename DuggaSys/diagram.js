@@ -8393,37 +8393,15 @@ function addNodes(element) {
     nodes += "<span id='md' class='node md'></span>";
     nodes += "<span id='mu' class='node mu'></span>";
 
-    if (element.kind == "UMLSuperState") {
-        nodes += "<span id='md' class='node md'></span>";
-        nodes += "<span id='mu' class='node mu'></span>";
-    }
     elementDiv.innerHTML += nodes;
     // This is the standard node size
     const defaultNodeSize = 8;
-    var nodeSize = defaultNodeSize * zoomfact;
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
-        var mdNode = document.getElementById("md");
-        mdNode.style.width = nodeSize + "px";
-        mdNode.style.height = nodeSize + "px";
-        mdNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
-        mdNode.style.bottom = "0%";
-    }
-
-    if (element.kind == "UMLSuperState") {
-        var mdNode = document.getElementById("md");
-        var muNode = document.getElementById("mu");
-        mdNode.style.width = nodeSize + "px";
-        muNode.style.width = nodeSize + "px";
-        mdNode.style.height = nodeSize + "px";
-        muNode.style.height = nodeSize + "px";
-        mdNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
-        muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
-    }
 
     var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
     var muNode = document.getElementById("mu");
+    var mdNode = document.getElementById("md");
     mrNode.style.width = nodeSize + "px";
     mlNode.style.width = nodeSize + "px";
     mrNode.style.height = nodeSize + "px";
@@ -8433,7 +8411,11 @@ function addNodes(element) {
     muNode.style.width = nodeSize + "px";
     muNode.style.height = nodeSize + "px";
     muNode.style.top = "0%";
-    muNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
+    muNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
+    mdNode.style.width = nodeSize + "px";
+    mdNode.style.height = nodeSize + "px";
+    mdNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
+    mdNode.style.bottom = "0%";
 
 }
 
