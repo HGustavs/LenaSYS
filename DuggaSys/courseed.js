@@ -61,7 +61,34 @@ function updateCourse()
 						alert(data.responseJSON.message + "\nDid not create/update token");
 						break;
 					default:
-						alert("Something went wrong...");
+						alert("Something went wrong with updating git token and git URL...");
+				}
+				dataCheck = false;
+			}
+		});
+	}
+	else
+	{
+		$.ajax({
+			async: false,
+			url: "../DuggaSys/gitcommitService.php",
+			type: "POST",
+			data: {'githubURL':courseGitURL,'cid':cid, 'action':'directInsert'},
+			success: function() { 
+				//Returns true if the data and JSON is correct
+				dataCheck = true;
+			},
+			error: function(data){
+				//Check FetchGithubRepo for the meaning of the error code.
+				switch(data.status){
+					case 422:
+						alert(data.responseJSON.message + "\nDid not create/update URL");
+						break;
+					case 503:
+						alert(data.responseJSON.message + "\nDid not create/update URL");
+						break;
+					default:
+						alert("Something went wrong with updating git URL..."+data.status);
 				}
 				dataCheck = false;
 			}
