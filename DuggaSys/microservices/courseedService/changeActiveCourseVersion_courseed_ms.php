@@ -35,5 +35,5 @@ if(checklogin() && isSuperUser(getUid()) == true) {
 			$error=$query->errorInfo();
 			$debug="Error updating entries".$error[2];
 		}
-    }
+  }
 }
