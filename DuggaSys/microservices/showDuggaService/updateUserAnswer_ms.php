@@ -3,6 +3,9 @@
 ////////////////////////////////////////////////////////////////////////////
 // This is a Micro Service for updating a user answer in the duggaservice //
 ////////////////////////////////////////////////////////////////////////////
+
+date_default_timezone_set("Europe/Stockholm"); // Added default timezone. Not sure if it is used 
+
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 
