@@ -21,7 +21,7 @@ if (!checklogin()) {
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');
-$sectid=getOP('lid');
+$moment=getOP('moment');
 
 
 $userfeedback=array();
@@ -32,7 +32,7 @@ $avgfeedbackscore=array();
 if(strcmp($opt,"GETUF")==0){
     $query = $pdo->prepare("SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
     $query->bindParam(':cid', $courseid);
-    $query->bindParam(':lid', $sectid);
+    $query->bindParam(':lid', $moment);
     if(!$query->execute()) {
         $error=$query->errorInfo();
         $debug="Error reading courses".$error[2];
@@ -53,7 +53,7 @@ if(strcmp($opt,"GETUF")==0){
     }
     $query = $pdo->prepare("SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
     $query->bindParam(':cid', $courseid);
-    $query->bindParam(':lid', $sectid);
+    $query->bindParam(':lid', $moment);
 
     if(!$query->execute()) {
         $error=$query->errorInfo();
