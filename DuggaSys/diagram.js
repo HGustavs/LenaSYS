@@ -8656,6 +8656,7 @@ function drawRulerBars(X, Y) {
 function drawElement(element, ghosted = false) {
     let ghostPreview = ghostLine ? 0 : 0.4;
     var str = "";
+    const multioffs = 3;
 
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
