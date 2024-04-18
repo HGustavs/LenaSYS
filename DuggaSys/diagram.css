@@ -238,21 +238,33 @@
 .diagramIcons{
     position: relative;
     margin: auto;
-    width: 34px;
-    height: 34px;
+    width: 3.7vh;
+    height: 3.7vh;
     cursor:pointer;
     border: solid 1px var(--color-primary);
     margin-top: 3px;
-    
-   
 }
+
+@media (max-height: 650px) {
+    .diagramIcons {
+        width: 3.3vh;
+        height: 3.3vh; 
+    }
+}
+
+@media (max-height: 540px) {
+    .diagramIcons {
+        width: 3vh;
+        height: 3vh; 
+    }
+}
+
 .diagramIcons:hover, .active{
     background: var(--color-primary-light);
     border: solid 1px var(--color-border-2);
 }
 .diagramIcons img{
-    width:34px;
-    height:34px;
+    height:100%;
 }
 .node {
     position: absolute;
@@ -704,6 +716,7 @@
     display: flex;
     justify-content: space-around;
     padding: 1px;
+    z-index: 900;
 }
 .diagramZoomIcons img {
     height: 27px;
