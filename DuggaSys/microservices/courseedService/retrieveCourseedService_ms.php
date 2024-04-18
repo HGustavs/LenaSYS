@@ -85,7 +85,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
     }
 
 
-    $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
+    $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename;");
 
     /*
 

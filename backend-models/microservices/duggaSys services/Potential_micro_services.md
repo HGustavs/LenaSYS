@@ -90,7 +90,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - copyCourseVersion_ms.php
 - updateCourse_ms.php
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- deleteCourseMaterial_ms.php
+- deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createDugga_ms.php
 - UpdateDugga_ms.php
 - deleteDugga_ms.php
@@ -110,7 +110,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - updateQuizDeadline_ms.php
 - updateListentriesGradesystem_ms.php
 - updateCourseVersion_sectioned_ms.php
-- changeActiveCourseVersion_sectioned_ms.php
+- changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
 - setVisibleListentrie_ms.php
 - getCourseVersions_ms.php
 - getGitReference_ms.php
@@ -123,7 +123,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - processDuggaFile_ms.php
 - submitDugga_ms.php
 - loadDugga_ms.php
-
+- retrieveCourseedService_ms.php __==finished==__ New filename: "readCourseedService_ms.php" according to new nameconvention based on CRUD.
 
 ---
 ---
@@ -813,6 +813,112 @@ DELETE course FROM course WHERE visibility=:deleted;
 ```
 
 <br>
+
+---
+
+<br>
+
+### readCourseedService_ms.php
+_SELECT_ operation on the table __'user_course'__ to retrieve values from the column:
+- cid
+
+```sql
+SELECT cid FROM user_course WHERE uid=:uid
+```
+
+
+_SELECT_ operation on the table __'user_course'__ to retrieve values from the columns:
+- cid
+- access
+
+```sql
+SELECT cid,access FROM user_course WHERE uid=:uid;
+```
+
+
+_DELETE_ operation on the table __'codeexample'__ to remove rows where:
+
+- The 'cid' value in the __'codeexample'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'listentries'__ to remove rows where:
+
+- The 'cid' value in the __'listentries'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'quiz'__ to remove rows where:
+
+- The 'cid' value in the __'quiz'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'vers'__ to remove rows where:
+
+- The 'cid' value in the __'vers'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+```sql
+DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = course.cid;
+```
+
+
+_DELETE_ operation on the table __'course'__ to remove rows where:
+
+- The 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
+
+
+```sql
+DELETE course FROM course WHERE visibility=:deleted;
+```
+
+
+_SELECT_ operation on the table __'course'__ to retrieve values from the columns:
+- coursename
+- coursecode
+- cid
+- visibility
+- activeversion
+- activeedversion
+
+```sql
+SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename;
+```
+
+
+_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+
+```sql
+SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;
+```
+
+
+_SELECT_ operation on the table __'settings'__ to retrieve values from the columns:
+- motd
+- readonly
+- sql
+
+```sql
+SELECT motd,readonly FROM settings;
+```
+
+
+<br>
 <br>
 
 ---
@@ -1077,9 +1183,13 @@ Uses the services __setActiveCourseVersion__ to change the content of these colu
 
 <br>
 
-### changeActiveCourseVersion_sectioned    
-Uses the services __setActiveCourseVersion__ to change the content of these columns:
+### updateActiveCourseVersion_sectioned_ms.php     
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
+
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid
+```
 
 <br>
 
