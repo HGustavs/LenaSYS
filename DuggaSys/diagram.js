@@ -8787,10 +8787,11 @@ function drawElement(element, ghosted = false) {
                     onmouseenter='mouseEnter();' 
                     onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%" 
-                        viewBox="0 0 24 24"
+                        viewBox="-2 -2 28 28"
                         xmlns="http://www.w3.org/2000/svg" 
                         xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;
+                        stroke-miterlimit:2;stroke:${element.fill =="#ffffff"? "black" : "none"}; stroke-width:1;">
                         <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
                             <circle cx="16.5" cy="12.5" r="10.5"/>
                         </g>
@@ -8811,10 +8812,10 @@ function drawElement(element, ghosted = false) {
                     onmouseenter='mouseEnter();' 
                     onmouseleave='mouseLeave();'>
                     <svg width="100%" height="100%"
-                        viewBox="0 0 24 24"
+                        viewBox="-2 -2 28 28"
                         xmlns="http://www.w3.org/2000/svg"
                         xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;stroke:${element.fill == "#ffffff"? "black" : "none"}; stroke-width:1;">
                         <g>
                             <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
                             <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/>
