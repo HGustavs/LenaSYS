@@ -124,6 +124,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - submitDugga_ms.php
 - loadDugga_ms.php
 - retrieveCourseedService_ms.php __==finished==__ New filename: "readCourseedService_ms.php" according to new nameconvention based on CRUD.
+- retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
 
 ---
 ---
@@ -1352,6 +1353,198 @@ SELECT * FROM listentries WHERE visible = '3'
 ```
 
 <br>
+
+---
+
+<br>
+
+### readSectionedService_ms.php
+_SELECT_ operation on the table __'user'__ to retrieve values from the column:
+- username
+
+```sql
+SELECT username FROM user WHERE uid = :uid;
+```
+
+
+_SELECT_ operation on the table __'course'__ to retrieve values from the column:
+- visibility
+
+```sql
+SELECT visibility FROM course WHERE cid=:cid;
+```
+
+
+_SELECT_ operation on the table __'quiz'__ to retrieve values from the columns:
+- id
+- qname
+- qrelease
+- deadline
+- relativedeadline
+
+```sql
+SELECT id,qname,qrelease,deadline,relativedeadline FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname;
+```
+
+
+_SELECT_ operation on the table __'user_course'__ to retrieve values from the column:
+- groups
+
+```sql
+SELECT groups FROM user_course WHERE uid=:uid AND cid=:cid;
+```
+
+
+_SELECT_ operation on the table __'userAnswer'__ to retrieve values from the columns:
+- moment
+- quiz
+- grade
+- submitted (formatted as YYYY-MM-DDTHH:MM:SS)
+- marked (formatted as YYYY-MM-DDTHH:MM:SS)
+- useranswer
+
+```sql
+SELECT moment,quiz,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;
+```
+
+
+_SELECT_ operation on the table __'listentries'__ joined with the table __'quiz'__ to retrieve values from the columns:
+- lid
+- moment
+- entryname
+- pos
+- kind
+- link
+- visible
+- code_id
+- gradesystem (from both listentries and aliased as tabs)
+- highscoremode
+- deadline
+- relativedeadline
+- qrelease
+- comments
+- qstart
+- jsondeadline
+- groupKind
+- ts
+- feedbackenabled
+- feedbackquestion
+
+```sql
+SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,relativedeadline,qrelease,comments, qstart, jsondeadline, groupKind, 
+ts, listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos;
+```
+
+
+_SELECT_ operation on the table __'course'__ to retrieve values from the columns:
+- coursename
+- coursecode
+
+```sql
+SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1;
+```
+
+
+_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
+
+```sql
+SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;
+```
+
+
+_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+
+```sql
+SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;
+```
+
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve values from the columns:
+- fileid
+- filename
+- kind
+
+```sql
+SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename;
+```
+
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve values from the columns:
+- fileid
+- filename
+- kind
+
+```sql
+SELECT fileid,filename,kind FROM fileLink WHERE (cid=:cid AND kind>1) or isGlobal='1' ORDER BY kind,filename;
+```
+
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve values from the columns:
+- exampleid
+- cid
+- examplename
+- sectionname
+- runlink
+- cversion
+
+```sql
+SELECT exampleid, cid, examplename, sectionname, runlink, cversion FROM codeexample WHERE cid=:cid ORDER BY examplename;
+```
+
+
+_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
+- startdate
+- enddate
+
+```sql
+SELECT startdate,enddate FROM vers WHERE cid=:cid AND vers=:vers LIMIT 1;
+```
+
+
+_SELECT_ operation on the table __'userduggafeedback'__ to retrieve all columns where:
+
+- The 'lid' value in the __'userduggafeedback'__ table matches the value bound to :lid.
+- The 'cid' value in the __'userduggafeedback'__ table matches the value bound to :cid.
+
+```sql
+SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
+```
+
+
+_SELECT_ operation on the table __'userduggafeedback'__ to retrieve the average value from the column:
+- score
+
+```sql
+SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid
+```
+
+
+_SELECT_ operation on the table __'listentries'_ to retrieve all columns where:
+
+- The 'visible' value in the __'listentries'__ table is set to '3'
+
+```sql
+SELECT * FROM listentries WHERE visible = '3'
+```
+
 <br>
 
 ---
