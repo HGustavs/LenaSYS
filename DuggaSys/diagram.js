@@ -2604,6 +2604,7 @@ function mmoving(event) {
                 const widthChange = -(tmp - elementData.width);
 
                 // Fetch original x-position
+                console.log("elementData.x, line 2597");
                 tmp = elementData.x;
                 elementData.x = screenToDiagramCoordinates((startX - deltaX), 0).x;
 
@@ -2647,6 +2648,7 @@ function mmoving(event) {
                 }
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
+                
                 // Fetch original height
                 var tmp = elementData.height;
                 elementData.height = (startHeight + (deltaY / zoomfact));
@@ -2657,12 +2659,12 @@ function mmoving(event) {
                 // Fetch original y-position
                 // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
-                console.log("elementData.y, line 2660");
+                console.log("elementData.y, Pre screentoDiagram: " + tmp + "startY: " + startY + "deltaY: " + deltaY);
                 elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
-
+                console.log("elementData.y, Post screentoDiagram: " + elementData.y);
                 // Deduct the new position, giving us the total change
                 const yChange = -(tmp - elementData.y);
-
+                console.log("yChange, Post screentoDiagram: " + yChange);
                 // Adds a deep clone of the element to preResizeHeight if it isn't in it
                 let foundID = false;
                 if (preResizeHeight == undefined) {
@@ -3432,18 +3434,19 @@ function screenToDiagramCoordinates(mouseX, mouseY) {
     // We're tired.
 
     // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
-    var zoomX = 0;
+    // Define an object to map zoom factors to corresponding zoomX values
+    const zoomMapping = {
+        1.25: zoom1_25,
+        1.5: zoom1_5,
+        2: zoom2,
+        4: zoom4,
+        0.75: zoom0_75,
+        0.5: zoom0_5,
+        0.25: zoom0_25
+    };
 
-    // ZOOM IN
-    if (zoomfact == 1.25) zoomX = zoom1_25;
-    if (zoomfact == 1.5) zoomX = zoom1_5;
-    if (zoomfact == 2) zoomX = zoom2;
-    if (zoomfact == 4) zoomX = zoom4;
-
-    // ZOOM OUT
-    if (zoomfact == 0.75) zoomX = zoom0_75;
-    if (zoomfact == 0.5) zoomX = zoom0_5;
-    if (zoomfact == 0.25) zoomX = zoom0_25;
+    // Use the mapping to assign the value of zoomX
+    var zoomX = zoomMapping[zoomfact] || 0; // Defaults to 0 if zoomfact is not in the map
 
     var timestamp = new Date().toISOString();
     
