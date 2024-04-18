@@ -14,7 +14,7 @@ session_start();
 
 $opt=getOP('opt');
 $hash=getOP('hash'); // Oklart om denna ska med då den hämtas från session
-$hashpwd=getOP('hashpwd'); // Oklart om denna ska vara med då den hämtas från session
+$hashpwd=getOP('password'); // Oklart om denna ska vara med då den hämtas från session
 $answer=getOP('useranswer');
 $dbpwd=getOP('password');
 $courseid=getOP('cid');
@@ -22,7 +22,6 @@ $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $moment=getOP('moment');
 $variant=getOP('variant');
-
 
 
 
@@ -60,7 +59,7 @@ if(strcmp($opt,"SAVDU")==0){
 					$error=$query->errorInfo();
 					$debug="Error updating variant (row ".__LINE__.") Error code: ".$error[2];
 				}else{
-					// ???????????????????????????????????
+					// Why is this empty?
 				}
 			} else if(isset($dbpwd) && strcmp($hashpwd,$dbpwd) !== 0){
 				$debug="The hash/hascode combination is not valid.";
