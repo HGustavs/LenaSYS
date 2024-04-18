@@ -70,6 +70,7 @@ function updateCourse()
 			}
 		});
 	}
+	// Runs if token is not set.
 	else
 	{	
 		$.ajax({
@@ -101,6 +102,8 @@ function updateCourse()
 		});
 	}
 
+	if(dataCheck)
+	{
 		// Show dialog
 		$("#editCourse").css("display", "none");
 		
@@ -113,29 +116,30 @@ function updateCourse()
 
 		const cookieValue = `; ${document.cookie}`;
 		const parts = cookieValue.split(`; ${"missingToken"}=`);
-		console.log(parts[1]);
-	if(dataCheck && parts[1]==0)
-	{
-		//Check if courseGitURL has a value
-		if(courseGitURL) {
-			//Check if fetchGitHubRepo returns true
-			if(fetchGitHubRepo(courseGitURL)) {
-				localStorage.setItem('courseGitHubRepo', courseGitURL);
-				//If courseGitURL has a value, display a message stating the update (with github-link) worked
-				alert("Course " + coursename + " updated with new GitHub-link!"); 
-				updateGithubRepo(courseGitURL, cid);
-			}
-			//Else: get error message from the fetchGitHubRepo function.
 
-		} else {
-			localStorage.setItem('courseGitHubRepo', " ");
-			//If courseGitURL has no value, display an update message
-			alert("Course " + coursename + " updated!"); 
+		if(dataCheck && parts[1]==0)
+		{
+			//Check if courseGitURL has a value
+			if(courseGitURL) {
+				//Check if fetchGitHubRepo returns true
+				if(fetchGitHubRepo(courseGitURL)) {
+					localStorage.setItem('courseGitHubRepo', courseGitURL);
+					//If courseGitURL has a value, display a message stating the update (with github-link) worked
+					alert("Course " + coursename + " updated with new GitHub-link!"); 
+					updateGithubRepo(courseGitURL, cid);
+				}
+				//Else: get error message from the fetchGitHubRepo function.
+
+			} else {
+				localStorage.setItem('courseGitHubRepo', " ");
+				//If courseGitURL has no value, display an update message
+				alert("Course " + coursename + " updated!"); 
+			}
 		}
-	}
-	else
-	{
-		alert("Git token is missing/expired. Commits may not be able to be fetched"); 
+		else
+		{
+			alert("Git token is missing/expired. Commits may not be able to be fetched"); 
+		}
 	}
 }
 
