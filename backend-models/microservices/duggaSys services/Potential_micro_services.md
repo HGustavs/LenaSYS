@@ -104,7 +104,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - getCourseGroupsAndMembers_ms.php
 - deleteListentries_ms.php
 - removeListentries_ms.php
-- createListentrie_ms.php
+- createListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - reorderListentries_ms.php
 - updateListentrie_ms.php
 - updateQuizDeadline_ms.php
@@ -1097,11 +1097,45 @@ Uses the services __updateTableListentries__ to change the content of these colu
 
 <br>
 
-### createListentrie
-Insert a new code example and update variables accordingly.
-Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__. 
-Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
-Uses service __createNewListentrie__ to makes _inserts_ into the table __listentries__.
+### createListentrie_ms.php
+_SELECT_ operation on the table __'settings'__ to retrieve values from the columns:
+- motd
+- readonly
+
+```sql
+SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;
+```
+
+
+_INSERT_ operation on the table __'codeexample'__ to create new rows in the columns:
+- cid
+- examplename
+- sectionname
+- uid (set to 1)
+- cversion
+
+```sql
+INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);
+```
+
+
+_INSERT_ operation on the table __'listentries'__ to create new rows in the columns:
+- cid
+- vers
+- entryname
+- link
+- kind
+- pos
+- visible
+- creator
+- comments
+- gradesystem
+- highscoremode
+- groupKind
+
+```sql
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)
+```
 
 <br>
 
