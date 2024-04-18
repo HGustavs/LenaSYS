@@ -1628,8 +1628,10 @@ document.addEventListener('keydown', function (e) {
 
     if (isKeybindValid(e, keybinds.SELECT_ALL)){
         e.preventDefault();
-        if (mouseMode != mouseModes.EDGE_CREATION) selectAll();
+        document.getElementById("mouseMode0").click();
+        selectAll();
     }
+
     if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
         e.preventDefault();
     }
