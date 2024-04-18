@@ -80,5 +80,4 @@ if(strcmp($opt,"SAVDU")==0){
 	}else{
 		$debug="Unable to save dugga!";
 	}
-} 
-?>
+}
