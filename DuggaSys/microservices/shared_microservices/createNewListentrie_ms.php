@@ -1,5 +1,6 @@
 <?php
 include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
 include_once "getUid_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
