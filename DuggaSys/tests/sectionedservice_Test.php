@@ -319,12 +319,11 @@ $testsData = array(
     // This tests the microservice updateListentrie and the part of the monalith called "UPDATE" 
     //---------------------------------------------------------------------------------------
     'updateListentrie' => array(
-        'expected-output'   => '{"entries":[{"entryname":"PHP examples"},{"entryname":"PHP Example 1"},{"entryname":"PHP Example 2"},{"entryname":"PHP Example 3"},{"entryname":"Javascript examples"},{"entryname":"New Group"},{"entryname":"JavaScript Example 1"},{"entryname":"JavaScript Example 2"},{"entryname":"JavaScript Example 3"},{"entryname":"HTML5 examples"},{"entryname":"HTML5 Example 1"},{"entryname":"HTML5 Example 2"},{"entryname":"HTML5 Example 3"},{"entryname":"HTML5 Example 4"},{"entryname":"HTML5 Example 5"},{"entryname":"HTML5 Example 6"},{"entryname":"HTML5 Example 7"},{"entryname":"HTML5 Example 8"},{"entryname":"Shader examples"},{"entryname":"Shaderprogrammering"},{"entryname":"Shaderprogrammering"},{"entryname":"UPDATED"}]}',
+        'expected-output'   => '{"entries":[{"entryname":"PHP examples"},{"entryname":"PHP Example 1"},{"entryname":"PHP Example 2"},{"entryname":"PHP Example 3"},{"entryname":"Javascript examples"},{"entryname":"JavaScript Example 1"},{"entryname":"JavaScript Example 2"},{"entryname":"JavaScript Example 3"},{"entryname":"HTML5 examples"},{"entryname":"HTML5 Example 1"},{"entryname":"HTML5 Example 2"},{"entryname":"HTML5 Example 3"},{"entryname":"HTML5 Example 4"},{"entryname":"HTML5 Example 5"},{"entryname":"HTML5 Example 6"},{"entryname":"HTML5 Example 7"},{"entryname":"HTML5 Example 8"},{"entryname":"Shader examples"},{"entryname":"Shaderprogrammering"},{"entryname":"Shaderprogrammering"},{"entryname":"UPDATED"}]}',
 
         'query-before-test-1' => "INSERT INTO listentries (lid, cid, vers, entryname, kind, pos, creator)   
-                                  VALUES(1 ,1 ,45656 ,'TEST',2 ,20, 101);",
-
-        'query-after-test-1' => "DELETE FROM listentries WHERE lid = 1;",
+                                  VALUES(9999,1,45656,'TEST',2,20,22);",
+        'query-after-test-1' => "DELETE FROM listentries WHERE lid = 9999;",
     
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(
@@ -333,7 +332,7 @@ $testsData = array(
                 'courseid' => '1',
                 'sectname' => 'UPDATED',
                 'coursevers' => 45656,
-                'lid' => 1, 
+                'lid' => 9999, 
                 'kind' => 2,
                 'link' => '6002',
                 'username' => 'mestr',
