@@ -13,8 +13,8 @@ pdoConnect(); // Connect to database and start session
 session_start();
 
 $opt=getOP('opt');
-$hash=getOP('hash'); // Oklart om denna ska med då den hämtas från session
-$hashpwd=getOP('password'); // Oklart om denna ska vara med då den hämtas från session
+$hash=getOP('hash');
+$hashpwd=getOP('password');
 $answer=getOP('useranswer');
 $dbpwd=getOP('password');
 $courseid=getOP('cid');
@@ -26,9 +26,8 @@ $variant=getOP('variant');
 
 
 if(strcmp($opt,"SAVDU")==0){
-    // Log the dugga write
     makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
-    $discription = $courseid." ".$duggaid." ".$moment." ".$answer;
+    $description = $courseid." ".$duggaid." ".$moment." ".$answer;
 
 	if(	!isSuperUser($userid) && // Teachers cannot submit
 	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"])){
