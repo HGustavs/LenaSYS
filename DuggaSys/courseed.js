@@ -54,6 +54,9 @@ function updateCourse()
 			error: function(data){
 				//Check FetchGithubRepo for the meaning of the error code.
 				switch(data.status){
+					case 403:
+						alert(data.status + " Error \nplease insert valid git key");
+						break;
 					case 422:
 						alert(data.responseJSON.message + "\nDid not create/update token");
 						break;
@@ -68,7 +71,7 @@ function updateCourse()
 		});
 	}
 	else
-	{
+	{	
 		$.ajax({
 			async: false,
 			url: "../DuggaSys/gitcommitService.php",
@@ -81,6 +84,9 @@ function updateCourse()
 			error: function(data){
 				//Check FetchGithubRepo for the meaning of the error code.
 				switch(data.status){
+					case 403:
+						alert(data.status + " Error \nplease insert valid git key");
+						break;
 					case 422:
 						alert(data.responseJSON.message + "\nDid not create/update URL");
 						break;
@@ -95,31 +101,34 @@ function updateCourse()
 		});
 	}
 
-	// Show dialog
-	$("#editCourse").css("display", "none");
-	
-	// Updates the course (except the course GitHub repo. 
-	// Course GitHub repo is updated in the next block of code)
-	$("#overlay").css("display", "none");
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-	localStorage.setItem('courseid', courseid);
-	localStorage.setItem('updateCourseName', true);
+	if(dataCheck)
+	{
+		// Show dialog
+		$("#editCourse").css("display", "none");
+		
+		// Updates the course (except the course GitHub repo. 
+		// Course GitHub repo is updated in the next block of code)
+		$("#overlay").css("display", "none");
+		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+		localStorage.setItem('courseid', courseid);
+		localStorage.setItem('updateCourseName', true);
 
-	//Check if courseGitURL has a value
-	if(courseGitURL) {
-		//Check if fetchGitHubRepo returns true
-		if(fetchGitHubRepo(courseGitURL)) {
-			localStorage.setItem('courseGitHubRepo', courseGitURL);
-			//If courseGitURL has a value, display a message stating the update (with github-link) worked
-			alert("Course " + coursename + " updated with new GitHub-link!"); 
-			updateGithubRepo(courseGitURL, cid);
+		//Check if courseGitURL has a value
+		if(courseGitURL) {
+			//Check if fetchGitHubRepo returns true
+			if(fetchGitHubRepo(courseGitURL)) {
+				localStorage.setItem('courseGitHubRepo', courseGitURL);
+				//If courseGitURL has a value, display a message stating the update (with github-link) worked
+				alert("Course " + coursename + " updated with new GitHub-link!"); 
+				updateGithubRepo(courseGitURL, cid);
+			}
+			//Else: get error message from the fetchGitHubRepo function.
+
+		} else {
+			localStorage.setItem('courseGitHubRepo', " ");
+			//If courseGitURL has no value, display an update message
+			alert("Course " + coursename + " updated!"); 
 		}
-		//Else: get error message from the fetchGitHubRepo function.
-
-	} else {
-		localStorage.setItem('courseGitHubRepo', " ");
-		//If courseGitURL has no value, display an update message
-		alert("Course " + coursename + " updated!"); 
 	}
 }
 
