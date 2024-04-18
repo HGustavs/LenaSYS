@@ -82,13 +82,11 @@
 		$urlParting = explode('/', $url);
 		// The 4th part contains the name of the repo, which is accessed by [4]
 		$repoName = $urlParting[4];
-
 		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL) VALUES (:cid, :repoName, :repoURL)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoName', $repoName);
 		$query->bindParam(':repoURL', $url);
 		
-
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];
