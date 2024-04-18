@@ -8082,7 +8082,7 @@ function drawLine(line, targetGhost = false) {
                         x='${(fx + length + (30 * zoomfact))}'
                         y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
                         style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
-                        ${line.label}
+                        ${labelValue}
                     </text>`;
         } else {
             str += `<rect
@@ -8100,7 +8100,7 @@ function drawLine(line, targetGhost = false) {
                         style='font-size:${Math.round(zoomfact * textheight)}px;'
                         x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
                         y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
-                        ${line.label}
+                        ${labelValue}
                     </text>`;
         }
     }
