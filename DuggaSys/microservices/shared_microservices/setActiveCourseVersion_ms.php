@@ -10,7 +10,8 @@ include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 
 $opt = getOP('opt');
-$cid = getOP('cid');
+$courseid = getOP('cid');
+$versid = getOP('vers');
 
 
 if (strcmp($opt, "UPDATEVRS") === 0) {
