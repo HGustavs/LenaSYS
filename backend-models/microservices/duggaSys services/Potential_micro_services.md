@@ -105,8 +105,9 @@ CRUD stands for the four basic operations for managing data in applications and 
 - deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - removeListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - createListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- reorderListentries_ms.php __==finished==__ New filename: "updateListentries_ms.php" according to new nameconvention based on CRUD.
-- updateListentrie_ms.php
+- reorderListentries_ms.php __==finished==__ New filename: "updateOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+- updateListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
+- updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php
 - updateListentriesGradesystem_ms.php
 - updateCourseVersion_sectioned_ms.php
@@ -1179,7 +1180,8 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 
 <br>
 
-### updateListentries_ms.php
+### updateOrder_ms.php
+Updates the order of the listentries of a course. Not to be confused with updateListentrie_ms.php.
 _UPDATE_ operation on the table __'listentries'__ to modify rows where:
 
 - The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
@@ -1195,10 +1197,28 @@ UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
 
 <br>
 
-### updateListentrie
-Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
-Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
-Uses the services __updateTableListentries__ to change the content of these columns:
+### updateListentrie_ms.php
+_SELECT_ operation on the table __'listentries'__ to retrieve the value from the column:
+- entryname
+
+```sql
+SELECT entryname FROM listentries WHERE vers=:cversion AND cid=:cid AND (kind=1 or kind=0 or kind=4) AND (pos < (SELECT pos FROM listentries WHERE lid=:lid)) ORDER BY pos DESC LIMIT 1;
+```
+
+
+_INSERT_ operation on the table __'codeexample'__ to create new rows with values for the columns:
+- cid
+- examplename
+- sectionname
+- uid
+- cversion
+
+```sql
+INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to modify rows with updated values for the columns:
 - highscoremode
 - gradesystem
 - moment
@@ -1211,7 +1231,22 @@ Uses the services __updateTableListentries__ to change the content of these colu
 - feedbackenabled
 - feedbackquestion
 
-Uses service __insertIntoTableList__ to makes _inserts_ into the table __list__.
+- The 'lid' value in the 'listentries' table matches the value bound to :lid
+
+```sql
+UPDATE listentries set highscoremode=:highscoremode, gradesystem=:gradesys, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;
+```
+
+
+_INSERT_ operation on the table __'list'__ to create new rows with values for the columns:
+- listnr
+- listeriesid
+- responsible
+- course
+
+```sql
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);
+```
 
 <br>
 
@@ -1230,9 +1265,15 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 
 <br>
 
-### updateListentriesTabs
-Uses the services __updateTableListentries__ to change the content of these columns:
+### updateListentriesTabs_ms.php
+_UPDATE_ operation on the table __'listentries'__ to modify rows with updated values for the column:
 - gradesystem
+
+- The 'lid' value in the 'listentries' table matches the value bound to :lid.
+
+```sql
+UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
+```
 
 <br>
 
