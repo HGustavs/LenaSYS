@@ -100,10 +100,10 @@ CRUD stands for the four basic operations for managing data in applications and 
 - deleteFileLink_ms.php
 - updataFileLink_ms.php
 - highscoreservice_ms.php
-- getGroupValues_ms.php
+- getGroupValues_ms.php __==finished==__ New filename: "readGroupValues_ms.php" according to new nameconvention based on CRUD.
 - getCourseGroupsAndMembers_ms.php __==finished==__ New filename: "readCourseGroupsAndMembers_ms.php" according to new nameconvention based on CRUD.
 - deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- removeListentries_ms.php
+- removeListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - createListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - reorderListentries_ms.php
 - updateListentrie_ms.php
@@ -116,7 +116,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - getGitReference_ms.php
 - createGithubCodeexample_ms.php
 - getUserDuggaFeedback_ms.php
-- getDeletedListentries_ms.php
+- getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - changeProfileValues_ms.php
 - getUserAnswar_ms.php
 - updateActiveUsers_ms.php
@@ -1056,8 +1056,16 @@ Uses service __selectFromTableScore__ to _get_ information it requires from __Sc
 <br>
 <br>
 
-### getGroupValues  
-Uses service __selectFromTableGroup__ to _get_ information it requires from __group__. 
+### readGroupValues_ms.php
+_SELECT_ operation on the table __'groups'__ to retrieve values from the columns:
+- groupKind
+- groupVal
+
+
+```sql
+SELECT groupKind,groupVal FROM groups;
+```
+
 <br>
 
 ---
@@ -1085,7 +1093,7 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 <br>
 
 ### deleteListentries_ms.php
-Listentries are duggas, headers, tests etc..  
+Listentries are duggas, headers, tests etc. This microservice DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items).
 
 _DELETE_ operation on the table __'useranswer'__ to remove rows where:
 
@@ -1110,12 +1118,13 @@ DELETE FROM listentries WHERE lid = :lid
 
 <br>
 
-### removeListentries (hides the entrie, no delete it)
-This will change the visibility of a listentry to deleted instead of deleting the item from the database. This will enable restoring deleted items.
-<br>
+### removeListentries_ms.php (hides the listentrie, no delete it)
+Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database). 
 
-Uses the services __updateTableListentries__ to change the content of these columns:
-- visible = 3
+_UPDATE_ operation on the table __'listentries'__ to update rows where:
+
+- The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
+- Set: The 'visible' value in the 'listentries' table to '3'.
 
 <br>
 
@@ -1326,9 +1335,16 @@ Uses service __selectFromTableUserduggafeedback__ to _get_ information it requir
 
 <br>
 
-### getDeletedListentries
-Retrives all removed (but not delited from db) listentries
-Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
+### readRemovedListentries_ms.php
+Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. This microservice is close related to the removeListentries_ms.php that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what readRemovedListentris_ms.php does.
+
+_SELECT_ operation on the table __'listentries'__ to retrieve all columns where:
+
+- The 'visible' value in the __'listentries'__ table is set to '3'.
+
+```sql
+SELECT * FROM listentries WHERE visible = '3'
+```
 
 <br>
 <br>
