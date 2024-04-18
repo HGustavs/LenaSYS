@@ -906,6 +906,13 @@ const lineCardinalitys = {
     ONE: "1"
 };
 
+const lineDirection = {
+    UP: 'TB',
+    DOWN: 'BT',
+    RIGHT: 'RL',
+    LEFT: 'LR',
+}
+
 /**
  * @description Available options of icons to display at the end of lines connecting two UML elements.
  */
@@ -1075,10 +1082,37 @@ const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
-const strokeColors = ["#383737"];
-const selectedColor = "#A000DC";
-const multioffs = 3;
+const color = {
+    WHITE: "#ffffff",
+    BLACK: "#000000",
+    GREY: "#383737",
+    BLUE: "#0000ff",
+    YELLOW: "#FFB000",
+    ORANGE: "#FE6100",
+    PURPLE: "#614875",
+    PINK: "#DC267F",
+    DENIM: "#648fff",
+    SELECTED: "#A000DC",
+    LIGHT_BLUE: "#C4E4FC",
+    LIGHT_RED: "#FFD4D4",
+    LIGHT_YELLOW: "#FFF4C2",
+    LIGHT_GREEN: "#C4F8BD",
+    LIGHT_PURPLE: "#927B9E",
+};
+const MENU_COLORS = [
+    color.WHITE,
+    color.LIGHT_BLUE,
+    color.LIGHT_RED,
+    color.LIGHT_YELLOW,
+    color.LIGHT_GREEN,
+    color.DENIM,
+    color.PINK,
+    color.YELLOW,
+    color.ORANGE,
+    color.BLUE,
+    color.BLACK,
+]
+const strokeColors = [color.GREY];
 
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -1215,8 +1249,8 @@ var defaults = {
     EREntity: {
         name: "Entity",
         kind: "EREntity",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
         height: 50,
         type: "ER",
@@ -1228,8 +1262,8 @@ var defaults = {
     ERRelation: {
         name: "Relation",
         kind: "ERRelation",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "ER",
@@ -1239,20 +1273,20 @@ var defaults = {
     ERAttr: {
         name: "Attribute",
         kind: "ERAttr",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 90,
         height: 45,
         type: "ER",
         state: 'normal'
     },
-    Ghost: {name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER"},
+    Ghost: {name: "Ghost", kind: "ERAttr", fill: color.WHITE, stroke: color.BLACK, width: 5, height: 5, type: "ER"},
 
     UMLEntity: {
         name: "Class",
         kind: "UMLEntity",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
         height: 50,
         type: "UML",
@@ -1263,8 +1297,8 @@ var defaults = {
     UMLRelation: {
         name: "Inheritance",
         kind: "UMLRelation",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "UML",
@@ -1273,8 +1307,8 @@ var defaults = {
     IEEntity: {
         name: "IEEntity",
         kind: "IEEntity",
-        stroke: "#000000",
-        fill: "#ffffff",
+        stroke: color.BLACK,
+        fill: color.WHITE,
         width: 200,
         height: 50,
         type: "IE",
@@ -1285,8 +1319,8 @@ var defaults = {
     IERelation: {
         name: "Inheritance",
         kind: "IERelation",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 50,
         height: 50,
         type: "IE",
@@ -1295,8 +1329,8 @@ var defaults = {
     SDEntity: {
         name: "State",
         kind: "SDEntity",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
         height: 50,
         type: "SD",
@@ -1308,8 +1342,8 @@ var defaults = {
     UMLInitialState: {
         name: "UML Initial State",
         kind: "UMLInitialState",
-        fill: "#000000",
-        stroke: "#000000",
+        fill: color.BLACK,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "SD",
@@ -1318,8 +1352,8 @@ var defaults = {
     UMLFinalState: {
         name: "UML Final State",
         kind: "UMLFinalState",
-        fill: "#000000",
-        stroke: "#000000",
+        fill: color.BLACK,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "SD",
@@ -1328,8 +1362,8 @@ var defaults = {
     UMLSuperState: {
         name: "UML Super State",
         kind: "UMLSuperState",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 500,
         height: 500,
         type: "SD",
@@ -1339,8 +1373,8 @@ var defaults = {
     sequenceActorAndObject: {
         name: "name",
         kind: "sequenceActorAndObject",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 100,
         height: 150,
         type: "SE",
@@ -1350,8 +1384,8 @@ var defaults = {
     sequenceActivation: {
         name: "Activation",
         kind: "sequenceActivation",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 30,
         height: 300,
         type: "SE",
@@ -1359,8 +1393,8 @@ var defaults = {
     }, // Sequence Activation.
     sequenceLoopOrAlt: {
         kind: "sequenceLoopOrAlt",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 750,
         height: 300,
         type: "SE",
@@ -1372,8 +1406,8 @@ var defaults = {
     note: {
         name: "Note",
         kind: "note",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
         height: 50,
         type: "NOTE",
@@ -2433,7 +2467,7 @@ function determineLineSelect(mouseX, mouseY) {
         lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
-        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="#000000" stroke-width="3" fill="red" /> '
+        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke='${color.BLACK}' stroke-width="3" fill="red" /> '
         // ---------------------------
         if (lineWasHit == true && labelWasHit == false) {
             // Return the current line that registered as a "hit".
@@ -4277,14 +4311,14 @@ function toggleDiagramDropdown() {
 
     if (window.getComputedStyle(dropdown).display === "none") {
         btn.style.backgroundColor = "transparent";
-        btn.style.border = "3px solid #614875";
-        btn.style.color = "#614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+        btn.style.color = color.PURPLE;
         btn.style.fontWeight = "bold";
     } else {
-        btn.style.backgroundColor = "#614875";
-        btn.style.color = "#ffffff";
+        btn.style.backgroundColor = color.PURPLE;
+        btn.style.color = color.WHITE;
         btn.style.fontWeight = "normal";
-        btn.style.border = "3px solid #614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
     }
 }
 
@@ -4357,15 +4391,15 @@ function toggleGrid() {
     if (grid.style.display == "block") {
         grid.style.display = "none";
         gridButton.style.backgroundColor = "transparent";
-        gridButton.style.border = "3px solid #614875";
-        gridButton.style.color = "#614875";
+        gridButton.style.border = `3px solid ${color.PURPLE}`;
+        gridButton.style.color = color.PURPLE;
         gridButton.style.fontWeight = "bold";
     } else {
         grid.style.display = "block";
-        gridButton.style.backgroundColor = "#614875";
-        gridButton.style.color = "#ffffff";
+        gridButton.style.backgroundColor = color.PURPLE;
+        gridButton.style.color = color.WHITE;
         gridButton.style.fontWeight = "normal";
-        gridButton.style.border = "3px solid #614875";
+        gridButton.style.border = `3px solid ${color.PURPLE}`;
     }
 }
 
@@ -4389,14 +4423,14 @@ function toggleDarkmode() {
         localStorage.setItem('diagramTheme', stylesheet.href)
     }
     if (stylesheet.href.includes('blackTheme')) {
-        btn.style.backgroundColor = "#614875";
-        btn.style.color = "#ffffff";
+        btn.style.backgroundColor = color.PURPLE;
+        btn.style.color = color.WHITE;
         btn.style.fontWeight = "normal";
-        btn.style.border = "3px solid #614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
     } else {
         btn.style.backgroundColor = "transparent";
-        btn.style.border = "3px solid #614875";
-        btn.style.color = "#614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+        btn.style.color = color.PURPLE;
         btn.style.fontWeight = "bold";
     }
     showdata();
@@ -5890,17 +5924,17 @@ function toggleA4Template() {
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
-        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
-        document.getElementById("a4TemplateToggle").style.color = "#614875";
+        document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
+        document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
-        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
-        document.getElementById("a4TemplateToggle").style.color = "#ffffff";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
+        document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
-        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
+        document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
     }
     generateContextProperties();
 }
@@ -5970,14 +6004,14 @@ function toggleSnapToGrid() {
 
     // Color change of button to clarify if button is pressed or not
     if (settings.grid.snapToGrid) {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
-        document.getElementById("rulerSnapToGrid").style.color = "#ffffff";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = color.PURPLE;
+        document.getElementById("rulerSnapToGrid").style.color = color.WHITE;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
-        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
+        document.getElementById("rulerSnapToGrid").style.border = `3px solid ${color.PURPLE}`;
     } else {
         document.getElementById("rulerSnapToGrid").style.backgroundColor = "transparent";
-        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
-        document.getElementById("rulerSnapToGrid").style.color = "#614875";
+        document.getElementById("rulerSnapToGrid").style.border = `3px solid ${color.PURPLE}`;
+        document.getElementById("rulerSnapToGrid").style.color = color.PURPLE;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
     }
 }
@@ -5997,16 +6031,16 @@ function toggleRuler() {
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
         rulerToggleButton.style.backgroundColor = "transparent";
-        rulerToggleButton.style.border = "3px solid #614875";
-        rulerToggleButton.style.color = "#614875";
+        rulerToggleButton.style.border = `3px solid ${color.PURPLE}`;
+        rulerToggleButton.style.color = color.PURPLE;
         rulerToggleButton.style.fontWeight = "bold";
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
-        rulerToggleButton.style.backgroundColor = "#614875";
-        rulerToggleButton.style.color = "#ffffff";
+        rulerToggleButton.style.backgroundColor = color.PURPLE;
+        rulerToggleButton.style.color = color.WHITE;
         rulerToggleButton.style.fontWeight = "normal";
-        rulerToggleButton.style.border = "3px solid #614875";
+        rulerToggleButton.style.border = `3px solid ${color.PURPLE}`;
     }
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
     drawRulerBars(scrollx, scrolly);
@@ -7330,9 +7364,9 @@ function toggleColorMenu(buttonID) {
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
-            for (var i = 0; i < colors.length; i++) {
+            for (var i = 0; i < MENU_COLORS.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke="#000000" stroke-width="2"/>
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${MENU_COLORS[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7340,7 +7374,7 @@ function toggleColorMenu(buttonID) {
             // Create svg circles for each element in the "strokeColors" array
             for (var i = 0; i < strokeColors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke="#000000" stroke-width="2"/>
+            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7373,7 +7407,7 @@ function setElementColors(clickedCircleID) {
     // If fill button was pressed
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
-        var color = colors[index];
+        var color = MENU_COLORS[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
@@ -7381,10 +7415,10 @@ function setElementColors(clickedCircleID) {
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg");
-               document.getElementsByClassName("text").style.color = "#ffffff";
+               document.getElementsByClassName("text").style.color = color.WHITE;
             }
             else{
-                //element.id.style.color = "#000000";
+                //element.id.style.color = color.BLACK;
             }*/
         }
         stateMachine.save(
@@ -7608,24 +7642,24 @@ function determineLine(line, targetGhost = false) {
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
     var ctype = 0;
     if (overlapY || ((majorX) && (!overlapX))) {
-        if (line.dx > 0) line.ctype = "LR";
-        else line.ctype = "RL";
+        if (line.dx > 0) line.ctype = lineDirection.LEFT;
+        else line.ctype = lineDirection.RIGHT;
     } else {
-        if (line.dy > 0) line.ctype = "TB";
-        else line.ctype = "BT";
+        if (line.dy > 0) line.ctype = lineDirection.UP;
+        else line.ctype = lineDirection.DOWN;
     }
 
     // Add accordingly to association end
-    if (line.ctype == "LR") {
+    if (line.ctype == lineDirection.LEFT) {
         felem.left.push(line.id);
         telem.right.push(line.id);
-    } else if (line.ctype == "RL") {
+    } else if (line.ctype == lineDirection.RIGHT) {
         felem.right.push(line.id);
         telem.left.push(line.id);
-    } else if (line.ctype == "TB") {
+    } else if (line.ctype == lineDirection.UP) {
         felem.top.push(line.id);
         telem.bottom.push(line.id);
-    } else if (line.ctype == "BT") {
+    } else if (line.ctype == lineDirection.DOWN) {
         felem.bottom.push(line.id);
         telem.top.push(line.id);
     }
@@ -7853,26 +7887,28 @@ function drawLine(line, targetGhost = false) {
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
 
     let str = "";
-    let strokeDash = (line.kind == "Dashed") ? "10" : "0";
-    let lineColor = isDarkTheme() ? '#FFFFFF' : '#000000';
+    let strokeDash = (line.kind == lineKind.DASHED) ? "10" : "0";
+    let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
     let isSelected = contextLine.includes(line);
 
-    if (isSelected) lineColor = selectedColor;
+    if (isSelected) lineColor = color.SELECTED;
 
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
-    line.type = (telem.type == 'NOTE') ? telem.type : felem.type;
-    if (line.type == 'NOTE') strokeDash = "10";
-    if (targetGhost && line.type == 'SD') line.endIcon = "ARROW";
+    line.type = (telem.type == entityType.note) ? telem.type : felem.type;
+    if (line.type == entityType.note) strokeDash = "10";
+    if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
 
-    if (line.type == 'ER') {
-        if (line.kind == "Normal") {
-            str += `<line id='${line.id}' class='lineColor' 
-                x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
-                x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-        } else if (line.kind == "Double") {
+    if (line.type == entityType.ER) {
+        if (line.kind == lineKind.NORMAL) {
+            str += `<line 
+                        id='${line.id}' 
+                        x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
+                        x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
+                        stroke='${lineColor}' stroke-width='${strokewidth}'
+                    />`;
+        } else if (line.kind == lineKind.DOUBLE) {
             let dy = -(tx - fx);
             let dx = ty - fy;
             let len = Math.sqrt((dx * dx) + (dy * dy));
@@ -7880,18 +7916,20 @@ function drawLine(line, targetGhost = false) {
             dx = dx / len;
 
             const double = (a, b) => {
-                return `<line id='${line.id}-${b}' class='lineColor' 
-                    x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
-                    y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
-                    x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
-                    y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
-                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                return `<line 
+                            id='${line.id}-${b}' 
+                            x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
+                            y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
+                            x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
+                            y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
+                            stroke='${lineColor}' stroke-width='${strokewidth}'
+                        />`;
             }
             str += double(1, 1);
             str += double(-1, 2);
         }
-    } else if ((line.type == 'SD' && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-        if (line.kind == "Recursive") {
+    } else if ((line.type == entityType.SD && line.innerType == null) || (line.type == entityType.SD && line.innerType === SDLineType.STRAIGHT)) {
+        if (line.kind == lineKind.RECURSIVE) {
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
             const startY = fy - 10 * zoomfact;
@@ -7900,48 +7938,35 @@ function drawLine(line, targetGhost = false) {
             const cornerX = fx + length;
             const cornerY = fy - length;
 
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
+            str += `<line id='${line.id}' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
-        } else if ((fy > ty) && (line.ctype == "TB")) {
+        } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             offset.y1 = 1;
             offset.y2 = -7 + 3 / zoomfact;
-        } else if ((fy < ty) && (line.ctype == "BT")) {
+        } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
             offset.y1 = -7 + 3 / zoomfact;
             offset.y2 = 1;
         }
-        str += `<line id='${line.id}' class='lineColor' \
-            x1='${fx + offset.x1 * zoomfact}' \
-            y1='${fy + offset.y1 * zoomfact}' \
-            x2='${tx + offset.x2 * zoomfact}' \
-            y2='${ty + offset.y2 * zoomfact}' \
-            fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-    } else { // UML, IE or SD with segmented line
-        // Halfway point between elements
-        let dx = ((fx + offset.x1) - (tx + offset.x2)) / 2;
-        let dy = ((fy + offset.y1) - (ty + offset.y2)) / 2;
-        if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline \
-                id='${line.id}' \
-                class='lineColor' \
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1},${fy + offset.y1 - dy} ${tx + offset.x2},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' \
-                fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-        } else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline \
-                id='${line.id}' \
-                class='lineColor' \
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1} ${tx + offset.x2 + dx},${ty + offset.y2} ${tx + offset.x2},${ty + offset.y2}' \
-                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
-        }
+        str += `<line 
+                    id='${line.id}' 
+                    x1='${fx + offset.x1 * zoomfact}' 
+                    y1='${fy + offset.y1 * zoomfact}' 
+                    x2='${tx + offset.x2 * zoomfact}' 
+                    y2='${ty + offset.y2 * zoomfact}' 
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
+                />`;
+    } else { // UML, IE or SD
+        str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
 
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
-    if  (line.type == 'SD' && line.innerType != SDLineType.SEGMENT) {
+    if  (line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
@@ -7952,7 +7977,7 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
-    if (felem.type != 'ER' || telem.type != 'ER') {
+    if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
@@ -7967,14 +7992,15 @@ function drawLine(line, targetGhost = false) {
 
     if (isSelected) {
         str += `<rect 
-            x='${((fx + tx) / 2) - (2 * zoomfact)}' 
-            y='${((fy + ty) / 2) - (2 * zoomfact)}' 
-            width='${4 * zoomfact}' 
-            height='${4 * zoomfact}' 
-            style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"/>`;
+                    x='${((fx + tx) / 2) - (2 * zoomfact)}' 
+                    y='${((fy + ty) / 2) - (2 * zoomfact)}' 
+                    width='${4 * zoomfact}' 
+                    height='${4 * zoomfact}' 
+                    style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"
+                />`;
     }
 
-    if (line.label && line.label != "" && line.type !== "IE") {
+    if (line.label  && line.type !== entityType.IE) {
         //Get width of label's text through canvas
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
@@ -8040,40 +8066,42 @@ function drawLine(line, targetGhost = false) {
         const labelPositionY = labelPosY + label.labelMovedY + label.displacementY - zoomfact
 
         //Add label with styling based on selection.
-        if (line.kind === "Recursive") {
+        if (line.kind === lineKind.RECURSIVE) {
             str += `<rect
-                class='text cardinalityLabel'
-                id='${line.id + 'Label'}'
-                x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
-                y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
-                width='${(textWidth + zoomfact * 4)}'
-                height='${textheight * zoomfact}'/>`;
+                        class='text cardinalityLabel'
+                        id='${line.id + 'Label'}'
+                        x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
+                        y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
+                        width='${(textWidth + zoomfact * 4)}'
+                        height='${textheight * zoomfact}'
+                    />`;
             str += `<text
-                class='cardinalityLabelText'
-                dominant-baseline='middle'
-                text-anchor='middle'
-                x='${(fx + length + (30 * zoomfact))}'
-                y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
-                ${labelValue}
-                </text>`;
+                        class='cardinalityLabelText'
+                        dominant-baseline='middle'
+                        text-anchor='middle'
+                        x='${(fx + length + (30 * zoomfact))}'
+                        y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
+                        style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
+                        ${line.label}
+                    </text>`;
         } else {
             str += `<rect
-                class='text cardinalityLabel'
-                id=${line.id + 'Label'}
-                x='${labelPositionX}'
-                y='${labelPositionY}'
-                width='${(textWidth + zoomfact * 4)}'
-                height='${textheight * zoomfact + zoomfact * 3}'/>`;
-            str += `<text
-                class='cardinalityLabelText'
-                dominant-baseline='middle'
-                text-anchor='middle'
-                style='font-size:${Math.round(zoomfact * textheight)}px;'
-                x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
-                y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
-                ${labelValue}
-                </text>`;
+                        class='text cardinalityLabel'
+                        id=${line.id + 'Label'}
+                        x='${labelPositionX}'
+                        y='${labelPositionY}'
+                        width='${(textWidth + zoomfact * 4)}'
+                        height='${textheight * zoomfact + zoomfact * 3}'
+                    />`;
+            str += ` <text
+                        class='cardinalityLabelText'
+                        dominant-baseline='middle'
+                        text-anchor='middle'
+                        style='font-size:${Math.round(zoomfact * textheight)}px;'
+                        x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
+                        y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
+                        ${line.label}
+                    </text>`;
         }
     }
     return str;
@@ -8089,22 +8117,22 @@ function getLineAttrubutes(f, t, ctype) {
         y2: 0,
     }
     switch (ctype) {
-        case 'TB':
+        case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
             result = [f.cx, f.y1, t.cx, t.y2, offset];
             break;
-        case 'BT':
+        case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
             result = [f.cx, f.y2, t.cx, t.y1, offset];
             break;
-        case 'LR':
+        case lineDirection.LEFT:
             offset.x1 = px;
             offset.x2 = 0;
             result = [f.x1, f.cy, t.x2, t.cy, offset];
             break;
-        case 'RL':
+        case lineDirection.RIGHT:
             offset.x1 = 0;
             offset.x2 = px;
             result = [f.x2, f.cy, t.x1, t.cy, offset];
@@ -8118,34 +8146,35 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
-    if (line.ctype == 'TB') {
+    if (line.ctype == lineDirection.UP) {
         x -= offsetOnLine / 2;
         y += (isStart) ? -offsetOnLine : offsetOnLine;
-    } else if (line.ctype == 'BT') {
+    } else if (line.ctype == lineDirection.DOWN) {
         x -= offsetOnLine / 2;
         y += (isStart) ? offsetOnLine : -offsetOnLine;
-    } else if (line.ctype == 'LR') {
+    } else if (line.ctype == lineDirection.LEFT) {
         x += (isStart) ? -offsetOnLine : offsetOnLine;
         y -= offsetOnLine / 2;
-    } else if (line.ctype == 'RL') {
+    } else if (line.ctype == lineDirection.RIGHT) {
         x += (isStart) ? offsetOnLine : -offsetOnLine;
         y -= offsetOnLine / 2;
     }
 
     return `<rect 
-            class='text cardinalityLabel' 
-            id='${line.id + labelStr}' 
-            x='${x - textWidth / 2}' 
-            y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
-            width='${textWidth + 2}' 
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+                class='text cardinalityLabel' 
+                id='${line.id + labelStr}' 
+                x='${x - textWidth / 2}' 
+                y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
+                width='${textWidth + 2}' 
+                height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
             <text 
-            class='text cardinalityLabelText' 
-            dominant-baseline='middle' 
-            text-anchor='middle' 
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
-            x='${x}' 
-            y='${y}'> ${label} </text>`;
+                class='text cardinalityLabelText' 
+                dominant-baseline='middle' 
+                text-anchor='middle' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                x='${x}' 
+                y='${y}'
+            > ${label} </text>`;
 }
 
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
@@ -8170,48 +8199,61 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     }
 
     if (findEntityFromLine(line) == -1) {
-        if (line.ctype == "TB") {
+        if (line.ctype == lineDirection.UP) {
             if (f.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "BT") {
+        } else if (line.ctype == lineDirection.DOWN) {
             if (f.bottom.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "RL") {
+        } else if (line.ctype == lineDirection.RIGHT) {
             if (f.right.indexOf(line.id) == 0) posY -= offset;
             else if (f.right.indexOf(line.id) == f.right.length - 1) posY += offset;
-        } else if (line.ctype == "LR") {
+        } else if (line.ctype == lineDirection.LEFT) {
             if (f.left.indexOf(line.id) == 0) posY -= offset;
             else if (f.left.indexOf(line.id) == f.left.length - 1) posY += offset;
         }
     } else {
-        if (line.ctype == "TB") {
+        if (line.ctype == lineDirection.UP) {
             if (t.bottom.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "BT") {
+        } else if (line.ctype == lineDirection.DOWN) {
             if (t.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "RL") {
+        } else if (line.ctype == lineDirection.RIGHT) {
             if (t.left.indexOf(line.id) == 0) posY -= offset;
             else if (t.left.indexOf(line.id) == f.left.length - 1) posY += offset;
-        } else if (line.ctype == "LR") {
+        } else if (line.ctype == lineDirection.LEFT) {
             if (t.right.indexOf(line.id) == 0) posY -= offset;
             else if (t.right.indexOf(line.id) == f.right.length - 1) posY += offset;
         }
     }
     return `<rect 
-            class='text cardinalityLabel' 
-            id='${line.id + "Cardinality"}' 
-            x='${posX - (textWidth) / 2}' 
-            y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
-            width='${textWidth + 2}' 
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+                class='text cardinalityLabel' 
+                id='${line.id + "Cardinality"}' 
+                x='${posX - (textWidth) / 2}' 
+                y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
+                width='${textWidth + 2}' 
+                height='${(textheight - 4) * zoomfact + zoomfact * 3}'
+            /> 
             <text 
-            class='text cardinalityLabelText' 
-            dominant-baseline='middle' 
-            text-anchor='middle' 
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
-            x='${posX}' 
-            y='${posY}'> ${lineCardinalitys[line.cardinality]} </text>`;
+                class='text cardinalityLabelText' 
+                dominant-baseline='middle' 
+                text-anchor='middle' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                x='${posX}' 
+                y='${posY}'
+            > ${lineCardinalitys[line.cardinality]} </text>`;
+}
+
+function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
+    let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
+    let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+    return `<polyline 
+                id='${line.id}' 
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
+                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
+            />`;
+
 }
 
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {
@@ -8229,7 +8271,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             str += iconLine(TWO_LINE[ctype], x, y, lineColor);
             break;
         case IELineIcons.WEAK:
-            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, '#ffffff');
+            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, color.WHITE);
             str += iconCircle(CIRCLE[ctype], x, y, lineColor);
             break;
         case IELineIcons.MANY:
@@ -8247,41 +8289,43 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
            str += iconPoly(ARROW[ctype], x, y, lineColor, 'none');
             break;
         case UMLLineIcons.TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#ffffff');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, color.WHITE);
             break;
         case UMLLineIcons.BLACK_TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#000000');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, color.BLACK);
             break;
         case UMLLineIcons.WHITEDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#ffffff');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, color.WHITE);
             break;
         case UMLLineIcons.BLACKDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#000000');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, color.BLACK);
             break;
         case SDLineIcons.ARROW:
             if (line.innerType == SDLineType.SEGMENT) {
                 // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, '#000000');
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
             }
     }
     return str;
 }
 
 function iconLine([a, b, c, d], x, y, lineColor) {
-    return `<line class='diagram-umlicon-darkmode' \
-                x1='${x + a * zoomfact}' \
-                y1='${y + b * zoomfact}' \
-                x2='${x + c * zoomfact}' \
-                y2='${y + d * zoomfact}' \
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<line 
+                x1='${x + a * zoomfact}' 
+                y1='${y + b * zoomfact}' 
+                x2='${x + c * zoomfact}' 
+                y2='${y + d * zoomfact}' 
+                stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 function iconCircle([a, b, c], x, y, lineColor,) {
-    return `<circle class='diagram-umlicon-darkmode' \
-                cx='${x + a * zoomfact}' \
-                cy='${y + b * zoomfact}' \
-                r='${c * zoomfact}' \
-                fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<circle 
+                cx='${x + a * zoomfact}' 
+                cy='${y + b * zoomfact}' 
+                r='${c * zoomfact}' 
+                fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 function iconPoly(arr, x, y, lineColor, fill) {
@@ -8290,9 +8334,10 @@ function iconPoly(arr, x, y, lineColor, fill) {
         const [a, b] = arr[i];
         s += `${x + a * zoomfact} ${y + b * zoomfact}, `;
     }
-    return `<polyline class='diagram-umlicon-darkmode' \
-                points='${s}' \
-                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<polyline 
+                points='${s}' 
+                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 /**
@@ -8347,8 +8392,7 @@ function rotateArrowPoint(base, to, clockwise) {
 function drawArrowPoint(base, point, x, y, lineColor, line) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
-    return `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd'
-        points=' 
+    return `<polygon points=' 
         ${right.x} ${right.y},
         ${point.x} ${point.y}, 
         ${left.x} ${left.y}' 
@@ -8633,15 +8677,15 @@ function drawElement(element, ghosted = false) {
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
     var nonFilledElementPartStrokeColor;
-    if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
-    else nonFilledElementPartStrokeColor = '#383737';
+    if (isDarkTheme()) nonFilledElementPartStrokeColor = color.WHITE;
+    else nonFilledElementPartStrokeColor = color.GREY;
 
     //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
     //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
     //replace this with nonFilledElementPartStroke when it gets merged.
     var actorFontColor;
-    if (isDarkTheme()) actorFontColor = '#FFFFFF';
-    else actorFontColor = '#383737';
+    if (isDarkTheme()) actorFontColor = color.WHITE;
+    else actorFontColor = color.GREY;
 
     // Caclulate font width using some canvas magic
     var font = canvasContext.font;
@@ -8798,10 +8842,10 @@ function drawElement(element, ghosted = false) {
                         </g>
                     </svg>
                 </div>`;
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-            element.fill = `${"#000000"}`;
+        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
+            element.fill = color.WHITE;
+        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
+            element.fill = color.BLACK;
         }
     } else if (element.kind == elementTypesNames.UMLFinalState) {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
@@ -8823,10 +8867,10 @@ function drawElement(element, ghosted = false) {
                         </g>
                     </svg>
                 </div>`;
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-            element.fill = `${"#000000"}`;
+        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
+            element.fill = color.WHITE;
+        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
+            element.fill = color.BLACK;
         }
     } else if (element.kind == elementTypesNames.UMLSuperState) {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
@@ -9328,10 +9372,10 @@ function drawElement(element, ghosted = false) {
             height: ((boxh + (boxh / 2)) / zoomfact)
         }
         NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == `${"#000000"}`) {
-            element.stroke = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}`) {
-            element.stroke = `${"#000000"}`;
+        if (element.fill == color.BLACK) {
+            element.stroke = color.WHITE;
+        } else if (element.fill == color.WHITE) {
+            element.stroke = color.BLACK;
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
@@ -11685,7 +11729,7 @@ function drawSelectionBox(str) {
         selectionBoxHighY = highY + 5;
 
         // Selection container of selected elements
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${color.SELECTED};" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
@@ -11783,10 +11827,10 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
@@ -11797,10 +11841,10 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
@@ -11811,10 +11855,10 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
@@ -11826,10 +11870,10 @@ function updateCSSForAllElements() {
                         fontColor = elementDiv.children[0];
 
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
@@ -11840,30 +11884,30 @@ function updateCSSForAllElements() {
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
                     if (markedOverOne()) {
-                        fillColor.style.fill = `${"#927b9e"}`;
-                        fontColor.style.fill = `${"#ffffff"}`;
+                        fillColor.style.fill = color.LIGHT_PURPLE;
+                        fontColor.style.fill = color.WHITE;
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.WHITE;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
                         else if (element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${"#ffffff"}`;
-                            disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = color.WHITE;
+                            disjointLine2Color.style.stroke = color.WHITE;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${"#000000"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.BLACK;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.WHITE;
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#000000"}`;
-                            if (element.fill == "#000000") {
-                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.BLACK;
+                            if (element.fill == color.BLACK) {
+                                weakKeyUnderline.style.stroke = color.WHITE;
                             }
                         }
                     }
@@ -11914,27 +11958,27 @@ function updateCSSForAllElements() {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.WHITE;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
                         else if (element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${"#ffffff"}`;
-                            disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                            disjointLine1Color.style.stroke = color.WHITE;
+                            disjointLine2Color.style.stroke = color.WHITE;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${"#000000"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.BLACK;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.WHITE;
                         }
                     } else {
-                        fillColor.style.fill = `${element.fill}`;
+                        fillColor.style.fill = element.fill;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#000000"}`;
-                            if (element.fill == "#000000") {
-                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.BLACK;
+                            if (element.fill == color.BLACK) {
+                                weakKeyUnderline.style.stroke = color.WHITE;
                             }
                         }
                     }
@@ -11953,7 +11997,7 @@ function updateCSSForAllElements() {
 
     function fontContrast() {
         //check if the fill color is black or pink, if so the font color is set to white
-        fontColor.style.fill = element.fill == "#000000" || element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+        fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
     }
 
     function markedOverOne() {
@@ -11986,8 +12030,8 @@ function toggleBorderOfElements() {
                 let fillColor = text.getAttribute('fill');
                 //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
                 //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
-                if (strokeColor == '#383737' && fillColor != '#ffffff') {
-                    strokeColor = '#ffffff';
+                if (strokeColor == color.GREY && fillColor != color.WHITE) {
+                    strokeColor = color.WHITE;
                     text.setAttribute('stroke', strokeColor);
                 }
             }
@@ -11998,8 +12042,8 @@ function toggleBorderOfElements() {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
                 let fillColor = text.getAttribute('fill');
-                if (strokeColor == '#ffffff' && fillColor != '#383737') {
-                    strokeColor = '#383737';
+                if (strokeColor == color.WHITE && fillColor != color.GREY) {
+                    strokeColor = color.GREY;
                     text.setAttribute('stroke', strokeColor);
                 }
             }
