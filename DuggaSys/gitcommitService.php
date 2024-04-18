@@ -78,14 +78,17 @@
 
 	function insertIntoSQLite($url, $cid) { 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		$lastCommit = bfs($url, $cid, "GETCOMMIT");
+		print_r($lastCommit);
 		// Splits the url into different parts for every "/" there is
 		$urlParting = explode('/', $url);
 		// The 4th part contains the name of the repo, which is accessed by [4]
 		$repoName = $urlParting[4];
-		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL) VALUES (:cid, :repoName, :repoURL)"); 
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL, lastCommit) VALUES (:cid, :repoName, :repoURL, :lastCommit)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoName', $repoName);
 		$query->bindParam(':repoURL', $url);
+		$query->bindParam(':lastCommit', $lastCommit);
 		
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
