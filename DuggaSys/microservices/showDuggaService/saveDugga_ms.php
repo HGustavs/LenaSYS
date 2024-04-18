@@ -29,6 +29,7 @@ if(strcmp($opt,"SAVDU")==0){
     // Log the dugga write
     makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
     $discription = $courseid." ".$duggaid." ".$moment." ".$answer;
+
 	if(	!isSuperUser($userid) && // Teachers cannot submit
 	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"])){
 		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
@@ -36,6 +37,7 @@ if(strcmp($opt,"SAVDU")==0){
 		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
 		$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
 		unset($grade);
+		
 		$query = $pdo->prepare("SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;");
 		$query->bindParam(':hash', $hash);			
 		$query->execute();
@@ -43,6 +45,7 @@ if(strcmp($opt,"SAVDU")==0){
 			$grade = $row['grade'];
 			$dbpwd = $row['password'];
 		}
+
 		if(isset($grade)&&($grade > 1)){
 			//if grade equal G, VG, 3, 4, 5, or 6
 			$debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
