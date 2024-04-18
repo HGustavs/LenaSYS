@@ -1426,6 +1426,7 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
+    document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
@@ -1998,6 +1999,11 @@ function mdown(event) {
             startY = event.clientY;
         }
     }
+
+    if (!event.target.parentElement.classList.contains("placementTypeBoxIcons")) {
+        hidePlacementType();
+    }
+
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
 }
@@ -2078,6 +2084,8 @@ function mouseMode_onMouseUp(event) {
     if (!hasPressedDelete) {
         switch (mouseMode) {
             case mouseModes.PLACING_ELEMENT:       
+                clearContext();
+                clearContextLine();
                 if (ghostElement && event.button == 0) {
                     addObjectToData(ghostElement, false);
 
@@ -6152,6 +6160,18 @@ function togglePlacementType(num, type) {
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
 }//<-- UML functionality end
 
+function hidePlacementType(){
+    let i = 0;
+
+    while (true) {
+        if (document.getElementById("togglePlacementTypeBox" + i)) {
+            document.getElementById("togglePlacementTypeBox" + i).classList.remove("activeTogglePlacementTypeBox");
+        } else if (document.getElementById("togglePlacementTypeBox" + i) == null && document.getElementById("togglePlacementTypeButton" + (i + 1)) == null) {
+            break;
+        }
+        i++;
+    }
+}
 
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
@@ -7059,7 +7079,7 @@ function generateContextProperties() {
  * @description function for include button to the options panel,writes out << Include >>
  */
 function setLineLabel() {
-    document.getElementById("lineLabel").value = "&#60&#60include&#62&#62";
+    document.getElementById("lineLabel").value = "<<include>>";
 }
 
 /**
@@ -7960,6 +7980,7 @@ function drawLine(line, targetGhost = false) {
         var canvas = document.getElementById('canvasOverlay');
         var canvasContext = canvas.getContext('2d');
         canvasContext.font = `${height}px ${canvasContext.font.split('px')[1]}`;
+        var labelValue = line.label.replaceAll('<', "&#60").replaceAll('>', "&#62");
         var textWidth = canvasContext.measureText(line.label).width;
 
         var label = {
@@ -8034,7 +8055,7 @@ function drawLine(line, targetGhost = false) {
                 x='${(fx + length + (30 * zoomfact))}'
                 y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
                 style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
-                ${line.label}
+                ${labelValue}
                 </text>`;
         } else {
             str += `<rect
@@ -8051,7 +8072,7 @@ function drawLine(line, targetGhost = false) {
                 style='font-size:${Math.round(zoomfact * textheight)}px;'
                 x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
                 y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
-                ${line.label}
+                ${labelValue}
                 </text>`;
         }
     }
@@ -8393,37 +8414,14 @@ function addNodes(element) {
     nodes += "<span id='md' class='node md'></span>";
     nodes += "<span id='mu' class='node mu'></span>";
 
-    if (element.kind == elementTypesNames.UMLSuperState) {
-        nodes += "<span id='md' class='node md'></span>";
-        nodes += "<span id='mu' class='node mu'></span>";
-    }
     elementDiv.innerHTML += nodes;
-    // This is the standard node size
     const defaultNodeSize = 8;
-    var nodeSize = defaultNodeSize * zoomfact;
-    if ((element.kind == elementTypesNames.sequenceActorAndObject) || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
-        var mdNode = document.getElementById("md");
-        mdNode.style.width = nodeSize + "px";
-        mdNode.style.height = nodeSize + "px";
-        mdNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
-        mdNode.style.bottom = "0%";
-    }
-
-    if (element.kind == elementTypesNames.UMLSuperState) {
-        var mdNode = document.getElementById("md");
-        var muNode = document.getElementById("mu");
-        mdNode.style.width = nodeSize + "px";
-        muNode.style.width = nodeSize + "px";
-        mdNode.style.height = nodeSize + "px";
-        muNode.style.height = nodeSize + "px";
-        mdNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
-        muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
-    }
-
+  
     var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
     var muNode = document.getElementById("mu");
+    var mdNode = document.getElementById("md");
     mrNode.style.width = nodeSize + "px";
     mlNode.style.width = nodeSize + "px";
     mrNode.style.height = nodeSize + "px";
@@ -8433,7 +8431,11 @@ function addNodes(element) {
     muNode.style.width = nodeSize + "px";
     muNode.style.height = nodeSize + "px";
     muNode.style.top = "0%";
-    muNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
+    muNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
+    mdNode.style.width = nodeSize + "px";
+    mdNode.style.height = nodeSize + "px";
+    mdNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
+    mdNode.style.bottom = "0%";
 
 }
 
@@ -8618,7 +8620,7 @@ function drawElement(element, ghosted = false) {
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height / 2) * zoomfact); //determines the corner radius for the SD states.
+    var cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
     //This value represents the amount of attributes, hopefully this will be calculated through
@@ -8910,21 +8912,22 @@ function drawElement(element, ghosted = false) {
         str += `</div>`;
 
         //div to encapuslate SD content
-        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
+
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
             /* find me let sdOption = document.getElementById("SDOption");
              console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius}
+                    h${(boxw - (linew * 2 ))}
+                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
                     h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius) * -1}
+                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
                     z
                 "
                 stroke-width='${linew}'
@@ -8937,9 +8940,11 @@ function drawElement(element, ghosted = false) {
             //end of svg for background
             str += `</svg>`;
             // Draw SD-content if there are no attributes.
-        } else {
+        }
+        else {
+            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
@@ -8954,7 +8959,7 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`;
+            /*str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`; */
             //end of svg for background
             str += `</svg>`;
         }
@@ -9181,7 +9186,8 @@ function drawElement(element, ghosted = false) {
                 str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
             }
             str += `</g>`;
-        } else if (element.actorOrObject == "object") {
+        }
+        else if (element.actorOrObject == "object") {
             //svg for object.
             str += `<g>`;
             str += `<rect class='text'
