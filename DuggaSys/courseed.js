@@ -101,8 +101,6 @@ function updateCourse()
 		});
 	}
 
-	if(dataCheck)
-	{
 		// Show dialog
 		$("#editCourse").css("display", "none");
 		
@@ -113,6 +111,11 @@ function updateCourse()
 		localStorage.setItem('courseid', courseid);
 		localStorage.setItem('updateCourseName', true);
 
+		const cookieValue = `; ${document.cookie}`;
+		const parts = cookieValue.split(`; ${"missingToken"}=`);
+		console.log(parts[1]);
+	if(dataCheck && parts[1]==0)
+	{
 		//Check if courseGitURL has a value
 		if(courseGitURL) {
 			//Check if fetchGitHubRepo returns true
@@ -129,6 +132,10 @@ function updateCourse()
 			//If courseGitURL has no value, display an update message
 			alert("Course " + coursename + " updated!"); 
 		}
+	}
+	else
+	{
+		alert("Git token is missing/expired. Commits may not be able to be fetched"); 
 	}
 }
 
