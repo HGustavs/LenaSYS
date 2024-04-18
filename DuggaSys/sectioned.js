@@ -4081,7 +4081,7 @@ function fetchGitCodeExamples(courseid){
     // Extract the owner and repo into individual variables
     var parts = githubURL.split("/");
     var owner = parts[3];
-    var repo = parts[4]
+    var repo = parts[4];
     //Foreach loop to fetch each file in the filteredFiles array
     filteredFiles.forEach(function(filename){
       var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath + '/' + filename;

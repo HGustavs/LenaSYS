@@ -742,17 +742,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	$path = '../../LenaSYS/courses/' . $cid;
 	$pathCoursesRoot = '../../LenaSYS/courses';	
-     // Creates the directory for the corresponding course if it doesnt exist.
+     //Creates course folder in root if it doesnt exist
 	if(!is_dir($pathCoursesRoot)){
 		mkdir($pathCoursesRoot, 0775, true);
 	}
-	
+	 // Creates the directory for the corresponding course if it doesnt exist.
     if (!file_exists($path)) {
       mkdir($path, 0775, true);
     }
     //Writes files in folder
 	$count = count($codeExamplesContent);
+	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+    $query = "SELECT * FROM gitFiles WHERE cid ($placeholders)";
     for($i = 0; $i < $count; $i++){
+        $query = "SELECT * FROM gitFiles WHERE cid ($placeholders)";
+
        $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
 	   if($WriteFilesSucces === false){
          echo "File failed to write";
