@@ -4057,11 +4057,13 @@ function fetchGitCodeExamples(courseid){
   //After names haves been fetched all relevant filenames are pushed into the filteredFiles array. These are to be fetched later.
   fetchFileNames(githubURL, folderPath).then(function(fileNamesArray){
     for (var i = 0; i < fileNamesArray.length; i++){
-      if(fileNamesArray[i].includes(fileSearchParam)){
+      if(fileNamesArray[i].name.includes(fileSearchParam)){
         filteredFiles.push(fileNamesArray[i]);
       }
     }
-  
+    console.log(filteredFiles);
+    filteredFiles = checkForUpdatedFiles(filteredFiles, cid);
+    console.log(filteredFiles);
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
       //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
       storeCodeExamples(cid, codeExamplesContent, githubURL);
@@ -4117,9 +4119,57 @@ function fetchGitCodeExamples(courseid){
   }
   // Remove the filename from the filepath and construct a path to its folder
   function getParentFolderOfFile(filePath){
-       var lastIndex = filePath.lastIndexOf("/");
-       var folderPath = filePath.substring(0, lastIndex);
-       return folderPath;
+    var lastIndex = filePath.lastIndexOf("/");
+    var folderPath = filePath.substring(0, lastIndex);
+    return folderPath;
+  }
+
+  function checkForUpdatedFiles(files, cid){
+    var request = window.indexedDB.open("metadata2", 1);
+
+    var dbPromise = new Promise(function(resolve, reject) {
+      request.onerror = function(event) {
+        console.log("Database error: " + event.target.errorCode);
+        reject(event.target.errorCode);
+      };
+      request.onsuccess = function(event) {
+        var databaseMetadata2 = event.target.result;
+        resolve(databaseMetadata2);
+      };
+    });
+
+    dbPromise.then(function(databaseMetadata2){
+      var db = databaseMetadata2.transaction("gitFiles", "readwrite");
+      var objectStore = db.objectStore("gitFiles");
+      var index = objectStore.index("cid");
+      var nextRowRequest = index.openCursor(IDBKeyRange.only(cid));
+
+      nextRowRequest.onsuccess = function(event) {
+        var row = event.target.result;
+        if(row){
+          var filename = row.value.fileName;
+          var fileSHA = row.value.fileSHA;
+          
+          var foundIndex = files.findIndex(function(file){
+            return file.name === filename;
+          });
+
+          if(foundIndex !== -1){
+            if(files[foundIndex].sha === fileSHA){
+              console.log("SHA matches for both files. File not updated. Removing object...")
+              files.splice(foundIndex, 1);
+            } else {
+              console.log("SHA does not match for both files.", filename)
+            }
+          } else {
+            console.log("File not found in array", filename)
+          }
+
+          row.continue();
+        }
+      };
+    });
+    return files;
   }
   //Fetch all filenames from the parent folder of original input file
   async function fetchFileNames(githubURL, folderPath){
@@ -4138,10 +4188,10 @@ function fetchGitCodeExamples(courseid){
           // Check if response is an array or single object, then parse the response to extract file names.
           // resolve() returns all filenames.
           var files = Array.isArray(response) ? response : [response];
-          var fileNames = files.map(function(file) {
-            return file.name;
+          var fileNameSHA = files.map(function(file) {
+            return {name: file.name, sha: file.sha};
           });
-          resolve(fileNames);
+          resolve(fileNameSHA);
         },
         error: function(xhr, status, error) {
           reject(error);
