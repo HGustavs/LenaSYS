@@ -717,47 +717,44 @@ function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $down
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cid = $_GET['cid'];
-	$githubURL = $_GET['githubURL'];
-	$postDataContent = file_get_contents('php://input');
-	$requestDataContent = json_decode($postDataContent, true);
-	$codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
-	$SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
-	$fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
-	$filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
-	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
-	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
-	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-	echo $cid;
-	print_r($codeExamplesContent[0]);
-	print_r($SHA);
-	print_r($fileNames);
-	$WriteFilesSucces = true;
-	$success = true;
-	$path = '../../LenaSYS/courses/'. $cid;
-     // Creates the directory for the corresponding course if it doesnt exist.
+    $githubURL = $_GET['githubURL'];
+    $postDataContent = file_get_contents('php://input');
+    $requestDataContent = json_decode($postDataContent, true);
+    $codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
+    $SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
+    $fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
+    $filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
+    $fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
+    $downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
+    $fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
+    $WriteFilesSucces = true;
+    $success = true;
+    $path = '../../LenaSYS/courses/'. $cid;
+    
+    // Creates the directory for the corresponding course if it doesn't exist.
     if (!file_exists($path)) {
-      mkdir($path, 0775, true);
+        mkdir($path, 0775, true);
     }
-    //Writes files in folder
-	$count = count($codeExamplesContent);
-    for($i = 0; $i < $count; $i++){
-       $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
-	   if($WriteFilesSucces === false){
-         echo "File failed to write";
-		 $success = false;
-	   }else{
-		 echo "File written successfully";
-	   }
-	}
     
-	if($success){
-		echo "All files written successfully!";
-		$successGitRepoInsert = insertIntoSqLiteGitRepo($cid, $githubURL);
-		insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA);
-	}else{
-		echo "One or more files failed to write!";
-	}
+    // Writes files in folder
+    $count = count($codeExamplesContent);
+    for ($i = 0; $i < $count; $i++) {
+        $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
+        if ($WriteFilesSucces === false) {
+            echo "File failed to write";
+            $success = false;
+        } else {
+            echo "File written successfully";
+        }
+    }
     
+    if ($success) {
+        echo "All files written successfully!";
+        $successGitRepoInsert = insertIntoSqLiteGitRepo($cid, $githubURL);
+        insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA);
+    } else {
+        echo "One or more files failed to write!";
+    }
 }
 ?>
 </body>
