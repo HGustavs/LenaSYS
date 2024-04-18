@@ -13,6 +13,7 @@ if (strcmp($opt, "UPDATEVRS") === 0) {
         $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
         $query->bindParam(':cid', $courseid);
         $query->bindParam(':vers', $versid);
+        $versid = getOP('versid');
 
         if (!$query->execute()) {
             $error = $query->errorInfo();
