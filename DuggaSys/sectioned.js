@@ -1241,6 +1241,11 @@ function createVersion() {
   param.startdate = getDateFormat(new Date($("#startdate").val()));
   param.enddate = getDateFormat(new Date($("#enddate").val()));
 
+  //If no previous versions exist. "None" can't be selected which makes it empty. Set to "None" for if-statement a few lines down.
+  if (param.copycourse == "") {
+    param.copycourse = "None";
+  }
+
   newversid = param.versid;
 
   if (param.versid == "" || param.versname == "") {
