@@ -702,8 +702,6 @@ function insertIntoSqLiteGitRepo($cid, $githubURL){
 		}else{
 			return true;
 		}
-	}
-	
 }
 
 //Insert files into gitFiles DB
@@ -729,6 +727,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$success = true;
     //Retreival of JSON data sent through POST and GET
     $cid = $_GET['cid'];
+
 	$githubURL = $_GET['githubURL'];
 	$postDataContent = file_get_contents('php://input');
 	$requestDataContent = json_decode($postDataContent, true);
@@ -748,7 +747,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 	 // Creates the directory for the corresponding course if it doesnt exist.
     if (!file_exists($path)) {
-      mkdir($path, 0775, true);
+        mkdir($path, 0775, true);
     }
     //Writes files in folder
 	$count = count($codeExamplesContent);
@@ -766,14 +765,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	   }
 	}
     
-	if($success){
-		echo "All files written successfully!";
-		$successGitRepoInsert = insertIntoSqLiteGitRepo($cid, $githubURL);
-		insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA);
-	}else{
-		echo "One or more files failed to write!";
-	}
+    // Writes files in folder
+    $count = count($codeExamplesContent);
+    for ($i = 0; $i < $count; $i++) {
+        $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
+        if ($WriteFilesSucces === false) {
+            echo "File failed to write";
+            $success = false;
+        } else {
+            echo "File written successfully";
+        }
+    }
     
+    if ($success) {
+        echo "All files written successfully!";
+        $successGitRepoInsert = insertIntoSqLiteGitRepo($cid, $githubURL);
+        insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA);
+    } else {
+        echo "One or more files failed to write!";
+    }
 }
 ?>
 </body>

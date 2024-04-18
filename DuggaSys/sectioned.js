@@ -4149,27 +4149,19 @@ function fetchGitCodeExamples(courseid){
       });
     });
   }
-  function storeCodeExamples(cid, codeExamplesContent, githubURL){
-    var base64;
-    var decodedContent = [];
-    var shaKeys = [];
-    var fileNames = [];
-    var fileURL = [];
-    var filePath = [];
-    var downloadURL = [];
-    var fileType = [];
-    var i = 0;
-    for(i; i < codeExamplesContent.length; i++){
-        base64 = codeExamplesContent[i].content.content;
-        decodedContent[i] = atob(base64);
-        shaKeys[i] = codeExamplesContent[i].content.sha;
-        fileNames[i] = codeExamplesContent[i].filename;
-        fileURL[i] = codeExamplesContent[i].content.url;
-        downloadURL[i] = codeExamplesContent[i].content.download_url;
-        filePath[i] = codeExamplesContent[i].content.path;
-        fileType[i] = codeExamplesContent[i].content.type;
-    }
-    //TODO store necessary data to send
+function storeCodeExamples(cid, codeExamplesContent, githubURL){
+    var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
+
+    codeExamplesContent.map(function(item) {
+       decodedContent.push(atob(item.content.content));
+       shaKeys.push(item.content.sha);
+       fileNames.push(item.filename);
+       fileURL.push(item.content.url);
+       downloadURL.push(item.content.download_url);
+       filePath.push(item.content.path);
+       fileType.push(item.content.type);
+    });
+
     var AllJsonData = {
       codeExamplesContent: decodedContent,
       SHA: shaKeys,
