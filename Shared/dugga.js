@@ -1174,6 +1174,16 @@ function AJAXService(opt,apara,kind)
 				success: returnedGroup
 			});
 	}else if(kind=="CODEVIEW"){
+		if(opt == "DELEXAMPLE"){
+			$.ajax({
+				url: "../DuggaSys/microservices/codeviewerService/deleteCodeExample_ms.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returned,
+				error: returnedError
+			});
+		}else{
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
@@ -1182,6 +1192,7 @@ function AJAXService(opt,apara,kind)
 				success: returned,
 				error: returnedError
 			});
+		}
 	}else if(kind=="BOXCONTENT"){
 		$.ajax({
 			url: "codeviewerService.php",
