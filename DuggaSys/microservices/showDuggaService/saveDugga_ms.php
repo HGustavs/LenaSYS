@@ -1,7 +1,7 @@
 <?php
 
 //
-// Microservice for saveDugga that has update userAnswer, insert userAnswer and 
+// Microservice for saveDugga that has update userAnswer, insert userAnswer and selecting data from userAnswer
 //
 
 date_default_timezone_set("Europe/Stockholm");
@@ -13,8 +13,8 @@ pdoConnect(); // Connect to database and start session
 session_start();
 
 $opt=getOP('opt');
-$hash=getOP('hash');
-$hashpwd=getOP('hashpwd');
+$hash=getOP('hash'); // Oklart om denna ska med då den hämtas från session
+$hashpwd=getOP('hashpwd'); // Oklart om denna ska vara med då den hämtas från session
 $answer=getOP('useranswer');
 $dbpwd=getOP('password');
 $courseid=getOP('cid');
@@ -22,6 +22,7 @@ $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $moment=getOP('moment');
 $variant=getOP('variant');
+
 
 
 
@@ -37,7 +38,7 @@ if(strcmp($opt,"SAVDU")==0){
 		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
 		$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
 		unset($grade);
-		
+
 		$query = $pdo->prepare("SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;");
 		$query->bindParam(':hash', $hash);			
 		$query->execute();
