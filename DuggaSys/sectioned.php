@@ -702,8 +702,8 @@ function insertIntoSqLiteGitRepo($cid, $githubURL){
 		}else{
 			return true;
 		}
+    }
 }
-
 //Insert files into gitFiles DB
 function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA){
 	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
