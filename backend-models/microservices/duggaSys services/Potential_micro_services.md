@@ -101,8 +101,8 @@ CRUD stands for the four basic operations for managing data in applications and 
 - updataFileLink_ms.php
 - highscoreservice_ms.php
 - getGroupValues_ms.php
-- getCourseGroupsAndMembers_ms.php
-- deleteListentries_ms.php
+- getCourseGroupsAndMembers_ms.php __==finished==__ New filename: "readCourseGroupsAndMembers_ms.php" according to new nameconvention based on CRUD.
+- deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - removeListentries_ms.php
 - createListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - reorderListentries_ms.php
@@ -1064,9 +1064,19 @@ Uses service __selectFromTableGroup__ to _get_ information it requires from __gr
 
 <br>
 
-### getCourseGroupsAndMembers
-Gets groups and there members for a specific course  
-Uses service __selectFromTableScore__ to _get_ information it requires from __user__ and __user_course__. 
+### readCourseGroupsAndMembers_ms.php
+_SELECT_ operation on the tables __'user'__ and __'user_course'__ to retrieve values from the columns:
+- uid
+- username
+- firstname
+- lastname
+- email
+- groups
+
+
+```sql
+SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid and user_course.cid=:cid AND user_course.vers=:vers;
+```
 
 <br>
 
@@ -1074,9 +1084,25 @@ Uses service __selectFromTableScore__ to _get_ information it requires from __us
 
 <br>
 
-### deleteListentries
-listentries are duggas, headers, tests,  etc..  
-Uses service __deliteFromTableListentries__ to delete a row from the table __listentries__.
+### deleteListentries_ms.php
+Listentries are duggas, headers, tests etc..  
+
+_DELETE_ operation on the table __'useranswer'__ to remove rows where:
+
+- The 'moment' value in the __'useranswer'__ table matches the value bound to :lid.
+
+```sql
+DELETE FROM useranswer WHERE moment=:lid
+```
+
+
+_DELETE_ operation on the table __'listentries'__ to remove rows where:
+
+- The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
+
+```sql
+DELETE FROM listentries WHERE lid = :lid
+```
 
 <br>
 
