@@ -196,6 +196,10 @@ class StateChangeFactory {
             width: changeX,
             height: changeY
         };
+
+        var timestamp = new Date().toISOString();
+    
+        console.log("Element Moved And Resized - Timestamp: " + timestamp);
         return new StateChange(elementIDs, values);
     }
 
@@ -2486,6 +2490,7 @@ function mouseMode_onMouseMove(event) {
             mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
+                console.log("function mouseMode_onMouseMove");
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
 
                 // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
@@ -2559,6 +2564,7 @@ function mmoving(event) {
                     x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
                     y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
                 };
+                console.log("function mmoving");
                 targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
                 targetDelta = {
                     x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
@@ -2589,6 +2595,7 @@ function mmoving(event) {
 
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                
                 // Fetch original width
                 var tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
@@ -2650,6 +2657,7 @@ function mmoving(event) {
                 // Fetch original y-position
                 // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
+                console.log("elementData.y, line 2660");
                 elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
 
                 // Deduct the new position, giving us the total change
@@ -2836,6 +2844,7 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
  * @see ghostElement
  */
 function makeGhost() {
+    console.log("function makeGhost");
     ghostElement = constructElementOfType(elementTypeSelected);
     var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
@@ -3309,6 +3318,8 @@ function pasteClipboard(elements, elementsLines) {
         if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
     });
 
+    console.log("function pasteClipboard");
+
     var cx = (x2 - x1) / 2;
     var cy = (y2 - y1) / 2;
     var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
@@ -3433,6 +3444,10 @@ function screenToDiagramCoordinates(mouseX, mouseY) {
     if (zoomfact == 0.75) zoomX = zoom0_75;
     if (zoomfact == 0.5) zoomX = zoom0_5;
     if (zoomfact == 0.25) zoomX = zoom0_25;
+
+    var timestamp = new Date().toISOString();
+    
+    console.log("Screen To Diagram Coordinates - Timestamp: " + timestamp);
 
     return new Point(Math.round((mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
         Math.round((mouseY / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
@@ -3934,6 +3949,7 @@ function getLinesInsideCoordinateBox(selectionRect) {
  * @returns {Boolean} Returns true if the line is within the coordinate box, else false
  */
 function lineIsInsideRect(selectionRect, line) {
+    console.log("function lineIsInsideRect");
     var lineCoord1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
@@ -3967,6 +3983,7 @@ function lineIsInsideRect(selectionRect, line) {
  * @returns {Boolean} Returns true if the line intersects with any of the sides of the coordinate box, else false
  */
 function intersectsBox(selectionRect, line) {
+    console.log("function intersectsBox");
     var tempCoords1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
@@ -4022,6 +4039,7 @@ function getBoxSelectionPoints() {
 }
 
 function getBoxSelectionCoordinates() {
+    console.log("function getBoxSelectionCoordinates");
     return {
         n1: screenToDiagramCoordinates(startX, startY),
         n2: screenToDiagramCoordinates(startX + deltaX, startY),
@@ -6161,6 +6179,7 @@ function zoomin(scrollEvent = undefined) {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact < 4) {
+            console.log("function zoomin, if (zoomfact < 4)");
             var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
             var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
@@ -6180,6 +6199,7 @@ function zoomin(scrollEvent = undefined) {
             zoomOrigo.y = midScreen.y;
         }
     } else if (zoomfact < 4.0) { // ELSE zoom towards mouseCoordinates
+        console.log("function zoomin, else if (zoomfact < 4.0");
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
@@ -6255,6 +6275,7 @@ function zoomout(scrollEvent = undefined) {
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact > 0.25) {
+            console.log("function zoomout, if (zoomfact > 0.25)");
             var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
             var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
@@ -6274,6 +6295,7 @@ function zoomout(scrollEvent = undefined) {
             zoomOrigo.y = midScreen.y;
         }
     } else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
+        console.log("function zoomout, else if (zoomfact > 0.25)");
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
@@ -6346,6 +6368,7 @@ function zoomout(scrollEvent = undefined) {
  * @description Decreases or increases the zoomfactor to its original value zoomfactor = 1.0.
  */
 function zoomreset() {
+    console.log("function zoomreset");
     var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
     var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
@@ -12124,6 +12147,8 @@ function centerCamera() {
         // Move camera to center of diagram
         scrollx = centerDiagram.x * zoomfact;
         scrolly = centerDiagram.y * zoomfact;
+
+        console.log("function centerCamera");
 
         var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
         document.getElementById("zoom-message").innerHTML = zoomfact + "x";
