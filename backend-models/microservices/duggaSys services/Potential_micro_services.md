@@ -105,7 +105,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - removeListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - createListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- reorderListentries_ms.php
+- reorderListentries_ms.php __==finished==__ New filename: "updateListentries_ms.php" according to new nameconvention based on CRUD.
 - updateListentrie_ms.php
 - updateQuizDeadline_ms.php
 - updateListentriesGradesystem_ms.php
@@ -1178,10 +1178,15 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 
 <br>
 
-### reorderListentries
-Uses the services __updateTableListentries__ to change the content of these columns:
-- pos
-- moment
+### updateListentries_ms.php
+_UPDATE_ operation on the table __'listentries'__ to modify rows where:
+
+- The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
+- Set: The 'pos' value in the __'listentries'__ table to the value bound to :pos, and the 'moment' value to the value bound to :moment.
+
+```sql
+UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
+```
 
 <br>
 
