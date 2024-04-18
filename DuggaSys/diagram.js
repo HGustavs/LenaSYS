@@ -8772,9 +8772,10 @@ function drawElement(element, ghosted = false) {
         str += `</div>`;
 
         //div to encapuslate UML content
-        str += `<div class='uml-content' style='height:${boxh - (linew * 2)}px'>`;
+
         //Draw UML-content if there exist at least one attribute
         if (elemAttri != 0) {
+            str += `<div class='uml-content' style='height:${boxh / 2 - (linew * 2) + (boxh * elemAttri / 2)}px'>`;
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
@@ -8787,6 +8788,7 @@ function drawElement(element, ghosted = false) {
             // Draw UML-content if there are no attributes.
         } else {
             //svg for background
+            str += `<div class='uml-content' style='height:${boxh * - (linew * 2)}px'>`;
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
             stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
