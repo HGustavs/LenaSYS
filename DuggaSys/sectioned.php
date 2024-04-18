@@ -693,7 +693,7 @@ function insertIntoSqLiteGitRepo($cid, $githubURL){
 		$errorvar = $error[2];
 		print_r($error);
 		echo $errorvar;
-    }else{
+	} else {
 		return true;
 	}
 }
