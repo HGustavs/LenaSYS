@@ -1,4 +1,9 @@
 <?php
+//
+// This microservice sets a course as active
+//
+
+
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
