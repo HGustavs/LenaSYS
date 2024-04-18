@@ -8495,8 +8495,6 @@ function drawRulerBars(X, Y) {
         pannedX*-1 + viewportWidth / zoomfact
     ];
 
-    console.log(visibleRangeX);
-    console.log(visibleRangeY);
 
     //Draw the Y-axis ruler positive side.
     var lineNumber = (lineRatio3 - 1);
@@ -8535,7 +8533,7 @@ function drawRulerBars(X, Y) {
         lineNumber++;
 
         //Check wether the line that will be drawn is within the visible range
-        if (i < visibleRangeY[0] && i > visibleRangeY[1]) {
+        if (-i > visibleRangeY[0] && -i < visibleRangeY[1]) {
 
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
@@ -8565,15 +8563,11 @@ function drawRulerBars(X, Y) {
     svgY.innerHTML = barY; //Print the generated ruler, for Y-axis
 
     //Draw the X-axis ruler positive side.
-    linestocheck = [];
-    linestodraw = [];
     lineNumber = (lineRatio3 - 1);
     for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
-        linestocheck.push(i);
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
         if (i > visibleRangeX[0] && i < visibleRangeX[1]) {
-            linestodraw.push(i);
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
@@ -8598,15 +8592,13 @@ function drawRulerBars(X, Y) {
             }
         }
     }
-    console.log(linestocheck);
-    console.log(linestodraw);
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
     for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
-        if (i > visibleRangeX[0] && i < visibleRangeX[1]) {
+        if (-i > visibleRangeX[0] && -i < visibleRangeX[1]) {
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
