@@ -9,6 +9,7 @@
   if($("#qstart").val()=="") {
 		alert("Missing Start Date");
 		return;
+        
   }
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
 	var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
