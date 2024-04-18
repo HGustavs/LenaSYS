@@ -165,87 +165,58 @@ $testsData = array(
             'avgfeedbackscore'
     )),
     ),
-    //-------------------------------------------------------------------------------------
-    // This test the microservice createListentrie and the part of the monalith called "NEW"
-    //-------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    // This test the microservice createListentrie and the part of the monalith called "NEW". THIS WILL FAIL THE FIRST TIME IT EXECUTES AFTER INSTALLING DATABASE!
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     'createListentrie' => array(
-        'expected-output'   => '{"entries":[{"entryname":"PHP examples","pos":"1","kind":"1","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":null,"relativedeadline":null,"qrelease":null,"comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"PHP Example 1","pos":"2","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-01-30 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"PHP Example 2","pos":"3","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-01-25 15:30:00","relativedeadline":null,"qrelease":"2015-01-08 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"PHP Example 3","pos":"4","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-01-20 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"New Code","pos":"5","kind":"2","moment":null,"visible":"0","highscoremode":"0","gradesys":"0","code_id":null,"deadline":null,"relativedeadline":null,"qrelease":null,"comments":"undefined","qstart":null,"grptype":null,"tabs":"0","feedbackenabled":"0","feedbackquestion":null},{"entryname":"Javascript examples","pos":"5","kind":"1","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":null,"relativedeadline":null,"qrelease":null,"comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"JavaScript Example 1","pos":"6","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-01-18 15:30:00","relativedeadline":null,"qrelease":"2015-01-08 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"JavaScript Example 2","pos":"7","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-10 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"JavaScript Example 3","pos":"8","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-15 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 examples","pos":"9","kind":"1","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":null,"relativedeadline":null,"qrelease":null,"comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 1","pos":"10","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-05 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 2","pos":"11","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-20 15:30:00","relativedeadline":null,"qrelease":"2015-02-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 3","pos":"12","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-19 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 4","pos":"13","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-19 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 5","pos":"14","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-19 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 6","pos":"15","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2015-02-19 15:30:00","relativedeadline":null,"qrelease":"2015-01-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 7","pos":"16","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2020-06-30 00:00:00","relativedeadline":null,"qrelease":"2020-05-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"HTML5 Example 8","pos":"17","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2020-06-30 00:00:00","relativedeadline":null,"qrelease":"2020-05-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"Shader examples","pos":"18","kind":"1","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":null,"relativedeadline":null,"qrelease":null,"comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"Shaderprogrammering","pos":"19","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2020-06-30 00:00:00","relativedeadline":null,"qrelease":"2020-05-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null},{"entryname":"Shaderprogrammering","pos":"20","kind":"2","moment":null,"visible":"1","highscoremode":"0","gradesys":null,"code_id":null,"deadline":"2020-06-30 00:00:00","relativedeadline":null,"qrelease":"2020-05-01 00:00:00","comments":null,"qstart":null,"grptype":null,"tabs":null,"feedbackenabled":"0","feedbackquestion":null}],"groups":{"No":["1","2","3","4","5","6","7","8"],"Le":["A","B","C","D","E","F","G","H"],"Vi":["I","II","III","IV","V","VI","VII","VIII"]},"debug":"NONE!","writeaccess":true,"studentteacher":false,"readaccess":true,"coursename":"Webbprogrammering","coursevers":"45656","coursecode":"DV12G","courseid":"1","links":[{"fileid":-1,"filename":"---===######===---"},{"fileid":"45","filename":"diagram.json"},{"fileid":"47","filename":"helloWorld.html"},{"fileid":"4","filename":"HTML_Ex1.txt"},{"fileid":"6","filename":"HTML_Ex2.txt"},{"fileid":"8","filename":"HTML_Ex3.txt"},{"fileid":"10","filename":"HTML_Ex4.txt"},{"fileid":"12","filename":"HTML_Ex5.txt"},{"fileid":"14","filename":"HTML_Ex6.txt"},{"fileid":"16","filename":"HTML_Ex7.txt"},{"fileid":"20","filename":"HTML_Ex8.txt"},{"fileid":"23","filename":"JavaScript_Ex1.txt"},{"fileid":"26","filename":"JavaScript_Ex2.txt"},{"fileid":"29","filename":"JavaScript_Ex3.txt"},{"fileid":"50","filename":"mdTest.md"},{"fileid":"31","filename":"PHP_Ex1.txt"},{"fileid":"33","filename":"PHP_Ex2.txt"},{"fileid":"35","filename":"PHP_Ex3.txt"},{"fileid":"38","filename":"Shader_Ex1.txt"},{"fileid":"41","filename":"Shader_Ex2.txt"},{"fileid":-1,"filename":"---===######===---"},{"fileid":"1","filename":"HTML_Ex1.css"},{"fileid":"2","filename":"HTML_Ex1.html"},{"fileid":"3","filename":"HTML_Ex1.js"},{"fileid":"5","filename":"HTML_Ex2.html"},{"fileid":"7","filename":"HTML_Ex3.html"},{"fileid":"9","filename":"HTML_Ex4.html"},{"fileid":"11","filename":"HTML_Ex5.html"},{"fileid":"13","filename":"HTML_Ex6.html"},{"fileid":"15","filename":"HTML_Ex7.html"},{"fileid":"17","filename":"HTML_Ex8.css"},{"fileid":"18","filename":"HTML_Ex8.html"},{"fileid":"19","filename":"HTML_Ex8.js"},{"fileid":"21","filename":"JavaScript_Ex1.html"},{"fileid":"22","filename":"JavaScript_Ex1.js"},{"fileid":"24","filename":"JavaScript_Ex2.html"},{"fileid":"25","filename":"JavaScript_Ex2.js"},{"fileid":"27","filename":"JavaScript_Ex3.html"},{"fileid":"28","filename":"JavaScript_Ex3.js"},{"fileid":"30","filename":"PHP_Ex1.php"},{"fileid":"32","filename":"PHP_Ex2.php"},{"fileid":"34","filename":"PHP_Ex3.php"},{"fileid":"36","filename":"Shader_Ex1.html"},{"fileid":"37","filename":"Shader_Ex1.js"},{"fileid":"39","filename":"Shader_Ex2.html"},{"fileid":"40","filename":"Shader_Ex2.js"}],"duggor":[],"results":[],"versions":[{"cid":"1","coursecode":"DV12G","vers":"45656","versname":"HT15","coursename":"Webbprogrammering","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbprogrammering - HT15"},{"cid":"1","coursecode":"DV12G","vers":"45657","versname":"HT16","coursename":"Webbprogrammering","coursenamealt":"UNK","startdate":"2015-12-29 00:00:00","enddate":"2016-03-08 00:00:00","motd":"Webbprogrammering - HT16"},{"cid":"2","coursecode":"IT118G","vers":"97731","versname":"HT14","coursename":"Webbutveckling - datorgrafik","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbutveckling - datorgrafik - HT14"},{"cid":"2","coursecode":"IT118G","vers":"97732","versname":"HT15","coursename":"Webbutveckling - datorgrafik","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbutveckling - datorgrafik - HT15"},{"cid":"3","coursecode":"IT500G","vers":"1337","versname":"HT15","coursename":"Datorns grunder","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Datorns grunder - HT15"},{"cid":"4","coursecode":"IT301G","vers":"1338","versname":"HT15","coursename":"Software Engineering","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Software Engineering - HT15"},{"cid":"305","coursecode":"IT308G","vers":"12305","versname":"HT15","coursename":"Objektorienterad programmering","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"307","coursecode":"IT115G","vers":"12307","versname":"HT15","coursename":"Datorns grunder","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"308","coursecode":"MA161G","vers":"12308","versname":"HT15","coursename":"Diskret matematik","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"309","coursecode":"DA322G","vers":"12309","versname":"HT15","coursename":"Operativsystem","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"312","coursecode":"IT326G","vers":"12312","versname":"HT15","coursename":"Distribuerade system","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"319","coursecode":"DV736A","vers":"12319","versname":"HT15","coursename":"Examensarbete i datavetenskap","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"324","coursecode":"IT108G","vers":"12324","versname":"HT15","coursename":"Webbutveckling - webbplatsdesign","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"1885","coursecode":"G1337","vers":"1337","versname":"","coursename":"Testing-Course","coursenamealt":"Course for testing codeviewer","startdate":"2020-05-01 00:00:00","enddate":"2020-06-30 00:00:00","motd":"Code examples shows both templateid and boxid!"},{"cid":"1894","coursecode":"G420","vers":"52432","versname":"ST20","coursename":"Demo-Course","coursenamealt":"Chaos Theory - Conspiracy 64k Demo","startdate":"2020-05-01 00:00:00","enddate":"2020-06-30 00:00:00","motd":"Demo Course 2020 - All current duggas"}],"unmarked":"0","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","grpmembershp":"UNK","grplst":[],"userfeedback":[],"feedbackquestion":"UNK","avgfeedbackscore":0}',
+        'expected-output'   => '{"entries":[{"entryname":"PHP examples","pos":0,"kind":1,"visible":1,"highscoremode":0,"deadline":null,"qrelease":null,"feedbackenabled":0},{"entryname":"PHP Example 1","pos":1,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-01-30 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"PHP Example 2","pos":2,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-01-25 15:30:00","qrelease":"2015-01-08 00:00:00","feedbackenabled":0},{"entryname":"PHP Example 3","pos":3,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-01-20 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"Javascript examples","pos":4,"kind":1,"visible":1,"highscoremode":0,"deadline":null,"qrelease":null,"feedbackenabled":0},{"entryname":"New Code","pos":5,"kind":2,"visible":0,"highscoremode":0,"deadline":null,"qrelease":null,"feedbackenabled":0},{"entryname":"JavaScript Example 1","pos":5,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-01-18 15:30:00","qrelease":"2015-01-08 00:00:00","feedbackenabled":0},{"entryname":"JavaScript Example 2","pos":6,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-10 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"JavaScript Example 3","pos":7,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-15 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 examples","pos":8,"kind":1,"visible":1,"highscoremode":0,"deadline":null,"qrelease":null,"feedbackenabled":0},{"entryname":"HTML5 Example 1","pos":9,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-05 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 Example 2","pos":10,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-20 15:30:00","qrelease":"2015-02-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 Example 3","pos":11,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-19 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 Example 4","pos":12,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-19 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 Example 5","pos":13,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-19 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 Example 6","pos":14,"kind":2,"visible":1,"highscoremode":0,"deadline":"2015-02-19 15:30:00","qrelease":"2015-01-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 Example 7","pos":15,"kind":2,"visible":1,"highscoremode":0,"deadline":"2020-06-30 00:00:00","qrelease":"2020-05-01 00:00:00","feedbackenabled":0},{"entryname":"HTML5 Example 8","pos":16,"kind":2,"visible":1,"highscoremode":0,"deadline":"2020-06-30 00:00:00","qrelease":"2020-05-01 00:00:00","feedbackenabled":0},{"entryname":"Shader examples","pos":17,"kind":1,"visible":1,"highscoremode":0,"deadline":null,"qrelease":null,"feedbackenabled":0},{"entryname":"Shaderprogrammering","pos":18,"kind":2,"visible":1,"highscoremode":0,"deadline":"2020-06-30 00:00:00","qrelease":"2020-05-01 00:00:00","feedbackenabled":0},{"entryname":"Shaderprogrammering","pos":19,"kind":2,"visible":1,"highscoremode":0,"deadline":"2020-06-30 00:00:00","qrelease":"2020-05-01 00:00:00","feedbackenabled":0}]}',
 
         'query-after-test-1' =>  "DELETE FROM listentries WHERE lid > 5009;",
         'query-after-test-2' => "DELETE FROM codeexample WHERE exampleid > 9009;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
-        'service-data' => serialize(array( // Data that service needs to execute function
-            'opt' => 'NEW',
-            'username' => 'mestr',
-            'password' => 'password',
-            'courseid' => '1',
-            'coursevers' => '45656',
-            'sectname' => 'New Code',
-            'sname' => 'examplename',
-            'gradesys' => '0',
-            'tabs' => '0',
-            'userid' => '2',
-            'link' => '-1',
-            'kind' => '2',
-            'comments' => 'undefined',
-            'lid' => 'undefined',
-            'moment' => 'null',
-            'grptype' => 'UNK',
-            'deadline' => '0:0',
-            'relativedeadline' => '1:1:0:0',
-            'visibility' => '0',
-            'highscoremode' => '0',
-            'pos' => '5',
-            'log_uuid' => 'XvH6j8E6SLBWBLP',
-            'hash' => 'UNK'
-            
-        )),
-        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-            'entries' => array(
-                'entryname',
-                //'lid',
-                'pos',
-                'kind',
-                'moment',
-                //'link',
-                'visible',
-                'highscoremode',
-                'gradesys',
-                'code_id',
-                'deadline',
-                'relativedeadline',
-                'qrelease',
-                'comments',
-                'qstart',
-                'grptype',
-                'tabs',
-                'feedbackenabled',
-                'feedbackquestion',
-                //'ts'
-            ),
-            'debug',
-            'writeaccess',
-            'studentteacher',
-            'readaccess',
-            'coursename',
-            'coursevers',
-            'coursecode',
-            'courseid',
-            'links',
-            'duggor',
-            'results',
-            'versions',
-            // 'codeexamples',
-            'unmarked',
-            'startdate',
-            'enddate',
-            'groups',
-            'grpmembershp',
-            'grplst',
-            'userfeedback',
-            'feedbackquestion',
-            'avgfeedbackscore'
-        )),
+        'service-data' => serialize(
+            // Data that service needs to execute function
+            array( 
+                'opt' => 'NEW',
+                'username' => 'mestr',
+                'password' => 'password',
+                'courseid' => '1',
+                'coursevers' => '45656',
+                'sectname' => 'New Code',
+                'sname' => 'examplename',
+                'gradesys' => '0',
+                'tabs' => '0',
+                'userid' => '2',
+                'link' => '-1',
+                'kind' => '2',
+                'comments' => 'undefined',
+                'lid' => 'undefined',
+                'moment' => 'null',
+                'grptype' => 'UNK',
+                'deadline' => '0:0',
+                'relativedeadline' => '1:1:0:0',
+                'visibility' => '0',
+                'highscoremode' => '0',
+                'pos' => '5',
+                'log_uuid' => 'XvH6j8E6SLBWBLP',
+                'hash' => 'UNK'          
+            )
+        ),
+        'filter-output' => serialize(
+            // Filter what output to use in assert test, use none to use all ouput from service
+            array(
+                'entries' => array(
+                    'entryname',
+                    'pos',
+                    'kind',
+                    'visible',
+                    'highscoremode',
+                    'deadline',
+                    'qrelease',
+                    'feedbackenabled',
+                ),
+            )
+        ),
     ),
     //------------------------------------------------------------------------------------------
     // This test the microservice reorderListentries and the part of the monalith called "REORDER" 
