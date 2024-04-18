@@ -1,6 +1,7 @@
 <?php
 
 include "../../Shared/test.php";
+
 /*Warning! No test works since showDugga doesn't work properly. Expected outputs in this document have not been fixed yet.*/
 
 $testsData = array(
