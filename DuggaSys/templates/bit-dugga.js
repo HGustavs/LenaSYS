@@ -129,7 +129,7 @@ function returnedDugga(data)
 
 function saveClick()
 {
-	$('#submission-receipt').html(`${response['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${response['link']}\n\nHash\n${response['hash']}\n\nHash password\n${response['hashpwd']}`);
+	//$('#submission-receipt').html(`${response['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${response['link']}\n\nHash\n${response['hash']}\n\nHash password\n${response['hashpwd']}`);
 		showReceiptPopup();
 	Timer.stopTimer();
 
