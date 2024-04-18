@@ -8524,6 +8524,11 @@ function drawRulerBars(X, Y) {
                     barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "' />";
                 }
             }
+        }else{
+            if(lineNumber === lineRatio3){
+                lineNumber = 0;
+                cordY = cordY + 10
+            }
         }
     }
     //Draw the Y-axis ruler negative side.
@@ -8556,6 +8561,11 @@ function drawRulerBars(X, Y) {
                 } else {
                     barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
                 }
+            }
+        }else{
+            if(lineNumber === lineRatio3) {
+                lineNumber = 0;
+                cordY = cordY - 10;
             }
         }
     }
@@ -8590,6 +8600,11 @@ function drawRulerBars(X, Y) {
                     barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='35' x2='" + (i + pannedX) + "' y2='40px'/>";
                 }
             }
+        }else{
+            if(lineNumber === lineRatio3){
+                lineNumber = 0;
+                cordX = cordX+10
+            }
         }
     }
     //Draw the X-axis ruler negative side.
@@ -8620,6 +8635,11 @@ function drawRulerBars(X, Y) {
                 } else {
                     barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='35' x2='" + (pannedX - i) + "' y2='40px'/>";
                 }
+            }
+        }else{
+            if(lineNumber === lineRatio3) {
+                lineNumber = 0;
+                cordX = cordX - 10;
             }
         }
     }
