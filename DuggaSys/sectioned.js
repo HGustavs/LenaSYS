@@ -4213,5 +4213,5 @@ function getLocalStorage() {
     dropdown.value = selectedValue;
   }
 }
-
- toast("warning", "You have entered incorrect information", 6);
+// We create a toast just to test it out :)
+toast("warning", "You have entered incorrect information", 6);

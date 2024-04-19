@@ -9417,7 +9417,7 @@ margin:2px;
 }
 
 /* Toast notifications */
-#snackbar {
+#toast {
   visibility: hidden; 
   min-width: 200px; 
   max-width: 300px;
@@ -9449,19 +9449,19 @@ margin:2px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3), 0 5px 20px 0 rgba(0, 0, 0, 0.3);
 }
 
-#snackbar.show {
+#toast.show {
   visibility: visible; 
   -webkit-animation: fadein 0.5s;
   animation: fadein 0.5s;
 }
 
-#snackbar.fadeout {
+#toast.fadeout {
   visibility: visible; 
   -webkit-animation: fadeout 1s;
   animation: fadeout 1s;
 }
 
-#snackbarText{
+#toastText{
   font-family: Arial; 
   grid-area: "text";
   overflow-y: scroll;
