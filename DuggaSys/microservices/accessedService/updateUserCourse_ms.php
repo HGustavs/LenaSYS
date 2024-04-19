@@ -2,19 +2,30 @@
 
 date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
+include_once "../../../Shared/sessions.php";     
+include_once "../shared_microservices/getUid_ms.php";
+
 // connect to database
 pdoConnect();
 session_start();
 // get userId and courseId
-$userid = getUid(); 
-$cid = getOP('courseid');
+// $userid = getUid(); 
+// $cid = getOP('courseid');
 
 //no idea what these do
-$prop=getOP('prop');
-$val=getOP('val');
-$vers = getOP('vers');
+// $prop=getOP('prop');
+// $groups=getOP('group');
+// $vers = getOP('vers');
+// $access = getOP('access');;
+$userid = 4; 
+$cid = 2;
+
+
+$prop= "examiner";
+$groups= "Le_A";
+$vers = "00000";
+$access = "ST";
+$examinerValue = 1;
 
 if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 	$hasAccess = true;
@@ -24,7 +35,6 @@ if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 
 
 if(checklogin() && $hasAccess) {
-
 		// User_Course Table Updates
 		if($prop=="examiner"){
 				$query = $pdo->prepare("UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;");
@@ -45,14 +55,14 @@ if(checklogin() && $hasAccess) {
 		}else if($prop=="access"){
 				$query = $pdo->prepare("UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid;");
                 // wait on this one.
-				$query->bindParam(':access', $val);
+				$query->bindParam(':access', $access);
                 $query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 
 		}else if($prop=="group"){
 				$query = $pdo->prepare("UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;");
                 // wait on this one.
-				$query->bindParam(':groups', $val);
+				$query->bindParam(':groups', $groups);
                 $query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 		}
@@ -61,24 +71,7 @@ if(checklogin() && $hasAccess) {
                 $error=$query->errorInfo();
                 $debug="Error updating user\n".$error[2];
         }
-
-
 }
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>
