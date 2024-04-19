@@ -13,6 +13,7 @@ include_once "getUid_ms.php";
 pdoConnect();
 session_start();
 
+$userid = getUid();
 
 // Gets username based on uid
 $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
