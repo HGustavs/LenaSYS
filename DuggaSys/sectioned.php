@@ -691,38 +691,42 @@ function insertIntoSqLiteGitRepo($cid, $githubURL){
 
 	if($count > 0){
 		//A repo with the same cid primary key already exists. Do nothing.
-		return false;
 	} else {
 		$query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $githubURL);
 		if (!$query->execute()) {
 	        $error = $query->errorInfo();
-		    echo "Error updating file entries" . $error[2];
-		}else{
-			return true;
+		    echo "Error updating entry in gitRepos" . $error[2];
 		}
     }
 }
 //Insert files into gitFiles DB
-function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA){
+function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA){
 	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+	$successInsert = true;
 	$count = count($fileNames);
 	for($i = 0; $i < $count; $i++){
-		$query = $pdoLite->prepare('INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
+		$query = $pdoLite->prepare('REPLACE INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':fileName', $fileNames[$i]);
 		$query->bindParam(':fileType', $fileTypes[$i]);
 		$query->bindParam(':fileURL', $fileURLS[$i]);
-		$query->bindParam(':downloadURL', $downloadURL[$i]);
+		$query->bindParam(':downloadURL', $downloadURLS[$i]);
 		$query->bindParam(':fileSHA', $SHA[$i]);
 		$query->bindParam(':filePath', $filePaths[$i]);
-		$query->execute();
+		$success = $query->execute();
+		if(!$success){
+			$successInsert = false;
+			echo "Insertion into gitFiles failed. File: " . $fileNames[$i];
+		}
+	}
+	if($successInsert){
+		echo "All insertions into gitFiles were successful.";
 	}
 }
 //Creates courses directory in root if it doesnt exist and courses folder inside
 function writeCoursesDir($path, $pathCoursesRoot){
-	$success = false;
 	if(!is_dir($pathCoursesRoot)){
 		mkdir($pathCoursesRoot, 0775, true);
 	}
@@ -730,19 +734,29 @@ function writeCoursesDir($path, $pathCoursesRoot){
     if (!file_exists($path)) {
         mkdir($path, 0775, true);
     }
-
 	if(is_dir($path)){
-		$success = true;
+		echo "Successfully created courses folder or it already exists!";
 	}
-	return $success
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$successGitRepoInsert;
+//Writes code example files to course directory
+function writeFilesInDir($path, $fileNames, $content){
 	$WriteFilesSuccess = true;
 	$success = true;
-	$path = '../../LenaSYS/courses/' . $cid;
-	$pathCoursesRoot = '../../LenaSYS/courses';
+	$count = count($content);
+    for($i = 0; $i < $count; $i++){
+       $WriteFilesSuccess = file_put_contents($path . '/' . $fileNames[$i], $content[$i]);
+	   if($WriteFilesSuccess === false){
+         echo "File failed to write: " . $fileNames[$i];
+		 $success = false;
+	   }else{
+		 echo "File written successfully: " . $fileNames[$i];
+	   }
+	}
+    if ($success) {
+        echo "All files written successfully!";
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Retreival of JSON data sent through POST and GET
     $cid = $_GET['cid'];
 	$githubURL = $_GET['githubURL'];
@@ -755,39 +769,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
 	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
 	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-    	
-    $successDir = writeCoursesDir($path, $pathCoursesRoot);
-    //Writes files in folder
-	$count = count($codeExamplesContent);
-    for($i = 0; $i < $count; $i++){
-       $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
-	   if($WriteFilesSucces === false){
-         echo "File failed to write";
-		 $success = false;
-	   }else{
-		 echo "File written successfully";
-	   }
-	}
-    
-    // Writes files in folder
-    $count = count($codeExamplesContent);
-    for ($i = 0; $i < $count; $i++) {
-        $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
-        if ($WriteFilesSucces === false) {
-            echo "File failed to write";
-            $success = false;
-        } else {
-            echo "File written successfully";
-        }
-    }
-    
-    if ($success) {
-        echo "All files written successfully!";
-        $successGitRepoInsert = insertIntoSqLiteGitRepo($cid, $githubURL);
-        insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURL, $fileTypes, $SHA);
-    } else {
-        echo "One or more files failed to write!";
-    }
+    $path = '../../LenaSYS/courses/' . $cid;
+	$pathCoursesRoot = '../../LenaSYS/courses';
+
+    writeCoursesDir($path, $pathCoursesRoot);
+	writeFilesInDir($path, $fileNames, $codeExamplesContent);
+	insertIntoSqLiteGitRepo($cid, $githubURL);
+	insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA);
+	
 }
 ?>
 </body>

@@ -4057,13 +4057,13 @@ function fetchGitCodeExamples(courseid){
   //After names haves been fetched all relevant filenames are pushed into the filteredFiles array. These are to be fetched later.
   fetchFileNames(githubURL, folderPath).then(function(fileNamesArray){
     for (var i = 0; i < fileNamesArray.length; i++){
-      if(fileNamesArray[i].name.includes(fileSearchParam)){
+      if(fileNamesArray[i].includes(fileSearchParam)){
         filteredFiles.push(fileNamesArray[i]);
       }
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-      //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
-      storeCodeExamples(cid, codeExamplesContent, githubURL);
+    //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+    storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4141,10 +4141,10 @@ function fetchGitCodeExamples(courseid){
           // Check if response is an array or single object, then parse the response to extract file names.
           // resolve() returns all filenames.
           var files = Array.isArray(response) ? response : [response];
-          var fileNameSHA = files.map(function(file) {
-            return {name: file.name, sha: file.sha};
+          var fileNames = files.map(function(file) {
+            return file.name;
           });
-          resolve(fileNameSHA);
+          resolve(fileNames);
         },
         error: function(xhr, status, error) {
           reject(error);
@@ -4183,7 +4183,9 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
        }
       }) 
       .then(response => response.text())
-      .then(data => {})
+      .then(data => {
+        console.log(data);
+      })
       .catch(error => {
           console.error('Error calling PHP function:', error);
       });
