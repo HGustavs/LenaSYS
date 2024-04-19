@@ -63,7 +63,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 ---
 
 - logging_ms.php
-- getUid_ms.php
+- getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - isSuperUser_ms.php
 - hasAccess_ms.php
 - setUserID_ms.php
@@ -149,8 +149,16 @@ Uses a function in basic.php.
 
 <br>
 
-### getUid
-Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
+### readUid_ms.php
+readUid_ms.php is primarily used for handling user identification and logging service events.
+
+__Session Control:__ Checks if there is a user ID (uid) present in the current session. If an ID exists, it is used; otherwise, the user ID is set to "guest", indicating that the user is not logged in.
+
+__Logging:__ Utilizes the information gathered to log a service event in the __serviceLogEntries__ table using the logServiceEvent function (defined in basic.php).
+
+__Return of User ID:__ The function returns the user ID, which is either the actual user ID from the session or "guest".
+
+__Conclusion:__ The purpose of the code is to ensure accurate identification and logging of users and their actions within the system.
 
 <br>
 
