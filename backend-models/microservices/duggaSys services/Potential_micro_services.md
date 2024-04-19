@@ -664,8 +664,8 @@ Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 
 <br>
 
-### saveDugga
-Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
+### saveDugga (SAVDU)
+Not to be confused with SAVDUGGA that is used by teachers to update quiz-answers. 
 
 
 
