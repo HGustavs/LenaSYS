@@ -140,17 +140,13 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
 			<div style='float:right; padding-top:20px; width: 464px;' >
-				
-    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
 				<button id="deleteCourseButton" onclick='openForm()'>Delete</button>
+    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
 					<div class="form-popup" id="myForm">
 					<form action="" class="form-container DarkModeBackgrounds">
 						<h1 Class="DarkModeText" style="font-size:24px; padding-bottom:50px; padding-top:60px; border-bottom: 2px solid #ccc;">Are you sure? </h1>
-
-
-					
-						<button id="deleteCourseButtonYes" type="button" onclick="closeForm()">Yes</button>
-						<button id="deleteCourseButtonNo" type="button" onclick="closeForm()">No</button>
+							<button id="deleteCourseButtonYes" type="button" onclick="closeForm()">Yes</button>
+							<button id="deleteCourseButtonNo" type="button" onclick="closeForm()">No</button>
 					</form>
 					</div>
     		</div>

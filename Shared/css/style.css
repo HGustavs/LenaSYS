@@ -7720,8 +7720,7 @@ textarea#mrkdwntxt {
 }
 
 #saveCourse{
-  margin-left: 347px;
-  margin-top: 20px;
+  margin: 0px;
 }
 
 #submitEditCourse{
@@ -7762,7 +7761,6 @@ textarea#mrkdwntxt {
 
 }
 
-
 #deleteCourseButton{
   background-color:#e35057;
   height:30px;
@@ -7798,7 +7796,6 @@ textarea#mrkdwntxt {
   margin:0px;
   border: solid 1px #775886;
 }
-
 
 @media only screen and (max-width: 1350px) {
   .previewWindow {
