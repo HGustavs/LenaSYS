@@ -3,24 +3,43 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../shared_microservices/getUid_ms.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
 
 // Global variables
+$opt = getOP('opt');
 $fid = getOP('fid');
 $cid = getOP('cid');
 $kind = getOP('kind');
 $filename = getOP('filename');
 $coursevers = getOP('coursevers');
+$userid = getUid();
+
+// Permission checks
+if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid) || hasAccess($userid, $cid, 'sv')) {
+    $hasAccess = true;
+} else {
+    $hasAccess = false;
+}
+
+if (!(checklogin() && $hasAccess))
+    return;
+
+if ($kind == 2 && (isSuperUser($userid) == false))
+    return;
+
+if (!(strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))))
+    return;
 
 // Get the path
 $query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
 $query->bindParam(':fid', $fid);
 $result = $query->execute();
 
-if($row = $query->fetch(PDO::FETCH_ASSOC)){
+if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
     $path = $row['path'];
 } else {
     $path = "Lokal";
