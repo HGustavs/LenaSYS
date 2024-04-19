@@ -72,7 +72,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
 - createNewVersionOfCourse_ms.php
-- setAsActiveCourse_ms.php
+- setAsActiveCourse_ms.php __==finished==__ New filename: "updateActiveCourse_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - UpdateUser_ms.php
 - updateUsercourse_ms.php
 - addClass_ms.php
@@ -357,14 +357,19 @@ Uses the services __insertIntoTableVers__ to _insert_ into the table __vers__.
 
 <br>
 
-### setAsActiveCourse
-__USED BY__
-- createCourseVersion
-- setActiveCourseversion
-<br>
+### updateActiveCourse_ms.php
+updateActiveCourse_ms.php code is designed to handle the activation of a specific course version by updating the database table __'course'__ based on user input.
 
-Uses the services __updateTableCourse__ to change the content of these columns:
-- activeversion
+_UPDATE_ operation on the table __'course'__ to modify rows where:
+
+- The 'cid' value in the __'course'__ table matches the value bound to :cid.
+
+Set the value for the column:
+- activeversion to :vers
+
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid
+```
 
 <br>
 <br>
