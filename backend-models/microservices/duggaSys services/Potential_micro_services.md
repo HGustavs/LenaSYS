@@ -123,7 +123,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - updateActiveUsers_ms.php
 - processDuggaFile_ms.php
 - submitDugga_ms.php
-- loadDugga_ms.php
+- loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
 - retrieveCourseedService_ms.php __==finished==__ New filename: "readCourseedService_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
 
@@ -1747,11 +1747,36 @@ Uses service __insertIntoTableUserAnswer__ to makes _inserts_ into the table __u
 
 <br>
 
-### loadDugga
-Get information based on __hash__.
-Uses service __selectFromTableUserAnswer__ to _get_ information it requires from __userAnswer__ and __variant__.
+### readSubmittedDugga_ms.php
+readSubmittedDugga_ms.php retrieves submitted user responses (submitted duggas) from a database based on specific identifiers such as a hash value or a moment identifier.
+
+_SELECT_ operation on the tables __'userAnswer'__ and __'variant'__ to retrieve values from the columns:
+- vid
+- variantanswer
+- useranswer
+- param
+- cid
+- vers
+- quiz
+
+- The 'hash' value in the __'userAnswer'__ table matches the value bound to :hash.
+
+
+If the hash didn't work then retrive all answers for that moment:
+
+_SELECT_ operation on the tables __'userAnswer'__ and __'variant'__ to retrieve values from the columns:
+- vid
+- variantanswer
+- useranswer
+- param
+- cid
+- vers
+- quiz
+
+- The 'moment' value in the __'userAnswer'__ table matches the value bound to :moment.
+
 <br>
 
-If _hash_ did not work, retrive all answeres for that __moment__. 
-Uses service __selectFromUserAnswer__ to _get_ information it requires from __userAnswer__ and __variant__.
+---
 
+<br>
