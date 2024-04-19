@@ -160,13 +160,14 @@ function bfs($url, $cid, $opt)
     global $pdoLite;
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
-	$query = $pdoLite->prepare('SELECT gitToken FROM gitToken WHERE cid=:cid');
-    $query->bindParam(':cid', $cid);
+	$query = $pdoLite->prepare('SELECT gitToken FROM gitRepos WHERE cid=:cid');
+	$query->bindParam(':cid', $cid);
 
-    $query->execute();
+	$query->execute();
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$token = $row['gitToken'];
 	}
+
 
     while (!empty($fifoQueue)) {
         $currentUrl = array_shift($fifoQueue);

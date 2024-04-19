@@ -40,67 +40,7 @@ function updateCourse()
 
 	var token = document.getElementById("githubToken").value;
 	
-	//check if token is set, if it is insert information into meta data
-	/* if(token){
-		$.ajax({
-			async: false,
-			url: "../DuggaSys/gitcommitService.php",
-			type: "POST",
-			data: {'githubURL':courseGitURL,'cid':cid,'token':token, 'action':'directInsert'},
-			success: function() { 
-				//Returns true if the data and JSON is correct
-				dataCheck = true;
-			},
-			error: function(data){
-				//Check FetchGithubRepo for the meaning of the error code.
-				switch(data.status){
-					case 403:
-						alert(data.status + " Error \nplease insert valid git key");
-						break;
-					case 422:
-						alert(data.responseJSON.message + "\nDid not create/update token");
-						break;
-					case 503:
-						alert(data.responseJSON.message + "\nDid not create/update token");
-						break;
-					default:
-						alert("Something went wrong with updating git token and git URL...");
-				}
-				dataCheck = false;
-			}
-		});
-	}
-	// Runs if token is not set.
-	else
-	{	
-		$.ajax({
-			async: false,
-			url: "../DuggaSys/gitcommitService.php",
-			type: "POST",
-			data: {'githubURL':courseGitURL,'cid':cid, 'action':'directInsert'},
-			success: function() { 
-				//Returns true if the data and JSON is correct
-				dataCheck = true;
-			},
-			error: function(data){
-				//Check FetchGithubRepo for the meaning of the error code.
-				switch(data.status){
-					case 403:
-						alert(data.status + " Error \nplease insert valid git key");
-						break;
-					case 422:
-						alert(data.responseJSON.message + "\nDid not create/update URL");
-						break;
-					case 503:
-						alert(data.responseJSON.message + "\nDid not create/update URL");
-						break;
-					default:
-						alert("Something went wrong with updating git URL..."+data.status);
-				}
-				dataCheck = false;
-			}
-		});
-	} */
+	//Send information about the git url and possible git token for a course
 	$.ajax({
 		async: false,
 		url: "../DuggaSys/gitcommitService.php",
@@ -144,7 +84,7 @@ function updateCourse()
 		const cookieValue = `; ${document.cookie}`;
 		const parts = cookieValue.split(`; ${"missingToken"}=`);
 
-		if(dataCheck && parts[1]==0)
+		if(dataCheck && parts[1]!=1)
 		{
 			//Check if courseGitURL has a value
 			if(courseGitURL) {

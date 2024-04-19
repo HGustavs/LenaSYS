@@ -251,6 +251,7 @@ $sql2 = '
 		repoName VARCHAR(50), 
     	repoURL VARCHAR(255), 
 		lastCommit VARCHAR(50),
+		gitToken VARCHAR(50),
 		PRIMARY KEY (cid)
 	);
 '; 
@@ -272,14 +273,6 @@ $sql3 = '
 '; 
 $metadata_db->exec($sql3);
 
-$sqlGitToken = '
-	CREATE TABLE IF NOT EXISTS gitToken ( 
-		cid INTEGER,
-		gitToken VARCHAR(50),
-		PRIMARY KEY (cid)
-	);
-'; 
-$metadata_db->exec($sqlGitToken);
 
 
 //------------------------------------------------------------------------------------------------
