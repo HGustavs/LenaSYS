@@ -127,6 +127,7 @@ $testsData = array(
     ),
     //-------------------------------------------------------------------------------------------------------------------
     // This test will test the micro-service removeListentries and its curresponding part in the monolith called "DELETED"
+    // THIS WILL FAIL THE FIRST TIME IT EXECUTES AFTER INSTALLING DATABASE!
     //-------------------------------------------------------------------------------------------------------------------
     'removeListentries' => array(
         'expected-output'   => '{"debug":"NONE!","writeaccess":true,"readaccess":true,"entries":[{"entryname":"PHP examples","visible":"1"},{"entryname":"PHP Example 1","visible":"1"},{"entryname":"PHP Example 2","visible":"1"},{"entryname":"PHP Example 3","visible":"1"},{"entryname":"Javascript examples","visible":"1"},{"entryname":"RemoveTest123","visible":"3"},{"entryname":"JavaScript Example 1","visible":"1"},{"entryname":"JavaScript Example 2","visible":"1"},{"entryname":"JavaScript Example 3","visible":"1"},{"entryname":"HTML5 examples","visible":"1"},{"entryname":"HTML5 Example 1","visible":"1"},{"entryname":"HTML5 Example 2","visible":"1"},{"entryname":"HTML5 Example 3","visible":"1"},{"entryname":"HTML5 Example 4","visible":"1"},{"entryname":"HTML5 Example 5","visible":"1"},{"entryname":"HTML5 Example 6","visible":"1"},{"entryname":"HTML5 Example 7","visible":"1"},{"entryname":"HTML5 Example 8","visible":"1"},{"entryname":"Shader examples","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"}]}',
@@ -134,17 +135,17 @@ $testsData = array(
         'query-before-test-2' => "SELECT lid FROM listentries WHERE entryname = 'RemoveTest123';",
         'query-after-test-1' =>  "DELETE FROM listentries WHERE entryname = 'RemoveTest123';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
-        'service-data' => serialize(array( // Data that service needs to execute function
+        'service-data' => serialize(array( 
+            // Data that service needs to execute function
             'opt' => 'DELETED',
             'username' => 'brom',
             'password' => 'password',
             'lid' => '<!query-before-test-2!><*[0]["lid"]*>',
             'courseid' => '1',
             'coursevers' => '45656',
-            
-            
         )),
-        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+        'filter-output' => serialize(array( 
+            // Filter what output to use in assert test, use none to use all ouput from service
             'debug',
             'writeaccess',
             'readaccess',
@@ -152,7 +153,6 @@ $testsData = array(
                 'entryname',
                 'visible',
             ),
-
         )),
     ),
     //-------------------------------------------------------------------------------------
