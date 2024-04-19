@@ -11,7 +11,6 @@
     $hash=$_SESSION['checkhash'];
     $hashpwd = getOP('hashpwd');
     if($hashpwd!="UNK"){
-        echo "Checking $hash/$hashpwd <br>";
         $sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz,moment FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash AND password=:hashpwd";
         $query = $pdo->prepare($sql);
         $query->bindParam(':hash', $hash);
@@ -33,7 +32,7 @@
             $_SESSION["submission-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hash;
             $_SESSION["submission-password-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hashpwd;
             $_SESSION["submission-variant-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$variant;
-            $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+            $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/LenaSYS/sh/?s=$hash";
             header("Location: $link");
             exit();	
         }else{
