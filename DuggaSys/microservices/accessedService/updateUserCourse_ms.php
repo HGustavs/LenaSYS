@@ -1,6 +1,7 @@
 <?php
 
 date_default_timezone_set("Europe/Stockholm");
+
 // Include basic application services!
 include_once "../../../Shared/sessions.php";     
 include_once "../shared_microservices/getUid_ms.php";
@@ -9,30 +10,23 @@ include_once "../shared_microservices/getUid_ms.php";
 pdoConnect();
 session_start();
 // get userId and courseId
-// $userid = getUid(); 
-// $cid = getOP('courseid');
+$userid = getUid(); 
+$cid = getOP('courseid');
 
-//no idea what these do
-// $prop=getOP('prop');
-// $groups=getOP('group');
-// $vers = getOP('vers');
-// $access = getOP('access');;
-$userid = 4; 
-$cid = 2;
+// What change will be done
+$prop=getOP('prop');
 
 
-$prop= "examiner";
-$groups= "Le_A";
-$vers = "00000";
-$access = "ST";
-$examinerValue = 1;
+//values that will be changed 
+$groups=getOP('group');
+$vers = getOP('vers');
+$access = getOP('access');;
 
 if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 	$hasAccess = true;
 } else {
 	$hasAccess = false;
 } 
-
 
 if(checklogin() && $hasAccess) {
 		// User_Course Table Updates
@@ -72,6 +66,5 @@ if(checklogin() && $hasAccess) {
                 $debug="Error updating user\n".$error[2];
         }
 }
-
 
 ?>
