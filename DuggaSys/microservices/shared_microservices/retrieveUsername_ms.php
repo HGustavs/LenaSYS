@@ -18,7 +18,7 @@ $query->bindParam(':uid', $userid);
 $query->execute();
 
 
-if(checklogin()){
+if(checklogin() == true){
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$username = $row['username'];
 	}
