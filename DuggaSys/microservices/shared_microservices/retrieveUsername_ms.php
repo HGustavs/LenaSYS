@@ -1,5 +1,7 @@
 <?php
 
+// This microservice is used to retrieve a username from a specific userid (uid) 
+
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -23,4 +25,5 @@ if(checklogin() == true){
 		$username = $row['username'];
 	}
 }
+
 ?>
