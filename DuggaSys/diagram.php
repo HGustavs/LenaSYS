@@ -1024,7 +1024,7 @@
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
                 <div class="dropdownContent">
-                    <select id="diagramTypeDropdown" onchange="checkDropdownOption()">
+                    <select id="diagramTypeDropdown">
 			<option value="JSON/EMPTYDiagramMockup.json">Empty board</option>
                         <option value="JSON/StateChartDiagramMockup.json">State chart diagrams</option>
                         <option value="JSON/IEDiagramMockup.json">IE diagrams</option>
