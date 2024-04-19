@@ -190,6 +190,7 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY) {
+        
         var values = {
             x: moveX,
             y: moveY,
@@ -197,9 +198,6 @@ class StateChangeFactory {
             height: changeY
         };
 
-        var timestamp = new Date().toISOString();
-    
-        console.log("Element Moved And Resized - Timestamp: " + timestamp);
         return new StateChange(elementIDs, values);
     }
 
@@ -2577,8 +2575,10 @@ function mmoving(event) {
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
 
-                // We update position of connected objects
-                updatepos(deltaX, deltaY);
+                if (deltaX !== 0 || deltaY !== 0) {
+                    // We update position of connected objects
+                    updatepos(deltaX, deltaY);
+                }
 
                 calculateDeltaExceeded();
             }
@@ -2592,6 +2592,8 @@ function mmoving(event) {
 
             const minHeight = 50; // Declare the minimal height of an object
             deltaY = startY - event.clientY;
+
+            console.log("Starting pos, X, Y: " + startX + " " + startY);
 
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
@@ -2612,6 +2614,7 @@ function mmoving(event) {
                 const xChange = -(tmp - elementData.x);
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+            
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
@@ -2622,6 +2625,7 @@ function mmoving(event) {
 
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+            
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
@@ -2647,6 +2651,7 @@ function mmoving(event) {
                     }
                 }
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+            
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 
                 // Fetch original height
@@ -2659,7 +2664,7 @@ function mmoving(event) {
                 // Fetch original y-position
                 // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
                 tmp = elementData.y;
-                console.log("elementData.y, Pre screentoDiagram: " + tmp + "startY: " + startY + "deltaY: " + deltaY);
+                console.log("elementData.y, Pre screentoDiagram: " + tmp + " startY: " + startY + " deltaY: " + deltaY);
                 elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
                 console.log("elementData.y, Post screentoDiagram: " + elementData.y);
                 // Deduct the new position, giving us the total change
@@ -2681,6 +2686,8 @@ function mmoving(event) {
                         preResizeHeight.push(resizedElement);
                     }
                 }
+                console.log("Initial elementData.y: " + elementData.y + ", startY: " + startY + ", Initial Mouse Y: " + event.clientY);
+                console.log("Used: else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight)");
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
             document.getElementById(context[0].id).remove();
@@ -3448,11 +3455,13 @@ function screenToDiagramCoordinates(mouseX, mouseY) {
     // Use the mapping to assign the value of zoomX
     var zoomX = zoomMapping[zoomfact] || 0; // Defaults to 0 if zoomfact is not in the map
 
-    var timestamp = new Date().toISOString();
-    
-    console.log("Screen To Diagram Coordinates - Timestamp: " + timestamp);
+    console.log("Last Mouse Position: " + lastMousePos.x + " " + lastMousePos.y);
+    console.log(`zoomX: ${zoomX}, zoomfact: ${zoomfact}, scrollx: ${scrollx}, scrolly: ${scrolly}`);
+    console.log(`Computed X: ${(mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x}`);
+    console.log(`Computed Y: ${(mouseY / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y}`);
 
-    return new Point(Math.round((mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
+    return new Point(
+        Math.round((mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
         Math.round((mouseY / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
     );
 }
