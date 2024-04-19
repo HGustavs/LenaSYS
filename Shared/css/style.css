@@ -3565,6 +3565,13 @@ span.arrow {
   width: 90%;
 }
 
+.course-dropdown-div select {
+  width: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Course version dropdown */
 
 .course-dropdown {
