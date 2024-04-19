@@ -491,7 +491,6 @@ function refreshGithubRepo(courseid, user) {
       dataCheck = false;
     }
   });
-  console.log("ajax done" + courseid);
   return dataCheck;
 }
 
