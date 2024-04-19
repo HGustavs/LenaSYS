@@ -11,6 +11,10 @@ session_start();
 $userid = getUid(); 
 $cid = getOP('courseid');
 
+//no idea what these do
+$prop=getOP('prop');
+$val=getOP('val');
+$vers = getOP('vers');
 
 if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 	$hasAccess = true;
@@ -21,43 +25,42 @@ if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 
 if(checklogin() && $hasAccess) {
 
-    if(strcmp($opt,"UPDATE")==0){
-
 		// User_Course Table Updates
 		if($prop=="examiner"){
 				$query = $pdo->prepare("UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;");
 				//Saves if the user changes examiner to none.
-				if($val == "None"){
-					$val = NULL;
+				if($examinerValue == "None"){
+					$examinerValue = NULL;
 				}
-				$query->bindParam(':examiner', $val);
+				$query->bindParam(':examiner', $examinerValue);
+                $query->bindParam(':uid', $userid);
+				$query->bindParam(':cid', $cid);
+
 		}else if($prop=="vers"){
 				$query = $pdo->prepare("UPDATE user_course SET vers=:vers WHERE uid=:uid AND cid=:cid;");
-				$query->bindParam(':vers', $val);
+				$query->bindParam(':vers', $vers);
+                $query->bindParam(':uid', $userid);
+				$query->bindParam(':cid', $cid);
+
 		}else if($prop=="access"){
 				$query = $pdo->prepare("UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid;");
+                // wait on this one.
 				$query->bindParam(':access', $val);
-		}else if($prop=="group"){
-				$query = $pdo->prepare("UPDATE user_course SET `groups`=:groups WHERE uid=:uid AND cid=:cid;");
-				$query->bindParam(':groups', $val);
-		}
+                $query->bindParam(':uid', $userid);
+				$query->bindParam(':cid', $cid);
 
-		if($prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
+		}else if($prop=="group"){
+				$query = $pdo->prepare("UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;");
+                // wait on this one.
+				$query->bindParam(':groups', $val);
+                $query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 		}
 
-		if(/*$prop=="firstname"||$prop=="lastname"||$prop=="ssn"||*/$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
-				$query->bindParam(':uid', $uid);
-				if(!$query->execute()) {
-						$error=$query->errorInfo();
-						$debug="Error updating user\n".$error[2];
-				}
-		}else{
-				$debug="Failed to update property ".$prop." with value ".$val;
-		}
-	}
-
-
+        if(!$query->execute()) {
+                $error=$query->errorInfo();
+                $debug="Error updating user\n".$error[2];
+        }
 
 
 }
