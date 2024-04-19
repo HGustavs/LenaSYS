@@ -691,6 +691,8 @@ const cooldownHolder = document.getElementById("cooldownHolder");
 setInterval(
 	function() 
 	{
+		//issue 14664, should be a typeerror down below: The TypeError is because of a innerHTML returns a string, not a number. We need to convert the innerHTML values to numbers, parseInt() function can be used which will convert a string innerHTML to an integer. 
+		
 		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
 		{
 			gitFetchCooldownSec.innerHTML-=1;

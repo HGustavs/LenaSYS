@@ -214,6 +214,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	</div>
 	
 	<!-- LoginBox (receipt&Feedback-box ) Start! -->
+	<!-- issue 14664 can be tracked here -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
 	  <div class="receiptBox loginBox" style="max-width:400px; overflow-y:visible;">
 			<div class='loginBoxheader'><h3>Dugga Submission Receipt</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
