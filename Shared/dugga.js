@@ -1176,6 +1176,7 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
+				//url: "../DuggaSys/microservices/resultedService/getUserAnswer_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
