@@ -2585,8 +2585,14 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
 
             const minHeight = 50; // Declare the minimal height of an object
-            deltaY = startY - event.clientY;
-
+            // Divide deltaY by 3 for UML and by 2 for IE and SD elements so the pointer follows the mouse when resizing up and down
+            if (elementData.kind === "UMLEntity") {
+                deltaY = (startY - event.clientY) / 3;
+            } else if (elementData.kind === "IEEntity" || elementData.kind === "SDEntity") {
+                deltaY = (startY - event.clientY) / 2;
+            } else {
+                deltaY = startY - event.clientY;
+            }
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
