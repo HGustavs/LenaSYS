@@ -14,7 +14,7 @@ pdoConnect();
 session_start();
 
 
-// Gets username based on uid, USED FOR LOGGING
+// Gets username based on uid
 $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
 $query->bindParam(':uid', $userid);
 $query->execute();
