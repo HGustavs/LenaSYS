@@ -34,7 +34,7 @@ $qid = getOP('qid');
 $uid = getOP('uid');
 $disabled = getOP('disabled');
 $param = getOP('param');
-$variantanswer = getOP('variananswer');
+$variantanswer = getOP('variantanswer');
 
 $insertData = array(
   'quizID' => $qid,
@@ -45,7 +45,7 @@ $insertData = array(
 ); 
 
 // Service call to insert data into the Variant table
-$result = insertIntoTablVariant($insertData);
+$result = insertIntoTableVariant($insertData);
 
 if ($result['success']) {
   // Data successfully inserted into the Variant table
