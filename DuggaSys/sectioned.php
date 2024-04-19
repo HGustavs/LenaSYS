@@ -1,7 +1,7 @@
 <?php
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
-	include_once "../Shared/toast.php";
+	include "../Shared/toast.php";
 	session_start();
 	//include_once "../../coursesyspw.php";
 	pdoConnect();
@@ -61,7 +61,6 @@
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src='../Shared/toast.js'></script>
 	<script src="sectioned.js"></script>
 	<script src="backToTop.js"></script>
 	
