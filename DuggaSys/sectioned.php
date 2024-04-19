@@ -720,14 +720,31 @@ function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $down
 		$query->execute();
 	}
 }
+//Creates courses directory in root if it doesnt exist and courses folder inside
+function writeCoursesDir($path, $pathCoursesRoot){
+	$success = false;
+	if(!is_dir($pathCoursesRoot)){
+		mkdir($pathCoursesRoot, 0775, true);
+	}
+	 // Creates the directory for the corresponding course if it doesnt exist.
+    if (!file_exists($path)) {
+        mkdir($path, 0775, true);
+    }
+
+	if(is_dir($path)){
+		$success = true;
+	}
+	return $success
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$successGitRepoInsert;
 	$WriteFilesSuccess = true;
 	$success = true;
+	$path = '../../LenaSYS/courses/' . $cid;
+	$pathCoursesRoot = '../../LenaSYS/courses';
     //Retreival of JSON data sent through POST and GET
     $cid = $_GET['cid'];
-
 	$githubURL = $_GET['githubURL'];
 	$postDataContent = file_get_contents('php://input');
 	$requestDataContent = json_decode($postDataContent, true);
@@ -738,24 +755,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
 	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
 	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-
-	$path = '../../LenaSYS/courses/' . $cid;
-	$pathCoursesRoot = '../../LenaSYS/courses';	
-     //Creates course folder in root if it doesnt exist
-	if(!is_dir($pathCoursesRoot)){
-		mkdir($pathCoursesRoot, 0775, true);
-	}
-	 // Creates the directory for the corresponding course if it doesnt exist.
-    if (!file_exists($path)) {
-        mkdir($path, 0775, true);
-    }
+    	
+    $successDir = writeCoursesDir($path, $pathCoursesRoot);
     //Writes files in folder
 	$count = count($codeExamplesContent);
-	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-    $query = "SELECT * FROM gitFiles WHERE cid ($placeholders)";
     for($i = 0; $i < $count; $i++){
-        $query = "SELECT * FROM gitFiles WHERE cid ($placeholders)";
-
        $WriteFilesSucces = file_put_contents($path . '/' . $fileNames[$i], $codeExamplesContent[$i]);
 	   if($WriteFilesSucces === false){
          echo "File failed to write";
