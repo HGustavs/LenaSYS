@@ -70,7 +70,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - setActiveCourseversion_ms.php
 - updateUserPassword_ms.php
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- createNewListentrie_ms.php
+- createNewListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
 - createNewVersionOfCourse_ms.php
 - setAsActiveCourse_ms.php
 - UpdateUser_ms.php
@@ -291,25 +291,34 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 
 <br>
 
-### createNewListentrie
-__USED BY__
-- createListentrie
-- createGithubCodeexample
-<br>
+### createNewListentrie_ms.php
+_SELECT_ operation on the table __'user'__ to retrieve the value from the column:
+- username
 
-Uses the services __insertIntoTableListentries__ to _insert_ into the table __listentries__.
+- The 'uid' value in the 'user' table matches the value bound to :uid.
+
+```sql
+SELECT username FROM user WHERE uid = :uid;
+```
+
+
+_INSERT_ operation on the table __'listentries'__ to create new rows with values for the columns:
 - cid
 - vers
 - entryname
 - link
 - kind
 - pos
-- visibility
-- creator 
-- comment
-- gradesys
+- visible
+- creator
+- comments
+- gradesystem
 - highscoremode
 - groupKind
+
+```sql
+INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind);
+```
 
 <br>
 
