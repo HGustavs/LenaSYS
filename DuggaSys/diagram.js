@@ -8062,8 +8062,8 @@ function drawLine(line, targetGhost = false) {
         // Label position for recursive edges
         var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
         var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionX = labelPosX + label.labelMovedX + label.displacementX + zoomfact
-        const labelPositionY = labelPosY + label.labelMovedY + label.displacementY - zoomfact
+        const labelPositionX = labelPosX + zoomfact
+        const labelPositionY = labelPosY - zoomfact
 
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
@@ -8098,8 +8098,8 @@ function drawLine(line, targetGhost = false) {
                         dominant-baseline='middle'
                         text-anchor='middle'
                         style='font-size:${Math.round(zoomfact * textheight)}px;'
-                        x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
-                        y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
+                        x='${label.centerX - (2 * zoomfact)}'
+                        y='${label.centerY - (2 * zoomfact)}'>
                         ${labelValue}
                     </text>`;
         }
