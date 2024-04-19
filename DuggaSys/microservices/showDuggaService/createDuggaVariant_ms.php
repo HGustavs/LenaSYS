@@ -42,21 +42,19 @@ $insertData = array(
   'disabled' => $disabled,
   'param' => $param,
   'variantanswer' => $variantanswer
-)
+); 
+
+// Service call to insert data into the Variant table
+$result = insertIntoTablVariant($insertData);
+
+if ($result['success']) {
+  // Data successfully inserted into the Variant table
+  echo "Data successfully inserted into the Variant table.";
+} else {
+  // Error occurred during insertion
+  echo "Error: " . $result['message'];
+}
 
 //????echo json_encode(retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated));
 
-
-// - quizID
-// - creator
-// - disabled
-// - param 
-// - variantanswer
-
-// INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)
-
-
-### createDuggaVariant
-// Uses service __insertIntoTablVariant__ to makes _inserts_ into the table __Variant__.
-``
 ?>
