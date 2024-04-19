@@ -12,7 +12,6 @@ pdoConnect();
 session_start();
 
 // TODO 
-// Inspect Rapport inlämning in LenaSYS
 
 function processDuggaFiles()
 {
@@ -133,3 +132,63 @@ function processDuggaFiles()
 	if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
 
 }
+
+// Self notes:
+// The references of processDuggaFiles() inside showDuggaservice.php
+/*
+1. 
+if(isset($variant)){
+    $_SESSION["submission-$courseid-$newcoursevers-$newduggaid"]=$hash;
+    $_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
+    $_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
+    $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+    processDuggaFiles();
+}else{
+    $debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
+    $variant="UNK";
+    $answer="UNK";
+    $variantanswer="UNK";
+    $param=html_entity_decode('{}');
+}
+2.
+if(isset($variant)){
+    $_SESSION["submission-$courseid-$newcoursevers-$newduggaid"]=$hash;
+    $_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
+    $_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
+    $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
+    processDuggaFiles();
+}else{
+    $debug="[Guest] Could not load dugga! Incorrect hash/password submitted! $hash/$hashpwd";
+    $variant="UNK";
+    $answer="UNK";
+    $variantanswer="UNK";
+    $param=html_entity_decode('{}');
+}
+3.
+if(isset($param)){
+    processDuggaFiles();
+} else {
+    $debug="[Guest] Missing hash/password/variant! Not found in db.";
+    $variant="UNK";
+    $answer="UNK";
+    $variantanswer="UNK";
+    $param=html_entity_decode('{}');
+    unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
+    unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
+    unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"]);	
+}
+4.
+if(isset($param)) {
+    processDuggaFiles();
+} else {
+    $debug="[Guest] Missing hash/password/variant! Not found in db.";
+    $variant="UNK";
+    $answer="UNK";
+    $variantanswer="UNK";
+    $param=html_entity_decode('{}');
+    unset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]);
+    unset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"]);
+    unset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"]);	
+}
+
+*/
