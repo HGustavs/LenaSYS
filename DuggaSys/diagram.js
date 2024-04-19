@@ -8521,8 +8521,8 @@ function drawRulerBars(X, Y) {
     settings.ruler.ZF = 100 * zoomfact;
     var pannedY = (Y - settings.ruler.ZF) / zoomfact;
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
-    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (1.0 / zoomfact));
-    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact));
+    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact));
 
     if (zoomfact < 0.5) {
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -8592,7 +8592,7 @@ function drawRulerBars(X, Y) {
 
     //Draw the X-axis ruler positive side.
     lineNumber = (lineRatio3 - 1);
-    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8620,7 +8620,7 @@ function drawRulerBars(X, Y) {
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
-    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
