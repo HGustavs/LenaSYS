@@ -50,10 +50,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title id="sectionedPageTitle">Section Editor</title>
 
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<!-- <link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet"> -->
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	
@@ -61,6 +61,7 @@
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
+	<script src='../Shared/toast.js'></script>
 	<script src="sectioned.js"></script>
 	<script src="backToTop.js"></script>
 	

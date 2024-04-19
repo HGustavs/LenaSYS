@@ -3805,7 +3805,6 @@ function validateForm(formid) {
     // If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
-
     }
 
     //Name is a duplicate
@@ -4214,3 +4213,5 @@ function getLocalStorage() {
     dropdown.value = selectedValue;
   }
 }
+
+ toast("warning", "You have entered incorrect information", 6);

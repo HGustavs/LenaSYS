@@ -9455,6 +9455,12 @@ margin:2px;
   animation: fadein 0.5s;
 }
 
+#snackbar.fadeout {
+  visibility: visible; 
+  -webkit-animation: fadeout 1s;
+  animation: fadeout 1s;
+}
+
 #snackbarText{
   font-family: Arial; 
   grid-area: "text";
