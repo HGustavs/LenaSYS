@@ -7737,6 +7737,68 @@ textarea#mrkdwntxt {
   margin-right: 2px;
 }
 
+.form-popup {
+  text-align: center;
+  display: none;
+  padding: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  background-color: #fff; /* white background */
+  height:260px;
+  width:460px;
+  background-color:#775886;
+}
+
+/* styles to the form container */
+.form-container {
+  height:211px;
+  padding: 30px;
+  background-color: white;
+
+
+}
+
+
+#deleteCourseButton{
+  background-color:#e35057;
+  height:30px;
+  padding-left:35px;
+  padding-right:35px;
+  border: none;
+  border-radius: 5px;
+  font-size:14px;
+  margin:0px;
+  margin-right:238px;
+  color:#fff;
+}
+
+#deleteCourseButtonYes{
+  background-color:#ccc;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border: solid 1px #775886;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  margin-right:75px;
+ 
+}
+#deleteCourseButtonNo{
+  background-color:#e35057;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  border: solid 1px #775886;
+}
+
 
 @media only screen and (max-width: 1350px) {
   .previewWindow {
