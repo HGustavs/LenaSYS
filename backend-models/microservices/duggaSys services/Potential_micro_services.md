@@ -120,7 +120,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - changeProfileValues_ms.php
 - getUserAnswar_ms.php
-- updateActiveUsers_ms.php
+- updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
 - processDuggaFile_ms.php
 - submitDugga_ms.php
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
@@ -375,7 +375,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ---
-## ----------------------------- _accessedservice_ -----------------------------
+## ----------------------------- _accessedService_ -----------------------------
 ---
 
 <br>
@@ -983,7 +983,7 @@ SELECT motd,readonly FROM settings;
 <br>
 
 ---
-## ----------------------------- _duggaedservice_ -----------------------------
+## ----------------------------- _duggaedService_ -----------------------------
 ---
 
 <br>
@@ -1059,7 +1059,7 @@ Uses service __deliteFromTableVariant__ to delete a row from the table __variant
 <br>
 
 ---
-## ----------------------------- _fileedservice_ -----------------------------
+## ----------------------------- _fileedService_ -----------------------------
 ---
 
 <br>
@@ -1093,7 +1093,7 @@ __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 <br>
 
 ---
-## ----------------------------- _highscoreservice_ -----------------------------
+## ----------------------------- _highscoreService_ -----------------------------
 ---
 
 <br>
@@ -1111,7 +1111,7 @@ Uses service __selectFromTableScore__ to _get_ information it requires from __Sc
 <br>
 
 ---
-## ----------------------------- _sectionedservice_ -----------------------------
+## ----------------------------- _sectionedService_ -----------------------------
 ---
 
 <br>
@@ -1646,9 +1646,10 @@ SELECT * FROM listentries WHERE visible = '3'
 ```
 
 <br>
+<br>
 
 ---
-## ----------------------------- _profileservice_ -----------------------------
+## ----------------------------- _profileService_ -----------------------------
 ---
 
 <br>
@@ -1676,7 +1677,7 @@ Uses service __updateUserPassword__ to _get_ information it requires from __user
 <br>
 
 ---
-## ----------------------------- _resultedservice_ -----------------------------
+## ----------------------------- _resultedService_ -----------------------------
 ---
 
 <br>
@@ -1693,20 +1694,47 @@ Uses service __selectFromTableListentries__ to _get_ information it requires fro
 <br>
 
 ---
-## ----------------------------- _showDuggaservice_ -----------------------------
+## ----------------------------- _showDuggaService_ -----------------------------
 ---
 
 <br>
 <br>
 
-### updateActiveUsers
-Collect active users
-Uses service __selectFromTableUserAnswar__ to _get_ information it requires from __userAnswer__.
-<br>
+### updateActiveUsers_ms.php
+updateActiveUsers_ms.php checks if there are already active users recorded for a given hash and either inserts a new record or updates the existing count of active users.
 
-Uses service __insertIntoTableGroupdugga__ to makes _inserts_ into the table __groupdugga__.
-Uses the services __updateTableGroupdugga__ to change the content of these columns:
+_SELECT_ operation on the table __'groupdugga'__ to retrieve the value from the column:
 - active_users
+
+- The 'hash' value in the __'groupdugga'__ table matches the value bound to :hash.
+
+```sql
+SELECT active_users FROM groupdugga WHERE hash=:hash;
+```
+
+
+_INSERT_ operation on the table __'groupdugga'__ to create new rows with values for the columns:
+- hash
+- active_users
+
+- The 'hash' value is bound to :hash.
+- The 'active_users' value is bound to :AUtoken.
+
+```sql
+INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);
+```
+
+
+_UPDATE_ operation on the table __'groupdugga'__ to modify rows where:
+
+- The 'hash' value in the __'groupdugga'__ table matches the value bound to :hash.
+
+Set the value for the column:
+- active_users to :AUtoken
+
+```sql
+UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
+```
 
 <br>
 
