@@ -8667,9 +8667,6 @@ function drawElement(element, ghosted = false) {
     var hboxh = Math.round(element.height * zoomfact * 0.5);
     var cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
-    var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
-    //This value represents the amount of attributes, hopefully this will be calculated through
-    //an array in the UML document that contains the element's attributes.
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8677,21 +8674,11 @@ function drawElement(element, ghosted = false) {
 
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
-    var nonFilledElementPartStrokeColor;
-    if (isDarkTheme()) nonFilledElementPartStrokeColor = color.WHITE;
-    else nonFilledElementPartStrokeColor = color.GREY;
-
-    //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
-    //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
-    //replace this with nonFilledElementPartStroke when it gets merged.
-    var actorFontColor;
-    if (isDarkTheme()) actorFontColor = color.WHITE;
-    else actorFontColor = color.GREY;
+    let actorFontColor;
+    actorFontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
 
     // Caclulate font width using some canvas magic
-    var font = canvasContext.font;
-    font = `${texth}px ${font.split('px')[1]}`;
-    canvasContext.font = font;
+    canvasContext.font = `${texth}px ${canvasContext.font.split('px')[1]}`;
     var textWidth = canvasContext.measureText(element.name).width;
 
     // If calculated size is larger than element width
@@ -8705,126 +8692,19 @@ function drawElement(element, ghosted = false) {
         checkElementError(element);
 
         // Checks if element is involved with an error and outlines them in red
-        for (var i = 0; i < errorData.length; i++) {
+        for (let i = 0; i < errorData.length; i++) {
             if (element.id == errorData[i].id) element.stroke = 'red';
         }
     }
 
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
-    if (element.kind == elementTypesNames.UMLEntity) {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        const funcText = element.functions.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-        elemFunc = funcText.length;
-
-        // Removes the previouse value in UMLHeight for the element
-        for (var i = 0; i < UMLHeight.length; i++) {
-            if (element.id == UMLHeight[i].id) {
-                UMLHeight.splice(i, 1);
-            }
-        }
-
-        // Calculate and store the UMLEntity's real height
-        var UMLEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2)) + (boxh / 2 + (boxh * elemFunc / 2))) / zoomfact)
-        }
-        UMLHeight.push(UMLEntityHeight);
-
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //div to encapuslate UML header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-        //svg for UML header, background and text
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for UML header
-        str += `</svg>`;
-        //end of div for UML header
-        str += `</div>`;
-
-        //div to encapuslate UML content
-        str += `<div class='uml-content' style='height:${boxh - (linew * 2)}px'>`;
-        //Draw UML-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw UML-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for UML content
-        str += `</div>`;
-
-        //Draw UML-footer if there exist at least one function
-        if (elemFunc != 0) {
-            //div for UML footer
-            str += `<div class='uml-footer' style='height: ${boxh / 2 + (boxh * elemFunc / 2)}px;'>`;
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemFunc; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${funcText[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw UML-footer if there are no functions
-        } else {
-            //div for UML footer
-            str += `<div class='uml-footer' style='height: ${boxh / 2 + (boxh / 2)}px;'>`;
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for UML footer
-        str += `</div>`;
-    } else if (element.kind == elementTypesNames.UMLInitialState) {
+    switch (element.kind) {
+        case elementTypesNames.UMLEntity:
+            str += drawElementUMLEntity(element, ghosted);
+            break;
+    }
+    if (element.kind == elementTypesNames.UMLInitialState) {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
@@ -8838,7 +8718,7 @@ function drawElement(element, ghosted = false) {
                         xmlns="http://www.w3.org/2000/svg" 
                         xml:space="preserve"
                         style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
+                        <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
                             <circle cx="16.5" cy="12.5" r="10.5"/>
                         </g>
                     </svg>
@@ -8882,7 +8762,7 @@ function drawElement(element, ghosted = false) {
                      onmouseenter='mouseEnter();' 
                      onmouseleave='mouseLeave();'>
                     <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
+                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${actorFontColor}' stroke-width='${linew}' rx="20"/>
                     <rect x='${linew}' y='${linew}' width="${boxw / 2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
@@ -9585,6 +9465,96 @@ function drawElement(element, ghosted = false) {
     }
     str += "</div>";
     return str;
+}
+
+function drawElementUMLEntity(element, ghosted) {
+    let str = "";
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const splitLengthyLine = (s, max) => {
+        if (s.length <= max) return s;
+        return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
+    }
+
+    const aText = element.attributes.map(
+        line => splitLengthyLine(line, maxCharactersPerLine)
+    ).flat();
+
+    const fText = element.functions.map(
+        line => splitLengthyLine(line, maxCharactersPerLine)
+    ).flat();
+
+    // Removes the previouse value in UMLHeight for the element
+    for (let i = 0; i < UMLHeight.length; i++) {
+        if (element.id == UMLHeight[i].id)  UMLHeight.splice(i, 1);
+    }
+
+    // Calculate and store the UMLEntity's real height
+    UMLHeight.push({
+        id: element.id,
+        height: (boxh / 2 * (2 + aText.length + fText.length)) / zoomfact
+    });
+
+    //div to encapuslate UML element
+    str += `<div 
+            id='${element.id}' 
+            class='element uml-element' 
+            onmousedown='ddown(event);' 
+            onmouseenter='mouseEnter();' 
+            onmouseleave='mouseLeave()';' 
+            style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;`;
+
+    if (ghosted) {
+        str += `pointer-events:none; opacity:${ghostPreview};`;
+    }
+    str += `'>`;
+
+    // Header
+    let height = texth * 2;
+    let headRect = drawRect(boxw, height, linew, element);
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headRect + headText);
+    str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
+
+    // Content, Attributes
+    const textBox = (s, css) => {
+        let height = (s) ? texth * (s.length + 1) * lineHeight : boxh / 2;
+        if (boxh > height) height = boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let rect = drawRect(boxw, height, linew, element);
+        let contentSvg = drawSvg(boxw, height, rect + text);
+        let style = (css == 'uml-footer') ? `height:${height}px` : `height:${height - linew * 2}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += textBox(aText, 'uml-content');
+    str += textBox(fText, 'uml-footer');
+    return str;
+}
+
+const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
+const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
+const drawRect = (w, h, l, e) => {
+    return `<rect 
+                class='text' x='${l}' y='${l}' 
+                width='${w - l * 2}' height='${h - l * 2}' 
+                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
+            />`;
+}
+const drawText = (x, y, a, t) => {
+    return `<text
+                class='text' x='${x}' y='${y}' 
+                dominant-baseline='auto' text-anchor='${a}'
+            > ${t} </text>`;
 }
 
 /**
