@@ -193,8 +193,8 @@
 							//Need to check if the course has a version, if it does not the button should not be created
 							if(isset($result['versname'])) {
 								// Changes format from 'HT20' to numbers to create the URL
-								$array = explode("T", $result['versname']);
-								$array_1 = explode("-", $result['startdate']);
+								$array = explode('T', $result['versname'] ?? '');
+								$array_1 = explode('-', $result['startdate'] ?? '');
         						$year = $array_1[0];
 
 								if ($array[0] === "H") {
