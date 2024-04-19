@@ -127,26 +127,26 @@ INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (22,11,'{\"instru
 INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (23,12,'{\"target\":\"test.png\"}', NOW(),2);
 
 /* Insert items on coursepage */
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1001,1,'PHP examples','UNK',1,1,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1002,1,'PHP Example 1',1,2,2,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1003,1,'PHP Example 2',2,2,3,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1004,1,'PHP Example 3',3,2,4,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1005,1,'Javascript examples','UNK',1,5,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1006,1,'JavaScript Example 1',4,2,6,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1007,1,'JavaScript Example 2',5,2,7,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1008,1,'JavaScript Example 3',6,2,8,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1009,1,'HTML5 examples','UNK',1,9,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1010,1,'HTML5 Example 1',7,2,10,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1011,1,'HTML5 Example 2',8,2,11,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1012,1,'HTML5 Example 3',9,2,12,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1013,1,'HTML5 Example 4',10,2,13,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1014,1,'HTML5 Example 5',11,2,14,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1015,1,'HTML5 Example 6',12,2,15,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1016,1,'HTML5 Example 7',13,2,16,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1017,1,'HTML5 Example 8',14,2,17,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1018,1,'Shader examples','UNK',1,18,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1019,1,'Shaderprogrammering',15,2,19,1,1,'45656',0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1020,1,'Shaderprogrammering',16,2,20,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1001,1,'PHP examples','UNK',1,0,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1002,1,'PHP Example 1',1,2,1,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1003,1,'PHP Example 2',2,2,2,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1004,1,'PHP Example 3',3,2,3,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1005,1,'Javascript examples','UNK',1,4,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1006,1,'JavaScript Example 1',4,2,5,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1007,1,'JavaScript Example 2',5,2,6,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1008,1,'JavaScript Example 3',6,2,7,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1009,1,'HTML5 examples','UNK',1,8,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1010,1,'HTML5 Example 1',7,2,9,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1011,1,'HTML5 Example 2',8,2,10,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1012,1,'HTML5 Example 3',9,2,11,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1013,1,'HTML5 Example 4',10,2,12,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1014,1,'HTML5 Example 5',11,2,13,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1015,1,'HTML5 Example 6',12,2,14,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1016,1,'HTML5 Example 7',13,2,15,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1017,1,'HTML5 Example 8',14,2,16,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1018,1,'Shader examples','UNK',1,17,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1019,1,'Shaderprogrammering',15,2,18,1,1,'45656',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1020,1,'Shaderprogrammering',16,2,19,1,1,'45656',0);
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1021,1,'PHP examples - EN','UNK',1,1,1,1,'45657',0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1022,1,'PHP Example 1 - EN',1,2,2,1,1,'45657',0);
