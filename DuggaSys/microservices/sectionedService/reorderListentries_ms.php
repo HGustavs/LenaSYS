@@ -1,9 +1,9 @@
 <?php
   date_default_timezone_set("Europe/Stockholm");
 
-  include_once ('../../../Shared/sessions.php');
+  include_once "../../../Shared/sessions.php";
   include_once "../../../Shared/basic.php";
-  include_once ('../shared_microservices/getUid_ms.php');
+  include_once "../shared_microservices/getUid_ms.php";
 
   pdoConnect();
   session_start();
@@ -30,8 +30,7 @@
       $armin=explode("XX",$value);
       $query->bindParam(':lid', $armin[1]);
       $query->bindParam(':pos', $armin[0]);
-      $query->bindParam(':moment', $armin[2]);
-              
+      $query->bindParam(':moment', $armin[2]);        
 
       if(!$query->execute()) {
         $error=$query->errorInfo();
@@ -40,8 +39,5 @@
     }
   }
 
-
-
   echo json_encode(array('courseid' => $courseid, 'coursevers' => $coursevers, 'pos' => $pos, 'moment' => $moment, 'debug' => $debug));
   return;
-?>

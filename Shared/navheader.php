@@ -8,9 +8,11 @@
        <?php
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
+			
 
 			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
 			include_once "../Shared/basic.php";
+			pdoConnect();
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if (isset($_GET['courseid']))

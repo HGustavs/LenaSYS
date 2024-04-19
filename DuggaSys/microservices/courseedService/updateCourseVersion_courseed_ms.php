@@ -87,4 +87,3 @@ function logError($error) {
     error_log($error);
     // Additional logging actions can be added if required
 }
-?>

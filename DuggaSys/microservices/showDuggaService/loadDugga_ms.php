@@ -1,5 +1,4 @@
 <?php
-
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
@@ -67,5 +66,5 @@ echo json_encode(
         'newcourseid'=>$row,
         'newcoursevers'=>$newcoursevers,
         'newduggaid'=>$newduggaid
-    ));
-?>
+    )
+);

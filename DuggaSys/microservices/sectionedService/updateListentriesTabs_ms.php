@@ -1,7 +1,7 @@
 <?php
-
 date_default_timezone_set("Europe/Stockholm");
-include_once ('../../../Shared/sessions.php');
+
+include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 
 // Connect to database and start session.
@@ -22,5 +22,3 @@ if(strcmp($opt,"UPDATETABS")===0){
         $debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
     }
 }
-
-?>
