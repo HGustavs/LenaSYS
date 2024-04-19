@@ -665,6 +665,8 @@ Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 <br>
 
 ### saveDugga (SAVDU)
+Will use service __Logging__ if it's going to be created
+
 Not to be confused with SAVDUGGA that is used by teachers to update quiz-answers. 
 This microservice is used to handle user answers for dugga quizes and assignments. This microservice can retrieve data from user answers,
 update user answers and insert new user answers.
