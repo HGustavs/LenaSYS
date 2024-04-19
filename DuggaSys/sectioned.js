@@ -442,7 +442,7 @@ function changedType(kind) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
     document.querySelector("#inputwrapper-group").style.display = "none";
-    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "none";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
     document.querySelector("#inputwrapper-group").style.display = "block";

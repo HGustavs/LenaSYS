@@ -71,8 +71,6 @@ function GetAssignment ($hash){
 		$_SESSION["submission-password-$cid-$vers-$did-$moment"]=$hashpwd;
 		$_SESSION["submission-variant-$cid-$vers-$did-$moment"]=$variant;	
 		$_SESSION["hash"]=$hash;
-		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}<br>";
-		echo "|$hash|$hashpwd|<br>";
 		header("Location: ../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}&hash={$hash}");
 		exit();	
 	}else{
@@ -80,8 +78,6 @@ function GetAssignment ($hash){
 		header("Location: ../DuggaSys/validateHash.php");
 		exit();	
 		/*
-		echo "../DuggaSys/showDugga.php?coursename={$coursename}&courseid={$cid}&cid={$cid}&coursevers={$vers}&did={$did}&moment={$moment}&deadline={$deadline}<br>";
-		echo "|$hash|$hashpwd|<br>";
 		header("Location: ../errorpages/404.php");
 		exit();	*/
 	}
