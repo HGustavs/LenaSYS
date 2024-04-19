@@ -127,43 +127,33 @@ $testsData = array(
     ),
     //-------------------------------------------------------------------------------------------------------------------
     // This test will test the micro-service removeListentries and its curresponding part in the monolith called "DELETED"
+    // THIS WILL FAIL THE FIRST TIME IT EXECUTES AFTER INSTALLING DATABASE!
     //-------------------------------------------------------------------------------------------------------------------
     'removeListentries' => array(
-        'expected-output'   => '{"groups":{"No":["1","2","3","4","5","6","7","8"],"Le":["A","B","C","D","E","F","G","H"],"Vi":["I","II","III","IV","V","VI","VII","VIII"]},"debug":"NONE!","writeaccess":false,"studentteacher":false,"readaccess":false,"coursename":"UNK","coursevers":"UNK","coursecode":"UNK","courseid":"UNK","links":[],"duggor":[],"results":[],"versions":[{"cid":"1","coursecode":"DV12G","vers":"45656","versname":"HT15","coursename":"Webbprogrammering","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbprogrammering - HT15"},{"cid":"1","coursecode":"DV12G","vers":"45657","versname":"HT16","coursename":"Webbprogrammering","coursenamealt":"UNK","startdate":"2015-12-29 00:00:00","enddate":"2016-03-08 00:00:00","motd":"Webbprogrammering - HT16"},{"cid":"2","coursecode":"IT118G","vers":"97731","versname":"HT14","coursename":"Webbutveckling - datorgrafik","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbutveckling - datorgrafik - HT14"},{"cid":"2","coursecode":"IT118G","vers":"97732","versname":"HT15","coursename":"Webbutveckling - datorgrafik","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbutveckling - datorgrafik - HT15"},{"cid":"3","coursecode":"IT500G","vers":"1337","versname":"HT15","coursename":"Datorns grunder","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Datorns grunder - HT15"},{"cid":"4","coursecode":"IT301G","vers":"1338","versname":"HT15","coursename":"Software Engineering","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Software Engineering - HT15"},{"cid":"305","coursecode":"IT308G","vers":"12305","versname":"HT15","coursename":"Objektorienterad programmering","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"307","coursecode":"IT115G","vers":"12307","versname":"HT15","coursename":"Datorns grunder","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"308","coursecode":"MA161G","vers":"12308","versname":"HT15","coursename":"Diskret matematik","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"309","coursecode":"DA322G","vers":"12309","versname":"HT15","coursename":"Operativsystem","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"312","coursecode":"IT326G","vers":"12312","versname":"HT15","coursename":"Distribuerade system","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"319","coursecode":"DV736A","vers":"12319","versname":"HT15","coursename":"Examensarbete i datavetenskap","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"324","coursecode":"IT108G","vers":"12324","versname":"HT15","coursename":"Webbutveckling - webbplatsdesign","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"1885","coursecode":"G1337","vers":"1337","versname":"","coursename":"Testing-Course","coursenamealt":"Course for testing codeviewer","startdate":"2020-05-01 00:00:00","enddate":"2020-06-30 00:00:00","motd":"Code examples shows both templateid and boxid!"},{"cid":"1894","coursecode":"G420","vers":"52432","versname":"ST20","coursename":"Demo-Course","coursenamealt":"Chaos Theory - Conspiracy 64k Demo","startdate":"2020-05-01 00:00:00","enddate":"2020-06-30 00:00:00","motd":"Demo Course 2020 - All current duggas"}],"codeexamples":[],"unmarked":0,"startdate":"UNK","enddate":"UNK","grpmembershp":"UNK","grplst":[],"userfeedback":[],"feedbackquestion":"UNK","avgfeedbackscore":0}',
-        'query-before-test-1' => "INSERT INTO listentries (lid, cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind)   
-                                  VALUES(5020,1,45656,'New Group',9021,6,5,0,22,'TOP', 0, 0, null);",
-        'query-after-test-1' =>  "DELETE FROM listentries WHERE lid > 5009;",
+        'expected-output'   => '{"debug":"NONE!","writeaccess":true,"readaccess":true,"entries":[{"entryname":"PHP examples","visible":"1"},{"entryname":"PHP Example 1","visible":"1"},{"entryname":"PHP Example 2","visible":"1"},{"entryname":"PHP Example 3","visible":"1"},{"entryname":"Javascript examples","visible":"1"},{"entryname":"RemoveTest123","visible":"3"},{"entryname":"JavaScript Example 1","visible":"1"},{"entryname":"JavaScript Example 2","visible":"1"},{"entryname":"JavaScript Example 3","visible":"1"},{"entryname":"HTML5 examples","visible":"1"},{"entryname":"HTML5 Example 1","visible":"1"},{"entryname":"HTML5 Example 2","visible":"1"},{"entryname":"HTML5 Example 3","visible":"1"},{"entryname":"HTML5 Example 4","visible":"1"},{"entryname":"HTML5 Example 5","visible":"1"},{"entryname":"HTML5 Example 6","visible":"1"},{"entryname":"HTML5 Example 7","visible":"1"},{"entryname":"HTML5 Example 8","visible":"1"},{"entryname":"Shader examples","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"}]}',
+        'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(1,45656,'RemoveTest123',9021,6,5,0,101,'TOP', 0, 0, null);",
+        'query-before-test-2' => "SELECT lid FROM listentries WHERE entryname = 'RemoveTest123';",
+        'query-after-test-1' =>  "DELETE FROM listentries WHERE entryname = 'RemoveTest123';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
-        'service-data' => serialize(array( // Data that service needs to execute function
+        'service-data' => serialize(array( 
+            // Data that service needs to execute function
             'opt' => 'DELETED',
-            'username' => 'mestr',
+            'username' => 'brom',
             'password' => 'password',
-            'lid' => '5020'
+            'lid' => '<!query-before-test-2!><*[0]["lid"]*>',
+            'courseid' => '1',
+            'coursevers' => '45656',
         )),
-        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+        'filter-output' => serialize(array( 
+            // Filter what output to use in assert test, use none to use all ouput from service
             'debug',
             'writeaccess',
-            'studentteacher',
-            'readaccess', 
-            'coursename',
-            'coursevers',
-            'coursecode',
-            'courseid',
-            'links',
-            'duggor',
-            'results',
-            'versions',
-            'codeexamples',
-            'unmarked',
-            'startdate',
-            'enddate',
-            'groups',
-            'grpmembershp',
-            'grplst',
-            'userfeedback',
-            'feedbackquestion',
-            'avgfeedbackscore'
-    )),
+            'readaccess',
+            'entries' => array(
+                'entryname',
+                'visible',
+            ),
+        )),
     ),
     //-------------------------------------------------------------------------------------
     // This test the microservice createListentrie and the part of the monalith called "NEW"
