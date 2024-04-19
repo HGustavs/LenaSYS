@@ -2629,6 +2629,7 @@ function mmoving(event) {
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
+            
 
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
@@ -7880,12 +7881,18 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1) || specialCaseSequence) {
         var newLine = {
             id: makeRandomID(),
+            specialCase: false,
             offsetX: 0,
             offsetY: 0,
             fromID: fromElement.id,
             toID: toElement.id,
             kind: kind
         };
+
+        // If the line is a special case, set the special case to true
+        if (specialCase || specialCaseSequence) {
+            newLine.specialCase = true;
+        }
 
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
         if (findEntityFromLine(newLine) != null) {
