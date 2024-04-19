@@ -194,10 +194,6 @@ function bfs($url, $cid, $opt)
                     'method' => 'GET',
                     'header' => [
                         'User-Agent: PHP',
-                        // If you wish to avoid the API-fetch limit, below is a comment that implements the ability to send a GitHub token key, 
-                        // simply replace 'YOUR_GITHUB_API_KEY' with a working token and un-comment the line to send the token as a header for your request. 
-                        // To clarify, the syntax will remain as 'Authorization: Bearer 'YOUR_GITHUB_API_KEY' which is a personal token (Settings -> Developer Settings -> Personal Access Token)
-                        // Example: 'Authorization: Bearer ghp_y2h1AzwRlaCpUFzEgafT656bDoNSCQ7Y2GSx'
                     ]
                 ]
             ];
@@ -223,11 +219,6 @@ function bfs($url, $cid, $opt)
                 $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code."\n";
                 $file = '../../LenaSYS/log/gitErrorLog.txt';
-                
-                $myfile = fopen("a22kara.txt", "w") or die("Unable to open file!");
-                
-                fwrite($myfile, $message);
-                fclose($myfile);
                 
                 http_response_code($http_response_code);
                 error_log($message, 3, $file);

@@ -103,13 +103,13 @@
 
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		
-		$query2 = $pdolite->prepare('SELECT gitToken FROM gitToken WHERE cid=:cid');
-		$query2->bindParam(':cid', $cid);
-		$query2->execute();
+		$query = $pdolite->prepare('SELECT gitToken FROM gitToken WHERE cid=:cid');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
 
 
 		$old_token="";
-		foreach($query2->fetchAll(PDO::FETCH_ASSOC) as $row){
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$old_token = $row['gitToken'];
 		}
 
@@ -118,19 +118,19 @@
 			if(strlen($old_token)>1)
 			{
 
-				$query2 = $pdolite->prepare('UPDATE gitToken SET gitToken=:token WHERE cid=:cid');
-				$query2->bindParam(':token', $token);
-				$query2->bindParam(':cid', $cid);
-				$query2->execute();
+				$query = $pdolite->prepare('UPDATE gitToken SET gitToken=:token WHERE cid=:cid');
+				$query->bindParam(':token', $token);
+				$query->bindParam(':cid', $cid);
+				$query->execute();
 
 			}
 			else
 			{
-				$query2 = $pdolite->prepare('INSERT OR REPLACE INTO gitToken (cid, gitToken) VALUES (:cid, :token)');
+				$query = $pdolite->prepare('INSERT OR REPLACE INTO gitToken (cid, gitToken) VALUES (:cid, :token)');
 
-				$query2->bindParam(':token', $token);
-				$query2->bindParam(':cid', $cid);
-				$query2->execute();
+				$query->bindParam(':token', $token);
+				$query->bindParam(':cid', $cid);
+				$query->execute();
 			}
 		}
 	}

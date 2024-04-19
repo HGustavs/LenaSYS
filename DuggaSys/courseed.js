@@ -41,7 +41,7 @@ function updateCourse()
 	var token = document.getElementById("githubToken").value;
 	
 	//check if token is set, if it is insert information into meta data
-	if(token){
+	/* if(token){
 		$.ajax({
 			async: false,
 			url: "../DuggaSys/gitcommitService.php",
@@ -100,7 +100,34 @@ function updateCourse()
 				dataCheck = false;
 			}
 		});
-	}
+	} */
+	$.ajax({
+		async: false,
+		url: "../DuggaSys/gitcommitService.php",
+		type: "POST",
+		data: {'githubURL':courseGitURL,'cid':cid,'token':token || undefined, 'action':'directInsert'},
+		success: function() { 
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch(data.status){
+				case 403:
+					alert(data.status + " Error \nplease insert valid git key");
+					break;
+				case 422:
+					alert(data.responseJSON.message + "\nDid not create/update token");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not create/update token");
+					break;
+				default:
+					alert("Something went wrong with updating git token and git URL...");
+			}
+			dataCheck = false;
+		}
+	});
 
 	if(dataCheck)
 	{
