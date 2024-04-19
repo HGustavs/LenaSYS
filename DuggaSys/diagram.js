@@ -7778,6 +7778,18 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         toElement.kind === elementTypesNames.ERRelation
     );
 
+    // Defina a boolean for special case for sequence diagrams where multiple lines are allowed
+    var specialCaseSequence = (
+        fromElement.kind === elementTypesNames.sequenceActorAndObject &&
+        toElement.kind === elementTypesNames.sequenceActorAndObject ||
+        fromElement.kind === elementTypesNames.sequenceActivation &&
+        toElement.kind === elementTypesNames.sequenceActivation ||
+        fromElement.kind === elementTypesNames.sequenceLoopOrAlt &&
+        toElement.kind === elementTypesNames.sequenceLoopOrAlt ||
+        fromElement.kind === elementTypesNames.sequenceMessage &&
+        toElement.kind === elementTypesNames.sequenceMessage
+    );
+
     // Check rules for Recursive relations
     if (fromElement.kind === elementTypesNames.ERRelation && fromElement.kind == "Normal" || toElement.kind === elementTypesNames.ERRelation && toElement.kind == "Normal") {
         var relationID;
@@ -7811,10 +7823,13 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             return;
         }
     }
+
     // If there is no existing lines or is a special case
-    if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
+    if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1) || specialCaseSequence) {
         var newLine = {
             id: makeRandomID(),
+            offsetX: 0,
+            offsetY: 0,
             fromID: fromElement.id,
             toID: toElement.id,
             kind: kind
