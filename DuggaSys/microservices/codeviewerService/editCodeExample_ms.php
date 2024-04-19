@@ -2,7 +2,7 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-
+include_once "../";
 pdoConnect();
 session_start();
 
@@ -17,6 +17,7 @@ $sectionName=getOP('sectionname');
 $exampleName=getOP('examplename');
 $playlink=getOP('playlink');
 $debug="NONE!";
+$userid="";
 
 // Checks user id, if user has none a guest id is set
 if(isset($_SESSION['uid'])){
@@ -77,7 +78,7 @@ if(strcmp('EDITEXAMPLE',$opt)===0){
 			$query = $pdo->prepare("INSERT INTO impwordlist(exampleid,word,uid) VALUES (:exampleid,:word,:uid);");
 			$query->bindParam(':exampleid', $exampleId);
 			$query->bindParam(':word', $word);
-			$query->bindParam(':uid', $_SESSION['uid']);
+			$query->bindParam(':uid', $userid);
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug.="Error updaring example: ".$error[2]." ".__LINE__;
