@@ -727,6 +727,7 @@ function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $down
 }
 //Creates courses directory in root if it doesnt exist and courses folder inside
 function writeCoursesDir($path, $pathCoursesRoot){
+	//Creats courses folder if it doesnt already exist.
 	if(!is_dir($pathCoursesRoot)){
 		mkdir($pathCoursesRoot, 0775, true);
 	}
@@ -769,6 +770,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
 	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
 	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
+	
     $path = '../../LenaSYS/courses/' . $cid;
 	$pathCoursesRoot = '../../LenaSYS/courses';
 

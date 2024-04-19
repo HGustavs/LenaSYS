@@ -4062,7 +4062,7 @@ function fetchGitCodeExamples(courseid){
       }
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-    //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+    //Test here to view content in console. codeExamplesContent array elements contains alot of info. 
     storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
@@ -4152,9 +4152,10 @@ function fetchGitCodeExamples(courseid){
       });
     });
   }
+//Function to store Code Examples in directory and in database (metadata2.db)
 function storeCodeExamples(cid, codeExamplesContent, githubURL){
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
-
+    //Push all file data into separate arrays and add them into one single array.
     codeExamplesContent.map(function(item) {
        decodedContent.push(atob(item.content.content));
        shaKeys.push(item.content.sha);
@@ -4174,7 +4175,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       downloadURLS: downloadURL,
       fileTypes: fileType
     }
-    
+    //Send data to sectioned.php as JSON through POST and GET
     fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
        method: 'POST',
        body: JSON.stringify(AllJsonData),
@@ -4184,7 +4185,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       }) 
       .then(response => response.text())
       .then(data => {
-        console.log(data);
+        console.log(data);//Remove before pull request
       })
       .catch(error => {
           console.error('Error calling PHP function:', error);
