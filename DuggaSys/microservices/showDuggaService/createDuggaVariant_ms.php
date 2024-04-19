@@ -21,7 +21,6 @@ function getUid(){
 
   $log_uuid = getOP('log_uuid');
   $log_timestamp = getOP('log_timestamp');
-
   $log_uuid = getOP('log_uuid');
   $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
   logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php",$userid,$info);
@@ -36,23 +35,24 @@ $disabled = getOP('disabled');
 $param = getOP('param');
 $variantanswer = getOP('variantanswer');
 
-$insertData = array(
-  'quizID' => $qid,
-  'creator' => $uid,
-  'disabled' => $disabled,
-  'param' => $param,
-  'variantanswer' => $variantanswer
-); 
+// Prepare the SQL statement
+$query = $pdo->prepare("INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)");
 
-// Service call to insert data into the Variant table
-$result = insertIntoTableVariant($insertData);
+// Bind parameters
+$query->bindParam(':qid', $qid);
+$query->bindParam(':uid', $uid);
+$query->bindParam(':disabled', $disabled);
+$query->bindParam(':param', $param);
+$query->bindParam(':variantanswer', $variantanswer);
 
-if ($result['success']) {
+// Execute the query
+if ($query->execute()) {
   // Data successfully inserted into the Variant table
   echo "Data successfully inserted into the Variant table.";
 } else {
   // Error occurred during insertion
-  echo "Error: " . $result['message'];
+  $error = $query->errorInfo();
+  echo "Error: " . $error[2];
 }
 
 //????echo json_encode(retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated));
