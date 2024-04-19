@@ -1018,9 +1018,17 @@ function AJAXService(opt,apara,kind)
 
 	if(kind=="COURSE"){
 		//for testing of the microservice, delete the if/else and uncomment the original ajax call below before merge
-		if (opt === "NEWVRS") {
+		if(opt === "NEW"){
+			$.ajax({
+                url: "courseedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedCourse
+            });
+		} else if (opt === "NEWVRS") {
             $.ajax({
-                url: "../DuggaSys/microservices/courseedService/createCourseVersion_ms.php",
+                url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
@@ -1090,30 +1098,8 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedAccess
 			});
+
 	}else if(kind=="SECTION"){	
-		
-		/*
-		//For testing microservice updateQuizDeadline_ms.php 
-		if(opt === "UPDATEDEADLINE"){
-			$.ajax({
-				//url: "sectionedservice.php",
-				url: "/LenaSYS/DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-				dataType: "json",
-				success: returnedSection
-				});
-		}
-		else {
-			$.ajax({
-				url: "sectionedservice.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-				dataType: "json",
-				success: returnedSection
-				});
-		}
-		*/
 		
 		$.ajax({
 		url: "sectionedservice.php",
@@ -1125,9 +1111,21 @@ function AJAXService(opt,apara,kind)
 		
   }else if(kind=="GRP"){
 	
+
+	}else if(kind=="SECTION"){
+				$.ajax({
+					url: "sectionedservice.php",
+					type: "POST",
+					data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+					dataType: "json",
+					success: returnedSection
+				});
+			}
+			else if(kind=="GRP"){
+
     $.ajax({
       url: "sectionedservice.php",
-      //url: "../DuggaSys/microservices/sectionedservice/getCourseGroupsAndMembers_ms.php",
+      //url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
       type: "POST",
       data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
       dataType: "json",
@@ -1237,6 +1235,7 @@ function AJAXService(opt,apara,kind)
 	} else if(kind=="DUGGAFEEDBACK") {
 		$.ajax({
 			url: "showDuggaservice.php",
+			//url: "../DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php",
 			type:"POST",
 			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
 			dataType: "json",
@@ -1260,14 +1259,13 @@ function AJAXService(opt,apara,kind)
 			success: returnedUserFeedback
 		});
 		
-	}
-	else if(kind=="GROUPTOKEN") {
+	} else if(kind=="GROUPTOKEN") {
 		$.ajax({
 			url: "showDuggaservice.php",
 			type:"POST",
 			data:"AUtoken="+groupTokenValue+"&hash="+hash+"&opt="+opt+para,
 			dataType: "json"
-		});
+		});		
 	} else if(kind=="ACCESSEDDUGGA") {
 		$.ajax({
 			url: "showDuggaservice.php",
@@ -1275,8 +1273,7 @@ function AJAXService(opt,apara,kind)
 			data: "hash="+hash+"&opt="+opt+para,
 			dataType: "json"
 		});
-	}
-	else if(kind=="CONT_LOGINBOX_SERVICE") {
+	} else if(kind=="CONT_LOGINBOX_SERVICE") {
 		$.ajax({
 			url: "contribution_loginbox_service.php",
 			type:"POST",
@@ -1284,8 +1281,7 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: CONT_LOGINBOX_SERVICE_RETURN
 		});
-	}
-	else if(kind=="CONT_ACCOUNT_STATUS"){
+	} else if(kind=="CONT_ACCOUNT_STATUS"){
 		$.ajax({
 			url: "contributionservice.php",
 			type:"POST",
@@ -1604,8 +1600,8 @@ function processLogin() {
         password: password,
         opt: "LOGIN"
       },
-      success:function(data) {  		  
-		var result = JSON.parse(data);
+      success:function(data) {  	
+		var result = JSON.parse(data);  
         if(result['login'] == "success") {
 			document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
 
@@ -1627,31 +1623,40 @@ function processLogin() {
         	displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
 		}
 		else{
+			loginFail();
         	if(typeof result.reason != "undefined") {
             	displayAlertText("#login #message", result.reason);
 		  	} 
 			else {
         		displayAlertText("#login #message", "Wrong username or password");
 			}
-
-			$("input#username").addClass("loginFail");
-			$("input#password").addClass("loginFail");
 			setTimeout(function(){
-			$("input#username").removeClass("loginFail");
-			$("input#password").removeClass("loginFail");
-			displayAlertText("#login #message", "Try again");
-					}, 2000);
-          //closeWindows();
+				displayAlertText("#login #message", "Try again");
+			}, 2000);
+          	//closeWindows();
 		}
-		
-
       },
-      error:function() {
-        console.log("error");
+	  error: function(data) {
+        console.log("Login error status: "+data.status);
+		// status 200 = successful request
+        if(data.status != 200){
+			loginFail();
+        } 
       }
     });
 }
 
+// Method is called when a login attempt fails. 
+//Displays an error text and makes login inputs flash red
+function loginFail(){
+	displayAlertText("#login #message", "Wrong username or password");
+	$("input#username").addClass("loginFail");
+	$("input#password").addClass("loginFail");
+	setTimeout(function(){
+		$("input#username").removeClass("loginFail");
+		$("input#password").removeClass("loginFail");
+	}, 2000);
+}
 
 function displayAlertText(selector, text){
   $(selector).html("<div style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
@@ -1662,10 +1667,9 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-            localStorage.removeItem("ls-security-question");
-            localStorage.removeItem("securitynotification");
-
-            reloadPage();
+			localStorage.removeItem("ls-security-question");
+			localStorage.removeItem("securitynotification");
+			reloadPage();
 		},
 		error:function() {
 			console.log("error");
@@ -2037,6 +2041,13 @@ $(window).load(function() {
         }
       });
 });
+
+// Close the "logout" window by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+	if (event.key === 'Escape') {
+	  $("#logoutBox").css("display", "none");
+	}
+})
 
 /*
 
