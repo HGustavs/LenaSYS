@@ -1219,6 +1219,7 @@ function AJAXService(opt,apara,kind)
 	} else if(kind=="DUGGAFEEDBACK") {
 		$.ajax({
 			url: "showDuggaservice.php",
+			//url: "../DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php",
 			type:"POST",
 			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
 			dataType: "json",
