@@ -69,7 +69,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - setUserID_ms.php
 - setActiveCourseversion_ms.php
 - updateUserPassword_ms.php
-- createNewCodeexample_ms.php
+- createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentrie_ms.php
 - createNewVersionOfCourse_ms.php
 - setAsActiveCourse_ms.php
@@ -135,7 +135,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 <br>
 
 ---
-## --------- _Misc services used in multiple of the original services_ -------------
+## ----------------------------- _shared_microservices_ -----------------------------
 ---
 
 <br>
@@ -235,18 +235,55 @@ Uses the services __updateTableUser__ to change the content of these columns:
 
 <br>
 
-### createNewCodeexample
-__USED BY__
-- createListentrie
-- createGithubCodeexample
-<br>
+### createNewCodeExample_ms.php
+_SELECT_ operation on the table __'user'__ to retrieve the value from the column:
+- username
 
-Uses the services __insertIntoTableCodeexample__ to _insert_ into the table __codeexample__.
+- The 'uid' value in the __'user'__ table matches the value bound to :uid.
+
+```sql
+SELECT username FROM user WHERE uid = :uid;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve all columns:
+
+- Retrieves all data fields from the __'codeexample'__ table for the last (most recent) entry based on the exampleid in descending order.
+
+```sql
+SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;
+```
+
+
+_INSERT_ operation on the table __'codeexample'__ to create new rows with values for the columns:
 - cid
-- exampleid
+- examplename
 - sectionname
 - uid = 1 (static value)
 - cversion
+
+```sql
+INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);
+```
+
+
+_INSERT_ operation on the table __'listentries'__ to create new rows with values for the columns:
+- cid
+- vers
+- entryname
+- link
+- kind
+- pos
+- visible
+- creator
+- comments
+- gradesystem
+- highscoremode
+- groupKind
+
+```sql
+INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind);
+```
 
 <br>
 
