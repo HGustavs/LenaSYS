@@ -4062,8 +4062,8 @@ function fetchGitCodeExamples(courseid){
       }
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-    //Test here to view content in console. codeExamplesContent array elements contains alot of info. 
-    storeCodeExamples(cid, codeExamplesContent, githubURL);
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info. 
+      storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4140,6 +4140,7 @@ function fetchGitCodeExamples(courseid){
         success: function(response) {
           // Check if response is an array or single object, then parse the response to extract file names.
           // resolve() returns all filenames.
+          var response = response.filter(item => item.type === 'file');
           var files = Array.isArray(response) ? response : [response];
           var fileNames = files.map(function(file) {
             return file.name;
@@ -4185,7 +4186,6 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       }) 
       .then(response => response.text())
       .then(data => {
-        console.log(data);//Remove before pull request
       })
       .catch(error => {
           console.error('Error calling PHP function:', error);
