@@ -917,6 +917,23 @@ p {
   font-size: 10px;
 }
 
+#swimlaneSVG rect:nth-child(n of .progressBar){
+  fill: #620C5B80; 
+  opacity: 0.7;
+}
+
+.scheduleWeeks{
+  fill: black;
+}
+
+.evenScheduleColumn{
+  fill:#f0f0f0;
+}
+
+.oddScheduleColumn{
+  fill:#ffffff;
+}
+
 @media only screen and (max-width: 800px), only screen and (orientation:portrait) {
   #swimlaneSVG text {
       font-size: 14px;
@@ -1373,7 +1390,6 @@ header td {
 }
 
 .navheader {
-  table-layout: fixed;
   height: 20px;
   margin-bottom: 10px;
   width: 100%;
@@ -1418,6 +1434,7 @@ header td {
 }
 #courseVersionDropDown{
   vertical-align: top;
+  max-width: 60px;
 }
 
 .burgerButt {
@@ -3545,6 +3562,7 @@ span.arrow {
   background-position: right;
   margin-top: 7px;
   margin-left: 3px;
+  width: 90%;
 }
 
 /* Course version dropdown */
@@ -4889,6 +4907,8 @@ rect[class*="activitymarker"]:hover {
   margin-bottom: 5px;
   margin-right: 2px;
 }
+
+
 
 #searchBar img,
 #testSearchContainer img {
@@ -7217,8 +7237,9 @@ only screen and (max-device-width: 568px) {
 /*Scroll up arrow */
 
 .fixedScroll{
+  z-index: 1;
   position: fixed;
-  right: 205px;
+  right: 133px;
   cursor: pointer;
   bottom: 25px;
   display: none;
@@ -7228,13 +7249,17 @@ only screen and (max-device-width: 568px) {
   border: solid var(--color-border-6);
   border-width: 0 6px 6px 0;
   display: inline-block;
-  opacity: 0.5;
   padding: 6px;
 }
 
 .up {
   transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
+}
+
+.arrow:hover {
+  border-color: var(--color-accent-hover);
+  opacity: 1;
 }
 
 .tooltiptextScroll {
@@ -7246,8 +7271,9 @@ only screen and (max-device-width: 568px) {
   border-radius: 6px;
   font-size: 12px;
   opacity: 0.3;
-  bottom: 56px;
-  right: 180px;
+  right: 160px;
+  cursor: pointer;
+  bottom: 35px;
   position: fixed;
   z-index: 1;
 }

@@ -291,10 +291,10 @@
 				return;
 			} else if (strcmp('DELEXAMPLE', $opt) === 0) {
 
-				$query1 = $pdo->prepare("DELETE FROM box WHERE exampleid=:exampleid;");
+				$query1 = $pdo->prepare("DELETE FROM improw WHERE exampleid=:exampleid;");
 				$query1->bindValue(':exampleid', $exampleId);				
-
-				$query2 = $pdo->prepare("DELETE FROM improw WHERE exampleid=:exampleid;");
+				
+				$query2 = $pdo->prepare("DELETE FROM box WHERE exampleid=:exampleid;");
 				$query2->bindValue(':exampleid', $exampleId);				
 
 				$query3 = $pdo->prepare("DELETE FROM impwordlist WHERE exampleid=:exampleid;");

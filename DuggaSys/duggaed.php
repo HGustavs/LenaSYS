@@ -1,6 +1,5 @@
 
 <?php
-session_start();
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 //pdoConnect();

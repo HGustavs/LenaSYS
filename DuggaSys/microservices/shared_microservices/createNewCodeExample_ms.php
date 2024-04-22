@@ -10,8 +10,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../../coursesyspw.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../../../recursivetesting/FetchGithubRepo.php";
-include('../shared_microservices/getUid_ms.php');
+include_once "getUid_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -32,10 +31,8 @@ $grptype = getOP('grptype');
 $gradesys=getOP('gradesys');
 $tabs=getOP('tabs');
 
-
 getUid(); // call to microservice getUid_ms.php
 $userid = $_SESSION['uid'];
-
 
 // TODO: the following will be changed to a microservice, as such this should be updated to a microservice call
 
@@ -50,7 +47,6 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 	$username = $row['username'];
 }
 // *********************** ^^^^ CHANGE TO MICROSERVICE CALL ^^^^ ***********************************
-
 
 if (strcmp($opt, "NEW") === 0) {
 
@@ -112,10 +108,8 @@ if (strcmp($opt, "NEW") === 0) {
 		logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 	}
 
-
 	if (!$query->execute()) {
 		$error = $query->errorInfo();
 		$debug = "Error updating entries" . $error[2];
 	}
 }
-?>
