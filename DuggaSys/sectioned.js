@@ -1479,9 +1479,14 @@ function returnedSection(data) {
 
       for (i = 0; i < data['entries'].length; i++) {
         var item = data['entries'][i];
-        var deadline = item['deadline'];
+        var deadline = item['handindeadline'];
         var rDeadline = item['relativedeadline'];
         var released = item['release'];
+
+        if(deadline==null)
+        {
+          deadline = item['deadline'];
+        }
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
