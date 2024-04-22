@@ -1,4 +1,9 @@
 <script>
+    const types = Object.freeze({ 
+        WARNING: "warning", 
+        ERROR: "error", 
+        SUCCESS: "success"
+    }); 
     // Close the toast by clicking the X icon
     function closeToast(toastDiv){
         const toastContainer = document.getElementById('toastContainer');
@@ -53,17 +58,20 @@
 
         // Decides the type of toast (changes the type icon and toast heading)
         switch(type){
-            case "warning":
-                typeIcon.innerHTML = "warning";
+            case types.WARNING:
+                typeIcon.innerHTML = types.WARNING;
                 typeText.innerHTML = "Warning";
+                toastDiv.classList.add(types.WARNING);
                 break;
-            case "success":
+            case types.SUCCESS:
                 typeIcon.innerHTML = "check_circle";
                 typeText.innerHTML = "Success";
+                toastDiv.classList.add(types.SUCCESS);
                 break;
-            case "error":
-                typeIcon.innerHTML = "error";
+            case types.ERROR:
+                typeIcon.innerHTML = types.ERROR;
                 typeText.innerHTML = "Error";
+                toastDiv.classList.add(types.ERROR);
                 break;
             // We create a default situation in case no type is given.
             // The default toast will not have an icon nor heading.
@@ -92,13 +100,4 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <!-- The toast container containing all toasts -->
-<div id='toastContainer'>
-    <!-- The following commented out code shows the structure of a toast notication
-    <div class='toasterr'>
-        <span class="material-symbols-outlined" class='typeIcon'>warning</span>
-        <span class='typeText'></span>
-        <span class="material-symbols-outlined" class='closeIcon' onclick='closeToast()'>close</span>
-        <p class='toastText'></p>
-    </div>  -->
-</div>
-
+<div id='toastContainer'></div>

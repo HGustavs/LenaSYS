@@ -4213,3 +4213,11 @@ function getLocalStorage() {
     dropdown.value = selectedValue;
   }
 }
+
+toast("success", "Hello world!", 1000);
+
+toast("warning", "Hello world!", 1000);
+
+toast("error", "Hello world!", 1000);
+
+toast("", "Hello world!", 1000);

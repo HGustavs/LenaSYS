@@ -9415,36 +9415,43 @@ margin:2px;
 .boxSelectionLines {
   stroke:#000;
 }
+
+/* Toast notifications */
 .toast:first-child{
   margin: 2rem 1rem 0 0;
 }
-/* Toast notifications */
+
 .toast {
   display: none; 
   min-width: 200px; 
-  max-width: 300px;
-  max-height: 150px;
+  width: 400px;
+  max-width: 500px;
+  max-height: 120px;
   margin-right: 10px; 
   border-radius: 10px; 
   padding: 15px;
-
   text-align: center; 
-
   margin: 1rem 1rem 0 0;
-  /* light mode */
   background-color: #fecc56;
-  /* 
-  Darkmode
-  #e9e9e9
-  */
   color: #000; 
-
   grid-template-areas: 
   'icon type close'
   'text text text';
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3), 0 5px 20px 0 rgba(0, 0, 0, 0.3);
+}
+
+.warning{
+  background-color: #faeb3c;
+}
+
+.success{
+  background-color: #80eb80;
+}
+
+.error{
+  background-color: rgb(243, 129, 129);
 }
 
 .toast.show {
@@ -9464,9 +9471,10 @@ margin:2px;
   grid-area: "text";
   overflow-y: scroll;
   width: 300%;
-  height: 85px;
+  height: auto;
   word-break: break-word;
 }
+
 .typeIcon{
   grid-area: "icon";
   cursor: default;
@@ -9483,7 +9491,6 @@ margin:2px;
 .closeIcon{
   grid-area: "close";
   cursor: pointer;
-  /* margin-right: -90px; */
 }
 
 #toastContainer{
@@ -9493,27 +9500,27 @@ margin:2px;
   right: 0;
   position: fixed;
   z-index: 10000;
+  min-width: 20%;
 }
 
 @-webkit-keyframes fadein {
-from {top: 0; opacity: 0;}
-to {top: 30px; opacity: 1;}
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
 }
 
 @keyframes fadein {
-from {top: 0; opacity: 0;}
-to {top: 30px; opacity: 1;}
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
 }
 
 @-webkit-keyframes fadeout {
-from {top: 30px; opacity: 1;}
-to {top: 0; opacity: 0;}
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
 }
 
 @keyframes fadeout {
-from {top: 30px; opacity: 1;}
-to {top: 0; opacity: 0;}
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
 } 
-/* Toast notifications END */
 
 /* END */
