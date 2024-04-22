@@ -167,7 +167,7 @@ Profile Service:
 
 Resulted Service:
 
-- getUserAnswar_ms.php
+- getUserAnswer_ms.php __==finished==__ New filename: "readUserAnswer_ms.php" according to new nameconvention based on CRUD.
 
 <br>
 
@@ -1878,12 +1878,39 @@ Uses service __updateUserPassword__ to _get_ information it requires from __user
 <br>
 <br>
 
-### getUserAnswar  
-(writers comment: this service is small enough as is)
-<br>
+### readUserAnswer_ms.php
+readUserAnswer_ms.php manages and presents information about submitted duggor.
 
-Uses service __selectFromTableUserAnswar__ to _get_ information it requires from __userAnswer__.
-Uses service __selectFromTableListentries__ to _get_ information it requires from __Listentries__.
+_SELECT_ operation on the table __'userAnswer'__ to retrieve the columns:
+- hash
+- password
+- submitted
+- timesSubmitted
+- timesAccessed
+- moment
+- last_Time_techer_visited
+
+- The 'cid' value in the __'userAnswer'__ table matches the value bound to :cid.
+- The 'vers' value in the __'userAnswer'__ table matches the value bound to :vers.
+
+```sql
+SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers;
+```
+
+
+_SELECT_ operation on the table __'listentries'__ to retrieve the columns:
+- entryname
+- kind
+- lid
+- moment
+
+- The 'cid' value in the __'listentries'__ table matches the value bound to :cid.
+- The 'vers' value in the __'listentries'__ table matches the value bound to :vers.
+- The 'kind' value in the __'listentries'__ table is equal to 3.
+
+```sql
+SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:vers AND (kind=3);
+```
 
 <br>
 <br>
