@@ -1,3 +1,5 @@
+import { PI } from './diagram_constants.js';
+console.log(PI);
 // =============================================================================================
 //#region ================================ CLASSES =============================================
 
@@ -1444,7 +1446,7 @@ var attrViaAttrToEnt = [];
 var attrViaAttrCounter = 0;
 
 // Global statemachine init, moved from onSetup
-stateMachine = new StateMachine(data, lines);
+var stateMachine = new StateMachine(data, lines);
 
 /**
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
@@ -2397,7 +2399,7 @@ function determineLineSelect(mouseX, mouseY) {
             var points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
             for (var j = 0; j < points.length - 1; j++) {
-                currentLineSegment = {
+                let currentLineSegment = {
                     x1: points[j].split(',')[0],
                     x2: points[j + 1].split(',')[0],
                     y1: points[j].split(',')[1],
@@ -2850,13 +2852,13 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
 
     // Removes from the two arrays that keep track of the attributes connections. 
     for (var i = 0; i < linesArray.length; i++) {
-        for (j = 0; j < allAttrToEntityRelations.length; j++) {
+        for (let j = 0; j < allAttrToEntityRelations.length; j++) {
             if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
                 allAttrToEntityRelations.splice(j, 1);
                 countUsedAttributes--;
             }
         }
-        for (k = 0; k < attrViaAttrToEnt.length; k++) {
+        for (let k = 0; k < attrViaAttrToEnt.length; k++) {
             if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
                 attrViaAttrToEnt.splice(k, 1);
                 attrViaAttrCounter--;
@@ -6592,7 +6594,7 @@ function generateContextProperties() {
                     if (elementHasLines(element)) {
                         str += '<option selected ="selected" value=' + selected + '>' + selected + '</option>';
                     } else {
-                        for (i = 0; i < typesToChangeTo.length; i++) {
+                        for (let i = 0; i < typesToChangeTo.length; i++) {
                             if (selected != typesToChangeTo[i]) {
                                 str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
                             } else if (selected == typesToChangeTo[i]) {
@@ -6631,7 +6633,7 @@ function generateContextProperties() {
                 }
 
                 str += '<select id="propertySelect">';
-                for (i = 0; i < value.length; i++) {
+                for (let i = 0; i < value.length; i++) {
                     if (selected != value[i]) {
                         str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                     } else if (selected == value[i]) {
@@ -6697,7 +6699,7 @@ function generateContextProperties() {
                     }
 
                     str += '<select id="propertySelect">';
-                    for (i = 0; i < value.length; i++) {
+                    for (let i = 0; i < value.length; i++) {
                         if (selected != value[i]) {
                             str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                         } else if (selected == value[i]) {
@@ -6748,7 +6750,7 @@ function generateContextProperties() {
                         value = Object.values(inheritanceStateIE);
                     }
                     str += '<select id="propertySelect">';
-                    for (i = 0; i < value.length; i++) {
+                    for (let i = 0; i < value.length; i++) {
                         if (selected != value[i]) {
                             str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                         } else if (selected == value[i]) {
@@ -7501,6 +7503,7 @@ function multipleColorsTest() {
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
 function sortvectors(currentElementID, compareElementID, ends, elementid, axis) {
+    var toElementA, toElementB, sortval, ay, ax, by, bx, parentx, parenty;
     // Get dx dy centered on association end e.g. invert vector if necessary
     var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
     var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
@@ -8420,7 +8423,7 @@ function redrawArrows(str) {
     }
 
     // Make list of all connectors?
-    connectors = [];
+    let connectors = [];
 
     for (var i = 0; i < lines.length; i++) {
         determineLine(lines[i]);
@@ -8512,8 +8515,8 @@ function drawRulerBars(X, Y) {
     //Get elements
     if (!settings.ruler.isRulerActive) return;
 
-    svgX = document.getElementById("ruler-x-svg");
-    svgY = document.getElementById("ruler-y-svg");
+    let svgX = document.getElementById("ruler-x-svg");
+    let svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
 
     var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
@@ -8538,7 +8541,7 @@ function drawRulerBars(X, Y) {
 
     //Draw the Y-axis ruler positive side.
     var lineNumber = (lineRatio3 - 1);
-    for (i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
 
         //Check if a full line should be drawn
@@ -8567,7 +8570,7 @@ function drawRulerBars(X, Y) {
     //Draw the Y-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordY = -10;
-    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
 
         //Check if a full line should be drawn
@@ -8598,7 +8601,7 @@ function drawRulerBars(X, Y) {
 
     //Draw the X-axis ruler positive side.
     lineNumber = (lineRatio3 - 1);
-    for (i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8626,7 +8629,7 @@ function drawRulerBars(X, Y) {
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
-    for (i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8678,10 +8681,10 @@ function drawElement(element, ghosted = false) {
     var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
     //This value represents the amount of attributes, hopefully this will be calculated through
     //an array in the UML document that contains the element's attributes.
-    canvas = document.getElementById('canvasOverlay');
+    let canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    canvasContext = canvas.getContext('2d');
+    let canvasContext = canvas.getContext('2d');
 
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
@@ -8721,6 +8724,7 @@ function drawElement(element, ghosted = false) {
     //=============================================== <-- UML functionality
     //Check if the element is a UML entity
     if (element.kind == elementTypesNames.UMLEntity) {
+        let elemFunc;
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
 
         const splitLengthyLine = (str, max) => {
@@ -9648,13 +9652,13 @@ function checkLineErrors(lines) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkEREntityErrors(element) {
-    var keyQuantity;
-    var primaryCount;
-    var strongEntity;
-    var weakrelation;
+    var keyQuantity, primaryCount, strongEntity, weakrelation;
+    let fElement, fElement0, fElement1;
+    let tElement, tElement0, tElement1;
+    let line0, line1;
 
     // Checks for entities with the same name
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (element.name == data[i].name && element.id != data[i].id) {
             errorData.push(element);
         }
@@ -10007,7 +10011,7 @@ function checkEREntityErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkERRelationErrors(element) {
-    var lineQuantity;
+    let lineQuantity, fElement, tElement;
 
     // Checks for relation connected to another relation
     for (var i = 0; i < lines.length; i++) {
@@ -10960,14 +10964,11 @@ function checkERRelationErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkERAttributeErrors(element) {
+    var fElement, fElement0, fElement1, tElement, line, line0, line1, tElement1;
     for (var i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
-
-        var line0;
-        var fElement0;
-        var tElement0;
 
         // Checking for non-normal attributes on a attribute
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
