@@ -106,7 +106,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
                 }
             }
 
-            if ($isSuperUserVar ||$row['visibility']==1 || $row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) || ($row['visibility']==0 && $writeAccess){
+            if ($isSuperUserVar || $row['visibility']==1 || ($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) || ($row['visibility']==0 && $writeAccess)) {
                 $isRegisteredToCourse = false;
             }
             foreach($userRegCourses as $userRegCourse){
