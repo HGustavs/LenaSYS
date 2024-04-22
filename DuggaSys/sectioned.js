@@ -4132,7 +4132,7 @@ function fetchGitCodeExamples(courseid){
     var folderPath = filePath.substring(0, lastIndex);
     return folderPath;
   }
-
+  //Clear inputfields in githubtemplate popup box
   function purgeInputFieldsGitTemplate(){
     var inputFields =  document.querySelectorAll('.inputwrapper input');
     inputFields.forEach(input => {
