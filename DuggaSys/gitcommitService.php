@@ -33,7 +33,8 @@
 			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
 		}
 		else if($_POST['action'] == 'directInsert'){
-			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
+			
+			insertIntoSQLite($_POST['githubURL'], $_POST['cid'], $_POST['token'],);
 		}
 	};
 
@@ -76,7 +77,11 @@
 	// insertIntoSQLite: Insert into Sqlite db when new course is created
 	//--------------------------------------------------------------------------------------------------
 
-	function insertIntoSQLite($url, $cid) { 
+	function insertIntoSQLite($url, $cid, $token) { 
+		if(strlen($token)<1)
+		{
+			$token=fetchOldToken($cid);
+		}
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 		$lastCommit = bfs($url, $cid, "GETCOMMIT");
 		print_r($lastCommit);
@@ -84,10 +89,11 @@
 		$urlParting = explode('/', $url);
 		// The 4th part contains the name of the repo, which is accessed by [4]
 		$repoName = $urlParting[4];
-		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL, lastCommit) VALUES (:cid, :repoName, :repoURL, :lastCommit)"); 
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL,gitToken, lastCommit) VALUES (:cid, :repoName, :repoURL, :gitToken, :lastCommit)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoName', $repoName);
 		$query->bindParam(':repoURL', $url);
+		$query->bindParam(':gitToken', $token);
 		$query->bindParam(':lastCommit', $lastCommit);
 		
 		if (!$query->execute()) {
@@ -98,6 +104,31 @@
 			echo $errorvar;
 		} else {
 			bfs($url, $cid, "REFRESH");
+		}
+	}
+
+	function fetchOldToken($cid) 
+	{
+
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		
+		$query = $pdolite->prepare('SELECT gitToken FROM gitRepos WHERE cid=:cid');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+
+
+		$old_token="";
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$old_token = $row['gitToken'];
+		}
+
+		if(strlen($old_token)>1)
+		{
+			return $old_token;
+		}
+		else
+		{
+			return null;
 		}
 	}
 
