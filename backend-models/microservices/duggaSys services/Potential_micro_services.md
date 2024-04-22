@@ -79,7 +79,7 @@ Accessed Service:
 
 - UpdateUser_ms.php
 - updateUsercourse_ms.php
-- addClass_ms.php
+- addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - changeUserPassword_accessed_ms.php
 - addUser_ms.php
 
@@ -478,9 +478,20 @@ Uses service __updateTableUser__ to update one of these columns in the table __u
 
 <br>
 
-### addClass
+### createClass_ms.php
+_INSERT_ operation on the table __'class'__ to insert values into the following columns:
+- class
+- responsible
+- classname
+- regcode
+- classcode
+- hp
+- tempo
+- hpProgress
 
-Uses service __insertIntoTableClass__ to makes _inserts_ into the table __class__.
+```sql
+INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES(:class, :responsible, :classname, :regcode, :classcode, :hp, :tempo, :hpProgress);
+```
 
 <br>
 
