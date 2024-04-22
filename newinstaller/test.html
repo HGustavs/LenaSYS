@@ -38,30 +38,43 @@
                 <div>
                     <h2>Create New Database & User</h2>
                 </div>
-                <div>
-                    <label for="databaseName">Database Name</label>
-                    <input id="databaseName" type="text">
-                    <label for="mySQLUser">MySQL user</label>
-                    <input id="mySQLUser" type="text">
-                    <label for="hostname">Hostname</label>
-                    <input id="hostname" type="text" placeholder="Usually set to 'localhost'.">
-                    <p>Tip: Usually set to "localhost".</p>
-                    <label for="mySQLUserPW">MySQL user Password</label>
-                    <input id="mySQLUserPW" type="text">
+                <div class="inner-wrapper">
+                    <div class="body-text">
+                        <p>Provide the following data for the data and user.</p>
+                    </div>
+                    <div class="input-fields">
+                        <div class="input-field">
+                            <label for="databaseName">Database Name</label>
+                            <input id="databaseName" type="text">
+                        </div>
+                        <div class="input-field">
+                            <label for="mySQLUser">MySQL user</label>
+                            <input id="mySQLUser" type="text">
+                        </div>
+                        <div class="input-field">
+                            <label for="hostname">Hostname</label>
+                            <input id="hostname" type="text" placeholder="Usually set to 'localhost'.">
+                            <p>Tip: Usually set to "localhost".</p>
+                        </div>
+                        <div class="input-field">
+                            <label for="mySQLUserPW">MySQL user Password</label>
+                            <input id="mySQLUserPW" type="text">
+                        </div>
+                    </div>
+                    <div class="checkboxes">
+                        <input id="distEnvironment" type="checkbox">
+                        <label for="distEnvironment">Use Distributed Environment</label>
+                        <input id="iniDatabaseTrans" type="checkbox">
+                        <label for="iniDatabaseTrans">Initialize database as transaction</label>
+                        <input id="overwriteDatabase" type="checkbox">
+                        <label for="overwriteDatabase">Overwrite existing database and user names</label>
+                        <p class="warning">WARNING! Overwriting databases and users cannot be undone!</p>
+                    </div>
                 </div>
-                <div>
-                    <input id="distEnvironment" type="checkbox">
-                    <label for="distEnvironment">Use Distributed Environment</label>
-                    <input id="iniDatabaseTrans" type="checkbox">
-                    <label for="iniDatabaseTrans">Initialize database as transaction</label>
-                    <input id="overwriteDatabase" type="checkbox">
-                    <label for="overwriteDatabase">Overwrite existing database and user names</label>
-                    <p class="warning">WARNING! Overwriting databases and users cannot be undone!</p>
+                <div class="footer">
+                    <button>Back</button>
+                    <button>Continue</button>
                 </div>
-            </div>
-            <div class="footer">
-                <button>Back</button>
-                <button>Continue</button>
             </div>
         </div>
     </div>

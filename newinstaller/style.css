@@ -12,6 +12,7 @@
     --text-light: #FEFCFF;
     --text-dark: #1E1E1E;
     --header-font: "Montserrat", sans-serif;
+    --body-font: "Noto Sans", sans-serif;
     --h1-fontsize: 78px;
     --h2-fontsize: 54px;
 }
@@ -64,4 +65,26 @@ h2{
     color: var(--primary-color);
     font-size: var(--h2-fontsize);
     margin-top: 0rem;
+}
+
+.inner-wrapper{
+    padding-left: 2rem;
+}
+
+.body-text{
+    font-family: var(--body-font);
+}
+
+/* Group of all input fields + labels*/
+.input-fields{
+    font-family: var(--body-font);
+    width: 5rem;
+    display: grid;
+    grid-template: 50px / auto auto;
+    gap: 1rem;
+}
+
+.input-field{
+    display: flex;
+    flex-direction: column;
 }
