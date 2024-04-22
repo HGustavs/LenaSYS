@@ -7649,6 +7649,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     if (toElement.kind == "EREntity" || toElement.kind == "ERRelation") {
         if(toElement.state == "weak"){
             kind = "Double";
+            fromElement.state = "weak";
         }
         else {
             var tempElement = toElement;
