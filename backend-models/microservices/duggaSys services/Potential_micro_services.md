@@ -152,7 +152,7 @@ Sectioned Service:
 - getCourseVersions_ms.php
 - getGitReference_ms.php
 - createGithubCodeexample_ms.php
-- getUserDuggaFeedback_ms.php
+- getUserDuggaFeedback_ms.php __==finished==__ New filename: "readUserDuggaFeedback_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
 
 <br>
@@ -1581,15 +1581,27 @@ Uses service __createNewListentrie__ to makes _inserts_ into the table __listent
 
 <br>
 
-### getUserDuggaFeedback
-<br>
+### readUserDuggaFeedback_ms.php
+readUserDuggaFeedback_ms.php retrieves feedback from users for a specific dugga and calculates the average score for that particular dugga.
 
-Retrives all information
-Uses service __selectFromTableUserduggafeedback__ to _get_ information it requires from __userduggafeedback__.
-<br>
+_SELECT_ operation on the table __'userduggafeedback'__ to select all columns where:
 
-Retrives the average score
-Uses service __selectFromTableUserduggafeedback__ to _get_ information it requires from __userduggafeedback__.
+- The 'lid' value matches the bound value for :lid.
+- The 'cid' value matches the bound value for :cid.
+
+```sql
+SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
+```
+
+
+_SELECT_ operation on the table __'userduggafeedback'__ to calculate the average of the 'score' column, aliased as 'avgScore', where:
+
+- The 'lid' value matches the bound value for :lid.
+- The 'cid' value matches the bound value for :cid.
+
+```sql
+SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
+```
 
 <br>
 
