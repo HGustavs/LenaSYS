@@ -115,7 +115,7 @@ Duggaed Service:
 - UpdateDugga_ms.php
 - deleteDugga_ms.php
 - createDuggaVariant_ms.php
-- updateDuggaVariant_ms.php
+- updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDuggaVariant_ms.php
 
 <br>
@@ -1172,11 +1172,15 @@ Uses service __insertIntoTablVariant__ to makes _inserts_ into the table __Varia
 
 <br>
 
-### updateDuggaVariant 
-Uses the services __updateTableVariant__ to change the content of these columns:
+### updateDuggaVariant_ms.php
+_UPDATE_ operation on the table __'variant'__ to update the value of the columns:
 - disabled
 - param
 - variantanswer
+
+```sql
+UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid;
+```
 
 <br>
 
