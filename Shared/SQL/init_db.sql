@@ -101,7 +101,7 @@ CREATE TABLE listentries (
 	cid 					INT UNSIGNED NOT NULL,
 	entryname 				VARCHAR(64),
 	link 					VARCHAR(200),
-	handindeadline			deadline,
+	handindeadline			DATETIME,
 	kind 					INT unsigned,
 	pos 					INT,
 	creator 				INT unsigned NOT NULL,
