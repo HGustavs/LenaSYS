@@ -175,7 +175,7 @@ Show Dugga Service:
 
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
 - processDuggaFile_ms.php
-- submitDugga_ms.php
+- saveDugga_ms.php __==finished==__ Should keep existing name. This filename is not based on CRUD because, in this particular case, a more general name is preferable as it better describes the microservice's function and avoids confusion with other services that handle similar functions.
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
 
 <br>
@@ -1810,19 +1810,52 @@ Uses service __selectFromTableSubmission__ to _get_ information it requires from
 
 <br>
 
-### submitDugga
-Get submission based on __hash__.
-Uses service __selectFromTableUserAnswer__ to _get_ information it requires from __userAnswer__.
-<br>
+### submitDugga_ms.php
 
-These are not services but __methods__. 
-#### updateUserAnswer
-Uses the services __updateTableUserAnswer__ to change the content of these columns:
-- useranswer
+_SELECT_ operation on the table __'userAnswer'__ to retrieve values from the columns:
+- password
 - timesSubmitted
+- timesAccessed
+- grade
 
-#### createUserAnswer
-Uses service __insertIntoTableUserAnswer__ to makes _inserts_ into the table __userAnswer__.
+- The 'hash' value in the __'userAnswer'__ table matches the value bound to :hash.
+
+```sql
+SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;
+```
+
+
+_UPDATE_ operation on the table __'userAnswer'__ to modify rows where:
+
+- The 'hash' value in the __'userAnswer'__ table matches the value bound to :hash, and
+- The 'password' value in the 'userAnswer' table matches the value bound to :hashpwd.
+
+Set the values for the columns:
+- submitted to the current date and time (NOW()),
+- useranswer to the value bound to :useranswer,
+- Increment the timesSubmitted by 1.
+
+```sql
+UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timesSubmitted=timesSubmitted+1 WHERE hash=:hash AND password=:hashpwd;
+```
+
+
+_INSERT_ operation on the table __'userAnswer'__ to create new rows with values for the columns:
+- cid
+- quiz
+- moment
+- vers
+- variant
+- hash
+- password
+- timesSubmitted (initialized to 1)
+- timesAccessed (initialized to 1)
+- useranswer
+- submitted (set to the current date and time, NOW())
+
+```sql
+INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted,timesAccessed,useranswer,submitted) VALUES(:cid,:did,:moment,:coursevers,:variant,:hash,:password,1,1,:useranswer,now());
+```
 
 <br>
 
