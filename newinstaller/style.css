@@ -1,0 +1,52 @@
+
+/* Import fonts Noto Sans and Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Variable Declaration*/
+:root{
+    --primary-color: #8F58A3;
+    --secondary-color: rgba(143, 88, 163, 0.4);
+    --third-color: #D9D9D9;
+    --warning-text: #F05555;
+    --success-text: #5FCE71;
+    --text-light: #FEFCFF;
+    --text-dark: #1E1E1E;
+    --header-font: "Montserrat", sans-serif;
+    --h1-fontsize: 64px;
+    --h2-fontsize: 48px;
+}
+
+html body{
+    margin: 0;
+}
+
+.page{
+    margin: 2rem;
+    border: 1px solid var(--primary-color);
+}
+
+.wrapper{
+    padding: 1rem;
+}
+
+.header{
+    background-color: var(--primary-color);
+}
+
+.header h1{
+    font-family: var(--header-font);
+    color: var(--text-light);
+    font-size: var(--h1-fontsize);
+    margin-top: 0;
+    padding: 1rem;
+}
+
+.breadcrumbs{
+    display: flex;
+}
+
+h2{
+    font-family: var(--header-font);
+    color: var(--primary-color);
+    font-size: var(--h2-fontsize);
+}

@@ -8,40 +8,44 @@
     <title>New Installer Test</title>
 </head>
 <body>
-    <div class="header">
-        <h1> New Installer <b>LenaSYS</b> </h1>
-    </div>
-    <div class="breadcrumb">
-        <p>Step 1</p><p>Step 2</p><p>Step 3</p><p>Step 4</p><p>Step 5</p><p>Step 6</p>
-    </div>
-    <div class="content">
-        <div>
-            <h2>Create New Database & User</h2>
+    <div class="page">
+        <div class="header">
+            <h1> New Installer <b>LenaSYS</b> </h1>
         </div>
-        <div>
-            <label for="databaseName">Database Name</label>
-            <input id="databaseName" type="text">
-            <label for="mySQLUser">MySQL user</label>
-            <input id="mySQLUser" type="text">
-            <label for="hostname">Hostname</label>
-            <input id="hostname" type="text" placeholder="Usually set to 'localhost'.">
-            <p>Tip: Usually set to "localhost".</p>
-            <label for="mySQLUserPW">MySQL user Password</label>
-            <input id="mySQLUserPW" type="text">
+            <div class="wrapper">
+            <div class="breadcrumbs">
+                <p>Step 1</p><p>Step 2</p><p>Step 3</p><p>Step 4</p><p>Step 5</p><p>Step 6</p>
+            </div>
+            <div class="content">
+                <div>
+                    <h2>Create New Database & User</h2>
+                </div>
+                <div>
+                    <label for="databaseName">Database Name</label>
+                    <input id="databaseName" type="text">
+                    <label for="mySQLUser">MySQL user</label>
+                    <input id="mySQLUser" type="text">
+                    <label for="hostname">Hostname</label>
+                    <input id="hostname" type="text" placeholder="Usually set to 'localhost'.">
+                    <p>Tip: Usually set to "localhost".</p>
+                    <label for="mySQLUserPW">MySQL user Password</label>
+                    <input id="mySQLUserPW" type="text">
+                </div>
+                <div>
+                    <input id="distEnvironment" type="checkbox">
+                    <label for="distEnvironment">Use Distributed Environment</label>
+                    <input id="iniDatabaseTrans" type="checkbox">
+                    <label for="iniDatabaseTrans">Initialize database as transaction</label>
+                    <input id="overwriteDatabase" type="checkbox">
+                    <label for="overwriteDatabase">Overwrite existing database and user names</label>
+                    <p class="warning">WARNING! Overwriting databases and users cannot be undone!</p>
+                </div>
+            </div>
+            <div class="footer">
+                <button>Back</button>
+                <button>Continue</button>
+            </div>
         </div>
-        <div>
-            <input id="distEnvironment" type="checkbox">
-            <label for="distEnvironment">Use Distributed Environment</label>
-            <input id="iniDatabaseTrans" type="checkbox">
-            <label for="iniDatabaseTrans">Initialize database as transaction</label>
-            <input id="overwriteDatabase" type="checkbox">
-            <label for="overwriteDatabase">Overwrite existing database and user names</label>
-            <p class="warning">WARNING! Overwriting databases and users cannot be undone!</p>
-        </div>
-    </div>
-   <div class="footer">
-    <button>Back</button>
-    <button>Continue</button>
    </div>
 
 </body>
