@@ -4069,6 +4069,7 @@ function fetchGitCodeExamples(courseid){
   
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
       //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+      storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4153,7 +4154,43 @@ function fetchGitCodeExamples(courseid){
       });
     });
   }
+function storeCodeExamples(cid, codeExamplesContent, githubURL){
+    var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
 
+    codeExamplesContent.map(function(item) {
+       decodedContent.push(atob(item.content.content));
+       shaKeys.push(item.content.sha);
+       fileNames.push(item.filename);
+       fileURL.push(item.content.url);
+       downloadURL.push(item.content.download_url);
+       filePath.push(item.content.path);
+       fileType.push(item.content.type);
+    });
+
+    var AllJsonData = {
+      codeExamplesContent: decodedContent,
+      SHA: shaKeys,
+      fileNames: fileNames,
+      filePaths: filePath,
+      fileURLS: fileURL,
+      downloadURLS: downloadURL,
+      fileTypes: fileType
+    }
+    
+    fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
+       method: 'POST',
+       body: JSON.stringify(AllJsonData),
+       headers: {
+        'Content-Type': 'application/json'
+       }
+      }) 
+      .then(response => response.text())
+      .then(data => {})
+      .catch(error => {
+          console.error('Error calling PHP function:', error);
+      });
+}
+  
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
     $(this).css("background", "#ccc");
