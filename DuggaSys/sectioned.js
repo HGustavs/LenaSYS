@@ -732,6 +732,7 @@ function confirmBox(operation, item = null) {
     $("#noMaterialConfirmBox").css("display", "none");
     $("#sectionShowConfirmBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none");
+    purgeInputFieldsGitTemplate();
   }
   else if (operation == "showItems" && !hideItemList.length == 0) {
     showMarkedItems(hideItemList);
@@ -4121,8 +4122,11 @@ function fetchGitCodeExamples(courseid){
     return folderPath;
   }
 
-  function checkForUpdatedFiles(files, cid){
-    //Function to use for future
+  function purgeInputFieldsGitTemplate(){
+    var inputFields =  document.querySelectorAll('.inputwrapper input');
+    inputFields.forEach(input => {
+        input.value = '';
+    });
   }
   //Fetch all filenames from the parent folder of original input file
   async function fetchFileNames(githubURL, folderPath){
@@ -4186,6 +4190,10 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       }) 
       .then(response => response.text())
       .then(data => {
+        //For testing/finding bugs/errors
+        console.log(data);
+        
+        purgeInputFieldsGitTemplate()
       })
       .catch(error => {
           console.error('Error calling PHP function:', error);
