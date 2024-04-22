@@ -1,36 +1,71 @@
 <?php
-// Input validation and sanitization
-$courseId = filter_input(INPUT_POST, 'courseId', FILTER_VALIDATE_INT); 
-$courseName = filter_input(INPUT_POST, 'courseName', FILTER_SANITIZE_STRING);
 
+date_default_timezone_set("Europe/Stockholm");
+
+include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
+
+// Connect to database and start session.
+pdoConnect();
+session_start();
+
+$opt = getOP('opt');
+$cid=getOP('cid');
 $coursename = getOP('coursename');
+$visibility = getOP('visib');
+$coursecode = getOP('coursecode');
+$courseGitURL = getOP('courseGitURL');
+$userid="UNK";
 
-// Retrieve cid
-$cid = getOP('cid'); // Inserted here
-
-// Update Course Logic
-$updateSuccessful = updateCourse($cid, $coursename, $visibility, $coursecode);
-
-// Error handling
-if (!$updateSuccessful) {
-    $error = "Error updating course information.";
-    // Log the error
-    logError($error);
+if (isset($_SESSION['uid'])) {
+	$userid = $_SESSION['uid'];
 } else {
-    // Log the successful course update
-    logCourseEditEvent($userid, $username, $coursename, $coursecode, $visibility);
+	$userid = "UNK";
 }
 
-// Update Course Logic 
-try {
-    $query = $db->prepare("UPDATE courses SET courseName = :coursename WHERE courseId = :courseId");
-    $query->bindParam(':coursename', $coursename); // Bind the coursename variable
-    $query->bindParam(':courseId', $courseId); // Bind the courseId variable
-    $query->execute();
+// Gets username based on uid, should be a microservice call
+$query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query->execute();
 
-    // Success Response
-    echo json_encode(['status' => 'success', 'message' => 'Course updated successfully']); 
-} catch (PDOException $e) {
-    // Error Response
-    echo json_encode(['status' => 'error', 'message' => 'Error updating course: ' . $e->getMessage()]);
+$ha = null;
+$debug = "NONE!";
+
+$isSuperUserVar = isSuperUser($userid);
+$ha = $isSuperUserVar;
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+	$username = $row['username'];
 }
+
+if (strcmp($opt, "UPDATE") === 0) {
+    $query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
+    $query->bindParam(':cid', $cid);
+    $query->bindParam(':coursename', $coursename);
+    $query->bindParam(':visibility', $visibility);
+    $query->bindParam(':coursecode', $coursecode);
+    $query->bindParam(':courseGitURL', $courseGitURL);
+
+if (!$query->execute()) {
+	$error = $query->errorInfo();
+	$debug = "Error updating entries\n" . $error[2];
+    }
+
+    // Belongs to Logging 
+    if ($visibility == 0) {
+	$visibilityName = "Hidden";
+    } else if ($visibility == 1) {
+	$visibilityName = "Public";
+    } else if ($visibility == 2) {
+	$visibilityName = "Login";
+    } else if ($visibility == 3) {
+	$visibilityName = "Deleted";
+    }
+
+}
+// Logging for editing of course
+$description = $coursename . " " . $coursecode . " " . $visibilityName . " " . $courseGitURL;
+logUserEvent($userid, $username, EventTypes::EditCourse, $description);
+
+// TODO: Add echo json from retrieveCourseSeedService_ms
