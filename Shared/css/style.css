@@ -9415,10 +9415,12 @@ margin:2px;
 .boxSelectionLines {
   stroke:#000;
 }
-
+.toast:first-child{
+  margin: 2rem 1rem 0 0;
+}
 /* Toast notifications */
-#toast {
-  visibility: hidden; 
+.toast {
+  display: none; 
   min-width: 200px; 
   max-width: 300px;
   max-height: 150px;
@@ -9428,10 +9430,7 @@ margin:2px;
 
   text-align: center; 
 
-  position: fixed;
-  right: 5%;
-  top: 20px;
-  z-index: 8001; 
+  margin: 1rem 1rem 0 0;
   /* light mode */
   background-color: #fecc56;
   /* 
@@ -9440,7 +9439,6 @@ margin:2px;
   */
   color: #000; 
 
-  display: grid;
   grid-template-areas: 
   'icon type close'
   'text text text';
@@ -9449,42 +9447,51 @@ margin:2px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3), 0 5px 20px 0 rgba(0, 0, 0, 0.3);
 }
 
-#toast.show {
-  visibility: visible; 
+.toast.show {
+  display: grid; 
   -webkit-animation: fadein 0.5s;
   animation: fadein 0.5s;
 }
 
-#toast.fadeout {
-  visibility: visible; 
+.toast.fadeout {
+  display: grid;
   -webkit-animation: fadeout 1s;
   animation: fadeout 1s;
 }
 
-#toastText{
+.toastText{
   font-family: Arial; 
   grid-area: "text";
   overflow-y: scroll;
   width: 300%;
   height: 85px;
 }
-#typeIcon{
+.typeIcon{
   grid-area: "icon";
   cursor: default;
   height: 1.5rem;
 }
 
-#typeText{
+.typeText{
   grid-area: "type";
   font-family: Arial; 
   font-weight: bold;
   font-size: 1.2em;
 }
 
-#closeIcon{
+.closeIcon{
   grid-area: "close";
   cursor: pointer;
   /* margin-right: -90px; */
+}
+
+#toastContainer{
+  min-height: 100vw;
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  position: fixed;
+  z-index: 10000;
 }
 
 @-webkit-keyframes fadein {
