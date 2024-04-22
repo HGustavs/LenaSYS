@@ -55,6 +55,4 @@ if ($query->execute()) {
   echo "Error: " . $error[2];
 }
 
-//????echo json_encode(retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated));
-
 ?>
