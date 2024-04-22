@@ -21,7 +21,7 @@ $pw = getOP('pw');
 $cid = getOP('courseid');
 $opt = getOP('opt');
 $uid = getOP('uid');
-//$ssn = getOP('ssn');
+$ssn = getOP('ssn');
 $className = getOP('className');
 //$firstname = getOP('firstname');
 //$lastname = getOP('lastname');
@@ -157,17 +157,18 @@ if(checklogin() && $hasAccess) {
 
 			$uid="UNK";
 			$regstatus="UNK";
-					
+			
+			//if 1 user was sent and they have set an ssn
             if (count($user) == 1&&strcmp($user[0],"")!==0) {
-                // See if we have added with username or SSN
-                //$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
-                $userquery->bindParam(':usernameorssn1', $user[0]);
-                //$userquery->bindParam(':usernameorssn2', $user[0]);
+                // See if we have added with SSN
+                $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
+                $userquery->bindParam(':ssn', $user[0]);
+
 
                 if(!$userquery->execute()) {
                   	$error=$userquery->errorInfo();
                   	$debug.="Error adding user by ssn or username: ".$error[2];
-                }	else {
+                }else {
                   	foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){ $uid = $row["uid"];}
                 }
 
@@ -178,8 +179,8 @@ if(checklogin() && $hasAccess) {
             } else if (count($user) > 1){
               $ssn = $user[0];
               // Check if user has an account
-              //$userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
-              //$userquery->bindParam(':ssn', $ssn);
+              $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
+              $userquery->bindParam(':ssn', $ssn);
 
               	if ($userquery->execute() && $userquery->rowCount() <= 0) {	
                   	//$firstname = $user[1];
@@ -323,8 +324,7 @@ if(checklogin() && $hasAccess) {
 		array_push($entries, $entry);
 	}
 
-	$query = $pdo->prepare("SELECT /*user.firstname*/,user.uid, /*user.lastname*/ FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by /*user.firstname,user.lastname,*/ user.uid /*ORDER BY user.firstname, user.lastname;*/");
-	$query->bindParam(':cid', $cid);
+	$query = $pdo->prepare("SELECT user_course.uid FROM user_course WHERE user_course.access = 'W' GROUP by user_course.uid;");
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries\n".$error[2];
@@ -338,7 +338,6 @@ if(checklogin() && $hasAccess) {
 	}
 
 	$query = $pdo->prepare("SELECT class FROM class;");
-	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries\n".$error[2];
