@@ -111,7 +111,7 @@ Courseed Service:
 
 Duggaed Service:
 
-- createDugga_ms.php
+- createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - UpdateDugga_ms.php
 - deleteDugga_ms.php
 - createDuggaVariant_ms.php
@@ -1106,8 +1106,24 @@ SELECT motd,readonly FROM settings;
 <br>
 <br>
 
-### createDugga
-Uses service __insertIntoTableQuiz__ to makes _inserts_ into the table __quiz__. 
+### createDugga_ms.php
+_INSERT_ operation on the table __'quiz'__ to create new rows with values for the columns:
+- cid
+- autograde
+- gradesystem
+- qname
+- quizFile
+- qrelease
+- deadline
+- creator
+- vers
+- qstart
+- jsondeadline
+- group
+
+```sql
+INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (:cid,:autograde,:gradesys,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart,:jsondeadline,:group);
+```
 
 <br>
 
