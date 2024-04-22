@@ -157,11 +157,17 @@ if(checklogin() && $hasAccess) {
 			$uid="UNK";
 			$regstatus="UNK";
 			
-			//if 1 user was sent and they have set an ssn
+			//if 1 user was sent and they have set a username
             if (count($user) == 1&&strcmp($user[0],"")!==0) {
-                // See if we have added with SSN
-                $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
-                $userquery->bindParam(':ssn', $user[0]);
+
+				//extracts username from email
+				if($saveemail){
+					$username = explode('@', $saveemail)[0];
+				}
+
+                // See if user exists in database with username
+                $userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:username");
+                $userquery->bindParam(':username', $username);
 
 
                 if(!$userquery->execute()) {
@@ -176,24 +182,26 @@ if(checklogin() && $hasAccess) {
                     $debug.=$user[0]." was not found as a user in the system!\n";
                 }
             }else if (count($user) > 1){
-            	$ssn = $user[0];
-              	// Check if user has an account
-              	$userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
-              	$userquery->bindParam(':ssn', $ssn);
+            	$ssn = $user[0]; //ssn is not sent with newusers in the current implementation of lenasys
+				 
+				$saveemail = $user[3];
+				if(isset($saveemail)){
+					$username = explode('@', $saveemail)[0];
+				}else{
+					$username=makeRandomString(6);
+				}
 
-              	if ($userquery->execute() && $userquery->rowCount() <= 0) {	
+              	// Check if user has an account with username (ssn is not sent in the current implementation of lenasys)
+              	$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:username");
+              	$userquery->bindParam(':username', $username);
+              	if ($userquery->execute() && $userquery->rowCount() <= 0) {
                   	$firstname = $user[1];
                   	$lastname = $user[2];
 	                $term = $user[5];
 					$className = "UNK"; // the class is not sent with newusers in the current implementation of lenasys
-    	            $saveemail = $user[3];
+    	            
 
-                  	if($saveemail){
-                    	$username = explode('@', $saveemail)[0];
-                  	}else{
-                    	$username=makeRandomString(6);
-                  	}
-
+					//If a className has been set. (this is not implemented in lenasys right now)
                   	if(strcmp($className,"UNK")!==0){
                      	$cstmt = $pdo->prepare("SELECT class FROM class WHERE class=:clsnme;");
                       	$cstmt->bindParam(':clsnme', $className);
@@ -215,7 +223,8 @@ if(checklogin() && $hasAccess) {
                       	}
                   	}
 
-					if($user[0]!="PNR"){
+					//creates a new user if one didn't exist in the database
+					if($uid=="UNK"){
 						$rnd=standardPasswordHash(makeRandomString(9));
 						$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
 						$stmt = $pdo->prepare($querystring);
