@@ -203,6 +203,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 						'kind' => $row['kind'],
 						'moment' => $row['moment'],
 						'link' => $row['link'],
+						'deadline'=> $row['handinDeadline']
 						'visible' => $row['visible'],
 						'highscoremode' => $row['highscoremode'],
 						'gradesys' => $row['gradesystem'],
