@@ -37,31 +37,76 @@ function updateCourse()
 	var courseGitURL = $("#editcoursegit-url").val();
 	var visib = $("#visib").val();
 	var courseid = "C"+cid;
-	// Show dialog
-	$("#editCourse").css("display", "none");
+
+	var token = document.getElementById("githubToken").value;
 	
-	// Updates the course (except the course GitHub repo. 
-	// Course GitHub repo is updated in the next block of code)
-	$("#overlay").css("display", "none");
-	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-	localStorage.setItem('courseid', courseid);
-	localStorage.setItem('updateCourseName', true);
-
-	//Check if courseGitURL has a value
-	if(courseGitURL) {
-		//Check if fetchGitHubRepo returns true
-		if(fetchGitHubRepo(courseGitURL)) {
-			localStorage.setItem('courseGitHubRepo', courseGitURL);
-			//If courseGitURL has a value, display a message stating the update (with github-link) worked
-			alert("Course " + coursename + " updated with new GitHub-link!"); 
-			updateGithubRepo(courseGitURL, cid);
+	//Send information about the git url and possible git token for a course
+	$.ajax({
+		async: false,
+		url: "../DuggaSys/gitcommitService.php",
+		type: "POST",
+		data: {'githubURL':courseGitURL,'cid':cid,'token':token || undefined, 'action':'directInsert'},
+		success: function() { 
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function(data){
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch(data.status){
+				case 403:
+					alert(data.status + " Error \nplease insert valid git key");
+					break;
+				case 422:
+					alert(data.responseJSON.message + "\nDid not create/update token");
+					break;
+				case 503:
+					alert(data.responseJSON.message + "\nDid not create/update token");
+					break;
+				default:
+					alert("Something went wrong with updating git token and git URL...");
+			}
+			dataCheck = false;
 		}
-		//Else: get error message from the fetchGitHubRepo function.
+	});
 
-	} else {
-		localStorage.setItem('courseGitHubRepo', " ");
-		//If courseGitURL has no value, display an update message
-		alert("Course " + coursename + " updated!"); 
+	if(dataCheck)
+	{
+		// Show dialog
+		$("#editCourse").css("display", "none");
+		
+		// Updates the course (except the course GitHub repo. 
+		// Course GitHub repo is updated in the next block of code)
+		$("#overlay").css("display", "none");
+		AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
+		localStorage.setItem('courseid', courseid);
+		localStorage.setItem('updateCourseName', true);
+
+		const cookieValue = `; ${document.cookie}`;
+		const parts = cookieValue.split(`; ${"missingToken"}=`);
+
+		if(dataCheck && parts[1]!=1)
+		{
+			//Check if courseGitURL has a value
+			if(courseGitURL) {
+				//Check if fetchGitHubRepo returns true
+				if(fetchGitHubRepo(courseGitURL)) {
+					localStorage.setItem('courseGitHubRepo', courseGitURL);
+					//If courseGitURL has a value, display a message stating the update (with github-link) worked
+					alert("Course " + coursename + " updated with new GitHub-link!"); 
+					updateGithubRepo(courseGitURL, cid);
+				}
+				//Else: get error message from the fetchGitHubRepo function.
+
+			} else {
+				localStorage.setItem('courseGitHubRepo', " ");
+				//If courseGitURL has no value, display an update message
+				alert("Course " + coursename + " updated!"); 
+			}
+		}
+		else
+		{
+			alert("Git token is missing/expired. Commits may not be able to be fetched"); 
+		}
 	}
 }
 
@@ -278,7 +323,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 	}else{
 		$("#editcoursegit-url").val("");
 	}
-	
+	$("#githubToken").val("");
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
 	$("#coursecode").attr("data-origincode", coursecode);

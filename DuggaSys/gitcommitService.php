@@ -33,7 +33,8 @@
 			updateGithubRepo($_POST['githubURL'], $_POST['cid']);
 		}
 		else if($_POST['action'] == 'directInsert'){
-			insertIntoSQLite($_POST['githubURL'], $_POST['cid']);
+			
+			insertIntoSQLite($_POST['githubURL'], $_POST['cid'], $_POST['token'],);
 		}
 	};
 
@@ -76,11 +77,16 @@
 	// insertIntoSQLite: Insert into Sqlite db when new course is created
 	//--------------------------------------------------------------------------------------------------
 
-	function insertIntoSQLite($url, $cid) { 
+	function insertIntoSQLite($url, $cid, $token) { 
+		if(strlen($token)<1)
+		{
+			$token=fetchOldToken($cid);
+		}
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL,gitToken) VALUES (:cid, :repoURL, :gitToken)"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoURL', $url);
+		$query->bindParam(':gitToken', $token);
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			echo "Error updating file entries" . $error[2];
@@ -89,6 +95,31 @@
 			echo $errorvar;
 		} else {
 			bfs($url, $cid, "REFRESH");
+		}
+	}
+
+	function fetchOldToken($cid) 
+	{
+
+		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+		
+		$query = $pdolite->prepare('SELECT gitToken FROM gitRepos WHERE cid=:cid');
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+
+
+		$old_token="";
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$old_token = $row['gitToken'];
+		}
+
+		if(strlen($old_token)>1)
+		{
+			return $old_token;
+		}
+		else
+		{
+			return null;
 		}
 	}
 
