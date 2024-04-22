@@ -2740,6 +2740,17 @@ label.login-label {
   background-color: #f57;
 }
 
+.color-change-invalid{
+  background-color: #f57;
+  border-color: #E54;
+  border-width: 2px;
+}
+
+.color-change-valid{
+  border-color:#383;
+  border-width: 2px;
+}
+
 input.option {
   float: left;
 }

@@ -3369,7 +3369,6 @@ function validateVersionName(versionName, dialogid) {
     if (versionName === 'eversname') {
       window.bool4 = true;
     }
-
     return true;
   } else {
     $(x).fadeIn();
@@ -3390,46 +3389,31 @@ function validateVersionName(versionName, dialogid) {
 
 // ------ Validate versionID ------
 function validateCourseID(courseid, dialogid) {
-
   //regex numbers, letters and dashes, between 3 and 8 numbers
   var Code = /^[0-9]{3,8}$/;
-  var code = document.getElementById(courseid);
-  var x2 = document.getElementById(dialogid);
-  var val = document.getElementById(courseid).value;
+  var cid = document.getElementById(courseid);
+  var errorMsg = document.getElementById(dialogid);
 
-  if (val.match(Code)) {
-    $(x2).fadeOut();
-    code.style.borderColor = "#383";
-    code.style.borderWidth = "2px";
-    //code.style.backgroundColor = "#fff";
-
-    code.style.backgroundColor = backgroundColorTheme;
-    //x2.style.display = "none";
+  if (cid.value.match(Code)) {
+    $(errorMsg).fadeOut();
+    cid.classList.add("color-change-valid");
+    cid.style.backgroundColor = backgroundColorTheme;
     window.bool = true;
   } else {
-    $(x2).fadeIn();
-    code.style.borderColor = "#E54";
-    //code.style.backgroundColor = "#f57";
-    code.style.borderWidth = "2px";
-    //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
-    //x2.style.display = "block";
+    $(errorMsg).fadeIn();
+    cid.classList.add("color-change-invalid");
     window.bool = false;
     return false;
   }
-
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
   if (versionIsValid) {
-    $(x2).fadeIn();
-    code.style.borderColor = "#E54";
-    //code.style.backgroundColor = "#f57";
-    code.style.borderWidth = "2px";
-    x2.innerHTML = "Version ID already exists, try another";
-    //x2.style.display = "block";
+    $(errorMsg).fadeIn();
+    cid.classList.add("color-change-invalid");
+    errorMsg.innerHTML = "Version ID already exists, try another";
     window.bool = false;
   } else {
     return true;
   }
-
   return false
 }
 
@@ -3438,24 +3422,24 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton) {
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
-  var x4 = document.getElementById(syntaxdialogid);
-  var x8 = document.getElementById(rangedialogid);
+  var errorMsg1 = document.getElementById(syntaxdialogid);
+  var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
-    $(x4).fadeOut()
+    $(errorMsg1).fadeOut()
     //x4.style.display = "none";
     window.bool9 = true;
   } else {
-    $(x4).fadeIn()
+    $(errorMsg1).fadeIn()
     //x4.style.display = "block";
     window.bool9 = false;
   }
 
   if (emotd.value.match(EmotdRange)) {
-    $(x8).fadeOut()
+    $(errorMsg2).fadeOut()
     //x8.style.display = "none";
     window.bool9 = true;
   } else {
-    $(x8).fadeIn()
+    $(errorMsg2).fadeIn()
     //x8.style.display = "block";
     window.bool9 = false;
   }
@@ -3480,7 +3464,7 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton) {
 function validateDate(startDate, endDate, dialogID) {
   var sdate = document.getElementById(startDate);
   var edate = document.getElementById(endDate);
-  var x3 = document.getElementById(dialogID);
+  var errorMsg = document.getElementById(dialogID);
 
   var date1 = new Date(sdate.value);
   var date2 = new Date(edate.value);
@@ -3493,8 +3477,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderWidth = "2px";
     //sdate.style.backgroundColor = "#f57";
     //edate.style.backgroundColor = "#f57";
-    $(x3).fadeIn();
-    x3.innerHTML = "Both start date and end date must be filled in";
+    $(errorMsg).fadeIn();
+    errorMsg.innerHTML = "Both start date and end date must be filled in";
     //x3.style.display = "block";
     return false;
   }
@@ -3509,7 +3493,7 @@ function validateDate(startDate, endDate, dialogID) {
 
     sdate.style.backgroundColor = backgroundColorTheme;
     edate.style.backgroundColor = backgroundColorTheme;
-    $(x3).fadeOut();
+    $(errorMsg).fadeOut();
     //x3.style.display = "none";
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
@@ -3525,8 +3509,8 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderColor = "#E54";
     //sdate.style.backgroundColor = "#f57";
     //edate.style.backgroundColor = "#f57";
-    $(x3).fadeIn();
-    x3.innerHTML = "Start date has to be before end date";
+    $(errorMsg).fadeIn();
+    errorMsg.innerHTML = "Start date has to be before end date";
     //x3.style.display = "block";
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
@@ -3721,7 +3705,6 @@ function quickValidateForm(formid, submitButton) {
     //Name is a duplicate
     if (sName == item) {
       window.bool11 = true;
-
     }
 
     if (valid) {
@@ -3734,66 +3717,28 @@ function quickValidateForm(formid, submitButton) {
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
     var versId = document.getElementById("cversid").value;
-    var endialog = document.getElementById("EndDialog2");
-    endialog.innerHTML = "";
     valid = true;
-    //Compilator is stupid. Cannot use one bool. Does not execute other methods if bool is already false.
-    valid2 = true;
-    valid3 = true;
-    valid4 = true;
+    valid &= validateCourseID('cversid', 'dialog2');
+    valid &= validateVersionName('versname', 'dialog');
+    valid &= validateDate('startdate', 'enddate', 'dialog3');
+    valid &= validateMOTD('vmotd', 'dialog4', 'dialog42', 'submitCourseMotd');
 
-
-    valid = (valid && validateCourseID('cversid', 'dialog2'));
-
-    //valid = (valid && validateVersionName('versname', 'dialog')); >:|
-    valid2 = (valid2 && validateVersionName('versname', 'dialog'));
-
-    valid3 = (valid3 && validateDate('startdate', 'enddate', 'dialog3'));
-
-    valid4 = (valid4 && validateMOTD('vmotd', 'dialog4', 'dialog42', 'submitCourseMotd'));
-
-    valid = valid && valid2 && valid3 && valid4
-
-    //If fields empty
-    if (versName == null || versName == "", versId == null || versId == "") {
-      //alert("Fill in all fields");
-      //endialog.innerHTML += "Fill in all fields </br>";
-      valid = false;
-    }
-
-    if (valid) {
-      saveButton.disabled = false;
-    } else {
-      saveButton.disabled = true;
-    }
+    //Fields being empty are neutral
+    valid != (versName == null || versName == "", versId == null || versId == "");
+    saveButton.disabled = !valid;
   }
-
   // validates edit course version form
   if (formid === 'editCourseVersion') {
     var eversName = document.getElementById("eversname").value;
-    var endialog = document.getElementById("EndDialog3");
-    endialog.innerHTML = "";
     valid = true;
+    valid &= validateVersionName('eversname', 'dialog5');
+    valid &= validateDate('estartdate', 'eenddate', 'dialog6');
+    valid &= validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse');
 
-    valid = valid && validateVersionName('eversname', 'dialog5')
-    valid = valid && validateDate('estartdate', 'eenddate', 'dialog6')
-    valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
-
-    //If fields empty
-    if (eversName == null || eversName == "") {
-      //alert("Fill in all fields");
-      //endialog.innerHTML += "Fill in all fields </br>";
-      valid = false;
-    }
-
-
-    if (valid) {
-      saveButton.disabled = false;
-    } else {
-      saveButton.disabled = true;
-    }
+    //Fields being empty are neutral
+    valid != (eversName == null || eversName == "");
+    saveButton.disabled = !valid;
   }
-
 }
 
 

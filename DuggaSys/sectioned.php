@@ -480,7 +480,6 @@
 				<!--<p id="dialog42" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
-				<p id="EndDialog2" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
 			<div style='padding:5px;'>
 				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onclick="validateForm('newCourseVersion')" />
@@ -514,7 +513,6 @@
 				<!--<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibted symbols</p>-->
 				<!--<p id="dialog92" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
-				<p id="EndDialog3" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
 			<div style='padding:5px;'>
 				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
