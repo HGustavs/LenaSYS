@@ -8671,7 +8671,6 @@ function drawElement(element, ghosted = false) {
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
@@ -8708,6 +8707,9 @@ function drawElement(element, ghosted = false) {
     switch (element.kind) {
         case elementTypesNames.UMLEntity:
             str += drawElementUMLEntity(element, ghosted);
+            break;
+        case elementTypesNames.SDEntity:
+            str += drawElementSDEntity(element, ghosted);
             break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
@@ -8774,129 +8776,6 @@ function drawElement(element, ghosted = false) {
                         <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
                     </svg>
                 </div>`;
-    }
-    // Check if element is SDEntity
-    else if (element.kind == elementTypesNames.SDEntity) {
-        const maxCharactersPerLine = Math.floor(boxw / texth);
-
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in SDHeight for the element
-        for (var i = 0; i < SDHeight.length; i++) {
-            if (element.id == SDHeight[i].id) {
-                SDHeight.splice(i, 1);
-            }
-        }
-
-        // Calculate and store the SDEntity's real height
-        var SDEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
-        }
-        SDHeight.push(SDEntityHeight);
-
-        //div to encapuslate SD element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //div to encapuslate SD header
-        str += `<div style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-        //svg for SD header, background and text
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<path class="text" 
-            d="M${linew + cornerRadius},${(linew)}
-                h${(boxw - (linew * 2)) - (cornerRadius * 2)}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius)}
-                h${(boxw - (linew * 2)) * -1}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - (cornerRadius)) * -1}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius) * -1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />
-        
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for SD header
-        str += `</svg>`;
-        //end of div for SD header
-        str += `</div>`;
-
-        //div to encapuslate SD content
-
-        //Draw SD-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
-            /* find me let sdOption = document.getElementById("SDOption");
-             console.log(sdOption); */
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2 ))}
-                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw SD-content if there are no attributes.
-        }
-        else {
-            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            /*str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`; */
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for SD content
-        str += `</div>`;
     }
     //Check if element is UMLRelation
     else if (element.kind == 'UMLRelation') {
@@ -9548,6 +9427,145 @@ function drawElementUMLEntity(element, ghosted) {
     return str;
 }
 
+function drawElementSDEntity(element, ghosted){
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let str = "";
+    // Compute size variables
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    let hboxw = Math.round(element.width * zoomfact * 0.5);
+    let hboxh = Math.round(element.height * zoomfact * 0.5);
+    let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
+
+    const maxCharactersPerLine = Math.floor(boxw / texth);
+
+    let textWidth = canvasContext.measureText(element.name).width;
+
+    // If calculated size is larger than element width
+    const margin = 10 * zoomfact;
+    let tooBig = (textWidth >= (boxw - (margin * 2)));
+    let xAnchor = tooBig ? margin : hboxw;
+    let vAlignment = tooBig ? "left" : "middle";
+
+    const splitLengthyLine = (str, max) => {
+        if (str.length <= max) return str;
+        else {
+            return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
+        }
+    }
+
+    const text = element.attributes.map(line => {
+        return splitLengthyLine(line, maxCharactersPerLine);
+    }).flat();
+
+    elemAttri = text.length;
+
+    // Removes the previouse value in SDHeight for the element
+    for (let i = 0; i < SDHeight.length; i++) {
+        if (element.id == SDHeight[i].id) {
+            SDHeight.splice(i, 1);
+        }
+    }
+
+    // Calculate and store the SDEntity's real height
+    let SDEntityHeight = {
+        id: element.id,
+        height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
+    }
+    SDHeight.push(SDEntityHeight);
+
+    //div to encapuslate SD element
+    str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+
+    if (context.includes(element)) {
+        str += `z-index: 1;`;
+    }
+    if (ghosted) {
+        str += `pointer-events: none; opacity: ${ghostPreview};`;
+    }
+    str += `'>`;
+
+    //div to encapuslate SD header
+    str += `<div style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
+    //svg for SD header, background and text
+    str += `<svg width='${boxw}' height='${boxh}'>`;
+    str += `<path class="text" 
+            d="M${linew + cornerRadius},${(linew)}
+                h${(boxw - (linew * 2)) - (cornerRadius * 2)}
+                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
+                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius)}
+                h${(boxw - (linew * 2)) * -1}
+                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - (cornerRadius)) * -1}
+                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius) * -1}
+                z
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />
+        
+        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+    //end of svg for SD header
+    str += `</svg>`;
+    //end of div for SD header
+    str += `</div>`;
+
+    //div to encapuslate SD content
+
+    //Draw SD-content if there exist at least one attribute
+    if (elemAttri != 0) {
+        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
+        //svg for background
+        str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+        str += `<path class="text"
+                d="M${linew},${(linew)}
+                    h${(boxw - (linew * 2 ))}
+                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
+                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
+                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
+                    z
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
+        for (let i = 0; i < elemAttri; i++) {
+            str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
+        }
+        //end of svg for background
+        str += `</svg>`;
+        // Draw SD-content if there are no attributes.
+    }
+    else {
+        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
+        //svg for background
+        str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
+        str += `<path class="text"
+                d="M${linew},${(linew)}
+                    h${(boxw - (linew * 2))}
+                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
+                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
+                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
+                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
+                    z
+                "
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
+        //end of svg for background
+        str += `</svg>`;
+    }
+    //end of div for SD content
+    str += `</div>`;
+    return str;
+}
 const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
 const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
 const drawRect = (w, h, l, e) => {
