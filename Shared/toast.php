@@ -19,6 +19,12 @@
         // The toast div is created
         let toastDiv = document.createElement('div');
 
+        // Three divs are created to structure the toast into three smaller containers (for styling purposes)
+        // These divs will contain the toast content
+        let toastLeft = document.createElement('div');
+        let toastCenter = document.createElement('div');
+        let toastRight = document.createElement('div');
+
         // The icon for the toast type (error, warning or success) is created
         let typeIcon = document.createElement('span');
         typeIcon.classList.add('material-symbols-outlined', 'typeIcon');
@@ -44,11 +50,16 @@
         let toastText = document.createElement('p');
         toastText.classList.add('toastText');
 
-        // Add the toast contents to the toast div
-        toastDiv.appendChild(typeIcon);
-        toastDiv.appendChild(typeText);
-        toastDiv.appendChild(closeIcon);
-        toastDiv.appendChild(toastText);
+        // Adds the smaller toast divs to the bigger toast div
+        toastDiv.appendChild(toastLeft);
+        toastDiv.appendChild(toastCenter);
+        toastDiv.appendChild(toastRight);
+
+        // Add the toast contents to the smaller toast divs
+        toastLeft.appendChild(typeIcon);
+        toastCenter.appendChild(typeText);
+        toastCenter.appendChild(toastText);
+        toastRight.appendChild(closeIcon);
          
         // Add the toast div to the toast container (containing all toasts)
         toastContainer.appendChild(toastDiv);

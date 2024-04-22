@@ -9426,21 +9426,36 @@ margin:2px;
   min-width: 200px; 
   width: 400px;
   max-width: 500px;
-  max-height: 120px;
+  height: 100px;
   margin-right: 10px; 
-  border-radius: 10px; 
+  border-radius: 5px; 
   padding: 15px;
-  text-align: center; 
   margin: 1rem 1rem 0 0;
   background-color: #fecc56;
   color: #000; 
-  grid-template-areas: 
-  'icon type close'
-  'text text text';
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3), 0 5px 20px 0 rgba(0, 0, 0, 0.3);
+  opacity: 0.95;
+  grid-template-rows: 1fr;
+  grid-template-columns: 2fr 8fr 1fr;
+  grid-template-areas: "iconDiv textDiv closeDiv";
 }
+
+.toast div:nth-child(1){
+  grid-area: "iconDiv";
+}
+
+.toast div:nth-child(2){
+  grid-area: "textDiv";
+}
+
+.toast div:nth-child(3){
+  grid-area: "closeDiv";
+}
+
+.toast div:first-child, .toast div:nth-child(3){
+  width: fit-content;
+}
+
 
 .warning{
   background-color: #faeb3c;
@@ -9470,15 +9485,18 @@ margin:2px;
   font-family: Arial; 
   grid-area: "text";
   overflow-y: scroll;
-  width: 300%;
-  height: auto;
+  width: 100%;
+  min-height: 2rem;
+  height: 4rem;
   word-break: break-word;
+  text-align: start; 
 }
 
 .typeIcon{
-  grid-area: "icon";
   cursor: default;
-  height: 1.5rem;
+  font-size: 3rem;
+  height: 100%;
+  margin: 10px 0 0 0;
 }
 
 .typeText{
