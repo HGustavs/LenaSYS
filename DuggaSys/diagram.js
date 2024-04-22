@@ -1288,7 +1288,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 200,
-        height: 50,
+        height: 0, // Extra height when resizing larger than text.
         type: "UML",
         attributes: ['-Attribute'],
         functions: ['+Function'],
@@ -2626,9 +2626,12 @@ function mmoving(event) {
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = 50; // Declare the minimal height of an object
-            deltaY = startY - event.clientY;
-
+            const minHeight = (elementData.kind == "UMLEntity") ? 0 : 50; // Declare the minimal height of an object
+            if (elementData.kind === "IEEntity" || elementData.kind === "SDEntity") {
+                deltaY = (startY - event.clientY) / 2;
+            } else {
+                deltaY = startY - event.clientY;
+            }
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
@@ -8698,13 +8701,14 @@ function drawElement(element, ghosted = false) {
     }
 
     //=============================================== <-- UML functionality
-    //Check if the element is a UML entity
+    // TODO: Refactor each if into own function, then use it in switch
     switch (element.kind) {
         case elementTypesNames.UMLEntity:
             str += drawElementUMLEntity(element, ghosted);
             break;
     }
-    if (element.kind == elementTypesNames.UMLInitialState) {
+    if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
+    } else if (element.kind == elementTypesNames.UMLInitialState) {
         const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
         const theme = document.getElementById("themeBlack");
         str += `<div id="${element.id}" 
@@ -9472,7 +9476,7 @@ function drawElementUMLEntity(element, ghosted) {
     let ghostPreview = ghostLine ? 0 : 0.4;
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
+    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
     let texth = Math.round(zoomfact * textheight);
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
@@ -9492,13 +9496,16 @@ function drawElementUMLEntity(element, ghosted) {
 
     // Removes the previouse value in UMLHeight for the element
     for (let i = 0; i < UMLHeight.length; i++) {
-        if (element.id == UMLHeight[i].id)  UMLHeight.splice(i, 1);
+        if (element.id == UMLHeight[i].id) UMLHeight.splice(i, 1);
     }
 
-    // Calculate and store the UMLEntity's real height
+    let aHeight = texth * (aText.length + 1) * lineHeight;
+    let fHeight = texth * (fText.length + 1) * lineHeight;
+    let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
+    // Calculate and store the UMLEntity's real height, used for overlapping check
     UMLHeight.push({
         id: element.id,
-        height: (boxh / 2 * (2 + aText.length + fText.length)) / zoomfact
+        height: totalHeight + boxh
     });
 
     //div to encapuslate UML element
@@ -9510,9 +9517,7 @@ function drawElementUMLEntity(element, ghosted) {
             onmouseleave='mouseLeave()';' 
             style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;`;
 
-    if (ghosted) {
-        str += `pointer-events:none; opacity:${ghostPreview};`;
-    }
+    if (ghosted) str += `pointer-events:none; opacity:${ghostPreview};`;
     str += `'>`;
 
     // Header
@@ -9524,8 +9529,7 @@ function drawElementUMLEntity(element, ghosted) {
 
     // Content, Attributes
     const textBox = (s, css) => {
-        let height = (s) ? texth * (s.length + 1) * lineHeight : boxh / 2;
-        if (boxh > height) height = boxh;
+        let height = texth * (s.length + 1) * lineHeight + boxh / 2;
         let text = "";
         for (let i = 0; i < s.length; i++) {
             text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
