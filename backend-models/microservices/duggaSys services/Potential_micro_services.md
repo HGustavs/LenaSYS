@@ -91,7 +91,7 @@ Codeviewer Service:
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
 - editContentOfCodeExample_ms.php
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
-- deliteExample_ms.php
+- deleteCodeExample_ms.php __==finished==__ New filename: "deleteCodeExample_ms.php" according to new nameconvention based on CRUD.
 
 <br>
 
@@ -636,12 +636,50 @@ UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
 
 <br>
 
-### deliteExample
-Uses service __deleteFromTableBox__ to delete a row from the table __Box__.
-Uses service __deleteFromTableImprow__ to delete a row from the tabe __improw__.
-Uses service __deleteFromTableImpwordlist__ to delete a row from the tabe __impwordlist__.
-Uses service __deleteFromTableCodeexample__ to delete a row from the tabe __Codeexample__.
-Uses service __deleteFromTableListentries__ to delete a row from the tabe __listentries__.
+### deleteCodeExample_ms.php
+_DELETE_ operation on the table __'improw'__ to remove rows where:
+
+- The 'exampleid' value in the __'improw'__ table matches the value bound to :exampleid.
+
+```sql
+DELETE FROM improw WHERE exampleid=:exampleid;
+```
+
+
+_DELETE_ operation on the table __'box'__ to remove rows where:
+
+- The 'exampleid' value in the __'box'__ table matches the value bound to :exampleid.
+
+```sql
+DELETE FROM box WHERE exampleid=:exampleid;
+```
+
+
+_DELETE_ operation on the table __'impwordlist'__ to remove rows where:
+
+- The 'exampleid' value in the __'impwordlist'__ table matches the value bound to :exampleid.
+
+```sql
+DELETE FROM impwordlist WHERE exampleid=:exampleid;
+```
+
+
+_DELETE_ operation on the table __'codeexample'__ to remove rows where:
+
+- The 'exampleid' value in the __'codeexample'__ table matches the value bound to :exampleid.
+
+```sql
+DELETE FROM codeexample WHERE exampleid=:exampleid;
+```
+
+
+_DELETE_ operation on the table __'listentries'__ to remove rows where:
+
+- The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
+
+```sql
+DELETE FROM listentries WHERE lid=:lid;
+```
 
 <br>
 <br>
