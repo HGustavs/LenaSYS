@@ -11,22 +11,29 @@ session_start();
 
 $opt=getOP('opt');
 $vid=getOP('vid');
+$cid=getOP('cid');
 
-if(strcmp($opt,"DELVARI")===0){
-    $query = $pdo->prepare("DELETE FROM userAnswer WHERE variant=:vid;");
-    $query->bindParam(':vid', $vid);
+include_once "../shared_microservices/getUid_ms.php";
+$userid=getUid();
 
-    if(!$query->execute()) {
-        $error=$query->errorInfo();
-        $debug="Error updating user".$error[2];
-    }
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
 
-    $query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
-    $query->bindParam(':vid', $vid);
+    if(strcmp($opt,"DELVARI")===0){
+        $query = $pdo->prepare("DELETE FROM userAnswer WHERE variant=:vid;");
+        $query->bindParam(':vid', $vid);
 
-    if(!$query->execute()) {
-        $error=$query->errorInfo();
-        $debug="Error updating user".$error[2];
+        if(!$query->execute()) {
+            $error=$query->errorInfo();
+            $debug="Error updating user".$error[2];
+        }
+
+        $query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
+        $query->bindParam(':vid', $vid);
+
+        if(!$query->execute()) {
+            $error=$query->errorInfo();
+            $debug="Error updating user".$error[2];
+        }
     }
 }
 ?>
