@@ -26,5 +26,6 @@ if(checklogin() == true){
 		$username = $row['username'];
 	}
 }
+return $username;
 
 ?>
