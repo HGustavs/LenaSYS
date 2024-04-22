@@ -9524,11 +9524,18 @@ function drawElement(element, ghosted = false) {
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     `;
                 xAnchor += linew * multioffs;
-            }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     ${weak}`;
-            str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+                str += `<text x='50%' y='50%' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+
+            }
+            else {
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
+                    ${weak}`;
+                str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+            }
         }
         str += "</svg>";
     }
