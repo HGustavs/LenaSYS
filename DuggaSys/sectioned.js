@@ -3724,7 +3724,7 @@ function quickValidateForm(formid, submitButton) {
     valid &= validateMOTD('vmotd', 'dialog4', 'dialog42', 'submitCourseMotd');
 
     //Fields being empty are neutral
-    valid != (versName == null || versName == "", versId == null || versId == "");
+    valid &= !(versName == null || versName == "", versId == null || versId == "");
     saveButton.disabled = !valid;
   }
   // validates edit course version form
@@ -3736,7 +3736,7 @@ function quickValidateForm(formid, submitButton) {
     valid &= validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse');
 
     //Fields being empty are neutral
-    valid != (eversName == null || eversName == "");
+    valid &= !(eversName == null || eversName == "");
     saveButton.disabled = !valid;
   }
 }
