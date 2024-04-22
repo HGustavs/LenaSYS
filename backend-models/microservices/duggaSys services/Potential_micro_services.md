@@ -60,6 +60,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - createDugga
 - UpdateDugga
 - deleteDugga
+- saveDugga
 - createDuggaVariant
 - updateDuggaVariant
 - deleteDuggaVariant
@@ -660,6 +661,17 @@ Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 <br>
 
 ---
+
+<br>
+
+### saveDugga
+Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
+
+
+
+<br>
+
+--
 
 <br>
 
