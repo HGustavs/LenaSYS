@@ -154,7 +154,6 @@ if(checklogin() && $hasAccess) {
 	} else if(strcmp($opt,"ADDUSR")==0){
         $newUserData = json_decode(htmlspecialchars_decode($newusers));
         foreach ($newUserData as $user) {
-
 			$uid="UNK";
 			$regstatus="UNK";
 			
@@ -176,15 +175,15 @@ if(checklogin() && $hasAccess) {
                     if(strcmp($debug,"NONE!")===0){$debug="";}
                     $debug.=$user[0]." was not found as a user in the system!\n";
                 }
-            } else if (count($user) > 1){
-              $ssn = $user[0];
-              // Check if user has an account
-              $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
-              $userquery->bindParam(':ssn', $ssn);
+            }else if (count($user) > 1){
+            	$ssn = $user[0];
+              	// Check if user has an account
+              	$userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
+              	$userquery->bindParam(':ssn', $ssn);
 
               	if ($userquery->execute() && $userquery->rowCount() <= 0) {	
-                  	//$firstname = $user[1];
-                  	//$lastname = $user[2];
+                  	$firstname = $user[1];
+                  	$lastname = $user[2];
 	                $className = $user[count($user)-2];
     	            $saveemail = $user[3];
         	    	$regstatus = $user[count($user)-1];
@@ -211,7 +210,7 @@ if(checklogin() && $hasAccess) {
                           	$stmt->bindParam(':className', $className);
                           	if(!$stmt->execute()) {
                               	$error=$stmt->errorInfo();
-                              	$debug.="Error updating klasse malmberg\n".$error[2];
+                              	$debug.="Error inserting into class\n".$error[2];
                           	}
                       	}
                   	}
