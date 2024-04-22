@@ -24,7 +24,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 
         if(!$query->execute()) {
             $error=$query->errorInfo();
-            $debug="Error updating user".$error[2];
+            $debug="Error when trying to delete a user answer: ".$error[2];
         }
 
         $query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
@@ -32,7 +32,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 
         if(!$query->execute()) {
             $error=$query->errorInfo();
-            $debug="Error updating user".$error[2];
+            $debug="Error when trying to delete a variant: ".$error[2];
         }
     }
 }
