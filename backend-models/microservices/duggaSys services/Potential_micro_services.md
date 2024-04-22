@@ -146,7 +146,7 @@ Sectioned Service:
 - updateListentriesGradesystem_ms.php
 - setVisibleListentrie_ms.php
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
-- updateQuizDeadline_ms.php
+- updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_sectioned_ms.php
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
 - getCourseVersions_ms.php
@@ -1485,10 +1485,22 @@ Uses the services __updateTableListentries__ to change the content of these colu
 Uses the services __updateTableListentries__ to change the content of these columns:
 - visible
 
-### updateQuizDeadline
-Uses the services __updateTableQuiz__ to change the content of these columns:
+<br>
+
+---
+
+<br>
+
+### updateQuizDeadline_ms.php
+updateQuizDeadline_ms.php updates the deadline for a quiz (also referred to as a dugga).
+
+_UPDATE_ operation on the table __'quiz'__ to update the values of the columns:
 - deadline
 - relativedeadline
+
+```sql
+UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=:link;
+```
 
 <br>
 
