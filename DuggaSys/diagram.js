@@ -6860,10 +6860,10 @@ function generateContextProperties() {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
-                            str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
                         } else {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
-                            str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
                         }
                     }
                 }
