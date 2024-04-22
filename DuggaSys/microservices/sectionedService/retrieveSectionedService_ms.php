@@ -180,7 +180,8 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 	//--------------------------------
 	$entries = array();
 	if ($cvisibility) {
-		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,relativedeadline,qrelease,comments, qstart, jsondeadline, groupKind, 
+
+		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,handInDeadline,visible,code_id,listentries.gradesystem,highscoremode,deadline,relativedeadline,qrelease,comments, qstart, jsondeadline, groupKind, 
 					 ts, listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
 							WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 		$query->bindParam(':cid', $courseid);
@@ -203,7 +204,7 @@ function retrieveSectionedService(PDO $pdo, $userid, ...$sectionedInfo)
 						'kind' => $row['kind'],
 						'moment' => $row['moment'],
 						'link' => $row['link'],
-						'deadline'=> $row['handinDeadline']
+						'handinDeadline'=> $row['handinDeadline']
 						'visible' => $row['visible'],
 						'highscoremode' => $row['highscoremode'],
 						'gradesys' => $row['gradesystem'],
