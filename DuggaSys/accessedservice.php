@@ -184,9 +184,9 @@ if(checklogin() && $hasAccess) {
               	if ($userquery->execute() && $userquery->rowCount() <= 0) {	
                   	$firstname = $user[1];
                   	$lastname = $user[2];
-	                $className = $user[count($user)-2];
+	                $term = $user[5];
+					$className = "UNK"; // the class is not sent with newusers in the current implementation of lenasys
     	            $saveemail = $user[3];
-        	    	$regstatus = $user[count($user)-1];
 
                   	if($saveemail){
                     	$username = explode('@', $saveemail)[0];
@@ -253,15 +253,15 @@ if(checklogin() && $hasAccess) {
 					
           	// We have a user, connect to current course
           	if($uid!="UNK"){
-				$debug=$regstatus;						
 				if($regstatus=="Registrerad"||$regstatus=="UNK"){
-					$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R',:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
+					$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,term,creator,vers,vershistory) VALUES(:uid, :cid,'R',:term,:creator,:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
 					$stmt->bindParam(':uid', $uid);
 					$stmt->bindParam(':cid', $cid);
+					$stmt->bindParam(':term', $term);
+					$stmt->bindParam(':creator', $userid);
 					$stmt->bindParam(':vers', $coursevers);
 					$stmt->bindParam(':avers', $coursevers);
 					$stmt->bindParam(':bvers', $coursevers);
-
 					// Insert the user into the database.
 					try {
 						if(!$stmt->execute()) {
