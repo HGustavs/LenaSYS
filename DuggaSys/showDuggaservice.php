@@ -327,7 +327,7 @@ if(isSuperUser($userid)){
 					}
 				}
 			}else{
-				$debug="Unable to save dugga!";
+				$debug="Teachers cannot save dugga!";
 			}
         } 
 

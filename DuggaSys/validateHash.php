@@ -32,7 +32,8 @@
             $_SESSION["submission-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hash;
             $_SESSION["submission-password-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$hashpwd;
             $_SESSION["submission-variant-$newcourseid-$newcoursevers-$newduggaid-$newmoment"]=$variant;
-            $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/LenaSYS/sh/?s=$hash";
+            $parentDir = basename(dirname(__DIR__));
+            $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/$parentDir/sh/?s=$hash";
             header("Location: $link");
             exit();	
         }else{
