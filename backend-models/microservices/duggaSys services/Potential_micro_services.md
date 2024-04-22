@@ -122,7 +122,7 @@ Duggaed Service:
 
 Fileed Service:
 
-- deleteFileLink_ms.php
+- deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updataFileLink_ms.php
 
 <br>
@@ -1213,15 +1213,36 @@ Uses service __deliteFromTableVariant__ to delete a row from the table __variant
 <br>
 <br>
 
-### deleteFileLink
-Count rows where these conditions hold. This will indicate if the file is in used.
+### deleteFileLink_ms.php
 
-- __FROM__ fileLink, box __WHERE__ box.filename = fileLink.filename __AND__ (fileLink.kind = 2 __OR__ fileLink.kind = 3) __AND__ fileLink.fileid=:fid ;
-<br>
+_SELECT_ operation on the table __'fileLink'__ that retrieves the value of the column:
+- path
 
-If not in use, then service __deliteFromTableFileLink__ is used to delete a row from the table __fileLink__.
+```sql
+SELECT path from fileLink WHERE fileid = :fid;
+```
 
-This service contains two seperat instanses of the above mentiond code, placed in an if and else statment. 
+
+_SELECT_ operation on the tables __'fileLink'__ and __'box'__ that calculates the total count of records:
+
+- The condition is met where the filename in box matches the filename in fileLink.
+- Additionally, the kind in fileLink must be either 2 or 3.
+- The fileid in fileLink matches a specific ID provided by the user (denoted as :fid).
+
+This query serves to count the number of matching records between the two tables under the specified conditions, providing a total count where these criteria are met.
+
+```sql
+SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;
+```
+
+
+_DELETE_ operation on the table __'fileLink'__ that removes records:
+
+- Where the fileid matches a specific ID provided by the user (denoted as :fid).
+
+```sql
+DELETE FROM fileLink WHERE fileid=:fid;
+```
 
 <br>
 
