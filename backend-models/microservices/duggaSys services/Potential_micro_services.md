@@ -88,7 +88,7 @@ Accessed Service:
 Codeviewer Service:
 
 - settingCodeexampleTemplate_ms.php
-- editCodeExample_ms.php
+- editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
 - editContentOfCodeExample_ms.php
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
 - deliteExample_ms.php
@@ -529,15 +529,65 @@ Depending on if a box with the set id exists or not an insert into the table __b
 
 <br>
 
-### editCodeExample
-This service uses __updateTableCodeexample__ to update values in table __codeexample__:
+### updateCodeExample_ms.php
+updateCodeExample_ms.php handles updates of code examples.
+
+_UPDATE_ operation on the table __'codeexample'__ to update the values of the columns:
 - runlink
 - examplename
 - sectionname
+
+- The 'exampleid' value in the __'codeexample'__ table matches the value bound to :exampleid,
+- The 'cid' value in the __'codeexample'__ table matches the value bound to :cid, and
+- The 'cversion' value in the 'codeexample' table matches the value bound to :cvers.
+
+```sql
+UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
+```
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
 - beforeid
+
+- The 'exampleid' value in the __'codeexample'__ table matches the value bound to :exampleid,
+- The 'cid' value in the __'codeexample'__ table matches the value bound to :cid, and
+- The 'cversion' value in the __'codeexample'__ table matches the value bound to :cvers.
+
+```sql
+UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
+```
+
+
+_UPDATE_ operation on the table ___'codeexample'__ to update the value of the column:
 - afterid
 
-Aswell as __insertIntoTableImpwordlist__ or __deliteFromTableImpwordlist__ to add or remove a row in table __impwordlist__.
+- The 'exampleid' value in the __'codeexample'__ table matches the value bound to :exampleid,
+- The 'cid' value in the __'codeexample'__ table matches the value bound to :cid, and
+- The 'cversion' value in the __'codeexample'__ table matches the value bound to :cvers.
+
+```sql
+UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
+```
+
+
+_INSERT_ operation on the table __'impwordlist'__ to create new rows with values for the columns:
+- exampleid
+- word
+- uid
+
+```sql
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (:exampleid,:word,:uid);
+```
+
+
+_DELETE_ operation on the table __'impwordlist'__ to delete rows where:
+
+- The 'word' value in the 'impwordlist' table matches the value bound to :word,
+- The 'exampleid' value in the 'impwordlist' table matches the value bound to :exampleid.
+
+```sql
+DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
+```
 
 <br>
 
