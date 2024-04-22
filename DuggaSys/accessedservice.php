@@ -299,7 +299,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,/*firstname,lastname,ssn,*/class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W'" );
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W';" );
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
