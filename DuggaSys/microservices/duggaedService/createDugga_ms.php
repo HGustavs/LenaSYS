@@ -21,6 +21,10 @@ $groupAssignment = false;
 $debug="NONE!";
 $jsondeadline = getOP('jsondeadline');
 
+// Check if it is a group assignment
+if (strcmp($template, "group-assignment")==0){
+	$groupAssignment = true;
+}
 if(is_null($qid)||strcmp($qid,"UNK")===0){
     $query = $pdo->prepare("INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (:cid,:autograde,:gradesys,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart,:jsondeadline,:group)");
     $query->bindParam(':cid', $cid);
