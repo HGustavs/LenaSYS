@@ -317,9 +317,9 @@ if(checklogin() && $hasAccess) {
 	foreach($result as $row){
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
-			/*'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),*/
-			//'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
-			//'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
+			'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
+			'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
+			'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
 			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
 			'modified' => $row['modified'],
 			'examiner' => json_encode(['examiner' => $row['examiner'], 'uid' => $row['uid']]),
