@@ -12,8 +12,8 @@
     --text-light: #FEFCFF;
     --text-dark: #1E1E1E;
     --header-font: "Montserrat", sans-serif;
-    --h1-fontsize: 64px;
-    --h2-fontsize: 48px;
+    --h1-fontsize: 78px;
+    --h2-fontsize: 54px;
 }
 
 html body{
@@ -27,6 +27,8 @@ html body{
 
 .wrapper{
     padding: 1rem;
+    padding-top: 2.5rem;
+    background-color: #FCFCFC;
 }
 
 .header{
@@ -37,16 +39,28 @@ html body{
     font-family: var(--header-font);
     color: var(--text-light);
     font-size: var(--h1-fontsize);
-    margin-top: 0;
+    margin: 0;
     padding: 1rem;
 }
 
-.breadcrumbs{
+.breadcrumbs ul{
+    font-family: var(--header-font);
+    font-size: 20px;
     display: flex;
+    align-items: center;
+    list-style: none;
+    padding-left: .15rem;
+    margin-bottom: .5rem;
+}
+
+.arrow_icon{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 h2{
     font-family: var(--header-font);
     color: var(--primary-color);
     font-size: var(--h2-fontsize);
+    margin-top: 0rem;
 }
