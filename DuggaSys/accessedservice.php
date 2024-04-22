@@ -169,7 +169,6 @@ if(checklogin() && $hasAccess) {
                 $userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:username");
                 $userquery->bindParam(':username', $username);
 
-
                 if(!$userquery->execute()) {
                   	$error=$userquery->errorInfo();
                   	$debug.="Error adding user by ssn or username: ".$error[2];
@@ -183,7 +182,7 @@ if(checklogin() && $hasAccess) {
                 }
             }else if (count($user) > 1){
             	$ssn = $user[0]; //ssn is not sent with newusers in the current implementation of lenasys
-				 
+
 				$saveemail = $user[3];
 				if(isset($saveemail)){
 					$username = explode('@', $saveemail)[0];
