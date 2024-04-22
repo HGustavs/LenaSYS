@@ -1860,7 +1860,8 @@ Uses service __selectFromTableSubmission__ to _get_ information it requires from
 
 <br>
 
-### submitDugga_ms.php
+### saveDugga_ms.php
+saveDugga_ms.php allows the user to make multiple saves of dugga answers before final submission. The user can update their answer multiple times as needed, and the system manages these updates until an approved grade is received, which then blocks further submissions for that specific dugga.
 
 _SELECT_ operation on the table __'userAnswer'__ to retrieve values from the columns:
 - password
