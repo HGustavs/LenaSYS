@@ -89,12 +89,12 @@
 		$urlParting = explode('/', $url);
 		// The 4th part contains the name of the repo, which is accessed by [4]
 		$repoName = $urlParting[4];
-		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL,gitToken, lastCommit) VALUES (:cid, :repoName, :repoURL, :gitToken, :lastCommit)"); 
+		$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL, lastCommit, gitToken) VALUES (:cid, :repoName, :repoURL, :lastCommit, :gitToken )"); 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':repoName', $repoName);
 		$query->bindParam(':repoURL', $url);
-		$query->bindParam(':gitToken', $token);
 		$query->bindParam(':lastCommit', $lastCommit);
+		$query->bindParam(':gitToken', $token);
 		
 		if (!$query->execute()) {
 			$error = $query->errorInfo();
