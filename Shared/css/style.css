@@ -6853,7 +6853,7 @@ only screen and (max-device-width: 568px) {
 /*  diagram ERTable css  */
 #ERTable{
   overflow: scroll;
-  height: 300px;
+  height: 85vh;
   width: 96%;
   background-color: var(--color-background);
   color: var(--color-text-list);

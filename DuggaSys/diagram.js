@@ -1663,8 +1663,10 @@ document.addEventListener('keydown', function (e) {
 
     if (isKeybindValid(e, keybinds.SELECT_ALL)){
         e.preventDefault();
-        if (mouseMode != mouseModes.EDGE_CREATION) selectAll();
+        document.getElementById("mouseMode0").click();
+        selectAll();
     }
+
     if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
         e.preventDefault();
     }
@@ -2627,6 +2629,7 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
 
             const minHeight = (elementData.kind == "UMLEntity") ? 0 : 50; // Declare the minimal height of an object
+        
             if (elementData.kind === "IEEntity" || elementData.kind === "SDEntity") {
                 deltaY = (startY - event.clientY) / 2;
             } else {
@@ -8065,8 +8068,8 @@ function drawLine(line, targetGhost = false) {
         // Label position for recursive edges
         var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
         var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionX = labelPosX + label.labelMovedX + label.displacementX + zoomfact
-        const labelPositionY = labelPosY + label.labelMovedY + label.displacementY - zoomfact
+        const labelPositionX = labelPosX + zoomfact
+        const labelPositionY = labelPosY - zoomfact
 
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
@@ -8101,8 +8104,8 @@ function drawLine(line, targetGhost = false) {
                         dominant-baseline='middle'
                         text-anchor='middle'
                         style='font-size:${Math.round(zoomfact * textheight)}px;'
-                        x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
-                        y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
+                        x='${label.centerX - (2 * zoomfact)}'
+                        y='${label.centerY - (2 * zoomfact)}'>
                         ${labelValue}
                     </text>`;
         }
@@ -8522,8 +8525,8 @@ function drawRulerBars(X, Y) {
     settings.ruler.ZF = 100 * zoomfact;
     var pannedY = (Y - settings.ruler.ZF) / zoomfact;
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
-    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (1.0 / zoomfact));
-    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact));
+    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact));
 
     if (zoomfact < 0.5) {
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -8593,7 +8596,7 @@ function drawRulerBars(X, Y) {
 
     //Draw the X-axis ruler positive side.
     lineNumber = (lineRatio3 - 1);
-    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8621,7 +8624,7 @@ function drawRulerBars(X, Y) {
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
-    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
