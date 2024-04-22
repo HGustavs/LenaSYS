@@ -65,3 +65,30 @@ h2{
     font-size: var(--h2-fontsize);
     margin-top: 0rem;
 }
+
+.buttonContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.backButton{
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    width: 100px;
+    height: 45px;
+    padding: .75rem;
+    font-size: 16px;
+}
+
+.progressButton{
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: 1px solid var(--primary-color);
+    width: 100px;
+    height: 45px;
+    padding: .75rem;
+    font-size: 16px;
+}
+
+
