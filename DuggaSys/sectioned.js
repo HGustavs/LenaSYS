@@ -723,6 +723,7 @@ function confirmBox(operation, item = null) {
   else if (operation == "openGitHubTemplate") {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
+    gitTemplatePopupOutsideClickHandler();
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
@@ -752,7 +753,17 @@ function confirmBox(operation, item = null) {
     }
   });
 }
+//OnClick handler for clicking outside the template popup
+function gitTemplatePopupOutsideClickHandler(){
+  const templateContainer = document.getElementById('chooseTemplate');
+  document.addEventListener('click', function(event){
+    const target = event.target;
 
+    if(!templateContainer.contains(target)){
+      purgeInputFieldsGitTemplate();
+    }
+  });
+}
 // Creates an array over all checked items
 function markedItems(item = null) {
   var removed = false;
@@ -4191,9 +4202,9 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       .then(response => response.text())
       .then(data => {
         //For testing/finding bugs/errors
-        console.log(data);
-        
-        purgeInputFieldsGitTemplate()
+        //console.log(data);
+
+        confirmBox('closeConfirmBox');
       })
       .catch(error => {
           console.error('Error calling PHP function:', error);
