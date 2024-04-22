@@ -102,7 +102,7 @@ Courseed Service:
 - updateCourseVersion_courseed_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
 - copyCourseVersion_ms.php
-- updateCourse_ms.php (Avvakta med denna tills error i kod är löst)
+- updateCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - retrieveCourseedService_ms.php __==finished==__ New filename: "readCourseedService_ms.php" according to new nameconvention based on CRUD.
@@ -777,12 +777,26 @@ Uses the services __setAsActiveCourse__ to change the content of these columns:
 
 <br>
 
-### updateCourse
-Uses the services __updateTableCourse__ to change the content of these columns:
+### updateCourse_ms.php
+_SELECT_ operation on the table __'user'__ to retrieve the value of the column:
+- username
+
+```sql
+SELECT username FROM user WHERE uid = :uid;
+```
+
+
+_UPDATE_ operation on the table __'course'__ to update values of the columns:
 - coursename
 - visibility
 - coursecode
 - courseGitURL
+
+- The 'cid' value in the __'course'__ table matches the value bound to :cid.
+
+```sql
+UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;
+```
 
 <br>
 
