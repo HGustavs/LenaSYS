@@ -37,10 +37,10 @@ CRUD stands for the four basic operations for managing data in applications and 
     In web applications or APIs: Use the DELETE request to remove data.
     In SQL databases: Use the 'DELETE' command to remove rows from a table.
 
-
 ---
 # LIST OF ORIGINAL SERVICE FILES
 ---
+
 - accessedservice.php __==finished==__
 - codeviewerService.php __==finished==__
 - contributedservice.php : _there is no documentation for this file_ __dont know is needed__
@@ -54,13 +54,12 @@ CRUD stands for the four basic operations for managing data in applications and 
 - profileservice.php __==finished==__
 - resultedservice.php __==finished==__
 - showDuggaservice.php __==finished==__ 
-<br>
-<br>
-
 
 ---
-# LIST OF POTENTIAL SERVICES
+# LIST OF POTENTIAL MICROSERVICES
 ---
+
+Shared microservices:
 
 - logging_ms.php
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
@@ -73,33 +72,69 @@ CRUD stands for the four basic operations for managing data in applications and 
 - createNewListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
 - createNewVersionOfCourse_ms.php
 - setAsActiveCourse_ms.php __==finished==__ New filename: "updateActiveCourse_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+
+<br>
+
+Accessed Service:
+
 - UpdateUser_ms.php
 - updateUsercourse_ms.php
 - addClass_ms.php
 - changeUserPassword_accessed_ms.php
 - addUser_ms.php
+
+<br>
+
+Codeviewer Service:
+
 - settingCodeexampleTemplate_ms.php
 - editCodeExample_ms.php
 - editContentOfCodeExample_ms.php
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
 - deliteExample_ms.php
+
+<br>
+
+Courseed Service:
+
 - createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_courseed_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
 - copyCourseVersion_ms.php
-- updateCourse_ms.php
+- updateCourse_ms.php (Avvakta med denna tills error i kod är löst)
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- retrieveCourseedService_ms.php __==finished==__ New filename: "readCourseedService_ms.php" according to new nameconvention based on CRUD.
+
+<br>
+
+Duggaed Service:
+
 - createDugga_ms.php
 - UpdateDugga_ms.php
 - deleteDugga_ms.php
 - createDuggaVariant_ms.php
 - updateDuggaVariant_ms.php
 - deleteDuggaVariant_ms.php
+
+<br>
+
+Fileed Service:
+
 - deleteFileLink_ms.php
 - updataFileLink_ms.php
+
+<br>
+
+Highscore Service:
+
 - highscoreservice_ms.php
+
+<br>
+
+Sectioned Service:
+
 - getGroupValues_ms.php __==finished==__ New filename: "readGroupValues_ms.php" according to new nameconvention based on CRUD.
 - getCourseGroupsAndMembers_ms.php __==finished==__ New filename: "readCourseGroupsAndMembers_ms.php" according to new nameconvention based on CRUD.
 - deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -108,28 +143,46 @@ CRUD stands for the four basic operations for managing data in applications and 
 - reorderListentries_ms.php __==finished==__ New filename: "updateOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updateQuizDeadline_ms.php
 - updateListentriesGradesystem_ms.php
+- setVisibleListentrie_ms.php
+- getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+- updateQuizDeadline_ms.php
 - updateCourseVersion_sectioned_ms.php
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
-- setVisibleListentrie_ms.php
 - getCourseVersions_ms.php
 - getGitReference_ms.php
 - createGithubCodeexample_ms.php
 - getUserDuggaFeedback_ms.php
-- getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+- retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
+
+<br>
+
+Profile Service:
+
 - changeProfileValues_ms.php
+- updateSecurityQuestion_ms.php
+- updatePassword_ms.php
+
+<br>
+
+Resulted Service:
+
 - getUserAnswar_ms.php
+
+<br>
+
+Show Dugga Service:
+
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
 - processDuggaFile_ms.php
 - submitDugga_ms.php
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
-- retrieveCourseedService_ms.php __==finished==__ New filename: "readCourseedService_ms.php" according to new nameconvention based on CRUD.
-- retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
+
+<br>
 
 ---
 ---
-# Potential microservices 
+# Microservices 
 ---
 ---
 <br>
@@ -1313,6 +1366,41 @@ INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Chr
 
 <br>
 
+### updateListentriesTabs_ms.php
+_UPDATE_ operation on the table __'listentries'__ to modify rows with updated values for the column:
+- gradesystem
+
+- The 'lid' value in the 'listentries' table matches the value bound to :lid.
+
+```sql
+UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
+```
+
+<br>
+
+---
+
+<br>
+
+### updateListentriesGradesystem_ms.php
+
+<br>
+
+---
+
+<br>
+
+### setVisibleListentrie
+(writers comment: These both do the same thing, i would sugest combining them and use if cases instead.)
+<br>
+
+#### changeVisibleHidden
+Uses the services __updateTableListentries__ to change the content of these columns:
+- visible
+#### changeVisiblePublic
+Uses the services __updateTableListentries__ to change the content of these columns:
+- visible
+
 ### updateQuizDeadline
 Uses the services __updateTableQuiz__ to change the content of these columns:
 - deadline
@@ -1324,14 +1412,15 @@ Uses the services __updateTableQuiz__ to change the content of these columns:
 
 <br>
 
-### updateListentriesTabs_ms.php
-_UPDATE_ operation on the table __'listentries'__ to modify rows with updated values for the column:
-- gradesystem
+### readRemovedListentries_ms.php
+Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. This microservice is close related to the removeListentries_ms.php that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what readRemovedListentris_ms.php does.
 
-- The 'lid' value in the 'listentries' table matches the value bound to :lid.
+_SELECT_ operation on the table __'listentries'__ to retrieve all columns where:
+
+- The 'visible' value in the __'listentries'__ table is set to '3'.
 
 ```sql
-UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
+SELECT * FROM listentries WHERE visible = '3'
 ```
 
 <br>
@@ -1365,23 +1454,6 @@ _UPDATE_ operation on the table __'course'__ to update the value of the column:
 ```sql
 UPDATE course SET activeversion=:vers WHERE cid=:cid
 ```
-
-<br>
-
----
-
-<br>
-
-### setVisibleListentrie
-(writers comment: These both do the same thing, i would sugest combining them and use if cases instead.)
-<br>
-
-#### changeVisibleHidden
-Uses the services __updateTableListentries__ to change the content of these columns:
-- visible
-#### changeVisiblePublic
-Uses the services __updateTableListentries__ to change the content of these columns:
-- visible
 
 <br>
 
@@ -1434,23 +1506,6 @@ Uses service __selectFromTableUserduggafeedback__ to _get_ information it requir
 
 Retrives the average score
 Uses service __selectFromTableUserduggafeedback__ to _get_ information it requires from __userduggafeedback__.
-
-<br>
-
----
-
-<br>
-
-### readRemovedListentries_ms.php
-Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. This microservice is close related to the removeListentries_ms.php that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what readRemovedListentris_ms.php does.
-
-_SELECT_ operation on the table __'listentries'__ to retrieve all columns where:
-
-- The 'visible' value in the __'listentries'__ table is set to '3'.
-
-```sql
-SELECT * FROM listentries WHERE visible = '3'
-```
 
 <br>
 
