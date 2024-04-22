@@ -1943,6 +1943,13 @@ function mdown(event) {
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
+                console.log("Line clicked")
+                if (determinedLines.specialCase == true) {
+                    targetElement = data[findIndex(data, determinedLines.id)];
+                    startX = event.clientX;
+                    startY = event.clientY;
+                }
+
                 pointerState = pointerStates.CLICKED_LINE;
 
                 // If double click, open option pane
@@ -2580,7 +2587,19 @@ function mmoving(event) {
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
-            
+            // Check if the line is a special case line
+            var targetLine = lines[findIndex(lines, determinedLines.id)];
+            console.log(targetLine);
+            if (targetLine.specialCase == true) {
+                console.log("Special case line detected");
+                // Moving the line
+                movingObject = true;
+                deltaX = startX - event.clientX;
+                deltaY = startY - event.clientY;
+
+                // We update the lines offset position
+                updatelineOffset(targetLine, deltaX, deltaY);
+            }
 
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
@@ -11529,6 +11548,12 @@ function updateLabelPos(newPosX, newPosY) {
     calculateProcentualDistance(targetLabel);
     calculateLabelDisplacement(targetLabel);
     displaceFromLine(newPosX, newPosY);
+}
+
+function updatelineOffset(line, x, y) {
+    console.log("line offset: " + line.offsetX + " " + line.offsetY);
+    line.offsetX = x;
+    line.offsetY = y;
 }
 
 function calculateProcentualDistance(objectLabel, x, y) {
