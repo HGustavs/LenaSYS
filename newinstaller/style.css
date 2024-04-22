@@ -5,6 +5,8 @@
 /* Variable Declaration*/
 :root{
     --primary-color: #8F58A3;
+    --primary-color-hover: #773090;
+    --primary-color-active: #692582;
     --secondary-color: rgba(143, 88, 163, 0.4);
     --third-color: #D9D9D9;
     --warning-text: #F05555;
@@ -155,4 +157,24 @@ input[type=text]:focus{
     height: 45px;
     padding: .75rem;
     font-size: 16px;
+}
+
+.progressButton:hover{
+    cursor:pointer;
+    background-color: var(--primary-color-hover);
+    box-shadow:1px 1px 1px #1E1E1E;
+}
+
+.progressButton:active{
+    background-color: var(--primary-color-active);
+    box-shadow:2px 2px 2px #1E1E1E;
+}
+
+.backButton:hover{
+    cursor:pointer;
+    box-shadow:-1px 1px 1px #1E1E1E;
+}
+
+.backButton:active{
+    box-shadow:-2px 2px 2px #1E1E1E;
 }
