@@ -9465,6 +9465,7 @@ margin:2px;
   overflow-y: scroll;
   width: 300%;
   height: 85px;
+  word-break: break-word;
 }
 .typeIcon{
   grid-area: "icon";

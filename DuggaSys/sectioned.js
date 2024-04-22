@@ -4213,7 +4213,3 @@ function getLocalStorage() {
     dropdown.value = selectedValue;
   }
 }
-// We create a toast just to test it out :)
-
-
-toast("success", "You're the loremidnaidawhdkjadbjawdjkawhdakhdkahduejbfjhkebsfuyesyfsebfesfuysefyeidnaidawhdkjadbjawdjkawhdakhdkahduejbfjhkebsfuyesyfsebfesfuysefyeidnaidawhdkjadbjawdjkawhdakhdkahduejbfjhkebsfuyesyfsebfesfuysefyeidnaidawhdkjadbjawdjkawhdakhdkahduejbfjhkebsfuyesyfsebfesfuysefyeidnaidawhdkjadbjawdjkawhdakhdkahduejbfjhkebsfuyesyfsebfesfuysefye best!!", 120);
