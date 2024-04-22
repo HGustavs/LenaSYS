@@ -264,12 +264,12 @@ if(checklogin() && $hasAccess) {
 
 					// Insert the user into the database.
 					try {
-							if(!$stmt->execute()) {
-								$error=$stmt->errorInfo();
-								$debug.="Error connecting user to course: ".$error[2];
-							}
+						if(!$stmt->execute()) {
+							$error=$stmt->errorInfo();
+							$debug.="Error connecting user to course: ".$error[2];
+						}
 					}catch(Exception $e) {
-
+						$debug.="Error connecting user to course: ".$e->getMessage();
 					}
 				}
         	}
