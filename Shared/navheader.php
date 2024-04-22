@@ -691,7 +691,6 @@ const cooldownHolder = document.getElementById("cooldownHolder");
 setInterval(
 	function() 
 	{
-		
 		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
 		{
 			gitFetchCooldownSec.innerHTML-=1;
