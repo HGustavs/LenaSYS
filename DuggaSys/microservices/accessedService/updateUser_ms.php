@@ -6,10 +6,11 @@ include_once "../shared_microservices/getUid_ms.php";
 // connect to database
 pdoConnect();
 session_start();
-// get userId and courseId
+// get userId
 $userid = getUid(); 
 
 // get the rest of values
+$prop=getOP('prop');
 $uid = getOP('uid');
 $firstname = getOP('firstname');
 $lastname = getOP('lastname');
@@ -23,27 +24,25 @@ $className = getOP('className');
 if(checklogin() && isSuperUser($userid) == true) {
 
     if($prop=="firstname"){
-        
         $query = $pdo->prepare("UPDATE user SET firstname=:firstname WHERE uid=:uid;");
         $query->bindParam(':firstname', $firstname);
         $query->bindParam(':uid', $uid);
-        
     }else if($prop=="lastname"){
-            $query = $pdo->prepare("UPDATE user SET lastname=:lastname WHERE uid=:uid;");
-            $query->bindParam(':lastname', $lastname);
-            $query->bindParam(':uid', $uid);
+        $query = $pdo->prepare("UPDATE user SET lastname=:lastname WHERE uid=:uid;");
+        $query->bindParam(':lastname', $lastname);
+        $query->bindParam(':uid', $uid);
     }else if($prop=="ssn"){
-            $query = $pdo->prepare("UPDATE user SET ssn=:ssn WHERE uid=:uid;");
-            $query->bindParam(':ssn', $ssn);
-            $query->bindParam(':uid', $uid);
+        $query = $pdo->prepare("UPDATE user SET ssn=:ssn WHERE uid=:uid;");
+        $query->bindParam(':ssn', $ssn);
+        $query->bindParam(':uid', $uid);
     }else if($prop=="username"){
-            $query = $pdo->prepare("UPDATE user SET username=:username WHERE uid=:uid;");
-            $query->bindParam(':username', $username);
-            $query->bindParam(':uid', $uid);
+        $query = $pdo->prepare("UPDATE user SET username=:username WHERE uid=:uid;");
+        $query->bindParam(':username', $username);
+        $query->bindParam(':uid', $uid);
     }else if($prop=="class"){
-            $query = $pdo->prepare("UPDATE user SET class=:class WHERE uid=:uid;");
-            $query->bindParam(':class', $className);
-            $query->bindParam(':uid', $uid);
+        $query = $pdo->prepare("UPDATE user SET class=:class WHERE uid=:uid;");
+        $query->bindParam(':class', $className);
+        $query->bindParam(':uid', $uid);
     }
    
     if(!$query->execute()) {
@@ -51,6 +50,5 @@ if(checklogin() && isSuperUser($userid) == true) {
         $debug="Error updating entries\n".$error[2];
     }
 }
-
 
 ?>
