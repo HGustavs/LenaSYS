@@ -7776,6 +7776,7 @@ textarea#mrkdwntxt {
 
 #deleteCourseButton:hover {
   background-color:#c9555b;
+  cursor: pointer;
 }
 
 #deleteCourseButtonYes{
@@ -7788,8 +7789,13 @@ textarea#mrkdwntxt {
   font-size:16px;
   margin:0px;
   margin-right:75px;
- 
 }
+
+#deleteCourseButtonYes:hover {
+  background-color:#6e6e6e;
+  cursor: pointer;
+}
+
 #deleteCourseButtonNo{
   background-color:#e35057;
   height:40px;
@@ -7799,6 +7805,11 @@ textarea#mrkdwntxt {
   font-size:16px;
   margin:0px;
   border: solid 1px #775886;
+}
+
+#deleteCourseButtonNo:hover {
+  background-color:#810f15;
+  cursor: pointer;
 }
 
 
