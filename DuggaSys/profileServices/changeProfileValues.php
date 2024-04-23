@@ -136,7 +136,6 @@ function changeProfileValues($userid, $password, $question, $answer, $action, $n
             $status = "teacher";
         }
     }
-
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, __FILE__, $userid, $info);
 
     echo json_encode(array(
