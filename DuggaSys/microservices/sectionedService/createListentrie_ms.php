@@ -4,6 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../shared_microservices/getUid_ms.php";
+include_once "../shared_microservices/retrieveUsername_ms.php";
 
 pdoConnect();
 session_start();

@@ -2,6 +2,7 @@
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "getUid_ms.php";
+include_once "retrieveUsername_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -23,23 +24,7 @@ $pos = getOP('pos');
 $grptype = getOP('grptype');
 $gradesys = getOP('gradesys');
 $tabs = getOP('tabs');
-
 $userid = getUid();
-
-// TODO: the following will be changed to a microservice, as such this should be updated to a microservice call
-
-// *********************** vvvv CHANGE TO MICROSERVICE CALL vvvv ***********************************
-// Gets username based on uid, USED FOR LOGGING
-$query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
-$query->bindParam(':uid', $userid);
-$query->execute();
-
-// This while is only performed if userid was set through getUid(), a guest will not have it's username set, USED FOR LOGGING
-while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-    $username = $row['username'];
-}
-// *********************** ^^^^ CHANGE TO MICROSERVICE CALL ^^^^ ***********************************
-
 
 $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
 								    VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind)");
