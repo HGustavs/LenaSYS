@@ -116,7 +116,7 @@ Duggaed Service:
 - deleteDugga_ms.php
 - createDuggaVariant_ms.php
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- deleteDuggaVariant_ms.php
+- deleteDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 
 <br>
 
@@ -1277,9 +1277,25 @@ UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer 
 
 <br>
 
-### deleteDuggaVariant
-Uses service __deliteFromTableUserAnswer__ to delete a row from the table __userAnswer__.
-Uses service __deliteFromTableVariant__ to delete a row from the table __variant__.
+### deleteDuggaVariant_ms.php
+_DELETE_ operation on the table __'userAnswer'__ to remove rows where the column:
+- variant
+
+- The value in the 'variant' column matches the value specified by :vid
+
+```sql
+DELETE FROM userAnswer WHERE variant=:vid;
+```
+
+
+_DELETE_ operation on the table __'variant'__ to remove rows where the column:
+- vid
+
+- The value in the 'vid' column matches the value specified by :vid.
+
+```sql
+DELETE FROM variant WHERE vid=:vid;
+```
 
 <br>
 <br>
