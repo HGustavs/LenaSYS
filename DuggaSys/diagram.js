@@ -7706,12 +7706,19 @@ function sortElementAssociations(element) {
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
-
     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == "EREntity" || toElement.kind == "ERRelation") {
-        if (toElement.state == "weak") {
+    if (toElement.kind == "EREntity"){
+        var tempElement = toElement;
+        toElement = fromElement;
+        fromElement = tempElement;
+    }
+    //If line is comming to ERRelation from weak entity it adds double line, else - single
+    if (toElement.kind == "ERRelation") {
+        if (fromElement.state == "weak") {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
             kind = "Double";
-            fromElement.state = "weak";
         } else {
             var tempElement = toElement;
             toElement = fromElement;
