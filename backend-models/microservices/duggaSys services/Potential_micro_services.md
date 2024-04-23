@@ -78,7 +78,7 @@ Shared microservices:
 Accessed Service:
 
 - UpdateUser_ms.php
-- updateUsercourse_ms.php
+- updateUsercourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD but the filename should look like this: "updateUserCourse_ms.php".
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - changeUserPassword_accessed_ms.php
 - addUser_ms.php
@@ -459,18 +459,37 @@ Uses service __updateTableUser__ to update one of these columns in the table __u
 
 <br>
 
-### updateUsercourse
-Uses service __updateTableUser__ to update one of these columns in the table __user_course__ at a time:
+### updateUsercourse_ms.php
+_UPDATE_ operation on the table __'user_course'__ to update the value of the column:
 - examiner
 
-Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
+```sql
+UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;
+```
+
+
+_UPDATE_ operation on the table __'user_course'__ to update the value of the column:
 - vers
 
-Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
+```sql
+UPDATE user_course SET vers=:vers WHERE uid=:uid AND cid=:cid;
+```
+
+
+_UPDATE_ operation on the table __'user_course'__ to update the value of the column:
 - access
 
-Uses service __updateTableUser__ to update one of these columns in the table __user_course__, at a time:
-- group
+```sql
+UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid;
+```
+
+
+_UPDATE_ operation on the table __'user_course'__ to update the value of the column:
+- groups
+
+```sql
+UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;
+```
 
 <br>
 
