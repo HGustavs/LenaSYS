@@ -1,34 +1,17 @@
 <?php
-date_default_timezone_set("Europe/Stockholm");
-
-include_once "../../../Shared/sessions.php";
-include_once "../../../Shared/basic.php";
-include_once "getUid_ms.php";
-include_once "retrieveUsername_ms.php";
-
-// Connect to database and start session
-pdoConnect();
-session_start();
-
-// Global variables
-$courseid = getOP('courseid');
-$examplename=getOP('examplename');
-$sectname = getOP('sectname');
-$coursevers = getOP('coursevers');
-$userid = getUid();
-
-$query = $pdo->prepare("INSERT INTO codeexample(cid, examplename, sectionname, uid, cversion) values (:cid, :ename, :sname, 1, :cversion);");
-
-$query->bindParam(':cid', $courseid);
-$query->bindParam(':ename', $examplename);
-$query->bindParam(':sname', $sectname);
-$query->bindParam(':cversion', $coursevers);
-
-if (!$query->execute()) {
-	$error = $query->errorInfo();
-	$debug = "Error updating entries" . $error[2];
+function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectname, $link, $log_uuid){
+	$userid = getUid();
+	$sname = $sectname . ($exampleid + 1);
+	$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+	$query2->bindParam(':cid', $courseid);
+	$query2->bindParam(':cversion', $coursevers);
+	$query2->bindParam(':ename', $sectname);
+	$query2->bindParam(':sname', $sname);
+	if (!$query2->execute()) {
+		$error = $query2->errorInfo();
+		$debug = "Error updating entries" . $error[2];
+	}
+	$link = $pdo->lastInsertId();
+	// TODO: Add logUserEvent call
+	return $link;
 }
-
-logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
-
-echo json_encode($debug);
