@@ -771,10 +771,11 @@ const elementTypes = {
     UMLInitialState: 9,
     UMLFinalState: 10,
     UMLSuperState: 11,
-    sequenceActorAndObject: 12,
+    sequenceActor: 12,
     sequenceActivation: 13,
     sequenceLoopOrAlt: 14,
     note: 15,
+    sequenceObject: 16,
 };
 
 /**
@@ -793,7 +794,8 @@ const elementTypesNames = {
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState",
     UMLSuperState: "UMLSuperState",
-    sequenceActorAndObject: "sequenceActorAndObject",
+    sequenceActor: "sequenceActor",
+    sequenceObject: "sequenceObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "Note",
@@ -1141,7 +1143,8 @@ const subMenuUMLstate = [
     elementTypes.UMLSuperState,
 ]
 const subMenuSequence = [
-    elementTypes.sequenceActorAndObject,
+    elementTypes.sequenceActor,
+    elementTypes.sequenceObject,
     elementTypes.sequenceActivation,
     elementTypes.sequenceLoopOrAlt,
 ]
@@ -1154,7 +1157,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER: false, UML: false, IE: false, SD: false, NOTE: false};
+var diagramType = {ER: false, UML: false, IE: false, SD: false, SE: false, NOTE: false};
 
 //Grid Settings
 var settings = {
@@ -1336,17 +1339,28 @@ var defaults = {
         canChangeTo: null
     },  // UML Super State.
 
-    sequenceActorAndObject: {
+    sequenceActor: {
         name: "name",
-        kind: "sequenceActorAndObject",
+        kind: "sequenceActor",
         fill: "#FFFFFF",
         stroke: "#000000",
         width: 100,
         height: 150,
         type: "SE",
-        actorOrObject: "actor",
+        //actorOrObject: "actor",
         canChangeTo: null
-    }, // sequence actor and object
+    }, // sequence actor
+    sequenceObject: {
+        name: "name",
+        kind: "sequenceObject",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 100,
+        height: 150,
+        type: "SE",
+        //actorOrObject: "object",
+        canChangeTo: null
+    }, // sequence object
     sequenceActivation: {
         name: "Activation",
         kind: "sequenceActivation",
@@ -1531,7 +1545,7 @@ function showDiagramTypes() {
     }
 
     // SE buttons
-    if (diagramType.UML) {
+    if (diagramType.SE) {
         document.getElementById("elementPlacement12").onmousedown = function () {
             holdPlacementButtonDown(0);
         };
@@ -1543,6 +1557,7 @@ function showDiagramTypes() {
     } else {
         Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
+
         });
     }
     // NOTE button
@@ -1765,7 +1780,7 @@ document.addEventListener('keyup', function (e) {
     // Sequence
     if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
         if (subMenuCycling(subMenuSequence)) return;
-        setElementPlacementType(elementTypes.sequenceActorAndObject);
+        setElementPlacementType(elementTypes.sequenceActor);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
@@ -3751,7 +3766,7 @@ function entityIsOverlapping(id, x, y) {
                     isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
-                if (data[i].kind == "sequenceActorAndObject" || element.kind == "sequenceActorAndObject") {
+                if ((data[i].kind == "sequenceActor" || element.kind == "sequenceActor") || (data[i].kind == "sequenceObject" || element.kind == "sequenceObject")) {
                     isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
@@ -6135,7 +6150,7 @@ function togglePlacementType(num, type) {
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");
     } else if (type == 12) {
-        // Sequence lifetime
+        // Sequence lifeline (actor)
         document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
@@ -6153,6 +6168,13 @@ function togglePlacementType(num, type) {
         document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
+        // Sequence lifeline (object)
+        document.getElementById("elementPlacement16").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement16").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement16").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton16").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox16").classList.remove("activeTogglePlacementTypeBox");
+
     }
     // Unhide the currently selected placement type
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
@@ -6749,20 +6771,25 @@ function generateContextProperties() {
                     }
                 }
             } else if (element.type == 'SE') {//Selected sequence type
-                //if sequenceActorAndObject kind
-                if (element.kind == 'sequenceActorAndObject') {
+                //if sequenceActor or Object kind
+                if (element.kind == 'sequenceActor') {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'name':
                                 str += `<div style='color:white'>Name</div>`;
                                 str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
-                            case 'actororobject':
-                                //buttons for choosing object or actor via toggleActorOrbject
-                                str += `<div>`
-                                str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
-                                str += `<button onclick='toggleActorOrbject("object");'>Object</button>`
-                                str += `</div>`
+                            default:
+                                break;
+                        }
+                    }
+                }
+                if (element.kind == 'sequenceObject') {
+                    for (const property in element) {
+                        switch (property.toLowerCase()) {
+                            case 'name':
+                                str += `<div style='color:white'>Name</div>`;
+                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
                             default:
                                 break;
@@ -8420,7 +8447,7 @@ function addNodes(element) {
     // This is the standard node size
     const defaultNodeSize = 8;
     var nodeSize = defaultNodeSize * zoomfact;
-    if ((element.kind == "sequenceActorAndObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
+    if ((element.kind == "sequenceActor") || (element.kind == "sequenceObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize + "px";
         mdNode.style.height = nodeSize + "px";
@@ -9010,7 +9037,7 @@ function drawElement(element, ghosted = false) {
         //end of svg
         str += `</svg>`;
     }
-    //=============================================== <-- IE functionality
+        //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == "IEEntity") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
@@ -9126,10 +9153,10 @@ function drawElement(element, ghosted = false) {
         //end of svg
         str += `</svg>`;
     }
-    //=============================================== <-- End of IE functionality
-    //=============================================== <-- Start Sequnece functionality
+        //=============================================== <-- End of IE functionality
+        //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == 'sequenceActorAndObject') {
+    else if (element.kind == 'sequenceActor') {
         //div to encapsulate sequence actor/object and its lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
@@ -9152,12 +9179,9 @@ function drawElement(element, ghosted = false) {
         stroke-dasharray='${linew * 3},${linew * 3}'
         fill='transparent'
         />`;
-        //actor or object is determined via the buttons in the context menu. the default is actor.
-        if (element.actorOrObject == "actor") {
-            //svg for actor.
-            str += `<g>`
-            str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-            str += `<path class="text"
+        str += `<g>`
+        str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        str += `<path class="text"
                 d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
                     v${boxw / 6}
                     m-${(boxw / 4)},0
@@ -9172,11 +9196,11 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //svg for the actor name text, it has a background rect for ease of readability.
-            //make the rect fit the text if the text isn't too big
-            if (!tooBig) {
-                //rect for sitting behind the actor text
-                str += `<rect class='text'
+        //svg for the actor name text, it has a background rect for ease of readability.
+        //make the rect fit the text if the text isn't too big
+        if (!tooBig) {
+            //rect for sitting behind the actor text
+            str += `<rect class='text'
                     x='${xAnchor - (textWidth / 2)}'
                     y='${boxw + (linew * 2)}'
                     width='${textWidth}'
@@ -9184,12 +9208,12 @@ function drawElement(element, ghosted = false) {
                     stroke='none'
                     fill='${element.fill}'
                 />`;
-                str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            }
-            //else just make a boxw width rect and adjust the text to fit this new rect better
-            else {
-                //rect for sitting behind the actor text
-                str += `<rect class='text'
+            str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        }
+        //else just make a boxw width rect and adjust the text to fit this new rect better
+        else {
+            //rect for sitting behind the actor text
+            str += `<rect class='text'
                     x='${linew}'
                     y='${boxw + (linew * 2)}'
                     width='${boxw - linew}'
@@ -9197,13 +9221,37 @@ function drawElement(element, ghosted = false) {
                     stroke='none'
                     fill='${element.fill}'
                 />`;
-                str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
-            }
-            str += `</g>`;
-        } else if (element.actorOrObject == "object") {
-            //svg for object.
-            str += `<g>`;
-            str += `<rect class='text'
+            str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
+        }
+        str += `</g>`;
+        str += `</svg>`;
+    }
+    //actor or object is determined via the buttons in the context menu. the default is actor.
+    else if (element.kind == "sequenceObject") {
+        //svg for object.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the life line
+        str += `<path class="text" 
+        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+        V${boxh}
+        "
+        stroke-width='${linew}'
+        stroke='${element.stroke}'
+        stroke-dasharray='${linew * 3},${linew * 3}'
+        fill='transparent'
+        />`;
+        str += `<g>`;
+        str += `<rect class='text'
                 x='${linew}'
                 y='${linew}'
                 width='${boxw - (linew * 2)}'
@@ -9213,11 +9261,11 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}' 
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            str += `</g>`;
-        }
+        str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `</g>`;
         str += `</svg>`;
     }
+
     // Sequence activation 
     else if (element.kind == 'sequenceActivation') {
         //div to encapsulate sequence lifeline.
