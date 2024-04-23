@@ -29,7 +29,7 @@
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
-    <script type="module" src="./diagram.js"></script>
+    <script src="./diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
 <!-- instead of onload on body there is an event listener for loaded in diagram.js at the top of the INIT AND SETUP REGION -->
