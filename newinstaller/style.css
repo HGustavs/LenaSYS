@@ -9,6 +9,7 @@
     --primary-color-active: #692582;
     --secondary-color: rgba(143, 88, 163, 0.4);
     --third-color: #D9D9D9;
+    --page-background: #FCFCFC;
     --warning-text: #F05555;
     --success-text: #5FCE71;
     --text-light: #FEFCFF;
@@ -27,12 +28,12 @@ html body {
 .page {
     margin: 2rem;
     border: 1px solid var(--primary-color);
+    background-color: var(--page-background);
 }
 
 .wrapper {
     padding: 3rem;
     padding-top: 2.5rem;
-    background-color: #FCFCFC;
 }
 
 .banner {
