@@ -7708,12 +7708,15 @@ function sortElementAssociations(element) {
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
 
     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == elementTypesNames.EREntity) {
-        var tempElement = toElement;
-        toElement = fromElement;
-        fromElement = tempElement;
+    if (toElement.kind == "EREntity" || toElement.kind == "ERRelation") {
+        if (toElement.state == "weak") {
+            kind = "Double";
+        } else {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
+        }
     }
-
     if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
