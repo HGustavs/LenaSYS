@@ -51,5 +51,48 @@ function testHandler($testsData, $prettyPrint) {
 
 
 
+        $testPassed = ($filteredResponse == $expectedOutput);          // Assert and gather results
+        $results[$name] = [
+            'expected' => $expectedOutput,
+            'received' => $filteredResponse,
+            'passed' => $testPassed
+        ];
+
+        if ($prettyPrint) {
+            echo "<pre>" . print_r($results[$name], true) . "</pre>";
+        }
+    }
+
+    if (!$prettyPrint) {
+        echo json_encode($results);
+    }
+}
+
+function prepareDataForTest($data, $testData) {
+    foreach ($testData as $key => $value) {
+        if (strpos($key, 'query-before-test') === 0) {
+            // Simulate a database query and manipulate data accordingly
+            $queryResult = doDBQuery($value);
+            // Replace placeholders in $data with $queryResult
+            foreach ($data as $dataKey => $dataValue) {
+                if (strpos($dataValue, '<!') !== false) {
+                    $data[$dataKey] = $queryResult;  
+                }
+            }
+        }
+    }
+    return $data;
+}
+
+function callService($servicePath, $serviceData) {
+    // Simulated service call
+    // Replace this with actual HTTP request logic or service call
+    return json_encode(array("login" => "successful", "message" => "Course created successfully"));
+}
+
+function doDBQuery($sql) {
+    // database query
+    return "result";  // Simplified return
+}
 
 ?>
