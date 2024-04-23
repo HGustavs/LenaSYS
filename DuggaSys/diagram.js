@@ -8571,6 +8571,7 @@ function drawRulerBars(X, Y) {
                 }
             }
         }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if(lineNumber === lineRatio3){
                 lineNumber = 0;
                 cordY = cordY + 10
@@ -8582,10 +8583,8 @@ function drawRulerBars(X, Y) {
     cordY = -10;
     for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
-
         //Check wether the line that will be drawn is within the visible range
         if (-i > visibleRangeY[0] && -i < visibleRangeY[1]) {
-
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
@@ -8609,6 +8608,7 @@ function drawRulerBars(X, Y) {
                 }
             }
         }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if(lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordY = cordY - 10;
@@ -8647,6 +8647,7 @@ function drawRulerBars(X, Y) {
                 }
             }
         }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if(lineNumber === lineRatio3){
                 lineNumber = 0;
                 cordX = cordX+10
@@ -8683,6 +8684,7 @@ function drawRulerBars(X, Y) {
                 }
             }
         }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if(lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordX = cordX - 10;
