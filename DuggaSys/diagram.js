@@ -8534,11 +8534,11 @@ function drawRulerBars(X, Y) {
 
     var visibleRangeY = [
         (pannedY*-1),
-        (pannedY*-1 + viewportHeight) * zoomfact
+        (pannedY*-1 + viewportHeight)
     ];
     var visibleRangeX = [
         (pannedX*-1) ,
-        (pannedX*-1 + viewportWidth) * zoomfact
+        (pannedX*-1 + viewportWidth)
     ];
 
 
