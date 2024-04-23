@@ -29,5 +29,27 @@ $testsData = array(
     )
 );
 
-testHandler($testsData, false);  // Using false for raw JSON output
+
+function testHandler($testsData, $prettyPrint) {
+    $results = [];
+    foreach ($testsData as $name => $testData) {
+        $data = unserialize($testData['service-data']);
+        $filteredOutput = prepareDataForTest($data, $testData);
+
+        if ($prettyPrint) {
+            echo "<h2>$name</h2>";
+            echo "<hr>";
+        }
+
+        
+        $serviceResponse = callService($testData['service'], $filteredOutput);  // Perform the service call
+        $responseDecoded = json_decode($serviceResponse, true);
+
+        $expectedOutput = json_decode($testData['expected-output'], true);  // Filter the response based on given filter
+
+        $filteredResponse = array_intersect_key($responseDecoded, array_flip(unserialize($testData['filter-output'])));
+
+
+
+
 ?>
