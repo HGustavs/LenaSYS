@@ -1015,42 +1015,17 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
+	if (kind === "COURSE") {
 
-	if(kind=="COURSE"){
-		//for testing of the microservice, delete the if/else and uncomment the original ajax call below before merge
-		if(opt === "NEW"){
 			$.ajax({
-                url: "courseedservice.php",
+				url: "courseedservice.php",
 				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-            });
-		} else if (opt === "NEWVRS") {
-            $.ajax({
-                url: "courseedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedCourse
-            });
-        } else {
-			$.ajax({
-				url : "courseedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
+				data: "opt=" + opt + para,
 				dataType: "json",
 				success: returnedCourse
 			});
-        }
-		/*$.ajax({
-			url : "courseedservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedCourse
-		});*/
-	}else if(kind=="VARIANTPDUGGA"){
+		
+		}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
@@ -1091,6 +1066,7 @@ function AJAXService(opt,apara,kind)
 				success: returnedFile
 			})
 	}else if(kind=="ACCESS"){
+
 		$.ajax({
 			url: "accessedservice.php",
 			type: "POST",
@@ -1106,6 +1082,7 @@ function AJAXService(opt,apara,kind)
 			dataType: "json", 
 			success: kind=="SECTION" ? returnedSection : returnedGroups
 		})
+
   }else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
@@ -1150,6 +1127,7 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
+				//url: "../DuggaSys/microservices/resultedService/getUserAnswer_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
@@ -1209,6 +1187,7 @@ function AJAXService(opt,apara,kind)
 	} else if(kind=="DUGGAFEEDBACK") {
 		$.ajax({
 			url: "showDuggaservice.php",
+			//url: "../DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php",
 			type:"POST",
 			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
 			dataType: "json",
@@ -1223,6 +1202,7 @@ function AJAXService(opt,apara,kind)
 			success: returnedSubmitFeedback
 		});
 	} else if(kind=="USERFB") {
+		
 		$.ajax({
 			url: "sectionedservice.php",
 			type:"POST",
