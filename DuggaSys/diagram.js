@@ -7755,14 +7755,25 @@ function sortElementAssociations(element) {
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
-
     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == elementTypesNames.EREntity) {
+    if (toElement.kind == "EREntity"){
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
     }
-
+    //If line is comming to ERRelation from weak entity it adds double line, else it will be single
+    if (toElement.kind == "ERRelation") {
+        if (fromElement.state == "weak") {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
+            kind = "Double";
+        } else {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
+        }
+    }
     if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
@@ -9379,11 +9390,16 @@ function drawElement(element, ghosted = false) {
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     `;
                 xAnchor += linew * multioffs;
-            }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     ${weak}`;
-            str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+                str += `<text x='50%' y='50%' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+            } else {
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
+                    ${weak}`;
+                str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+            }
         }
         str += "</svg>";
     }
