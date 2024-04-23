@@ -82,7 +82,7 @@ Accessed Service:
 - updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - changeUserPassword_accessed_ms.php
-- addUser_ms.php
+- addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
 
@@ -563,13 +563,64 @@ Uses service __updateUserPassword__ to _update_ the column "_password_" in the t
 
 <br>
 
-### addUser
-Uses service __selectFromTableClass__ to _get_ information it requires from __class__.
-Uses service __insertIntoTableclass__ to _insert_ into the table __class__.
-<br>
+### createUser_ms.php
+createUser_ms.php handles adding or updating user records and their enrollments in specific courses. The microservice checks if a user exists based on their username, creates new users if they don't exist, and then links them to courses in the database. If users already exist, it updates their course enrollment details. So this microservice is not a pure "create" operation but it is the main function.
 
-Uses service __insertIntoTableUser__ to _insert_ into the table __user__.
-Uses service __insertIntoTableUserCourse__ to _insert_ into the table __user_course__.
+_SELECT_ operation on the table __'user'__ to retrieve the value of the column:
+- uid
+
+```sql
+SELECT uid FROM user WHERE username=:username;
+```
+
+
+_SELECT_ operation on the table __'class'__ to retrieve the value of the column:
+- class
+
+```sql
+SELECT class FROM class WHERE class = :clsnme;
+```
+
+
+_INSERT_ operation into the table __'class'__ to add a new row with values for the following columns:
+- class
+- responsible
+
+```sql
+INSERT INTO class (class, responsible) VALUES (:className, 1);
+```
+
+
+_INSERT_ operation into the table __'user'__ to add a new row with values for the following columns:
+- username
+- email
+- firstname
+- lastname
+- ssn
+- password
+- addedtime
+- class
+
+```sql
+INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime, class) VALUES (:username, :email, :firstname, :lastname, :ssn, :password, NOW(), :className);
+```
+
+
+_INSERT_ operation into the table __'user_course'__ to add a new row or update an existing row with values for the following columns:
+- uid
+- cid
+- access
+- term
+- creator
+- vers
+- vershistory
+
+- The operation adds a new row with specified values. If a row with the same primary key already exists (triggered by a duplicate key error), it updates the `vers` field to `:avers` and appends `:bvers` to the existing `vershistory`, separated by a comma.
+
+```sql
+INSERT INTO user_course (uid, cid, access, term, creator, vers, vershistory) VALUES (:uid, :cid, 'R', :term, :creator, :vers, '')
+ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers, ','))
+```
 
 <br>
 <br>
