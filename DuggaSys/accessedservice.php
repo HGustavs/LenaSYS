@@ -47,7 +47,6 @@ $log_uuid = getOP('log_uuid');
 $info="opt: ".$opt." cid: ".$cid." uid: ".$uid." username: ".$username." newusers: ".$newusers;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php",$userid,$info);
 
-
 if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 	$hasAccess = true;
 } else {
@@ -290,6 +289,8 @@ if(checklogin() && $hasAccess) {
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
+/*firstname,lastname,ssn,*/
+
 $entries=array();
 $teachers=array();
 $classes=array();
@@ -299,7 +300,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W';" );
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W';");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -330,7 +331,7 @@ if(checklogin() && $hasAccess) {
 		);
 		array_push($entries, $entry);
 	}
-
+  
 	$query = $pdo->prepare("SELECT user_course.uid FROM user_course WHERE user_course.access = 'W' GROUP by user_course.uid;");
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -356,6 +357,7 @@ if(checklogin() && $hasAccess) {
 		array_push($classes, $classe);
 	}
 
+	
 	$query = $pdo->prepare("SELECT groupval,groupkind,groupint FROM `groups` ORDER BY groupkind,groupint;");
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -394,7 +396,7 @@ if(checklogin() && $hasAccess) {
 		}
 	}
 
-	// Find user submissions in old versions
+// 	// Find user submissions in old versions
 	$query=$pdo->prepare("SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE course.cid=:cid AND course.cid=userAnswer.cid AND vers.vers=userAnswer.vers AND userAnswer.vers!=activeversion;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
@@ -433,4 +435,6 @@ $array = array(
 echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "accessedservice.php",$userid,$info);
+
+
 ?>

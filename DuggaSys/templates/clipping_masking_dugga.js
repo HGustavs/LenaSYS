@@ -142,7 +142,7 @@ function returnedDugga(data)
 		}
 
     if(data['opt']=="SAVDU"){
-        $('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+        //$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
         showReceiptPopup();
     }
     if(data["feedback"] !== null && data["feedback"] !== "" && data["feedback"] !== "UNK") {
