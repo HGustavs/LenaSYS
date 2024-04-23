@@ -2760,12 +2760,7 @@ function mmoving(event) {
             document.getElementById("container").innerHTML += drawElement(data[index]);
 
             // Check if entity is overlapping
-            if (entityIsOverlapping(context[0].id, elementData.x, elementData.y)) {
-                resizeOverlapping = true;
-            }
-            else {
-                resizeOverlapping = false;
-            }
+            resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
 
             // Update element in DOM
             const elementDOM = document.getElementById(context[0].id);
