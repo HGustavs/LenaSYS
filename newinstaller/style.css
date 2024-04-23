@@ -35,11 +35,11 @@ html body{
     background-color: #FCFCFC;
 }
 
-.header{
+.banner{
     background-color: var(--primary-color);
 }
 
-.header h1{
+.header-1{
     font-family: var(--header-font);
     color: var(--text-light);
     font-size: var(--h1-fontsize);
@@ -47,7 +47,7 @@ html body{
     padding: 1rem;
 }
 
-.breadcrumbs ul{
+.breadcrumbs{
     font-family: var(--header-font);
     font-size: 16px;
     display: flex;
@@ -63,7 +63,7 @@ html body{
     font-size: 20px;
 }
 
-h2{
+.header-2{
     font-family: var(--header-font);
     color: var(--primary-color);
     font-size: var(--h2-fontsize);
@@ -71,6 +71,8 @@ h2{
     margin-bottom: 1.5rem;
 }
 
+/*  Container for the main content of the installer
+    window, including the .body-text and .input-grid    */
 .inner-wrapper{
     padding: 2rem;
     padding-top: 0;
@@ -91,6 +93,8 @@ h2{
     grid-row-gap: 1rem;
 }
 
+/*  Media query for changing element disposition to support
+    smaller screens like tablets and smaller browser windows */
 @media (max-width: 768px){
 
     .input-grid{
@@ -117,10 +121,12 @@ h2{
     }
 }
 
+/*  Lets the last cell of the .input-grid span 2 columns */
 .grid-element-span{
     grid-area: 4 / 1 / 5 / 3;
 }
 
+/*  Sets label above corresponding input field  */
 .input-field{
     display: flex;
     flex-direction: column;
