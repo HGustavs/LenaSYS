@@ -1034,6 +1034,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedCourse
             });
+        } else if (opt === "CPYVRS") {
+            $.ajax({
+                url: "courseedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedCourse
+            });
         } else {
 			$.ajax({
 				url : "courseedservice.php",
