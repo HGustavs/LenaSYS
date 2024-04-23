@@ -1310,7 +1310,7 @@ var defaults = {
         stroke: color.BLACK,
         fill: color.WHITE,
         width: 200,
-        height: 50,
+        height: 0,
         type: "IE",
         attributes: ['-Attribute'],
         functions: ['+function'],
@@ -2629,9 +2629,11 @@ function mmoving(event) {
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = (elementData.kind == "UMLEntity") ? 0 : 50; // Declare the minimal height of an object
-        
-            if (elementData.kind === "IEEntity" || elementData.kind === "SDEntity") {
+            let minHeight = 50;
+            if (elementData.kind == "UMLEntity" || elementData.kind == "IEEntity") { // Declare the minimal height of an object
+                minHeight = 0;
+            }
+            if (elementData.kind === "SDEntity") {
                 deltaY = (startY - event.clientY) / 2;
             } else {
                 deltaY = startY - event.clientY;
@@ -8731,7 +8733,10 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.UMLSuperState:
             str += drawElementSuperState(element, ghosted, textWidth);
-
+            break;
+        case elementTypesNames.IEEntity:
+            str += drawElementIEEntity(element, ghosted);
+            break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
@@ -8892,87 +8897,7 @@ function drawElement(element, ghosted = false) {
     //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == elementTypesNames.IEEntity) {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in IEHeight for the element
-        for (var i = 0; i < IEHeight.length; i++) {
-            if (element.id == IEHeight[i].id) {
-                IEHeight.splice(i, 1);
-            }
-        }
-
-        // Calculate and store the IEEntity's real height
-        var IEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
-        }
-        IEHeight.push(IEEntityHeight);
-
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //div to encapuslate IE header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-        //svg for IE header, background and text
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for IE header
-        str += `</svg>`;
-        //end of div for IE header
-        str += `</div>`;
-
-        //div to encapuslate IE content
-        str += `<div class='uml-content' style='height: ${boxh / 2 + (boxh * elemAttri / 2)}px;'>`;
-        //Draw IE-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='5' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw IE-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for IE content
-        str += `</div>`;
-    }
-    //IE inheritance
-    else if (element.kind == elementTypesNames.IERelation) {
+    } else if (element.kind == elementTypesNames.IERelation) {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
@@ -9330,20 +9255,12 @@ function drawElement(element, ghosted = false) {
                             height:${boxh}px;
                             font-size:${texth}px;`;
         }
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `
-                pointer-events: none;
-                opacity: ${ghostPreview};
-            `;
-        }
+        if (context.includes(element)) str += `z-index: 1;`;
+        if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview}; `;
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == elementTypesNames.EREntity) {
-
             var weak = "";
 
             if (element.state == "weak") {
@@ -9435,6 +9352,27 @@ function drawElement(element, ghosted = false) {
     return str;
 }
 
+const splitLengthyLine = (s, max) => {
+    if (s.length <= max) return s;
+    return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
+}
+
+function splitFull(e, max) {
+    return e.map(line => splitLengthyLine(line, max)).flat()
+}
+
+function updateElementHeight(arr, element, height) {
+    // Removes the previouse value in IEHeight for the element
+    for (let i = 0; i < arr.length; i++) {
+        if (element.id == arr[i].id) arr.splice(i, 1);
+    }
+    // Calculate and store the IEEntity's real height
+    arr.push( {
+        id: element.id,
+        height: height
+    });
+}
+
 function drawElementUMLEntity(element, ghosted) {
     let str = "";
     let ghostPreview = ghostLine ? 0 : 0.4;
@@ -9445,34 +9383,14 @@ function drawElementUMLEntity(element, ghosted) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
-    const splitLengthyLine = (s, max) => {
-        if (s.length <= max) return s;
-        return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
-    }
-
-    const aText = element.attributes.map(
-        line => splitLengthyLine(line, maxCharactersPerLine)
-    ).flat();
-
-    const fText = element.functions.map(
-        line => splitLengthyLine(line, maxCharactersPerLine)
-    ).flat();
-
-    // Removes the previouse value in UMLHeight for the element
-    for (let i = 0; i < UMLHeight.length; i++) {
-        if (element.id == UMLHeight[i].id) UMLHeight.splice(i, 1);
-    }
+    const aText = splitFull(element.attributes, maxCharactersPerLine);
+    const fText = splitFull(element.functions, maxCharactersPerLine);
 
     let aHeight = texth * (aText.length + 1) * lineHeight;
     let fHeight = texth * (fText.length + 1) * lineHeight;
     let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
-    // Calculate and store the UMLEntity's real height, used for overlapping check
-    UMLHeight.push({
-        id: element.id,
-        height: totalHeight + boxh
-    });
+    updateElementHeight(UMLHeight, element, totalHeight + boxh)
 
-    //div to encapuslate UML element
     str += `<div 
             id='${element.id}' 
             class='element uml-element' 
@@ -9525,6 +9443,56 @@ const drawText = (x, y, a, t, extra='') => {
             > ${t} </text>`;
 }
 
+function drawElementIEEntity(element, ghosted) {
+    let str = "";
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let texth = Math.round(zoomfact * textheight);
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    let tHeight = texth * (text.length + 1) * lineHeight;
+    let totalHeight =  tHeight - linew * 2 + texth * 2;
+    updateElementHeight(IEHeight, element, totalHeight + boxh)
+
+    str += `<div 
+            id='${element.id}' 
+            class='element uml-element' 
+            onmousedown='ddown(event);' 
+            onmouseenter='mouseEnter();' 
+            onmouseleave='mouseLeave()';' 
+            style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
+
+    if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview};`;
+    str += `'>`;
+
+    let height = texth * 2;
+    let headRect = drawRect(boxw, height, linew, element);
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headRect + headText);
+    str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
+
+    // Content, Attributes
+    const textBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let rect = drawRect(boxw, height, linew, element);
+        let contentSvg = drawSvg(boxw, height, rect + text);
+        let style = `height:${height}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += textBox(text, 'uml-content');
+    return str;
+}
+
 function drawElementState(element, ghosted, vectorGraphic) {
     let ghostPreview = ghostLine ? 0 : 0.4;
     const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
@@ -9573,6 +9541,7 @@ function drawElementSuperState(element, ghosted, textWidth) {
                 </svg>
             </div>`;
 }
+
 /**
  * @description Updates the elements translations and redraw lines.
  * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
