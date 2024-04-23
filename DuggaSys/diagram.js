@@ -1737,6 +1737,7 @@ document.addEventListener('keydown', function (e) {
 document.addEventListener('keyup', function (e) {
     var pressedKey = e.key.toLowerCase();
 
+    hidePlacementType();
     // Toggle modifiers when released
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
