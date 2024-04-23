@@ -77,7 +77,7 @@ Shared microservices:
 
 Accessed Service:
 
-- UpdateUser_ms.php
+- updateUser_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUsercourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD but the filename should look like this: "updateUserCourse_ms.php".
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - changeUserPassword_accessed_ms.php
@@ -434,24 +434,45 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 <br>
 
-### UpdateUser
-Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
+### updateUser_ms.php
+_UPDATE_ operation on the table __'user'__ to update the value of the column:
 - firstname
 
-Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
+```sql
+UPDATE user SET firstname=:firstname WHERE uid=:uid;
+```
+
+
+_UPDATE_ operation on the table __'user'__ to update the value of the column:
 - lastname
 
-Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
+```sql
+UPDATE user SET lastname=:lastname WHERE uid=:uid;
+```
+
+
+_UPDATE_ operation on the table __'user'__ to update the value of the column:
 - ssn
 
-Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
+```sql
+UPDATE user SET ssn=:ssn WHERE uid=:uid;
+```
+
+
+_UPDATE_ operation on the table __'user'__ to update the value of the column:
 - username
 
-Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
+```sql
+UPDATE user SET username=:username WHERE uid=:uid;
+```
+
+
+_UPDATE_ operation on the table __'user'__ to update the value of the column:
 - class
 
-Uses service __updateTableUser__ to update one of these columns in the table __user__, at a time:
-- password 
+```sql
+UPDATE user SET class=:class WHERE uid=:uid;
+```
 
 <br>
 
