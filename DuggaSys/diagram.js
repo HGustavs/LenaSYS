@@ -8460,7 +8460,7 @@ function addNodes(element) {
 
     elementDiv.innerHTML += nodes;
     const defaultNodeSize = 8;
-  
+
     var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
@@ -8533,12 +8533,12 @@ function drawRulerBars(X, Y) {
     var viewportWidth = window.innerWidth;
 
     var visibleRangeY = [
-        pannedY*-1,
-        pannedY*-1 + viewportHeight / zoomfact
+        (pannedY*-1),
+        (pannedY*-1 + viewportHeight) * zoomfact
     ];
     var visibleRangeX = [
-        pannedX*-1,
-        pannedX*-1 + viewportWidth / zoomfact
+        (pannedX*-1) ,
+        (pannedX*-1 + viewportWidth) * zoomfact
     ];
 
 
