@@ -73,12 +73,10 @@ if(checklogin() && $hasAccess) {
 	                $term = $user[5];
 					$className = "UNK"; // the class is not sent with newusers in the current implementation of lenasys
     	            
-
 					//If a className has been set. (this is not implemented in lenasys right now)
                   	if(strcmp($className,"UNK")!==0){
                      	$cstmt = $pdo->prepare("SELECT class FROM class WHERE class=:clsnme;");
                       	$cstmt->bindParam(':clsnme', $className);
-
                       	if(!$cstmt->execute()) {
                         	$error=$cstmt->errorInfo();
                         	$debug.="Could not read class\n".$error[2];
@@ -130,7 +128,6 @@ if(checklogin() && $hasAccess) {
                 	$usr = $userquery->fetch(PDO::FETCH_ASSOC);
                     $uid = $usr['uid'];
                 }
-
 			}
 					
           	// We have a user, connect to current course
