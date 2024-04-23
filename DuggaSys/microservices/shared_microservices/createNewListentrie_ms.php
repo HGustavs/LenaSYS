@@ -2,31 +2,12 @@
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "getUid_ms.php";
-include_once "retrieveUsername_ms.php";
+include_once "./retrieveUsername_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
-// Connect to database and start session
-pdoConnect();
-session_start();
 
-// Global variables
-global $pdo;
-$link = getOP('link');
-$courseid = getOP('courseid');
-$coursevers = getOP('coursevers');
-$sectname = getOP('sectname');
-$kind = getOP('kind');
-$comments = getOP('comments');
-$visibility = getOP('visibility');
-$highscoremode = getOP('highscoremode');
-$pos = getOP('pos');
-$grptype = getOP('grptype');
-$gradesys = getOP('gradesys');
-$tabs = getOP('tabs');
-$userid = getUid();
-
-function createNewListentrie($listEntry){
+function createNewListentrie($pdo, $listEntry){
     $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
 	VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind)");
     $query->bindParam(':cid', $listEntry['cid']);
@@ -51,8 +32,8 @@ function createNewListentrie($listEntry){
     } else {
 	$query->bindValue(':groupkind', null, PDO::PARAM_STR);
 
-	// Logging for newly added items
-	logUserEvent($listEntry['userid'], getUsername($listEntry['userid']), EventTypes::SectionItems, $sectname);
+	// Logging for newly added items, USE retrieveUsername() when it is implemented. UNK temporary
+	logUserEvent($listEntry['userid'],"UNK",EventTypes::SectionItems, $listEntry['entryname']);
     }
 
     if (!$query->execute()) {
