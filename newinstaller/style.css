@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* Variable Declaration*/
-:root{
+:root {
     --primary-color: #8F58A3;
     --primary-color-hover: #773090;
     --primary-color-active: #692582;
@@ -20,26 +20,26 @@
     --text-xs: 12px;
 }
 
-html body{
+html body {
     margin: 0;
 }
 
-.page{
+.page {
     margin: 2rem;
     border: 1px solid var(--primary-color);
 }
 
-.wrapper{
+.wrapper {
     padding: 3rem;
     padding-top: 2.5rem;
     background-color: #FCFCFC;
 }
 
-.banner{
+.banner {
     background-color: var(--primary-color);
 }
 
-.header-1{
+.header-1 {
     font-family: var(--header-font);
     color: var(--text-light);
     font-size: var(--h1-fontsize);
@@ -47,7 +47,7 @@ html body{
     padding: 1rem;
 }
 
-.breadcrumbs{
+.breadcrumbs {
     font-family: var(--header-font);
     font-size: 16px;
     display: flex;
@@ -57,13 +57,13 @@ html body{
     margin-bottom: .5rem;
 }
 
-.arrow_icon{
+.arrow_icon {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     font-size: 20px;
 }
 
-.header-2{
+.header-2 {
     font-family: var(--header-font);
     color: var(--primary-color);
     font-size: var(--h2-fontsize);
@@ -73,18 +73,18 @@ html body{
 
 /*  Container for the main content of the installer
     window, including the .body-text and .input-grid    */
-.inner-wrapper{
+.inner-wrapper {
     padding: 2rem;
     padding-top: 0;
 }
 
-.body-text{
+.body-text {
     font-family: var(--body-font);
     margin-bottom: 2.5rem;
 }
 
 /* Group of all input fields + labels*/
-.input-grid{
+.input-grid {
     font-family: var(--body-font);
     display: grid;
     grid-template-columns: 17rem 17rem;
@@ -95,7 +95,7 @@ html body{
 
 /*  Media query for changing element disposition to support
     smaller screens like tablets and smaller browser windows */
-@media (max-width: 768px){
+@media (max-width: 768px) {
 
     .input-grid{
         font-family: var(--body-font);
@@ -104,7 +104,7 @@ html body{
         gap: 1.5rem;
     }
 
-    .header h1{
+    .header h1 {
         font-family: var(--header-font);
         color: var(--text-light);
         font-size: 38px;
@@ -112,7 +112,7 @@ html body{
         padding: 1rem;
     }
 
-    h2{
+    h2 {
         font-family: var(--header-font);
         color: var(--primary-color);
         font-size: 26px;
@@ -122,17 +122,17 @@ html body{
 }
 
 /*  Lets the last cell of the .input-grid span 2 columns */
-.grid-element-span{
+.grid-element-span {
     grid-area: 4 / 1 / 5 / 3;
 }
 
 /*  Sets label above corresponding input field  */
-.input-field{
+.input-field {
     display: flex;
     flex-direction: column;
 }
 
-input[type=text]{
+input[type=text] {
     inset: none;
     border-radius: 0;
     border: 1px solid var(--text-dark);
@@ -142,32 +142,32 @@ input[type=text]{
     transition: .3s ease;
 }
 
-input[type=text]:focus{
+input[type=text]:focus {
     border-color: var(--primary-color);
 }
 
-.tip{
+.tip {
     font-size: var(--text-xs);
     font-style: italic;
     color: var(--text-dark);
     margin-top: .25rem;
 }
 
-.buttonContainer{
+.buttonContainer {
     display: flex;
     justify-content: space-between;
 }
 
-.checkbox{
+.checkbox {
     display: flex;
     font-size: 14px;
 }
 
-input[type=checkbox]{
+input[type=checkbox] {
     accent-color: var(--primary-color);
 }
 
-.warning{
+.warning {
     font-size: var(--text-xs);
     color: var(--warning-text);
     font-style: italic;
@@ -175,7 +175,7 @@ input[type=checkbox]{
     margin-top: 0.25rem;
 }
 
-.backButton{
+.backButton {
     background-color: rgba(0, 0, 0, 0);
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
@@ -185,7 +185,7 @@ input[type=checkbox]{
     font-size: 16px;
 }
 
-.progressButton{
+.progressButton {
     background-color: var(--primary-color);
     color: var(--text-light);
     border: 1px solid var(--primary-color);
@@ -195,22 +195,22 @@ input[type=checkbox]{
     font-size: 16px;
 }
 
-.progressButton:hover{
+.progressButton:hover {
     cursor:pointer;
     background-color: var(--primary-color-hover);
     box-shadow:1px 1px 1px #1E1E1E;
 }
 
-.progressButton:active{
+.progressButton:active {
     background-color: var(--primary-color-active);
     box-shadow:2px 2px 2px #1E1E1E;
 }
 
-.backButton:hover{
+.backButton:hover {
     cursor:pointer;
     box-shadow:-1px 1px 1px #1E1E1E;
 }
 
-.backButton:active{
+.backButton:active {
     box-shadow:-2px 2px 2px #1E1E1E;
 }
