@@ -4213,3 +4213,4 @@ function getLocalStorage() {
     var dropdown = document.querySelector('select[name="githubDir"]');
     dropdown.value = selectedValue;
   }
+}
