@@ -1337,8 +1337,7 @@ function returnedGroups(data) {
       str += `<thead><tr><th rowspan=2 style='text-align:left;'>Group ${cgrp[1]}</th></tr></thead>`;
       str += "<tbody>";
     }
-    str += `<tr><td>" + (j++) + "</td><td><a  style='white-space:nowrap'
-    href='mailto:${member[3]}'>${member[1]} ${member[2]}</a></td></tr>`;
+    str += "<tr><td>" + (i+1) + "</td><td><a style='white-space:nowrap' href='mailto:" + member[3] + "'>" + member[1] + " " + member[2] + "</a></td></tr>";
     if (grpemail != "") grpemail += ",";
     grpemail += member[3];
   }
