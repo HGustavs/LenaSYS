@@ -1,7 +1,7 @@
 <?php
 
-include "../Shared/test.php";
-include "path_to_your_editorService.php";  // mockup path
+include "C:\Users\Youssuf\OneDrive\Documents\GitHub\LenaSYS\DuggaSys\microservices\courseedService\courseseedService_test.php";
+include "DuggaSys\microservices\courseedService\courseseedService_test.php"; //path to testfile
 
 $testsData = array(
     'login credentials test' => array(
