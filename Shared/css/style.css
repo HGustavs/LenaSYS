@@ -2741,7 +2741,7 @@ label.login-label {
 }
 
 .color-change-invalid{
-  background-color: #f57;
+  background-color: #f57 !important;
   border-color: #E54;
   border-width: 2px;
 }
@@ -3099,7 +3099,7 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent var(--color-border-6);
+  border-color: transparent transparent transparent var(--color-text-list);
 }
 
 /* Tooltip */
