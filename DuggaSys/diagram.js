@@ -1946,6 +1946,7 @@ function mdown(event) {
                 console.log("Line clicked")
                 if (determinedLines.specialCase == true) {
                     targetElement = data[findIndex(data, determinedLines.id)];
+                    console.log(targetElement);  
                     startX = event.clientX;
                     startY = event.clientY;
                 }
@@ -7858,6 +7859,21 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
         // If the line is a special case, set the special case to true
         if (specialCase || specialCaseSequence) {
+            // find out if there are any other lines between the two elements
+            var linesBetween = lines.filter(function (line) {
+                return (fromElement.id === line.fromID &&
+                    toElement.id === line.toID ||
+                    fromElement.id === line.toID &&
+                    toElement.id === line.fromID)
+            });
+
+            if (linesBetween.length > 0) {
+                x1 = fromElement.x1;
+                y1 = fromElement.y1;
+                x2 = toElement.x1;
+                y2 = toElement.y1;
+            }
+
             newLine.specialCase = true;
         }
 
@@ -8001,7 +8017,9 @@ function drawLine(line, targetGhost = false) {
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
                 />`;
     } else { // UML, IE or SD
+        if(line.specialCase) {console.log("Special case line drawn")} else { console.log("Normal line drawn")}
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+        console.log(str);
     }
 
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
@@ -8289,12 +8307,19 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+    if (line.specialCase){
+        return `<polyline
+                id='${line.id}'
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}'
+                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' style="transform: translate(${line.offsetX}px, ${line.offsetY}px);"
+            />`;
+    }
+
     return `<polyline 
                 id='${line.id}' 
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}'
                 fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
             />`;
-
 }
 
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {
