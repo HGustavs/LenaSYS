@@ -115,7 +115,7 @@ Duggaed Service:
 - createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDugga_ms.php
-- createDuggaVariant_ms.php
+- createDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 
@@ -1266,8 +1266,17 @@ Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 
 <br>
 
-### createDuggaVariant
-Uses service __insertIntoTablVariant__ to makes _inserts_ into the table __Variant__.
+### createDuggaVariant_ms.php
+_INSERT_ operation into the table __'variant'__ to add a new row with values for the following columns:
+- quizID
+- creator
+- disabled
+- param
+- variantanswer
+
+```sql
+INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (:qid, :uid, :disabled, :param, :variantanswer);
+```
 
 <br>
 
