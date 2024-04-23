@@ -292,11 +292,10 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 
 ### retrieveUsername
 __USED BY__
-- 
-- 
+- Several microservices that fetches username
 <br>
 
-Uses a SQL query to SELECT username from table with uid
+Uses a SQL query to SELECT username from user table with uid (userid)
 
 <br>
 <br>
