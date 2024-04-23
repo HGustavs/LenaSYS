@@ -38,7 +38,6 @@
 
 #svggrid {
     position:absolute;
-    left:0;
     top:0;
     display: none;
     width:100%;
@@ -323,11 +322,17 @@
     #diagram-toolbar {
         width:50px;
     }
+    #svggrid{
+        left: 0px;
+    }
   }
   
 @media screen and (min-height: 1200px) {
     #diagram-toolbar {
         width:70px;
+    }
+    #svggrid{
+        left: 20px;
     }
 }
 
