@@ -3666,7 +3666,7 @@ function quickValidateForm(formid, submitButton) {
     valid &= validateCourseID('cversid', 'dialog2');
     valid &= validateVersionName('versname', 'dialog');
     valid &= validateDate('startdate', 'enddate', 'dialog3');
-    valid &= validateMOTD('vmotd', 'dialog4', 'dialog42', 'submitCourseMotd');
+    valid &= validateMOTD('vmotd', 'dialog4', 'dialog42');
 
     //Fields being empty are neutral
     valid &= !(versName == null || versName == "", versId == null || versId == "");
@@ -3676,7 +3676,7 @@ function quickValidateForm(formid, submitButton) {
     valid = true;
     valid &= validateVersionName('eversname', 'dialog5');
     valid &= validateDate('estartdate', 'eenddate', 'dialog6');
-    valid &= validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse');
+    valid &= validateMOTD('eMOTD', 'dialog9', 'dialog92');
 
     //Fields being empty are neutral
     valid &= !(eversName == null || eversName == "");

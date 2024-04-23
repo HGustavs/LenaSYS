@@ -489,7 +489,7 @@
 
 <!-- Edit Version Dialog START -->
 
-<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse');" class='loginBoxContainer' style='display:none;'>
+<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 
 			<div class='loginBoxheader'>
