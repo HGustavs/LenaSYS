@@ -2672,7 +2672,15 @@ function mmoving(event) {
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
-            const minWidth = 20; // Declare the minimal with of an object
+            var minWidth = 20; // Declare the minimal with of an object
+            var minHeight = 50; // Declare the minimal height of an object
+
+            // Sets different min-values for ERRelation
+            if (elementData.kind === "ERRelation") {
+                minHeight = 60;
+                minWidth = 60; 
+            }
+
             deltaX = startX - event.clientX;
 
             let minHeight = 50;
@@ -9689,7 +9697,7 @@ function updatepos(deltaX, deltaY) {
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != elementTypesNames.ERRelation && context[0].kind != "UMLRelation" && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "UMLRelation" && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
 }
 
 /**
