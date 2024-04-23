@@ -112,7 +112,7 @@ Courseed Service:
 Duggaed Service:
 
 - createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- UpdateDugga_ms.php
+- updateDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDugga_ms.php
 - createDuggaVariant_ms.php
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -1220,22 +1220,21 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 
 <br>
 
-### UpdateDugga
-
-Uses the services __updateTableQuiz__ to change the content of these columns:
-- coursename
-- visibility
-- coursecode
-- courseGitURL
+### updateDugga_ms.php
+_UPDATE_ operation on the table __'quiz'__ to update the values of the columns:
 - qname
 - autograde
 - gradesystem
-- quizFile (template)
-- qstart (start date)
+- quizFile
+- qstart
 - deadline
-- qrelease (release date)
+- qrelease
 - jsondeadline
 - group
+
+```sql
+UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizFile=:template, qstart=:qstart, deadline=:deadline, qrelease=:release, jsondeadline=:jsondeadline, `group`=:group WHERE id=:qid;
+```
 
 <br>
 
