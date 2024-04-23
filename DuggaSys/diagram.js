@@ -908,6 +908,13 @@ const lineCardinalitys = {
     ONE: "1"
 };
 
+const lineDirection = {
+    UP: 'TB',
+    DOWN: 'BT',
+    RIGHT: 'RL',
+    LEFT: 'LR',
+}
+
 /**
  * @description Available options of icons to display at the end of lines connecting two UML elements.
  */
@@ -1057,6 +1064,13 @@ var hasPressedDelete = false;
 var mouseOverElement = false;
 var mouseOverLine = false;
 
+// Variables for resizing
+var originalWidth = 0;
+var originalHeight = 0;
+var originalX = 0;
+var originalY = 0;
+var resizeOverlapping = false;
+
 // Zoom variables
 var desiredZoomfact = 1.0;
 var zoomfact = 1.0;
@@ -1077,10 +1091,37 @@ const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
 const baseline = 10;
-const colors = ["#ffffff", "#c4e4fc", "#ffd4d4", "#fff4c2", "#c4f8bd", "#648fff", "#DC267F", "#FFB000", "#FE6100", "#000000", "#0000ff"];
-const strokeColors = ["#383737"];
-const selectedColor = "#A000DC";
-const multioffs = 3;
+const color = {
+    WHITE: "#ffffff",
+    BLACK: "#000000",
+    GREY: "#383737",
+    BLUE: "#0000ff",
+    YELLOW: "#FFB000",
+    ORANGE: "#FE6100",
+    PURPLE: "#614875",
+    PINK: "#DC267F",
+    DENIM: "#648fff",
+    SELECTED: "#A000DC",
+    LIGHT_BLUE: "#C4E4FC",
+    LIGHT_RED: "#FFD4D4",
+    LIGHT_YELLOW: "#FFF4C2",
+    LIGHT_GREEN: "#C4F8BD",
+    LIGHT_PURPLE: "#927B9E",
+};
+const MENU_COLORS = [
+    color.WHITE,
+    color.LIGHT_BLUE,
+    color.LIGHT_RED,
+    color.LIGHT_YELLOW,
+    color.LIGHT_GREEN,
+    color.DENIM,
+    color.PINK,
+    color.YELLOW,
+    color.ORANGE,
+    color.BLUE,
+    color.BLACK,
+]
+const strokeColors = [color.GREY];
 
 // Zoom values for offsetting the mouse cursor positioning
 const zoom1_25 = 0.36;
@@ -1218,8 +1259,8 @@ var defaults = {
     EREntity: {
         name: "Entity",
         kind: "EREntity",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
         height: 50,
         type: "ER",
@@ -1231,8 +1272,8 @@ var defaults = {
     ERRelation: {
         name: "Relation",
         kind: "ERRelation",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "ER",
@@ -1242,22 +1283,22 @@ var defaults = {
     ERAttr: {
         name: "Attribute",
         kind: "ERAttr",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 90,
         height: 45,
         type: "ER",
         state: 'normal'
     },
-    Ghost: {name: "Ghost", kind: "ERAttr", fill: "#ffffff", stroke: "#000000", width: 5, height: 5, type: "ER"},
+    Ghost: {name: "Ghost", kind: "ERAttr", fill: color.WHITE, stroke: color.BLACK, width: 5, height: 5, type: "ER"},
 
     UMLEntity: {
         name: "Class",
         kind: "UMLEntity",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
-        height: 50,
+        height: 0, // Extra height when resizing larger than text.
         type: "UML",
         attributes: ['-Attribute'],
         functions: ['+Function'],
@@ -1266,8 +1307,8 @@ var defaults = {
     UMLRelation: {
         name: "Inheritance",
         kind: "UMLRelation",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "UML",
@@ -1276,10 +1317,10 @@ var defaults = {
     IEEntity: {
         name: "IEEntity",
         kind: "IEEntity",
-        stroke: "#000000",
-        fill: "#ffffff",
+        stroke: color.BLACK,
+        fill: color.WHITE,
         width: 200,
-        height: 50,
+        height: 0,
         type: "IE",
         attributes: ['-Attribute'],
         functions: ['+function'],
@@ -1288,8 +1329,8 @@ var defaults = {
     IERelation: {
         name: "Inheritance",
         kind: "IERelation",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 50,
         height: 50,
         type: "IE",
@@ -1298,8 +1339,8 @@ var defaults = {
     SDEntity: {
         name: "State",
         kind: "SDEntity",
-        fill: "#ffffff",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
         height: 50,
         type: "SD",
@@ -1311,8 +1352,8 @@ var defaults = {
     UMLInitialState: {
         name: "UML Initial State",
         kind: "UMLInitialState",
-        fill: "#000000",
-        stroke: "#000000",
+        fill: color.BLACK,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "SD",
@@ -1321,8 +1362,8 @@ var defaults = {
     UMLFinalState: {
         name: "UML Final State",
         kind: "UMLFinalState",
-        fill: "#000000",
-        stroke: "#000000",
+        fill: color.BLACK,
+        stroke: color.BLACK,
         width: 60,
         height: 60,
         type: "SD",
@@ -1331,8 +1372,8 @@ var defaults = {
     UMLSuperState: {
         name: "UML Super State",
         kind: "UMLSuperState",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 500,
         height: 500,
         type: "SD",
@@ -1342,8 +1383,8 @@ var defaults = {
     sequenceActor: {
         name: "name",
         kind: "sequenceActor",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK
         width: 100,
         height: 150,
         type: "SE",
@@ -1364,8 +1405,8 @@ var defaults = {
     sequenceActivation: {
         name: "Activation",
         kind: "sequenceActivation",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 30,
         height: 300,
         type: "SE",
@@ -1373,8 +1414,8 @@ var defaults = {
     }, // Sequence Activation.
     sequenceLoopOrAlt: {
         kind: "sequenceLoopOrAlt",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 750,
         height: 300,
         type: "SE",
@@ -1386,8 +1427,8 @@ var defaults = {
     note: {
         name: "Note",
         kind: "note",
-        fill: "#FFFFFF",
-        stroke: "#000000",
+        fill: color.WHITE,
+        stroke: color.BLACK,
         width: 200,
         height: 50,
         type: "NOTE",
@@ -1644,8 +1685,10 @@ document.addEventListener('keydown', function (e) {
 
     if (isKeybindValid(e, keybinds.SELECT_ALL)){
         e.preventDefault();
-        if (mouseMode != mouseModes.EDGE_CREATION) selectAll();
+        document.getElementById("mouseMode0").click();
+        selectAll();
     }
+
     if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
         e.preventDefault();
     }
@@ -1716,6 +1759,7 @@ document.addEventListener('keydown', function (e) {
 document.addEventListener('keyup', function (e) {
     var pressedKey = e.key.toLowerCase();
 
+    hidePlacementType();
     // Toggle modifiers when released
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
@@ -1832,7 +1876,6 @@ document.addEventListener('keyup', function (e) {
 })
 
 window.addEventListener("resize", handleResize);
-var testCount = 0;
 function handleResize() {
     updateRulers();
 }
@@ -2001,6 +2044,14 @@ function mdown(event) {
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
+            var element = data[findIndex(data, context[0].id)];
+
+            // Save the original properties
+            originalWidth = element.width;
+            originalHeight = element.height;
+            originalX = element.x;
+            originalY = element.y;
+            
             startWidth = data[findIndex(data, context[0].id)].width;
             startHeight = data[findIndex(data, context[0].id)].height;
 
@@ -2099,6 +2150,8 @@ function mouseMode_onMouseUp(event) {
     if (!hasPressedDelete) {
         switch (mouseMode) {
             case mouseModes.PLACING_ELEMENT:       
+                clearContext();
+                clearContextLine();
                 if (ghostElement && event.button == 0) {
                     addObjectToData(ghostElement, false);
 
@@ -2246,6 +2299,24 @@ function mup(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
+            if (resizeOverlapping) {
+                // Reset to original state if overlapping is detected
+                var element = data[findIndex(data, context[0].id)];
+                element.width = originalWidth;
+                element.height = originalHeight;
+                element.x = originalX;
+                element.y = originalY;
+        
+                // Update DOM with the original properties
+                const elementDOM = document.getElementById(element.id);
+                elementDOM.style.width = originalWidth + 'px';
+                elementDOM.style.height = originalHeight + 'px';
+                elementDOM.style.left = originalX + 'px';
+                elementDOM.style.top = originalY + 'px';
+                showdata()
+                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+                resizeOverlapping = false;
+            }
             break;
         default:
             console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
@@ -2446,7 +2517,7 @@ function determineLineSelect(mouseX, mouseY) {
         lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
         // --- Used when debugging ---
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
-        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke="#000000" stroke-width="3" fill="red" /> '
+        // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke='${color.BLACK}' stroke-width="3" fill="red" /> '
         // ---------------------------
         if (lineWasHit == true && labelWasHit == false) {
             // Return the current line that registered as a "hit".
@@ -2605,9 +2676,15 @@ function mmoving(event) {
             const minWidth = 20; // Declare the minimal with of an object
             deltaX = startX - event.clientX;
 
-            const minHeight = 50; // Declare the minimal height of an object
-            deltaY = startY - event.clientY;
-
+            let minHeight = 50;
+            if (elementData.kind == "UMLEntity" || elementData.kind == "IEEntity") { // Declare the minimal height of an object
+                minHeight = 0;
+            }
+            if (elementData.kind === "SDEntity") {
+                deltaY = (startY - event.clientY) / 2;
+            } else {
+                deltaY = startY - event.clientY;
+            }
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
@@ -2696,6 +2773,17 @@ function mmoving(event) {
             }
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
+
+            // Check if entity is overlapping
+            resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
+
+            // Update element in DOM
+            const elementDOM = document.getElementById(context[0].id);
+            elementDOM.style.width = elementData.width + 'px';
+            elementDOM.style.height = elementData.height + 'px';
+            elementDOM.style.left = elementData.x + 'px';
+            elementDOM.style.top = elementData.y + 'px';
+            showdata()
             updatepos(null, null);
             break;
 
@@ -2931,7 +3019,7 @@ function changeState() {
         return;
     } else if (element.type == 'ER') {
         //If not attribute, also save the current type and check if kind also should be updated
-        if (element.kind != 'ERAttr') {
+        if (element.kind != elementTypesNames.ERAttr) {
             if (oldType != newType) {
                 var newKind = element.kind;
                 newKind = newKind.replace(oldType, newType);
@@ -2948,7 +3036,7 @@ function changeState() {
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else if (element.type == 'UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != 'UMLEntity') {
+        if (element.kind != elementTypesNames.UMLEntity) {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -2966,7 +3054,7 @@ function changeState() {
 
     } else if (element.type == 'IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != 'IEEntity') {
+        if (element.kind != elementTypesNames.IEEntity) {
             var property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3606,7 +3694,7 @@ function setPos(objects, x, y) {
             if (settings.grid.snapToGrid) {
                 if (!ctrlPressed) {
                     //Different snap points for entity and others
-                    if (obj.kind == "EREntity") {
+                    if (obj.kind == elementTypesNames.EREntity) {
                         // Calculate nearest snap point
                         obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize * 2)) / settings.grid.gridSize) * settings.grid.gridSize;
                         obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
@@ -3762,11 +3850,11 @@ function entityIsOverlapping(id, x, y) {
                     }
                 }
                 //if its overlapping with a super state, just break since that is allowed.
-                if (data[i].kind == "UMLSuperState" || element.kind == "UMLSuperState") {
+                if (data[i].kind == elementTypesNames.UMLSuperState || element.kind == elementTypesNames.UMLSuperState) {
                     isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
-                if ((data[i].kind == "sequenceActor" || element.kind == "sequenceActor") || (data[i].kind == "sequenceObject" || element.kind == "sequenceObject")) {
+                if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject)) {
                     isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
@@ -4290,14 +4378,14 @@ function toggleDiagramDropdown() {
 
     if (window.getComputedStyle(dropdown).display === "none") {
         btn.style.backgroundColor = "transparent";
-        btn.style.border = "3px solid #614875";
-        btn.style.color = "#614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+        btn.style.color = color.PURPLE;
         btn.style.fontWeight = "bold";
     } else {
-        btn.style.backgroundColor = "#614875";
-        btn.style.color = "#ffffff";
+        btn.style.backgroundColor = color.PURPLE;
+        btn.style.color = color.WHITE;
         btn.style.fontWeight = "normal";
-        btn.style.border = "3px solid #614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
     }
 }
 
@@ -4370,15 +4458,15 @@ function toggleGrid() {
     if (grid.style.display == "block") {
         grid.style.display = "none";
         gridButton.style.backgroundColor = "transparent";
-        gridButton.style.border = "3px solid #614875";
-        gridButton.style.color = "#614875";
+        gridButton.style.border = `3px solid ${color.PURPLE}`;
+        gridButton.style.color = color.PURPLE;
         gridButton.style.fontWeight = "bold";
     } else {
         grid.style.display = "block";
-        gridButton.style.backgroundColor = "#614875";
-        gridButton.style.color = "#ffffff";
+        gridButton.style.backgroundColor = color.PURPLE;
+        gridButton.style.color = color.WHITE;
         gridButton.style.fontWeight = "normal";
-        gridButton.style.border = "3px solid #614875";
+        gridButton.style.border = `3px solid ${color.PURPLE}`;
     }
 }
 
@@ -4402,14 +4490,14 @@ function toggleDarkmode() {
         localStorage.setItem('diagramTheme', stylesheet.href)
     }
     if (stylesheet.href.includes('blackTheme')) {
-        btn.style.backgroundColor = "#614875";
-        btn.style.color = "#ffffff";
+        btn.style.backgroundColor = color.PURPLE;
+        btn.style.color = color.WHITE;
         btn.style.fontWeight = "normal";
-        btn.style.border = "3px solid #614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
     } else {
         btn.style.backgroundColor = "transparent";
-        btn.style.border = "3px solid #614875";
-        btn.style.color = "#614875";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+        btn.style.color = color.PURPLE;
         btn.style.fontWeight = "bold";
     }
     showdata();
@@ -5720,7 +5808,7 @@ function generateErTableString() {
     // Iterate through ERForeignData to find many to many relation
     for (var i = 0; i < ERForeignData.length; i++) {
         // If relation is exist in ERForeignData
-        if (ERForeignData[i][0].kind == 'ERRelation') {
+        if (ERForeignData[i][0].kind == elementTypesNames.ERRelation) {
             var currentString = '';
             currentString += `<p>${ERForeignData[i][0].name} (`; // Push in relation's name
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
@@ -5903,17 +5991,17 @@ function toggleA4Template() {
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
-        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
-        document.getElementById("a4TemplateToggle").style.color = "#614875";
+        document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
+        document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
         document.getElementById("a4VerticalButton").style.display = "inline-block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
-        document.getElementById("a4TemplateToggle").style.backgroundColor = "#614875";
-        document.getElementById("a4TemplateToggle").style.color = "#ffffff";
+        document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
+        document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
-        document.getElementById("a4TemplateToggle").style.border = "3px solid #614875";
+        document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
     }
     generateContextProperties();
 }
@@ -5983,14 +6071,14 @@ function toggleSnapToGrid() {
 
     // Color change of button to clarify if button is pressed or not
     if (settings.grid.snapToGrid) {
-        document.getElementById("rulerSnapToGrid").style.backgroundColor = "#614875";
-        document.getElementById("rulerSnapToGrid").style.color = "#ffffff";
+        document.getElementById("rulerSnapToGrid").style.backgroundColor = color.PURPLE;
+        document.getElementById("rulerSnapToGrid").style.color = color.WHITE;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "normal";
-        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
+        document.getElementById("rulerSnapToGrid").style.border = `3px solid ${color.PURPLE}`;
     } else {
         document.getElementById("rulerSnapToGrid").style.backgroundColor = "transparent";
-        document.getElementById("rulerSnapToGrid").style.border = "3px solid #614875";
-        document.getElementById("rulerSnapToGrid").style.color = "#614875";
+        document.getElementById("rulerSnapToGrid").style.border = `3px solid ${color.PURPLE}`;
+        document.getElementById("rulerSnapToGrid").style.color = color.PURPLE;
         document.getElementById("rulerSnapToGrid").style.fontWeight = "bold";
     }
 }
@@ -6010,16 +6098,16 @@ function toggleRuler() {
         ruler.style.left = "-100px";
         ruler.style.top = "-100px";
         rulerToggleButton.style.backgroundColor = "transparent";
-        rulerToggleButton.style.border = "3px solid #614875";
-        rulerToggleButton.style.color = "#614875";
+        rulerToggleButton.style.border = `3px solid ${color.PURPLE}`;
+        rulerToggleButton.style.color = color.PURPLE;
         rulerToggleButton.style.fontWeight = "bold";
     } else {
         ruler.style.left = "50px";
         ruler.style.top = "0px";
-        rulerToggleButton.style.backgroundColor = "#614875";
-        rulerToggleButton.style.color = "#ffffff";
+        rulerToggleButton.style.backgroundColor = color.PURPLE;
+        rulerToggleButton.style.color = color.WHITE;
         rulerToggleButton.style.fontWeight = "normal";
-        rulerToggleButton.style.border = "3px solid #614875";
+        rulerToggleButton.style.border = `3px solid ${color.PURPLE}`;
     }
     settings.ruler.isRulerActive = !settings.ruler.isRulerActive;
     drawRulerBars(scrollx, scrolly);
@@ -6549,7 +6637,7 @@ function generateContextProperties() {
 
             //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
             //TODO: Find a way to do this dynamically as new diagram types are added
-            if (element.kind != 'ERAttr') {
+            if (element.kind != elementTypesNames.ERAttr) {
                 var typesToChangeTo = [];
 
                 // If property canChangeTo is not set, or set to null, assign empty array
@@ -6600,11 +6688,11 @@ function generateContextProperties() {
                 var value;
                 var selected = context[0].state;
                 if (selected == undefined) selected = "normal"
-                if (element.kind == "ERAttr") {
+                if (element.kind == elementTypesNames.ERAttr) {
                     value = Object.values(attrState);
-                } else if (element.kind == "EREntity") {
+                } else if (element.kind == elementTypesNames.EREntity) {
                     value = Object.values(entityState);
-                } else if (element.kind == "ERRelation") {
+                } else if (element.kind == elementTypesNames.ERRelation) {
                     value = Object.values(relationState);
                 }
 
@@ -6630,7 +6718,7 @@ function generateContextProperties() {
                 }
             } else if (element.type == 'UML') { //Selected UML type
                 //If UML entity
-                if (element.kind == 'UMLEntity') {
+                if (element.kind == elementTypesNames.UMLEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
                     for (const property in element) {
                         switch (property.toLowerCase()) {
@@ -6686,7 +6774,7 @@ function generateContextProperties() {
                 }
             } else if (element.type == 'IE') {//Selected IE type
                 //If IE entity
-                if (element.kind == 'IEEntity') {
+                if (element.kind == elementTypesNames.IEEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
                     for (const property in element) {
                         switch (property.toLowerCase()) {
@@ -6722,7 +6810,7 @@ function generateContextProperties() {
                         selected = "disjoint"
                     }
 
-                    if (element.kind == "IERelation") {
+                    if (element.kind == elementTypesNames.IERelation) {
                         value = Object.values(inheritanceStateIE);
                     }
                     str += '<select id="propertySelect">';
@@ -6737,7 +6825,7 @@ function generateContextProperties() {
                 }
             } else if (element.type == 'SD') {//Selected SD type
                 //if SDEntity kind
-                if (element.kind == 'SDEntity') {
+                if (element.kind == elementTypesNames.SDEntity) {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'name':
@@ -6758,12 +6846,16 @@ function generateContextProperties() {
                                 break;
                         }
                     }
-                } else if (element.kind == 'UMLSuperState') {
+                } else if (element.kind == elementTypesNames.UMLSuperState) {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'name':
                                 str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                str += `<input id='elementProperty_${property}' 
+                                            type='text' 
+                                            value='${element[property]}' 
+                                            maxlength='${20 * zoomfact}'
+                                            onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
                             default:
                                 break;
@@ -6772,7 +6864,7 @@ function generateContextProperties() {
                 }
             } else if (element.type == 'SE') {//Selected sequence type
                 //if sequenceActor or Object kind
-                if (element.kind == 'sequenceActor') {
+                if (element.kind == elementTypesNames.sequenceActor) {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'name':
@@ -6811,7 +6903,7 @@ function generateContextProperties() {
                 }
             }
             /// Creates button for selecting element background color if not a UML relation since they should not be able change color
-            if (element.kind != 'UMLRelation' && element.kind != 'IERelation') {
+            if (element.kind != 'UMLRelation' && element.kind != elementTypesNames.IERelation) {
                 // Creates button for selecting element background color
                 str += `<div style="white">Color</div>`;
                 str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
@@ -6843,10 +6935,10 @@ function generateContextProperties() {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
-                            str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
                         } else {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
-                            str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
                         }
                     }
                 }
@@ -7355,9 +7447,9 @@ function toggleColorMenu(buttonID) {
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
-            for (var i = 0; i < colors.length; i++) {
+            for (var i = 0; i < MENU_COLORS.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${colors[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke="#000000" stroke-width="2"/>
+            <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${MENU_COLORS[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7365,7 +7457,7 @@ function toggleColorMenu(buttonID) {
             // Create svg circles for each element in the "strokeColors" array
             for (var i = 0; i < strokeColors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke="#000000" stroke-width="2"/>
+            <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
                 width += 50;
             }
@@ -7398,7 +7490,7 @@ function setElementColors(clickedCircleID) {
     // If fill button was pressed
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
-        var color = colors[index];
+        var color = MENU_COLORS[index];
         for (var i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
@@ -7406,10 +7498,10 @@ function setElementColors(clickedCircleID) {
             // Change font color to white for contrast, doesn't work for whatever reason but will maybe provide a hint for someone who might want to try to solve it.
             if (clickedCircleID == "BGColorCircle9" || clickedCircleID == "BGColorCircle6") {
                 console.log("du har klickat på svart eller rosa färg");
-               document.getElementsByClassName("text").style.color = "#ffffff";
+               document.getElementsByClassName("text").style.color = color.WHITE;
             }
             else{
-                //element.id.style.color = "#000000";
+                //element.id.style.color = color.BLACK;
             }*/
         }
         stateMachine.save(
@@ -7633,24 +7725,24 @@ function determineLine(line, targetGhost = false) {
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
     var ctype = 0;
     if (overlapY || ((majorX) && (!overlapX))) {
-        if (line.dx > 0) line.ctype = "LR";
-        else line.ctype = "RL";
+        if (line.dx > 0) line.ctype = lineDirection.LEFT;
+        else line.ctype = lineDirection.RIGHT;
     } else {
-        if (line.dy > 0) line.ctype = "TB";
-        else line.ctype = "BT";
+        if (line.dy > 0) line.ctype = lineDirection.UP;
+        else line.ctype = lineDirection.DOWN;
     }
 
     // Add accordingly to association end
-    if (line.ctype == "LR") {
+    if (line.ctype == lineDirection.LEFT) {
         felem.left.push(line.id);
         telem.right.push(line.id);
-    } else if (line.ctype == "RL") {
+    } else if (line.ctype == lineDirection.RIGHT) {
         felem.right.push(line.id);
         telem.left.push(line.id);
-    } else if (line.ctype == "TB") {
+    } else if (line.ctype == lineDirection.UP) {
         felem.top.push(line.id);
         telem.bottom.push(line.id);
-    } else if (line.ctype == "BT") {
+    } else if (line.ctype == lineDirection.DOWN) {
         felem.bottom.push(line.id);
         telem.top.push(line.id);
     }
@@ -7692,13 +7784,13 @@ function sortElementAssociations(element) {
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
 
     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == "EREntity") {
+    if (toElement.kind == elementTypesNames.EREntity) {
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
     }
 
-    if (fromElement.id === toElement.id && !(fromElement.kind === 'SDEntity' || toElement.kind === 'SDEntity')) {
+    if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
     }
@@ -7708,10 +7800,10 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         return;
     }
     //checks if a line is drawn to UMLInitialState.
-    if (toElement.kind == "UMLInitialState") {
+    if (toElement.kind == elementTypesNames.UMLInitialState) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
         return;
-    } else if (fromElement.kind == "UMLFinalState") {
+    } else if (fromElement.kind == elementTypesNames.UMLFinalState) {
         displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}`);
         return;
     }
@@ -7731,11 +7823,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // Adding elements to the array that carries attributes connected to attributes without being directly connected to an entity or relation
     for (i = 0; i < allAttrToEntityRelations.length; i++) {
-        if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr" && fromElement.id == allAttrToEntityRelations[i]) {
+        if (fromElement.kind === elementTypesNames.ERAttr && toElement.kind === elementTypesNames.ERAttr && fromElement.id == allAttrToEntityRelations[i]) {
             attrViaAttrToEnt[attrViaAttrCounter] = toElement.id;
             attrViaAttrCounter++;
             break;
-        } else if (fromElement.kind === "ERAttr" && toElement.kind === "ERAttr" && toElement.id == allAttrToEntityRelations[i]) {
+        } else if (fromElement.kind === elementTypesNames.ERAttr && toElement.kind === elementTypesNames.ERAttr && toElement.id == allAttrToEntityRelations[i]) {
             attrViaAttrToEnt[attrViaAttrCounter] = fromElement.id;
             attrViaAttrCounter++;
             break;
@@ -7744,7 +7836,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // Adding attributes to the array that only carries attributes directly connected to entities or relations
     if (!exists) {
-        if (toElement.kind == "ERRelation") {
+        if (toElement.kind == elementTypesNames.ERRelation) {
             allAttrToEntityRelations[countUsedAttributes] = fromElement.id;
             countUsedAttributes++;
         } else {
@@ -7763,16 +7855,16 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
 
     // Define a boolean for special case that relation and entity can have 2 lines
-    var specialCase = (fromElement.kind === "ERRelation" &&
-        toElement.kind === "EREntity" ||
-        fromElement.kind === "EREntity" &&
-        toElement.kind === "ERRelation"
+    var specialCase = (fromElement.kind === elementTypesNames.ERRelation &&
+        toElement.kind === elementTypesNames.EREntity ||
+        fromElement.kind === elementTypesNames.EREntity &&
+        toElement.kind === elementTypesNames.ERRelation
     );
 
     // Check rules for Recursive relations
-    if (fromElement.kind === "ERRelation" && fromElement.kind == "Normal" || toElement.kind === "ERRelation" && toElement.kind == "Normal") {
+    if (fromElement.kind === elementTypesNames.ERRelation && fromElement.kind == "Normal" || toElement.kind === elementTypesNames.ERRelation && toElement.kind == "Normal") {
         var relationID;
-        if (fromElement.kind === "ERRelation") relationID = fromElement.id;
+        if (fromElement.kind === elementTypesNames.ERRelation) relationID = fromElement.id;
         else relationID = toElement.id;
 
         var linesFromRelation = lines.filter(line => {
@@ -7878,26 +7970,28 @@ function drawLine(line, targetGhost = false) {
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
 
     let str = "";
-    let strokeDash = (line.kind == "Dashed") ? "10" : "0";
-    let lineColor = isDarkTheme() ? '#FFFFFF' : '#000000';
+    let strokeDash = (line.kind == lineKind.DASHED) ? "10" : "0";
+    let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
     let isSelected = contextLine.includes(line);
 
-    if (isSelected) lineColor = selectedColor;
+    if (isSelected) lineColor = color.SELECTED;
 
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
-    line.type = (telem.type == 'NOTE') ? telem.type : felem.type;
-    if (line.type == 'NOTE') strokeDash = "10";
-    if (targetGhost && line.type == 'SD') line.endIcon = "ARROW";
+    line.type = (telem.type == entityType.note) ? telem.type : felem.type;
+    if (line.type == entityType.note) strokeDash = "10";
+    if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
 
-    if (line.type == 'ER') {
-        if (line.kind == "Normal") {
-            str += `<line id='${line.id}' class='lineColor' 
-                x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
-                x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-        } else if (line.kind == "Double") {
+    if (line.type == entityType.ER) {
+        if (line.kind == lineKind.NORMAL) {
+            str += `<line 
+                        id='${line.id}' 
+                        x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
+                        x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
+                        stroke='${lineColor}' stroke-width='${strokewidth}'
+                    />`;
+        } else if (line.kind == lineKind.DOUBLE) {
             let dy = -(tx - fx);
             let dx = ty - fy;
             let len = Math.sqrt((dx * dx) + (dy * dy));
@@ -7905,18 +7999,20 @@ function drawLine(line, targetGhost = false) {
             dx = dx / len;
 
             const double = (a, b) => {
-                return `<line id='${line.id}-${b}' class='lineColor' 
-                    x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
-                    y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
-                    x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
-                    y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
-                    stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+                return `<line 
+                            id='${line.id}-${b}' 
+                            x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
+                            y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
+                            x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
+                            y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
+                            stroke='${lineColor}' stroke-width='${strokewidth}'
+                        />`;
             }
             str += double(1, 1);
             str += double(-1, 2);
         }
-    } else if ((line.type == 'SD' && line.innerType == null) || (line.type == 'SD' && line.innerType === SDLineType.STRAIGHT)) {
-        if (line.kind == "Recursive") {
+    } else if ((line.type == entityType.SD && line.innerType == null) || (line.type == entityType.SD && line.innerType === SDLineType.STRAIGHT)) {
+        if (line.kind == lineKind.RECURSIVE) {
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
             const startY = fy - 10 * zoomfact;
@@ -7925,48 +8021,35 @@ function drawLine(line, targetGhost = false) {
             const cornerX = fx + length;
             const cornerY = fy - length;
 
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' class='lineColor' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
+            str += `<line id='${line.id}' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+            str += `<line id='${line.id}' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
-        } else if ((fy > ty) && (line.ctype == "TB")) {
+        } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             offset.y1 = 1;
             offset.y2 = -7 + 3 / zoomfact;
-        } else if ((fy < ty) && (line.ctype == "BT")) {
+        } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
             offset.y1 = -7 + 3 / zoomfact;
             offset.y2 = 1;
         }
-        str += `<line id='${line.id}' class='lineColor' \
-            x1='${fx + offset.x1 * zoomfact}' \
-            y1='${fy + offset.y1 * zoomfact}' \
-            x2='${tx + offset.x2 * zoomfact}' \
-            y2='${ty + offset.y2 * zoomfact}' \
-            fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-    } else { // UML, IE or SD with segmented line
-        // Halfway point between elements
-        let dx = ((fx + offset.x1) - (tx + offset.x2)) / 2;
-        let dy = ((fy + offset.y1) - (ty + offset.y2)) / 2;
-        if (line.ctype == 'TB' || line.ctype == 'BT') {
-            str += `<polyline \
-                id='${line.id}' \
-                class='lineColor' \
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1},${fy + offset.y1 - dy} ${tx + offset.x2},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' \
-                fill=none stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'/>`;
-        } else if (line.ctype == 'LR' || line.ctype == 'RL') {
-            str += `<polyline \
-                id='${line.id}' \
-                class='lineColor' \
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1} ${tx + offset.x2 + dx},${ty + offset.y2} ${tx + offset.x2},${ty + offset.y2}' \
-                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
-        }
+        str += `<line 
+                    id='${line.id}' 
+                    x1='${fx + offset.x1 * zoomfact}' 
+                    y1='${fy + offset.y1 * zoomfact}' 
+                    x2='${tx + offset.x2 * zoomfact}' 
+                    y2='${ty + offset.y2 * zoomfact}' 
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
+                />`;
+    } else { // UML, IE or SD
+        str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
 
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
-    if  (line.type == 'SD' && line.innerType != SDLineType.SEGMENT) {
+    if  (line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
@@ -7977,7 +8060,7 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
-    if (felem.type != 'ER' || telem.type != 'ER') {
+    if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
@@ -7992,14 +8075,15 @@ function drawLine(line, targetGhost = false) {
 
     if (isSelected) {
         str += `<rect 
-            x='${((fx + tx) / 2) - (2 * zoomfact)}' 
-            y='${((fy + ty) / 2) - (2 * zoomfact)}' 
-            width='${4 * zoomfact}' 
-            height='${4 * zoomfact}' 
-            style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"/>`;
+                    x='${((fx + tx) / 2) - (2 * zoomfact)}' 
+                    y='${((fy + ty) / 2) - (2 * zoomfact)}' 
+                    width='${4 * zoomfact}' 
+                    height='${4 * zoomfact}' 
+                    style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"
+                />`;
     }
 
-    if (line.label && line.label != "" && line.type !== "IE") {
+    if (line.label  && line.type !== entityType.IE) {
         //Get width of label's text through canvas
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
@@ -8061,44 +8145,46 @@ function drawLine(line, targetGhost = false) {
         // Label position for recursive edges
         var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
         var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionX = labelPosX + label.labelMovedX + label.displacementX + zoomfact
-        const labelPositionY = labelPosY + label.labelMovedY + label.displacementY - zoomfact
+        const labelPositionX = labelPosX + zoomfact
+        const labelPositionY = labelPosY - zoomfact
 
         //Add label with styling based on selection.
-        if (line.kind === "Recursive") {
+        if (line.kind === lineKind.RECURSIVE) {
             str += `<rect
-                class='text cardinalityLabel'
-                id='${line.id + 'Label'}'
-                x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
-                y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
-                width='${(textWidth + zoomfact * 4)}'
-                height='${textheight * zoomfact}'/>`;
+                        class='text cardinalityLabel'
+                        id='${line.id + 'Label'}'
+                        x='${((fx + length + (30 * zoomfact))) - textWidth / 2}'
+                        y='${(labelPositionY - 70 * zoomfact) - ((textheight / 4) * zoomfact)}'
+                        width='${(textWidth + zoomfact * 4)}'
+                        height='${textheight * zoomfact}'
+                    />`;
             str += `<text
-                class='cardinalityLabelText'
-                dominant-baseline='middle'
-                text-anchor='middle'
-                x='${(fx + length + (30 * zoomfact))}'
-                y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
-                ${labelValue}
-                </text>`;
+                        class='cardinalityLabelText'
+                        dominant-baseline='middle'
+                        text-anchor='middle'
+                        x='${(fx + length + (30 * zoomfact))}'
+                        y='${(labelPositionY - 70 * zoomfact) + ((textheight / 4) * zoomfact)}'
+                        style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
+                        ${labelValue}
+                    </text>`;
         } else {
             str += `<rect
-                class='text cardinalityLabel'
-                id=${line.id + 'Label'}
-                x='${labelPositionX}'
-                y='${labelPositionY}'
-                width='${(textWidth + zoomfact * 4)}'
-                height='${textheight * zoomfact + zoomfact * 3}'/>`;
-            str += `<text
-                class='cardinalityLabelText'
-                dominant-baseline='middle'
-                text-anchor='middle'
-                style='font-size:${Math.round(zoomfact * textheight)}px;'
-                x='${label.centerX - (2 * zoomfact) + label.labelMovedX + label.displacementX}'
-                y='${label.centerY - (2 * zoomfact) + label.labelMovedY + label.displacementY}'>
-                ${labelValue}
-                </text>`;
+                        class='text cardinalityLabel'
+                        id=${line.id + 'Label'}
+                        x='${labelPositionX}'
+                        y='${labelPositionY}'
+                        width='${(textWidth + zoomfact * 4)}'
+                        height='${textheight * zoomfact + zoomfact * 3}'
+                    />`;
+            str += ` <text
+                        class='cardinalityLabelText'
+                        dominant-baseline='middle'
+                        text-anchor='middle'
+                        style='font-size:${Math.round(zoomfact * textheight)}px;'
+                        x='${label.centerX - (2 * zoomfact)}'
+                        y='${label.centerY - (2 * zoomfact)}'>
+                        ${labelValue}
+                    </text>`;
         }
     }
     return str;
@@ -8114,22 +8200,22 @@ function getLineAttrubutes(f, t, ctype) {
         y2: 0,
     }
     switch (ctype) {
-        case 'TB':
+        case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
             result = [f.cx, f.y1, t.cx, t.y2, offset];
             break;
-        case 'BT':
+        case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
             result = [f.cx, f.y2, t.cx, t.y1, offset];
             break;
-        case 'LR':
+        case lineDirection.LEFT:
             offset.x1 = px;
             offset.x2 = 0;
             result = [f.x1, f.cy, t.x2, t.cy, offset];
             break;
-        case 'RL':
+        case lineDirection.RIGHT:
             offset.x1 = 0;
             offset.x2 = px;
             result = [f.x2, f.cy, t.x1, t.cy, offset];
@@ -8143,34 +8229,35 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
-    if (line.ctype == 'TB') {
+    if (line.ctype == lineDirection.UP) {
         x -= offsetOnLine / 2;
         y += (isStart) ? -offsetOnLine : offsetOnLine;
-    } else if (line.ctype == 'BT') {
+    } else if (line.ctype == lineDirection.DOWN) {
         x -= offsetOnLine / 2;
         y += (isStart) ? offsetOnLine : -offsetOnLine;
-    } else if (line.ctype == 'LR') {
+    } else if (line.ctype == lineDirection.LEFT) {
         x += (isStart) ? -offsetOnLine : offsetOnLine;
         y -= offsetOnLine / 2;
-    } else if (line.ctype == 'RL') {
+    } else if (line.ctype == lineDirection.RIGHT) {
         x += (isStart) ? offsetOnLine : -offsetOnLine;
         y -= offsetOnLine / 2;
     }
 
     return `<rect 
-            class='text cardinalityLabel' 
-            id='${line.id + labelStr}' 
-            x='${x - textWidth / 2}' 
-            y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
-            width='${textWidth + 2}' 
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+                class='text cardinalityLabel' 
+                id='${line.id + labelStr}' 
+                x='${x - textWidth / 2}' 
+                y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
+                width='${textWidth + 2}' 
+                height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
             <text 
-            class='text cardinalityLabelText' 
-            dominant-baseline='middle' 
-            text-anchor='middle' 
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
-            x='${x}' 
-            y='${y}'> ${label} </text>`;
+                class='text cardinalityLabelText' 
+                dominant-baseline='middle' 
+                text-anchor='middle' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                x='${x}' 
+                y='${y}'
+            > ${label} </text>`;
 }
 
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
@@ -8195,48 +8282,61 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     }
 
     if (findEntityFromLine(line) == -1) {
-        if (line.ctype == "TB") {
+        if (line.ctype == lineDirection.UP) {
             if (f.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "BT") {
+        } else if (line.ctype == lineDirection.DOWN) {
             if (f.bottom.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "RL") {
+        } else if (line.ctype == lineDirection.RIGHT) {
             if (f.right.indexOf(line.id) == 0) posY -= offset;
             else if (f.right.indexOf(line.id) == f.right.length - 1) posY += offset;
-        } else if (line.ctype == "LR") {
+        } else if (line.ctype == lineDirection.LEFT) {
             if (f.left.indexOf(line.id) == 0) posY -= offset;
             else if (f.left.indexOf(line.id) == f.left.length - 1) posY += offset;
         }
     } else {
-        if (line.ctype == "TB") {
+        if (line.ctype == lineDirection.UP) {
             if (t.bottom.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "BT") {
+        } else if (line.ctype == lineDirection.DOWN) {
             if (t.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
-        } else if (line.ctype == "RL") {
+        } else if (line.ctype == lineDirection.RIGHT) {
             if (t.left.indexOf(line.id) == 0) posY -= offset;
             else if (t.left.indexOf(line.id) == f.left.length - 1) posY += offset;
-        } else if (line.ctype == "LR") {
+        } else if (line.ctype == lineDirection.LEFT) {
             if (t.right.indexOf(line.id) == 0) posY -= offset;
             else if (t.right.indexOf(line.id) == f.right.length - 1) posY += offset;
         }
     }
     return `<rect 
-            class='text cardinalityLabel' 
-            id='${line.id + "Cardinality"}' 
-            x='${posX - (textWidth) / 2}' 
-            y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
-            width='${textWidth + 2}' 
-            height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+                class='text cardinalityLabel' 
+                id='${line.id + "Cardinality"}' 
+                x='${posX - (textWidth) / 2}' 
+                y='${posY - (textheight * zoomfact + zoomfact * 3) / 2}' 
+                width='${textWidth + 2}' 
+                height='${(textheight - 4) * zoomfact + zoomfact * 3}'
+            /> 
             <text 
-            class='text cardinalityLabelText' 
-            dominant-baseline='middle' 
-            text-anchor='middle' 
-            style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
-            x='${posX}' 
-            y='${posY}'> ${lineCardinalitys[line.cardinality]} </text>`;
+                class='text cardinalityLabelText' 
+                dominant-baseline='middle' 
+                text-anchor='middle' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                x='${posX}' 
+                y='${posY}'
+            > ${lineCardinalitys[line.cardinality]} </text>`;
+}
+
+function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
+    let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
+    let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+    return `<polyline 
+                id='${line.id}' 
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
+                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
+            />`;
+
 }
 
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {
@@ -8254,7 +8354,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             str += iconLine(TWO_LINE[ctype], x, y, lineColor);
             break;
         case IELineIcons.WEAK:
-            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, '#ffffff');
+            str += iconPoly(WEAK_TRIANGLE[ctype], x, y, lineColor, color.WHITE);
             str += iconCircle(CIRCLE[ctype], x, y, lineColor);
             break;
         case IELineIcons.MANY:
@@ -8272,41 +8372,43 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
            str += iconPoly(ARROW[ctype], x, y, lineColor, 'none');
             break;
         case UMLLineIcons.TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#ffffff');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, color.WHITE);
             break;
         case UMLLineIcons.BLACK_TRIANGLE:
-            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, '#000000');
+            str += iconPoly(TRIANGLE[ctype], x, y, lineColor, color.BLACK);
             break;
         case UMLLineIcons.WHITEDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#ffffff');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, color.WHITE);
             break;
         case UMLLineIcons.BLACKDIAMOND:
-            str += iconPoly(DIAMOND[ctype], x, y, lineColor, '#000000');
+            str += iconPoly(DIAMOND[ctype], x, y, lineColor, color.BLACK);
             break;
         case SDLineIcons.ARROW:
             if (line.innerType == SDLineType.SEGMENT) {
                 // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, '#000000');
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
             }
     }
     return str;
 }
 
 function iconLine([a, b, c, d], x, y, lineColor) {
-    return `<line class='diagram-umlicon-darkmode' \
-                x1='${x + a * zoomfact}' \
-                y1='${y + b * zoomfact}' \
-                x2='${x + c * zoomfact}' \
-                y2='${y + d * zoomfact}' \
-                stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<line 
+                x1='${x + a * zoomfact}' 
+                y1='${y + b * zoomfact}' 
+                x2='${x + c * zoomfact}' 
+                y2='${y + d * zoomfact}' 
+                stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 function iconCircle([a, b, c], x, y, lineColor,) {
-    return `<circle class='diagram-umlicon-darkmode' \
-                cx='${x + a * zoomfact}' \
-                cy='${y + b * zoomfact}' \
-                r='${c * zoomfact}' \
-                fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<circle 
+                cx='${x + a * zoomfact}' 
+                cy='${y + b * zoomfact}' 
+                r='${c * zoomfact}' 
+                fill='white' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 function iconPoly(arr, x, y, lineColor, fill) {
@@ -8315,9 +8417,10 @@ function iconPoly(arr, x, y, lineColor, fill) {
         const [a, b] = arr[i];
         s += `${x + a * zoomfact} ${y + b * zoomfact}, `;
     }
-    return `<polyline class='diagram-umlicon-darkmode' \
-                points='${s}' \
-                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
+    return `<polyline 
+                points='${s}' 
+                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
 }
 
 /**
@@ -8372,8 +8475,7 @@ function rotateArrowPoint(base, to, clockwise) {
 function drawArrowPoint(base, point, x, y, lineColor, line) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
-    return `<polygon id='${line.id + "IconOne"}' class='diagram-umlicon-darkmode-sd'
-        points=' 
+    return `<polygon points=' 
         ${right.x} ${right.y},
         ${point.x} ${point.y}, 
         ${left.x} ${left.y}' 
@@ -8439,13 +8541,9 @@ function addNodes(element) {
     nodes += "<span id='md' class='node md'></span>";
     nodes += "<span id='mu' class='node mu'></span>";
 
-    if (element.kind == "UMLSuperState") {
-        nodes += "<span id='md' class='node md'></span>";
-        nodes += "<span id='mu' class='node mu'></span>";
-    }
     elementDiv.innerHTML += nodes;
-    // This is the standard node size
     const defaultNodeSize = 8;
+
     var nodeSize = defaultNodeSize * zoomfact;
     if ((element.kind == "sequenceActor") || (element.kind == "sequenceObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         var mdNode = document.getElementById("md");
@@ -8465,11 +8563,12 @@ function addNodes(element) {
         mdNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
         muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
     }
-
+  
     var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
     var muNode = document.getElementById("mu");
+    var mdNode = document.getElementById("md");
     mrNode.style.width = nodeSize + "px";
     mlNode.style.width = nodeSize + "px";
     mrNode.style.height = nodeSize + "px";
@@ -8479,7 +8578,11 @@ function addNodes(element) {
     muNode.style.width = nodeSize + "px";
     muNode.style.height = nodeSize + "px";
     muNode.style.top = "0%";
-    muNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
+    muNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
+    mdNode.style.width = nodeSize + "px";
+    mdNode.style.height = nodeSize + "px";
+    mdNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
+    mdNode.style.bottom = "0%";
 
 }
 
@@ -8519,8 +8622,8 @@ function drawRulerBars(X, Y) {
     settings.ruler.ZF = 100 * zoomfact;
     var pannedY = (Y - settings.ruler.ZF) / zoomfact;
     var pannedX = (X - settings.ruler.ZF) / zoomfact;
-    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (1.0 / zoomfact));
-    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (1.0 / zoomfact));
+    settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact));
+    settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact));
 
     if (zoomfact < 0.5) {
         var verticalText = "writing-mode= 'vertical-lr'";
@@ -8590,7 +8693,7 @@ function drawRulerBars(X, Y) {
 
     //Draw the X-axis ruler positive side.
     lineNumber = (lineRatio3 - 1);
-    for (i = 51 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8618,7 +8721,7 @@ function drawRulerBars(X, Y) {
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
-    for (i = -51 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8656,6 +8759,7 @@ function drawRulerBars(X, Y) {
 function drawElement(element, ghosted = false) {
     let ghostPreview = ghostLine ? 0 : 0.4;
     var str = "";
+    const multioffs = 3;
 
     // Compute size variables
     var linew = Math.round(strokewidth * zoomfact);
@@ -8664,11 +8768,8 @@ function drawElement(element, ghosted = false) {
     var texth = Math.round(zoomfact * textheight);
     var hboxw = Math.round(element.width * zoomfact * 0.5);
     var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round((element.height / 2) * zoomfact); //determines the corner radius for the SD states.
+    var cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
     var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
-    var elemAttri = 3;//element.attributes.length;          //<-- UML functionality This is hardcoded will be calcualted in issue regarding options panel
-    //This value represents the amount of attributes, hopefully this will be calculated through
-    //an array in the UML document that contains the element's attributes.
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8676,21 +8777,11 @@ function drawElement(element, ghosted = false) {
 
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
-    var nonFilledElementPartStrokeColor;
-    if (isDarkTheme()) nonFilledElementPartStrokeColor = '#FFFFFF';
-    else nonFilledElementPartStrokeColor = '#383737';
-
-    //TODO, replace all actorFontColor with nonFilledElementPartStrokeColor
-    //this is a silly way of changing the color for the text for actor, I couldnt think of a better one though. Currently it is also used for sequenceLoopOrAlt
-    //replace this with nonFilledElementPartStroke when it gets merged.
-    var actorFontColor;
-    if (isDarkTheme()) actorFontColor = '#FFFFFF';
-    else actorFontColor = '#383737';
+    let actorFontColor;
+    actorFontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
 
     // Caclulate font width using some canvas magic
-    var font = canvasContext.font;
-    font = `${texth}px ${font.split('px')[1]}`;
-    canvasContext.font = font;
+    canvasContext.font = `${texth}px ${canvasContext.font.split('px')[1]}`;
     var textWidth = canvasContext.measureText(element.name).width;
 
     // If calculated size is larger than element width
@@ -8704,191 +8795,44 @@ function drawElement(element, ghosted = false) {
         checkElementError(element);
 
         // Checks if element is involved with an error and outlines them in red
-        for (var i = 0; i < errorData.length; i++) {
+        for (let i = 0; i < errorData.length; i++) {
             if (element.id == errorData[i].id) element.stroke = 'red';
         }
     }
 
     //=============================================== <-- UML functionality
-    //Check if the element is a UML entity
-    if (element.kind == "UMLEntity") {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        const funcText = element.functions.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-        elemFunc = funcText.length;
-
-        // Removes the previouse value in UMLHeight for the element
-        for (var i = 0; i < UMLHeight.length; i++) {
-            if (element.id == UMLHeight[i].id) {
-                UMLHeight.splice(i, 1);
-            }
-        }
-
-        // Calculate and store the UMLEntity's real height
-        var UMLEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2)) + (boxh / 2 + (boxh * elemFunc / 2))) / zoomfact)
-        }
-        UMLHeight.push(UMLEntityHeight);
-
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //div to encapuslate UML header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-        //svg for UML header, background and text
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for UML header
-        str += `</svg>`;
-        //end of div for UML header
-        str += `</div>`;
-
-        //div to encapuslate UML content
-        str += `<div class='uml-content' style='height:${boxh - (linew * 2)}px'>`;
-        //Draw UML-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw UML-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for UML content
-        str += `</div>`;
-
-        //Draw UML-footer if there exist at least one function
-        if (elemFunc != 0) {
-            //div for UML footer
-            str += `<div class='uml-footer' style='height: ${boxh / 2 + (boxh * elemFunc / 2)}px;'>`;
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemFunc / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemFunc / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemFunc; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${funcText[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw UML-footer if there are no functions
-        } else {
-            //div for UML footer
-            str += `<div class='uml-footer' style='height: ${boxh / 2 + (boxh / 2)}px;'>`;
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for UML footer
-        str += `</div>`;
-    } else if (element.kind == 'UMLInitialState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%" 
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg" 
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g  transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
-                            <circle cx="16.5" cy="12.5" r="10.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-            element.fill = `${"#000000"}`;
-        }
-    } else if (element.kind == 'UMLFinalState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}"
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g>
-                            <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                            <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
-            element.fill = `${"#000000"}`;
-        }
-    } else if (element.kind == 'UMLSuperState') {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        str += `<div id="${element.id}" 
-                    class="element uml-Super"
-                    style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
-                     onmousedown='ddown(event);' 
-                     onmouseenter='mouseEnter();' 
-                     onmouseleave='mouseLeave();'>
-                    <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${nonFilledElementPartStrokeColor}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${boxw / 2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
-                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
-                    </svg>
-                </div>`;
+    // TODO: Refactor each if into own function, then use it in switch
+    switch (element.kind) {
+        case elementTypesNames.UMLEntity:
+            str += drawElementUMLEntity(element, ghosted);
+            break;
+        case elementTypesNames.UMLInitialState:
+            let initVec = `
+                <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+                    <circle cx="16.5" cy="12.5" r="10.5" />
+                </g>`
+            str += drawElementState(element, ghosted, initVec);
+            break;
+        case elementTypesNames.UMLFinalState:
+            let finalVec = `
+                <g> 
+                    <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
+                    <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/> 
+                </g>`
+            str += drawElementState(element, ghosted, finalVec);
+            break;
+        case elementTypesNames.UMLSuperState:
+            str += drawElementSuperState(element, ghosted, textWidth);
+            break;
+        case elementTypesNames.IEEntity:
+            str += drawElementIEEntity(element, ghosted);
+            break;
     }
-    // Check if element is SDEntity
-    else if (element.kind == "SDEntity") {
+    if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
+    } else if (element.kind == elementTypesNames.UMLInitialState) {
+    } else if (element.kind == elementTypesNames.UMLFinalState) {
+    } else if (element.kind == elementTypesNames.UMLSuperState) {
+    } else if (element.kind == elementTypesNames.SDEntity) {
         const maxCharactersPerLine = Math.floor(boxw / texth);
 
         const splitLengthyLine = (str, max) => {
@@ -8956,21 +8900,22 @@ function drawElement(element, ghosted = false) {
         str += `</div>`;
 
         //div to encapuslate SD content
-        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
+
         //Draw SD-content if there exist at least one attribute
         if (elemAttri != 0) {
+            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
             /* find me let sdOption = document.getElementById("SDOption");
              console.log(sdOption); */
             //svg for background
             str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius}
+                    h${(boxw - (linew * 2 ))}
+                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
                     h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
                     a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - cornerRadius) * -1}
+                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
                     z
                 "
                 stroke-width='${linew}'
@@ -8983,9 +8928,11 @@ function drawElement(element, ghosted = false) {
             //end of svg for background
             str += `</svg>`;
             // Draw SD-content if there are no attributes.
-        } else {
+        }
+        else {
+            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
             //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
+            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
             str += `<path class="text"
                 d="M${linew},${(linew)}
                     h${(boxw - (linew * 2))}
@@ -9000,7 +8947,7 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`;
+            /*str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`; */
             //end of svg for background
             str += `</svg>`;
         }
@@ -9039,88 +8986,8 @@ function drawElement(element, ghosted = false) {
     }
         //=============================================== <-- IE functionality
     //Check if the element is a IE entity
-    else if (element.kind == "IEEntity") {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in IEHeight for the element
-        for (var i = 0; i < IEHeight.length; i++) {
-            if (element.id == IEHeight[i].id) {
-                IEHeight.splice(i, 1);
-            }
-        }
-
-        // Calculate and store the IEEntity's real height
-        var IEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
-        }
-        IEHeight.push(IEEntityHeight);
-
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //div to encapuslate IE header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-        //svg for IE header, background and text
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for IE header
-        str += `</svg>`;
-        //end of div for IE header
-        str += `</div>`;
-
-        //div to encapuslate IE content
-        str += `<div class='uml-content' style='height: ${boxh / 2 + (boxh * elemAttri / 2)}px;'>`;
-        //Draw IE-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='5' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw IE-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for IE content
-        str += `</div>`;
-    }
-    //IE inheritance
-    else if (element.kind == 'IERelation') {
+    else if (element.kind == elementTypesNames.IEEntity) {
+    } else if (element.kind == elementTypesNames.IERelation) {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
@@ -9156,7 +9023,7 @@ function drawElement(element, ghosted = false) {
         //=============================================== <-- End of IE functionality
         //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == 'sequenceActor') {
+    else if (element.kind == elementTypesNames.sequenceActor) {
         //div to encapsulate sequence actor/object and its lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
@@ -9389,10 +9256,10 @@ function drawElement(element, ghosted = false) {
             height: ((boxh + (boxh / 2)) / zoomfact)
         }
         NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == `${"#000000"}`) {
-            element.stroke = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}`) {
-            element.stroke = `${"#000000"}`;
+        if (element.fill == color.BLACK) {
+            element.stroke = color.WHITE;
+        } else if (element.fill == color.WHITE) {
+            element.stroke = color.BLACK;
         }
         //div to encapuslate note element
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
@@ -9476,21 +9343,21 @@ function drawElement(element, ghosted = false) {
     //ER element
     else {
         // Create div & svg element
-        if (element.kind == "EREntity") {
+        if (element.kind == elementTypesNames.EREntity) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
-        } else if (element.kind == "ERAttr") {
+        } else if (element.kind == elementTypesNames.ERAttr) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
                             width:${boxw}px;
                             height:${boxh}px;
                             font-size:${texth}px;`;
-        } else if (element.kind == "ERRelation") {
+        } else if (element.kind == elementTypesNames.ERRelation) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
                             left:0px;
                             top:0px;
@@ -9498,20 +9365,12 @@ function drawElement(element, ghosted = false) {
                             height:${boxh}px;
                             font-size:${texth}px;`;
         }
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `
-                pointer-events: none;
-                opacity: ${ghostPreview};
-            `;
-        }
+        if (context.includes(element)) str += `z-index: 1;`;
+        if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview}; `;
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
-        if (element.kind == "EREntity") {
-
+        if (element.kind == elementTypesNames.EREntity) {
             var weak = "";
 
             if (element.state == "weak") {
@@ -9525,7 +9384,7 @@ function drawElement(element, ghosted = false) {
                     ${weak}
                     <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
                     `;
-        } else if (element.kind == "ERAttr") {
+        } else if (element.kind == elementTypesNames.ERAttr) {
             var dash = "";
             var multi = "";
 
@@ -9565,7 +9424,7 @@ function drawElement(element, ghosted = false) {
                 diff = diff < 0 ? 0 - diff + 10 : 0;
                 str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5 * zoomfact}" stroke-width="${linew}"/>`;
             }
-        } else if (element.kind == "ERRelation") {
+        } else if (element.kind == elementTypesNames.ERRelation) {
             var numOfLetters = element.name.length;
             if (tooBig) {
                 var tempName = "";
@@ -9603,6 +9462,196 @@ function drawElement(element, ghosted = false) {
     return str;
 }
 
+const splitLengthyLine = (s, max) => {
+    if (s.length <= max) return s;
+    return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
+}
+
+function splitFull(e, max) {
+    return e.map(line => splitLengthyLine(line, max)).flat()
+}
+
+function updateElementHeight(arr, element, height) {
+    // Removes the previouse value in IEHeight for the element
+    for (let i = 0; i < arr.length; i++) {
+        if (element.id == arr[i].id) arr.splice(i, 1);
+    }
+    // Calculate and store the IEEntity's real height
+    arr.push( {
+        id: element.id,
+        height: height
+    });
+}
+
+function drawElementUMLEntity(element, ghosted) {
+    let str = "";
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let texth = Math.round(zoomfact * textheight);
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const aText = splitFull(element.attributes, maxCharactersPerLine);
+    const fText = splitFull(element.functions, maxCharactersPerLine);
+
+    let aHeight = texth * (aText.length + 1) * lineHeight;
+    let fHeight = texth * (fText.length + 1) * lineHeight;
+    let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
+    updateElementHeight(UMLHeight, element, totalHeight + boxh)
+
+    str += `<div 
+            id='${element.id}' 
+            class='element uml-element' 
+            onmousedown='ddown(event);' 
+            onmouseenter='mouseEnter();' 
+            onmouseleave='mouseLeave()';' 
+            style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;`;
+
+    if (ghosted) str += `pointer-events:none; opacity:${ghostPreview};`;
+    str += `'>`;
+
+    // Header
+    let height = texth * 2;
+    let headRect = drawRect(boxw, height, linew, element);
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headRect + headText);
+    str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
+
+    // Content, Attributes
+    const textBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh / 2;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let rect = drawRect(boxw, height, linew, element);
+        let contentSvg = drawSvg(boxw, height, rect + text);
+        let style = (css == 'uml-footer') ? `height:${height}px` : `height:${height - linew * 2}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += textBox(aText, 'uml-content');
+    str += textBox(fText, 'uml-footer');
+    return str;
+}
+
+const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
+const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
+const drawRect = (w, h, l, e) => {
+    return `<rect 
+                class='text' x='${l}' y='${l}' 
+                width='${w - l * 2}' height='${h - l * 2}' 
+                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
+            />`;
+}
+const drawText = (x, y, a, t, extra='') => {
+    return `<text
+                class='text' x='${x}' y='${y}' 
+                dominant-baseline='auto' text-anchor='${a}' ${extra}
+            > ${t} </text>`;
+}
+
+function drawElementIEEntity(element, ghosted) {
+    let str = "";
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let texth = Math.round(zoomfact * textheight);
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    let tHeight = texth * (text.length + 1) * lineHeight;
+    let totalHeight =  tHeight - linew * 2 + texth * 2;
+    updateElementHeight(IEHeight, element, totalHeight + boxh)
+
+    str += `<div 
+            id='${element.id}' 
+            class='element uml-element' 
+            onmousedown='ddown(event);' 
+            onmouseenter='mouseEnter();' 
+            onmouseleave='mouseLeave()';' 
+            style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
+
+    if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview};`;
+    str += `'>`;
+
+    let height = texth * 2;
+    let headRect = drawRect(boxw, height, linew, element);
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headRect + headText);
+    str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
+
+    // Content, Attributes
+    const textBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let rect = drawRect(boxw, height, linew, element);
+        let contentSvg = drawSvg(boxw, height, rect + text);
+        let style = `height:${height}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += textBox(text, 'uml-content');
+    return str;
+}
+
+function drawElementState(element, ghosted, vectorGraphic) {
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    var boxw = Math.round(element.width * zoomfact);
+    var boxh = Math.round(element.height * zoomfact);
+    const theme = document.getElementById("themeBlack");
+    if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
+        element.fill = color.WHITE;
+    } else if (element.fill == color.WHITE && theme.href.includes('style')) {
+        element.fill = color.BLACK;
+    }
+    return `<div id="${element.id}" 
+                class="element uml-state"
+                style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'>
+                <svg width="100%" height="100%" 
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" 
+                    xml:space="preserve"
+                    style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                    ${vectorGraphic}
+                </svg>
+            </div>`;
+}
+
+function drawElementSuperState(element, ghosted, textWidth) {
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let linew = Math.round(strokewidth * zoomfact);
+    element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`)
+    return `<div id="${element.id}" 
+                class="element uml-Super"
+                style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'>
+                <svg width='${boxw}' height='${boxh}'>
+                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${element.stroke}' stroke-width='${linew}' rx="20"/>
+                    <rect x='${linew}' y='${linew}' width="${textWidth + 40 * zoomfact}px" height="${50 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
+                    ${text}
+                </svg>
+            </div>`;
+}
+
 /**
  * @description Updates the elements translations and redraw lines.
  * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
@@ -9625,7 +9674,7 @@ function updatepos(deltaX, deltaY) {
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "ERRelation" && context[0].kind != "UMLRelation" && context[0].kind != "IERelation")) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != elementTypesNames.ERRelation && context[0].kind != "UMLRelation" && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
 }
 
 /**
@@ -9642,7 +9691,7 @@ function checkLineErrors(lines) {
         var tElement = data[findIndex(data, line.toID)];
 
         //Checking for cardinality
-        if ((fElement.kind == "EREntity" && tElement.kind == "ERRelation") || (tElement.kind == "EREntity" && fElement.kind == "ERRelation")) {
+        if ((fElement.kind == elementTypesNames.EREntity && tElement.kind == elementTypesNames.ERRelation) || (tElement.kind == elementTypesNames.EREntity && fElement.kind == elementTypesNames.ERRelation)) {
             if (line.cardinality != "ONE" && line.cardinality != "MANY") {
                 errorData.push(fElement);
                 errorData.push(tElement);
@@ -9674,10 +9723,10 @@ function checkEREntityErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "EREntity") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == "EREntity") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
             errorData.push(element);
         }
     }
@@ -9688,30 +9737,30 @@ function checkEREntityErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
@@ -9724,13 +9773,13 @@ function checkEREntityErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -9744,7 +9793,7 @@ function checkEREntityErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -9760,13 +9809,13 @@ function checkEREntityErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -9780,7 +9829,7 @@ function checkEREntityErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -9808,94 +9857,94 @@ function checkEREntityErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong key type
-            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                 if (tElement.state == "candidate" || tElement.state == "primary") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                 if (fElement.state == "candidate" || fElement.state == "primary") {
                     errorData.push(tElement);
                 }
             }
 
             // Counting quantity of keys
-            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                 if (tElement.state == "weakKey") {
                     keyQuantity += 1;
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                 if (fElement.state == "weakKey") {
                     keyQuantity += 1;
                 }
             }
 
             // Checking for attributes with same name
-            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                    if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                    if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                         errorData.push(element);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                    if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                    if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                         errorData.push(element);
                     }
                 }
             }
 
             // Checking if weak entity is related to a strong entity or a weak entity with a relation
-            if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak" && line.kind == "Double") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak" && line.kind == "Double") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == tElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                    if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.EREntity && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
                         strongEntity += 1;
                     }
-                    if (tElement0.id == tElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                    if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.EREntity && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
                         strongEntity += 1;
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak" && line.kind == "Double") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak" && line.kind == "Double") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == fElement.id && tElement0.kind == "EREntity" && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                    if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.EREntity && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
                         strongEntity += 1;
                     }
-                    if (tElement0.id == fElement.id && fElement0.kind == "EREntity" && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                    if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.EREntity && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
                         strongEntity += 1;
                     }
                 }
             }
 
             // Counting weak relations
-            if (fElement.id == element.id && tElement.kind == "ERRelation" && tElement.state == "weak") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak") {
                 weakrelation += 1;
             }
-            if (tElement.id == element.id && fElement.kind == "ERRelation" && fElement.state == "weak") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak") {
                 weakrelation += 1;
             }
         }
@@ -9930,19 +9979,19 @@ function checkEREntityErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong key type
-            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                 if (tElement.state == "weakKey") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                 if (fElement.state == "weakKey") {
                     errorData.push(tElement);
                 }
             }
 
             // Counting quantity of keys
-            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                 if (tElement.state == "candidate" || tElement.state == "primary") {
                     keyQuantity += 1;
                 }
@@ -9950,7 +9999,7 @@ function checkEREntityErrors(element) {
                     primaryCount += 1;
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                 if (fElement.state == "candidate" || fElement.state == "primary") {
                     keyQuantity += 1;
                 }
@@ -9960,30 +10009,30 @@ function checkEREntityErrors(element) {
             }
 
             // Checking for attributes with same name
-            if (fElement.id == element.id && tElement.kind == "ERAttr") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                    if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                    if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                         errorData.push(element);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "ERAttr") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                    if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                    if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                         errorData.push(element);
                     }
                 }
@@ -10023,10 +10072,10 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "ERRelation") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == "ERRelation") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
             errorData.push(element);
         }
     }
@@ -10037,30 +10086,30 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
@@ -10073,13 +10122,13 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -10093,7 +10142,7 @@ function checkERRelationErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -10109,13 +10158,13 @@ function checkERRelationErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -10129,7 +10178,7 @@ function checkERRelationErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -10149,7 +10198,7 @@ function checkERRelationErrors(element) {
 
     // Checking for reletions with same name but different properties
     for (var i = 0; i < data.length; i++) {
-        if (element.name == data[i].name && element.id != data[i].id && data[i].kind == "ERRelation") {
+        if (element.name == data[i].name && element.id != data[i].id && data[i].kind == elementTypesNames.ERRelation) {
 
             // Checking if relations have same line types
             var linesChecked = [];
@@ -10162,7 +10211,7 @@ function checkERRelationErrors(element) {
                 var fElement0;
                 var tElement0;
 
-                if (fElement.id == element.id && tElement.kind == "EREntity") {
+                if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
@@ -10177,13 +10226,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10205,13 +10254,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10235,13 +10284,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10263,13 +10312,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10284,7 +10333,7 @@ function checkERRelationErrors(element) {
                         errorData.push(element);
                     }
                 }
-                if (tElement.id == element.id && fElement.kind == "EREntity") {
+                if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
@@ -10299,13 +10348,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10327,13 +10376,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10357,13 +10406,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10385,13 +10434,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == "EREntity" && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -10421,7 +10470,7 @@ function checkERRelationErrors(element) {
                 var fElement2;
                 var tElement2;
 
-                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
@@ -10430,7 +10479,7 @@ function checkERRelationErrors(element) {
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
 
-                        if (fElement0.id == data[i].id && tElement0.kind == "ERAttr" && tElement0.state == tElement.state && tElement0.name == tElement.name) {
+                        if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.ERAttr && tElement0.state == tElement.state && tElement0.name == tElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -10440,7 +10489,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == tElement.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10448,15 +10497,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10464,16 +10513,16 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
 
-                                if (fElement1.id == tElement0.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10481,15 +10530,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement0.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10497,10 +10546,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -10509,7 +10558,7 @@ function checkERRelationErrors(element) {
                         } else {
                             noLineFound = true;
                         }
-                        if (tElement0.id == data[i].id && fElement0.kind == "ERAttr" && fElement0.state == tElement.state && fElement0.name == tElement.name) {
+                        if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.ERAttr && fElement0.state == tElement.state && fElement0.name == tElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -10519,7 +10568,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == tElement.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10527,15 +10576,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10543,15 +10592,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (fElement1.id == fElement0.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10559,15 +10608,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement0.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10575,10 +10624,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -10596,7 +10645,7 @@ function checkERRelationErrors(element) {
                         errorData.push(element);
                     }
                 }
-                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
@@ -10605,7 +10654,7 @@ function checkERRelationErrors(element) {
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
 
-                        if (fElement0.id == data[i].id && tElement0.kind == "ERAttr" && tElement0.state == fElement.state && tElement0.name == fElement.name) {
+                        if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.ERAttr && tElement0.state == fElement.state && tElement0.name == fElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -10615,7 +10664,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == fElement.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10623,15 +10672,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10639,16 +10688,16 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
 
-                                if (fElement1.id == tElement0.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10656,15 +10705,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement0.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10672,10 +10721,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -10684,7 +10733,7 @@ function checkERRelationErrors(element) {
                         } else {
                             noLineFound = true;
                         }
-                        if (tElement0.id == data[i].id && fElement0.kind == "ERAttr" && fElement0.state == fElement.state && fElement0.name == fElement.name) {
+                        if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.ERAttr && fElement0.state == fElement.state && fElement0.name == fElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -10694,7 +10743,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == fElement.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10702,15 +10751,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10718,16 +10767,16 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
 
-                                if (fElement1.id == fElement0.id && tElement1.kind == "ERAttr") {
+                                if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10735,15 +10784,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement0.id && fElement1.kind == "ERAttr") {
+                                if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
                                     for (var m = 0; m < lines.length; m++) {
@@ -10751,10 +10800,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == "ERAttr" && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == "ERAttr" && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -10782,17 +10831,17 @@ function checkERRelationErrors(element) {
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
 
-                if (fElement.id == element.id && tElement.kind == "ERAttr") {
+                if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
                     elementAttrCount += 1;
                 }
-                if (tElement.id == element.id && fElement.kind == "ERAttr") {
+                if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
                     elementAttrCount += 1;
                 }
 
-                if (fElement.id == data[i].id && tElement.kind == "ERAttr") {
+                if (fElement.id == data[i].id && tElement.kind == elementTypesNames.ERAttr) {
                     dataAttrCount += 1;
                 }
-                if (tElement.id == data[i].id && fElement.kind == "ERAttr") {
+                if (tElement.id == data[i].id && fElement.kind == elementTypesNames.ERAttr) {
                     dataAttrCount += 1;
                 }
             }
@@ -10808,30 +10857,30 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == element.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == element.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -10846,30 +10895,30 @@ function checkERRelationErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong line type to a relation
-            if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state == "weak" && line.kind == "Normal") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state == "weak" && line.kind == "Normal") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != tElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != tElement.id) {
                         errorData.push(element);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state == "weak" && line.kind == "Normal") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state == "weak" && line.kind == "Normal") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != fElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != fElement.id) {
                         errorData.push(element);
                     }
                 }
@@ -10880,30 +10929,30 @@ function checkERRelationErrors(element) {
             var tElement0;
 
             // Checking for more than one Normal line to a weak relation
-            if (fElement.id == element.id && tElement.kind == "EREntity" && tElement.state != "weak") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state != "weak") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != tElement.id) {
                         errorData.push(fElement);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != tElement.id) {
                         errorData.push(fElement);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity" && fElement.state != "weak") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state != "weak") {
                 for (var j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == "EREntity" && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != fElement.id) {
                         errorData.push(tElement);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == "EREntity" && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != fElement.id) {
                         errorData.push(tElement);
                     }
                 }
@@ -10940,7 +10989,7 @@ function checkERRelationErrors(element) {
             }
 
             // Counting connected lines
-            if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+            if ((tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) || (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity)) {
                 lineQuantity += 1;
             }
         }
@@ -10952,7 +11001,7 @@ function checkERRelationErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Counting connected lines
-            if ((tElement.id == element.id && fElement.kind == "EREntity") || (fElement.id == element.id && tElement.kind == "EREntity")) {
+            if ((tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) || (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity)) {
                 lineQuantity += 1;
             }
         }
@@ -10978,36 +11027,36 @@ function checkERAttributeErrors(element) {
         var tElement0;
 
         // Checking for non-normal attributes on a attribute
-        if (fElement.id == element.id && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
@@ -11016,72 +11065,72 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for 2nd line attribute connected with a 3rd attribute
-        if (fElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && fElement0.kind == "ERAttr" && tElement0.kind == "ERAttr" && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && tElement0.kind == "ERAttr" && fElement0.kind == "ERAttr" && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && tElement.kind == "ERAttr" && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && fElement0.kind == "ERAttr" && tElement0.kind == "ERAttr" && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && tElement0.kind == "ERAttr" && fElement0.kind == "ERAttr" && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11089,72 +11138,72 @@ function checkERAttributeErrors(element) {
             }
         }
         // Checking for 3rd line attribute connected with a 2nd attribute
-        if (fElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && fElement0.kind == "ERAttr" && tElement0.kind == "ERAttr" && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && tElement0.kind == "ERAttr" && fElement0.kind == "ERAttr" && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && tElement.kind == "ERAttr" && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && fElement0.kind == "ERAttr" && tElement0.kind == "ERAttr" && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && tElement0.kind == "ERAttr" && fElement0.kind == "ERAttr" && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == "ERAttr" && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == "ERAttr" && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11163,102 +11212,102 @@ function checkERAttributeErrors(element) {
         }
 
         // Attribute connected to more than one relation or entity
-        if (fElement.id == element.id && (tElement.kind == "EREntity" || tElement.kind == "ERRelation")) {
+        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == "EREntity" || fElement.kind == "ERRelation")) {
+        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation") && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation") && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
 
         // 2nd line attribute connected to another relation or entity
-        if (fElement.id == element.id && tElement.kind == "ERAttr") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == "EREntity" || tElement0.kind == "ERRelation")) {
+                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == "EREntity" || fElement0.kind == "ERRelation")) {
+                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == "EREntity" || tElement1.kind == "ERRelation")) {
+                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == "EREntity" || fElement1.kind == "ERRelation")) {
+                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
                             errorData.push(element);
                         }
                     }
@@ -11266,72 +11315,72 @@ function checkERAttributeErrors(element) {
             }
         }
         // Check for 1st line attribute connected in a 3 line attribute chain
-        if (fElement.id == element.id && (tElement.kind == "EREntity" || tElement.kind == "ERRelation")) {
+        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == "ERAttr") {
+                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && tElement1.kind == "ERAttr" && tElement1.id != fElement0.id) {
+                        if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && fElement1.kind == "ERAttr" && fElement1.id != fElement0.id) {
+                        if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == element.id && fElement0.kind == "ERAttr") {
+                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && tElement1.kind == "ERAttr" && tElement1.id != tElement0.id) {
+                        if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && fElement1.kind == "ERAttr" && fElement1.id != tElement0.id) {
+                        if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == "EREntity" || fElement.kind == "ERRelation")) {
+        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == "ERAttr") {
+                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && tElement1.kind == "ERAttr" && tElement1.id != fElement0.id) {
+                        if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && fElement1.kind == "ERAttr" && fElement1.id != fElement0.id) {
+                        if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == element.id && fElement0.kind == "ERAttr") {
+                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
                     for (var k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && tElement1.kind == "ERAttr" && tElement1.id != tElement0.id) {
+                        if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && fElement1.kind == "ERAttr" && fElement1.id != tElement0.id) {
+                        if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
                     }
@@ -11340,24 +11389,24 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for wrong key type
-        if ((tElement.kind == "EREntity" || fElement.kind == "EREntity") && (tElement.state == "weak" || fElement.state == "weak")) {
-            if (fElement.id == element.id && tElement.kind == "EREntity") {
+        if ((tElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.EREntity) && (tElement.state == "weak" || fElement.state == "weak")) {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
                 if (fElement.state == "candidate" || fElement.state == "primary") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
                 if (tElement.state == "candidate" || tElement.state == "primary") {
                     errorData.push(tElement);
                 }
             }
         } else {
-            if (fElement.id == element.id && tElement.kind == "EREntity") {
+            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
                 if (fElement.state == "weakKey") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == "EREntity") {
+            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
                 if (tElement.state == "weakKey") {
                     errorData.push(tElement);
                 }
@@ -11369,53 +11418,53 @@ function checkERAttributeErrors(element) {
         var tElement0;
 
         // Checking for attributes on the same relation with the same name
-        if (fElement.id == element.id && tElement.kind == "ERRelation") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && tElement0.kind == "ERAttr" && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && fElement0.kind == "ERAttr" && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "ERRelation") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
             for (var j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && tElement0.kind == "ERAttr" && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && fElement0.kind == "ERAttr" && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
 
         // Checking for key attributes on relation
-        if (fElement.id == element.id && tElement.kind == "ERRelation" && (fElement.state == "primary" || fElement.state == "candidate" || fElement.state == "weakKey")) {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && (fElement.state == "primary" || fElement.state == "candidate" || fElement.state == "weakKey")) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == "ERRelation" && (tElement.state == "primary" || tElement.state == "candidate" || tElement.state == "weakKey")) {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && (tElement.state == "primary" || tElement.state == "candidate" || tElement.state == "weakKey")) {
             errorData.push(element);
         }
 
         // Checking for attributes connected with the same name
-        if (fElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr" && fElement.name == tElement.name) {
+        if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr && fElement.name == tElement.name) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == "ERAttr" && tElement.kind == "ERAttr" && fElement.name == tElement.name) {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr && fElement.name == tElement.name) {
             errorData.push(element);
         }
 
         // Checking for attributes on the same entity
-        if (fElement.id == element.id && tElement.kind == "EREntity") {
+        if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
             var currentAttr = fElement;
             var currentEntity = tElement;
             for (var j = 0; j < lines.length; j++) {
@@ -11444,7 +11493,7 @@ function checkERAttributeErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == "EREntity") {
+        if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
             var currentAttr = tElement;
             var currentEntity = fElement;
             for (var j = 0; j < lines.length; j++) {
@@ -11481,9 +11530,9 @@ function checkERAttributeErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkElementError(element) {
-    if (element.kind == "EREntity") checkEREntityErrors(element)
-    if (element.kind == "ERRelation") checkERRelationErrors(element)
-    if (element.kind == "ERAttr") checkERAttributeErrors(element)
+    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element)
+    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element)
+    if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element)
 
     // Check lines
     checkLineErrors(lines);
@@ -11746,7 +11795,7 @@ function drawSelectionBox(str) {
         selectionBoxHighY = highY + 5;
 
         // Selection container of selected elements
-        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${selectedColor};" />`;
+        str += `<rect width='${highX - lowX + 10}' height='${highY - lowY + 10}' x= '${lowX - 5}' y='${lowY - 5}' style="fill:transparent; stroke-width:1.5; stroke:${color.SELECTED};" />`;
 
         //Determine size and position of delete button
         if (highX - lowX + 10 > highY - lowY + 10) {
@@ -11786,7 +11835,7 @@ function updateCSSForAllElements() {
         }
 
         if (settings.grid.snapToGrid && useDelta) {
-            if (element.kind == "EREntity") {
+            if (element.kind == elementTypesNames.EREntity) {
                 // The element coordinates with snap point
                 var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
@@ -11798,7 +11847,7 @@ function updateCSSForAllElements() {
                 // Set the new snap point to center of element
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
-            } else if (element.kind != "EREntity") {
+            } else if (element.kind != elementTypesNames.EREntity) {
                 // The element coordinates with snap point
                 var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
                 var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
@@ -11839,43 +11888,43 @@ function updateCSSForAllElements() {
             // Edge creation does not highlight selected elements
             if (mouseMode != mouseModes.EDGE_CREATION) {
                 // Update UMLEntity
-                if (element.kind == "UMLEntity") {
+                if (element.kind == elementTypesNames.UMLEntity) {
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
                 }
                 // Update IEEntity
-                else if (element.kind == "IEEntity") {
+                else if (element.kind == elementTypesNames.IEEntity) {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
                 }
                 // Update SDEntity
-                else if (element.kind == "SDEntity") {
+                else if (element.kind == elementTypesNames.SDEntity) {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
@@ -11887,10 +11936,10 @@ function updateCSSForAllElements() {
                         fontColor = elementDiv.children[0];
 
                         if (markedOverOne()) {
-                            fillColor.style.fill = `${"#927b9e"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.LIGHT_PURPLE;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${element.fill}`;
+                            fillColor.style.fill = element.fill;
                             fontContrast();
                         }
                     }
@@ -11901,37 +11950,37 @@ function updateCSSForAllElements() {
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
                     if (markedOverOne()) {
-                        fillColor.style.fill = `${"#927b9e"}`;
-                        fontColor.style.fill = `${"#ffffff"}`;
+                        fillColor.style.fill = color.LIGHT_PURPLE;
+                        fontColor.style.fill = color.WHITE;
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.WHITE;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if (element.kind == "IERelation" && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${"#ffffff"}`;
-                            disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                        else if (element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
+                            disjointLine1Color.style.stroke = color.WHITE;
+                            disjointLine2Color.style.stroke = color.WHITE;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${"#000000"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.BLACK;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.WHITE;
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#000000"}`;
-                            if (element.fill == "#000000") {
-                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.BLACK;
+                            if (element.fill == color.BLACK) {
+                                weakKeyUnderline.style.stroke = color.WHITE;
                             }
                         }
                     }
                 }
             } else {
                 // Update UMLEntity
-                if (element.kind == "UMLEntity") {
+                if (element.kind == elementTypesNames.UMLEntity) {
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -11940,7 +11989,7 @@ function updateCSSForAllElements() {
                     }
                 }
                 // Update IEEntity
-                else if (element.kind == "IEEntity") {
+                else if (element.kind == elementTypesNames.IEEntity) {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -11949,7 +11998,7 @@ function updateCSSForAllElements() {
                     }
                 }
                 // Update SDEntity
-                else if (element.kind == "SDEntity") {
+                else if (element.kind == elementTypesNames.SDEntity) {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
@@ -11975,27 +12024,27 @@ function updateCSSForAllElements() {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.WHITE;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if (element.kind == "IERelation" && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = `${"#ffffff"}`;
-                            disjointLine2Color.style.stroke = `${"#ffffff"}`;
+                        else if (element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
+                            disjointLine1Color.style.stroke = color.WHITE;
+                            disjointLine2Color.style.stroke = color.WHITE;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
-                            fillColor.style.fill = `${"#000000"}`;
-                            fontColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.BLACK;
+                            fontColor.style.fill = color.WHITE;
                         } else {
-                            fillColor.style.fill = `${"#ffffff"}`;
+                            fillColor.style.fill = color.WHITE;
                         }
                     } else {
-                        fillColor.style.fill = `${element.fill}`;
+                        fillColor.style.fill = element.fill;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            weakKeyUnderline.style.stroke = `${"#000000"}`;
-                            if (element.fill == "#000000") {
-                                weakKeyUnderline.style.stroke = `${"#ffffff"}`;
+                            weakKeyUnderline.style.stroke = color.BLACK;
+                            if (element.fill == color.BLACK) {
+                                weakKeyUnderline.style.stroke = color.WHITE;
                             }
                         }
                     }
@@ -12014,7 +12063,7 @@ function updateCSSForAllElements() {
 
     function fontContrast() {
         //check if the fill color is black or pink, if so the font color is set to white
-        fontColor.style.fill = element.fill == "#000000" || element.fill == "#DC267F" ? `${"#ffffff"}` : `${"#000000"}`;
+        fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
     }
 
     function markedOverOne() {
@@ -12047,8 +12096,8 @@ function toggleBorderOfElements() {
                 let fillColor = text.getAttribute('fill');
                 //if the element has a stroke which has the color #383737 and its fill isn't white: set it to white.
                 //this is because we dont want to affect the strokes that are null or other colors and have a contrasting border.
-                if (strokeColor == '#383737' && fillColor != '#ffffff') {
-                    strokeColor = '#ffffff';
+                if (strokeColor == color.GREY && fillColor != color.WHITE) {
+                    strokeColor = color.WHITE;
                     text.setAttribute('stroke', strokeColor);
                 }
             }
@@ -12059,8 +12108,8 @@ function toggleBorderOfElements() {
                 let text = allTexts[i];
                 let strokeColor = text.getAttribute('stroke');
                 let fillColor = text.getAttribute('fill');
-                if (strokeColor == '#ffffff' && fillColor != '#383737') {
-                    strokeColor = '#383737';
+                if (strokeColor == color.WHITE && fillColor != color.GREY) {
+                    strokeColor = color.GREY;
                     text.setAttribute('stroke', strokeColor);
                 }
             }
