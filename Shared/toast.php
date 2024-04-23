@@ -1,5 +1,5 @@
 <script>
-    const types = Object.freeze({ 
+    const types = Object.freeze( { 
         WARNING: "warning", 
         ERROR: "error", 
         SUCCESS: "success"
