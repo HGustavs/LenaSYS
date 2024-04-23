@@ -7712,7 +7712,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         toElement = fromElement;
         fromElement = tempElement;
     }
-    //If line is comming to ERRelation from weak entity it adds double line, else - single
+    //If line is comming to ERRelation from weak entity it adds double line, else it will be single
     if (toElement.kind == "ERRelation") {
         if (fromElement.state == "weak") {
             var tempElement = toElement;
