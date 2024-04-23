@@ -50,13 +50,17 @@ if(checklogin()){
 		if($query->execute()) {
 			foreach($query->fetchAll() as $row) {
 		        $grpmembershp=$row['groups'];
-				// Collect members part of the group specified in $showgrp
-				if (!str_contains($showgrp, $grpmembershp)){
-					$email=$row['email'];
-					if(is_null($email)){
-						$email=$row['username']."@student.his.se";
+				if (!empty($grpmembershp)){
+					// just need two first letters for comparison
+					$grpletters = $grpmembershp[0] . $grpmembershp[1];
+					// Collect members part of the group specified in $showgrp
+					if (strpos($showgrp, $grpletters)!==false){
+						$email=$row['email'];
+						if(is_null($email)){
+							$email=$row['username']."@student.his.se";
+						}
+						array_push($grplst, array($row['groups'],$row['firstname'],$row['lastname'],$email));
 					}
-					array_push($grplst, array($row['groups'],$row['firstname'],$row['lastname'],$email));
 				}
 			}
 			sort($grplst);
