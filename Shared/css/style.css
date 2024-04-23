@@ -7762,7 +7762,7 @@ textarea#mrkdwntxt {
 }
 
 #deleteCourseButton{
-  background-color:#e35057;
+  background-color:#d42c35;
   height:30px;
   padding-left:35px;
   padding-right:35px;
@@ -7772,6 +7772,10 @@ textarea#mrkdwntxt {
   margin:0px;
   margin-right:238px;
   color:#fff;
+}
+
+#deleteCourseButton:hover {
+  background-color:#c9555b;
 }
 
 #deleteCourseButtonYes{
@@ -7796,6 +7800,7 @@ textarea#mrkdwntxt {
   margin:0px;
   border: solid 1px #775886;
 }
+
 
 @media only screen and (max-width: 1350px) {
   .previewWindow {
