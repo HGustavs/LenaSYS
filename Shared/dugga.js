@@ -1091,31 +1091,21 @@ function AJAXService(opt,apara,kind)
 				success: returnedFile
 			})
 	}else if(kind=="ACCESS"){
-			$.ajax({
-				url: "accessedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedAccess
-			});
-	}else if(kind=="SECTION"){
-				$.ajax({
-					url: "sectionedservice.php",
-					type: "POST",
-					data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
-					dataType: "json",
-					success: returnedSection
-				});
-			}
-			else if(kind=="GRP"){
-    $.ajax({
-      url: "sectionedservice.php",
-      //url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
-      type: "POST",
-      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
-      dataType: "json",
-      success: returnedGroups
-    });
+		$.ajax({
+			url: "accessedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedAccess
+		});
+	}if(kind=="SECTION" || kind=="GRP"){
+		$.ajax({
+			url: "sectionedservice.php",
+			type: "POST",
+			data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+			dataType: "json", 
+			success: kind=="SECTION" ? returnedSection : returnedGroups
+		})
   }else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
