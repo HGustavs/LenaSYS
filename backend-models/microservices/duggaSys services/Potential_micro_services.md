@@ -63,6 +63,7 @@ Shared microservices:
 
 - logging_ms.php
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+- retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - isSuperUser_ms.php
 - hasAccess_ms.php
 - setUserID_ms.php
@@ -212,6 +213,20 @@ __Logging:__ Utilizes the information gathered to log a service event in the __s
 __Return of User ID:__ The function returns the user ID, which is either the actual user ID from the session or "guest".
 
 __Conclusion:__ The purpose of the code is to ensure accurate identification and logging of users and their actions within the system.
+
+<br>
+
+---
+
+<br>
+
+### readUsername_ms.php
+_SELECT_ operation on the table __'user'__ to retrieve the value of the column:
+- username
+
+```sql
+SELECT username FROM user WHERE uid = :uid;
+```
 
 <br>
 
