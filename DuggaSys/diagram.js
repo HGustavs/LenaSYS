@@ -8777,6 +8777,7 @@ function drawElement(element, ghosted = false) {
                     </svg>
                 </div>`;
     }
+    else if (element.kind == elementTypesNames.SDEntity){}
     //Check if element is UMLRelation
     else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
@@ -9477,8 +9478,8 @@ function drawElementSDEntity(element, ghosted){
     SDHeight.push(SDEntityHeight);
 
     //div to encapuslate SD element
-    str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
+    /*str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px; z-index:1;'`;
 
     if (context.includes(element)) {
         str += `z-index: 1;`;
@@ -9486,7 +9487,9 @@ function drawElementSDEntity(element, ghosted){
     if (ghosted) {
         str += `pointer-events: none; opacity: ${ghostPreview};`;
     }
-    str += `'>`;
+    str += `'>`;*/
+    str += `<div id='${element.id}' class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();' 
+        style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index: ${context.includes(element) ? 1 : 0}; ${ghosted ? 'pointer-events: none; opacity: ' + ghostPreview + ';' : ''}'>`;
 
     //div to encapuslate SD header
     str += `<div style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
@@ -9563,6 +9566,7 @@ function drawElementSDEntity(element, ghosted){
         str += `</svg>`;
     }
     //end of div for SD content
+    str += `</div>`;
     str += `</div>`;
     return str;
 }
