@@ -243,7 +243,7 @@ class StateChangeFactory {
         var lineIDs = [];
 
         // For every object in the lines array, add them to lineIDs
-        for (var index = 0; index < lines.length; index++) {
+        for (let index = 0; index < lines.length; index++) {
             lineIDs.push(lines[index].id);
         }
 
@@ -367,7 +367,7 @@ class StateMachine {
         let currentChangedType;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
-        for (var i = 0; i < stateChangeArray.length; i++) {
+        for (let i = 0; i < stateChangeArray.length; i++) {
 
             var stateChange = stateChangeArray[i];
 
@@ -391,7 +391,7 @@ class StateMachine {
                     } else { // Perform history comparisions
                         if (Array.isArray(lastLog.id)) {
                             if (stateChange.id.length != lastLog.id.length) sameElements = false;
-                            for (var index = 0; index < lastLog.id.length && sameElements; index++) {
+                            for (let index = 0; index < lastLog.id.length && sameElements; index++) {
                                 var id_found = lastLog.id[index];
 
                                 if (!stateChange.id.includes(id_found)) sameElements = false;
@@ -401,7 +401,7 @@ class StateMachine {
                         }
 
                         if (Array.isArray(newChangeType)) {
-                            for (var index = 0; index < newChangeType.length && isSoft; index++) {
+                            for (let index = 0; index < newChangeType.length && isSoft; index++) {
                                 isSoft = newChangeType[index].isSoft;
                             }
                             var changeTypes = newChangeType;
@@ -412,14 +412,14 @@ class StateMachine {
 
                         // Find last change with the same ids
                         var timeLimit = 10; // Timelimit on history append in seconds
-                        for (var index = this.historyLog.length - 1; index >= 0; index--) {
+                        for (let index = this.historyLog.length - 1; index >= 0; index--) {
                             // Check so if the changeState is not an created-object
                             if (this.historyLog[index].created != undefined) continue;
 
                             var sameIds = true;
                             if (stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
 
-                            for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
+                            for (let idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
                                 if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
                             }
 
@@ -527,7 +527,7 @@ class StateMachine {
     scrubHistory(endIndex) {
         this.gotoInitialState();
 
-        for (var i = 0; i <= endIndex; i++) {
+        for (let i = 0; i <= endIndex; i++) {
             this.restoreState(this.historyLog[i]);
         }
 
@@ -570,7 +570,7 @@ class StateMachine {
 
         if (!Array.isArray(state.id)) state.id = [state.id];
 
-        for (var i = 0; i < state.id.length; i++) {
+        for (let i = 0; i < state.id.length; i++) {
             // Find object
             var object;
             if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
@@ -671,7 +671,7 @@ class StateMachine {
                 stopStateIndex = 0;
             }
 
-            for (var i = startStateIndex; i <= stopStateIndex; i++) {
+            for (let i = startStateIndex; i <= stopStateIndex; i++) {
                 self.restoreState(self.historyLog[i]);
 
                 if (settings.replay.delay != startDelay) {
@@ -1112,15 +1112,6 @@ const MENU_COLORS = [
 ]
 const strokeColors = [color.GREY];
 
-// Zoom values for offsetting the mouse cursor positioning
-const zoom1_25 = 0.36;
-const zoom1_5 = 0.555;
-const zoom2 = 0.75;
-const zoom4 = 0.9375;
-const zoom0_75 = -0.775;
-const zoom0_5 = -3;
-const zoom0_25 = -15.01;
-
 var errorActive = false;
 
 // Arrow drawing stuff - diagram elements, diagram lines and labels 
@@ -1133,11 +1124,10 @@ var contextLine = []; // Contains the currently selected line(s).
 var previousContextLine = [];
 var determinedLines = null; // Last calculated line(s) clicked.
 var deltaExceeded = false;
+const maxDeltaBeforeExceeded = 2;
 var targetElement = null;
 var targetElementDiv;
 var targetLabel = null;
-
-const maxDeltaBeforeExceeded = 2;
 
 // Currently hold down buttons
 var ctrlPressed = false;
@@ -1213,7 +1203,6 @@ var settings = {
 };
 
 // Demo data - read / write from service later on
-
 var cid = "";
 var cvers = "";
 
@@ -1239,7 +1228,6 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-
     EREntity: {
         name: "Entity",
         kind: "EREntity",
@@ -1274,8 +1262,15 @@ var defaults = {
         type: "ER",
         state: 'normal'
     },
-    Ghost: {name: "Ghost", kind: "ERAttr", fill: color.WHITE, stroke: color.BLACK, width: 5, height: 5, type: "ER"},
-
+    Ghost: {
+        name: "Ghost",
+        kind: "ERAttr",
+        fill: color.WHITE,
+        stroke: color.BLACK,
+        width: 5,
+        height: 5,
+        type: "ER"
+    },
     UMLEntity: {
         name: "Class",
         kind: "UMLEntity",
@@ -1287,7 +1282,7 @@ var defaults = {
         attributes: ['-Attribute'],
         functions: ['+Function'],
         canChangeTo: ["UML", "ER", "IE", "SD"]
-    },     //<-- UML functionality
+    },
     UMLRelation: {
         name: "Inheritance",
         kind: "UMLRelation",
@@ -1297,7 +1292,7 @@ var defaults = {
         height: 60,
         type: "UML",
         canChangeTo: Object.values(relationType)
-    }, //<-- UML functionality
+    },
     IEEntity: {
         name: "IEEntity",
         kind: "IEEntity",
@@ -1309,7 +1304,7 @@ var defaults = {
         attributes: ['-Attribute'],
         functions: ['+function'],
         canChangeTo: ["UML", "ER", "IE", "SD"]
-    },     //<-- IE functionality
+    },
     IERelation: {
         name: "Inheritance",
         kind: "IERelation",
@@ -1319,7 +1314,7 @@ var defaults = {
         height: 50,
         type: "IE",
         canChangeTo: Object.values(relationType)
-    }, //<-- IE inheritence functionality
+    },
     SDEntity: {
         name: "State",
         kind: "SDEntity",
@@ -1331,8 +1326,7 @@ var defaults = {
         attributes: ['do: func'],
         functions: ['+function'],
         canChangeTo: ["UML", "ER", "IE", "SD"]
-    }, //<-- SD functionality
-
+    },
     UMLInitialState: {
         name: "UML Initial State",
         kind: "UMLInitialState",
@@ -1342,7 +1336,7 @@ var defaults = {
         height: 60,
         type: "SD",
         canChangeTo: null
-    }, // UML Initial state.
+    },
     UMLFinalState: {
         name: "UML Final State",
         kind: "UMLFinalState",
@@ -1352,7 +1346,7 @@ var defaults = {
         height: 60,
         type: "SD",
         canChangeTo: null
-    }, // UML Final state.
+    },
     UMLSuperState: {
         name: "UML Super State",
         kind: "UMLSuperState",
@@ -1362,8 +1356,7 @@ var defaults = {
         height: 500,
         type: "SD",
         canChangeTo: null
-    },  // UML Super State.
-
+    },
     sequenceActorAndObject: {
         name: "name",
         kind: "sequenceActorAndObject",
@@ -1374,7 +1367,7 @@ var defaults = {
         type: "SE",
         actorOrObject: "actor",
         canChangeTo: null
-    }, // sequence actor and object
+    },
     sequenceActivation: {
         name: "Activation",
         kind: "sequenceActivation",
@@ -1384,7 +1377,7 @@ var defaults = {
         height: 300,
         type: "SE",
         canChangeTo: null
-    }, // Sequence Activation.
+    },
     sequenceLoopOrAlt: {
         kind: "sequenceLoopOrAlt",
         fill: color.WHITE,
@@ -1395,8 +1388,7 @@ var defaults = {
         alternatives: ["alternative1", "alternative2", "alternative3"],
         altOrLoop: "Alt",
         canChangeTo: null
-    }, // Sequence Loop or Alternative.
-
+    },
     note: {
         name: "Note",
         kind: "note",
@@ -1406,10 +1398,11 @@ var defaults = {
         height: 50,
         type: "NOTE",
         attributes: ['Note'],
-    },  // Note.
+    },
 }
 
 var defaultLine = {kind: "Normal"};
+
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP ======================================
 
@@ -1424,10 +1417,6 @@ window.addEventListener("DOMContentLoaded", () => {
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
  */
-
-var allLinesFromEntiAndRela = [];
-var allLinesFromAttributes = [];
-var allLinesBetweenAttributesToEntiAndRel = [];
 
 // Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
 var countUsedAttributes = 0;
@@ -2381,6 +2370,7 @@ function getLinesFromBackLayer() {
  * @param {Number} mouseY
  */
 function determineLineSelect(mouseX, mouseY) {
+    let currentLineSegment;
     var allLines = getLinesFromBackLayer();
     var bLayerLineIDs = []
 
@@ -2403,7 +2393,7 @@ function determineLineSelect(mouseX, mouseY) {
         radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
     }
 
-    for (var i = 0; i < allLines.length; i++) {
+    for (let i = 0; i < allLines.length; i++) {
         // Copy the IDs.
         bLayerLineIDs[i] = allLines[i].id;
 
@@ -2417,7 +2407,7 @@ function determineLineSelect(mouseX, mouseY) {
 
             var points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
-            for (var j = 0; j < points.length - 1; j++) {
+            for (let j = 0; j < points.length - 1; j++) {
                 currentLineSegment = {
                     x1: points[j].split(',')[0],
                     x2: points[j + 1].split(',')[0],
@@ -2621,8 +2611,8 @@ function mmoving(event) {
                     y: data[findIndex(data, targetElement.id)].y
                 }
                 var targetPos = {
-                    x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
-                    y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
+                    x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
+                    y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
                 };
                 targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
                 targetDelta = {
@@ -2661,7 +2651,7 @@ function mmoving(event) {
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var tmp = elementData.width;
+                let tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
 
                 // Deduct the new width, giving us the total change
@@ -2677,7 +2667,7 @@ function mmoving(event) {
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var tmp = elementData.width;
+                let tmp = elementData.width;
                 elementData.width = (startWidth - (deltaX / zoomfact));
 
                 // Remove the new width, giving us the total change
@@ -2687,7 +2677,7 @@ function mmoving(event) {
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
-                var tmp = elementData.height;
+                let tmp = elementData.height;
                 elementData.height = (startHeight - (deltaY / zoomfact));
 
                 // Deduct the new height, giving us the total change
@@ -2712,7 +2702,7 @@ function mmoving(event) {
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
-                var tmp = elementData.height;
+                let tmp = elementData.height;
                 elementData.height = (startHeight + (deltaY / zoomfact));
 
                 // Deduct the new height, giving us the total change
@@ -2781,16 +2771,15 @@ function makeRandomID() {
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
     while (true) {
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-
-        if (settings.misc.randomidArray === undefined || settings.misc.randomidArray.length == 0) { //always add first id
+        if (!settings.misc.randomidArray) { //always add first id
             settings.misc.randomidArray.push(str);
             return str;
         } else {
-            var check = settings.misc.randomidArray.includes(str); //if check is true the id already exists
-            if (check == true) {
+            //if check is true the id already exists
+            if (settings.misc.randomidArray.includes(str)) {
                 str = "";
             } else {
                 settings.misc.randomidArray.push(str);
@@ -2807,7 +2796,7 @@ function makeRandomID() {
  * @returns {Number} Index for the searched item OR -1 for a miss.
  */
 function findIndex(arr, id) {
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         if (arr[i].id == id) return i;
     }
     return -1;
@@ -2843,7 +2832,7 @@ function removeElements(elementArray, stateMachineShouldSave = true) {
     var linesToRemove = [];
     var elementsToRemove = [];
 
-    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
+    for (let i = 0; i < elementArray.length; i++) { // Find VALID items to remove
         linesToRemove = linesToRemove.concat(lines.filter(function (line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
@@ -2881,14 +2870,14 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     var anyRemoved = false;
 
     // Removes from the two arrays that keep track of the attributes connections. 
-    for (var i = 0; i < linesArray.length; i++) {
-        for (j = 0; j < allAttrToEntityRelations.length; j++) {
+    for (let i = 0; i < linesArray.length; i++) {
+        for (let j = 0; j < allAttrToEntityRelations.length; j++) {
             if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
                 allAttrToEntityRelations.splice(j, 1);
                 countUsedAttributes--;
             }
         }
-        for (k = 0; k < attrViaAttrToEnt.length; k++) {
+        for (let k = 0; k < attrViaAttrToEnt.length; k++) {
             if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
                 attrViaAttrToEnt.splice(k, 1);
                 attrViaAttrCounter--;
@@ -2994,7 +2983,7 @@ function changeState() {
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != elementTypesNames.ERAttr) {
             if (oldType != newType) {
-                var newKind = element.kind;
+                let newKind = element.kind;
                 newKind = newKind.replace(oldType, newType);
                 element.kind = newKind;
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3004,18 +2993,18 @@ function changeState() {
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
             }
         }
-        var property = document.getElementById("propertySelect").value;
+        let property = document.getElementById("propertySelect").value;
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else if (element.type == 'UML') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.UMLEntity) {
-            var property = document.getElementById("propertySelect").value;
+            let property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3028,12 +3017,12 @@ function changeState() {
     } else if (element.type == 'IE') {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.IEEntity) {
-            var property = document.getElementById("propertySelect").value;
+            let property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3044,7 +3033,7 @@ function changeState() {
         }
     } else if (element.type == 'SD') {
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3055,7 +3044,7 @@ function changeState() {
         }
     } else if (element.type == 'SE') {
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3066,7 +3055,7 @@ function changeState() {
         }
     } else if (element.type == 'NOTE') {
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3089,7 +3078,7 @@ function saveProperties() {
 
     var propsChanged = {};
 
-    for (var index = 0; index < children.length; index++) {
+    for (let index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
         switch (propName) {
@@ -3106,7 +3095,7 @@ function saveProperties() {
                 //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
                 var formatArr = [];
-                for (var i = 0; i < arrElementAttr.length; i++) {
+                for (let i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
                         formatArr.push(arrElementAttr[i]);
                     }
@@ -3122,7 +3111,7 @@ function saveProperties() {
                 //Create an array from string where newline seperates elements
                 var arrElementFunc = elementFunc.split('\n');
                 var formatArr = [];
-                for (var i = 0; i < arrElementFunc.length; i++) {
+                for (let i = 0; i < arrElementFunc.length; i++) {
                     if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
                         formatArr.push(arrElementFunc[i]);
                     }
@@ -3503,21 +3492,19 @@ function screenToDiagramCoordinates(mouseX, mouseY) {
     // We're tired.
 
     // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
-    var zoomX = 0;
+    // Zoom values for offsetting the mouse cursor positioning
+    let cursorOffset = new Map();
+    cursorOffset.set(1.25, 0.36);
+    cursorOffset.set(1.5, 0.555);
+    cursorOffset.set(2, 0.75);
+    cursorOffset.set(4, 0.9375);
+    cursorOffset.set(0.75, -0.775);
+    cursorOffset.set(0.5, -3);
+    cursorOffset.set(0.25, -15.01);
+    let zoom = cursorOffset.get(zoomfact) ?? 0;
 
-    // ZOOM IN
-    if (zoomfact == 1.25) zoomX = zoom1_25;
-    if (zoomfact == 1.5) zoomX = zoom1_5;
-    if (zoomfact == 2) zoomX = zoom2;
-    if (zoomfact == 4) zoomX = zoom4;
-
-    // ZOOM OUT
-    if (zoomfact == 0.75) zoomX = zoom0_75;
-    if (zoomfact == 0.5) zoomX = zoom0_5;
-    if (zoomfact == 0.25) zoomX = zoom0_25;
-
-    return new Point(Math.round((mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
-        Math.round((mouseY / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
+    return new Point(Math.round(mouseX / zoomfact - scrollx + zoom * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
+        Math.round(mouseY / zoomfact - scrolly + zoom * scrolly + zoomOrigo.y)
     );
 }
 
@@ -3760,25 +3747,25 @@ function entityIsOverlapping(id, x, y) {
         var elementHeight = element.height;
 
         // Change height if element is an UML Entity
-        for (var i = 0; i < UMLHeight.length; i++) {
+        for (let i = 0; i < UMLHeight.length; i++) {
             if (element.id == UMLHeight[i].id) {
                 elementHeight = UMLHeight[i].height;
             }
         }
         // Change height if element is an IE Entity
-        for (var i = 0; i < IEHeight.length; i++) {
+        for (let i = 0; i < IEHeight.length; i++) {
             if (element.id == IEHeight[i].id) {
                 elementHeight = IEHeight[i].height;
             }
         }
         // Change height if element is an SD Entity
-        for (var i = 0; i < SDHeight.length; i++) {
+        for (let i = 0; i < SDHeight.length; i++) {
             if (element.id == SDHeight[i].id) {
                 elementHeight = SDHeight[i].height;
             }
         }
 
-        for (var i = 0; i < NOTEHeight.length; i++) {
+        for (let i = 0; i < NOTEHeight.length; i++) {
             if (element.id == NOTEHeight[i].id) {
                 elementHeight = NOTEHeight[i].height;
             }
@@ -3786,13 +3773,13 @@ function entityIsOverlapping(id, x, y) {
         targetX = x //(x / zoomfact);
         targetY = y//(y / zoomfact);
 
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i].id === id) continue
 
             // Doesn't compare if the other element is moving
             var compare = true;
             if (context.length > 1) {
-                for (var j = 0; j < context.length; j++) {
+                for (let j = 0; j < context.length; j++) {
                     if (data[i].id == context[j].id && !data[i].isLocked) {
                         compare = false;
                         break;
@@ -3805,19 +3792,19 @@ function entityIsOverlapping(id, x, y) {
                 var compY2 = data[i].y + data[i].height;
 
                 // Change height if element is an UML Entity
-                for (var j = 0; j < UMLHeight.length; j++) {
+                for (let j = 0; j < UMLHeight.length; j++) {
                     if (data[i].id == UMLHeight[j].id) {
                         compY2 = data[i].y + UMLHeight[j].height;
                     }
                 }
                 // Change height if element is an IE Entity
-                for (var j = 0; j < IEHeight.length; j++) {
+                for (let j = 0; j < IEHeight.length; j++) {
                     if (data[i].id == IEHeight[j].id) {
                         compY2 = data[i].y + IEHeight[j].height;
                     }
                 }
                 // Change height if element is an SD Entity
-                for (var j = 0; j < SDHeight.length; j++) {
+                for (let j = 0; j < SDHeight.length; j++) {
                     if (data[i].id == SDHeight[j].id) {
                         compY2 = data[i].y + SDHeight[j].height;
                     }
@@ -3942,7 +3929,7 @@ function onMouseModeEnabled() {
 function onMouseModeDisabled() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
+    for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
 
@@ -3998,7 +3985,7 @@ function getLinesInsideCoordinateBox(selectionRect) {
     var allLines = document.getElementById("svgbacklayer").children;
     var tempLines = [];
     var bLayerLineIDs = [];
-    for (var i = 0; i < allLines.length; i++) {
+    for (let i = 0; i < allLines.length; i++) {
         if (lineIsInsideRect(selectionRect, allLines[i])) {
             bLayerLineIDs[i] = allLines[i].id;
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
@@ -4156,15 +4143,15 @@ function boxSelect_Update(mouseX, mouseY) {
             bottomRight.y = coords.n1.y;
         }
 
-        var rect = getRectFromPoints(topLeft, bottomRight);
+        let rect = getRectFromPoints(topLeft, bottomRight);
 
         if (ctrlPressed) {
-            var markedEntities = getElementsInsideCoordinateBox(rect);
+            let markedEntities = getElementsInsideCoordinateBox(rect);
 
             // Remove entity from markedEntities if it was already marked.
             markedEntities = markedEntities.filter(entity => !previousContext.includes(entity));
 
-            var markedLines = getLinesInsideCoordinateBox(rect);
+            let markedLines = getLinesInsideCoordinateBox(rect);
             markedLines = markedLines.filter(line => !previousContextLine.includes(line));
 
             clearContext();
@@ -4175,11 +4162,11 @@ function boxSelect_Update(mouseX, mouseY) {
             contextLine = contextLine.concat(markedLines);
             contextLine = contextLine.concat(previousContextLine);
         } else if (altPressed) {
-            var markedEntities = getElementsInsideCoordinateBox(rect);
+            let markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context if the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
-            var markedLines = getLinesInsideCoordinateBox(rect);
+            let markedLines = getLinesInsideCoordinateBox(rect);
             previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
 
             context = [];
@@ -4396,13 +4383,13 @@ function toggleEntityLocked() {
     var ids = []
     var lockbtn = document.getElementById("lockbtn");
     var locked = true;
-    for (var i = 0; i < context.length; i++) {
+    for (let i = 0; i < context.length; i++) {
         if (!context[i].isLocked) {
             locked = false;
             break;
         }
     }
-    for (var i = 0; i < context.length; i++) {
+    for (let i = 0; i < context.length; i++) {
         if (!locked) {
             context[i].isLocked = true;
             lockbtn.value = "Unlock";
@@ -4623,7 +4610,7 @@ function setReplayRunning(state) {
 function toggleErTable() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
+    for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
     // Add the diagramActive to current diagramIcon
@@ -4650,7 +4637,7 @@ function toggleErTable() {
 function toggleTestCase() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
+    for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
     // Add the diagramActive to current diagramIcon
@@ -4700,7 +4687,7 @@ function generateErTableString() {
     var ERRelationData = [];
 
     // Sort the data[] elements into entity-, attr- and relationList
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
 
         if (data[i].kind == elementTypesNames.EREntity) {
             entityList.push(data[i]);
@@ -4711,13 +4698,13 @@ function generateErTableString() {
         }
     }
     //For each relation in relationList
-    for (var i = 0; i < relationList.length; i++) {
+    for (let i = 0; i < relationList.length; i++) {
         //List containing relation-element and connected entities
         var currentRelationList = [];
         currentRelationList.push(relationList[i]);
         //Sort all lines that are connected to the current relation into lineList[]
         var lineList = [];
-        for (var j = 0; j < lines.length; j++) {
+        for (let j = 0; j < lines.length; j++) {
             //Get connected line from element
             if (relationList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
@@ -4727,8 +4714,8 @@ function generateErTableString() {
         }
 
         //Identify every connected entity to relations
-        for (var j = 0; j < lineList.length; j++) {
-            for (var k = 0; k < entityList.length; k++) {
+        for (let j = 0; j < lineList.length; j++) {
+            for (let k = 0; k < entityList.length; k++) {
                 if (entityList[k].id == lineList[j].fromID || entityList[k].id == lineList[j].toID) {
                     //Push in entity, line cardinality and kind
                     currentRelationList.push([entityList[k], lineList[j].cardinality, lineList[j].kind]);
@@ -4739,11 +4726,11 @@ function generateErTableString() {
         ERRelationData.push(currentRelationList);
     }
     //For each entity in entityList
-    for (var i = 0; i < entityList.length; i++) {
+    for (let i = 0; i < entityList.length; i++) {
         var currentRow = [entityList[i]];
         //Sort all lines that are connected to the current entity into lineList[]
         var lineList = [];
-        for (var j = 0; j < lines.length; j++) {
+        for (let j = 0; j < lines.length; j++) {
             if (entityList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
             } else if (entityList[i].id == lines[j].toID) {
@@ -4753,8 +4740,8 @@ function generateErTableString() {
         // Identify all attributes that are connected to the current entity by using lineList[] and store them in currentEntityAttrList. Save their ID's in idList.
         var currentEntityAttrList = [];
         var idList = [];
-        for (var j = 0; j < lineList.length; j++) {
-            for (var h = 0; h < attrList.length; h++) {
+        for (let j = 0; j < lineList.length; j++) {
+            for (let h = 0; h < attrList.length; h++) {
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
                     currentEntityAttrList.push(attrList[h]);
                     currentRow.push(attrList[h]);
@@ -4764,10 +4751,10 @@ function generateErTableString() {
         }
         var parentAttribeList = []; //list of parent attributes
 
-        for (var j = 0; j < currentEntityAttrList.length; j++) {
+        for (let j = 0; j < currentEntityAttrList.length; j++) {
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
             var attrLineList = [];
-            for (var h = 0; h < lines.length; h++) {
+            for (let h = 0; h < lines.length; h++) {
                 //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
                 if ((currentEntityAttrList[j].id == lines[h].toID ||
                         currentEntityAttrList[j].id == lines[h].fromID) &&
@@ -4778,13 +4765,13 @@ function generateErTableString() {
             }
 
             //Compare each line in attrLineList to each attribute.
-            for (var h = 0; h < attrLineList.length; h++) {
-                for (var k = 0; k < attrList.length; k++) {
+            for (let h = 0; h < attrLineList.length; h++) {
+                for (let k = 0; k < attrList.length; k++) {
                     //If ID matches the current attribute AND another attribute, try pushing the other attribute to currentEntityAttrList[]
                     if (((attrLineList[h].fromID == attrList[k].id) && (attrLineList[h].toID == currentEntityAttrList[j].id)) || ((attrLineList[h].toID == attrList[k].id) && (attrLineList[h].fromID == currentEntityAttrList[j].id))) {
                         //Iterate over saved IDs
                         var hits = 0;
-                        for (var p = 0; p < idList.length; p++) {
+                        for (let p = 0; p < idList.length; p++) {
                             //If the ID of the attribute already exists, then increase hits and break the loop.
                             if (idList[p] == attrList[k].id) {
                                 hits++;
@@ -4822,7 +4809,7 @@ function generateErTableString() {
     var weakEntityList = formatERWeakEntities(ERAttributeData);
 
     // Iterate over every strong entity
-    for (var i = 0; i < strongEntityList.length; i++) {
+    for (let i = 0; i < strongEntityList.length; i++) {
         var visitedList = []; // A list which contains entities that has been vistited in this codeblock
         var queue = []; // Queue for each entity's relation
         queue.push(strongEntityList[i][0]); // Push in the current entity
@@ -4830,12 +4817,12 @@ function generateErTableString() {
         while (queue.length > 0) {
             var current = queue.shift(); // Get current entity by removing first entity in queue
             // For current entity, iterate through every relation
-            for (var j = 0; j < ERRelationData.length; j++) {
+            for (let j = 0; j < ERRelationData.length; j++) {
                 // Check if relation is valid, (relation, entity1, entity2)
                 if (ERRelationData[j].length >= 3) {
                     if (ERRelationData[j][0].state == 'weak') {
                         var visited = false;    // Boolean representing if the current entity has already been visited
-                        for (var v = 0; v < visitedList.length; v++) {
+                        for (let v = 0; v < visitedList.length; v++) {
                             if (current.id == visitedList[v].id) {
                                 visited = true;
                                 break;
@@ -4848,16 +4835,16 @@ function generateErTableString() {
                                 // Check if entity is in relation and check its cardinality
                                 if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
                                     // Iterate through weak entities and find its ID
-                                    for (var k = 0; k < weakEntityList.length; k++) {
+                                    for (let k = 0; k < weakEntityList.length; k++) {
                                         // ID match
                                         if (weakEntityList[k][0].id == ERRelationData[j][2][0].id) {
                                             // Iterate through strong entities and find its ID
-                                            for (var l = 0; l < strongEntityList.length; l++) {
+                                            for (let l = 0; l < strongEntityList.length; l++) {
                                                 // ID match
                                                 if (strongEntityList[l][0].id == current.id) {
                                                     var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
                                                     // Iterate through key list
-                                                    for (var m = 0; m < strongEntityList[l][1].length; m++) {
+                                                    for (let m = 0; m < strongEntityList[l][1].length; m++) {
                                                         tempList.push(strongEntityList[l][1][m]) // Push in key
                                                     }
                                                     weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4870,15 +4857,15 @@ function generateErTableString() {
                                 // Check if entity is in relation and check its cardinality
                                 else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
                                     // Iterate through weak entities and find its ID
-                                    for (var k = 0; k < weakEntityList.length; k++) {
+                                    for (let k = 0; k < weakEntityList.length; k++) {
                                         // ID match
                                         if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
                                             // Iterate through strong entities and find its ID
-                                            for (var l = 0; l < strongEntityList.length; l++) {
+                                            for (let l = 0; l < strongEntityList.length; l++) {
                                                 // ID match
                                                 if (strongEntityList[l][0].id == current.id) {
                                                     var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
-                                                    for (var m = 0; m < strongEntityList[l][1].length; m++) {
+                                                    for (let m = 0; m < strongEntityList[l][1].length; m++) {
                                                         tempList.push(strongEntityList[l][1][m]) // Push in key
                                                     }
                                                     weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4894,7 +4881,7 @@ function generateErTableString() {
                                 // Check if entity is in relation and check its cardinality
                                 if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
                                     var exists = false; // Boolean representing if the other entity has already been visited
-                                    for (var v = 0; v < visitedList.length; v++) {
+                                    for (let v = 0; v < visitedList.length; v++) {
                                         if (ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
                                             break;
@@ -4903,15 +4890,15 @@ function generateErTableString() {
                                     // If not already visited
                                     if (!exists) {
                                         // Iterate through weak entities and find its ID. (Entity that should have keys)
-                                        for (var k = 0; k < weakEntityList.length; k++) {
+                                        for (let k = 0; k < weakEntityList.length; k++) {
                                             // ID match
                                             if (weakEntityList[k][0].id == ERRelationData[j][2][0].id) {
                                                 // Iterate through weak entities and find its ID (Entity that should give keys)
-                                                for (var l = 0; l < weakEntityList.length; l++) {
+                                                for (let l = 0; l < weakEntityList.length; l++) {
                                                     // ID match
                                                     if (weakEntityList[l][0].id == current.id) {
                                                         var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
-                                                        for (var m = 0; m < weakEntityList[l][1].length; m++) {
+                                                        for (let m = 0; m < weakEntityList[l][1].length; m++) {
                                                             tempList.push(weakEntityList[l][1][m]) // Push in key
                                                         }
                                                         weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4925,7 +4912,7 @@ function generateErTableString() {
                                 // Check if entity is in relation and check its cardinality
                                 else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
                                     var exists = false; // Boolean representing if the other entity has already been visited
-                                    for (var v = 0; v < visitedList.length; v++) {
+                                    for (let v = 0; v < visitedList.length; v++) {
                                         if (ERRelationData[j][1][0].id == visitedList[v].id) {//|| ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
                                             break;
@@ -4934,15 +4921,15 @@ function generateErTableString() {
                                     // If not already visited
                                     if (!exists) {
                                         // Iterate through weak entities and find its ID. (Entity that should have keys)
-                                        for (var k = 0; k < weakEntityList.length; k++) {
+                                        for (let k = 0; k < weakEntityList.length; k++) {
                                             // ID match
                                             if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
                                                 // Iterate through weak entities and find its ID (Entity that should give keys)
-                                                for (var l = 0; l < weakEntityList.length; l++) {
+                                                for (let l = 0; l < weakEntityList.length; l++) {
                                                     // ID match
                                                     if (weakEntityList[l][0].id == current.id) {
                                                         var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
-                                                        for (var m = 0; m < weakEntityList[i][1].length; m++) {
+                                                        for (let m = 0; m < weakEntityList[i][1].length; m++) {
                                                             tempList.push(weakEntityList[l][1][m]); // Push in key
                                                         }
                                                         weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4963,12 +4950,12 @@ function generateErTableString() {
     }
     var tempWeakList = [];
     // Update the weak entity list to accomodate the new list of weak keys
-    for (var i = 0; i < weakEntityList.length; i++) {
+    for (let i = 0; i < weakEntityList.length; i++) {
         var row = []; // New formatted weak entity row
         row.push(weakEntityList[i][0]); // Push in weak entity, as usual, [0] is entity
         row.push([]); // Push in empty list to contain the keys
         // In the weak entity's key list, iterate and check if current is an array
-        for (var j = 0; j < weakEntityList[i][1].length; j++) {
+        for (let j = 0; j < weakEntityList[i][1].length; j++) {
             if (Array.isArray(weakEntityList[i][1][j])) {
                 var strongWeakKEy = []; // List that will have the the entities and strong/weak keys required
                 var current = weakEntityList[i][1][j]; // Select the first list for the current entity
@@ -4980,13 +4967,13 @@ function generateErTableString() {
                     // Check if algorithm should go deeper, if the last element is an array, go deeper 
                     if ((temp[temp.length - 1].length > 0)) {
                         //Iterate through the list, push every attribute
-                        for (var k = 0; k < temp.length - 1; k++) {
+                        for (let k = 0; k < temp.length - 1; k++) {
                             strongWeakKEy.push(temp[k]); // Push in entity and / or keys
                         }
                         queue.push(temp[temp.length - 1]); // Push in list into queue
                     } else {
                         //Iterate through the list, push every attribute
-                        for (var k = 0; k < temp.length; k++) {
+                        for (let k = 0; k < temp.length; k++) {
                             strongWeakKEy.push(temp[k]); // Push in entity and / or keys
                         }
                     }
@@ -4999,7 +4986,7 @@ function generateErTableString() {
             }
         }
         //Iterate through the entity's list and push in normal and multivalued attributes
-        for (var j = 0; j < weakEntityList[i].length; j++) {
+        for (let j = 0; j < weakEntityList[i].length; j++) {
             // If not array, check if normal or multivalued
             if (!Array.isArray(weakEntityList[i][j])) {
                 if (weakEntityList[i][j].state == 'normal') {
@@ -5016,7 +5003,7 @@ function generateErTableString() {
     var allEntityList = strongEntityList.concat(weakEntityList); // Add the two list together
 
     //Iterate through all relations
-    for (var i = 0; i < ERRelationData.length; i++) {
+    for (let i = 0; i < ERRelationData.length; i++) {
         if (ERRelationData[i].length >= 3) {
             var foreign = []; // Array with entities foreign keys
             // Case 1, two strong entities in relation
@@ -5028,7 +5015,7 @@ function generateErTableString() {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
                         var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5039,18 +5026,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5062,7 +5049,7 @@ function generateErTableString() {
                         ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                     } else {
                         var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 exist = true;
@@ -5073,18 +5060,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push(ERRelationData[i][1][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5096,7 +5083,7 @@ function generateErTableString() {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
                         var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5107,18 +5094,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5127,22 +5114,22 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {//MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
 
                                 }
@@ -5150,11 +5137,11 @@ function generateErTableString() {
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5170,7 +5157,7 @@ function generateErTableString() {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
                         var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5181,18 +5168,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5206,7 +5193,7 @@ function generateErTableString() {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
                             var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                     exist = true;
@@ -5217,18 +5204,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5243,7 +5230,7 @@ function generateErTableString() {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
                             var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                     exist = true;
@@ -5254,18 +5241,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push(ERRelationData[i][2][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5275,33 +5262,33 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') { // MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5317,7 +5304,7 @@ function generateErTableString() {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
                         var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5328,18 +5315,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5353,7 +5340,7 @@ function generateErTableString() {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
                             var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                     exist = true;
@@ -5364,18 +5351,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5390,7 +5377,7 @@ function generateErTableString() {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
                             var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                     exist = true;
@@ -5401,18 +5388,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push(ERRelationData[i][2][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5422,22 +5409,22 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {//MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
 
                                 }
@@ -5445,11 +5432,11 @@ function generateErTableString() {
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5465,7 +5452,7 @@ function generateErTableString() {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
                         var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5476,18 +5463,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5501,7 +5488,7 @@ function generateErTableString() {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
                             var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                     exist = true;
@@ -5512,18 +5499,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5538,7 +5525,7 @@ function generateErTableString() {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
                             var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                     exist = true;
@@ -5549,18 +5536,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push(ERRelationData[i][2][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5570,22 +5557,22 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {//MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
 
                                 }
@@ -5593,11 +5580,11 @@ function generateErTableString() {
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5607,14 +5594,14 @@ function generateErTableString() {
         }
     }
     // Iterate and add each entity's foreign attribute to the correct place
-    for (var i = 0; i < ERForeignData.length; i++) {
+    for (let i = 0; i < ERForeignData.length; i++) {
         // Iterate throught all entities
-        for (var j = 0; j < allEntityList.length; j++) {
+        for (let j = 0; j < allEntityList.length; j++) {
             // Check if correct entity were found
             if (ERForeignData[i][0].id == allEntityList[j][0].id) {
                 var row = [];
                 // Push in every foreign attribute
-                for (var k = 1; k < ERForeignData[i].length; k++) {
+                for (let k = 1; k < ERForeignData[i].length; k++) {
                     row.push(ERForeignData[i][k]); // Push in entity
                 }
                 allEntityList[j].push(row); // Push in list
@@ -5622,20 +5609,20 @@ function generateErTableString() {
         }
     }
     // Actual creating the string. Step one, strong / normal entities
-    for (var i = 0; i < allEntityList.length; i++) {
+    for (let i = 0; i < allEntityList.length; i++) {
         var currentString = ''; // Current table row
         if (allEntityList[i][0].state == 'normal') {
             currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
             var existPrimary = false; // Determine if a primary key exist
             // ITerate and determine if primary keys are present
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 if (allEntityList[i][1][j].state == 'primary') {
                     existPrimary = true;
                     break;
                 }
             }
             // Once again iterate through through the entity's key attributes and add them to string
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 // Print only primary keys if at least one is present
                 if (existPrimary) {
                     if (allEntityList[i][1][j].state == 'primary') {
@@ -5660,7 +5647,7 @@ function generateErTableString() {
             // Check if entity has foreign keys, aka last element is an list
             if (Array.isArray(allEntityList[i][allEntityList[i].length - 1])) {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                for (let j = 2; j < allEntityList[i].length - 1; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5673,13 +5660,13 @@ function generateErTableString() {
                 var lastList = allEntityList[i].length - 1;
                 if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
-                    for (var k = 0; k < allEntityList[i][lastList].length; k++) {
+                    for (let k = 0; k < allEntityList[i][lastList].length; k++) {
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;
                         // Iterate through all the lists with foreign keys
-                        for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
+                        for (let l = 0; l < allEntityList[i][lastList][k].length; l++) {
                             // If element is array, aka strong key for weak entity
                             if (Array.isArray(allEntityList[i][lastList][k][l])) {
-                                for (var m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
+                                for (let m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
                                     currentString += `${allEntityList[i][lastList][k][l][m].name}`;
                                 }
                             } else {
@@ -5691,7 +5678,7 @@ function generateErTableString() {
                 }
             } else {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length; j++) {
+                for (let j = 2; j < allEntityList[i].length; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5707,12 +5694,12 @@ function generateErTableString() {
             stringList.push(currentString);
         }
     }
-    for (var i = 0; i < allEntityList.length; i++) {
+    for (let i = 0; i < allEntityList.length; i++) {
         var currentString = ''; // Current table row
         if (allEntityList[i][0].state == 'weak') {
             currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
             // Once again iterate through through the entity's key attributes and add them to string
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 if (!Array.isArray(allEntityList[i][1][j])) {
                     // Print only weakKeys
                     if (allEntityList[i][1][j].state == 'weakKey') {
@@ -5721,10 +5708,10 @@ function generateErTableString() {
                 }
             }
             // Once again iterate through through the entity's key attributes and add them to string
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 if (Array.isArray(allEntityList[i][1][j])) {
                     currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
-                    for (var k = 0; k < allEntityList[i][1][j].length; k++) {
+                    for (let k = 0; k < allEntityList[i][1][j].length; k++) {
                         currentString += `${allEntityList[i][1][j][k].name}`;
                     }
                     currentString += `</span>, `;
@@ -5733,7 +5720,7 @@ function generateErTableString() {
             // Check if entity has foreign keys, aka last element is an list
             if (Array.isArray(allEntityList[i][allEntityList[i].length - 1])) {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                for (let j = 2; j < allEntityList[i].length - 1; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5744,13 +5731,13 @@ function generateErTableString() {
                 var lastList = allEntityList[i].length - 1;
                 if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
-                    for (var k = 0; k < allEntityList[i][lastList].length; k++) {
+                    for (let k = 0; k < allEntityList[i][lastList].length; k++) {
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;
                         // Iterate through all the lists with foreign keys
-                        for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
+                        for (let l = 0; l < allEntityList[i][lastList][k].length; l++) {
                             // If element is array, aka strong key for weak entity
                             if (Array.isArray(allEntityList[i][lastList][k][l])) {
-                                for (var m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
+                                for (let m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
                                     currentString += `${allEntityList[i][lastList][k][l][m].name}`;
                                 }
                             } else {
@@ -5762,7 +5749,7 @@ function generateErTableString() {
                 }
             } else {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length; j++) {
+                for (let j = 2; j < allEntityList[i].length; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5779,17 +5766,17 @@ function generateErTableString() {
         }
     }
     // Iterate through ERForeignData to find many to many relation
-    for (var i = 0; i < ERForeignData.length; i++) {
+    for (let i = 0; i < ERForeignData.length; i++) {
         // If relation is exist in ERForeignData
         if (ERForeignData[i][0].kind == elementTypesNames.ERRelation) {
             var currentString = '';
             currentString += `<p>${ERForeignData[i][0].name} (`; // Push in relation's name
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
             // Add left side of relation
-            for (var j = 0; j < ERForeignData[i][1].length; j++) {
+            for (let j = 0; j < ERForeignData[i][1].length; j++) {
                 // If element is array, aka strong key for weak entity
                 if (Array.isArray(ERForeignData[i][1][j])) {
-                    for (var l = 0; l < ERForeignData[i][1][j].length; l++) {
+                    for (let l = 0; l < ERForeignData[i][1][j].length; l++) {
                         currentString += `${ERForeignData[i][1][j][l].name}`;
                     }
                 } else {
@@ -5799,10 +5786,10 @@ function generateErTableString() {
             currentString += `</span>, `;
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
             // Add right side of relation
-            for (var j = 0; j < ERForeignData[i][2].length; j++) {
+            for (let j = 0; j < ERForeignData[i][2].length; j++) {
                 // If element is array, aka strong key for weak entity
                 if (Array.isArray(ERForeignData[i][2][j])) {
-                    for (var l = 0; l < ERForeignData[i][2][j].length; l++) {
+                    for (let l = 0; l < ERForeignData[i][2][j].length; l++) {
                         currentString += `${ERForeignData[i][2][j][l].name}`;
                     }
                 } else {
@@ -5815,8 +5802,8 @@ function generateErTableString() {
         }
     }
     // Adding multi-valued attributes to the string
-    for (var i = 0; i < allEntityList.length; i++) {
-        for (var j = 2; j < allEntityList[i].length; j++) {
+    for (let i = 0; i < allEntityList.length; i++) {
+        for (let j = 2; j < allEntityList[i].length; j++) {
             // Write out multi attributes
             if (allEntityList[i][j].state == 'multiple') {
                 // add the multiple attribute as relation
@@ -5827,7 +5814,7 @@ function generateErTableString() {
                     multipleString += `${allEntityList[i][0].name}`;
                     // If element is array, aka strong key for weak entity
                     if (Array.isArray(allEntityList[i][1][k])) {
-                        for (var l = 0; l < allEntityList[i][1][k].length; l++) {
+                        for (let l = 0; l < allEntityList[i][1][k].length; l++) {
                             multipleString += `${allEntityList[i][1][k][l].name}`;
                         }
                     } else {
@@ -5844,7 +5831,7 @@ function generateErTableString() {
     }
     //Add each string element in stringList[] into a single string.
     var stri = "";
-    for (var i = 0; i < stringList.length; i++) {
+    for (let i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
     //if its empty, show a message instead.
@@ -5862,36 +5849,36 @@ function generateErTableString() {
 function formatERStrongEntities(ERData) {
     var temp = []; // The formated list of strong/normal entities 
     // Iterating through all entities
-    for (var i = 0; i < ERData.length; i++) {
+    for (let i = 0; i < ERData.length; i++) {
         if (ERData[i][0].state == 'normal') {
             var row = []; // The formated row
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
             var keys = []; // The key attributes (primary, candidate and weakKey)
             // Pushing in weak keys last to ensure that the first key in a strong/normal entity isn't weak
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'primary') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'candidate') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'weakKey') {
                     keys.push(ERData[i][j]);
                 }
             }
             row.push(keys); // Pushing all keys from the entity
             // Pushing in remaining attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'normal') {
                     row.push(ERData[i][j]);
                 }
             }
             // Pushing in remaining multivalued attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'multiple') {
                     row.push(ERData[i][j]);
                 }
@@ -5910,36 +5897,36 @@ function formatERStrongEntities(ERData) {
 function formatERWeakEntities(ERData) {
     var temp = []; // The formated list of weak entities 
     // Iterating through all entities
-    for (var i = 0; i < ERData.length; i++) {
+    for (let i = 0; i < ERData.length; i++) {
         if (ERData[i][0].state == 'weak') {
             var row = []; // The formated row
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
             var keys = []; // The key attributes (weakKey, primary and candidate)
             // Pushing in weak keys first to ensure that the first key in a weak entity is weak
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'weakKey') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'primary') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'candidate') {
                     keys.push(ERData[i][j]);
                 }
             }
             row.push(keys); // Pushing all keys from the entity
             // Pushing in remaining attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'normal') {
                     row.push(ERData[i][j]);
                 }
             }
             // Pushing in remaining multivalued attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'multiple') {
                     row.push(ERData[i][j]);
                 }
@@ -6536,7 +6523,7 @@ function propFieldSelected(isSelected) {
  */
 function textboxFormatString(arr) {
     var content = '';
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         content += arr[i] + '\n';
     }
     return content;
@@ -6565,7 +6552,7 @@ function generateContextProperties() {
         //Hide properties and show the other options
         propSet.classList.add('options-fieldset-hidden');
         propSet.classList.remove('options-fieldset-show');
-        for (var i = 0; i < menuSet.length; i++) {
+        for (let i = 0; i < menuSet.length; i++) {
             menuSet[i].classList.add('options-fieldset-show');
             menuSet[i].classList.remove('options-fieldset-hidden');
         }
@@ -6573,7 +6560,7 @@ function generateContextProperties() {
         //Show properties and hide the other options
         propSet.classList.add('options-fieldset-show');
         propSet.classList.remove('options-fieldset-hidden');
-        for (var i = 0; i < menuSet.length; i++) {
+        for (let i = 0; i < menuSet.length; i++) {
             menuSet[i].classList.add('options-fieldset-hidden');
             menuSet[i].classList.remove('options-fieldset-show');
         }
@@ -6594,7 +6581,7 @@ function generateContextProperties() {
         if (context.length == 1 && contextLine.length == 0) {//Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
@@ -6624,7 +6611,7 @@ function generateContextProperties() {
                     if (elementHasLines(element)) {
                         str += '<option selected ="selected" value=' + selected + '>' + selected + '</option>';
                     } else {
-                        for (i = 0; i < typesToChangeTo.length; i++) {
+                        for (let i = 0; i < typesToChangeTo.length; i++) {
                             if (selected != typesToChangeTo[i]) {
                                 str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
                             } else if (selected == typesToChangeTo[i]) {
@@ -6663,7 +6650,7 @@ function generateContextProperties() {
                 }
 
                 str += '<select id="propertySelect">';
-                for (i = 0; i < value.length; i++) {
+                for (let i = 0; i < value.length; i++) {
                     if (selected != value[i]) {
                         str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                     } else if (selected == value[i]) {
@@ -6729,7 +6716,7 @@ function generateContextProperties() {
                     }
 
                     str += '<select id="propertySelect">';
-                    for (i = 0; i < value.length; i++) {
+                    for (let i = 0; i < value.length; i++) {
                         if (selected != value[i]) {
                             str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                         } else if (selected == value[i]) {
@@ -6780,7 +6767,7 @@ function generateContextProperties() {
                         value = Object.values(inheritanceStateIE);
                     }
                     str += '<select id="propertySelect">';
-                    for (i = 0; i < value.length; i++) {
+                    for (let i = 0; i < value.length; i++) {
                         if (selected != value[i]) {
                             str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                         } else if (selected == value[i]) {
@@ -6873,7 +6860,7 @@ function generateContextProperties() {
             //Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
@@ -6888,7 +6875,7 @@ function generateContextProperties() {
             //this creates line kinds for UML IE AND ER
             if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER' || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-                for (var i = 0; i < value.length; i++) {
+                for (let i = 0; i < value.length; i++) {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
@@ -7117,7 +7104,7 @@ function generateContextProperties() {
             //Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
@@ -7130,18 +7117,18 @@ function generateContextProperties() {
             //Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
             var locked = true;
-            for (var i = 0; i < context.length; i++) {
+            for (let i = 0; i < context.length; i++) {
                 if (!context[i].isLocked) {
                     locked = false;
                     break;
                 }
             }
-            str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
+            str += `<br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
         }
     }
     propSet.innerHTML = str;
@@ -7179,7 +7166,7 @@ function toggleOptionsPane() {
 function generateToolTips() {
     var toolButtons = document.getElementsByClassName("key_tooltip");
 
-    for (var index = 0; index < toolButtons.length; index++) {
+    for (let index = 0; index < toolButtons.length; index++) {
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
@@ -7273,18 +7260,18 @@ function updateGridPos() {
     var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
     var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute('x', gridOffsetX);
-    bLayer.setAttribute('y', gridOffsetY);
+    bLayer.setAttribute('x', gridOffsetX.toString());
+    bLayer.setAttribute('y', gridOffsetY.toString());
 
     // origo x axis line position
     bLayer = document.getElementById("origoX");
-    bLayer.setAttribute('y1', gridOffsetY);
-    bLayer.setAttribute('y2', gridOffsetY);
+    bLayer.setAttribute('y1', gridOffsetY.toString());
+    bLayer.setAttribute('y2', gridOffsetY.toString());
 
     // origo y axis line position
     bLayer = document.getElementById("origoY");
-    bLayer.setAttribute('x1', gridOffsetX);
-    bLayer.setAttribute('x2', gridOffsetX);
+    bLayer.setAttribute('x1', gridOffsetX.toString());
+    bLayer.setAttribute('x2', gridOffsetX.toString());
 }
 
 /**
@@ -7297,14 +7284,14 @@ function updateA4Pos() {
     var vRect = document.getElementById("vRect");
     var text = document.getElementById("a4Text");
 
-    vRect.setAttribute('x', OffsetX);
-    vRect.setAttribute('y', OffsetY);
+    vRect.setAttribute('x', OffsetX.toString());
+    vRect.setAttribute('y', OffsetY.toString());
 
-    rect.setAttribute('x', OffsetX);
-    rect.setAttribute('y', OffsetY);
+    rect.setAttribute('x', OffsetX.toString());
+    rect.setAttribute('y', OffsetY.toString());
 
-    text.setAttribute('x', (OffsetX + (780 * zoomfact)));
-    text.setAttribute('y', (OffsetY - 5));
+    text.setAttribute('x', (OffsetX + (780 * zoomfact)).toString());
+    text.setAttribute('y', (OffsetY - 5).toString());
 }
 
 /**
@@ -7404,7 +7391,7 @@ function toggleColorMenu(buttonID) {
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
-            for (var i = 0; i < MENU_COLORS.length; i++) {
+            for (let i = 0; i < MENU_COLORS.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${MENU_COLORS[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
@@ -7412,7 +7399,7 @@ function toggleColorMenu(buttonID) {
             }
         } else {
             // Create svg circles for each element in the "strokeColors" array
-            for (var i = 0; i < strokeColors.length; i++) {
+            for (let i = 0; i < strokeColors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
@@ -7448,7 +7435,7 @@ function setElementColors(clickedCircleID) {
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
         var color = MENU_COLORS[index];
-        for (var i = 0; i < context.length; i++) {
+        for (let i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
             /*
@@ -7468,7 +7455,7 @@ function setElementColors(clickedCircleID) {
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
         var index = id.replace("strokeColorCircle", "") * 1;
         var color = strokeColors[index];
-        for (var i = 0; i < context.length; i++) {
+        for (let i = 0; i < context.length; i++) {
             context[i].stroke = color;
             elementIDs[i] = context[i].id;
         }
@@ -7493,7 +7480,7 @@ function multipleColorsTest() {
         var stroke = context[0].stroke;
         var varyingFills = false;
         var varyingStrokes = false;
-        for (var i = 0; i < context.length; i++) {
+        for (let i = 0; i < context.length; i++) {
             // Checks if there are varying fill colors, but not if varying colors have already been detected
             if (fill != context[i].fill && !varyingFills) {
                 var button = document.getElementById("colorMenuButton1");
@@ -7533,6 +7520,7 @@ function multipleColorsTest() {
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
 function sortvectors(currentElementID, compareElementID, ends, elementid, axis) {
+    let ax, ay, bx, by, toElementA, toElementB, sortval, parentx, parenty;
     // Get dx dy centered on association end e.g. invert vector if necessary
     var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
     var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
@@ -7767,7 +7755,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
     var exists = false;
-    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+    for (let i = 0; i < allAttrToEntityRelations.length; i++) {
         if (toElement.id == allAttrToEntityRelations[i]) {
             exists = true;
             break;
@@ -7779,7 +7767,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     // Adding elements to the array that carries attributes connected to attributes without being directly connected to an entity or relation
-    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+    for (let i = 0; i < allAttrToEntityRelations.length; i++) {
         if (fromElement.kind === elementTypesNames.ERAttr && toElement.kind === elementTypesNames.ERAttr && fromElement.id == allAttrToEntityRelations[i]) {
             attrViaAttrToEnt[attrViaAttrCounter] = toElement.id;
             attrViaAttrCounter++;
@@ -7835,7 +7823,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         });
         var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
         var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
-        for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        for (let i = 0; i < allAttrToEntityRelations.length; i++) {
             if (allAttrToEntityRelations[i] == fromElement.id) {
                 allAttrToEntityRelations.splice(i, 1);
                 countUsedAttributes--;
@@ -8447,14 +8435,11 @@ function drawArrowPoint(base, point, x, y, lineColor, line) {
  */
 function redrawArrows(str) {
     // Clear all lines and update with dom object dimensions
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         clearLinesForElement(data[i]);
     }
 
-    // Make list of all connectors?
-    connectors = [];
-
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         determineLine(lines[i]);
     }
 
@@ -8465,12 +8450,12 @@ function redrawArrows(str) {
     }
 
     // Sort all association ends that number above 0 according to direction of line
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
     }
 
     // Draw each line using sorted line ends when applicable
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         str += drawLine(lines[i]);
     }
 
@@ -8479,7 +8464,7 @@ function redrawArrows(str) {
     }
 
     // Remove all neighbour maps from elements
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         delete data[i].neighbours;
     }
 
@@ -8544,8 +8529,8 @@ function drawRulerBars(X, Y) {
     //Get elements
     if (!settings.ruler.isRulerActive) return;
 
-    svgX = document.getElementById("ruler-x-svg");
-    svgY = document.getElementById("ruler-y-svg");
+    let svgX = document.getElementById("ruler-x-svg");
+    let svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
 
     var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
@@ -8570,19 +8555,19 @@ function drawRulerBars(X, Y) {
 
     //Draw the Y-axis ruler positive side.
     var lineNumber = (lineRatio3 - 1);
-    for (i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
 
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
             lineNumber = 0;
             barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
-            barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "'style='font-size: 10px''>" + cordY + "</text>";
+            barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
             cordY = cordY + 10;
         } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
             //centi
             if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
-                barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "'style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
+                barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "' style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
                 barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
             } else {
                 barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
@@ -8599,7 +8584,7 @@ function drawRulerBars(X, Y) {
     //Draw the Y-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordY = -10;
-    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
 
         //Check if a full line should be drawn
@@ -8630,7 +8615,7 @@ function drawRulerBars(X, Y) {
 
     //Draw the X-axis ruler positive side.
     lineNumber = (lineRatio3 - 1);
-    for (i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8658,7 +8643,7 @@ function drawRulerBars(X, Y) {
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
-    for (i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check if a full line should be drawn
         if (lineNumber === lineRatio3) {
@@ -8695,22 +8680,23 @@ function drawRulerBars(X, Y) {
  */
 function drawElement(element, ghosted = false) {
     let ghostPreview = ghostLine ? 0 : 0.4;
-    var str = "";
+    let str = "";
     const multioffs = 3;
 
     // Compute size variables
-    var linew = Math.round(strokewidth * zoomfact);
-    var boxw = Math.round(element.width * zoomfact);
-    var boxh = Math.round(element.height * zoomfact);
-    var texth = Math.round(zoomfact * textheight);
-    var hboxw = Math.round(element.width * zoomfact * 0.5);
-    var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
-    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    let hboxw = Math.round(element.width * zoomfact * 0.5);
+    let hboxh = Math.round(element.height * zoomfact * 0.5);
+    let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
+    let sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let elemAttri;
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    canvasContext = canvas.getContext('2d');
+    let canvasContext = canvas.getContext('2d');
 
     //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
     //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
@@ -8719,13 +8705,13 @@ function drawElement(element, ghosted = false) {
 
     // Caclulate font width using some canvas magic
     canvasContext.font = `${texth}px ${canvasContext.font.split('px')[1]}`;
-    var textWidth = canvasContext.measureText(element.name).width;
+    let textWidth = canvasContext.measureText(element.name).width;
 
     // If calculated size is larger than element width
     const margin = 10 * zoomfact;
-    var tooBig = (textWidth >= (boxw - (margin * 2)));
-    var xAnchor = tooBig ? margin : hboxw;
-    var vAlignment = tooBig ? "left" : "middle";
+    let tooBig = (textWidth >= (boxw - (margin * 2)));
+    let xAnchor = tooBig ? margin : hboxw;
+    let vAlignment = tooBig ? "left" : "middle";
 
     if (errorActive) {
         // Checking for errors regarding ER Entities
@@ -8830,7 +8816,7 @@ function drawElement(element, ghosted = false) {
         elemAttri = text.length;
 
         // Removes the previouse value in SDHeight for the element
-        for (var i = 0; i < SDHeight.length; i++) {
+        for (let i = 0; i < SDHeight.length; i++) {
             if (element.id == SDHeight[i].id) {
                 SDHeight.splice(i, 1);
             }
@@ -8903,7 +8889,7 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            for (var i = 0; i < elemAttri; i++) {
+            for (let i = 0; i < elemAttri; i++) {
                 str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
             }
             //end of svg for background
@@ -8988,13 +8974,13 @@ function drawElement(element, ghosted = false) {
         // Overlapping IE-inheritance
 
         if (element.state == 'overlapping') {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />`
+            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white" stroke="black"'/> 
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black" />`
         }
         // Disjoint IE-inheritance
         else {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/>
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />
+            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white" stroke="black"/>
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black" />
                 <line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke="black" />
                 <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke="black" />`
         }
@@ -9206,7 +9192,7 @@ function drawElement(element, ghosted = false) {
         elemAttri = text.length;
 
         // Removes the previouse value in NOTEHeight for the element
-        for (var i = 0; i < NOTEHeight.length; i++) {
+        for (let i = 0; i < NOTEHeight.length; i++) {
             if (element.id == NOTEHeight[i].id) {
                 NOTEHeight.splice(i, 1);
             }
@@ -9258,7 +9244,7 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            for (var i = 0; i < elemAttri; i++) {
+            for (let i = 0; i < elemAttri; i++) {
                 str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
 
@@ -9288,7 +9274,7 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-            for (var i = 0; i < elemAttri; i++) {
+            for (let i = 0; i < elemAttri; i++) {
                 str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
             }
 
@@ -9393,7 +9379,7 @@ function drawElement(element, ghosted = false) {
 
                 if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
 
-                for (var i = 0; i < element.name.length; i++) {
+                for (let i = 0; i < element.name.length; i++) {
                     tempName += element.name[i];
                     if (canvasContext.measureText(tempName).width > maxTextWidth) {
                         numOfLetters = tempName.length - 1;
@@ -9417,7 +9403,7 @@ function drawElement(element, ghosted = false) {
     }
     //=============================================== <-- End ER functionality
     if (element.isLocked) {
-        str += `<img id="pad_lock" width='${zoomfact * 20}' height='${zoomfact * 25}' src="../Shared/icons/pad_lock.svg"/>`;
+        str += `<img id="pad_lock" width='${zoomfact * 20}' height='${zoomfact * 25}' src="../Shared/icons/pad_lock.svg" alt="padlock"/>`;
     }
     str += "</div>";
     return str;
@@ -9566,8 +9552,8 @@ function drawElementIEEntity(element, ghosted) {
 
 /**
  * @description Updates the elements translations and redraw lines.
- * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
- * @param {Interger} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
+ * @param {number || null} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
+ * @param {number || null} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
  */
 function updatepos(deltaX, deltaY) {
     updateCSSForAllElements();
@@ -9597,7 +9583,7 @@ function checkLineErrors(lines) {
     var line;
 
     // Error checking for lines
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         var fElement = data[findIndex(data, line.fromID)];
         var tElement = data[findIndex(data, line.toID)];
@@ -9617,20 +9603,18 @@ function checkLineErrors(lines) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkEREntityErrors(element) {
-    var keyQuantity;
-    var primaryCount;
-    var strongEntity;
-    var weakrelation;
+    let keyQuantity, primaryCount, strongEntity, weakrelation;
+    let fElement, fElement0, fElement1, tElement, tElement0, tElement1, line, line0, line1;
 
     // Checks for entities with the same name
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (element.name == data[i].name && element.id != data[i].id) {
             errorData.push(element);
         }
     }
 
     // Checks for entity connected to another entity
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
@@ -9644,13 +9628,13 @@ function checkEREntityErrors(element) {
     }
 
     // Checks if connected attribute is connected with another relation or entity
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -9664,7 +9648,7 @@ function checkEREntityErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -9680,19 +9664,19 @@ function checkEREntityErrors(element) {
     }
 
     // Checks for connection to attribute with more than 2 connections
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9706,7 +9690,7 @@ function checkEREntityErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9722,13 +9706,13 @@ function checkEREntityErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9742,7 +9726,7 @@ function checkEREntityErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9760,10 +9744,9 @@ function checkEREntityErrors(element) {
     }
     if (element.state == "weak") {
         keyQuantity = 0;
-        primaryCount = 0;
         strongEntity = 0;
         weakrelation = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -9794,7 +9777,7 @@ function checkEREntityErrors(element) {
 
             // Checking for attributes with same name
             if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9808,7 +9791,7 @@ function checkEREntityErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9824,7 +9807,7 @@ function checkEREntityErrors(element) {
 
             // Checking if weak entity is related to a strong entity or a weak entity with a relation
             if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak" && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9838,7 +9821,7 @@ function checkEREntityErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak" && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9865,7 +9848,7 @@ function checkEREntityErrors(element) {
             errorData.push(element);
         }
 
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -9885,7 +9868,7 @@ function checkEREntityErrors(element) {
     } else {
         keyQuantity = 0;
         primaryCount = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -9922,7 +9905,7 @@ function checkEREntityErrors(element) {
 
             // Checking for attributes with same name
             if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9936,7 +9919,7 @@ function checkEREntityErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9952,7 +9935,7 @@ function checkEREntityErrors(element) {
 
         }
 
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -9976,10 +9959,10 @@ function checkEREntityErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkERRelationErrors(element) {
-    var lineQuantity;
+    let lineQuantity, line, fElement, tElement;
 
     // Checks for relation connected to another relation
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
@@ -9993,13 +9976,13 @@ function checkERRelationErrors(element) {
     }
 
     // Checks if connected attribute is connected with another relation or entity
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10013,7 +9996,7 @@ function checkERRelationErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10029,19 +10012,19 @@ function checkERRelationErrors(element) {
     }
 
     // Checks for connection to attribute with more than 2 connections
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10055,7 +10038,7 @@ function checkERRelationErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10071,13 +10054,13 @@ function checkERRelationErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10091,7 +10074,7 @@ function checkERRelationErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10109,12 +10092,12 @@ function checkERRelationErrors(element) {
     }
 
     // Checking for reletions with same name but different properties
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (element.name == data[i].name && element.id != data[i].id && data[i].kind == elementTypesNames.ERRelation) {
 
             // Checking if relations have same line types
             var linesChecked = [];
-            for (var k = 0; k < lines.length; k++) {
+            for (let k = 0; k < lines.length; k++) {
                 line = lines[k];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
@@ -10127,13 +10110,13 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10155,13 +10138,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10185,13 +10168,13 @@ function checkERRelationErrors(element) {
                     }
                     if (line.kind == "Double") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10213,13 +10196,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10249,13 +10232,13 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10277,13 +10260,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10307,13 +10290,13 @@ function checkERRelationErrors(element) {
                     }
                     if (line.kind == "Double") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10335,13 +10318,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10370,7 +10353,7 @@ function checkERRelationErrors(element) {
             }
 
             // Checking if reletions have the same attributes
-            for (var k = 0; k < lines.length; k++) {
+            for (let k = 0; k < lines.length; k++) {
                 line = lines[k];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
@@ -10386,7 +10369,7 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
-                    for (var j = 0; j < lines.length; j++) {
+                    for (let j = 0; j < lines.length; j++) {
                         line0 = lines[j];
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
@@ -10396,7 +10379,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10404,7 +10387,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10420,7 +10403,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10437,7 +10420,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10453,7 +10436,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10475,7 +10458,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10483,7 +10466,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10499,7 +10482,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10515,7 +10498,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10531,7 +10514,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10561,7 +10544,7 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
-                    for (var j = 0; j < lines.length; j++) {
+                    for (let j = 0; j < lines.length; j++) {
                         line0 = lines[j];
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
@@ -10571,7 +10554,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10579,7 +10562,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10595,7 +10578,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10612,7 +10595,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10628,7 +10611,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10650,7 +10633,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10658,7 +10641,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10674,7 +10657,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10691,7 +10674,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10707,7 +10690,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10738,7 +10721,7 @@ function checkERRelationErrors(element) {
             // Checking if relations have the same amount of attributes
             var elementAttrCount = 0;
             var dataAttrCount = 0;
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line = lines[j];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
@@ -10764,13 +10747,13 @@ function checkERRelationErrors(element) {
     }
 
     // Checking for attribute with same name on relation
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10784,7 +10767,7 @@ function checkERRelationErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10801,14 +10784,14 @@ function checkERRelationErrors(element) {
 
     if (element.state == "weak") {
         lineQuantity = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong line type to a relation
             if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state == "weak" && line.kind == "Normal") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10822,7 +10805,7 @@ function checkERRelationErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state == "weak" && line.kind == "Normal") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10842,7 +10825,7 @@ function checkERRelationErrors(element) {
 
             // Checking for more than one Normal line to a weak relation
             if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state != "weak") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10856,7 +10839,7 @@ function checkERRelationErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state != "weak") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10872,7 +10855,7 @@ function checkERRelationErrors(element) {
 
             // Checking for more than one double line to a weak relation
             if (fElement.id == element.id && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10886,7 +10869,7 @@ function checkERRelationErrors(element) {
                 }
             }
             if (tElement.id == element.id && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10907,7 +10890,7 @@ function checkERRelationErrors(element) {
         }
     } else {
         lineQuantity = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -10929,18 +10912,17 @@ function checkERRelationErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkERAttributeErrors(element) {
-    for (var i = 0; i < lines.length; i++) {
+    let line, line0, line1;
+    let fElement, fElement0, fElement1;
+    let tElement, tElement0, tElement1;
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        var line0;
-        var fElement0;
-        var tElement0;
-
         // Checking for non-normal attributes on a attribute
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10958,7 +10940,7 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10978,13 +10960,13 @@ function checkERAttributeErrors(element) {
 
         // Checking for 2nd line attribute connected with a 3rd attribute
         if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10998,7 +10980,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11014,13 +10996,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11034,7 +11016,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11051,13 +11033,13 @@ function checkERAttributeErrors(element) {
         }
         // Checking for 3rd line attribute connected with a 2nd attribute
         if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11071,7 +11053,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11087,13 +11069,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11107,7 +11089,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11125,7 +11107,7 @@ function checkERAttributeErrors(element) {
 
         // Attribute connected to more than one relation or entity
         if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11139,7 +11121,7 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11155,13 +11137,13 @@ function checkERAttributeErrors(element) {
 
         // 2nd line attribute connected to another relation or entity
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11175,7 +11157,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11191,13 +11173,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11211,7 +11193,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11228,13 +11210,13 @@ function checkERAttributeErrors(element) {
         }
         // Check for 1st line attribute connected in a 3 line attribute chain
         if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11248,7 +11230,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11264,13 +11246,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11284,7 +11266,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11325,13 +11307,9 @@ function checkERAttributeErrors(element) {
             }
         }
 
-        var line0;
-        var fElement0;
-        var tElement0;
-
         // Checking for attributes on the same relation with the same name
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11345,7 +11323,7 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11379,7 +11357,7 @@ function checkERAttributeErrors(element) {
         if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
             var currentAttr = fElement;
             var currentEntity = tElement;
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11408,7 +11386,7 @@ function checkERAttributeErrors(element) {
         if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
             var currentAttr = tElement;
             var currentEntity = fElement;
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11455,15 +11433,15 @@ function checkElementError(element) {
  * @param {Object} elements List of all elements.
  */
 function errorReset(elements) {
-    for (var i = 0; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
         elements[i].stroke = strokeColors;
     }
 }
 
 /**
  * @description Updates the Label position on the line.
- * @param {Interger} newPosX The position the mouse is at in the X-axis.
- * @param {Interger} newPosY The position the mouse is at in the Y-axis.
+ * @param {number} newPosX The position the mouse is at in the X-axis.
+ * @param {number} newPosY The position the mouse is at in the Y-axis.
  */
 function updateLabelPos(newPosX, newPosY) {
     targetLabel.labelMoved = true;
@@ -11623,7 +11601,7 @@ function drawSelectionBox(str) {
             highX = context[0].x2;
             lowY = context[0].y1;
             highY = context[0].y2;
-            for (var i = 0; i < context.length; i++) {
+            for (let i = 0; i < context.length; i++) {
                 x1 = context[i].x1;
                 x2 = context[i].x2;
                 y1 = context[i].y1;
@@ -11637,7 +11615,7 @@ function drawSelectionBox(str) {
 
         var tempLines = [];
         if (contextLine.length > 0) {
-            for (var i = 0; i < contextLine.length; i++) {
+            for (let i = 0; i < contextLine.length; i++) {
                 if (contextLine[i] && contextLine[i].kind !== undefined) {
                     if (contextLine[i].kind === lineKind.DOUBLE) {
                         tempLines.push(document.getElementById(contextLine[i].id + "-1"));
@@ -11669,7 +11647,7 @@ function drawSelectionBox(str) {
             lineHighY = Math.max(tempY1, tempY2);
 
             // Loop through all selected lines and find highest and lowest x and y coordinates
-            for (var i = 0; i < tempLines.length; i++) {
+            for (let i = 0; i < tempLines.length; i++) {
                 var hasPoints = tempLines[i].getAttribute('points'); // Polyline
                 if (hasPoints != null) {
                     var points = hasPoints.split(' ');
@@ -11738,8 +11716,8 @@ function drawSelectionBox(str) {
  */
 function updateCSSForAllElements() {
     function updateElementDivCSS(elementData, divObject, useDelta = false) {
-        var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+        let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+        let top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta) {
             left -= deltaX;
@@ -11749,8 +11727,8 @@ function updateCSSForAllElements() {
         if (settings.grid.snapToGrid && useDelta) {
             if (element.kind == elementTypesNames.EREntity) {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
-                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                let objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
+                let objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Add the scroll values
                 left = Math.round((((objX - zoomOrigo.x) + (settings.grid.gridSize * 5)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
@@ -11761,8 +11739,8 @@ function updateCSSForAllElements() {
                 top -= ((elementData.height * zoomfact) / 2);
             } else if (element.kind != elementTypesNames.EREntity) {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
-                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
+                let objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
+                let objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
 
                 // Add the scroll values
                 left = Math.round((((objX - zoomOrigo.x) + (settings.grid.gridSize * 4)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
@@ -11778,7 +11756,7 @@ function updateCSSForAllElements() {
     }
 
     // Update positions of all data elements based on the zoom level and view space coordinate
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         // Element data from the array
         var element = data[i];
         // Element DIV (dom-object)
@@ -12104,7 +12082,7 @@ function showdata() {
     errorReset(data);
 
     // Iterate over programs
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         str += drawElement(data[i]);
     }
 
