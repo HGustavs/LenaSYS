@@ -17,7 +17,11 @@
     --header-font: "Montserrat", sans-serif;
     --body-font: "Noto Sans", sans-serif;
     --h1-fontsize: 54px;
+    --h1-fontsize-small: 38px;
     --h2-fontsize: 36px;
+    --h2-fontsize-small: 26px;
+    --text-large: 16px;
+    --text-medium: 14px;
     --text-xs: 12px;
 }
 
@@ -50,7 +54,7 @@ html body {
 
 .breadcrumbs {
     font-family: var(--header-font);
-    font-size: 16px;
+    font-size: var(--text-large);
     display: flex;
     align-items: baseline;
     list-style: none;
@@ -61,7 +65,7 @@ html body {
 .arrow_icon {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-    font-size: 16px;
+    font-size: var(--text-large);
 }
 
 .header-2 {
@@ -108,7 +112,7 @@ html body {
     .header h1 {
         font-family: var(--header-font);
         color: var(--text-light);
-        font-size: 38px;
+        font-size: var(--h1-fontsize-small);
         margin: 0;
         padding: 1rem;
     }
@@ -116,7 +120,7 @@ html body {
     h2 {
         font-family: var(--header-font);
         color: var(--primary-color);
-        font-size: 26px;
+        font-size: var(--h2-fontsize-small);
         margin-top: 0rem;
         margin-bottom: 1.5rem;
     }
@@ -161,7 +165,7 @@ input[type=text]:focus {
 
 .checkbox {
     display: flex;
-    font-size: 14px;
+    font-size: var(--text-medium);
 }
 
 input[type=checkbox] {
@@ -177,13 +181,13 @@ input[type=checkbox] {
 }
 
 .backButton {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0); /* To get none color*/
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
     width: 100px;
     height: 45px;
     padding: .75rem;
-    font-size: 16px;
+    font-size: var(--text-large);
 }
 
 .progressButton {
@@ -193,25 +197,25 @@ input[type=checkbox] {
     width: 100px;
     height: 45px;
     padding: .75rem;
-    font-size: 16px;
+    font-size: var(--text-large);
 }
 
 .progressButton:hover {
     cursor:pointer;
     background-color: var(--primary-color-hover);
-    box-shadow:1px 1px 1px #1E1E1E;
+    box-shadow:1px 1px 1px var(--text-dark);
 }
 
 .progressButton:active {
     background-color: var(--primary-color-active);
-    box-shadow:2px 2px 2px #1E1E1E;
+    box-shadow:2px 2px 2px var(--text-dark);
 }
 
 .backButton:hover {
     cursor:pointer;
-    box-shadow:-1px 1px 1px #1E1E1E;
+    box-shadow:-1px 1px 1px var(--text-dark);
 }
 
 .backButton:active {
-    box-shadow:-2px 2px 2px #1E1E1E;
+    box-shadow:-2px 2px 2px var(--text-dark);
 }
