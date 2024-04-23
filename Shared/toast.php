@@ -5,11 +5,11 @@
         SUCCESS: "success"
     }); 
     // Close the toast by clicking the X icon
-    function closeToast(toastDiv){
+    function closeToast(toastDiv) {
         const toastContainer = document.getElementById('toastContainer');
         if (toastDiv) {
-        // Delete the toast from the toast container
-        toastContainer.removeChild(toastDiv);
+            // Delete the toast from the toast container
+            toastContainer.removeChild(toastDiv);
         }
     }
     // Create a toast notification
@@ -68,7 +68,7 @@
         toastText.innerHTML = text;
 
         // Decides the type of toast (changes the type icon and toast heading)
-        switch(type){
+        switch(type) {
             case types.WARNING:
                 typeIcon.innerHTML = types.WARNING;
                 typeText.innerHTML = "Warning";
@@ -96,7 +96,7 @@
 
         // The duration of a toast decides how long it should be visible for
         // If no duration is given, the default duration should be 3 seconds.
-        if(duration == "" || duration == null){
+        if(duration == "" || duration == null) {
             duration = 3;
         }
         // After x amount of seconds, remove the show class from DIV
