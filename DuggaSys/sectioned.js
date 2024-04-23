@@ -1483,7 +1483,7 @@ function returnedSection(data) {
         var rDeadline = item['relativedeadline'];
         var released = item['release'];
 
-        if(deadline==null){
+        if(deadline==null) {
           deadline = item['deadline'];
         }
 
@@ -1921,13 +1921,13 @@ function returnedSection(data) {
 
           str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(";
-          if(item['handindeadline']!=null){
+          if(item['handindeadline']!=null) {
             str +=makeparams([item['lid'], item['entryname'],
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['handindeadline'],item['relativedeadline'],
             item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
           }
-          else{
+          else {
             str +=makeparams([item['lid'], item['entryname'],
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['deadline'],item['relativedeadline'],
