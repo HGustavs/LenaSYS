@@ -145,7 +145,7 @@ Sectioned Service:
 - updateListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php
-- setVisibleListentrie_ms.php
+- setVisibleListentrie_ms.php __==finished==__ New filename: "updateVisibleListentrie_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_sectioned_ms.php
@@ -1465,7 +1465,7 @@ DELETE FROM listentries WHERE lid = :lid
 
 <br>
 
-### removeListentries_ms.php (hides the listentrie, no delete it)
+### removeListentries_ms.php (hides the listentrie, not deleting it)
 Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database). 
 
 _UPDATE_ operation on the table __'listentries'__ to update rows where:
@@ -1623,16 +1623,13 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 
 <br>
 
-### setVisibleListentrie
-(writers comment: These both do the same thing, i would sugest combining them and use if cases instead.)
-<br>
+### updateVisibleListentrie_ms.php
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- visibility (0 = Hidden, 1 = Public)
 
-#### changeVisibleHidden
-Uses the services __updateTableListentries__ to change the content of these columns:
-- visible
-#### changeVisiblePublic
-Uses the services __updateTableListentries__ to change the content of these columns:
-- visible
+```sql
+UPDATE listentries SET visibility = :listentryId;
+```
 
 <br>
 
