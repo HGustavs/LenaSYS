@@ -78,7 +78,7 @@ Shared microservices:
 Accessed Service:
 
 - updateUser_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateUsercourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD but the filename should look like this: "updateUserCourse_ms.php".
+- updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - changeUserPassword_accessed_ms.php
 - addUser_ms.php
@@ -480,7 +480,7 @@ UPDATE user SET class=:class WHERE uid=:uid;
 
 <br>
 
-### updateUsercourse_ms.php
+### updateUserCourse_ms.php
 _UPDATE_ operation on the table __'user_course'__ to update the value of the column:
 - examiner
 
