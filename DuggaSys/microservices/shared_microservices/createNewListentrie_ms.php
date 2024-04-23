@@ -26,36 +26,37 @@ $gradesys = getOP('gradesys');
 $tabs = getOP('tabs');
 $userid = getUid();
 
-$query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
-								    VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind)");
+function createNewListentrie($listEntry){
+    $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
+	VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind)");
+    $query->bindParam(':cid', $listEntry['cid']);
+    $query->bindParam(':cvs', $listEntry['coursevers']);
+    $query->bindParam(':usrid', $listEntry['userid']);
+    $query->bindParam(':entryname', $listEntry['entryname']);
+    $query->bindParam(':link', $listEntry['link']);
+    $query->bindParam(':kind', $listEntry['kind']);
+    $query->bindParam(':comment', $listEntry['comment']);
+    $query->bindParam(':visible', $listEntry['visible']);
+    $query->bindParam(':highscoremode', $listEntry['highscoremode']);
+    $query->bindParam(':pos', $listEntry['pos']);
 
-$query->bindParam(':cid', $courseid);
-$query->bindParam(':cvs', $coursevers);
-$query->bindParam(':usrid', $userid);
-$query->bindParam(':entryname', $sectname);
-$query->bindParam(':link', $link);
-$query->bindParam(':kind', $kind);
-$query->bindParam(':comment', $comments);
-$query->bindParam(':visible', $visibility);
-$query->bindParam(':highscoremode', $highscoremode);
-$query->bindParam(':pos', $pos);
+    if ($listEntry['kind'] == 4) {
+	$query->bindParam(':gradesys', $listEntry['gradesys']);
+    } else {
+	$query->bindParam(':gradesys', $listEntry['tabs']);
+    }
 
-if ($kind == 4) {
-    $query->bindParam(':gradesys', $gradesys);
-} else {
-    $query->bindParam(':gradesys', $tabs);
-}
+    if ($listEntry['grptype'] != "UNK") {
+	$query->bindParam(':groupkind', $listEntry['grptype']);
+    } else {
+	$query->bindValue(':groupkind', null, PDO::PARAM_STR);
 
-if ($grptype != "UNK") {
-    $query->bindParam(':groupkind', $grptype);
-} else {
-    $query->bindValue(':groupkind', null, PDO::PARAM_STR);
+	// Logging for newly added items
+	logUserEvent($listEntry['userid'], getUsername($listEntry['userid']), EventTypes::SectionItems, $sectname);
+    }
 
-    // Logging for newly added items
-    logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
-}
-
-if (!$query->execute()) {
-    $error = $query->errorInfo();
-    $debug = "Error updating entries" . $error[2];
+    if (!$query->execute()) {
+	$error = $query->errorInfo();
+	$debug = "Error updating entries" . $error[2];
+    }
 }
