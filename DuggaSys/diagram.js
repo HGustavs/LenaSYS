@@ -6784,7 +6784,11 @@ function generateContextProperties() {
                         switch (property.toLowerCase()) {
                             case 'name':
                                 str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                str += `<input id='elementProperty_${property}' 
+                                            type='text' 
+                                            value='${element[property]}' 
+                                            maxlength='${20 * zoomfact}'
+                                            onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
                             default:
                                 break;
@@ -8710,74 +8714,30 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLEntity:
             str += drawElementUMLEntity(element, ghosted);
             break;
+        case elementTypesNames.UMLInitialState:
+            let initVec = `
+                <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+                    <circle cx="16.5" cy="12.5" r="10.5" />
+                </g>`
+            str += drawElementState(element, ghosted, initVec);
+            break;
+        case elementTypesNames.UMLFinalState:
+            let finalVec = `
+                <g> 
+                    <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
+                    <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/> 
+                </g>`
+            str += drawElementState(element, ghosted, finalVec);
+            break;
+        case elementTypesNames.UMLSuperState:
+            str += drawElementSuperState(element, ghosted, textWidth);
+
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%" 
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg" 
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
-                            <circle cx="16.5" cy="12.5" r="10.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
-            element.fill = color.WHITE;
-        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
-            element.fill = color.BLACK;
-        }
     } else if (element.kind == elementTypesNames.UMLFinalState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}"
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g>
-                            <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                            <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
-            element.fill = color.WHITE;
-        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
-            element.fill = color.BLACK;
-        }
     } else if (element.kind == elementTypesNames.UMLSuperState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        str += `<div id="${element.id}" 
-                    class="element uml-Super"
-                    style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
-                     onmousedown='ddown(event);' 
-                     onmouseenter='mouseEnter();' 
-                     onmouseleave='mouseLeave();'>
-                    <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${actorFontColor}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${boxw / 2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
-                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
-                    </svg>
-                </div>`;
-    }
-    // Check if element is SDEntity
-    else if (element.kind == elementTypesNames.SDEntity) {
+    } else if (element.kind == elementTypesNames.SDEntity) {
         const maxCharactersPerLine = Math.floor(boxw / texth);
 
         const splitLengthyLine = (str, max) => {
@@ -9558,13 +9518,61 @@ const drawRect = (w, h, l, e) => {
                 stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
             />`;
 }
-const drawText = (x, y, a, t) => {
+const drawText = (x, y, a, t, extra='') => {
     return `<text
                 class='text' x='${x}' y='${y}' 
-                dominant-baseline='auto' text-anchor='${a}'
+                dominant-baseline='auto' text-anchor='${a}' ${extra}
             > ${t} </text>`;
 }
 
+function drawElementState(element, ghosted, vectorGraphic) {
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    var boxw = Math.round(element.width * zoomfact);
+    var boxh = Math.round(element.height * zoomfact);
+    const theme = document.getElementById("themeBlack");
+    if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
+        element.fill = color.WHITE;
+    } else if (element.fill == color.WHITE && theme.href.includes('style')) {
+        element.fill = color.BLACK;
+    }
+    return `<div id="${element.id}" 
+                class="element uml-state"
+                style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'>
+                <svg width="100%" height="100%" 
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" 
+                    xml:space="preserve"
+                    style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                    ${vectorGraphic}
+                </svg>
+            </div>`;
+}
+
+function drawElementSuperState(element, ghosted, textWidth) {
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let linew = Math.round(strokewidth * zoomfact);
+    element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`)
+    return `<div id="${element.id}" 
+                class="element uml-Super"
+                style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'>
+                <svg width='${boxw}' height='${boxh}'>
+                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${element.stroke}' stroke-width='${linew}' rx="20"/>
+                    <rect x='${linew}' y='${linew}' width="${textWidth + 40 * zoomfact}px" height="${50 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
+                    ${text}
+                </svg>
+            </div>`;
+}
 /**
  * @description Updates the elements translations and redraw lines.
  * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
