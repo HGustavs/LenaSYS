@@ -296,7 +296,7 @@ __USED BY__
 - 
 <br>
 
-Uses 
+Uses a SQL query to SELECT username from table with uid
 
 <br>
 <br>
