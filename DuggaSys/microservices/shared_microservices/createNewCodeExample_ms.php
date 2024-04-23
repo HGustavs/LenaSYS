@@ -11,6 +11,7 @@ include_once "../../../../coursesyspw.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "getUid_ms.php";
+include_once "retrieveUsername_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -33,20 +34,6 @@ $tabs=getOP('tabs');
 
 getUid(); // call to microservice getUid_ms.php
 $userid = $_SESSION['uid'];
-
-// TODO: the following will be changed to a microservice, as such this should be updated to a microservice call
-
-// *********************** vvvv CHANGE TO MICROSERVICE CALL vvvv ***********************************
-// Gets username based on uid, USED FOR LOGGING
-$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
-$query->bindParam(':uid', $userid);
-$query-> execute();
-
-// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
-while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-	$username = $row['username'];
-}
-// *********************** ^^^^ CHANGE TO MICROSERVICE CALL ^^^^ ***********************************
 
 if (strcmp($opt, "NEW") === 0) {
 
