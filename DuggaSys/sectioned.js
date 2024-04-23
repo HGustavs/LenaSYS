@@ -3805,6 +3805,7 @@ function validateForm(formid) {
     // If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
+
     }
 
     //Name is a duplicate
@@ -4212,4 +4213,3 @@ function getLocalStorage() {
     var dropdown = document.querySelector('select[name="githubDir"]');
     dropdown.value = selectedValue;
   }
-}
