@@ -3432,15 +3432,19 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid) {
     $(errorMsg2).fadeIn()
     window.bool9 = false;
   }
-  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) && emotd.value.length > 0) {
     emotd.style.backgroundColor = backgroundColorTheme;
     emotd.classList.add("color-change-valid");
     emotd.classList.remove("color-change-invalid");
     return true;
-  } else {
+  } else if (emotd.value.length > 0) {
     emotd.classList.add("color-change-invalid");
     emotd.classList.remove("color-change-valid");
     return false;
+  }else{
+    emotd.classList.remove("color-change-invalid");
+    emotd.classList.remove("color-change-valid");
+    return true;
   }
 }
 
