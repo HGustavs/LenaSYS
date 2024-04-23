@@ -10,8 +10,8 @@ $opt=getOP('opt');
 
 $exampleId=getOP('exampleid');
 $boxId=getOP('boxid');
-$boxTitle=getOP('boxTitle');
-$boxContent=getOP('boxContent');
+$boxTitle=getOP('boxtitle');
+$boxContent=getOP('boxcontent');
 $wordlist=getOP('wordlist');
 $filename=getOP('filename');
 $fontsize = getOP('fontsize');
