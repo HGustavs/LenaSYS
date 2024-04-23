@@ -1062,6 +1062,13 @@ var hasPressedDelete = false;
 var mouseOverElement = false;
 var mouseOverLine = false;
 
+// Variables for resizing
+var originalWidth = 0;
+var originalHeight = 0;
+var originalX = 0;
+var originalY = 0;
+var resizeOverlapping = false;
+
 // Zoom variables
 var desiredZoomfact = 1.0;
 var zoomfact = 1.0;
@@ -2023,6 +2030,14 @@ function mdown(event) {
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
+            var element = data[findIndex(data, context[0].id)];
+
+            // Save the original properties
+            originalWidth = element.width;
+            originalHeight = element.height;
+            originalX = element.x;
+            originalY = element.y;
+            
             startWidth = data[findIndex(data, context[0].id)].width;
             startHeight = data[findIndex(data, context[0].id)].height;
 
@@ -2270,6 +2285,24 @@ function mup(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
+            if (resizeOverlapping) {
+                // Reset to original state if overlapping is detected
+                var element = data[findIndex(data, context[0].id)];
+                element.width = originalWidth;
+                element.height = originalHeight;
+                element.x = originalX;
+                element.y = originalY;
+        
+                // Update DOM with the original properties
+                const elementDOM = document.getElementById(element.id);
+                elementDOM.style.width = originalWidth + 'px';
+                elementDOM.style.height = originalHeight + 'px';
+                elementDOM.style.left = originalX + 'px';
+                elementDOM.style.top = originalY + 'px';
+                showdata()
+                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+                resizeOverlapping = false;
+            }
             break;
         default:
             console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
@@ -2726,6 +2759,17 @@ function mmoving(event) {
             }
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
+
+            // Check if entity is overlapping
+            resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
+
+            // Update element in DOM
+            const elementDOM = document.getElementById(context[0].id);
+            elementDOM.style.width = elementData.width + 'px';
+            elementDOM.style.height = elementData.height + 'px';
+            elementDOM.style.left = elementData.x + 'px';
+            elementDOM.style.top = elementData.y + 'px';
+            showdata()
             updatepos(null, null);
             break;
 
