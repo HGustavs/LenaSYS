@@ -1026,17 +1026,14 @@ const CIRCLE = iconCircleDirections(25);
 // Data and html building variables
 var service = [];
 var str = "";
-var defs = "";
 var container;
 
 // Interaction variables - unknown if all are needed
 var deltaX = 0, deltaY = 0, startX, startY;
-var startTop, startLeft;
 var sscrollx, sscrolly;
 var cwidth, cheight;
 var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
-var hasRecursion = false;
 var startWidth;
 var startHeight;
 var startNodeLeft = false;
@@ -1075,20 +1072,14 @@ var zoomfact = 1.0;
 var scrollx = 100;
 var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
-var camera = new Point(0, 0); // Relative to coordinate system origo
-var lastZoomPos = new Point(0, 0); // placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
-var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom)
 var zoomAllowed = true; // To slow down zoom on touchpad.
 var lastZoomPos = new Point(0, 0); // placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
 var lastMousePosCoords = new Point(0, 0); // placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom)
 
 
 // Constants
-const elementwidth = 200;
-const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
-const baseline = 10;
 const color = {
     WHITE: "#ffffff",
     BLACK: "#000000",
@@ -1133,8 +1124,6 @@ const zoom0_25 = -15.01;
 var errorActive = false;
 
 // Arrow drawing stuff - diagram elements, diagram lines and labels 
-var lines = [];
-var elements = [];
 var lineLabelList = [];
 
 // Currently clicked object list
@@ -1225,10 +1214,8 @@ var settings = {
 
 // Demo data - read / write from service later on
 
-var diagramToLoad = "";
 var cid = "";
 var cvers = "";
-var diagramToLoadContent = "";
 
 var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
