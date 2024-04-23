@@ -1379,12 +1379,11 @@ var defaults = {
         type: "SD",
         canChangeTo: null
     },  // UML Super State.
-
     sequenceActor: {
         name: "name",
         kind: "sequenceActor",
         fill: color.WHITE,
-        stroke: color.BLACK
+        stroke: color.BLACK,
         width: 100,
         height: 150,
         type: "SE",
