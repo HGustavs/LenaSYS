@@ -1,5 +1,4 @@
 <?php
-
 function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectname, $link, $log_uuid){
 	$userid = getUid();
 	$sname = $sectname . ($exampleid + 1);
@@ -16,4 +15,3 @@ function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectnam
 	// TODO: Add logUserEvent call
 	return $link;
 }
-

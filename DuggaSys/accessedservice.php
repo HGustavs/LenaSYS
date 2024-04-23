@@ -21,7 +21,7 @@ $pw = getOP('pw');
 $cid = getOP('courseid');
 $opt = getOP('opt');
 $uid = getOP('uid');
-//$ssn = getOP('ssn');
+$ssn = getOP('ssn');
 $className = getOP('className');
 //$firstname = getOP('firstname');
 //$lastname = getOP('lastname');
@@ -153,129 +153,134 @@ if(checklogin() && $hasAccess) {
 	} else if(strcmp($opt,"ADDUSR")==0){
         $newUserData = json_decode(htmlspecialchars_decode($newusers));
         foreach ($newUserData as $user) {
-
-						$uid="UNK";
-						$regstatus="UNK";
-					
+			$uid="UNK";
+			$regstatus="UNK";
+			
+			//if 1 user was sent and they have set a username
             if (count($user) == 1&&strcmp($user[0],"")!==0) {
-                // See if we have added with username or SSN
-                //$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
-                $userquery->bindParam(':usernameorssn1', $user[0]);
-                //$userquery->bindParam(':usernameorssn2', $user[0]);
+
+				//extracts username from email
+				if($saveemail){
+					$username = explode('@', $saveemail)[0];
+				}
+
+                // See if user exists in database with username
+                $userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:username");
+                $userquery->bindParam(':username', $username);
 
                 if(!$userquery->execute()) {
-                  $error=$userquery->errorInfo();
-                  $debug.="Error adding user by ssn or username: ".$error[2];
-                }	else {
-                  foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){ $uid = $row["uid"];}
+                  	$error=$userquery->errorInfo();
+                  	$debug.="Error adding user by ssn or username: ".$error[2];
+                }else {
+                  	foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){ $uid = $row["uid"];}
                 }
 
                 if(strcmp($uid,"UNK")===0){
                     if(strcmp($debug,"NONE!")===0){$debug="";}
                     $debug.=$user[0]." was not found as a user in the system!\n";
                 }
-            } else if (count($user) > 1){
-              $ssn = $user[0];
-              // Check if user has an account
-              //$userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
-              //$userquery->bindParam(':ssn', $ssn);
+            }else if (count($user) > 1){
+            	$ssn = $user[0]; //ssn is not sent with newusers in the current implementation of lenasys
 
-              if ($userquery->execute() && $userquery->rowCount() <= 0) {
-								
-                  //$firstname = $user[1];
-                  //$lastname = $user[2];
-                  $className = $user[count($user)-2];
-                  $saveemail = $user[3];
-                  $regstatus = $user[count($user)-1];
+				$saveemail = $user[3];
+				if(isset($saveemail)){
+					$username = explode('@', $saveemail)[0];
+				}else{
+					$username=makeRandomString(6);
+				}
 
-                  if($saveemail){
-                      $username = explode('@', $saveemail)[0];
-                  }else{
-                      $username=makeRandomString(6);
-                  }
+              	// Check if user has an account with username (ssn is not sent in the current implementation of lenasys)
+              	$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:username");
+              	$userquery->bindParam(':username', $username);
+              	if ($userquery->execute() && $userquery->rowCount() <= 0) {
+                  	$firstname = $user[1];
+                  	$lastname = $user[2];
+	                $term = $user[5];
+					$className = "UNK"; // the class is not sent with newusers in the current implementation of lenasys
+    	            
 
-                  if(strcmp($className,"UNK")!==0){
-                      $cstmt = $pdo->prepare("SELECT class FROM class WHERE class=:clsnme;");
-                      $cstmt->bindParam(':clsnme', $className);
+					//If a className has been set. (this is not implemented in lenasys right now)
+                  	if(strcmp($className,"UNK")!==0){
+                     	$cstmt = $pdo->prepare("SELECT class FROM class WHERE class=:clsnme;");
+                      	$cstmt->bindParam(':clsnme', $className);
 
-                      if(!$cstmt->execute()) {
-                          $error=$cstmt->errorInfo();
-                          $debug.="Could not read class\n".$error[2];
-                      }
+                      	if(!$cstmt->execute()) {
+                        	$error=$cstmt->errorInfo();
+                        	$debug.="Could not read class\n".$error[2];
+                      	}
 
-                      // If class does not exist
-                      if($cstmt->rowCount() === 0){
-                          $querystring='INSERT INTO class (class, responsible) VALUES(:className,1);';
-                          $stmt = $pdo->prepare($querystring);
-                          $stmt->bindParam(':className', $className);
-                          if(!$stmt->execute()) {
-                              $error=$stmt->errorInfo();
-                              $debug.="Error updating klasse malmberg\n".$error[2];
-                          }
-                      }
+                      	// If class does not exist
+                      	if($cstmt->rowCount() === 0){
+                          	$querystring='INSERT INTO class (class, responsible) VALUES(:className,1);';
+                          	$stmt = $pdo->prepare($querystring);
+                          	$stmt->bindParam(':className', $className);
+                          	if(!$stmt->execute()) {
+                              	$error=$stmt->errorInfo();
+                              	$debug.="Error inserting into class\n".$error[2];
+                          	}
+                      	}
+                  	}
 
-                  }
+					//creates a new user if one didn't exist in the database
+					if($uid=="UNK"){
+						$rnd=standardPasswordHash(makeRandomString(9));
+						$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
+						$stmt = $pdo->prepare($querystring);
+						$stmt->bindParam(':username', $username);
+						$stmt->bindParam(':email', $saveemail);
+						$stmt->bindParam(':firstname', $firstname);
+						$stmt->bindParam(':lastname', $lastname);
+						$stmt->bindParam(':ssn', $ssn);
+						$stmt->bindParam(':password', $rnd);
+						$stmt->bindParam(':className', $className);
 
-									if($user[0]!="PNR"){
-											$rnd=standardPasswordHash(makeRandomString(9));
-											$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
-											$stmt = $pdo->prepare($querystring);
-											$stmt->bindParam(':username', $username);
-											$stmt->bindParam(':email', $saveemail);
-											$stmt->bindParam(':firstname', $firstname);
-											$stmt->bindParam(':lastname', $lastname);
-											$stmt->bindParam(':ssn', $ssn);
-											$stmt->bindParam(':password', $rnd);
-											$stmt->bindParam(':className', $className);
+						try {
+							if(!$stmt->execute()) {
+								$error=$stmt->errorInfo();
+								$debug.="Error updating entries\n".$error[2];
+								$debug.="   ".$username."Does not Exist \n";
+								$debug.=" ".$uid;
+							}
+							$uid=$pdo->lastInsertId();
+						} catch (PDOException $e) {
+							if ($e->errorInfo[1] == 1062) {
+								$debug="Duplicate SSN or Username";
+							} else {
+								$debug="Error updating entries\n".$error[2];
+							}
+						}
+					}
 
-											try {
-												if(!$stmt->execute()) {
-													$error=$stmt->errorInfo();
-													$debug.="Error updating entries\n".$error[2];
-													$debug.="   ".$username."Does not Exist \n";
-													$debug.=" ".$uid;
-												}
-												$uid=$pdo->lastInsertId();
-											} catch (PDOException $e) {
-												if ($e->errorInfo[1] == 1062) {
-													$debug="Duplicate SSN or Username";
-												} else {
-													$debug="Error updating entries\n".$error[2];
-												}
-											}
-
-									}
-
-								}else if($userquery->rowCount() > 0){
-                    $usr = $userquery->fetch(PDO::FETCH_ASSOC);
+				}else if($userquery->rowCount() > 0){
+                	$usr = $userquery->fetch(PDO::FETCH_ASSOC);
                     $uid = $usr['uid'];
                 }
 
-					}
+			}
 					
-          // We have a user, connect to current course
-          if($uid!="UNK"){
-						$debug=$regstatus;						
-						if($regstatus=="Registrerad"||$regstatus=="UNK"){
-								$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R',:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
-								$stmt->bindParam(':uid', $uid);
-								$stmt->bindParam(':cid', $cid);
-								$stmt->bindParam(':vers', $coursevers);
-								$stmt->bindParam(':avers', $coursevers);
-								$stmt->bindParam(':bvers', $coursevers);
-
-								// Insert the user into the database.
-								try {
-										if(!$stmt->execute()) {
-												$error=$stmt->errorInfo();
-												$debug.="Error connecting user to course: ".$error[2];
-										}
-								}catch(Exception $e) {
-
-								}
+          	// We have a user, connect to current course
+          	if($uid!="UNK"){
+				if($regstatus=="Registrerad"||$regstatus=="UNK"){
+					$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,term,creator,vers,vershistory) VALUES(:uid, :cid,'R',:term,:creator,:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
+					$stmt->bindParam(':uid', $uid);
+					$stmt->bindParam(':cid', $cid);
+					$stmt->bindParam(':term', $term);
+					$stmt->bindParam(':creator', $userid);
+					$stmt->bindParam(':vers', $coursevers);
+					$stmt->bindParam(':avers', $coursevers);
+					$stmt->bindParam(':bvers', $coursevers);
+					// Insert the user into the database.
+					try {
+						if(!$stmt->execute()) {
+							$error=$stmt->errorInfo();
+							$debug.="Error connecting user to course: ".$error[2];
 						}
-          }
-			} // End of foreach user
+					}catch(Exception $e) {
+						$debug.="Error connecting user to course: ".$e->getMessage();
+					}
+				}
+        	}
+		} // End of foreach user
 	} // End ADD_USER
 }
 
@@ -295,7 +300,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W'" );
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W';");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -313,9 +318,9 @@ if(checklogin() && $hasAccess) {
 	foreach($result as $row){
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
-			/*'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),*/
-			//'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
-			//'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
+			'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
+			'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
+			'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
 			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
 			'modified' => $row['modified'],
 			'examiner' => json_encode(['examiner' => $row['examiner'], 'uid' => $row['uid']]),
@@ -326,9 +331,8 @@ if(checklogin() && $hasAccess) {
 		);
 		array_push($entries, $entry);
 	}
-	
-	$query = $pdo->prepare("SELECT user.uid FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by user.uid ");
-	//$query->bindParam(':cid', $cid);
+  
+	$query = $pdo->prepare("SELECT user_course.uid FROM user_course WHERE user_course.access = 'W' GROUP by user_course.uid;");
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries\n".$error[2];
