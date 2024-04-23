@@ -90,6 +90,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - processDuggaFile
 - submitDugga
 - loadDugga
+- retrieveUsername
 
 
 
@@ -284,6 +285,18 @@ __USED BY__
 
 Uses the services __updateTableCourse__ to change the content of these columns:
 - activeversion
+
+<br>
+
+---
+
+### retrieveUsername
+__USED BY__
+- 
+- 
+<br>
+
+Uses 
 
 <br>
 <br>
