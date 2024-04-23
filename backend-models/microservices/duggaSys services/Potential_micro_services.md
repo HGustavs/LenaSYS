@@ -175,7 +175,7 @@ Resulted Service:
 Show Dugga Service:
 
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
-- processDuggaFile_ms.php
+- processDuggaFile_ms.php __==finished==__ New filename: "readDuggaFile_ms.php" according to new nameconvention based on CRUD.
 - saveDugga_ms.php __==finished==__ Should keep existing name. This filename is not based on CRUD because, in this particular case, a more general name is preferable as it better describes the microservice's function and avoids confusion with other services that handle similar functions.
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
 
@@ -2078,12 +2078,55 @@ UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
 
 <br>
 
-### processDuggaFile
-Search with __hash__
-Uses service __selectFromTableSubmission__ to _get_ information it requires from __submission__.
-<br>
-If no match on _hash_, retreive all submissions
-Uses service __selectFromTableSubmission__ to _get_ information it requires from __submission__.
+### readDuggaFile_ms.php
+_SELECT_ operation on the table __'submission'__ to retrieve the following columns for records that match a specific condition:
+- subid
+- vers
+- did
+- fieldnme
+- filename
+- extension
+- mime
+- updtime
+- kind
+- filepath
+- seq
+- segment
+- hash
+
+- The value in the 'hash' column must match the specified `:hash`. The results are ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
+
+```sql
+SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash 
+FROM submission 
+WHERE hash = :hash 
+ORDER BY subid, fieldnme, updtime ASC;
+```
+
+
+_SELECT_ operation on the table __'submission'__ to retrieve the following columns for records that meet a specific condition:
+- subid
+- vers
+- did
+- fieldnme
+- filename
+- extension
+- mime
+- updtime
+- kind
+- filepath
+- seq
+- segment
+- hash
+
+- The value in the 'segment' column matches the specified `:moment`. The results should be ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
+
+```sql
+SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash 
+FROM submission 
+WHERE segment = :moment 
+ORDER BY subid, fieldnme, updtime ASC;
+```
 
 <br>
 
