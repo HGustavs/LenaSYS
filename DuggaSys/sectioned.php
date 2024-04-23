@@ -680,7 +680,7 @@
 				</div>
 				
 		</div>
-		<?php
+<?php
 //Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
     //First query: Check if a row with same cid already exists. If not, insert into db.
