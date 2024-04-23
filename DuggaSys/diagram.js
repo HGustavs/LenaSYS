@@ -8823,8 +8823,8 @@ function drawElement(element, ghosted = false) {
                     </svg>
                 </div>`;
         if (element.fill == `${"#000000"}` && theme.href.includes('blackTheme')) {
-            element.fill = `${"#FFFFFF"}`;
-        } else if (element.fill == `${"#FFFFFF"}` && theme.href.includes('style')) {
+            element.fill = `${"#ffffff"}`;
+        } else if (element.fill == `${"#ffffff"}` && theme.href.includes('style')) {
             element.fill = `${"#000000"}`;
         }
     } else if (element.kind == 'UMLSuperState') {
