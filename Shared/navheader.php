@@ -687,10 +687,12 @@ function hamburgerToggle() {
 
 //count down the fetch cooldown
 
+let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
+
 document.addEventListener("DOMContentLoaded", function() {
-	const gitFetchCooldownMin = document.getElementById("gitFetchMin");
-	const gitFetchCooldownSec = document.getElementById("gitFetchSec");
-	const cooldownHolder = document.getElementById("cooldownHolder");
+	gitFetchCooldownMin = document.getElementById("gitFetchMin");
+	gitFetchCooldownSec = document.getElementById("gitFetchSec");
+	cooldownHolder = document.getElementById("cooldownHolder");
 
 	if (gitFetchCooldownMin && gitFetchCooldownSec) { //Check if elements exist
 	setInterval(
@@ -716,7 +718,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function resetGitFetchTimer(superuser)
 {
-	if(cooldownHolder.style.display=="none"){
+	if(cooldownHolder && cooldownHolder.style.display=="none"){
 		cooldownHolder.style.display="block";
 		if(superuser==1)
 		{
