@@ -461,7 +461,7 @@
 			</div>
 			<div style='padding:5px;'>
 				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
-				<div class="formDialog" style="display: block; left:54px; top:-30px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">Only numbers(between 3-8 numbers)</span></div>
+				<div class="formDialog" style="display: block; left:54px; top:-30px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">3-8 numbers required</span></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
 				<div class="formDialog" style="display: block; left:54px; top:-35px;"><span id="dialog" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' /></div>
@@ -474,7 +474,7 @@
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
 			<div style='padding:5px;'>
-				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onclick="validateForm('newCourseVersion')" />
+				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onmouseover="quickValidateForm('newCourseVersion', 'submitCourseMotd');" onclick="validateForm('newCourseVersion')" />
 			</div>
 		</div>
 	</div>

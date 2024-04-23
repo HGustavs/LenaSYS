@@ -3350,10 +3350,9 @@ function validateVersionName(versionName, dialogid) {
   var Name = /^(HT|VT|ST){1}\d{2}$/;
   var name = document.getElementById(versionName);
   var errorMsg = document.getElementById(dialogid);
-  var val = document.getElementById(versionName).value;
 
   //if versionname is 2 capital letters, 2 numbers
-  if (val.match(Name)) {
+  if (name.value.match(Name)) {
     $(errorMsg).fadeOut();
     name.classList.add("color-change-valid");
     name.classList.remove("color-change-invalid");
@@ -3365,9 +3364,20 @@ function validateVersionName(versionName, dialogid) {
       window.bool4 = true;
     }
     return true;
-  } else {
+  } else if (name.value.length > 0){
     $(errorMsg).fadeIn();
     name.classList.add("color-change-invalid");
+    name.classList.remove("color-change-valid");
+    if (versionName === 'versname') {
+      window.bool3 = false;
+    }
+    if (versionName === 'eversname') {
+      window.bool4 = false;
+    }
+    return false;
+  }else{
+    $(errorMsg).fadeOut();
+    name.classList.remove("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
       window.bool3 = false;
@@ -3392,9 +3402,15 @@ function validateCourseID(courseid, dialogid) {
     cid.classList.remove("color-change-invalid");
     cid.style.backgroundColor = backgroundColorTheme;
     window.bool = true;
-  } else {
+  } else if (cid.value.length > 0){
     $(errorMsg).fadeIn();
     cid.classList.add("color-change-invalid");
+    cid.classList.remove("color-change-valid");
+    window.bool = false;
+    return false;
+  }else{
+    $(errorMsg).fadeOut();
+    cid.classList.remove("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
     return false;
@@ -3578,9 +3594,14 @@ function validateSectName(name) {
     element.classList.remove("color-change-invalid");
     window.bool10 = true;
     return true;
-  } else { //Invalid
+  } else if (element.value.length > 0) { //Invalid
     $(errorMsg).fadeIn();
     element.classList.add("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
+    return false;
+  }else{
+    element.classList.remove("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
@@ -3656,8 +3677,7 @@ function quickValidateForm(formid, submitButton) {
     if (deadlinedisplayattribute != 'none') {
       valid &= showCourseDate('setDeadlineValue', 'dialog8');
     }
-
-    //Fields being empty are neutral
+    //Empty check
     valid &= !(sName == null || sName == "");
 
     //Name is a duplicate
@@ -3672,7 +3692,7 @@ function quickValidateForm(formid, submitButton) {
     valid &= validateDate('startdate', 'enddate', 'dialog3');
     valid &= validateMOTD('vmotd', 'dialog4', 'dialog42');
 
-    //Fields being empty are neutral
+    //Empty check
     valid &= !(versName == null || versName == "", versId == null || versId == "");
     saveButton.disabled = !valid;
   } else if (formid === 'editCourseVersion') {
@@ -3682,7 +3702,7 @@ function quickValidateForm(formid, submitButton) {
     valid &= validateDate('estartdate', 'eenddate', 'dialog6');
     valid &= validateMOTD('eMOTD', 'dialog9', 'dialog92');
 
-    //Fields being empty are neutral
+    //Empty check
     valid &= !(eversName == null || eversName == "");
     saveButton.disabled = !valid;
   }
