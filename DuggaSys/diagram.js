@@ -1966,10 +1966,8 @@ function mdown(event) {
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
-                console.log("Line clicked")
                 if (determinedLines.specialCase == true) {
                     targetElement = data[findIndex(data, determinedLines.id)];
-                    console.log(targetElement);  
                     startX = event.clientX;
                     startY = event.clientY;
                 }
@@ -2639,9 +2637,7 @@ function mmoving(event) {
         case pointerState.CLICKED_LINE:
             // Check if the line is a special case line
             var targetLine = lines[findIndex(lines, determinedLines.id)];
-            console.log(targetLine);
             if (targetLine.specialCase == true) {
-                console.log("Special case line detected");
                 // Moving the line
                 movingObject = true;
                 deltaX = startX - event.clientX;
@@ -7924,7 +7920,36 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 y1 = fromElement.y1;
                 x2 = toElement.x1;
                 y2 = toElement.y1;
+
+                // Calculate differences in x and y coordinates
+                var dx = Math.abs(x2 - x1);
+                var dy = Math.abs(y2 - y1);
+                // Check if the elements are more horizontally, vertically, or diagonally aligned
+                if (dx > dy && (Math.abs(dx-dy) > 150)) {
+                    console.log("Horizontally aligned");
+                    console.log("dx: " + dx + " dy: " + dy);
+                    console.log("lines between: " +linesBetween.length);
+                    // Horizontally aligned, adjust offsetX
+                    newLine.offsetY = (x2 > x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
+                    newLine.offsetX = 0; // No vertical offset
+                } else if (dx < dy && (Math.abs(dy-dx) > 150)) {
+                    console.log("Vertically aligned");
+                    console.log("dx: " + dx + " dy: " + dy);
+                    console.log("lines between: " +linesBetween.length);
+                    // Vertically aligned, adjust offsetY
+                    newLine.offsetY = 0; // No horizontal offset
+                    newLine.offsetX = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
+                } else {
+                    console.log("Diagonally aligned");
+                    console.log("dx: " + dx + " dy: " + dy);
+                    console.log("lines between: " +linesBetween.length);
+                    // Diagonally aligned, adjust both offsetX and offsetY
+                    newLine.offsetX = (x2 < x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
+                    newLine.offsetY = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
+                }
+                console.log("offsetX: " + newLine.offsetX + " offsetY: " + newLine.offsetY);
             }
+        
 
             newLine.specialCase = true;
         }
@@ -8069,9 +8094,7 @@ function drawLine(line, targetGhost = false) {
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
                 />`;
     } else { // UML, IE or SD
-        if(line.specialCase) {console.log("Special case line drawn")} else { console.log("Normal line drawn")}
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
-        console.log(str);
     }
 
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
@@ -11685,7 +11708,6 @@ function updateLabelPos(newPosX, newPosY) {
 }
 
 function updatelineOffset(line, x, y) {
-    console.log("line offset: " + line.offsetX + " " + line.offsetY);
     line.offsetX = x;
     line.offsetY = y;
 }
