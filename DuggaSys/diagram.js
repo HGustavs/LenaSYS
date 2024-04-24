@@ -2683,7 +2683,6 @@ function mmoving(event) {
 
             deltaX = startX - event.clientX;
 
-            let minHeight = 50;
             if (elementData.kind == "UMLEntity" || elementData.kind == "IEEntity") { // Declare the minimal height of an object
                 minHeight = 0;
             }
